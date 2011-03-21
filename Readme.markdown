@@ -2,7 +2,7 @@
 
 Alla controllers ska skapas utav Castle Windsor.
 
-## Lösning
+## LÃ¶sning
 
 * [Setting Up IoC in ASP.NET MVC using Castle Windsor](http://mvcsharp.wordpress.com/2010/01/09/setting-up-ioc-in-asp-net-mvc-using-castle-windsor)
 
@@ -10,25 +10,25 @@ Alla controllers ska skapas utav Castle Windsor.
 
 # Skapa testprojekt
 
-Hitta metod för att testa controllers.
+Hitta metod fÃ¶r att testa controllers.
 
-## Lösning
+## LÃ¶sning
 
 * [Exercise 1: Testing simple controller actions](http://msdn.microsoft.com/en-us/vs2010trainingcourse_aspnetmvc3testing_topic3)
 
-# Testprojektet ska kunna köras mot en SQLite-databas.
+# Testprojektet ska kunna kÃ¶ras mot en SQLite-databas.
 
-# Länka ihop standalone-migrations med MySQL
+# LÃ¤nka ihop standalone-migrations med MySQL
 
-## Lösning
+## LÃ¶ng
 
 * [vijedi / standalone-migrations](https://github.com/vijedi/standalone-migrations)
 * [Migrations](http://guides.rubyonrails.org/migrations.html)
 * [Rake](http://rake.rubyforge.org)
 
-# Använd AutoMapper för att skapa ViewModel
+# AnvÃ¤nd AutoMapper fÃ¶r att skapa ViewModel
 
-## Lösning
+## LÃ¶sning
 
 * [AutoMapper med ASP.NET MVC ](http://weblogs.asp.net/mikaelsoderstrom/archive/2010/02/03/automapper-med-asp-net-mvc.aspx)
 * [View Model pattern and AutoMapper in ASP.NET MVC Applications](http://weblogs.asp.net/shijuvarghese/archive/2010/02/01/view-model-pattern-and-automapper-in-asp-net-mvc-applications.aspx)
