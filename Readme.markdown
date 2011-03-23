@@ -20,7 +20,7 @@ Hitta metod för att testa controllers.
 
 # Länka ihop standalone-migrations med MySQL
 
-## Löng
+## Lösning
 
 * [vijedi / standalone-migrations](https://github.com/vijedi/standalone-migrations)
 * [Migrations](http://guides.rubyonrails.org/migrations.html)
