@@ -1,5 +1,6 @@
 ﻿namespace SnittListan.Controllers
 {
+	using System;
 	using System.Web.Mvc;
 	using System.Web.Routing;
 	using System.Web.Security;
@@ -48,6 +49,16 @@
 		[HttpPost]
 		public ActionResult LogOn(LogOnModel model, string returnUrl)
 		{
+			if (model == null)
+			{
+				throw new ArgumentNullException("model");
+			}
+
+			if (returnUrl == null)
+			{
+				throw new ArgumentNullException("returnUrl");
+			}
+
 			if (ModelState.IsValid)
 			{
 				if (this.MembershipService.ValidateUser(model.UserName, model.Password))
@@ -101,6 +112,11 @@
 		[HttpPost]
 		public ActionResult Register(RegisterModel model)
 		{
+			if (model == null)
+			{
+				throw new ArgumentNullException("model");
+			}
+
 			if (ModelState.IsValid)
 			{
 				// Attempt to register the user
@@ -133,6 +149,11 @@
 		[HttpPost]
 		public ActionResult ChangePassword(ChangePasswordModel model)
 		{
+			if (model == null)
+			{
+				throw new ArgumentNullException("model");
+			}
+
 			if (ModelState.IsValid)
 			{
 				if (this.MembershipService.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword))

@@ -20,6 +20,11 @@
 		/// <param name="filters">Add filters to this collection.</param>
 		public static void RegisterGlobalFilters(GlobalFilterCollection filters)
 		{
+			if (filters == null)
+			{
+				throw new ArgumentNullException("filters");
+			}
+
 			filters.Add(new HandleErrorAttribute());
 		}
 

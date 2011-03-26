@@ -32,6 +32,11 @@
 
 		public IEnumerable<ModelClientValidationRule> GetClientValidationRules(ModelMetadata metadata, ControllerContext context)
 		{
+			if (metadata == null)
+			{
+				throw new ArgumentNullException("metadata");
+			}
+
 			return new[] {
 				new ModelClientValidationStringLengthRule(FormatErrorMessage(metadata.GetDisplayName()), _minCharacters, int.MaxValue)
 			};
