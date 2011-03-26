@@ -138,6 +138,10 @@
 			return View(model);
 		}
 
+		/// <summary>
+		/// Handles the ChangePassword action.
+		/// </summary>
+		/// <returns>ChangePassword view.</returns>
 		[Authorize]
 		public ActionResult ChangePassword()
 		{
