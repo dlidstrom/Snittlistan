@@ -3,3 +3,4 @@
 SnittListan/bin
 SnittListan/obj
 *.user
+*.Cache
