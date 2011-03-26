@@ -35,3 +35,10 @@ Hitta metod för att testa controllers.
 * [AutoMapper in NerdDinner](http://mhinze.com/2009/07/06/automapper-in-nerddinner/)
 * [Using AutoMapper to map view models in ASP.NET MVC](http://www.bengtbe.com/blog/post/2009/04/14/Using-AutoMapper-to-map-view-models-in-ASPNET-MVC.aspx)
 * [Asp.Net MVC ViewModel with AutoMapper](http://blog.aquabirdconsulting.com/?p=317)
+
+# Uppgifter
+
+* Spelare ska registreras i databasen.
+* Administratör ska kunna registrera spelare.
+* Det ska gå att lägga till serier till en spelare. Serie är slutresultat, antal strike, spärrar, missar och hål.
+* Det ska finnas en sida som listar alla spelare.
