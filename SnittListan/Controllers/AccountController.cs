@@ -1,61 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Security.Principal;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
-using System.Web.Security;
-using SnittListan.Models;
-
-namespace SnittListan.Controllers
+﻿namespace SnittListan.Controllers
 {
+	using System.Web.Mvc;
+	using System.Web.Routing;
+	using System.Web.Security;
+	using SnittListan.Infrastructure;
+	using SnittListan.Models;
+	using SnittListan.Services;
+
+	/// <summary>
+	/// Controller for the account view.
+	/// </summary>
 	public class AccountController : Controller
 	{
-
+		/// <summary>
+		/// Gets or sets the forms authentication service.
+		/// </summary>
 		public IFormsAuthenticationService FormsService
 		{
 			get;
 			set;
 		}
+
+		/// <summary>
+		/// Gets or sets the memberships service.
+		/// </summary>
 		public IMembershipService MembershipService
 		{
 			get;
 			set;
 		}
 
-		protected override void Initialize(RequestContext requestContext)
-		{
-			if (FormsService == null)
-			{
-				FormsService = new FormsAuthenticationService();
-			}
-			if (MembershipService == null)
-			{
-				MembershipService = new AccountMembershipService();
-			}
-
-			base.Initialize(requestContext);
-		}
-
-		// **************************************
-		// URL: /Account/LogOn
-		// **************************************
-
+		/// <summary>
+		/// Handles the LogOn action.
+		/// </summary>
+		/// <returns>LogOn view.</returns>
 		public ActionResult LogOn()
 		{
 			return View();
 		}
 
+		/// <summary>
+		/// Logs on the user then, if successful, redirects to another url.
+		/// </summary>
+		/// <param name="model">LogOn model.</param>
+		/// <param name="returnUrl">Redirect url.</param>
+		/// <returns>View after redirect, or same view if something failed.</returns>
 		[HttpPost]
 		public ActionResult LogOn(LogOnModel model, string returnUrl)
 		{
 			if (ModelState.IsValid)
 			{
-				if (MembershipService.ValidateUser(model.UserName, model.Password))
+				if (this.MembershipService.ValidateUser(model.UserName, model.Password))
 				{
-					FormsService.SignIn(model.UserName, model.RememberMe);
+					this.FormsService.SignIn(model.UserName, model.RememberMe);
 					if (Url.IsLocalUrl(returnUrl))
 					{
 						return Redirect(returnUrl);
@@ -67,7 +64,7 @@ namespace SnittListan.Controllers
 				}
 				else
 				{
-					ModelState.AddModelError("", "The user name or password provided is incorrect.");
+					ModelState.AddModelError(string.Empty, "The user name or password provided is incorrect.");
 				}
 			}
 
@@ -75,59 +72,60 @@ namespace SnittListan.Controllers
 			return View(model);
 		}
 
-		// **************************************
-		// URL: /Account/LogOff
-		// **************************************
-
+		/// <summary>
+		/// Handles the LogOff action.
+		/// </summary>
+		/// <returns>Index of the home view.</returns>
 		public ActionResult LogOff()
 		{
-			FormsService.SignOut();
+			this.FormsService.SignOut();
 
 			return RedirectToAction("Index", "Home");
 		}
 
-		// **************************************
-		// URL: /Account/Register
-		// **************************************
-
+		/// <summary>
+		/// Handles the Register GET action.
+		/// </summary>
+		/// <returns>Register view.</returns>
 		public ActionResult Register()
 		{
-			ViewBag.PasswordLength = MembershipService.MinPasswordLength;
+			ViewBag.PasswordLength = this.MembershipService.MinPasswordLength;
 			return View();
 		}
 
+		/// <summary>
+		/// Handles the register POST action.
+		/// </summary>
+		/// <param name="model">Registration model.</param>
+		/// <returns>Index of the Home view, or same page if there was an error.</returns>
 		[HttpPost]
 		public ActionResult Register(RegisterModel model)
 		{
 			if (ModelState.IsValid)
 			{
 				// Attempt to register the user
-				MembershipCreateStatus createStatus = MembershipService.CreateUser(model.UserName, model.Password, model.Email);
+				MembershipCreateStatus createStatus = this.MembershipService.CreateUser(model.UserName, model.Password, model.Email);
 
 				if (createStatus == MembershipCreateStatus.Success)
 				{
-					FormsService.SignIn(model.UserName, false /* createPersistentCookie */);
+					this.FormsService.SignIn(model.UserName, false /* createPersistentCookie */);
 					return RedirectToAction("Index", "Home");
 				}
 				else
 				{
-					ModelState.AddModelError("", AccountValidation.ErrorCodeToString(createStatus));
+					ModelState.AddModelError(string.Empty, AccountValidation.ErrorCodeToString(createStatus));
 				}
 			}
 
 			// If we got this far, something failed, redisplay form
-			ViewBag.PasswordLength = MembershipService.MinPasswordLength;
+			ViewBag.PasswordLength = this.MembershipService.MinPasswordLength;
 			return View(model);
 		}
-
-		// **************************************
-		// URL: /Account/ChangePassword
-		// **************************************
 
 		[Authorize]
 		public ActionResult ChangePassword()
 		{
-			ViewBag.PasswordLength = MembershipService.MinPasswordLength;
+			ViewBag.PasswordLength = this.MembershipService.MinPasswordLength;
 			return View();
 		}
 
@@ -137,7 +135,7 @@ namespace SnittListan.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				if (MembershipService.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword))
+				if (this.MembershipService.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword))
 				{
 					return RedirectToAction("ChangePasswordSuccess");
 				}
@@ -148,18 +146,28 @@ namespace SnittListan.Controllers
 			}
 
 			// If we got this far, something failed, redisplay form
-			ViewBag.PasswordLength = MembershipService.MinPasswordLength;
+			ViewBag.PasswordLength = this.MembershipService.MinPasswordLength;
 			return View(model);
 		}
-
-		// **************************************
-		// URL: /Account/ChangePasswordSuccess
-		// **************************************
 
 		public ActionResult ChangePasswordSuccess()
 		{
 			return View();
 		}
 
+		protected override void Initialize(RequestContext requestContext)
+		{
+			if (this.FormsService == null)
+			{
+				this.FormsService = new FormsAuthenticationService();
+			}
+
+			if (this.MembershipService == null)
+			{
+				this.MembershipService = new AccountMembershipService();
+			}
+
+			base.Initialize(requestContext);
+		}
 	}
 }
