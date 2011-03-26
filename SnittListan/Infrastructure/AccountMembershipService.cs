@@ -11,6 +11,9 @@
 	{
 		private readonly MembershipProvider provider;
 
+		/// <summary>
+		/// Initializes a new instance of the AccountMembershipService class.
+		/// </summary>
 		public AccountMembershipService()
 			: this(null)
 		{
