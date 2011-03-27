@@ -5,10 +5,13 @@
 	using SnittListan.Services;
 
 	/// <summary>
-	/// Handles account membership.
+	/// Implementation of the membership service that forwards to MembershipProvider.
 	/// </summary>
 	public class AccountMembershipService : IMembershipService
 	{
+		/// <summary>
+		/// Membership provider.
+		/// </summary>
 		private readonly MembershipProvider provider;
 
 		/// <summary>
@@ -19,27 +22,45 @@
 		{
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the AccountMembershipService class.
+		/// </summary>
+		/// <param name="provider">Membership provider to use.</param>
 		public AccountMembershipService(MembershipProvider provider)
 		{
 			this.provider = provider ?? Membership.Provider;
 		}
 
+		/// <summary>
+		/// Gets the minimum password length.
+		/// </summary>
 		public int MinPasswordLength
 		{
 			get
 			{
-				return provider.MinRequiredPasswordLength;
+				return this.provider.MinRequiredPasswordLength;
 			}
 		}
 
+		/// <summary>
+		/// Validates user name and password.
+		/// </summary>
+		/// <param name="userName">User name.</param>
+		/// <param name="password">User password.</param>
+		/// <returns>A value indicating whether user was validated or not.</returns>
 		public bool ValidateUser(string userName, string password)
 		{
-			if (String.IsNullOrEmpty(userName))
+			if (string.IsNullOrEmpty(userName))
+			{
 				throw new ArgumentException("Value cannot be null or empty.", "userName");
-			if (String.IsNullOrEmpty(password))
-				throw new ArgumentException("Value cannot be null or empty.", "password");
+			}
 
-			return provider.ValidateUser(userName, password);
+			if (string.IsNullOrEmpty(password))
+			{
+				throw new ArgumentException("Value cannot be null or empty.", "password");
+			}
+
+			return this.provider.ValidateUser(userName, password);
 		}
 
 		public MembershipCreateStatus CreateUser(string userName, string password, string email)

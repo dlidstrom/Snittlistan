@@ -6,8 +6,16 @@
 	using System.Web;
 	using System.Web.Security;
 
+	/// <summary>
+	/// Handles account validation.
+	/// </summary>
 	public static class AccountValidation
 	{
+		/// <summary>
+		/// Converts an error code into an error message.
+		/// </summary>
+		/// <param name="createStatus">Membership creation status.</param>
+		/// <returns>Error message.</returns>
 		public static string ErrorCodeToString(MembershipCreateStatus createStatus)
 		{
 			// See http://go.microsoft.com/fwlink/?LinkID=177550 for

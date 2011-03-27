@@ -149,6 +149,11 @@
 			return View();
 		}
 
+		/// <summary>
+		/// Handles the ChangePassword POST action.
+		/// </summary>
+		/// <param name="model">ChangePassword model.</param>
+		/// <returns>Redirects to ChangePasswordSuccess, or redisplay if errors.</returns>
 		[Authorize]
 		[HttpPost]
 		public ActionResult ChangePassword(ChangePasswordModel model)
@@ -166,7 +171,7 @@
 				}
 				else
 				{
-					ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
+					ModelState.AddModelError(string.Empty, "The current password is incorrect or the new password is invalid.");
 				}
 			}
 
@@ -175,11 +180,19 @@
 			return View(model);
 		}
 
+		/// <summary>
+		/// Handles the ChangePasswordSuccess action.
+		/// </summary>
+		/// <returns>ChangePasswordSuccess view.</returns>
 		public ActionResult ChangePasswordSuccess()
 		{
 			return View();
 		}
 
+		/// <summary>
+		/// Called when controller is being initialized.
+		/// </summary>
+		/// <param name="requestContext">Request context.</param>
 		protected override void Initialize(RequestContext requestContext)
 		{
 			if (this.FormsService == null)
