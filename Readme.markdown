@@ -1,3 +1,9 @@
+# Konfigurera ASP.NET Membership/Roles för MySQL
+
+## Lösning
+
+* [How to configure MySQL for ASP.Net Membership/Roles Provider](http://forum.winhost.com/showthread.php?t=5948)
+
 # Integrera Castle Windsor
 
 Alla controllers ska skapas utav Castle Windsor.
