@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="ftp://snittlistan.se" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FTP" replaceMatchingFiles="True" userName="snittlis" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAGAdb4c0lyEawTppRAHQ8vgAAAAACAAAAAAAQZgAAAAEAACAAAADOsp27Gx3BzhFCVqIO/AG5oCZy7vg3zhuQ46vWk3cxtAAAAAAOgAAAAAIAACAAAAD9ZoRlgB11EjtrcuUNwiJ0Z4w9fNoqMQKfappPhmgbkxAAAABnKGp3A7Zhob+Ob4zrrKIzQAAAAG5wOgDCxwG0efl7GdVn9WUREQizAmp7pz6iaLGNI5ajISlNSFFopf46/3UflhMQD1yb0foHX7/vd/FvuwkqTk8=" SelectedForPublish="True">
+    <file relUrl="Views/Account/ChangePassword.cshtml" publishTime="03/20/2011 15:20:15" />
+    <file relUrl="Content/themes/base/images/ui-bg_glass_75_dadada_1x400.png" publishTime="03/20/2011 15:20:13" />
+    <file relUrl="bin/SnittListan.dll" publishTime="04/05/2011 21:59:05" />
+    <file relUrl="Scripts/MicrosoftMvcAjax.js" publishTime="03/20/2011 15:20:15" />
+    <file relUrl="bin/MySql.Data.dll" publishTime="10/11/2010 15:35:42" />
+    <file relUrl="Scripts/jquery-1.4.4-vsdoc.js" publishTime="03/20/2011 15:20:13" />
+    <file relUrl="Global.asax" publishTime="03/20/2011 15:20:15" />
+    <file relUrl="Views/_ViewStart.cshtml" publishTime="03/20/2011 15:20:15" />
+    <file relUrl="Content/themes/base/jquery-ui.css" publishTime="03/20/2011 15:20:13" />
+    <file relUrl="Content/themes/base/images/ui-bg_highlight-soft_75_cccccc_1x100.png" publishTime="03/20/2011 15:20:13" />
+    <file relUrl="Content/themes/base/images/ui-bg_glass_55_fbf9ee_1x400.png" publishTime="03/20/2011 15:20:13" />
+    <file relUrl="Scripts/MicrosoftMvcAjax.debug.js" publishTime="03/20/2011 15:20:15" />
+    <file relUrl="Scripts/MicrosoftMvcValidation.debug.js" publishTime="03/20/2011 15:20:15" />
+    <file relUrl="Content/themes/base/images/ui-bg_flat_0_aaaaaa_40x100.png" publishTime="03/20/2011 15:20:13" />
+    <file relUrl="Scripts/MicrosoftAjax.js" publishTime="03/20/2011 15:20:15" />
+    <file relUrl="Views/Shared/_LogOnPartial.cshtml" publishTime="03/20/2011 15:20:15" />
+    <file relUrl="Views/Shared/Error.cshtml" publishTime="03/20/2011 15:20:15" />
+    <file relUrl="Scripts/jquery.validate.min.js" publishTime="03/20/2011 15:20:14" />
+    <file relUrl="Views/Account/ChangePasswordSuccess.cshtml" publishTime="03/20/2011 15:20:15" />
+    <file relUrl="Scripts/jquery-1.4.4.js" publishTime="03/20/2011 15:20:14" />
+    <file relUrl="Views/Home/About.cshtml" publishTime="03/20/2011 15:20:15" />
+    <file relUrl="Scripts/jquery.validate-vsdoc.js" publishTime="03/20/2011 15:20:14" />
+    <file relUrl="Scripts/jquery.unobtrusive-ajax.min.js" publishTime="03/20/2011 15:20:14" />
+    <file relUrl="Content/themes/base/images/ui-icons_222222_256x240.png" publishTime="03/20/2011 15:20:13" />
+    <file relUrl="Scripts/jquery.validate.js" publishTime="03/20/2011 15:20:14" />
+    <file relUrl="Scripts/jquery-1.4.4.min.js" publishTime="03/20/2011 15:20:14" />
+    <file relUrl="Content/themes/base/images/ui-bg_glass_75_e6e6e6_1x400.png" publishTime="03/20/2011 15:20:13" />
+    <file relUrl="Content/themes/base/images/ui-icons_454545_256x240.png" publishTime="03/20/2011 15:20:13" />
+    <file relUrl="Views/Home/Index.cshtml" publishTime="03/20/2011 15:20:15" />
+    <file relUrl="Scripts/MicrosoftMvcValidation.js" publishTime="03/20/2011 15:20:15" />
+    <file relUrl="Content/themes/base/images/ui-bg_glass_65_ffffff_1x400.png" publishTime="03/20/2011 15:20:13" />
+    <file relUrl="Scripts/jquery.validate.unobtrusive.min.js" publishTime="03/20/2011 15:20:14" />
+    <file relUrl="Scripts/jquery.validate.unobtrusive.js" publishTime="03/20/2011 15:20:14" />
+    <file relUrl="Views/Account/Register.cshtml" publishTime="03/20/2011 15:20:15" />
+    <file relUrl="Views/Shared/_Layout.cshtml" publishTime="03/20/2011 15:20:15" />
+    <file relUrl="Content/themes/base/images/ui-icons_cd0a0a_256x240.png" publishTime="03/20/2011 15:20:13" />
+    <file relUrl="bin/MySql.Web.dll" publishTime="10/11/2010 15:35:46" />
+    <file relUrl="Scripts/jquery.unobtrusive-ajax.js" publishTime="03/20/2011 15:20:14" />
+    <file relUrl="Views/Account/LogOn.cshtml" publishTime="03/20/2011 15:20:15" />
+    <file relUrl="Scripts/jquery-ui.min.js" publishTime="03/20/2011 15:20:14" />
+    <file relUrl="Content/themes/base/images/ui-bg_glass_95_fef1ec_1x400.png" publishTime="03/20/2011 15:20:13" />
+    <file relUrl="Content/themes/base/images/ui-icons_888888_256x240.png" publishTime="03/20/2011 15:20:13" />
+    <file relUrl="Content/Site.css" publishTime="03/20/2011 15:20:13" />
+    <file relUrl="Scripts/MicrosoftAjax.debug.js" publishTime="03/20/2011 15:20:15" />
+    <file relUrl="Content/themes/base/images/ui-bg_flat_75_ffffff_40x100.png" publishTime="03/20/2011 15:20:13" />
+    <file relUrl="Scripts/jquery-ui.js" publishTime="03/20/2011 15:20:14" />
+    <file relUrl="bin/SnittListan.pdb" publishTime="04/05/2011 21:59:05" />
+    <file relUrl="Content/themes/base/images/ui-icons_2e83ff_256x240.png" publishTime="03/20/2011 15:20:13" />
+    <file relUrl="Views/Web.config" publishTime="03/20/2011 15:20:15" />
+    <file relUrl="Web.config" publishTime="04/05/2011 21:59:15" />
+  </publishProfile>
+</publishData>
