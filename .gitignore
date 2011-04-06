@@ -6,3 +6,4 @@ SnittListan/obj
 *.Cache
 SnittListan.Test/bin
 SnittListan.Test/obj
+SnittListan/SnittListan.Publish.xml
