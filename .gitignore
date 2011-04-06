@@ -4,3 +4,5 @@ SnittListan/bin
 SnittListan/obj
 *.user
 *.Cache
+SnittListan.Test/bin
+SnittListan.Test/obj

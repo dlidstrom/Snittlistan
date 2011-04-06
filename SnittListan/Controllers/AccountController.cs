@@ -44,7 +44,7 @@
 		/// Logs on the user then, if successful, redirects to another url.
 		/// </summary>
 		/// <param name="model">LogOn model.</param>
-		/// <param name="returnUrl">Redirect url.</param>
+		/// <param name="returnUrl">Redirect url (null allowed).</param>
 		/// <returns>View after redirect, or same view if something failed.</returns>
 		[HttpPost]
 		public ActionResult LogOn(LogOnModel model, string returnUrl)
@@ -52,11 +52,6 @@
 			if (model == null)
 			{
 				throw new ArgumentNullException("model");
-			}
-
-			if (returnUrl == null)
-			{
-				throw new ArgumentNullException("returnUrl");
 			}
 
 			if (ModelState.IsValid)
