@@ -7,7 +7,6 @@ using System.Web.Security;
 
 namespace SnittListan.Models
 {
-
 	public class ChangePasswordModel
 	{
 		[Required]
