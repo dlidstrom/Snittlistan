@@ -1,2 +1,0 @@
-#R: Gendarme.Rules.Correctness.CheckParametersNullityInVisibleMethodsRule
-#M: System.Web.Mvc.ActionResult SnittListan.Controllers.AccountController::LogOn(SnittListan.Models.LogOnModel,System.String)

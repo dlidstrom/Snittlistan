@@ -1,65 +1,38 @@
-﻿namespace SnittListan.Controllers
-{
-	using System;
-	using System.Web.Mvc;
-	using System.Web.Routing;
-	using System.Web.Security;
-	using SnittListan.Infrastructure;
-	using SnittListan.Models;
-	using SnittListan.Services;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
+using System.Web.Security;
+using SnittListan.Models;
 
-	/// <summary>
-	/// Controller for the account view.
-	/// </summary>
+namespace SnittListan.Controllers
+{
 	public class AccountController : Controller
 	{
-		/// <summary>
-		/// Gets or sets the forms authentication service.
-		/// </summary>
-		public IFormsAuthenticationService FormsService
-		{
-			get;
-			set;
-		}
 
-		/// <summary>
-		/// Gets or sets the memberships service.
-		/// </summary>
-		public IMembershipService MembershipService
-		{
-			get;
-			set;
-		}
+		//
+		// GET: /Account/LogOn
 
-		/// <summary>
-		/// Handles the LogOn action.
-		/// </summary>
-		/// <returns>LogOn view.</returns>
 		public ActionResult LogOn()
 		{
 			return View();
 		}
 
-		/// <summary>
-		/// Logs on the user then, if successful, redirects to another url.
-		/// </summary>
-		/// <param name="model">LogOn model.</param>
-		/// <param name="returnUrl">Redirect url (null allowed).</param>
-		/// <returns>View after redirect, or same view if something failed.</returns>
+		//
+		// POST: /Account/LogOn
+
 		[HttpPost]
 		public ActionResult LogOn(LogOnModel model, string returnUrl)
 		{
-			if (model == null)
-			{
-				throw new ArgumentNullException("model");
-			}
-
 			if (ModelState.IsValid)
 			{
-				if (this.MembershipService.ValidateUser(model.UserName, model.Password))
+				if (Membership.ValidateUser(model.UserName, model.Password))
 				{
-					this.FormsService.SignIn(model.UserName, model.RememberMe);
-					if (Url.IsLocalUrl(returnUrl))
+					FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+					if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
+						&& !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
 					{
 						return Redirect(returnUrl);
 					}
@@ -70,7 +43,7 @@
 				}
 				else
 				{
-					ModelState.AddModelError(string.Empty, "The user name or password provided is incorrect.");
+					ModelState.AddModelError("", "The user name or password provided is incorrect.");
 				}
 			}
 
@@ -78,129 +51,143 @@
 			return View(model);
 		}
 
-		/// <summary>
-		/// Handles the LogOff action.
-		/// </summary>
-		/// <returns>Index of the home view.</returns>
+		//
+		// GET: /Account/LogOff
+
 		public ActionResult LogOff()
 		{
-			this.FormsService.SignOut();
+			FormsAuthentication.SignOut();
 
 			return RedirectToAction("Index", "Home");
 		}
 
-		/// <summary>
-		/// Handles the Register GET action.
-		/// </summary>
-		/// <returns>Register view.</returns>
+		//
+		// GET: /Account/Register
+
 		public ActionResult Register()
 		{
-			ViewBag.PasswordLength = this.MembershipService.MinPasswordLength;
 			return View();
 		}
 
-		/// <summary>
-		/// Handles the register POST action.
-		/// </summary>
-		/// <param name="model">Registration model.</param>
-		/// <returns>Index of the Home view, or same page if there was an error.</returns>
+		//
+		// POST: /Account/Register
+
 		[HttpPost]
 		public ActionResult Register(RegisterModel model)
 		{
-			if (model == null)
-			{
-				throw new ArgumentNullException("model");
-			}
-
 			if (ModelState.IsValid)
 			{
 				// Attempt to register the user
-				MembershipCreateStatus createStatus = this.MembershipService.CreateUser(model.UserName, model.Password, model.Email);
+				MembershipCreateStatus createStatus;
+				Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
 
 				if (createStatus == MembershipCreateStatus.Success)
 				{
-					this.FormsService.SignIn(model.UserName, false /* createPersistentCookie */);
+					FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
 					return RedirectToAction("Index", "Home");
 				}
 				else
 				{
-					ModelState.AddModelError(string.Empty, AccountValidation.ErrorCodeToString(createStatus));
+					ModelState.AddModelError("", ErrorCodeToString(createStatus));
 				}
 			}
 
 			// If we got this far, something failed, redisplay form
-			ViewBag.PasswordLength = this.MembershipService.MinPasswordLength;
 			return View(model);
 		}
 
-		/// <summary>
-		/// Handles the ChangePassword action.
-		/// </summary>
-		/// <returns>ChangePassword view.</returns>
+		//
+		// GET: /Account/ChangePassword
+
 		[Authorize]
 		public ActionResult ChangePassword()
 		{
-			ViewBag.PasswordLength = this.MembershipService.MinPasswordLength;
 			return View();
 		}
 
-		/// <summary>
-		/// Handles the ChangePassword POST action.
-		/// </summary>
-		/// <param name="model">ChangePassword model.</param>
-		/// <returns>Redirects to ChangePasswordSuccess, or redisplay if errors.</returns>
+		//
+		// POST: /Account/ChangePassword
+
 		[Authorize]
 		[HttpPost]
 		public ActionResult ChangePassword(ChangePasswordModel model)
 		{
-			if (model == null)
-			{
-				throw new ArgumentNullException("model");
-			}
-
 			if (ModelState.IsValid)
 			{
-				if (this.MembershipService.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword))
+
+				// ChangePassword will throw an exception rather
+				// than return false in certain failure scenarios.
+				bool changePasswordSucceeded;
+				try
+				{
+					MembershipUser currentUser = Membership.GetUser(User.Identity.Name, true /* userIsOnline */);
+					changePasswordSucceeded = currentUser.ChangePassword(model.OldPassword, model.NewPassword);
+				}
+				catch (Exception)
+				{
+					changePasswordSucceeded = false;
+				}
+
+				if (changePasswordSucceeded)
 				{
 					return RedirectToAction("ChangePasswordSuccess");
 				}
 				else
 				{
-					ModelState.AddModelError(string.Empty, "The current password is incorrect or the new password is invalid.");
+					ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
 				}
 			}
 
 			// If we got this far, something failed, redisplay form
-			ViewBag.PasswordLength = this.MembershipService.MinPasswordLength;
 			return View(model);
 		}
 
-		/// <summary>
-		/// Handles the ChangePasswordSuccess action.
-		/// </summary>
-		/// <returns>ChangePasswordSuccess view.</returns>
+		//
+		// GET: /Account/ChangePasswordSuccess
+
 		public ActionResult ChangePasswordSuccess()
 		{
 			return View();
 		}
 
-		/// <summary>
-		/// Called when controller is being initialized.
-		/// </summary>
-		/// <param name="requestContext">Request context.</param>
-		protected override void Initialize(RequestContext requestContext)
+		#region Status Codes
+		private static string ErrorCodeToString(MembershipCreateStatus createStatus)
 		{
-			if (this.FormsService == null)
+			// See http://go.microsoft.com/fwlink/?LinkID=177550 for
+			// a full list of status codes.
+			switch (createStatus)
 			{
-				this.FormsService = new FormsAuthenticationService();
-			}
+				case MembershipCreateStatus.DuplicateUserName:
+					return "User name already exists. Please enter a different user name.";
 
-			if (this.MembershipService == null)
-			{
-				this.MembershipService = new AccountMembershipService();
-			}
+				case MembershipCreateStatus.DuplicateEmail:
+					return "A user name for that e-mail address already exists. Please enter a different e-mail address.";
 
-			base.Initialize(requestContext);
+				case MembershipCreateStatus.InvalidPassword:
+					return "The password provided is invalid. Please enter a valid password value.";
+
+				case MembershipCreateStatus.InvalidEmail:
+					return "The e-mail address provided is invalid. Please check the value and try again.";
+
+				case MembershipCreateStatus.InvalidAnswer:
+					return "The password retrieval answer provided is invalid. Please check the value and try again.";
+
+				case MembershipCreateStatus.InvalidQuestion:
+					return "The password retrieval question provided is invalid. Please check the value and try again.";
+
+				case MembershipCreateStatus.InvalidUserName:
+					return "The user name provided is invalid. Please check the value and try again.";
+
+				case MembershipCreateStatus.ProviderError:
+					return "The authentication provider returned an error. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+
+				case MembershipCreateStatus.UserRejected:
+					return "The user creation request has been canceled. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+
+				default:
+					return "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+			}
 		}
+		#endregion
 	}
 }
