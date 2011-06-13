@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Castle.Windsor;
+using Castle.Windsor.Installer;
 
 namespace SnittListan
 {
@@ -35,6 +37,31 @@ namespace SnittListan
 
 			RegisterGlobalFilters(GlobalFilters.Filters);
 			RegisterRoutes(RouteTable.Routes);
+
+			// initialize container and controller factory
+			InitializeContainer();
+			InitializeControllerFactory();
+		}
+
+		private void InitializeContainer()
+		{
+			if (container == null)
+			{
+				container = new WindsorContainer()
+					.Install(FromAssembly.This());
+			}
+		}
+
+		private void InitializeControllerFactory()
+		{
+			var controllerFactory = container.Resolve<IControllerFactory>();
+			ControllerBuilder.Current.SetControllerFactory(controllerFactory);
+		}
+
+		private static IWindsorContainer container;
+		public IWindsorContainer Container
+		{
+			get { return container; }
 		}
 	}
 }
