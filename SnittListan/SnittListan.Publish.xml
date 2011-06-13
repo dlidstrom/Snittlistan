@@ -6,15 +6,12 @@
     <file relUrl="Views/Account/Register.cshtml" publishTime="06/05/2011 21:39:24" />
     <file relUrl="Content/themes/base/images/ui-bg_flat_75_ffffff_40x100.png" publishTime="06/05/2011 21:39:33" />
     <file relUrl="Content/themes/base/images/ui-bg_glass_55_fbf9ee_1x400.png" publishTime="06/05/2011 21:39:33" />
-    <file relUrl="Scripts/MicrosoftAjax.js" publishTime="06/05/2011 21:39:24" />
     <file relUrl="Content/themes/base/jquery.ui.accordion.css" publishTime="06/05/2011 21:39:32" />
     <file relUrl="Views/Account/LogOn.cshtml" publishTime="06/05/2011 21:39:24" />
-    <file relUrl="Scripts/MicrosoftMvcValidation.debug.js" publishTime="06/05/2011 21:39:24" />
     <file relUrl="Content/themes/base/jquery.ui.button.css" publishTime="06/05/2011 21:39:32" />
     <file relUrl="app_code/Content.cshtml" publishTime="06/09/2011 19:46:14" />
     <file relUrl="Web.config" publishTime="06/06/2011 00:20:25" />
     <file relUrl="Content/themes/base/images/ui-icons_cd0a0a_256x240.png" publishTime="06/05/2011 21:39:33" />
-    <file relUrl="Scripts/MicrosoftMvcAjax.js" publishTime="06/05/2011 21:39:24" />
     <file relUrl="Scripts/jquery-ui-1.8.11.js" publishTime="06/05/2011 21:39:31" />
     <file relUrl="Content/themes/base/jquery.ui.autocomplete.css" publishTime="06/05/2011 21:39:32" />
     <file relUrl="Global.asax" publishTime="06/05/2011 21:39:24" />
@@ -47,20 +44,17 @@
     <file relUrl="Views/Account/ChangePassword.cshtml" publishTime="06/09/2011 19:51:38" />
     <file relUrl="Scripts/jquery.validate-vsdoc.js" publishTime="06/05/2011 21:39:30" />
     <file relUrl="Scripts/jquery-1.5.1.min.js" publishTime="06/05/2011 21:39:29" />
-    <file relUrl="bin/SnittListan.pdb" publishTime="06/09/2011 19:46:15" />
+    <file relUrl="bin/SnittListan.pdb" publishTime="06/09/2011 21:14:53" />
     <file relUrl="Views/Shared/_Layout.cshtml" publishTime="06/09/2011 19:52:01" />
     <file relUrl="Views/Web.config" publishTime="06/05/2011 21:39:24" />
     <file relUrl="Content/Site.css" publishTime="06/05/2011 21:39:24" />
-    <file relUrl="Scripts/MicrosoftMvcValidation.js" publishTime="06/05/2011 21:39:24" />
-    <file relUrl="bin/SnittListan.dll" publishTime="06/09/2011 19:46:15" />
+    <file relUrl="bin/SnittListan.dll" publishTime="06/09/2011 21:14:53" />
     <file relUrl="Content/themes/base/images/ui-icons_888888_256x240.png" publishTime="06/05/2011 21:39:33" />
     <file relUrl="Views/_ViewStart.cshtml" publishTime="06/05/2011 21:39:24" />
     <file relUrl="Scripts/modernizr-1.7.js" publishTime="06/05/2011 21:39:35" />
     <file relUrl="Scripts/jquery.unobtrusive-ajax.js" publishTime="06/05/2011 21:39:24" />
     <file relUrl="Content/themes/base/jquery.ui.all.css" publishTime="06/05/2011 21:39:32" />
-    <file relUrl="Scripts/MicrosoftAjax.debug.js" publishTime="06/05/2011 21:39:24" />
     <file relUrl="Scripts/jquery-1.5.1-vsdoc.js" publishTime="06/05/2011 21:39:30" />
-    <file relUrl="Scripts/MicrosoftMvcAjax.debug.js" publishTime="06/05/2011 21:39:24" />
     <file relUrl="Content/themes/base/images/ui-bg_glass_95_fef1ec_1x400.png" publishTime="06/05/2011 21:39:33" />
     <file relUrl="Scripts/jquery.validate.js" publishTime="06/05/2011 21:39:30" />
     <file relUrl="Content/themes/base/images/ui-bg_flat_0_aaaaaa_40x100.png" publishTime="06/05/2011 21:39:33" />
