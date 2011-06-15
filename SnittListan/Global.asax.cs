@@ -7,6 +7,7 @@ using System.Web.Routing;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
 using SnittListan.IoC;
+using Common.Logging;
 
 namespace SnittListan
 {
@@ -15,6 +16,8 @@ namespace SnittListan
 
 	public class MvcApplication : System.Web.HttpApplication
 	{
+		private static readonly ILog logger = LogManager.GetCurrentClassLogger();
+
 		public static void RegisterGlobalFilters(GlobalFilterCollection filters)
 		{
 			filters.Add(new HandleErrorAttribute());
@@ -50,6 +53,7 @@ namespace SnittListan
 
 		private void InitializeContainer()
 		{
+			logger.Info("Initializing container");
 			if (container == null)
 			{
 				container = new WindsorContainer()
