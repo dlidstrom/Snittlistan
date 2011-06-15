@@ -29,7 +29,7 @@ namespace SnittListan.IoC
 
 			try
 			{
-				return kernel.Resolve<IController>(controllerName + "controller");
+				return kernel.Resolve<IController>(controllerName + "Controller");
 			}
 			catch (ComponentNotFoundException ex)
 			{
