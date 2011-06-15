@@ -2,6 +2,7 @@
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
+using SnittListan.Controllers;
 
 namespace SnittListan.Installers
 {
@@ -9,12 +10,21 @@ namespace SnittListan.Installers
 	{
 		public void Install(IWindsorContainer container, IConfigurationStore store)
 		{
-			container.Register(
-					AllTypes
-						.FromThisAssembly()
-						.BasedOn<IController>()
-						.Configure(c => c.LifeStyle.Transient.Named(c.Implementation.Name))
-				);
+			container.Register(FindControllers().Configure(ConfigureControllers()));
+		}
+
+		private static ConfigureDelegate ConfigureControllers()
+		{
+			return c => c.LifeStyle.Transient;
+		}
+
+		private static BasedOnDescriptor FindControllers()
+		{
+			return AllTypes
+				.FromThisAssembly()
+				.BasedOn<IController>()
+				.If(Component.IsInSameNamespaceAs<HomeController>())
+				.If(t => t.Name.EndsWith("Controller"));
 		}
 	}
 }
