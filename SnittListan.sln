@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Web Developer Express 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnittListan", "SnittListan\SnittListan.csproj", "{5E81B34E-A864-4F3C-8B13-9843FB029EA7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnittListan.Test", "SnittListan.Test\SnittListan.Test.csproj", "{B3C8CEC4-7F39-4223-A1AB-45EAD2DBE2B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{5E81B34E-A864-4F3C-8B13-9843FB029EA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E81B34E-A864-4F3C-8B13-9843FB029EA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E81B34E-A864-4F3C-8B13-9843FB029EA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3C8CEC4-7F39-4223-A1AB-45EAD2DBE2B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3C8CEC4-7F39-4223-A1AB-45EAD2DBE2B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3C8CEC4-7F39-4223-A1AB-45EAD2DBE2B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3C8CEC4-7F39-4223-A1AB-45EAD2DBE2B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
