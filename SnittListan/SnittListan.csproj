@@ -71,7 +71,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="IoC\ControllerFactoryInstaller.cs" />
-    <Compile Include="IoC\ControllerInstaller.cs" />
+    <Compile Include="Installers\ControllerInstaller.cs" />
     <Compile Include="IoC\WindsorControllerFactory.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
