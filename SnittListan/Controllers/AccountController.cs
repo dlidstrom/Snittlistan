@@ -6,11 +6,18 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
 using SnittListan.Models;
+using Raven.Client;
 
 namespace SnittListan.Controllers
 {
 	public class AccountController : Controller
 	{
+		public AccountController(IDocumentSession session)
+		{
+			this.Session = session;
+		}
+
+		public new IDocumentSession Session { get; set; }
 
 		//
 		// GET: /Account/LogOn
@@ -78,18 +85,36 @@ namespace SnittListan.Controllers
 			if (ModelState.IsValid)
 			{
 				// Attempt to register the user
-				MembershipCreateStatus createStatus;
-				Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
+				var user = Session.Query<User>()
+					.Where(u => u.UserName == model.UserName)
+					.FirstOrDefault();
 
-				if (createStatus == MembershipCreateStatus.Success)
+				if (user == null)
 				{
+					Session.Store(new User
+					{
+						UserName = model.UserName,
+						Password = model.Password
+					});
+
+					Session.SaveChanges();
+
 					FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
 					return RedirectToAction("Index", "Home");
 				}
-				else
-				{
-					ModelState.AddModelError("", ErrorCodeToString(createStatus));
-				}
+
+				//MembershipCreateStatus createStatus;
+				//Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
+
+				//if (createStatus == MembershipCreateStatus.Success)
+				//{
+				//    FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
+				//    return RedirectToAction("Index", "Home");
+				//}
+				//else
+				//{
+				//    ModelState.AddModelError("", ErrorCodeToString(createStatus));
+				//}
 			}
 
 			// If we got this far, something failed, redisplay form
