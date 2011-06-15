@@ -24,7 +24,8 @@ namespace SnittListan.Installers
 				.FromThisAssembly()
 				.BasedOn<IController>()
 				.If(Component.IsInSameNamespaceAs<HomeController>())
-				.If(t => t.Name.EndsWith("Controller"));
+				.If(t => t.Name.EndsWith("Controller"))
+				.Configure(c => c.Named(c.Implementation.Name));
 		}
 	}
 }
