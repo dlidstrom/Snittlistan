@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
+using SnittListan.IoC;
 
 namespace SnittListan
 {
@@ -40,7 +41,11 @@ namespace SnittListan
 
 			// initialize container and controller factory
 			InitializeContainer();
-			InitializeControllerFactory();
+		}
+
+		protected void Application_End()
+		{
+			container.Dispose();
 		}
 
 		private void InitializeContainer()
@@ -50,11 +55,8 @@ namespace SnittListan
 				container = new WindsorContainer()
 					.Install(FromAssembly.This());
 			}
-		}
 
-		private void InitializeControllerFactory()
-		{
-			var controllerFactory = container.Resolve<IControllerFactory>();
+			var controllerFactory = new WindsorControllerFactory(container.Kernel);
 			ControllerBuilder.Current.SetControllerFactory(controllerFactory);
 		}
 
