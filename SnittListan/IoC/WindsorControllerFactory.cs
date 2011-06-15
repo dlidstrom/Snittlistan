@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.MicroKernel;
+using System.Web;
 
 namespace SnittListan.IoC
 {
@@ -23,7 +24,7 @@ namespace SnittListan.IoC
 
 			if (controllerName == null)
 			{
-				throw new ArgumentNullException("controllerName");
+				throw new HttpException(404, string.Format("The controller path '{0}' could not be found.", controllerName));
 			}
 
 			try
