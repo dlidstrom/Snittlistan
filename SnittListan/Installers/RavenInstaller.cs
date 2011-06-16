@@ -14,8 +14,13 @@ namespace SnittListan.Installers
 		{
 			container.Register(
 					Component.For<IDocumentStore>().Instance(CreateDocumentStore()).LifeStyle.Singleton,
-					Component.For<IDocumentSession>().UsingFactoryMethod(GetDocumentSession).LifeStyle.PerWebRequest
-				);
+					Component.For<IDocumentSession>().UsingFactoryMethod(GetDocumentSession).LifeStyle.PerWebRequest);
+		}
+
+		private static IDocumentSession GetDocumentSession(IKernel kernel)
+		{
+			var store = kernel.Resolve<IDocumentStore>();
+			return store.OpenSession();
 		}
 
 		private IDocumentStore CreateDocumentStore()
@@ -26,12 +31,6 @@ namespace SnittListan.Installers
 			}.Initialize();
 
 			return store;
-		}
-
-		private static IDocumentSession GetDocumentSession(IKernel kernel)
-		{
-			var store = kernel.Resolve<IDocumentStore>();
-			return store.OpenSession();
 		}
 	}
 }

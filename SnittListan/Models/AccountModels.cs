@@ -44,7 +44,7 @@ namespace SnittListan.Models
 	public class RegisterModel
 	{
 		[Required]
-		[Display(Name = "User name")]
+		[Display(Name = "Användarnamn")]
 		public string UserName { get; set; }
 
 		[Required]
