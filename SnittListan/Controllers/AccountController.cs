@@ -96,11 +96,12 @@ namespace SnittListan.Controllers
 
 				if (user == null)
 				{
-					Session.Store(new User
+					var newUser = new User
 					{
 						UserName = model.UserName,
-						Password = model.Password
-					});
+					};
+					newUser.SetPassword(model.Password);
+					Session.Store(newUser);
 
 					Session.SaveChanges();
 
