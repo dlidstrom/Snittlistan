@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Routing;
 using System.Web.Security;
-using SnittListan.Models;
 using Raven.Client;
+using SnittListan.Models;
 
 namespace SnittListan.Controllers
 {
@@ -19,17 +16,21 @@ namespace SnittListan.Controllers
 
 		public new IDocumentSession Session { get; set; }
 
-		//
-		// GET: /Account/LogOn
-
+		/// <summary>
+		/// GET: /Account/LogOn
+		/// </summary>
+		/// <returns></returns>
 		public ActionResult LogOn()
 		{
 			return View();
 		}
 
-		//
-		// POST: /Account/LogOn
-
+		/// <summary>
+		/// POST: /Account/LogOn
+		/// </summary>
+		/// <param name="model"></param>
+		/// <param name="returnUrl"></param>
+		/// <returns></returns>
 		[HttpPost]
 		public ActionResult LogOn(LogOnModel model, string returnUrl)
 		{
@@ -50,7 +51,7 @@ namespace SnittListan.Controllers
 				}
 				else
 				{
-					ModelState.AddModelError("", "The user name or password provided is incorrect.");
+					ModelState.AddModelError(string.Empty, "The user name or password provided is incorrect.");
 				}
 			}
 
@@ -58,9 +59,10 @@ namespace SnittListan.Controllers
 			return View(model);
 		}
 
-		//
-		// GET: /Account/LogOff
-
+		/// <summary>
+		/// GET: /Account/LogOff
+		/// </summary>
+		/// <returns></returns>
 		public ActionResult LogOff()
 		{
 			FormsAuthentication.SignOut();
@@ -68,17 +70,20 @@ namespace SnittListan.Controllers
 			return RedirectToAction("Index", "Home");
 		}
 
-		//
-		// GET: /Account/Register
-
+		/// <summary>
+		/// GET: /Account/Register
+		/// </summary>
+		/// <returns></returns>
 		public ActionResult Register()
 		{
 			return View();
 		}
 
-		//
-		// POST: /Account/Register
-
+		/// <summary>
+		/// POST: /Account/Register
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
 		[HttpPost]
 		public ActionResult Register(RegisterModel model)
 		{
@@ -103,43 +108,45 @@ namespace SnittListan.Controllers
 					return RedirectToAction("Index", "Home");
 				}
 
-				//MembershipCreateStatus createStatus;
-				//Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
+				////MembershipCreateStatus createStatus;
+				////Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
 
-				//if (createStatus == MembershipCreateStatus.Success)
-				//{
-				//    FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
-				//    return RedirectToAction("Index", "Home");
-				//}
-				//else
-				//{
-				//    ModelState.AddModelError("", ErrorCodeToString(createStatus));
-				//}
+				////if (createStatus == MembershipCreateStatus.Success)
+				////{
+				////    FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
+				////    return RedirectToAction("Index", "Home");
+				////}
+				////else
+				////{
+				////    ModelState.AddModelError("", ErrorCodeToString(createStatus));
+				////}
 			}
 
 			// If we got this far, something failed, redisplay form
 			return View(model);
 		}
 
-		//
-		// GET: /Account/ChangePassword
-
+		/// <summary>
+		/// GET: /Account/ChangePassword
+		/// </summary>
+		/// <returns></returns>
 		[Authorize]
 		public ActionResult ChangePassword()
 		{
 			return View();
 		}
 
-		//
-		// POST: /Account/ChangePassword
-
+		/// <summary>
+		/// POST: /Account/ChangePassword
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
 		[Authorize]
 		[HttpPost]
 		public ActionResult ChangePassword(ChangePasswordModel model)
 		{
 			if (ModelState.IsValid)
 			{
-
 				// ChangePassword will throw an exception rather
 				// than return false in certain failure scenarios.
 				bool changePasswordSucceeded;
@@ -159,7 +166,7 @@ namespace SnittListan.Controllers
 				}
 				else
 				{
-					ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
+					ModelState.AddModelError(string.Empty, "The current password is incorrect or the new password is invalid.");
 				}
 			}
 
@@ -167,9 +174,10 @@ namespace SnittListan.Controllers
 			return View(model);
 		}
 
-		//
-		// GET: /Account/ChangePasswordSuccess
-
+		/// <summary>
+		/// GET: /Account/ChangePasswordSuccess
+		/// </summary>
+		/// <returns></returns>
 		public ActionResult ChangePasswordSuccess()
 		{
 			return View();
