@@ -30,6 +30,7 @@ namespace SnittListan.Installers
 				DataDirectory = AppDomain.CurrentDomain.GetData("DataDirectory").ToString()
 			}.Initialize();
 
+			store.Conventions.IdentityPartsSeparator = "-";
 			return store;
 		}
 	}
