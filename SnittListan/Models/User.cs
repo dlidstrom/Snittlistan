@@ -51,7 +51,7 @@ namespace SnittListan.Models
 						Encoding.Unicode.GetBytes(saltPerUser + password + ConstantSalt))
 						.ToArray());
 
-				hashedPassword = Convert.ToString(computedHash);
+				hashedPassword = Convert.ToBase64String(computedHash);
 			}
 
 			return hashedPassword;
