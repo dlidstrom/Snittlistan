@@ -10,3 +10,4 @@ SnittListan.Test/obj
 SnittListan/App_Data
 SnittListan/Logs
 SnittListan/SnittListan.Publish.xml
+SnittListan/Web.Release.config
