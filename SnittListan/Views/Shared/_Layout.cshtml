@@ -30,6 +30,10 @@
     </div>
     @Content.Script("jquery-1.6.1.min.js", Url)
     @Content.Script("modernizr-1.7.min.js", Url)
+    <script type="text/javascript">
+        var logErrorUrl = '@Url.Action("LogJavaScriptError", "Error")';
+    </script>
+    @Content.Script("stacktrace.min.js", Url)
     @RenderSection("scripts", false)
 </body>
 </html>
