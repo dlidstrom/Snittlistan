@@ -1,8 +1,10 @@
-﻿using System.Web.Mvc;
+﻿using System.Web;
+using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
 using Common.Logging;
+using SnittListan.Helpers.Attributes;
 using SnittListan.IoC;
 
 namespace SnittListan
@@ -10,7 +12,7 @@ namespace SnittListan
 	// Note: For instructions on enabling IIS6 or IIS7 classic mode, 
 	// visit http://go.microsoft.com/?LinkId=9394801
 
-	public class MvcApplication : System.Web.HttpApplication
+	public class MvcApplication : HttpApplication
 	{
 		private static readonly ILog logger = LogManager.GetCurrentClassLogger();
 		private static IWindsorContainer container;
@@ -22,7 +24,8 @@ namespace SnittListan
 
 		public static void RegisterGlobalFilters(GlobalFilterCollection filters)
 		{
-			////filters.Add(new HandleErrorAttribute());
+			filters.Add(new ElmahHandleErrorAttribute());
+			filters.Add(new HandleErrorAttribute());
 		}
 
 		public static void RegisterRoutes(RouteCollection routes)
