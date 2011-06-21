@@ -28,6 +28,7 @@ namespace SnittListan
 		public static void RegisterRoutes(RouteCollection routes)
 		{
 			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+			routes.IgnoreRoute("admin/elmah.axd/{*pathInfo}");
 
 			routes.MapRoute(
 				"Default", // Route name
