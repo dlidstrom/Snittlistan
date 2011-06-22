@@ -96,13 +96,8 @@ namespace SnittListan.Controllers
 
 				if (user == null)
 				{
-					var newUser = new User
-					{
-						UserName = model.UserName,
-					};
-					newUser.SetPassword(model.Password);
+					var newUser = new User(model.FirstName, model.LastName, model.Email, model.UserName, model.Password);
 					Session.Store(newUser);
-
 					Session.SaveChanges();
 
 					FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
