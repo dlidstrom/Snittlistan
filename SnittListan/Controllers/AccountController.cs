@@ -4,14 +4,18 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Raven.Client;
 using SnittListan.Models;
+using SnittListan.Services;
 
 namespace SnittListan.Controllers
 {
 	public class AccountController : Controller
 	{
-		public AccountController(IDocumentSession session)
+		private readonly IFormsAuthenticationService authenticationServce;
+
+		public AccountController(IDocumentSession session, IFormsAuthenticationService authenticationServce)
 		{
 			this.Session = session;
+			this.authenticationServce = authenticationServce;
 		}
 
 		public new IDocumentSession Session { get; set; }
@@ -97,25 +101,13 @@ namespace SnittListan.Controllers
 				if (user == null)
 				{
 					var newUser = new User(model.FirstName, model.LastName, model.Email, model.UserName, model.Password);
+					newUser.Initialize();
 					Session.Store(newUser);
 					Session.SaveChanges();
 
-					FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
+					authenticationServce.SetAuthCookie(model.UserName, false);
 					return RedirectToAction("Index", "Home");
 				}
-
-				////MembershipCreateStatus createStatus;
-				////Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
-
-				////if (createStatus == MembershipCreateStatus.Success)
-				////{
-				////    FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
-				////    return RedirectToAction("Index", "Home");
-				////}
-				////else
-				////{
-				////    ModelState.AddModelError("", ErrorCodeToString(createStatus));
-				////}
 			}
 
 			// If we got this far, something failed, redisplay form
