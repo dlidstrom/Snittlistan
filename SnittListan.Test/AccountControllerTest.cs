@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Xunit;
-using SnittListan.Controllers;
-using SnittListan.Models;
-using Raven.Client.Embedded;
-using SnittListan.Events;
-using Moq;
+﻿using Moq;
 using Raven.Client;
+using Raven.Client.Embedded;
+using SnittListan.Controllers;
+using SnittListan.Events;
+using SnittListan.Models;
 using SnittListan.Services;
+using Xunit;
 
 namespace SnittListan.Test
 {
@@ -48,6 +44,7 @@ namespace SnittListan.Test
 		[Fact]
 		public void ShouldCreateInitializedUser()
 		{
+			using (DomainEvent.Disable())
 			using (var sess = store.OpenSession())
 			{
 				var controller = new AccountController(sess, Mock.Of<IFormsAuthenticationService>());

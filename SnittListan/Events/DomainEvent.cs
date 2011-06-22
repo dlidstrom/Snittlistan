@@ -34,6 +34,13 @@ namespace SnittListan.Events
 			RaiseAction = e => { };
 		}
 
+		public static DomainEventReset Disable()
+		{
+			Reset();
+
+			return new DomainEventReset();
+		}
+
 		private static void DefaultRaiseAction<TEvent>(TEvent @event) where TEvent : class, IDomainEvent
 		{
 			var container = ReturnContainer();
