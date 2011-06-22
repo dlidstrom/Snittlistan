@@ -138,9 +138,14 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Events\DomainEvent.cs" />
+    <Compile Include="Events\DomainEventReset.cs" />
+    <Compile Include="Events\IDomainEvent.cs" />
+    <Compile Include="Events\NewUserCreatedEvent.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Handlers\IHandle.cs" />
     <Compile Include="Helpers\Attributes\ElmahHandleErrorAttribute.cs" />
     <Compile Include="Helpers\JavaScriptException.cs" />
     <Compile Include="Installers\RavenInstaller.cs" />
