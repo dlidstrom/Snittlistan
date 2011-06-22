@@ -53,6 +53,11 @@ namespace SnittListan.Models
 			return HashedPassword == ComputeHashedPassword(somePassword);
 		}
 
+		public void Initialize()
+		{
+			DomainEvent.Raise(new NewUserCreatedEvent { User = this });
+		}
+
 		private string ComputeHashedPassword(string password)
 		{
 			string hashedPassword;
