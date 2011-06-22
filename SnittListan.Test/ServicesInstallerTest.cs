@@ -19,5 +19,11 @@ namespace SnittListan.Test
 		{
 			Assert.NotNull(container.Resolve<IFormsAuthenticationService>());
 		}
+
+		[Fact]
+		public void InstallsEmailService()
+		{
+			Assert.NotNull(container.Resolve<IEmailService>());
+		}
 	}
 }
