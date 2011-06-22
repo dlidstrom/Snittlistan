@@ -100,7 +100,7 @@ namespace SnittListan.Controllers
 
 				if (user == null)
 				{
-					var newUser = new User(model.FirstName, model.LastName, model.Email, model.UserName, model.Password);
+					var newUser = new User(model.FirstName, model.LastName, model.UserName, model.Email, model.Password);
 					newUser.Initialize();
 					Session.Store(newUser);
 					Session.SaveChanges();
