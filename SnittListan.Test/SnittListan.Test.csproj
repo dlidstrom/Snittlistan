@@ -114,6 +114,7 @@
     <Compile Include="AccountControllerTest.cs" />
     <Compile Include="ControllerFactoryTest.cs" />
     <Compile Include="ControllersInstallerTest.cs" />
+    <Compile Include="EmailServiceTest.cs" />
     <Compile Include="InstallerTestHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServicesInstallerTest.cs" />
