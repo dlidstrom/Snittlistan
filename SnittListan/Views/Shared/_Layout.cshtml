@@ -4,12 +4,14 @@
     <meta charset="utf-8" />
     <title>@ViewBag.Title</title>
     <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    @Content.GA()
 </head>
 <body>
     <div class="page">
         <header>
             <div id="title">
-                <h1>Snittlistan</h1>
+                <h1>
+                    Snittlistan</h1>
             </div>
             <div id="logindisplay">
                 @Html.Partial("_LogOnPartial")
