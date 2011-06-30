@@ -1,7 +1,8 @@
 ﻿using SnittListan.Events;
 using SnittListan.Handlers;
+using SnittListan.Services;
 
-namespace SnittListan.Services
+namespace SnittListan.Handlers
 {
 	public class SendRegistrationEmailHandler : IHandle<NewUserCreatedEvent>
 	{
