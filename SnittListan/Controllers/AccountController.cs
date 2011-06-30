@@ -95,18 +95,22 @@ namespace SnittListan.Controllers
 			{
 				// Attempt to register the user
 				var user = Session.Query<User>()
-					.Where(u => u.UserName == model.UserName)
+					.Where(u => u.Email == model.Email)
 					.FirstOrDefault();
 
 				if (user == null)
 				{
-					var newUser = new User(model.FirstName, model.LastName, model.UserName, model.Email, model.Password);
+					var newUser = new User(model.FirstName, model.LastName, model.Email, model.Password);
 					newUser.Initialize();
 					Session.Store(newUser);
 					Session.SaveChanges();
 
-					authenticationServce.SetAuthCookie(model.UserName, false);
+					authenticationServce.SetAuthCookie(model.Email, false);
 					return RedirectToAction("Index", "Home");
+				}
+				else
+				{
+					ModelState.AddModelError("Email", "Adressen finns redan.");
 				}
 			}
 

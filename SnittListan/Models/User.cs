@@ -11,23 +11,21 @@ namespace SnittListan.Models
 		private const string ConstantSalt = "CheFe2ra8en9SW";
 		private Guid passwordSalt;
 
-		public User(string firstName, string lastName, string userName, string email, string password)
+		public User(string firstName, string lastName, string email, string password)
 		{
 			FirstName = firstName;
 			LastName = lastName;
-			UserName = userName;
 			Email = email;
 			HashedPassword = ComputeHashedPassword(password);
 		}
 
-		public string Id { get; set; }
-		public string UserName { get; private set; }
+		public string Id { get; private set; }
+		public string Email { get; private set; }
 		public bool IsActive { get; set; }
 
 		// Other user properties
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
-		public string Email { get; set; }
 
 		private string HashedPassword { get; set; }
 
