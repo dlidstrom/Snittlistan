@@ -1,6 +1,7 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
+using SnittListan.Services;
 
 namespace SnittListan.Installers
 {
@@ -11,7 +12,7 @@ namespace SnittListan.Installers
 			container.Register(
 				AllTypes
 					.FromThisAssembly()
-					.Where(Component.IsInNamespace("SnittListan.Services"))
+					.Where(Component.IsInSameNamespaceAs<IEmailService>())
 					.WithService.DefaultInterface()
 					.Configure(c => c.LifeStyle.Transient));
 		}
