@@ -23,7 +23,8 @@ namespace SnittListan.Test
 		[Fact]
 		public void InstallsEmailService()
 		{
-			Assert.NotNull(container.Resolve<IEmailService>());
+			var handlers = InstallerTestHelper.GetHandlersFor(typeof(IEmailService), container);
+			Assert.Equal(1, handlers.Length);
 		}
 	}
 }
