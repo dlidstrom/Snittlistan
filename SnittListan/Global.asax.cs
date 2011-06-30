@@ -14,7 +14,7 @@ namespace SnittListan
 		private static readonly ILog logger = LogManager.GetCurrentClassLogger();
 		private static IWindsorContainer container;
 
-		public IWindsorContainer Container
+		public static IWindsorContainer Container
 		{
 			get { return container; }
 		}
