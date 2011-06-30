@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using Castle.Windsor;
 using SnittListan.Handlers;
 
@@ -11,7 +8,8 @@ namespace SnittListan.Events
 	{
 		static DomainEvent()
 		{
-			RaiseAction = DefaultRaiseAction;
+			///RaiseAction = DefaultRaiseAction;
+			ReturnContainer = DefaultReturnContainer;
 		}
 
 		public static Func<IWindsorContainer> ReturnContainer { get; set; }
@@ -19,7 +17,20 @@ namespace SnittListan.Events
 
 		public static void Raise<TEvent>(TEvent @event) where TEvent : IDomainEvent
 		{
-			RaiseAction(@event);
+			if (RaiseAction != null)
+			{
+				RaiseAction(@event);
+				return;
+			}
+
+			var container = ReturnContainer();
+			var handlers = container.ResolveAll<IHandle<TEvent>>();
+
+			foreach (var handle in handlers)
+			{
+				handle.Handle(@event);
+				container.Release(handle);
+			}
 		}
 
 		public static DomainEventReset TestWith(Action<IDomainEvent> raiseAction)
@@ -51,6 +62,11 @@ namespace SnittListan.Events
 				handle.Handle(@event);
 				container.Release(handle);
 			}
+		}
+
+		private static IWindsorContainer DefaultReturnContainer()
+		{
+			return MvcApplication.Container;
 		}
 	}
 }
