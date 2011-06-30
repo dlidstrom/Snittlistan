@@ -149,6 +149,7 @@
     <Compile Include="Handlers\SendRegistrationEmailHandler.cs" />
     <Compile Include="Helpers\Attributes\ElmahHandleErrorAttribute.cs" />
     <Compile Include="Helpers\JavaScriptException.cs" />
+    <Compile Include="Installers\HandlersInstaller.cs" />
     <Compile Include="Installers\RavenInstaller.cs" />
     <Compile Include="Installers\ServicesInstaller.cs" />
     <Compile Include="IoC\ControllerFactoryInstaller.cs" />
