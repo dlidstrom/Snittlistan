@@ -34,7 +34,6 @@ namespace SnittListan.Test
 					FirstName = "first name",
 					LastName = "last name",
 					Email = "email",
-					UserName = "username"
 				});
 			}
 
@@ -53,7 +52,6 @@ namespace SnittListan.Test
 					FirstName = "first name",
 					LastName = "last name",
 					Email = "email",
-					UserName = "username"
 				});
 
 				sess.SaveChanges();
@@ -63,7 +61,6 @@ namespace SnittListan.Test
 				Assert.Equal("first name", user.FirstName);
 				Assert.Equal("last name", user.LastName);
 				Assert.Equal("email", user.Email);
-				Assert.Equal("username", user.UserName);
 				Assert.False(user.IsActive);
 			}
 		}
