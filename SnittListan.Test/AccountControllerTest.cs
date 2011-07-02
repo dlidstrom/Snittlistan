@@ -1,4 +1,6 @@
-﻿using Moq;
+﻿using System;
+using Moq;
+using MvcContrib.TestHelper;
 using Raven.Client;
 using Raven.Client.Embedded;
 using SnittListan.Controllers;
@@ -6,9 +8,6 @@ using SnittListan.Events;
 using SnittListan.Models;
 using SnittListan.Services;
 using Xunit;
-using System;
-using System.Web.Mvc;
-using MvcContrib.TestHelper;
 
 namespace SnittListan.Test
 {

@@ -5,9 +5,6 @@ using SnittListan.Events;
 using SnittListan.Handlers;
 using SnittListan.Installers;
 using Xunit;
-using Castle.MicroKernel.Registration;
-using SnittListan.Services;
-using Moq;
 
 namespace SnittListan.Test
 {

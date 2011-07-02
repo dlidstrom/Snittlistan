@@ -1,10 +1,9 @@
-﻿using Moq;
+﻿using System.Collections.Generic;
+using Castle.MicroKernel.Registration;
+using Castle.Windsor;
+using SnittListan.Handlers;
 using SnittListan.Services;
 using Xunit;
-using System.Collections.Generic;
-using Castle.Windsor;
-using Castle.MicroKernel.Registration;
-using SnittListan.Handlers;
 
 namespace SnittListan.Test
 {

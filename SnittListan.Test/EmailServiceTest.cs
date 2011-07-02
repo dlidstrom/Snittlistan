@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using SnittListan.Services;
 using Xunit;
-using SnittListan.Services;
 
 namespace SnittListan.Test
 {
