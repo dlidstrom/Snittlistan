@@ -18,6 +18,7 @@ namespace SnittListan.Models
 		[Display(Name = "E-postadress")]
 		public string Email { get; set; }
 
+		[Required]
 		[DataType(DataType.EmailAddress)]
 		[Display(Name = "Upprepa e-postadressen")]
 		[Compare("Email", ErrorMessage = "Adresserna är olika.")]
