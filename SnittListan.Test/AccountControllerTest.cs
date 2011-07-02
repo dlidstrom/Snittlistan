@@ -8,6 +8,7 @@ using SnittListan.Events;
 using SnittListan.Models;
 using SnittListan.Services;
 using Xunit;
+using System.Linq.Expressions;
 
 namespace SnittListan.Test
 {
@@ -71,6 +72,25 @@ namespace SnittListan.Test
 		}
 
 		[Fact]
+		public void RegisterDoesNotLogin()
+		{
+			using (DomainEvent.Disable())
+			{
+				var authService = Mock.Of<IFormsAuthenticationService>();
+				Mock.Get(authService)
+					.Setup(s => s.SetAuthCookie(It.IsAny<string>(), It.IsAny<bool>()))
+					.Throws(new Exception("Register should not set authorization cookie"));
+				var controller = new AccountController(sess, authService);
+				var result = controller.Register(new RegisterModel
+				{
+					FirstName = "f",
+					LastName = "l",
+					Email = "email"
+				});
+			}
+		}
+
+		[Fact]
 		public void SuccessfulRegisterRedirectsToSuccessPage()
 		{
 			using (DomainEvent.Disable())
@@ -83,7 +103,7 @@ namespace SnittListan.Test
 					Email = "email"
 				});
 
-				result.AssertActionRedirect().ToAction("success");
+				result.AssertActionRedirect().ToAction("RegisterSuccess");
 			}
 		}
 	}
