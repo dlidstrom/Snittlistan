@@ -22,6 +22,7 @@ namespace SnittListan.Models
 		public string Id { get; private set; }
 		public string Email { get; private set; }
 		public bool IsActive { get; set; }
+		public string ActivationKey { get; set; }
 
 		// Other user properties
 		public string FirstName { get; set; }
@@ -53,6 +54,7 @@ namespace SnittListan.Models
 
 		public void Initialize()
 		{
+			ActivationKey = Guid.NewGuid().ToString();
 			DomainEvent.Raise(new NewUserCreatedEvent { User = this });
 		}
 
