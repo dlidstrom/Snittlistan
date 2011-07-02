@@ -2,9 +2,9 @@
 using System.Web.Routing;
 using Castle.Windsor;
 using SnittListan.Controllers;
+using SnittListan.Installers;
 using SnittListan.IoC;
 using Xunit;
-using SnittListan.Installers;
 
 namespace SnittListan.Test
 {

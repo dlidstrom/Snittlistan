@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MvcContrib.TestHelper;
-using Xunit;
-using SnittListan.Controllers;
 using System.Web.Routing;
+using MvcContrib.TestHelper;
+using SnittListan.Controllers;
+using Xunit;
 
 namespace SnittListan.Test
 {

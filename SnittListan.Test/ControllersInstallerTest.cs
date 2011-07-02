@@ -1,13 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
+using Castle.Core;
 using Castle.Core.Internal;
-using Castle.MicroKernel;
 using Castle.Windsor;
-using SnittListan.Controllers;
 using SnittListan.Installers;
 using Xunit;
-using Castle.Core;
 
 namespace SnittListan.Test
 {

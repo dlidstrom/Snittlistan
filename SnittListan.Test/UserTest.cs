@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Xunit;
+﻿using SnittListan.Events;
 using SnittListan.Models;
-using Castle.Windsor;
-using SnittListan.Events;
+using Xunit;
 
 namespace SnittListan.Test
 {
