@@ -6,12 +6,16 @@ using SnittListan.Events;
 using SnittListan.Models;
 using SnittListan.Services;
 using Xunit;
+using System;
+using System.Web.Mvc;
+using MvcContrib.TestHelper;
 
 namespace SnittListan.Test
 {
-	public class AccountControllerTest
+	public class AccountControllerTest : IDisposable
 	{
 		private readonly IDocumentStore store;
+		private readonly IDocumentSession sess;
 
 		public AccountControllerTest()
 		{
@@ -19,6 +23,12 @@ namespace SnittListan.Test
 			{
 				RunInMemory = true
 			}.Initialize();
+			sess = store.OpenSession();
+		}
+
+		public void Dispose()
+		{
+			sess.Dispose();
 		}
 
 		[Fact]
@@ -26,7 +36,6 @@ namespace SnittListan.Test
 		{
 			NewUserCreatedEvent ev = null;
 			using (DomainEvent.TestWith(e => ev = (NewUserCreatedEvent)e))
-			using (var sess = store.OpenSession())
 			{
 				var controller = new AccountController(sess, Mock.Of<IFormsAuthenticationService>());
 				controller.Register(new RegisterModel
@@ -44,7 +53,6 @@ namespace SnittListan.Test
 		public void ShouldCreateInitializedUser()
 		{
 			using (DomainEvent.Disable())
-			using (var sess = store.OpenSession())
 			{
 				var controller = new AccountController(sess, Mock.Of<IFormsAuthenticationService>());
 				controller.Register(new RegisterModel
@@ -54,14 +62,29 @@ namespace SnittListan.Test
 					Email = "email",
 				});
 
-				sess.SaveChanges();
-
 				var user = sess.Load<User>(1);
 				Assert.NotNull(user);
 				Assert.Equal("first name", user.FirstName);
 				Assert.Equal("last name", user.LastName);
 				Assert.Equal("email", user.Email);
 				Assert.False(user.IsActive);
+			}
+		}
+
+		[Fact]
+		public void SuccessfulRegisterRedirectsToSuccessPage()
+		{
+			using (DomainEvent.Disable())
+			{
+				var controller = new AccountController(sess, Mock.Of<IFormsAuthenticationService>());
+				var result = controller.Register(new RegisterModel
+				{
+					FirstName = "f",
+					LastName = "l",
+					Email = "email"
+				});
+
+				result.AssertActionRedirect().ToAction("success");
 			}
 		}
 	}
