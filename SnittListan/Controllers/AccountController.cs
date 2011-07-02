@@ -105,8 +105,7 @@ namespace SnittListan.Controllers
 					Session.Store(newUser);
 					Session.SaveChanges();
 
-					authenticationServce.SetAuthCookie(model.Email, false);
-					return RedirectToAction("Index", "Home");
+					return RedirectToAction("RegisterSuccess");
 				}
 				else
 				{
@@ -171,6 +170,15 @@ namespace SnittListan.Controllers
 		/// </summary>
 		/// <returns></returns>
 		public ActionResult ChangePasswordSuccess()
+		{
+			return View();
+		}
+
+		/// <summary>
+		/// GET: /Account/RegisterSuccess
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult RegisterSuccess()
 		{
 			return View();
 		}
