@@ -21,7 +21,8 @@ namespace SnittListan
 			ConfigureAccount();
 			ConfigureHome();
 
-			routes.MapRoute(
+			// default route
+			routes.MapRouteLowerCase(
 				"Default", // Route name
 				"{controller}/{action}/{id}", // URL with parameters
 				new { controller = "Home", action = "Index", id = UrlParameter.Optional }); // Parameter defaults
