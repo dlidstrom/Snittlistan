@@ -1,6 +1,7 @@
 ﻿using SnittListan.Events;
 using SnittListan.Models;
 using Xunit;
+using MvcContrib.TestHelper;
 
 namespace SnittListan.Test
 {
@@ -10,7 +11,7 @@ namespace SnittListan.Test
 		public void ShouldNotBeActiveWhenCreated()
 		{
 			var user = new User("first name", "last name", "email", "password");
-			Assert.False(user.IsActive);
+			user.IsActive.ShouldBe(false);
 		}
 
 		[Fact]
@@ -23,11 +24,11 @@ namespace SnittListan.Test
 				user.Initialize();
 			}
 
-			Assert.NotNull(createdEvent);
-			Assert.Equal("first name", createdEvent.User.FirstName);
-			Assert.Equal("last name", createdEvent.User.LastName);
-			Assert.Equal("email", createdEvent.User.Email);
-			Assert.False(createdEvent.User.IsActive);
+			createdEvent.ShouldNotBeNull("Event not raised");
+			createdEvent.User.FirstName.ShouldBe("first name");
+			createdEvent.User.LastName.ShouldBe("last name");
+			createdEvent.User.Email.ShouldBe("email");
+			createdEvent.User.IsActive.ShouldBe(false);
 		}
 	}
 }
