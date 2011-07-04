@@ -25,8 +25,8 @@ namespace SnittListan.Models
 		public string ActivationKey { get; set; }
 
 		// Other user properties
-		public string FirstName { get; set; }
-		public string LastName { get; set; }
+		public string FirstName { get; private set; }
+		public string LastName { get; private set; }
 
 		private string HashedPassword { get; set; }
 
