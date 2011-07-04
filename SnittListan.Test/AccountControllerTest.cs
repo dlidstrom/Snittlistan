@@ -77,6 +77,7 @@ namespace SnittListan.Test
 			using (DomainEvent.Disable())
 			{
 				var authService = Mock.Of<IFormsAuthenticationService>();
+				// assert through mock object
 				Mock.Get(authService)
 					.Setup(s => s.SetAuthCookie(It.IsAny<string>(), It.IsAny<bool>()))
 					.Throws(new Exception("Register should not set authorization cookie"));
@@ -105,6 +106,65 @@ namespace SnittListan.Test
 
 				result.AssertActionRedirect().ToAction("RegisterSuccess");
 			}
+		}
+
+		[Fact]
+		public void ActiveUserCanLogOn()
+		{
+			Assert.False(true, "Not finished");
+		}
+
+		[Fact]
+		public void InactiveUserCannotLogin()
+		{
+			var user = new User(firstName: "f", lastName: "l", email: "e@d.com", password: "pwd");
+			sess.Store(user);
+			sess.SaveChanges();
+
+			var controller = new AccountController(sess, Mock.Of<IFormsAuthenticationService>());
+			controller.LogOn(new LogOnModel { UserName = "e@d.com", Password = "pwd" }, null);
+
+			Assert.False(true, "Not finished");
+		}
+
+		[Fact]
+		public void WrongPasswordRedisplaysForm()
+		{
+			Assert.False(true, "Not finished");
+		}
+
+		[Fact]
+		public void CanLoginVerifiedUserWithEmailAddress()
+		{
+			NewUserCreatedEvent ev = null;
+			using (DomainEvent.TestWith(e => ev = (NewUserCreatedEvent)e))
+			{
+				var controller = new AccountController(sess, Mock.Of<IFormsAuthenticationService>());
+				controller.Register(new RegisterModel
+				{
+					FirstName = Guid.NewGuid().ToString(),
+					LastName = Guid.NewGuid().ToString(),
+					Email = "someone@microsoft.com"
+				});
+			}
+
+			// make sure user is active
+			sess.Load<User>(ev.User.Id).IsActive = true;
+			sess.SaveChanges();
+
+			Assert.False(true, "Not finished");
+		}
+
+		[Fact]
+		public void ChangePasswordInvalidPassword()
+		{
+			Assert.False(true, "Not finished");
+		}
+
+		[Fact]
+		public void ChangePasswordSuccess()
+		{
+			Assert.False(true, "Not finished");
 		}
 	}
 }
