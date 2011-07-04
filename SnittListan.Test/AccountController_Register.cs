@@ -26,7 +26,7 @@ namespace SnittListan.Test
 				});
 			}
 
-			Assert.NotNull(ev);
+			ev.ShouldNotBeNull("No event raised");
 		}
 
 		[Fact]
@@ -43,11 +43,11 @@ namespace SnittListan.Test
 				});
 
 				var user = Session.Load<User>(1);
-				Assert.NotNull(user);
-				Assert.Equal("first name", user.FirstName);
-				Assert.Equal("last name", user.LastName);
-				Assert.Equal("email", user.Email);
-				Assert.False(user.IsActive);
+				user.ShouldNotBeNull("Should find it");
+				user.FirstName.ShouldBe("first name");
+				user.LastName.ShouldBe("last name");
+				user.Email.ShouldBe("email");
+				user.IsActive.ShouldBe(false);
 			}
 		}
 
