@@ -117,9 +117,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountControllerTest.cs" />
+    <Compile Include="AccountController_ChangePassword.cs" />
+    <Compile Include="AccountController_Logon.cs" />
+    <Compile Include="AccountController_Register.cs" />
     <Compile Include="ControllerFactoryTest.cs" />
     <Compile Include="ControllersInstallerTest.cs" />
+    <Compile Include="DbTest.cs" />
     <Compile Include="EmailServiceTest.cs" />
     <Compile Include="HandlersInstallerTest.cs" />
     <Compile Include="InstallerTestHelper.cs" />
