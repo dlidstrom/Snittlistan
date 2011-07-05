@@ -1,9 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using Raven.Client;
 using SnittListan.Models;
 using SnittListan.Services;
+using SnittListan.ViewModels;
 
 namespace SnittListan.Controllers
 {
@@ -91,30 +92,24 @@ namespace SnittListan.Controllers
 		[HttpPost]
 		public ActionResult Register(RegisterModel model)
 		{
-			if (ModelState.IsValid)
-			{
-				// Attempt to register the user
-				var user = Session.Query<User>()
-					.Where(u => u.Email == model.Email)
-					.FirstOrDefault();
+			// attempt to register the user
+			var user = Session.Query<User>()
+				.Where(u => u.Email == model.Email)
+				.FirstOrDefault();
 
-				if (user == null)
-				{
-					var newUser = new User(model.FirstName, model.LastName, model.Email, model.Password);
-					newUser.Initialize();
-					Session.Store(newUser);
-					Session.SaveChanges();
+			if (user != null)
+				ModelState.AddModelError("Email", "Adressen finns redan.");
 
-					return RedirectToAction("RegisterSuccess");
-				}
-				else
-				{
-					ModelState.AddModelError("Email", "Adressen finns redan.");
-				}
-			}
+			// redisplay form if any errors at this point
+			if (!ModelState.IsValid)
+				return View(model);
 
-			// If we got this far, something failed, redisplay form
-			return View(model);
+			var newUser = new User(model.FirstName, model.LastName, model.Email, model.Password);
+			newUser.Initialize();
+			Session.Store(newUser);
+			Session.SaveChanges();
+
+			return RedirectToAction("RegisterSuccess");
 		}
 
 		/// <summary>
@@ -124,7 +119,7 @@ namespace SnittListan.Controllers
 		[Authorize]
 		public ActionResult ChangePassword()
 		{
-			return View();
+			return View(new ChangePasswordViewModel { Email = HttpContext.User.Identity.Name });
 		}
 
 		/// <summary>
@@ -134,36 +129,21 @@ namespace SnittListan.Controllers
 		/// <returns></returns>
 		[Authorize]
 		[HttpPost]
-		public ActionResult ChangePassword(ChangePasswordModel model)
+		public ActionResult ChangePassword(ChangePasswordViewModel model)
 		{
-			if (ModelState.IsValid)
-			{
-				// ChangePassword will throw an exception rather
-				// than return false in certain failure scenarios.
-				bool changePasswordSucceeded;
-				try
-				{
-					///MembershipUser currentUser = Membership.GetUser(User.Identity.Name, true /* userIsOnline */);
-					///changePasswordSucceeded = currentUser.ChangePassword(model.OldPassword, model.NewPassword);
-				}
-				catch (Exception)
-				{
-					changePasswordSucceeded = false;
-				}
+			var user = Session.Query<User>()
+				.Where(u => u.Email == model.Email)
+				.FirstOrDefault();
 
-				///if (changePasswordSucceeded)
-				{
-					return RedirectToAction("ChangePasswordSuccess");
-				}
+			if (user == null)
+				return HttpNotFound("Användaren existerar inte.");
 
-				///else
-				{
-					ModelState.AddModelError(string.Empty, "The current password is incorrect or the new password is invalid.");
-				}
-			}
+			// redisplay form if any errors at this point
+			if (!ModelState.IsValid)
+				return View(model);
 
-			// If we got this far, something failed, redisplay form
-			return View(model);
+			user.SetPassword(model.NewPassword);
+			return RedirectToAction("ChangePasswordSuccess");
 		}
 
 		/// <summary>
