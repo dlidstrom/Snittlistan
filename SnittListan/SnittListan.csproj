@@ -157,7 +157,6 @@
     <Compile Include="IoC\ControllerFactoryInstaller.cs" />
     <Compile Include="Installers\ControllerInstaller.cs" />
     <Compile Include="IoC\WindsorControllerFactory.cs" />
-    <Compile Include="Models\ChangePasswordModel.cs" />
     <Compile Include="Models\LogOnModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\User.cs" />
@@ -167,6 +166,7 @@
     <Compile Include="Services\FormsAuthenticationService.cs" />
     <Compile Include="Services\IEmailService.cs" />
     <Compile Include="Services\IFormsAuthenticationService.cs" />
+    <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
