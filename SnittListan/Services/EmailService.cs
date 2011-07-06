@@ -4,8 +4,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Configuration;
 using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
+using Elmah;
 
 namespace SnittListan.Services
 {
@@ -46,6 +48,17 @@ namespace SnittListan.Services
 		}
 
 		public void SendMail(string recipient, string subject, string body)
+		{
+			// execute asynchronously
+			Task.Factory.StartNew(
+				() => DoWork(recipient, subject, body),
+				TaskCreationOptions.LongRunning)
+					.ContinueWith(
+						task => ErrorLog.GetDefault(null).Log(new Error(task.Exception)),
+						TaskContinuationOptions.OnlyOnFaulted);
+		}
+
+		private void DoWork(string recipient, string subject, string body)
 		{
 			var mailMessage = new MailMessage
 			{
