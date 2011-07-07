@@ -131,6 +131,7 @@
     <Compile Include="SendRegistrationEmailHandlerTest.cs" />
     <Compile Include="ServicesInstallerTest.cs" />
     <Compile Include="UserTest.cs" />
+    <Compile Include="User_ValidatePassword.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
