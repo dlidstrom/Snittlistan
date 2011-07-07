@@ -21,7 +21,7 @@ namespace SnittListan.Models
 
 		public string Id { get; private set; }
 		public string Email { get; private set; }
-		public bool IsActive { get; set; }
+		public bool IsActive { get; private set; }
 		public string ActivationKey { get; set; }
 
 		// Other user properties
@@ -56,6 +56,11 @@ namespace SnittListan.Models
 		{
 			ActivationKey = Guid.NewGuid().ToString();
 			DomainEvent.Raise(new NewUserCreatedEvent { User = this });
+		}
+
+		public void Activate()
+		{
+			IsActive = true;
 		}
 
 		private string ComputeHashedPassword(string password)

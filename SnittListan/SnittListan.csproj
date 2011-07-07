@@ -154,6 +154,7 @@
     <Compile Include="Handlers\IHandle.cs" />
     <Compile Include="Handlers\SendRegistrationEmailHandler.cs" />
     <Compile Include="Helpers\Attributes\ElmahHandleErrorAttribute.cs" />
+    <Compile Include="Helpers\DocumentSessionExtensions.cs" />
     <Compile Include="Helpers\JavaScriptException.cs" />
     <Compile Include="Helpers\LowercaseRoute.cs" />
     <Compile Include="Helpers\RouteCollectionExtension.cs" />

@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.Mvc;
 using MvcContrib;
 using Raven.Client;
+using SnittListan.Helpers;
 using SnittListan.Models;
 using SnittListan.Services;
 using SnittListan.ViewModels;
@@ -39,26 +40,32 @@ namespace SnittListan.Controllers
 		[HttpPost]
 		public ActionResult LogOn(LogOnModel model, string returnUrl)
 		{
-			if (ModelState.IsValid)
-			{
-				///if (Membership.ValidateUser(model.UserName, model.Password))
-				{
-					///FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-					if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
-						&& !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
-					{
-						return Redirect(returnUrl);
-					}
-					else
-					{
-						return RedirectToAction("Index", "Home");
-					}
-				}
+			// find the user in question
+			var user = Session.FindUserByEmail(model.Email)
+				.FirstOrDefault();
 
-				///else
-				{
-					ModelState.AddModelError(string.Empty, "The user name or password provided is incorrect.");
-				}
+			if (user == null)
+			{
+				ModelState.AddModelError("Email", "Användaren existerar inte.");
+			}
+			else if (!user.ValidatePassword(model.Password))
+			{
+				ModelState.AddModelError("Password", "Lösenordet stämmer inte!");
+			}
+
+			// redisplay form if any errors at this point
+			if (!ModelState.IsValid)
+				return View(model);
+
+			authenticationServce.SetAuthCookie(model.Email, model.RememberMe);
+
+			if (Url.IsLocalUrl(returnUrl)
+				&& returnUrl.Length > 1
+				&& returnUrl.StartsWith("/")
+				&& !returnUrl.StartsWith("//")
+				&& !returnUrl.StartsWith("/\\"))
+			{
+				return Redirect(returnUrl);
 			}
 
 			return this.RedirectToAction<HomeController>(c => c.Index());
@@ -91,8 +98,7 @@ namespace SnittListan.Controllers
 		public ActionResult Register(RegisterModel model)
 		{
 			// attempt to register the user
-			var user = Session.Query<User>()
-				.Where(u => u.Email == model.Email)
+			var user = Session.FindUserByEmail(model.Email)
 				.FirstOrDefault();
 
 			if (user != null)
