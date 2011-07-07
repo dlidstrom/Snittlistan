@@ -30,5 +30,13 @@ namespace SnittListan.Test
 			createdEvent.User.Email.ShouldBe("email");
 			createdEvent.User.IsActive.ShouldBe(false);
 		}
+
+		[Fact]
+		public void CanActivate()
+		{
+			var user = new User("F", "L", "e@d.com", "pwd");
+			user.Activate();
+			user.IsActive.ShouldBe(true);
+		}
 	}
 }
