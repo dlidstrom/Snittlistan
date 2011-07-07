@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MvcContrib;
 using Raven.Client;
 using SnittListan.Models;
 using SnittListan.Services;
@@ -60,8 +61,7 @@ namespace SnittListan.Controllers
 				}
 			}
 
-			// If we got this far, something failed, redisplay form
-			return View(model);
+			return this.RedirectToAction<HomeController>(c => c.Index());
 		}
 
 		/// <summary>
@@ -70,9 +70,7 @@ namespace SnittListan.Controllers
 		/// <returns></returns>
 		public ActionResult LogOff()
 		{
-			///FormsAuthentication.SignOut();
-
-			return RedirectToAction("Index", "Home");
+			return this.RedirectToAction<HomeController>(c => c.Index());
 		}
 
 		/// <summary>
@@ -109,7 +107,7 @@ namespace SnittListan.Controllers
 			Session.Store(newUser);
 			Session.SaveChanges();
 
-			return RedirectToAction("RegisterSuccess");
+			return this.RedirectToAction(c => c.RegisterSuccess());
 		}
 
 		/// <summary>
@@ -143,7 +141,7 @@ namespace SnittListan.Controllers
 				return View(model);
 
 			user.SetPassword(model.NewPassword);
-			return RedirectToAction("ChangePasswordSuccess");
+			return this.RedirectToAction(c => c.ChangePasswordSuccess());
 		}
 
 		/// <summary>
