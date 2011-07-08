@@ -120,6 +120,7 @@
     <Compile Include="AccountController_ChangePassword.cs" />
     <Compile Include="AccountController_Logon.cs" />
     <Compile Include="AccountController_Register.cs" />
+    <Compile Include="AccountController_Verify.cs" />
     <Compile Include="ControllerFactoryTest.cs" />
     <Compile Include="ControllersInstallerTest.cs" />
     <Compile Include="DbTest.cs" />
