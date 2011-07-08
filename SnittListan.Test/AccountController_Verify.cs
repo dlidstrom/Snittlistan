@@ -32,7 +32,7 @@ namespace SnittListan.Test
 				.Callback(() => loggedSomebodyOn = true);
 			var controller = new AccountController(Session, service);
 			var result = controller.Verify(Guid.Parse(user.ActivationKey));
-			result.AssertActionRedirect().ToAction("LogOn");
+			result.AssertActionRedirect().ToAction("VerifySuccess");
 			loggedSomebodyOn.ShouldBe(false);
 		}
 
