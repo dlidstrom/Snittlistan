@@ -1,11 +1,12 @@
-﻿using Xunit;
-using SnittListan.Controllers;
-using Moq;
-using SnittListan.Services;
-using SnittListan.Models;
-using MvcContrib.TestHelper;
+﻿using System;
 using System.Web.Mvc;
+using Moq;
+using MvcContrib.TestHelper;
+using SnittListan.Controllers;
+using SnittListan.Models;
+using SnittListan.Services;
 using SnittListan.ViewModels;
+using Xunit;
 
 namespace SnittListan.Test
 {
@@ -14,12 +15,7 @@ namespace SnittListan.Test
 		[Fact]
 		public void InvalidUserFails()
 		{
-			// add a user
-			var user = new User("F", "L", "e@d.com", "password");
-			Session.Store(user);
-			Session.SaveChanges();
-
-			var controller = new AccountController(Session, Mock.Of<IFormsAuthenticationService>());
+			var controller = CreateUserAndController();
 			controller.ChangePassword(new ChangePasswordViewModel
 			{
 				Email = "f@d.com",
@@ -31,12 +27,7 @@ namespace SnittListan.Test
 		[Fact]
 		public void ChangePasswordSuccess()
 		{
-			// add a user
-			var user = new User("F", "L", "e@d.com", "password");
-			Session.Store(user);
-			Session.SaveChanges();
-
-			var controller = new AccountController(Session, Mock.Of<IFormsAuthenticationService>());
+			var controller = CreateUserAndController();
 			var result = controller.ChangePassword(new ChangePasswordViewModel
 			{
 				Email = "e@d.com",
@@ -56,6 +47,20 @@ namespace SnittListan.Test
 			var controller = new AccountController(Session, Mock.Of<IFormsAuthenticationService>());
 			var result = controller.ChangePasswordSuccess();
 			result.AssertViewRendered().ForView(string.Empty);
+		}
+
+		/// <summary>
+		/// Creates a user with random password.
+		/// </summary>
+		/// <returns></returns>
+		private AccountController CreateUserAndController()
+		{
+			// add a user
+			var user = new User("F", "L", "e@d.com", password: Guid.NewGuid().ToString());
+			Session.Store(user);
+			Session.SaveChanges();
+
+			return new AccountController(Session, Mock.Of<IFormsAuthenticationService>());
 		}
 	}
 }
