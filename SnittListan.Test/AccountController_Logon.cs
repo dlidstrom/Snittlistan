@@ -37,27 +37,34 @@ namespace SnittListan.Test
 		[Fact]
 		public void ActiveUserCanLogon()
 		{
-			// create an active user
-			var user = new User("F", "L", "e@d.com", "some pwd");
-			user.Activate();
-			Session.Store(user);
-			Session.SaveChanges();
-
-			// make sure SetAuthCookie is set
 			bool cookieSet = false;
-			var service = Mock.Of<IFormsAuthenticationService>();
-			Mock.Get(service)
-				.Setup(x => x.SetAuthCookie(It.Is<string>(s => s == "e@d.com"), It.Is<bool>(b => b == false)))
-				.Callback(() => cookieSet = true);
+			Action cookieSetAction = () => cookieSet = true;
+			AccountController controller = SetupPasswordTest(cookieSetAction);
 
-			var controller = new AccountController(Session, service);
-			controller.Url = CreateUrlHelper();
 			var result = controller.LogOn(new LogOnModel { Email = "e@d.com", Password = "some pwd" }, string.Empty);
 			controller.ModelState.ContainsKey("Email").ShouldBe(false);
 			controller.ModelState.ContainsKey("Password").ShouldBe(false);
 			result.AssertActionRedirect().ToController("Home").ToAction("Index");
 
 			cookieSet.ShouldBe(true);
+		}
+
+		private AccountController SetupPasswordTest(Action cookieSetAction)
+		{
+			// create an active user
+			var user = new User("F", "L", "e@d.com", "some pwd");
+			user.Activate();
+			Session.Store(user);
+			Session.SaveChanges();
+
+			var service = Mock.Of<IFormsAuthenticationService>();
+			Mock.Get(service)
+				.Setup(x => x.SetAuthCookie(It.Is<string>(s => s == "e@d.com"), It.Is<bool>(b => b == false)))
+				.Callback(cookieSetAction);
+
+			AccountController controller = new AccountController(Session, service);
+			controller.Url = CreateUrlHelper();
+			return controller;
 		}
 
 		[Fact]
@@ -83,22 +90,12 @@ namespace SnittListan.Test
 		[Fact]
 		public void WrongPasswordRedisplaysForm()
 		{
-			// create an active user
-			var user = new User("F", "L", "e@d.com", "some pwd");
-			user.Activate();
-			Session.Store(user);
-			Session.SaveChanges();
-
-			// make sure SetAuthCookie is *not* set
 			bool cookieSet = false;
-			var service = Mock.Of<IFormsAuthenticationService>();
-			Mock.Get(service)
-				.Setup(x => x.SetAuthCookie(It.Is<string>(s => s == "e@d.com"), It.Is<bool>(b => b == false)))
-				.Callback(() => cookieSet = true);
+			Action cookieSetAction = () => cookieSet = true;
+			AccountController controller = SetupPasswordTest(cookieSetAction);
 
-			var controller = new AccountController(Session, service);
-			controller.Url = CreateUrlHelper();
 			var result = controller.LogOn(new LogOnModel { Email = "e@d.com", Password = "some other pwd" }, string.Empty);
+
 			controller.ModelState.ContainsKey("Email").ShouldBe(false);
 			controller.ModelState.ContainsKey("Password").ShouldBe(true);
 			cookieSet.ShouldBe(false);
