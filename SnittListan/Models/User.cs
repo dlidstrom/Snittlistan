@@ -13,11 +13,18 @@ namespace SnittListan.Models
 		/// <summary>
 		/// The salt needs to be initialized lazily.
 		/// This allows it to be set when it is first needed (new user),
-		/// and also when reconstituting.
+		/// and also when reconstituting (loading an existing user).
 		/// </summary>
 		private Guid passwordSalt;
 		private string activationKey;
 
+		/// <summary>
+		/// Initializes a new instance of the User class.
+		/// </summary>
+		/// <param name="firstName">First name of the user.</param>
+		/// <param name="lastName">Last name of the user.</param>
+		/// <param name="email">Email address.</param>
+		/// <param name="password">User password.</param>
 		public User(string firstName, string lastName, string email, string password)
 		{
 			FirstName = firstName;
