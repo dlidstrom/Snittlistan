@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Web.Mvc;
 using Moq;
 using MvcContrib.TestHelper;
 using SnittListan.Controllers;
+using SnittListan.Models;
 using SnittListan.Services;
 using Xunit;
-using SnittListan.Models;
 
 namespace SnittListan.Test
 {
@@ -19,13 +20,15 @@ namespace SnittListan.Test
 		}
 
 		[Fact]
-		public void KnownUserIsActivatedAndCanLogOn()
+		public void KnownUserIsActivatedAndShownSuccess()
 		{
 			var user = new User("F", "L", "e@d.com", "some pwd");
 			Session.Store(user);
 			Session.SaveChanges();
 
-			VerifyActivateForUser(user);
+			VerifyActivateForUser(user)
+				.AssertActionRedirect()
+				.ToAction("VerifySuccess");
 		}
 
 		[Fact]
@@ -36,10 +39,12 @@ namespace SnittListan.Test
 			Session.Store(user);
 			Session.SaveChanges();
 
-			VerifyActivateForUser(user);
+			VerifyActivateForUser(user)
+				.AssertActionRedirect()
+				.ToAction("LogOn");
 		}
 
-		private void VerifyActivateForUser(User user)
+		private ActionResult VerifyActivateForUser(User user)
 		{
 			bool loggedSomebodyOn = false;
 			var service = Mock.Of<IFormsAuthenticationService>();
@@ -48,8 +53,8 @@ namespace SnittListan.Test
 				.Callback(() => loggedSomebodyOn = true);
 			var controller = new AccountController(Session, service);
 			var result = controller.Verify(Guid.Parse(user.ActivationKey));
-			result.AssertActionRedirect().ToAction("VerifySuccess");
 			loggedSomebodyOn.ShouldBe(false);
+			return result;
 		}
 	}
 }
