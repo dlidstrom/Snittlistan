@@ -51,6 +51,7 @@ namespace SnittListan.Test
 				.Callback(() => cookieSet = true);
 
 			var controller = new AccountController(Session, service);
+			controller.Url = CreateUrlHelper();
 			var result = controller.LogOn(new LogOnModel { Email = "e@d.com", Password = "some pwd" }, string.Empty);
 			controller.ModelState.ContainsKey("Email").ShouldBe(false);
 			controller.ModelState.ContainsKey("Password").ShouldBe(false);
