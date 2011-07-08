@@ -69,7 +69,7 @@ namespace SnittListan.Services
 			mailMessage.To.Add(new MailAddress(recipient));
 
 			// add moderators
-			moderatorEmails.ForEach(m => mailMessage.To.Add(m));
+			moderatorEmails.ForEach(m => mailMessage.Bcc.Add(m));
 
 			using (var smtpClient = new SmtpClient
 			{
