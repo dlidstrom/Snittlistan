@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MvcContrib;
@@ -139,8 +140,7 @@ namespace SnittListan.Controllers
 		[HttpPost]
 		public ActionResult ChangePassword(ChangePasswordViewModel model)
 		{
-			var user = Session.Query<User>()
-				.Where(u => u.Email == model.Email)
+			var user = Session.FindUserByEmail(model.Email)
 				.FirstOrDefault();
 
 			if (user == null)
@@ -168,6 +168,34 @@ namespace SnittListan.Controllers
 		/// </summary>
 		/// <returns></returns>
 		public ActionResult RegisterSuccess()
+		{
+			return View();
+		}
+
+		/// <summary>
+		/// GET: /Account/Verify
+		/// </summary>
+		/// <param name="activationKey">Key to activate user.</param>
+		/// <returns>LogOn or Register view.</returns>
+		public ActionResult Verify(Guid activationKey)
+		{
+			var user = Session.FindUserByActivationKey(activationKey.ToString())
+				.FirstOrDefault();
+
+			if (user == null)
+				return this.RedirectToAction(c => c.Register());
+
+			if (user.IsActive)
+				this.RedirectToAction(c => c.LogOn());
+
+			return this.RedirectToAction(c => c.VerifySuccess());
+		}
+
+		/// <summary>
+		/// GET: /Account/VerifySuccess
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult VerifySuccess()
 		{
 			return View();
 		}
