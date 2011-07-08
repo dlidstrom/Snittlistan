@@ -9,6 +9,12 @@ namespace SnittListan.Models
 	public class User
 	{
 		private const string ConstantSalt = "CheFe2ra8en9SW";
+
+		/// <summary>
+		/// The salt needs to be initialized lazily.
+		/// This allows it to be set when it is first needed (new user),
+		/// and also when reconstituting.
+		/// </summary>
 		private Guid passwordSalt;
 		private string activationKey;
 
@@ -42,6 +48,9 @@ namespace SnittListan.Models
 
 		private string HashedPassword { get; set; }
 
+		/// <summary>
+		/// Password salt, per user.
+		/// </summary>
 		private Guid PasswordSalt
 		{
 			get
@@ -80,10 +89,9 @@ namespace SnittListan.Models
 			string hashedPassword;
 			using (var sha = SHA256.Create())
 			{
-				var saltPerUser = Id;
 				var computedHash = sha.ComputeHash(
 					PasswordSalt.ToByteArray().Concat(
-						Encoding.Unicode.GetBytes(saltPerUser + password + ConstantSalt))
+						Encoding.Unicode.GetBytes(password + PasswordSalt + ConstantSalt))
 						.ToArray());
 
 				hashedPassword = Convert.ToBase64String(computedHash);
