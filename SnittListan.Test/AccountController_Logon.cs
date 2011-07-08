@@ -22,33 +22,6 @@ namespace SnittListan.Test
 			return new UrlHelper(new RequestContext(Mock.Get(context).Object, new RouteData()), routes);
 		}
 
-		[Fact]
-		public void UnknownUserCannotLogon()
-		{
-			// Arrange
-
-
-			// Act
-
-			// Assert
-			Assert.False(false, "Not finished yet");
-		}
-
-		[Fact]
-		public void ActiveUserCanLogon()
-		{
-			bool cookieSet = false;
-			Action cookieSetAction = () => cookieSet = true;
-			AccountController controller = SetupPasswordTest(cookieSetAction);
-
-			var result = controller.LogOn(new LogOnModel { Email = "e@d.com", Password = "some pwd" }, string.Empty);
-			controller.ModelState.ContainsKey("Email").ShouldBe(false);
-			controller.ModelState.ContainsKey("Password").ShouldBe(false);
-			result.AssertActionRedirect().ToController("Home").ToAction("Index");
-
-			cookieSet.ShouldBe(true);
-		}
-
 		private AccountController SetupPasswordTest(Action cookieSetAction)
 		{
 			// create an active user
@@ -65,6 +38,37 @@ namespace SnittListan.Test
 			AccountController controller = new AccountController(Session, service);
 			controller.Url = CreateUrlHelper();
 			return controller;
+		}
+
+		[Fact]
+		public void UnknownUserCannotLogon()
+		{
+			var service = Mock.Of<IFormsAuthenticationService>();
+			bool cookieSet = false;
+			Mock.Get(service)
+				.Setup(x => x.SetAuthCookie(It.IsAny<string>(), It.IsAny<bool>()))
+				.Callback(() => cookieSet = true);
+
+			var controller = new AccountController(Session, service);
+			var result = controller.LogOn(new LogOnModel { Email = "unknown@d.com", Password = "some pwd" }, string.Empty);
+
+			result.AssertViewRendered().ForView(string.Empty);
+			cookieSet.ShouldBe(false);
+		}
+
+		[Fact]
+		public void ActiveUserCanLogon()
+		{
+			bool cookieSet = false;
+			Action cookieSetAction = () => cookieSet = true;
+			AccountController controller = SetupPasswordTest(cookieSetAction);
+
+			var result = controller.LogOn(new LogOnModel { Email = "e@d.com", Password = "some pwd" }, string.Empty);
+			controller.ModelState.ContainsKey("Email").ShouldBe(false);
+			controller.ModelState.ContainsKey("Password").ShouldBe(false);
+			result.AssertActionRedirect().ToController("Home").ToAction("Index");
+
+			cookieSet.ShouldBe(true);
 		}
 
 		[Fact]
