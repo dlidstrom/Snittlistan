@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.TestHelper;
 using SnittListan.Controllers;
 using Xunit;
-using System.Web.Mvc;
 
 namespace SnittListan.Test
 {

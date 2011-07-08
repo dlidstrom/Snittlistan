@@ -7,15 +7,6 @@ using Xunit;
 
 namespace SnittListan.Test
 {
-	public class EmailServiceStub : IEmailService
-	{
-		public List<string> EmailsToSend { get; set; }
-		public void SendMail(string recipient, string subject, string body)
-		{
-			EmailsToSend.Add(recipient + ": " + subject);
-		}
-	}
-
 	public class SendRegistrationEmailHandlerTest
 	{
 		[Fact(Skip = "Not sure how to assert")]
@@ -25,6 +16,15 @@ namespace SnittListan.Test
 			var handler = new SendRegistrationEmailHandler(es);
 			var container = new WindsorContainer()
 				.Register(Component.For<IEmailService>().ImplementedBy<EmailServiceStub>());
+		}
+
+		public class EmailServiceStub : IEmailService
+		{
+			public List<string> EmailsToSend { get; set; }
+			public void SendMail(string recipient, string subject, string body)
+			{
+				EmailsToSend.Add(recipient + ": " + subject);
+			}
 		}
 	}
 }

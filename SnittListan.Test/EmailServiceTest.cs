@@ -5,7 +5,7 @@ namespace SnittListan.Test
 {
 	public class EmailServiceTest
 	{
-		[Fact(Skip="Configure before executing")]
+		[Fact(Skip = "Configure before executing")]
 		public void ShouldDeliverMail()
 		{
 			// this test actually sends a mail

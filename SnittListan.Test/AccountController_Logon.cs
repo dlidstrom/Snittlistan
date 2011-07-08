@@ -1,45 +1,18 @@
 ﻿using System;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
 using Moq;
 using MvcContrib.TestHelper;
 using SnittListan.Controllers;
-using SnittListan.Events;
 using SnittListan.Models;
 using SnittListan.Services;
 using Xunit;
-using System.Web.Mvc;
-using System.Web.Routing;
-using System.Web;
 
 namespace SnittListan.Test
 {
 	public class AccountController_Logon : DbTest
 	{
-		private UrlHelper CreateUrlHelper()
-		{
-			var context = Mock.Of<HttpContextBase>();
-			var routes = new RouteCollection();
-			new RouteConfigurator(routes).Configure();
-			return new UrlHelper(new RequestContext(Mock.Get(context).Object, new RouteData()), routes);
-		}
-
-		private AccountController SetupPasswordTest(Action cookieSetAction)
-		{
-			// create an active user
-			var user = new User("F", "L", "e@d.com", "some pwd");
-			user.Activate();
-			Session.Store(user);
-			Session.SaveChanges();
-
-			var service = Mock.Of<IFormsAuthenticationService>();
-			Mock.Get(service)
-				.Setup(x => x.SetAuthCookie(It.Is<string>(s => s == "e@d.com"), It.Is<bool>(b => b == false)))
-				.Callback(cookieSetAction);
-
-			var controller = new AccountController(Session, service);
-			controller.Url = CreateUrlHelper();
-			return controller;
-		}
-
 		[Fact]
 		public void UnknownUserCannotLogon()
 		{
@@ -104,6 +77,32 @@ namespace SnittListan.Test
 			controller.ModelState.ContainsKey("Password").ShouldBe(true);
 			cookieSet.ShouldBe(false);
 			result.AssertViewRendered().ForView(string.Empty);
+		}
+
+		private UrlHelper CreateUrlHelper()
+		{
+			var context = Mock.Of<HttpContextBase>();
+			var routes = new RouteCollection();
+			new RouteConfigurator(routes).Configure();
+			return new UrlHelper(new RequestContext(Mock.Get(context).Object, new RouteData()), routes);
+		}
+
+		private AccountController SetupPasswordTest(Action cookieSetAction)
+		{
+			// create an active user
+			var user = new User("F", "L", "e@d.com", "some pwd");
+			user.Activate();
+			Session.Store(user);
+			Session.SaveChanges();
+
+			var service = Mock.Of<IFormsAuthenticationService>();
+			Mock.Get(service)
+				.Setup(x => x.SetAuthCookie(It.Is<string>(s => s == "e@d.com"), It.Is<bool>(b => b == false)))
+				.Callback(cookieSetAction);
+
+			var controller = new AccountController(Session, service);
+			controller.Url = CreateUrlHelper();
+			return controller;
 		}
 	}
 }

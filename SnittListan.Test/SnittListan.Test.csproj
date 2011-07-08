@@ -144,7 +144,8 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
+  <Import Project="$(ProgramFiles)\MSBuild\StyleCop\v4.5\StyleCop.targets" />
+	<PropertyGroup>
     <PostBuildEvent>$(SolutionDir)packages\xunit.1.8.0.1545\lib\xunit.console.clr4.exe $(TargetPath)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

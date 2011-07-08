@@ -30,8 +30,8 @@ namespace SnittListan.Test
 		[Fact]
 		public void AllControllersAreRegistered()
 		{
-			// Is<TType> is a helper extension method from Windsor
-			// which behaves like 'is' keyword in C# but at a Type, not instance level
+			/// Is<TType> is a helper extension method from Windsor
+			/// which behaves like 'is' keyword in C# but at a Type, not instance level
 
 			var allControllers = InstallerTestHelper.GetPublicClassesFromApplicationAssembly(c => c.Is<IController>());
 			var registeredControllers = InstallerTestHelper.GetImplementationTypesFor(typeof(IController), container);
