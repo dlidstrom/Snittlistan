@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Xunit;
+﻿using System.Linq;
 using MvcContrib.TestHelper;
-using SnittListan.Models;
-using SnittListan.Helpers;
 using SnittListan.Events;
+using SnittListan.Helpers;
+using SnittListan.Models;
+using Xunit;
 
 namespace SnittListan.Test
 {

@@ -1,7 +1,7 @@
-﻿using SnittListan.Events;
+﻿using MvcContrib.TestHelper;
+using SnittListan.Events;
 using SnittListan.Models;
 using Xunit;
-using MvcContrib.TestHelper;
 
 namespace SnittListan.Test
 {

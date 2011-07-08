@@ -57,6 +57,7 @@ namespace SnittListan.Test
 			using (DomainEvent.Disable())
 			{
 				var authService = Mock.Of<IFormsAuthenticationService>();
+
 				// assert through mock object
 				Mock.Get(authService)
 					.Setup(s => s.SetAuthCookie(It.IsAny<string>(), It.IsAny<bool>()))
