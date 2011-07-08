@@ -76,7 +76,26 @@ namespace SnittListan.Test
 		[Fact]
 		public void WrongPasswordRedisplaysForm()
 		{
-			Assert.False(true, "Not finished");
+			// create an active user
+			var user = new User("F", "L", "e@d.com", "some pwd");
+			user.Activate();
+			Session.Store(user);
+			Session.SaveChanges();
+
+			// make sure SetAuthCookie is *not* set
+			bool cookieSet = false;
+			var service = Mock.Of<IFormsAuthenticationService>();
+			Mock.Get(service)
+				.Setup(x => x.SetAuthCookie(It.Is<string>(s => s == "e@d.com"), It.Is<bool>(b => b == false)))
+				.Callback(() => cookieSet = true);
+
+			var controller = new AccountController(Session, service);
+			controller.Url = CreateUrlHelper();
+			var result = controller.LogOn(new LogOnModel { Email = "e@d.com", Password = "some other pwd" }, string.Empty);
+			controller.ModelState.ContainsKey("Email").ShouldBe(false);
+			controller.ModelState.ContainsKey("Password").ShouldBe(true);
+			cookieSet.ShouldBe(false);
+			result.AssertViewRendered().ForView(string.Empty);
 		}
 	}
 }
