@@ -10,6 +10,7 @@ namespace SnittListan.Models
 	{
 		private const string ConstantSalt = "CheFe2ra8en9SW";
 		private Guid passwordSalt;
+		private string activationKey;
 
 		public User(string firstName, string lastName, string email, string password)
 		{
@@ -22,7 +23,18 @@ namespace SnittListan.Models
 		public string Id { get; private set; }
 		public string Email { get; private set; }
 		public bool IsActive { get; private set; }
-		public string ActivationKey { get; set; }
+		public string ActivationKey
+		{
+			get
+			{
+				if (activationKey == null)
+					activationKey = Guid.NewGuid().ToString();
+
+				return activationKey;
+			}
+
+			set { activationKey = value; }
+		}
 
 		// Other user properties
 		public string FirstName { get; private set; }
