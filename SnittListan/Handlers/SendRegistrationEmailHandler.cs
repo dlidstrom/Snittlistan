@@ -19,7 +19,7 @@ namespace SnittListan.Handlers
 			string subject = "Välkommen till SnittListan!";
 			string body = "Du får det här brevet för att du har försökt registrera dig på Snittlistan.se."
 				+ "\n"
-				+ string.Format("Klicka här för att aktivera ditt konto: http://www.snittlistan.se/account/validate?id={0}", @event.User.ActivationKey);
+				+ string.Format("Klicka här för att aktivera ditt konto: http://www.snittlistan.se/account/verify?activationKey={0}", @event.User.ActivationKey);
 
 			emailService.SendMail(recipient, subject, body);
 		}
