@@ -8,7 +8,6 @@ namespace SnittListan.Events
 	{
 		static DomainEvent()
 		{
-			///RaiseAction = DefaultRaiseAction;
 			ReturnContainer = DefaultReturnContainer;
 		}
 
@@ -50,18 +49,6 @@ namespace SnittListan.Events
 			Reset();
 
 			return new DomainEventReset();
-		}
-
-		private static void DefaultRaiseAction<TEvent>(TEvent @event) where TEvent : class, IDomainEvent
-		{
-			var container = ReturnContainer();
-			var handlers = container.ResolveAll<IHandle<TEvent>>();
-
-			foreach (var handle in handlers)
-			{
-				handle.Handle(@event);
-				container.Release(handle);
-			}
 		}
 
 		private static IWindsorContainer DefaultReturnContainer()
