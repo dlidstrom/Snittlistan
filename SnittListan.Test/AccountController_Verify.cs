@@ -25,15 +25,7 @@ namespace SnittListan.Test
 			Session.Store(user);
 			Session.SaveChanges();
 
-			bool loggedSomebodyOn = false;
-			var service = Mock.Of<IFormsAuthenticationService>();
-			Mock.Get(service)
-				.Setup(s => s.SetAuthCookie(It.IsAny<string>(), It.IsAny<bool>()))
-				.Callback(() => loggedSomebodyOn = true);
-			var controller = new AccountController(Session, service);
-			var result = controller.Verify(Guid.Parse(user.ActivationKey));
-			result.AssertActionRedirect().ToAction("VerifySuccess");
-			loggedSomebodyOn.ShouldBe(false);
+			VerifyActivateForUser(user);
 		}
 
 		[Fact]
@@ -44,6 +36,11 @@ namespace SnittListan.Test
 			Session.Store(user);
 			Session.SaveChanges();
 
+			VerifyActivateForUser(user);
+		}
+
+		private void VerifyActivateForUser(User user)
+		{
 			bool loggedSomebodyOn = false;
 			var service = Mock.Of<IFormsAuthenticationService>();
 			Mock.Get(service)
@@ -51,7 +48,7 @@ namespace SnittListan.Test
 				.Callback(() => loggedSomebodyOn = true);
 			var controller = new AccountController(Session, service);
 			var result = controller.Verify(Guid.Parse(user.ActivationKey));
-			result.AssertActionRedirect().ToAction("LogOn");
+			result.AssertActionRedirect().ToAction("VerifySuccess");
 			loggedSomebodyOn.ShouldBe(false);
 		}
 	}
