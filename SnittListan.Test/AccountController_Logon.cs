@@ -78,27 +78,5 @@ namespace SnittListan.Test
 		{
 			Assert.False(true, "Not finished");
 		}
-
-		[Fact]
-		public void CanLoginVerifiedUserWithEmailAddress()
-		{
-			NewUserCreatedEvent ev = null;
-			using (DomainEvent.TestWith(e => ev = (NewUserCreatedEvent)e))
-			{
-				var controller = new AccountController(Session, Mock.Of<IFormsAuthenticationService>());
-				controller.Register(new RegisterModel
-				{
-					FirstName = Guid.NewGuid().ToString(),
-					LastName = Guid.NewGuid().ToString(),
-					Email = "someone@microsoft.com"
-				});
-			}
-
-			// make sure user is active
-			Session.Load<User>(ev.User.Id).Activate();
-			Session.SaveChanges();
-
-			Assert.False(true, "Not finished");
-		}
 	}
 }
