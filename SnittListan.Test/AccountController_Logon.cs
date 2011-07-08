@@ -67,10 +67,17 @@ namespace SnittListan.Test
 			Session.Store(user);
 			Session.SaveChanges();
 
-			var controller = new AccountController(Session, Mock.Of<IFormsAuthenticationService>());
-			controller.LogOn(new LogOnModel { Email = "e@d.com", Password = "pwd" }, null);
-
-			Assert.False(true, "Not finished");
+			bool loggedOn = false;
+			var service = Mock.Of<IFormsAuthenticationService>();
+			Mock.Get(service)
+				.Setup(s => s.SetAuthCookie(It.IsAny<string>(), It.IsAny<bool>()))
+				.Callback(() => loggedOn = true);
+			var controller = new AccountController(Session, service);
+			controller.Url = CreateUrlHelper();
+			var result = controller.LogOn(new LogOnModel { Email = "e@d.com", Password = "pwd" }, string.Empty);
+			controller.ModelState.Keys.Contains("Inactive").ShouldBe(true);
+			result.AssertViewRendered().ForView(string.Empty);
+			loggedOn.ShouldBe(false);
 		}
 
 		[Fact]

@@ -52,6 +52,10 @@ namespace SnittListan.Controllers
 			{
 				ModelState.AddModelError("Password", "Lösenordet stämmer inte!");
 			}
+			else if (user.IsActive == false)
+			{
+				ModelState.AddModelError("Inactive", "Användaren har inte aktiverats");
+			}
 
 			// redisplay form if any errors at this point
 			if (!ModelState.IsValid)
