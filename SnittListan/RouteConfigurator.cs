@@ -34,7 +34,7 @@ namespace SnittListan
 				"AccountController-Action",
 				"{action}",
 				new { controller = "Account" },
-				new { action = "LogOn|Register" });
+				new { action = "LogOn|Register|Verify" });
 		}
 
 		private void ConfigureHome()
