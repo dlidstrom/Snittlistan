@@ -35,7 +35,7 @@ namespace SnittListan.Test
 				.Setup(x => x.SetAuthCookie(It.Is<string>(s => s == "e@d.com"), It.Is<bool>(b => b == false)))
 				.Callback(cookieSetAction);
 
-			AccountController controller = new AccountController(Session, service);
+			var controller = new AccountController(Session, service);
 			controller.Url = CreateUrlHelper();
 			return controller;
 		}
@@ -61,7 +61,7 @@ namespace SnittListan.Test
 		{
 			bool cookieSet = false;
 			Action cookieSetAction = () => cookieSet = true;
-			AccountController controller = SetupPasswordTest(cookieSetAction);
+			var controller = SetupPasswordTest(cookieSetAction);
 
 			var result = controller.LogOn(new LogOnModel { Email = "e@d.com", Password = "some pwd" }, string.Empty);
 			controller.ModelState.ContainsKey("Email").ShouldBe(false);
@@ -96,7 +96,7 @@ namespace SnittListan.Test
 		{
 			bool cookieSet = false;
 			Action cookieSetAction = () => cookieSet = true;
-			AccountController controller = SetupPasswordTest(cookieSetAction);
+			var controller = SetupPasswordTest(cookieSetAction);
 
 			var result = controller.LogOn(new LogOnModel { Email = "e@d.com", Password = "some other pwd" }, string.Empty);
 
