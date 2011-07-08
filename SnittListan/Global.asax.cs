@@ -1,9 +1,11 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
 using Common.Logging;
+using SnittListan.Helpers;
 using SnittListan.Helpers.Attributes;
 using SnittListan.IoC;
 
@@ -25,17 +27,17 @@ namespace SnittListan
 			filters.Add(new HandleErrorAttribute());
 		}
 
-		public static void RegisterRoutes(RouteCollection routes)
-		{
-			new RouteConfigurator(routes).Configure();
-		}
-
 		protected void Application_Start()
 		{
 			AreaRegistration.RegisterAllAreas();
 
 			RegisterGlobalFilters(GlobalFilters.Filters);
-			RegisterRoutes(RouteTable.Routes);
+
+			// register routes
+			new RouteConfigurator(RouteTable.Routes).Configure();
+
+			// add model binders
+			ModelBinders.Binders.Add(typeof(Guid), new GuidBinder());
 
 			// initialize container and controller factory
 			InitializeContainer();
