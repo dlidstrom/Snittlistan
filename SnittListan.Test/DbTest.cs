@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -34,9 +35,9 @@ namespace SnittListan.Test
 			Session.Dispose();
 		}
 
-		public void WaitForNonStaleResultsAsOfLastWrite<T>() where T : class
+		public void WaitForNonStaleResults<T>() where T : class
 		{
-			Session.Query<T>().Customize(x => x.WaitForNonStaleResultsAsOfLastWrite());
+			Session.Query<T>().Customize(x => x.WaitForNonStaleResults()).ToList();
 		}
 
 		public UrlHelper CreateUrlHelper()
