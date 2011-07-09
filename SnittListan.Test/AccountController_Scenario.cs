@@ -5,6 +5,7 @@ using MvcContrib.TestHelper;
 using SnittListan.Controllers;
 using SnittListan.Events;
 using SnittListan.Helpers;
+using SnittListan.Models;
 using SnittListan.Services;
 using SnittListan.ViewModels;
 using Xunit;
@@ -30,6 +31,9 @@ namespace SnittListan.Test
 			using (DomainEvent.Disable())
 				controller1.Register(model);
 
+			// let indexing do its job
+			WaitForNonStaleResultsAsOfLastWrite<User>();
+
 			// verify
 			var registeredUser = Session.FindUserByEmail("e@d.com").SingleOrDefault();
 			registeredUser.ShouldNotBeNull("Should find user after registration");
@@ -37,6 +41,9 @@ namespace SnittListan.Test
 
 			var controller2 = new AccountController(Session, Mock.Of<IFormsAuthenticationService>());
 			controller2.Verify(Guid.Parse(key));
+
+			// let indexing do its job
+			WaitForNonStaleResultsAsOfLastWrite<User>();
 
 			// logon
 			bool loggedOn = false;
