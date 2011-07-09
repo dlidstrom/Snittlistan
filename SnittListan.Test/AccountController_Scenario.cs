@@ -32,7 +32,7 @@ namespace SnittListan.Test
 				controller1.Register(model);
 
 			// let indexing do its job
-			WaitForNonStaleResultsAsOfLastWrite<User>();
+			WaitForNonStaleResults<User>();
 
 			// verify
 			var registeredUser = Session.FindUserByEmail("e@d.com").SingleOrDefault();
@@ -43,7 +43,7 @@ namespace SnittListan.Test
 			controller2.Verify(Guid.Parse(key));
 
 			// let indexing do its job
-			WaitForNonStaleResultsAsOfLastWrite<User>();
+			WaitForNonStaleResults<User>();
 
 			// logon
 			bool loggedOn = false;

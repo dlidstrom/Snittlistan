@@ -5,6 +5,7 @@ using MvcContrib.TestHelper;
 using SnittListan.Controllers;
 using SnittListan.Events;
 using SnittListan.Helpers;
+using SnittListan.Models;
 using SnittListan.Services;
 using SnittListan.ViewModels;
 using Xunit;
@@ -42,6 +43,9 @@ namespace SnittListan.Test
 					LastName = "last name",
 					Email = "email",
 				});
+
+			// let indexing do its job
+			WaitForNonStaleResults<User>();
 
 			var user = Session.FindUserByEmail("email").SingleOrDefault();
 			user.ShouldNotBeNull("Should find it");
