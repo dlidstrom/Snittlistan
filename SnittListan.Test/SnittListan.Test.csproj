@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountController_ChangePassword.cs" />
+    <Compile Include="AccountController_LogOff.cs" />
     <Compile Include="AccountController_Logon.cs" />
     <Compile Include="AccountController_Register.cs" />
     <Compile Include="AccountController_Scenario.cs" />
