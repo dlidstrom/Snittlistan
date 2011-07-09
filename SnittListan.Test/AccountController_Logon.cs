@@ -17,7 +17,7 @@ namespace SnittListan.Test
 		[Fact]
 		public void UnknownUserCannotLogon()
 		{
-			var service = Mock.Of<IFormsAuthenticationService>();
+			var service = Mock.Of<IAuthenticationService>();
 			bool cookieSet = false;
 			Mock.Get(service)
 				.Setup(x => x.SetAuthCookie(It.IsAny<string>(), It.IsAny<bool>()))
@@ -53,7 +53,7 @@ namespace SnittListan.Test
 			Session.SaveChanges();
 
 			bool loggedOn = false;
-			var service = Mock.Of<IFormsAuthenticationService>();
+			var service = Mock.Of<IAuthenticationService>();
 			Mock.Get(service)
 				.Setup(s => s.SetAuthCookie(It.IsAny<string>(), It.IsAny<bool>()))
 				.Callback(() => loggedOn = true);
@@ -88,7 +88,7 @@ namespace SnittListan.Test
 			Session.Store(user);
 			Session.SaveChanges();
 
-			var service = Mock.Of<IFormsAuthenticationService>();
+			var service = Mock.Of<IAuthenticationService>();
 			Mock.Get(service)
 				.Setup(x => x.SetAuthCookie(It.Is<string>(s => s == "e@d.com"), It.Is<bool>(b => b == false)))
 				.Callback(cookieSetAction);

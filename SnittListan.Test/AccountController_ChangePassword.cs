@@ -47,7 +47,7 @@ namespace SnittListan.Test
 		[Fact]
 		public void ChangePasswordSuccessReturnsView()
 		{
-			var controller = new AccountController(Session, Mock.Of<IFormsAuthenticationService>());
+			var controller = new AccountController(Session, Mock.Of<IAuthenticationService>());
 			var result = controller.ChangePasswordSuccess();
 			result.AssertViewRendered().ForView(string.Empty);
 		}
@@ -63,7 +63,7 @@ namespace SnittListan.Test
 			Session.Store(user);
 			Session.SaveChanges();
 
-			return new AccountController(Session, Mock.Of<IFormsAuthenticationService>());
+			return new AccountController(Session, Mock.Of<IAuthenticationService>());
 		}
 	}
 }

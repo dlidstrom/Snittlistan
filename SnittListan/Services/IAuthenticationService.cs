@@ -1,7 +1,9 @@
 ﻿namespace SnittListan.Services
 {
-	public interface IFormsAuthenticationService
+	public interface IAuthenticationService
 	{
 		void SetAuthCookie(string userName, bool createPersistentCookie);
+
+		void SignOut();
 	}
 }

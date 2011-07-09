@@ -16,7 +16,7 @@ namespace SnittListan.Test
 		[Fact]
 		public void UnknownIdFails()
 		{
-			var controller = new AccountController(Session, Mock.Of<IFormsAuthenticationService>());
+			var controller = new AccountController(Session, Mock.Of<IAuthenticationService>());
 			var result = controller.Verify(Guid.NewGuid());
 			result.AssertActionRedirect().ToAction("Register");
 		}
@@ -52,7 +52,7 @@ namespace SnittListan.Test
 		private ActionResult VerifyActivateForUser(User user)
 		{
 			bool loggedSomebodyOn = false;
-			var service = Mock.Of<IFormsAuthenticationService>();
+			var service = Mock.Of<IAuthenticationService>();
 			Mock.Get(service)
 				.Setup(s => s.SetAuthCookie(It.IsAny<string>(), It.IsAny<bool>()))
 				.Callback(() => loggedSomebodyOn = true);

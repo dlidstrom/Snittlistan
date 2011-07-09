@@ -17,7 +17,7 @@ namespace SnittListan.Test
 		[Fact]
 		public void InstallsFormsAuthenticationService()
 		{
-			Assert.NotNull(container.Resolve<IFormsAuthenticationService>());
+			Assert.NotNull(container.Resolve<IAuthenticationService>());
 		}
 
 		[Fact]
