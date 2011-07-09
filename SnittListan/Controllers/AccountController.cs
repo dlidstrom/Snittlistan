@@ -102,11 +102,8 @@ namespace SnittListan.Controllers
 		[HttpPost]
 		public ActionResult Register(RegisterViewModel model)
 		{
-			// attempt to register the user
-			var user = Session.FindUserByEmail(model.Email)
-				.FirstOrDefault();
-
-			if (user != null)
+			// an existing user cannot be registered again
+			if (Session.FindUserByEmail(model.Email).FirstOrDefault() != null)
 				ModelState.AddModelError("Email", "Adressen finns redan.");
 
 			// redisplay form if any errors at this point
