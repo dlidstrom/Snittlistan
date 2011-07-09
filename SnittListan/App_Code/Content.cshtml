@@ -1,10 +1,10 @@
 ﻿@using System.Web.Mvc
 @helper Script(string scriptName, UrlHelper url)
-	{
+{
 	<script src="@url.Content("~/Scripts/" + scriptName)" type="text/javascript"></script>
 }
 @helper GA()
-	{
+{
 	<script type="text/javascript">
 		var _gaq = _gaq || [];
 		_gaq.push(['_setAccount', 'UA-16003953-2']);
