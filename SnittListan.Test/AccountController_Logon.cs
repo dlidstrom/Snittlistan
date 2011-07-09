@@ -80,14 +80,6 @@ namespace SnittListan.Test
 			result.AssertViewRendered().ForView(string.Empty);
 		}
 
-		private UrlHelper CreateUrlHelper()
-		{
-			var context = Mock.Of<HttpContextBase>();
-			var routes = new RouteCollection();
-			new RouteConfigurator(routes).Configure();
-			return new UrlHelper(new RequestContext(Mock.Get(context).Object, new RouteData()), routes);
-		}
-
 		private AccountController SetupPasswordTest(Action cookieSetAction)
 		{
 			// create an active user
