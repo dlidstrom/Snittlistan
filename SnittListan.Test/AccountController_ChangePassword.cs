@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using Moq;
+using SnittListan.Helpers;
 using MvcContrib.TestHelper;
 using SnittListan.Controllers;
 using SnittListan.Models;
@@ -15,7 +17,7 @@ namespace SnittListan.Test
 		[Fact]
 		public void InvalidUserFails()
 		{
-			var controller = CreateUserAndController();
+			var controller = CreateUserAndController("e@d.com");
 			controller.ChangePassword(new ChangePasswordViewModel
 			{
 				Email = "f@d.com",
@@ -27,7 +29,7 @@ namespace SnittListan.Test
 		[Fact]
 		public void ChangePasswordSuccess()
 		{
-			var controller = CreateUserAndController();
+			var controller = CreateUserAndController("e@d.com");
 			var result = controller.ChangePassword(new ChangePasswordViewModel
 			{
 				Email = "e@d.com",
@@ -38,7 +40,9 @@ namespace SnittListan.Test
 			result.AssertActionRedirect().ToAction("ChangePasswordSuccess");
 
 			// also make sure password actually changed
-			Assert.True(Session.Load<User>(1).ValidatePassword("newpass"), "Password was not changed");
+			var user = Session.FindUserByEmail("e@d.com").SingleOrDefault();
+			user.ShouldNotBeNull("Did not find user");
+			user.ValidatePassword("newpass").ShouldBe(true);
 		}
 
 		[Fact]
@@ -53,10 +57,10 @@ namespace SnittListan.Test
 		/// Creates a user with random password.
 		/// </summary>
 		/// <returns></returns>
-		private AccountController CreateUserAndController()
+		private AccountController CreateUserAndController(string email)
 		{
 			// add a user
-			var user = new User("F", "L", "e@d.com", password: Guid.NewGuid().ToString());
+			var user = new User("F", "L", email, password: Guid.NewGuid().ToString());
 			Session.Store(user);
 			Session.SaveChanges();
 
