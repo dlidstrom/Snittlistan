@@ -1,11 +1,10 @@
 ﻿using System;
-using Moq;
 using System.Linq;
+using Moq;
 using MvcContrib.TestHelper;
 using SnittListan.Controllers;
 using SnittListan.Events;
 using SnittListan.Helpers;
-using SnittListan.Models;
 using SnittListan.Services;
 using SnittListan.ViewModels;
 using Xunit;
