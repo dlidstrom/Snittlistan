@@ -141,7 +141,7 @@ namespace SnittListan.Controllers
 				.FirstOrDefault();
 
 			if (user == null)
-				return HttpNotFound("Användaren existerar inte.");
+				ModelState.AddModelError("Email",  "Användaren existerar inte.");
 
 			// redisplay form if any errors at this point
 			if (!ModelState.IsValid)
