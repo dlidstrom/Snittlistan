@@ -94,6 +94,7 @@ namespace SnittListan.Controllers
 		/// <returns></returns>
 		public ActionResult LogOff()
 		{
+			authenticationServce.SignOut();
 			return this.RedirectToAction<HomeController>(c => c.Index());
 		}
 
