@@ -5,6 +5,7 @@ using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Raven.Client;
 using Raven.Client.Embedded;
+using Raven.Database.Server;
 
 namespace SnittListan.Installers
 {
@@ -27,7 +28,8 @@ namespace SnittListan.Installers
 		{
 			var store = new EmbeddableDocumentStore
 			{
-				DataDirectory = AppDomain.CurrentDomain.GetData("DataDirectory").ToString()
+				DataDirectory = AppDomain.CurrentDomain.GetData("DataDirectory").ToString(),
+				UseEmbeddedHttpServer = true
 			}.Initialize();
 
 			store.Conventions.IdentityPartsSeparator = "-";
