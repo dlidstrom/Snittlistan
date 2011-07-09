@@ -21,11 +21,6 @@ namespace SnittListan.Test
 				RunInMemory = true
 			}.Initialize();
 			Session = store.OpenSession();
-
-			// this is a workaround
-			// to be able to query, at least one document must be stored
-			Session.Store(new User("Daniel", "Lidström", "someone@somedomain.com", "some password"));
-			Session.SaveChanges();
 		}
 
 		public IDocumentSession Session { get; private set; }
