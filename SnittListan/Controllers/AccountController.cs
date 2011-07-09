@@ -17,14 +17,14 @@ namespace SnittListan.Controllers
 	/// </summary>
 	public class AccountController : Controller
 	{
-		private readonly IFormsAuthenticationService authenticationServce;
+		private readonly IAuthenticationService authenticationServce;
 
 		/// <summary>
 		/// Initializes a new instance of the AccountController class.
 		/// </summary>
 		/// <param name="session">Document session.</param>
 		/// <param name="authenticationServce">Authentication service.</param>
-		public AccountController(IDocumentSession session, IFormsAuthenticationService authenticationServce)
+		public AccountController(IDocumentSession session, IAuthenticationService authenticationServce)
 		{
 			this.Session = session;
 			this.authenticationServce = authenticationServce;

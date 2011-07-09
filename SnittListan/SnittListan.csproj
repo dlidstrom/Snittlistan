@@ -178,7 +178,7 @@
     <Compile Include="Services\EmailService.cs" />
     <Compile Include="Services\FormsAuthenticationService.cs" />
     <Compile Include="Services\IEmailService.cs" />
-    <Compile Include="Services\IFormsAuthenticationService.cs" />
+    <Compile Include="Services\IAuthenticationService.cs" />
     <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

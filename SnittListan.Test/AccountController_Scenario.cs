@@ -27,7 +27,7 @@ namespace SnittListan.Test
 					Password = "some pwd"
 				};
 
-			var controller1 = new AccountController(Session, Mock.Of<IFormsAuthenticationService>());
+			var controller1 = new AccountController(Session, Mock.Of<IAuthenticationService>());
 			using (DomainEvent.Disable())
 				controller1.Register(model);
 
@@ -42,7 +42,7 @@ namespace SnittListan.Test
 			registeredUser.ShouldNotBeNull("Should find user after registration");
 			var key = registeredUser.ActivationKey;
 
-			var controller2 = new AccountController(Session, Mock.Of<IFormsAuthenticationService>());
+			var controller2 = new AccountController(Session, Mock.Of<IAuthenticationService>());
 			controller2.Verify(Guid.Parse(key));
 
 			// let indexing do its job
@@ -50,7 +50,7 @@ namespace SnittListan.Test
 
 			// logon
 			bool loggedOn = false;
-			var service = Mock.Of<IFormsAuthenticationService>();
+			var service = Mock.Of<IAuthenticationService>();
 			Mock.Get(service)
 				.Setup(s => s.SetAuthCookie(It.Is<string>(e => e == "e@d.com"), It.IsAny<bool>()))
 				.Callback(() => loggedOn = true);

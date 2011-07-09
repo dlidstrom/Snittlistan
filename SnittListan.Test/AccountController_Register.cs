@@ -20,7 +20,7 @@ namespace SnittListan.Test
 			NewUserCreatedEvent ev = null;
 			using (DomainEvent.TestWith(e => ev = (NewUserCreatedEvent)e))
 			{
-				var controller = new AccountController(Session, Mock.Of<IFormsAuthenticationService>());
+				var controller = new AccountController(Session, Mock.Of<IAuthenticationService>());
 				controller.Register(new RegisterViewModel
 				{
 					FirstName = "first name",
@@ -35,7 +35,7 @@ namespace SnittListan.Test
 		[Fact]
 		public void ShouldCreateInitializedUser()
 		{
-			var controller = new AccountController(Session, Mock.Of<IFormsAuthenticationService>());
+			var controller = new AccountController(Session, Mock.Of<IAuthenticationService>());
 			using (DomainEvent.Disable())
 				controller.Register(new RegisterViewModel
 				{
@@ -63,7 +63,7 @@ namespace SnittListan.Test
 		{
 			using (DomainEvent.Disable())
 			{
-				var authService = Mock.Of<IFormsAuthenticationService>();
+				var authService = Mock.Of<IAuthenticationService>();
 
 				// assert through mock object
 				Mock.Get(authService)
@@ -84,7 +84,7 @@ namespace SnittListan.Test
 		{
 			using (DomainEvent.Disable())
 			{
-				var controller = new AccountController(Session, Mock.Of<IFormsAuthenticationService>());
+				var controller = new AccountController(Session, Mock.Of<IAuthenticationService>());
 				var result = controller.Register(new RegisterViewModel
 				{
 					FirstName = "f",
