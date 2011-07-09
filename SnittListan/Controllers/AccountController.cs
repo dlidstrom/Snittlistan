@@ -187,6 +187,8 @@ namespace SnittListan.Controllers
 
 			user.Activate();
 
+			Session.SaveChanges();
+
 			return this.RedirectToAction(c => c.VerifySuccess());
 		}
 
