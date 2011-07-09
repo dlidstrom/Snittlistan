@@ -7,6 +7,7 @@ using Castle.Windsor.Installer;
 using Common.Logging;
 using SnittListan.Helpers;
 using SnittListan.Helpers.Attributes;
+using SnittListan.Infrastructure;
 using SnittListan.IoC;
 
 namespace SnittListan
@@ -25,6 +26,7 @@ namespace SnittListan
 		{
 			filters.Add(new ElmahHandleErrorAttribute());
 			filters.Add(new HandleErrorAttribute());
+			filters.Add(new RavenActionFilterAttribute());
 		}
 
 		protected void Application_Start()

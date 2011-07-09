@@ -44,6 +44,9 @@ namespace SnittListan.Test
 					Email = "email",
 				});
 
+			// normally done by infrastructure (special action filter)
+			Session.SaveChanges();
+
 			// let indexing do its job
 			WaitForNonStaleResults<User>();
 

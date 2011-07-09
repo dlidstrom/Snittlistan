@@ -31,6 +31,9 @@ namespace SnittListan.Test
 			using (DomainEvent.Disable())
 				controller1.Register(model);
 
+			// normally done by infrastructure (special action filter)
+			Session.SaveChanges();
+
 			// let indexing do its job
 			WaitForNonStaleResults<User>();
 

@@ -113,7 +113,6 @@ namespace SnittListan.Controllers
 			var newUser = new User(model.FirstName, model.LastName, model.Email, model.Password);
 			newUser.Initialize();
 			Session.Store(newUser);
-			Session.SaveChanges();
 
 			return this.RedirectToAction(c => c.RegisterSuccess());
 		}
@@ -186,8 +185,6 @@ namespace SnittListan.Controllers
 				return this.RedirectToAction(c => c.LogOn());
 
 			user.Activate();
-
-			Session.SaveChanges();
 
 			return this.RedirectToAction(c => c.VerifySuccess());
 		}
