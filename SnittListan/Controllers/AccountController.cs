@@ -188,6 +188,8 @@ namespace SnittListan.Controllers
 			if (user.IsActive)
 				return this.RedirectToAction(c => c.LogOn());
 
+			user.Activate();
+
 			return this.RedirectToAction(c => c.VerifySuccess());
 		}
 
