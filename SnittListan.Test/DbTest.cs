@@ -34,6 +34,11 @@ namespace SnittListan.Test
 			Session.Dispose();
 		}
 
+		public void WaitForNonStaleResultsAsOfLastWrite<T>() where T : class
+		{
+			Session.Query<T>().Customize(x => x.WaitForNonStaleResultsAsOfLastWrite());
+		}
+
 		public UrlHelper CreateUrlHelper()
 		{
 			var context = Mock.Of<HttpContextBase>();
