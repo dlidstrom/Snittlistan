@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
-using System.Web.Mvc;
 using Moq;
-using SnittListan.Helpers;
 using MvcContrib.TestHelper;
 using SnittListan.Controllers;
+using SnittListan.Helpers;
 using SnittListan.Models;
 using SnittListan.Services;
 using SnittListan.ViewModels;
@@ -23,7 +22,7 @@ namespace SnittListan.Test
 				Email = "f@d.com",
 				NewPassword = "somepasswd",
 				ConfirmPassword = "somepasswd"
-			}).AssertResultIs<HttpNotFoundResult>();
+			}).AssertViewRendered().ForView(string.Empty);
 		}
 
 		[Fact]
