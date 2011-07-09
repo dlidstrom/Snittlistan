@@ -41,12 +41,12 @@ namespace SnittListan.Events
 
 		public static void Reset()
 		{
-			RaiseAction = e => { };
+			RaiseAction = null;
 		}
 
 		public static DomainEventReset Disable()
 		{
-			Reset();
+            RaiseAction = e => { };
 
 			return new DomainEventReset();
 		}
