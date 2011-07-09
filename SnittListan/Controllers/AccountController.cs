@@ -11,17 +11,29 @@ using SnittListan.ViewModels;
 
 namespace SnittListan.Controllers
 {
+	/// <summary>
+	/// Handles everything related to accounts: creating and validating
+	/// new users, logging in and logging out.
+	/// </summary>
 	public class AccountController : Controller
 	{
 		private readonly IFormsAuthenticationService authenticationServce;
 
+		/// <summary>
+		/// Initializes a new instance of the AccountController class.
+		/// </summary>
+		/// <param name="session">Document session.</param>
+		/// <param name="authenticationServce">Authentication service.</param>
 		public AccountController(IDocumentSession session, IFormsAuthenticationService authenticationServce)
 		{
 			this.Session = session;
 			this.authenticationServce = authenticationServce;
 		}
 
-		public new IDocumentSession Session { get; set; }
+		/// <summary>
+		/// Gets or sets the document session.
+		/// </summary>
+		public new IDocumentSession Session { get; private set; }
 
 		/// <summary>
 		/// GET: /Account/LogOn
