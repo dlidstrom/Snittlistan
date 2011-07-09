@@ -1,6 +1,12 @@
-﻿using SnittListan.Events;
-using SnittListan.Handlers;
+﻿using System.IO;
+using System.Web.Mvc;
+using System.Web.Routing;
+using SnittListan.Controllers;
+using SnittListan.Events;
+using SnittListan.Infrastructure;
+using SnittListan.Models;
 using SnittListan.Services;
+using SnittListan.ViewModels;
 
 namespace SnittListan.Handlers
 {
@@ -17,11 +23,29 @@ namespace SnittListan.Handlers
 		{
 			string recipient = @event.User.Email;
 			string subject = "Välkommen till SnittListan!";
-			string body = "Du får det här brevet för att du har försökt registrera dig på Snittlistan.se."
-				+ "\n"
-				+ string.Format("Klicka här för att aktivera ditt konto: http://www.snittlistan.se/account/verify?activationKey={0}", @event.User.ActivationKey);
+
+			string body = RenderBody(new RegistrationMailViewModel { ActivationKey = @event.User.ActivationKey });
 
 			emailService.SendMail(recipient, subject, body);
+		}
+
+		private static string RenderBody(object viewModel)
+		{
+			var routeData = new RouteData();
+			routeData.Values.Add("controller", "MailTemplates");
+			var controllerContext = new ControllerContext(new MailHttpContext(), routeData, new MailController());
+			var viewEngineResult = ViewEngines.Engines.FindView(controllerContext, "Registration", "_Layout");
+			var stringWriter = new StringWriter();
+			viewEngineResult.View.Render(
+				new ViewContext(
+					controllerContext,
+					viewEngineResult.View,
+					new ViewDataDictionary(viewModel),
+					new TempDataDictionary(),
+					stringWriter),
+				stringWriter);
+
+			return stringWriter.GetStringBuilder().ToString();
 		}
 	}
 }

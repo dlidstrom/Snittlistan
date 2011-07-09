@@ -1,0 +1,7 @@
+﻿@model RegistrationMailViewModel
+<p>
+    Du får det här brevet för att du har försökt registrera dig på Snittlistan.se.</p>
+<p>
+    Klicka här för att aktivera ditt konto: <a href="@Url.Action("Verify", "Account", new { activationKey = Model.ActivationKey }, Request.Url.Scheme)">
+        Aktivera mig</a>
+</p>

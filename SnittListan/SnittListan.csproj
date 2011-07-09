@@ -144,6 +144,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MailController.cs" />
     <Compile Include="Events\DomainEvent.cs" />
     <Compile Include="Events\DomainEventReset.cs" />
     <Compile Include="Events\IDomainEvent.cs" />
@@ -152,6 +153,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Handlers\IHandle.cs" />
+    <Compile Include="Infrastructure\MailHttpContext.cs" />
+    <Compile Include="Infrastructure\MailHttpResponse.cs" />
     <Compile Include="Handlers\SendRegistrationEmailHandler.cs" />
     <Compile Include="Helpers\Attributes\ElmahHandleErrorAttribute.cs" />
     <Compile Include="Helpers\DocumentSessionExtensions.cs" />
@@ -291,6 +294,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Account\VerifySuccess.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\MailTemplates\Registration.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\MailTemplates\_Layout.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
