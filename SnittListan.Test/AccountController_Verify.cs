@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using Moq;
 using MvcContrib.TestHelper;
 using SnittListan.Controllers;
+using SnittListan.Helpers;
 using SnittListan.Models;
 using SnittListan.Services;
 using Xunit;
@@ -29,6 +31,9 @@ namespace SnittListan.Test
 			VerifyActivateForUser(user)
 				.AssertActionRedirect()
 				.ToAction("VerifySuccess");
+			var storedUser = Session.FindUserByEmail("e@d.com").SingleOrDefault();
+			storedUser.ShouldNotBeNull("Failed to find user");
+			storedUser.IsActive.ShouldBe(true);
 		}
 
 		[Fact]
