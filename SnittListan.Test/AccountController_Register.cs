@@ -1,8 +1,10 @@
 ﻿using System;
 using Moq;
+using System.Linq;
 using MvcContrib.TestHelper;
 using SnittListan.Controllers;
 using SnittListan.Events;
+using SnittListan.Helpers;
 using SnittListan.Models;
 using SnittListan.Services;
 using SnittListan.ViewModels;
@@ -43,7 +45,7 @@ namespace SnittListan.Test
 					Email = "email",
 				});
 
-				var user = Session.Load<User>(1);
+				var user = Session.FindUserByEmail("email").SingleOrDefault();
 				user.ShouldNotBeNull("Should find it");
 				user.FirstName.ShouldBe("first name");
 				user.LastName.ShouldBe("last name");
