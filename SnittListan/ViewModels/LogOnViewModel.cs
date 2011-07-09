@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SnittListan.Models
+namespace SnittListan.ViewModels
 {
-	public class LogOnModel
+	public class LogOnViewModel
 	{
 		[Required]
 		[Display(Name = "E-postadress")]
