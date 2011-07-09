@@ -5,6 +5,7 @@ using SnittListan.Controllers;
 using SnittListan.Events;
 using SnittListan.Models;
 using SnittListan.Services;
+using SnittListan.ViewModels;
 using Xunit;
 
 namespace SnittListan.Test
@@ -18,7 +19,7 @@ namespace SnittListan.Test
 			using (DomainEvent.TestWith(e => ev = (NewUserCreatedEvent)e))
 			{
 				var controller = new AccountController(Session, Mock.Of<IFormsAuthenticationService>());
-				controller.Register(new RegisterModel
+				controller.Register(new RegisterViewModel
 				{
 					FirstName = "first name",
 					LastName = "last name",
@@ -35,7 +36,7 @@ namespace SnittListan.Test
 			using (DomainEvent.Disable())
 			{
 				var controller = new AccountController(Session, Mock.Of<IFormsAuthenticationService>());
-				controller.Register(new RegisterModel
+				controller.Register(new RegisterViewModel
 				{
 					FirstName = "first name",
 					LastName = "last name",
@@ -63,7 +64,7 @@ namespace SnittListan.Test
 					.Setup(s => s.SetAuthCookie(It.IsAny<string>(), It.IsAny<bool>()))
 					.Throws(new Exception("Register should not set authorization cookie"));
 				var controller = new AccountController(Session, authService);
-				var result = controller.Register(new RegisterModel
+				var result = controller.Register(new RegisterViewModel
 				{
 					FirstName = "f",
 					LastName = "l",
@@ -78,7 +79,7 @@ namespace SnittListan.Test
 			using (DomainEvent.Disable())
 			{
 				var controller = new AccountController(Session, Mock.Of<IFormsAuthenticationService>());
-				var result = controller.Register(new RegisterModel
+				var result = controller.Register(new RegisterViewModel
 				{
 					FirstName = "f",
 					LastName = "l",

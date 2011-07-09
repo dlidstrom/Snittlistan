@@ -39,7 +39,7 @@ namespace SnittListan.Controllers
 		/// <param name="returnUrl"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult LogOn(LogOnModel model, string returnUrl)
+		public ActionResult LogOn(LogOnViewModel model, string returnUrl)
 		{
 			// find the user in question
 			var user = Session.FindUserByEmail(model.Email)
@@ -100,7 +100,7 @@ namespace SnittListan.Controllers
 		/// <param name="model"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult Register(RegisterModel model)
+		public ActionResult Register(RegisterViewModel model)
 		{
 			// attempt to register the user
 			var user = Session.FindUserByEmail(model.Email)

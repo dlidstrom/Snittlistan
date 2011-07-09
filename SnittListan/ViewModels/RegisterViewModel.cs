@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
-namespace SnittListan.Models
+namespace SnittListan.ViewModels
 {
-	public class RegisterModel
+	public class RegisterViewModel
 	{
 		[Required(ErrorMessage = "Ange ditt förnamn")]
 		[Display(Name = "Förnamn")]

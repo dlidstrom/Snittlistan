@@ -7,6 +7,7 @@ using MvcContrib.TestHelper;
 using SnittListan.Controllers;
 using SnittListan.Models;
 using SnittListan.Services;
+using SnittListan.ViewModels;
 using Xunit;
 
 namespace SnittListan.Test
@@ -23,7 +24,7 @@ namespace SnittListan.Test
 				.Callback(() => cookieSet = true);
 
 			var controller = new AccountController(Session, service);
-			var result = controller.LogOn(new LogOnModel { Email = "unknown@d.com", Password = "some pwd" }, string.Empty);
+			var result = controller.LogOn(new LogOnViewModel { Email = "unknown@d.com", Password = "some pwd" }, string.Empty);
 
 			result.AssertViewRendered().ForView(string.Empty);
 			cookieSet.ShouldBe(false);
@@ -36,7 +37,7 @@ namespace SnittListan.Test
 			Action cookieSetAction = () => cookieSet = true;
 			var controller = SetupPasswordTest(cookieSetAction);
 
-			var result = controller.LogOn(new LogOnModel { Email = "e@d.com", Password = "some pwd" }, string.Empty);
+			var result = controller.LogOn(new LogOnViewModel { Email = "e@d.com", Password = "some pwd" }, string.Empty);
 			controller.ModelState.ContainsKey("Email").ShouldBe(false);
 			controller.ModelState.ContainsKey("Password").ShouldBe(false);
 			result.AssertActionRedirect().ToController("Home").ToAction("Index");
@@ -58,7 +59,7 @@ namespace SnittListan.Test
 				.Callback(() => loggedOn = true);
 			var controller = new AccountController(Session, service);
 			controller.Url = CreateUrlHelper();
-			var result = controller.LogOn(new LogOnModel { Email = "e@d.com", Password = "pwd" }, string.Empty);
+			var result = controller.LogOn(new LogOnViewModel { Email = "e@d.com", Password = "pwd" }, string.Empty);
 			controller.ModelState.Keys.Contains("Inactive").ShouldBe(true);
 			result.AssertViewRendered().ForView(string.Empty);
 			loggedOn.ShouldBe(false);
@@ -71,7 +72,7 @@ namespace SnittListan.Test
 			Action cookieSetAction = () => cookieSet = true;
 			var controller = SetupPasswordTest(cookieSetAction);
 
-			var result = controller.LogOn(new LogOnModel { Email = "e@d.com", Password = "some other pwd" }, string.Empty);
+			var result = controller.LogOn(new LogOnViewModel { Email = "e@d.com", Password = "some other pwd" }, string.Empty);
 
 			controller.ModelState.ContainsKey("Email").ShouldBe(false);
 			controller.ModelState.ContainsKey("Password").ShouldBe(true);

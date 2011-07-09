@@ -165,8 +165,9 @@
     <Compile Include="IoC\ControllerFactoryInstaller.cs" />
     <Compile Include="Installers\ControllerInstaller.cs" />
     <Compile Include="IoC\WindsorControllerFactory.cs" />
-    <Compile Include="Models\LogOnModel.cs" />
-    <Compile Include="Models\RegisterModel.cs" />
+    <Compile Include="ViewModels\LogOnViewModel.cs" />
+    <Compile Include="ViewModels\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\RegistrationMailViewModel.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteConfigurator.cs" />
