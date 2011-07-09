@@ -64,7 +64,8 @@ namespace SnittListan.Services
 			{
 				Body = body,
 				Subject = subject,
-				From = this.from
+				From = this.from,
+				IsBodyHtml = true
 			};
 			mailMessage.To.Add(new MailAddress(recipient));
 
