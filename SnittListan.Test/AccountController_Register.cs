@@ -35,9 +35,8 @@ namespace SnittListan.Test
 		[Fact]
 		public void ShouldCreateInitializedUser()
 		{
+			var controller = new AccountController(Session, Mock.Of<IFormsAuthenticationService>());
 			using (DomainEvent.Disable())
-			{
-				var controller = new AccountController(Session, Mock.Of<IFormsAuthenticationService>());
 				controller.Register(new RegisterViewModel
 				{
 					FirstName = "first name",
@@ -45,13 +44,12 @@ namespace SnittListan.Test
 					Email = "email",
 				});
 
-				var user = Session.FindUserByEmail("email").SingleOrDefault();
-				user.ShouldNotBeNull("Should find it");
-				user.FirstName.ShouldBe("first name");
-				user.LastName.ShouldBe("last name");
-				user.Email.ShouldBe("email");
-				user.IsActive.ShouldBe(false);
-			}
+			var user = Session.FindUserByEmail("email").SingleOrDefault();
+			user.ShouldNotBeNull("Should find it");
+			user.FirstName.ShouldBe("first name");
+			user.LastName.ShouldBe("last name");
+			user.Email.ShouldBe("email");
+			user.IsActive.ShouldBe(false);
 		}
 
 		[Fact]
