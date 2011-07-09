@@ -29,7 +29,9 @@ namespace SnittListan.Installers
 			var store = new EmbeddableDocumentStore
 			{
 				DataDirectory = AppDomain.CurrentDomain.GetData("DataDirectory").ToString(),
+#if DEBUG
 				UseEmbeddedHttpServer = true
+#endif
 			}.Initialize();
 
 			store.Conventions.IdentityPartsSeparator = "-";
