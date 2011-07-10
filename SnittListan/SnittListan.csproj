@@ -277,7 +277,6 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\modernizr-2.0.6-development-only.js" />
     <Content Include="Scripts\stacktrace.js" />
-    <Content Include="Scripts\stacktrace.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
