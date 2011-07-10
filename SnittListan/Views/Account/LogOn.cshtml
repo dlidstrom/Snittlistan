@@ -17,30 +17,32 @@
 @Html.ValidationSummary(true, "Inloggningen gick inte att genomföra. Försök gärna igen.")
 
 @using (Html.BeginForm()) {
-    <div>
+    <div class="logon-form">
         <fieldset>
             <legend>Kontoinformation</legend>
 
-            <div class="editor-label">
-                @Html.LabelFor(m => m.Email)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(m => m.Email)
-                @Html.ValidationMessageFor(m => m.Email)
-            </div>
-
-            <div class="editor-label">
-                @Html.LabelFor(m => m.Password)
-            </div>
-            <div class="editor-field">
-                @Html.PasswordFor(m => m.Password)
-                @Html.ValidationMessageFor(m => m.Password)
-            </div>
-
-            <div class="editor-label">
-                @Html.CheckBoxFor(m => m.RememberMe)
-                @Html.LabelFor(m => m.RememberMe)
-            </div>
+            <table>
+                <tr>
+                    <td class="editor-label">@Html.LabelFor(m => m.Email):</td>
+                    <td class="editor-field">
+                        @Html.TextBoxFor(m => m.Email)
+                        @Html.ValidationMessageFor(m => m.Email)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="editor-label">@Html.LabelFor(m => m.Password):</td>
+                    <td class="editor-field">
+                        @Html.PasswordFor(m => m.Password)
+                        @Html.ValidationMessageFor(m => m.Password)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="editor-label">
+                        @Html.CheckBoxFor(m => m.RememberMe)
+                        @Html.LabelFor(m => m.RememberMe)
+                    </td>
+                </tr>
+            </table>
 
             <p>
                 <input type="submit" value="Logga in" />

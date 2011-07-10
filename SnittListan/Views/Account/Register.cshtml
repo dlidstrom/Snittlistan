@@ -14,44 +14,46 @@
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true, "Kontot gick inte att skapa. Försök gärna igen.")
-    <div>
+    <div class="register-form">
         <fieldset>
             <legend>Användarinformation</legend>
-            <div class="editor-label">
-                @Html.LabelFor(m => m.FirstName)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(m => m.FirstName)
-                @Html.ValidationMessageFor(m => m.FirstName)
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(m => m.LastName)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(m => m.LastName)
-                @Html.ValidationMessageFor(m => m.LastName)
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(m => m.Email)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(m => m.Email)
-                @Html.ValidationMessageFor(m => m.Email)
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(m => m.ConfirmEmail)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(m => m.ConfirmEmail)
-                @Html.ValidationMessageFor(m => m.ConfirmEmail)
-            </div>
-            <div class="editor-label">
-                @Html.LabelFor(m => m.Password)
-            </div>
-            <div class="editor-field">
-                @Html.PasswordFor(m => m.Password)
-                @Html.ValidationMessageFor(m => m.Password)
-            </div>
+            <table>
+                <tr>
+                    <td class="editor-label">@Html.LabelFor(m => m.FirstName):</td>
+                    <td class="editor-field">
+                        @Html.TextBoxFor(m => m.FirstName)
+                        @Html.ValidationMessageFor(m => m.FirstName)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="editor-label">@Html.LabelFor(m => m.LastName):</td>
+                    <td class="editor-field">
+                        @Html.TextBoxFor(m => m.LastName)
+                        @Html.ValidationMessageFor(m => m.LastName)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="editor-label">@Html.LabelFor(m => m.Email):</td>
+                    <td class="editor-field">
+                        @Html.TextBoxFor(m => m.Email)
+                        @Html.ValidationMessageFor(m => m.Email)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="editor-label">@Html.LabelFor(m => m.ConfirmEmail):</td>
+                    <td class="editor-field">
+                        @Html.TextBoxFor(m => m.ConfirmEmail)
+                        @Html.ValidationMessageFor(m => m.ConfirmEmail)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="editor-label">@Html.LabelFor(m => m.Password):</td>
+                    <td class="editor-field">
+                        @Html.PasswordFor(m => m.Password)
+                        @Html.ValidationMessageFor(m => m.Password)
+                    </td>
+                </tr>
+            </table>
             <p>
                 <input type="submit" value="Registrera" />
             </p>

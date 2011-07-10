@@ -324,3 +324,21 @@ div#title {
 .tri-state {
     width: 6em;
 }
+
+.register-form table {
+	border: 0;
+}
+
+.register-form td {
+	border: 0;
+}
+
+.logon-form table 
+{
+	border: 0;
+}
+
+.logon-form td 
+{
+	border: 0;
+}
