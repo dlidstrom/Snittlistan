@@ -28,7 +28,7 @@ namespace SnittListan.Test
 			Session.Store(user);
 			Session.SaveChanges();
 
-			VerifyActivateForUser(user)
+			VerifyActivationKeyForUser(user)
 				.AssertActionRedirect()
 				.ToAction("VerifySuccess");
 			var storedUser = Session.FindUserByEmail("e@d.com").SingleOrDefault();
@@ -44,12 +44,12 @@ namespace SnittListan.Test
 			Session.Store(user);
 			Session.SaveChanges();
 
-			VerifyActivateForUser(user)
+			VerifyActivationKeyForUser(user)
 				.AssertActionRedirect()
 				.ToAction("LogOn");
 		}
 
-		private ActionResult VerifyActivateForUser(User user)
+		private ActionResult VerifyActivationKeyForUser(User user)
 		{
 			bool loggedSomebodyOn = false;
 			var service = Mock.Of<IAuthenticationService>();
