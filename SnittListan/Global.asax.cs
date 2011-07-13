@@ -31,6 +31,7 @@ namespace SnittListan
 
 		protected void Application_Start()
 		{
+			logger.Info("Application Starting");
 			AreaRegistration.RegisterAllAreas();
 
 			RegisterGlobalFilters(GlobalFilters.Filters);
@@ -47,12 +48,12 @@ namespace SnittListan
 
 		protected void Application_End()
 		{
+			logger.Info("Application Ending");
 			container.Dispose();
 		}
 
 		private void InitializeContainer()
 		{
-			logger.Info("Initializing container");
 			if (container == null)
 			{
 				container = new WindsorContainer()
