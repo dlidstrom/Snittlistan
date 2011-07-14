@@ -281,6 +281,7 @@
     <Content Include="Content\js\jquery.validate.unobtrusive.min.js" />
     <Content Include="Content\js\modernizr-2.0.6-development-only.js" />
     <Content Include="Content\js\stacktrace.js" />
+    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Raven.Studio.xap" />
     <Content Include="Web.config">

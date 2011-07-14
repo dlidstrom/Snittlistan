@@ -17,3 +17,7 @@
 		})();
 	</script>
 }
+@helper Favicon(UrlHelper url)
+{
+    <link rel="shortcut icon" type="image/x-icon" href="@url.Content("~/favicon.ico")" />
+}

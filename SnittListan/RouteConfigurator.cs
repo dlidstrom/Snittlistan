@@ -16,6 +16,10 @@ namespace SnittListan
 		public void Configure()
 		{
 			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+			routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
+
+			// robots.txt
+			routes.IgnoreRoute("{file}.txt");
 			routes.IgnoreRoute("admin/elmah.axd/{*pathInfo}");
 
 			ConfigureAccount();
