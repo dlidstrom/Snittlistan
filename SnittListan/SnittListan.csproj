@@ -198,6 +198,7 @@
     <Compile Include="IoC\ControllerFactoryInstaller.cs" />
     <Compile Include="Installers\ControllerInstaller.cs" />
     <Compile Include="IoC\WindsorControllerFactory.cs" />
+    <Content Include="robots.txt" />
     <Compile Include="ViewModels\LogOnViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\RegistrationMailViewModel.cs" />
