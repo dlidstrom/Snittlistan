@@ -35,6 +35,9 @@
     <Reference Include="AsyncCtpLibrary, Version=1.0.4107.18181, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB-Embedded.1.0.0.397\lib\net40\AsyncCtpLibrary.dll</HintPath>
     </Reference>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.1.1.0.118\lib\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.Core">
       <HintPath>..\packages\Castle.Core.2.5.2\lib\NET35\Castle.Core.dll</HintPath>
     </Reference>
@@ -124,6 +127,7 @@
     <Compile Include="AccountController_Register.cs" />
     <Compile Include="AccountController_Scenario.cs" />
     <Compile Include="AccountController_Verify.cs" />
+    <Compile Include="AutoMapperConfigurationTest.cs" />
     <Compile Include="ControllerFactoryTest.cs" />
     <Compile Include="ControllersInstallerTest.cs" />
     <Compile Include="DbTest.cs" />
