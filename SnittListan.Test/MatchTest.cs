@@ -41,7 +41,7 @@ namespace SnittListan.Test
 			match.LaneScoreForTeam(2).ShouldBe(2);
 			match.LaneScoreForTeam(3).ShouldBe(1);
 			match.LaneScoreForTeam(4).ShouldBe(1);
-			match.OppTeamLaneScore.ShouldBe(14);
+			match.OppTeamLaneScore.ShouldBe(13);
 		}
 
 		[Fact]
