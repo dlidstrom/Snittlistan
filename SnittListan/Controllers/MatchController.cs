@@ -72,7 +72,7 @@ namespace SnittListan.Controllers
 		/// <returns></returns>
 		public ActionResult Edit(int id)
 		{
-			return View(repo.Query().Where(m => m.Id == id).Single());
+			return View(repo.Query().Where(m => m.Id == id).Single().MapTo<MatchViewModel>());
 		}
 
 		/// <summary>
