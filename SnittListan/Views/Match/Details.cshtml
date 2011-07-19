@@ -1,25 +1,24 @@
 ﻿@model MatchViewModel
-
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detaljer";
 }
 
-<h2>Details</h2>
+<h2>Detaljer</h2>
 
 <fieldset>
     <legend>Match</legend>
-
-    <div class="display-label">Place</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Place)
-    </div>
-
-    <div class="display-label">Date</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Date)
-    </div>
+    <div class="display-label">Datum</div>
+    <div class="display-field">@Html.DisplayFor(model => model.Date)</div>
+    <div class="display-label">Match</div>
+    <div class="display-field">@Html.DisplayFor(model => model.Teams)</div>
+    <div class="display-label">Resultat</div>
+    <div class="display-field">@Html.DisplayFor(model => model.Results)</div>
+    <div class="display-label">Plats</div>
+    <div class="display-field">@Html.DisplayFor(model => model.Place)</div>
+    <div class="display-label">BITS</div>
+    <div class="display-field"><a href="http://bits.swebowl.se/MatchFact.aspx?MatchId=@Model.Id">Matchfakta</a></div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Redigera", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Tillbaka", "Index")
 </p>
