@@ -42,6 +42,9 @@ namespace SnittListan
 			// add model binders
 			ModelBinders.Binders.Add(typeof(Guid), new GuidBinder());
 
+			// configure AutoMapper
+			AutoMapperConfiguration.Configure();
+
 			// initialize container and controller factory
 			InitializeContainer();
 		}
