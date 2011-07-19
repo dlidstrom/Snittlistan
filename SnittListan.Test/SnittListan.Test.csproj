@@ -128,6 +128,7 @@
     <Compile Include="AccountController_Scenario.cs" />
     <Compile Include="AccountController_Verify.cs" />
     <Compile Include="AutoMapperConfigurationTest.cs" />
+    <Compile Include="AutoMapperInstallerTest.cs" />
     <Compile Include="ControllerFactoryTest.cs" />
     <Compile Include="ControllersInstallerTest.cs" />
     <Compile Include="DbTest.cs" />
