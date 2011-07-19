@@ -197,7 +197,9 @@
     <Compile Include="Helpers\JavaScriptException.cs" />
     <Compile Include="Helpers\LowercaseRoute.cs" />
     <Compile Include="Helpers\RouteCollectionExtension.cs" />
+    <Compile Include="Infrastructure\AutoMapperProfiles\MatchProfile.cs" />
     <Compile Include="Infrastructure\RavenActionFilterAttribute.cs" />
+    <Compile Include="Installers\AutoMapperInstaller.cs" />
     <Compile Include="Installers\HandlersInstaller.cs" />
     <Compile Include="Installers\RavenInstaller.cs" />
     <Compile Include="Installers\ServicesInstaller.cs" />

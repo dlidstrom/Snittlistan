@@ -36,6 +36,9 @@ namespace SnittListan
 
 			RegisterGlobalFilters(GlobalFilters.Filters);
 
+			// initialize container and controller factory
+			InitializeContainer();
+
 			// register routes
 			new RouteConfigurator(RouteTable.Routes).Configure();
 
@@ -43,10 +46,7 @@ namespace SnittListan
 			ModelBinders.Binders.Add(typeof(Guid), new GuidBinder());
 
 			// configure AutoMapper
-			AutoMapperConfiguration.Configure();
-
-			// initialize container and controller factory
-			InitializeContainer();
+			AutoMapperConfiguration.Configure(container);
 		}
 
 		protected void Application_End()
