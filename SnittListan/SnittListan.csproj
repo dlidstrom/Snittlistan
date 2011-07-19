@@ -204,6 +204,10 @@
     <Compile Include="Installers\ControllerInstaller.cs" />
     <Compile Include="IoC\WindsorControllerFactory.cs" />
     <Content Include="robots.txt" />
+    <Compile Include="Models\Game.cs" />
+    <Compile Include="Models\Match.cs" />
+    <Compile Include="Models\Player.cs" />
+    <Compile Include="Models\Serie.cs" />
     <Compile Include="ViewModels\LogOnViewModel.cs" />
     <Compile Include="ViewModels\MatchViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
