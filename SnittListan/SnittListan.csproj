@@ -185,6 +185,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Handlers\IHandle.cs" />
+    <Compile Include="Infrastructure\AutoMapperConfiguration.cs" />
+    <Compile Include="Infrastructure\AutoMapperExtensions.cs" />
     <Compile Include="Infrastructure\MailHttpContext.cs" />
     <Compile Include="Infrastructure\MailHttpResponse.cs" />
     <Compile Include="Handlers\SendRegistrationEmailHandler.cs" />
@@ -203,6 +205,7 @@
     <Compile Include="IoC\WindsorControllerFactory.cs" />
     <Content Include="robots.txt" />
     <Compile Include="ViewModels\LogOnViewModel.cs" />
+    <Compile Include="ViewModels\MatchViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\RegistrationMailViewModel.cs" />
     <Compile Include="Models\User.cs" />
