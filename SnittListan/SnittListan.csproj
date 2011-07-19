@@ -178,6 +178,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MailController.cs" />
     <Compile Include="Controllers\MatchController.cs" />
+    <Compile Include="MatchRepository.cs" />
     <Compile Include="Events\DomainEvent.cs" />
     <Compile Include="Events\DomainEventReset.cs" />
     <Compile Include="Events\IDomainEvent.cs" />
