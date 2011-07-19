@@ -99,7 +99,7 @@ namespace SnittListan.Controllers
 		/// <returns></returns>
         public ActionResult Details(string id)
         {
-            return View(matches.Where(m => m.Id == id).Single());
+			return View(matches.Where(m => m.Id == id).Single().MapTo<MatchViewModel>());
         }
 
 		/// <summary>

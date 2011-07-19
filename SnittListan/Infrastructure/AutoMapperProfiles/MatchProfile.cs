@@ -8,7 +8,8 @@ namespace SnittListan.Infrastructure
 	{
 		protected override void Configure()
 		{
-			Mapper.CreateMap<Match, MatchViewModel>();
+			Mapper.CreateMap<Match, MatchViewModel>()
+				.ForMember(x => x.Date, o => o.MapFrom(y => y.Date.ToShortDateString()));
 		}
 	}
 }

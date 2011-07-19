@@ -14,5 +14,13 @@ namespace SnittListan.Infrastructure
 
 			return (List<TResult>)Mapper.Map(self, self.GetType(), typeof(List<TResult>));
 		}
+
+		public static TResult MapTo<TResult>(this object self)
+		{
+			if (self == null)
+				throw new ArgumentNullException("self");
+
+			return (TResult)Mapper.Map(self, self.GetType(), typeof(TResult));
+		}
 	}
 }
