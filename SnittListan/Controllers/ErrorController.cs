@@ -8,7 +8,7 @@ using SnittListan.Helpers;
 
 namespace SnittListan.Controllers
 {
-	public class ErrorController : Controller
+	public class ErrorController : AbstractController
 	{
 		public void LogJavaScriptError(string message)
 		{

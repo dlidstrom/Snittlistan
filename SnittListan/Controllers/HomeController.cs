@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace SnittListan.Controllers
 {
-	public class HomeController : Controller
+	public class HomeController : AbstractController
 	{
 		public ActionResult Index()
 		{

@@ -15,7 +15,7 @@ namespace SnittListan.Controllers
 	/// Handles everything related to accounts: creating and validating
 	/// new users, logging in and logging out.
 	/// </summary>
-	public class AccountController : Controller
+	public class AccountController : AbstractController
 	{
 		private readonly IAuthenticationService authenticationServce;
 
