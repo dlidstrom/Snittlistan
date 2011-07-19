@@ -9,7 +9,7 @@ using SnittListan.ViewModels;
 
 namespace SnittListan.Controllers
 {
-	public class MatchController : Controller
+	public class MatchController : AbstractController
 	{
 		private MatchRepository repo;
 

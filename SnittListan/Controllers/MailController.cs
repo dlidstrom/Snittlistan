@@ -2,7 +2,7 @@
 
 namespace SnittListan.Controllers
 {
-	public class MailController : Controller
+	public class MailController : AbstractController
 	{
 	}
 }
