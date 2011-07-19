@@ -19,7 +19,7 @@ namespace SnittListan
 				homeGame: false,
 				homeTeam: "Sollentuna Bwk",
 				oppTeam: "Fredrikshof IF",
-				oppTeamLaneScore: 14,
+				oppTeamLaneScore: 13,
 				series: new List<Serie>
 				{
 					new Serie
