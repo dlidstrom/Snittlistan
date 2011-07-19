@@ -16,6 +16,10 @@ namespace SnittListan
 				id: 3003231,
 				place: "Sollentuna Bowlinghall",
 				date: DateTime.ParseExact("2011-03-26", "yyyy-MM-dd", CultureInfo.InvariantCulture),
+				homeGame: false,
+				homeTeam: "Sollentuna Bwk",
+				oppTeam: "Fredrikshof IF",
+				oppTeamLaneScore: 14,
 				series: new List<Serie>
 				{
 					new Serie
