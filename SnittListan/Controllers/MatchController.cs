@@ -81,7 +81,7 @@ namespace SnittListan.Controllers
 		/// <param name="match"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult Edit(Match match)
+		public ActionResult Edit(MatchViewModel match)
 		{
 			try
 			{
