@@ -14,6 +14,9 @@ namespace SnittListan.Controllers
 		{
 			base.OnActionExecuting(filterContext);
 
+			if (HttpContext.Request.UserLanguages == null)
+				return;
+
 			// try to set culture
 			foreach (var lang in HttpContext.Request.UserLanguages)
 			{
