@@ -16,7 +16,7 @@ namespace SnittListan.Models
 			string homeTeam,
 			string oppTeam,
 			int oppTeamLaneScore,
-			List<Serie> series)
+			List<Game> games)
 		{
 			Id = id;
 			Place = place;
@@ -25,7 +25,7 @@ namespace SnittListan.Models
 			HomeTeam = homeTeam;
 			OppTeam = oppTeam;
 			OppTeamLaneScore = oppTeamLaneScore;
-			Series = series;
+			Games = games;
 		}
 
 		public int Id { get; private set; }
@@ -35,40 +35,40 @@ namespace SnittListan.Models
 		public string HomeTeam { get; private set; }
 		public string OppTeam { get; private set; }
 		public int OppTeamLaneScore { get; private set; }
-		public List<Serie> Series { get; private set; }
+		public List<Game> Games { get; private set; }
 
 		[JsonIgnore]
 		public int NumberOfSeries
 		{
 			get
 			{
-				return Series.Count;
+				return Games.Max(g => g.SerieNumber);
 			}
 		}
 
 		public int PinScoreForTeam()
 		{
-			return Series.Sum(s => s.Games.Sum(g => g.PinScore));
+			return Games.Sum(g => g.PinScore);
 		}
 
 		public int PinscoreForTeam(int serie)
 		{
-			return Series[serie - 1].Games.Sum(g => g.PinScore);
+			return Games.Where(g => g.SerieNumber == serie).Sum(g => g.PinScore);
 		}
 
 		public int PinscoreForPlayer(string player)
 		{
-			return Series.Sum(s => s.Games.Where(g => g.Player == player).Sum(g => g.PinScore));
+			return Games.Where(g => g.Player == player).Sum(g => g.PinScore);
 		}
 
 		public int LaneScoreForTeam()
 		{
-			return Series.Sum(s => s.Games.Sum(g => g.LaneScore)) / 2;
+			return Games.Sum(g => g.LaneScore) / 2;
 		}
 
 		public int LaneScoreForTeam(int serie)
 		{
-			return Series[serie - 1].Games.Sum(g => g.LaneScore) / 2;
+			return Games.Where(g => g.SerieNumber == serie).Sum(g => g.LaneScore) / 2;
 		}
 
 		public string FormattedLaneScore()
