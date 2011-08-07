@@ -7,14 +7,16 @@ namespace SnittListan.Models
 {
 	public class Game
 	{
-		public Game(int table, string player, int pinScore, int laneScore)
+		public Game(int serieNumber, int table, string player, int pinScore, int laneScore)
 		{
+			SerieNumber = serieNumber;
 			Table = table;
 			Player = player;
 			PinScore = pinScore;
 			LaneScore = laneScore;
 		}
 
+		public int SerieNumber { get; private set; }
 		public int Table { get; private set; }
 		public string Player { get; private set; }
 		public int PinScore { get; private set; }
