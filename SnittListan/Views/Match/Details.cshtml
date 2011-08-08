@@ -4,7 +4,10 @@
 }
 
 <h2>Detaljer</h2>
-
+<p>
+    @Html.ActionLink("Redigera", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Tillbaka", "Index")
+</p>
 <fieldset>
     <legend>Match</legend>
     <div class="display-label">Datum</div>
@@ -17,8 +20,13 @@
     <div class="display-field">@Html.DisplayFor(model => model.Place)</div>
     <div class="display-label">BITS</div>
     <div class="display-field"><a href="http://bits.swebowl.se/MatchFact.aspx?MatchId=@Model.Id">Matchfakta</a></div>
+    <div class="games-viewmodel">
+        <table>
+            <tr><th>Namn</th><th>Serie</th><th>Banpoäng</th></tr>
+            @foreach (var game in Model.Games)
+            {
+                <tr><td>@game.Player</td><td>@game.PinScore</td><td>@game.LaneScore</td></tr>
+            }
+        </table>
+    </div>
 </fieldset>
-<p>
-    @Html.ActionLink("Redigera", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Tillbaka", "Index")
-</p>
