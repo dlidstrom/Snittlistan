@@ -333,12 +333,16 @@ div#title {
 	border: 0;
 }
 
-.logon-form table 
-{
+.logon-form table {
 	border: 0;
 }
 
-.logon-form td 
-{
+.logon-form td {
 	border: 0;
+}
+
+/* Styles for view models
+----------------------------------------------------------*/
+.games-viewmodel {
+	margin: 1em	 0 0 0;
 }
