@@ -19,6 +19,9 @@
     <div class="display-field"><a href="http://bits.swebowl.se/MatchFact.aspx?MatchId=@Model.Id">Matchfakta</a></div>
 </fieldset>
 <p>
-    @Html.ActionLink("Redigera", "Edit", new { id = Model.Id }) |
+@if (Request.IsAuthenticated)
+{
+    <text>@Html.ActionLink("Redigera", "Edit", new { id = Model.Id }) |</text>
+}
     @Html.ActionLink("Tillbaka", "Index")
 </p>
