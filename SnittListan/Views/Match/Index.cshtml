@@ -25,7 +25,10 @@
         <td>@item.Results</td>
         <td>@Html.DisplayFor(modelItem => item.Place)</td>
         <td>
-            @Html.ActionLink("Redigera", "Edit", new { id=item.Id }) |
+@if (Request.IsAuthenticated)
+{
+            <text>@Html.ActionLink("Redigera", "Edit", new { id=item.Id }) |</text>
+}
             @Html.ActionLink("Detaljer", "Details", new { id=item.Id })
             @* | @Html.ActionLink("Ta bort", "Delete", new { id=item.Id })*@
         </td>
