@@ -103,8 +103,6 @@ header h1, #header h1 {
     padding: 30px 30px 15px 30px;
     background-color: #fff;
     border-radius: 4px 0 0 0;
-    -webkit-border-radius: 4px 0 0 0;
-    -moz-border-radius: 4px 0 0 0;
 }
 
 footer, #footer {
@@ -116,8 +114,6 @@ footer, #footer {
     margin: 0 0 30px 0;
     font-size: .9em;
     border-radius: 0 0 4px 4px;
-    -webkit-border-radius: 0 0 4px 4px;
-    -moz-border-radius: 0 0 4px 4px;
 }
 
 /* TAB MENU   
@@ -151,8 +147,6 @@ ul#menu li a {
     background-color: #e8eef4;
     color: #034af3;
     border-radius: 4px 4px 0 0;
-    -webkit-border-radius: 4px 4px 0 0;
-    -moz-border-radius: 4px 4px 0 0;
 }
 
 ul#menu li a:hover {
@@ -192,20 +186,16 @@ input[type="text"],
 input[type="password"] {
     border: 1px solid #ccc;
     padding: 2px;
-    font-size: 1.2em;
-    color: #444;
     width: 200px;
 }
 
 select {
     border: 1px solid #ccc;
     padding: 2px;
-    font-size: 1.2em;
     color: #444;
 }
 
 input[type="submit"] {
-    font-size: 1.2em;
     padding: 5px;
 }
 
