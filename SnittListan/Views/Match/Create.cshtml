@@ -24,7 +24,7 @@
         this.laneScore = laneScore || 0;
 
         // behaviour
-        this.remove = function () { viewModel.games.remove(this); }
+        this.remove = function () { viewModel.removeGame(this); }
     }
 
     var viewModel = {
@@ -73,6 +73,11 @@
         // behaviour
         addGame: function () {
             this.games.push(new game());
+        },
+        removeGame: function (g) {
+            this.games.remove(g);
+            if (this.games().length == 0)
+                this.games.push(new game());
         }
     }
 
