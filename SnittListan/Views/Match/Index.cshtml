@@ -21,8 +21,8 @@
 @foreach (var item in Model) {
     <tr>
         <td>@Html.DisplayFor(modelItem => item.Date)</td>
-        <td>@item.Teams</td>
-        <td>@item.Results</td>
+        <td>@Html.DisplayFor(modelItem => item.HomeTeam) - @Html.DisplayFor(modelItem => item.OppTeam)</td>
+        <td>@Html.DisplayFor(modelItem => item.HomeTeamLaneScore)-@Html.DisplayFor(modelItem => item.OppTeamLaneScore)</td>
         <td>@Html.DisplayFor(modelItem => item.Place)</td>
         <td>
 @if (Request.IsAuthenticated)
