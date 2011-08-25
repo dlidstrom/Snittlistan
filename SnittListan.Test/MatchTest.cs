@@ -20,7 +20,7 @@ namespace SnittListan.Test
 		[Fact]
 		public void PinscoreForPlayer()
 		{
-			match.PinscoreForPlayer("P. Sjöberg").ShouldBe(787);
+			match.PinscoreForPlayer("Peter Sjöberg").ShouldBe(787);
 		}
 
 		[Fact]
