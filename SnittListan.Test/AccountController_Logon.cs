@@ -83,11 +83,7 @@ namespace SnittListan.Test
 		private AccountController SetupPasswordTest(Action cookieSetAction)
 		{
 			// create an active user
-			var user = new User("F", "L", "e@d.com", "some pwd");
-			user.Activate();
-			Session.Store(user);
-			Session.SaveChanges();
-			WaitForNonStaleResults<User>();
+			var user = CreateActivatedUser("F", "L", "e@d.com", "some pwd");
 
 			var service = Mock.Of<IAuthenticationService>();
 			Mock.Get(service)

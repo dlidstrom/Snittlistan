@@ -40,11 +40,7 @@ namespace SnittListan.Test
 		[Fact]
 		public void ActivatedUserRedirectsToLogOn()
 		{
-			var user = new User("F", "L", "e@d.com", "some pwd");
-			user.Activate();
-			Session.Store(user);
-			Session.SaveChanges();
-			WaitForNonStaleResults<User>();
+			var user = CreateActivatedUser("F", "L", "e@d.com", "some pwd");
 
 			VerifyActivationKeyForUser(user)
 				.AssertActionRedirect()
