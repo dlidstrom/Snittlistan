@@ -179,7 +179,7 @@ textarea {
 	min-height: 75px;
 }
 
-input[type="text"], input[type="password"], input[type="email"] {
+input[type="text"], input[type="password"], input[type="email"], input[type="date"] {
 	border: 1px solid #ccc;
 	padding: 2px;
 	width: 200px;
