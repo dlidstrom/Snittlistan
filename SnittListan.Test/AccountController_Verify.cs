@@ -27,6 +27,7 @@ namespace SnittListan.Test
 			var user = new User("F", "L", "e@d.com", "some pwd");
 			Session.Store(user);
 			Session.SaveChanges();
+			WaitForNonStaleResults<User>();
 
 			VerifyActivationKeyForUser(user)
 				.AssertActionRedirect()
@@ -43,6 +44,7 @@ namespace SnittListan.Test
 			user.Activate();
 			Session.Store(user);
 			Session.SaveChanges();
+			WaitForNonStaleResults<User>();
 
 			VerifyActivationKeyForUser(user)
 				.AssertActionRedirect()
