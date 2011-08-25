@@ -42,5 +42,19 @@ namespace SnittListan.Test
 			new RouteConfigurator(routes).Configure();
 			return new UrlHelper(new RequestContext(Mock.Get(context).Object, new RouteData()), routes);
 		}
+
+		public User CreateActivatedUser(string firstName, string lastName, string email, string password)
+		{
+			var user = new User(
+				firstName: firstName,
+				lastName: lastName,
+				email: email,
+				password: password);
+			user.Activate();
+			Session.Store(user);
+			Session.SaveChanges();
+			WaitForNonStaleResults<User>();
+			return user;
+		}
 	}
 }
