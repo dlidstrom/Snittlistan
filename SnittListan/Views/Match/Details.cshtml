@@ -13,16 +13,23 @@
 </p>
 <fieldset>
     <legend>Match</legend>
-    <div class="display-label">Datum</div>
-    <div class="display-field">@Html.DisplayFor(model => model.Date)</div>
-    <div class="display-label">Match</div>
-    <div class="display-field">@Html.DisplayFor(model => model.Teams)</div>
-    <div class="display-label">Resultat</div>
-    <div class="display-field">@Html.DisplayFor(model => model.Results)</div>
-    <div class="display-label">Plats</div>
-    <div class="display-field">@Html.DisplayFor(model => model.Place)</div>
-    <div class="display-label">BITS</div>
-    <div class="display-field"><a href="http://bits.swebowl.se/MatchFact.aspx?MatchId=@Model.Id">Matchfakta</a></div>
+    <table>
+        <tr>
+            <td>Datum</td><td>@Html.DisplayFor(model => model.Date)</td>
+        </tr>
+        <tr>
+            <td>Match</td><td>@Html.DisplayFor(model => model.HomeTeam) - @Html.DisplayFor(model => model.OppTeam)</td>
+        </tr>
+        <tr>
+            <td>Resultat</td><td>@Html.DisplayFor(model => model.HomeTeamLaneScore)-@Html.DisplayFor(model => model.OppTeamLaneScore)</td>
+        </tr>
+        <tr>
+            <td>Plats</td><td>@Html.DisplayFor(model => model.Place)</td>
+        </tr>
+        <tr>
+            <td>BITS</td><td><a href="http://bits.swebowl.se/MatchFact.aspx?MatchId=@Model.Id">Matchfakta</td>
+        </tr>
+    </table>
     <div class="games-viewmodel">
         <table>
             <tr><th>Namn</th><th>Serie</th><th>Banpoäng</th></tr>
