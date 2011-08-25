@@ -10,34 +10,136 @@
 {
     @Content.Script("jquery.validate.min.js", Url)
     @Content.Script("jquery.validate.unobtrusive.min.js", Url)
+    <script type="text/javascript" src="@Url.Content("http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js")"></script>
+    @Content.Script("knockout-1.2.1.js", Url)
+
+    @*
+     Minify this script when finished.
+     *@
+<script type="text/javascript">
+    var game = function (name, pinScore, laneScore) {
+        // state
+        this.name = name;
+        this.pinScore = pinScore || 0;
+        this.laneScore = laneScore || 0;
+
+        // behaviour
+        this.remove = function () { viewModel.games.remove(this); }
+    }
+
+    var viewModel = {
+        // state
+        place: ko.observable("Sollentuna Bowlinghall"),
+        date: ko.observable("2011-03-26"),
+        homeTeam: ko.observable("Sollentuna Bwk"),
+        homeTeamLaneScore: ko.observable(13),
+        oppTeam: ko.observable("Fredrikshof IF"),
+        oppTeamLaneScore: ko.observable(6),
+        games: ko.observableArray([
+            new game("Mikael Axelsson", 202, 1),
+            new game("Christer Liedholm", 218, 1),
+            new game("Kjell Persson", 172, 0),
+            new game("Peter Sjöberg", 220, 0),
+            new game("Kjell Jansson", 166, 0),
+            new game("Hans Norbeck", 194, 0),
+            new game("Lars Öberg", 222, 1),
+            new game("Torbjörn Jensen", 204, 1),
+            new game("Lars Öberg", 182, 1),
+            new game("Torbjörn Jensen", 211, 1),
+            new game("Kjell Jansson", 208, 1),
+            new game("Hans Norbeck", 227, 1),
+            new game("Kjell Persson", 194, 0),
+            new game("Peter Sjöberg", 195, 0),
+            new game("Mikael Axelsson", 206, 0),
+            new game("Christer Liedholm", 150, 0),
+            new game("Kjell Persson", 174, 0),
+            new game("Peter Sjöberg", 182, 0),
+            new game("Mikael Axelsson", 214, 1),
+            new game("Christer Liedholm", 176, 1),
+            new game("Lars Öberg", 168, 0),
+            new game("Torbjörn Jensen", 199, 0),
+            new game("Kjell Jansson", 180, 0),
+            new game("Hans Norbeck", 212, 0),
+            new game("Kjell Jansson", 189, 0),
+            new game("Hans Norbeck", 181, 0),
+            new game("Lars Öberg", 227, 0),
+            new game("Torbjörn Jensen", 180, 0),
+            new game("Mikael Axelsson", 223, 1),
+            new game("Christer Liedholm", 191, 1),
+            new game("Thomas Gurell", 159, 0),
+            new game("Peter Sjöberg", 190, 0)
+        ]),
+
+        // behaviour
+        addGame: function () {
+            this.games.push(new game());
+        }
+    }
+
+    // total team score
+    viewModel.teamScore = ko.dependentObservable(function () {
+        var total = 0;
+        for (var i = 0; i < this.games().length; i++)
+            total += this.games()[i].pinScore;
+        return total;
+    }, viewModel);
+
+    // total lane score
+    viewModel.laneScore = ko.dependentObservable(function () {
+        var total = 0;
+        for (var i = 0; i < this.games().length; i++)
+            total += this.games()[i].laneScore;
+        return total / 2;
+    }, viewModel);
+
+    ko.applyBindings(viewModel);
+</script>
 }
 
-@using (Html.BeginForm()) {
-    @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>Match</legend>
+<script type="text/x-jquery-tmpl" id="gameTemplate">
+    <tr>
+        <td><input type="text" required value="${name}" /></td>
+        <td><input type="number" required value="${pinScore}" /></td>
+        <td><input type="number" required value="${laneScore}" /></td>
+        <td><button data-bind="click: remove">Ta bort</button></td>
+    </tr>
+</script>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Place)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Place)
-            @Html.ValidationMessageFor(model => model.Place)
-        </div>
+<fieldset>
+    <legend>Match</legend>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Date)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Date)
-            @Html.ValidationMessageFor(model => model.Date)
-        </div>
+    <p>Plats: <input type="text" data-bind="value: place" /></p>
+    <p>Datum: <input type="date" data-bind="value: date" /></p>
+    <p>Hemmalag: <input type="text" data-bind="value: homeTeam" />
+       Banpoäng: <input type="number" data-bind="value: homeTeamLaneScore" />
+    </p>
+    <p>Bortalag: <input type="text" data-bind="value: oppTeam" />
+       Banpoäng: <input type="number" data-bind="value: oppTeamLaneScore" />
+    </p>
 
-        <p>
-            <input type="submit" value="Create" />
-        </p>
-    </fieldset>
-}
+    <h3>Serier</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Namn</th>
+                <th>Poäng</th>
+                <th>Banpoäng</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody data-bind="template: {name: 'gameTemplate', foreach: games}"></tbody>
+    </table>
+    <button data-bind="click: addGame">Lägg till serie</button>
+
+    <p>
+        Lagpoäng: <span data-bind="text: laneScore()"></span>, totalsumma: <span data-bind="text: teamScore()"></span>
+    </p>
+
+    <p>
+        <input type="submit" value="Create" />
+    </p>
+</fieldset>
 
 <div>
     @Html.ActionLink("Back to List", "Index")
