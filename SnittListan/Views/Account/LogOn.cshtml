@@ -26,7 +26,9 @@
                 <tr>
                     <td class="editor-label">@Html.LabelFor(m => m.Email):</td>
                     <td class="editor-field">
-                        @Html.TextBoxFor(m => m.Email, new { required = "required", placeholder = "Ange e-postadress" })
+                        @Html.TextBoxFor(m => m.Email, new { required = "required",
+                            placeholder = "Ange e-postadress",
+                            type = "email" })
                         @Html.ValidationMessageFor(m => m.Email)
                     </td>
                 </tr>
