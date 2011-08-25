@@ -203,6 +203,7 @@
     <Compile Include="IoC\ControllerFactoryInstaller.cs" />
     <Compile Include="Installers\ControllerInstaller.cs" />
     <Compile Include="IoC\WindsorControllerFactory.cs" />
+    <Content Include="Content\js\knockout-1.2.1.js" />
     <Content Include="robots.txt" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\Match.cs" />
