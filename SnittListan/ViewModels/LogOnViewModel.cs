@@ -4,13 +4,10 @@ namespace SnittListan.ViewModels
 {
 	public class LogOnViewModel
 	{
-		[Required]
-		[Display(Name = "E-postadress")]
+		[Required, DataType(DataType.EmailAddress), Display(Name = "E-postadress")]
 		public string Email { get; set; }
 
-		[Required]
-		[DataType(DataType.Password)]
-		[Display(Name = "Lösenord")]
+		[Required, DataType(DataType.Password), Display(Name = "Lösenord")]
 		public string Password { get; set; }
 
 		[Display(Name = "Kom ihåg mig?")]
