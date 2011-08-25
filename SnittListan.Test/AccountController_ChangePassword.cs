@@ -59,9 +59,9 @@ namespace SnittListan.Test
 		private AccountController CreateUserAndController(string email)
 		{
 			// add a user
-			var user = new User("F", "L", email, password: Guid.NewGuid().ToString());
-			Session.Store(user);
+			Session.Store(new User("F", "L", email, password: Guid.NewGuid().ToString()));
 			Session.SaveChanges();
+			WaitForNonStaleResults<User>();
 
 			return new AccountController(Session, Mock.Of<IAuthenticationService>());
 		}

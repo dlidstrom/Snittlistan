@@ -48,9 +48,9 @@ namespace SnittListan.Test
 		[Fact]
 		public void InactiveUserCannotLogon()
 		{
-			var user = new User(firstName: "f", lastName: "l", email: "e@d.com", password: "pwd");
-			Session.Store(user);
+			Session.Store(new User(firstName: "f", lastName: "l", email: "e@d.com", password: "pwd"));
 			Session.SaveChanges();
+			WaitForNonStaleResults<User>();
 
 			bool loggedOn = false;
 			var service = Mock.Of<IAuthenticationService>();
@@ -87,6 +87,7 @@ namespace SnittListan.Test
 			user.Activate();
 			Session.Store(user);
 			Session.SaveChanges();
+			WaitForNonStaleResults<User>();
 
 			var service = Mock.Of<IAuthenticationService>();
 			Mock.Get(service)
