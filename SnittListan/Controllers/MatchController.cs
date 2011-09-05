@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
+using Raven.Client;
 using SnittListan.Infrastructure;
 using SnittListan.Models;
 using SnittListan.ViewModels;
@@ -13,7 +11,8 @@ namespace SnittListan.Controllers
 	{
 		private MatchRepository repo;
 
-		public MatchController()
+		public MatchController(IDocumentSession session)
+			: base(session)
 		{
 			repo = new MatchRepository();
 		}
@@ -24,7 +23,7 @@ namespace SnittListan.Controllers
 		/// <returns></returns>
 		public ActionResult Index()
 		{
-			return View(repo.LoadAll(0, 25).MapTo<MatchViewModel>());
+			return View(Session.Query<Match>().MapTo<MatchViewModel>());
 		}
 
 		/// <summary>
@@ -34,7 +33,8 @@ namespace SnittListan.Controllers
 		/// <returns></returns>
 		public ActionResult Details(int id)
 		{
-			return View(repo.Query().Where(m => m.Id == id).Single().MapTo<MatchViewModel>());
+			var match = Session.Load<Match>(id).MapTo<MatchViewModel>();
+			return View(match);
 		}
 
 		/// <summary>
@@ -43,7 +43,7 @@ namespace SnittListan.Controllers
 		/// <returns></returns>
 		public ActionResult Create()
 		{
-			return View();
+			return View(new MatchInfoViewModel());
 		}
 
 		/// <summary>
@@ -52,17 +52,25 @@ namespace SnittListan.Controllers
 		/// <param name="match"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult Create(Match match)
+		public ActionResult Create(MatchInfoViewModel model)
 		{
-			try
-			{
-				// TODO: Add insert logic here
-				return RedirectToAction("Index");
-			}
-			catch
-			{
-				return View();
-			}
+			if (!ModelState.IsValid)
+				return View(model);
+
+			var match = new Match(
+				model.Place,
+				model.Date,
+				new Team(model.HomeTeam, model.HomeTeamScore),
+				new Team(model.AwayTeam, model.AwayTeamScore),
+				model.BitsMatchId);
+			Session.Store(match);
+
+			return RedirectToAction("Details", new { id = match.Id });
+		}
+
+		public ActionResult AddGame(int matchId)
+		{
+			return View(new GameViewModel { MatchId = matchId });
 		}
 
 		/// <summary>
@@ -72,7 +80,7 @@ namespace SnittListan.Controllers
 		/// <returns></returns>
 		public ActionResult Edit(int id)
 		{
-			return View(repo.Query().Where(m => m.Id == id).Single().MapTo<MatchViewModel>());
+			return View(Session.Load<Match>(id).MapTo<MatchViewModel>());
 		}
 
 		/// <summary>
@@ -81,17 +89,21 @@ namespace SnittListan.Controllers
 		/// <param name="match"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult Edit(MatchViewModel match)
+		public ActionResult Edit(MatchViewModel model)
 		{
-			try
-			{
-				// TODO: Add update logic here
-				return RedirectToAction("Index");
-			}
-			catch
-			{
-				return View();
-			}
+			if (!ModelState.IsValid)
+				return View(model);
+
+			var match = new Match(
+				model.Info.Place,
+				model.Info.Date,
+				new Team(model.Info.HomeTeam, model.Info.HomeTeamScore),
+				new Team(model.Info.AwayTeam, model.Info.AwayTeamScore),
+				model.Info.BitsMatchId);
+			match.Id = model.Id;
+			Session.Store(match);
+
+			return RedirectToAction("Details", new { id = match.Id });
 		}
 
 		/// <summary>

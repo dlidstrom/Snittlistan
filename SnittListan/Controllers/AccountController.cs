@@ -25,15 +25,10 @@ namespace SnittListan.Controllers
 		/// <param name="session">Document session.</param>
 		/// <param name="authenticationServce">Authentication service.</param>
 		public AccountController(IDocumentSession session, IAuthenticationService authenticationServce)
+			: base(session)
 		{
-			this.Session = session;
 			this.authenticationServce = authenticationServce;
 		}
-
-		/// <summary>
-		/// Gets or sets the document session.
-		/// </summary>
-		public new IDocumentSession Session { get; private set; }
 
 		/// <summary>
 		/// GET: /Account/LogOn

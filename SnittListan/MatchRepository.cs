@@ -13,14 +13,12 @@ namespace SnittListan
 		public MatchRepository()
 		{
 			var match = new Match(
-				id: 3003231,
 				place: "Sollentuna Bowlinghall",
 				date: DateTime.ParseExact("2011-03-26", "yyyy-MM-dd", CultureInfo.InvariantCulture),
-				homeGame: false,
-				homeTeam: "Sollentuna Bwk",
-				oppTeam: "Fredrikshof IF",
-				oppTeamLaneScore: 13,
-				games: new List<Game>
+				homeTeam: new Team("Sollentuna Bwk", 13),
+				awayTeam: new Team("Fredrikshof IF", 6),
+				bitsMatchId: 3003231);
+			new List<Game>
 				{
 					new Game(1, 1, "Mikael Axelsson", 202, 1),
 					new Game(1, 1, "Christer Liedholm", 218, 1),
@@ -54,7 +52,7 @@ namespace SnittListan
 					new Game(4, 3, "Christer Liedholm", 191, 1),
 					new Game(4, 4, "Thomas Gurell", 159, 0),
 					new Game(4, 4, "Peter Sjöberg", 190, 0),
-				});
+				}.ForEach(g => match.AwayTeam.AddGame(g));
 
 			matches = new Match[] { match }.ToList();
 		}

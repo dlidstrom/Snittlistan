@@ -1,37 +1,71 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace SnittListan.ViewModels
 {
 	public class MatchViewModel
 	{
-		public string Id { get; set; }
+		[HiddenInput]
+		public int Id { get; set; }
 
-		[Required, Display(Name = "Plats")]
-		public string Place { get; set; }
+		public MatchInfo Info { get; set; }
 
-		[Required, Display(Name = "Datum"), DataType(DataType.Date)]
-		public DateTime Date { get; set; }
+		public Game[] HomeTeamGames { get; set; }
 
-		[Required, Display(Name = "Hemmalag")]
-		public string HomeTeam { get; set; }
+		public Game[] AwayTeamGames { get; set; }
 
-		[Required, Display(Name = "Banpoäng")]
-		public int HomeTeamLaneScore { get; set; }
+		public class MatchInfo
+		{
+			public MatchInfo()
+			{
+				Date = DateTime.Now.Date;
+			}
 
-		[Required, Display(Name = "Bortalag")]
-		public string OppTeam { get; set; }
+			[Required, Display(Name = "BITS MatchId")]
+			public int BitsMatchId { get; set; }
 
-		[Required, Display(Name = "Banpoäng")]
-		public int OppTeamLaneScore { get; set; }
+			[Required, Display(Name = "Plats")]
+			public string Place { get; set; }
 
-		public Game[] Games { get; set; }
+			[Required, Display(Name = "Datum"), DataType(DataType.Date)]
+			public DateTime Date { get; set; }
+
+			[Required, Display(Name = "Hemmalag")]
+			public string HomeTeam { get; set; }
+
+			[Required, Display(Name = "Banpoäng"), Range(0, 20)]
+			public int HomeTeamScore { get; set; }
+
+			[Required, Display(Name = "Bortalag")]
+			public string AwayTeam { get; set; }
+
+			[Required, Display(Name = "Banpoäng"), Range(0, 20)]
+			public int AwayTeamScore { get; set; }
+		}
 
 		public class Game
 		{
+			[Display(Name = "Spelare")]
 			public string Player { get; set; }
-			public int PinScore { get; set; }
-			public int LaneScore { get; set; }
+
+			[Display(Name = "Kägelpoäng")]
+			public int Pins { get; set; }
+
+			[Display(Name = "Banpoäng")]
+			public int Score { get; set; }
+
+			[Display(Name = "X")]
+			public int Strikes { get; set; }
+
+			[Display(Name = "Miss")]
+			public int Misses { get; set; }
+
+			[Display(Name = "9-")]
+			public int OnePinMisses { get; set; }
+
+			[Display(Name = "Hål")]
+			public int Splits { get; set; }
 		}
 	}
 }

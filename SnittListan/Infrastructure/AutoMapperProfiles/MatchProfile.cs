@@ -9,24 +9,14 @@ namespace SnittListan.Infrastructure
 	{
 		protected override void Configure()
 		{
-			Mapper.CreateMap<Match, MatchViewModel>()
+			Mapper.CreateMap<Match, MatchViewModel.MatchInfo>()
 				.ForMember(x => x.Date, o => o.MapFrom(y => y.Date))
-				.ForMember(x => x.HomeTeam, o => o.MapFrom(y => y.HomeTeam))
-				.ForMember(
-					x => x.HomeTeamLaneScore,
-					o => o.MapFrom(y =>
-					{
-						return y.HomeGame ? y.LaneScoreForTeam() : y.OppTeamLaneScore;
-					}))
-				.ForMember(x => x.OppTeam, o => o.MapFrom(y => y.OppTeam))
-				.ForMember(
-					x => x.OppTeamLaneScore,
-					o => o.MapFrom(y =>
-					{
-						return y.HomeGame ? y.OppTeamLaneScore : y.LaneScoreForTeam();
-					}))
-				.ForMember(x => x.Games, o => o.MapFrom(y => y.Games));
+				.ForMember(x => x.HomeTeam, o => o.MapFrom(y => y.HomeTeam.Name))
+				.ForMember(x => x.HomeTeamScore, o => o.MapFrom(y => y.HomeTeam.Score))
+				.ForMember(x => x.AwayTeam, o => o.MapFrom(y => y.AwayTeam.Name))
+				.ForMember(x => x.AwayTeamScore, o => o.MapFrom(y => y.AwayTeam.Score));
 
+			Mapper.CreateMap<Match, MatchInfoViewModel>();
 			Mapper.CreateMap<Game, MatchViewModel.Game>();
 		}
 	}

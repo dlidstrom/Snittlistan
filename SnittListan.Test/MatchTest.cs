@@ -20,41 +20,35 @@ namespace SnittListan.Test
 		[Fact]
 		public void PinscoreForPlayer()
 		{
-			match.PinscoreForPlayer("Peter Sjöberg").ShouldBe(787);
+			match.AwayTeam.PinscoreForPlayer("Peter Sjöberg").ShouldBe(787);
 		}
 
 		[Fact]
 		public void PinscoreForTeam()
 		{
-			match.PinScoreForTeam().ShouldBe(6216);
-			match.PinscoreForTeam(1).ShouldBe(1598);
-			match.PinscoreForTeam(2).ShouldBe(1573);
-			match.PinscoreForTeam(3).ShouldBe(1505);
-			match.PinscoreForTeam(4).ShouldBe(1540);
+			match.AwayTeam.Pins.ShouldBe(6216);
+			match.AwayTeam.PinsFor(1).ShouldBe(1598);
+			match.AwayTeam.PinsFor(2).ShouldBe(1573);
+			match.AwayTeam.PinsFor(3).ShouldBe(1505);
+			match.AwayTeam.PinsFor(4).ShouldBe(1540);
 		}
 
 		[Fact]
 		public void LaneScores()
 		{
-			match.LaneScoreForTeam().ShouldBe(6);
-			match.LaneScoreForTeam(1).ShouldBe(2);
-			match.LaneScoreForTeam(2).ShouldBe(2);
-			match.LaneScoreForTeam(3).ShouldBe(1);
-			match.LaneScoreForTeam(4).ShouldBe(1);
-			match.OppTeamLaneScore.ShouldBe(13);
-		}
-
-		[Fact]
-		public void SeriesPlayed()
-		{
-			match.NumberOfSeries.ShouldBe(4);
+			match.HomeTeam.Score.ShouldBe(13);
+			match.AwayTeam.ScoreFor(1).ShouldBe(2);
+			match.AwayTeam.ScoreFor(2).ShouldBe(2);
+			match.AwayTeam.ScoreFor(3).ShouldBe(1);
+			match.AwayTeam.ScoreFor(4).ShouldBe(1);
+			match.AwayTeam.Score.ShouldBe(6);
 		}
 
 		[Fact]
 		public void Teams()
 		{
-			match.HomeTeam.ShouldBe("Sollentuna Bwk");
-			match.OppTeam.ShouldBe("Fredrikshof IF");
+			match.HomeTeam.Name.ShouldBe("Sollentuna Bwk");
+			match.AwayTeam.Name.ShouldBe("Fredrikshof IF");
 		}
 	}
 }
