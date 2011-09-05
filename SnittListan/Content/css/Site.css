@@ -185,6 +185,12 @@ input[type="text"], input[type="password"], input[type="email"], input[type="dat
 	width: 200px;
 }
 
+input[class="stats"] {
+	border: 1px solid #ccc;
+	padding: 2px;
+	width: 50px;
+}
+
 select {
 	border: 1px solid #ccc;
 	padding: 2px;
@@ -213,6 +219,16 @@ table th {
 	text-align: left;
 	background-color: #e8eef4;
 	border: solid 1px #e8eef4;
+}
+
+/* Invisible table
+----------------------------------------------------------*/
+table.invis {
+	border: 0 none;
+}
+
+table.invis td {
+	border: 0 none;
 }
 
 /* MISC  

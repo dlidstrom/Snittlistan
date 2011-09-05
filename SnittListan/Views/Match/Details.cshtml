@@ -3,14 +3,9 @@
     ViewBag.Title = "Detaljer";
 }
 
-<h2>Detaljer</h2>
-<p>
-@if (Request.IsAuthenticated)
-{
-    <text>@Html.ActionLink("Redigera", "Edit", new { id = Model.Id }) |</text>
-}
-    @Html.ActionLink("Tillbaka", "Index")
-</p>
+<h2>@ViewBag.Title</h2>
+@Html.GenerateEditBackLinks(Model)
+
 <fieldset>
     <legend>Match</legend>
     <table>
@@ -18,25 +13,26 @@
             <td>Datum</td><td>@Html.DisplayFor(model => model.Date)</td>
         </tr>
         <tr>
-            <td>Match</td><td>@Html.DisplayFor(model => model.HomeTeam) - @Html.DisplayFor(model => model.OppTeam)</td>
+            <td>Match</td><td>@Html.DisplayFor(model => model.HomeTeam) - @Html.DisplayFor(model => model.AwayTeam)</td>
         </tr>
         <tr>
-            <td>Resultat</td><td>@Html.DisplayFor(model => model.HomeTeamLaneScore)-@Html.DisplayFor(model => model.OppTeamLaneScore)</td>
+            <td>Resultat</td><td>@Html.DisplayFor(model => model.HomeTeamScore)-@Html.DisplayFor(model => model.AwayTeamScore)</td>
         </tr>
         <tr>
             <td>Plats</td><td>@Html.DisplayFor(model => model.Place)</td>
         </tr>
         <tr>
-            <td>BITS</td><td><a href="http://bits.swebowl.se/MatchFact.aspx?MatchId=@Model.Id">Matchfakta</td>
+            <td>BITS</td><td>@Html.GenerateBitsLink(Model)</td>
         </tr>
     </table>
     <div class="games-viewmodel">
-        <table>
-            <tr><th>Namn</th><th>Serie</th><th>Banpoäng</th></tr>
-            @foreach (var game in Model.Games)
-            {
-                <tr><td>@game.Player</td><td>@game.PinScore</td><td>@game.LaneScore</td></tr>
-            }
-        </table>
+        <h3>Hemmalag</h3>
+        @Html.Partial("GamesPartial", Model.HomeTeamGames)
+        @Html.ActionLink("Lägg till serie", "AddGame", new { id = Model.Id })
+    </div>
+    <div class="games-viewmodel">
+        <h3>Bortalag</h3>
+        @Html.Partial("GamesPartial", Model.AwayTeamGames)
+        @Html.ActionLink("Lägg till serie", "AddGame", new { id = Model.Id })
     </div>
 </fieldset>

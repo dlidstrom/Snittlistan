@@ -14,7 +14,7 @@ namespace SnittListan.Installers
 				AllTypes.FromThisAssembly()
 				.BasedOn(typeof(IHandle<>))
 				.If(Component.IsInSameNamespaceAs<SendRegistrationEmailHandler>())
-				.Configure(c => c.LifeStyle.Transient));
+				.Configure(c => c.LifestyleTransient()));
 		}
 	}
 }

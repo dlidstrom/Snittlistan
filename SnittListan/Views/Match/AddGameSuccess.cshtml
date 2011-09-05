@@ -1,0 +1,45 @@
+﻿@model SnittListan.ViewModels.MatchInfoViewModel
+
+@{
+    ViewBag.Title = "AddGameSuccess";
+}
+
+<h2>AddGameSuccess</h2>
+
+<fieldset>
+    <legend>MatchInfoViewModel</legend>
+
+    <div class="display-label">Place</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Place)
+    </div>
+
+    <div class="display-label">Date</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Date)
+    </div>
+
+    <div class="display-label">HomeTeam</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.HomeTeam)
+    </div>
+
+    <div class="display-label">HomeTeamScore</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.HomeTeamScore)
+    </div>
+
+    <div class="display-label">AwayTeam</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AwayTeam)
+    </div>
+
+    <div class="display-label">AwayTeamScore</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AwayTeamScore)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

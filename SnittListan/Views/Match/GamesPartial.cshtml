@@ -1,0 +1,9 @@
+﻿@model IEnumerable<MatchViewModel.Game>
+
+<table>
+    <tr><th>Namn</th><th>Serie</th><th>Banpoäng</th></tr>
+    @foreach (var game in Model)
+    {
+        <tr><td>@game.Player</td><td>@game.Pins</td><td>@game.Score</td></tr>
+    }
+</table>

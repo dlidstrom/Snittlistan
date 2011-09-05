@@ -1,4 +1,4 @@
-﻿@model MatchViewModel
+﻿@model SnittListan.ViewModels.MatchViewModel
 
 @{
     ViewBag.Title = "Edit";
@@ -12,12 +12,18 @@
 
 <h2>Edit</h2>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm("Create", "Match")) {
     @Html.ValidationSummary(true)
     <fieldset>
-        <legend>Match</legend>
+        <legend>MatchViewModel</legend>
 
-        @Html.HiddenFor(model => model.Id)
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Id)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Id)
+            @Html.ValidationMessageFor(model => model.Id)
+        </div>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Place)
@@ -33,6 +39,38 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.Date)
             @Html.ValidationMessageFor(model => model.Date)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.HomeTeam)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.HomeTeam)
+            @Html.ValidationMessageFor(model => model.HomeTeam)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.HomeTeamScore)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.HomeTeamScore)
+            @Html.ValidationMessageFor(model => model.HomeTeamScore)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AwayTeam)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.AwayTeam)
+            @Html.ValidationMessageFor(model => model.AwayTeam)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AwayTeamScore)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.AwayTeamScore)
+            @Html.ValidationMessageFor(model => model.AwayTeamScore)
         </div>
 
         <p>
