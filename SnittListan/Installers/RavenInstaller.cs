@@ -14,8 +14,8 @@ namespace SnittListan.Installers
 		public void Install(IWindsorContainer container, IConfigurationStore store)
 		{
 			container.Register(
-					Component.For<IDocumentStore>().Instance(CreateDocumentStore()).LifeStyle.Singleton,
-					Component.For<IDocumentSession>().UsingFactoryMethod(GetDocumentSession).LifeStyle.PerWebRequest);
+					Component.For<IDocumentStore>().Instance(CreateDocumentStore()).LifestyleSingleton(),
+					Component.For<IDocumentSession>().UsingFactoryMethod(GetDocumentSession).LifestylePerWebRequest());
 		}
 
 		private static IDocumentSession GetDocumentSession(IKernel kernel)
