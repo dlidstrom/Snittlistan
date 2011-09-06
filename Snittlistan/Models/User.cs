@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using SnittListan.Events;
+using Snittlistan.Events;
 
-namespace SnittListan.Models
+namespace Snittlistan.Models
 {
 	public class User
 	{

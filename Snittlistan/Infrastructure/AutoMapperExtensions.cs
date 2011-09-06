@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using AutoMapper;
 
-namespace SnittListan.Infrastructure
+namespace Snittlistan.Infrastructure
 {
 	public static class AutoMapperExtensions
 	{

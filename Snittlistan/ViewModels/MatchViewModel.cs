@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
-namespace SnittListan.ViewModels
+namespace Snittlistan.ViewModels
 {
 	public class MatchViewModel
 	{

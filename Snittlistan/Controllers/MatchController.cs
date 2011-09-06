@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using Raven.Client;
-using SnittListan.Infrastructure;
-using SnittListan.Models;
-using SnittListan.ViewModels;
+using Snittlistan.Infrastructure;
+using Snittlistan.Models;
+using Snittlistan.ViewModels;
 
-namespace SnittListan.Controllers
+namespace Snittlistan.Controllers
 {
 	public class MatchController : AbstractController
 	{

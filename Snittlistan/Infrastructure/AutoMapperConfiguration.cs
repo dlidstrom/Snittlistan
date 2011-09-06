@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Castle.Windsor;
 
-namespace SnittListan.Infrastructure
+namespace Snittlistan.Infrastructure
 {
 	public static class AutoMapperConfiguration
 	{

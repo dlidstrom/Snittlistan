@@ -1,10 +1,10 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using SnittListan.Events;
-using SnittListan.Handlers;
+using Snittlistan.Events;
+using Snittlistan.Handlers;
 
-namespace SnittListan.Installers
+namespace Snittlistan.Installers
 {
 	public class HandlersInstaller : IWindsorInstaller
 	{

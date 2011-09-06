@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using MvcContrib.TestHelper;
-using SnittListan.Models;
+using Snittlistan.Models;
 using Xunit;
 
-namespace SnittListan.Test
+namespace Snittlistan.Test
 {
 	public class MatchTest : DbTest
 	{

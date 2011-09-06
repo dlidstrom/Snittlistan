@@ -1,4 +1,4 @@
-﻿namespace SnittListan.Handlers
+﻿namespace Snittlistan.Handlers
 {
 	public interface IHandle<TEvent>
 	{

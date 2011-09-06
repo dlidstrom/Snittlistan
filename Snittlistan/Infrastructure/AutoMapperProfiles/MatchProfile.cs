@@ -1,9 +1,9 @@
 ﻿using System.Threading;
 using AutoMapper;
-using SnittListan.Models;
-using SnittListan.ViewModels;
+using Snittlistan.Models;
+using Snittlistan.ViewModels;
 
-namespace SnittListan.Infrastructure
+namespace Snittlistan.Infrastructure
 {
 	public class MatchProfile : Profile
 	{

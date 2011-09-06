@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using Raven.Client;
-using SnittListan.Models;
+using Snittlistan.Models;
 
-namespace SnittListan.Helpers
+namespace Snittlistan.Helpers
 {
 	public static class DocumentSessionExtensions
 	{

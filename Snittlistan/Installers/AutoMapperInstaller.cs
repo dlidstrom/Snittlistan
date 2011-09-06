@@ -3,7 +3,7 @@ using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 
-namespace SnittListan.Installers
+namespace Snittlistan.Installers
 {
 	public class AutoMapperInstaller : IWindsorInstaller
 	{

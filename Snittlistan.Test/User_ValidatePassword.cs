@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using MvcContrib.TestHelper;
-using SnittListan.Events;
-using SnittListan.Helpers;
-using SnittListan.Models;
+using Snittlistan.Events;
+using Snittlistan.Helpers;
+using Snittlistan.Models;
 using Xunit;
 
-namespace SnittListan.Test
+namespace Snittlistan.Test
 {
 	public class User_ValidatePassword : DbTest
 	{

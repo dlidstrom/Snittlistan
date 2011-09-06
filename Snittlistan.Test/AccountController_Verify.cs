@@ -3,13 +3,13 @@ using System.Linq;
 using System.Web.Mvc;
 using Moq;
 using MvcContrib.TestHelper;
-using SnittListan.Controllers;
-using SnittListan.Helpers;
-using SnittListan.Models;
-using SnittListan.Services;
+using Snittlistan.Controllers;
+using Snittlistan.Helpers;
+using Snittlistan.Models;
+using Snittlistan.Services;
 using Xunit;
 
-namespace SnittListan.Test
+namespace Snittlistan.Test
 {
 	public class AccountController_Verify : DbTest
 	{

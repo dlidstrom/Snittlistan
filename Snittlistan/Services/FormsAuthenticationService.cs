@@ -1,6 +1,6 @@
 ﻿using System.Web.Security;
 
-namespace SnittListan.Services
+namespace Snittlistan.Services
 {
 	public class FormsAuthenticationService : IAuthenticationService
 	{

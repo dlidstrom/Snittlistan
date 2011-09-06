@@ -4,7 +4,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.MicroKernel;
 
-namespace SnittListan.IoC
+namespace Snittlistan.IoC
 {
 	public class WindsorControllerFactory : DefaultControllerFactory
 	{

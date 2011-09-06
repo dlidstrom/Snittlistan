@@ -2,10 +2,10 @@
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.TestHelper;
-using SnittListan.Controllers;
+using Snittlistan.Controllers;
 using Xunit;
 
-namespace SnittListan.Test
+namespace Snittlistan.Test
 {
 	public class RoutesTest : IDisposable
 	{

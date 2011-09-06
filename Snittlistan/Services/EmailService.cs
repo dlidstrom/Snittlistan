@@ -9,7 +9,7 @@ using System.Web;
 using System.Web.Configuration;
 using Elmah;
 
-namespace SnittListan.Services
+namespace Snittlistan.Services
 {
 	public class EmailService : IEmailService
 	{

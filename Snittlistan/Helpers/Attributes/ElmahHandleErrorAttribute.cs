@@ -3,7 +3,7 @@ using System.Web;
 using System.Web.Mvc;
 using Elmah;
 
-namespace SnittListan.Helpers.Attributes
+namespace Snittlistan.Helpers.Attributes
 {
 	public class ElmahHandleErrorAttribute : HandleErrorAttribute
 	{

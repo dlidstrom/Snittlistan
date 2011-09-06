@@ -1,4 +1,4 @@
-﻿namespace SnittListan.ViewModels
+﻿namespace Snittlistan.ViewModels
 {
 	public class RegistrationMailViewModel
 	{

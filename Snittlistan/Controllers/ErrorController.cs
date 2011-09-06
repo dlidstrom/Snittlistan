@@ -4,9 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Elmah;
-using SnittListan.Helpers;
+using Snittlistan.Helpers;
 
-namespace SnittListan.Controllers
+namespace Snittlistan.Controllers
 {
 	public class ErrorController : AbstractController
 	{

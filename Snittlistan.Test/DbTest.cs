@@ -6,9 +6,9 @@ using System.Web.Routing;
 using Moq;
 using Raven.Client;
 using Raven.Client.Embedded;
-using SnittListan.Models;
+using Snittlistan.Models;
 
-namespace SnittListan.Test
+namespace Snittlistan.Test
 {
 	public abstract class DbTest : IDisposable
 	{

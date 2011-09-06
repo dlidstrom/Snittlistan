@@ -1,6 +1,6 @@
 ﻿using System.Web.Routing;
 
-namespace SnittListan.Helpers
+namespace Snittlistan.Helpers
 {
 	public class LowercaseRoute : Route
 	{

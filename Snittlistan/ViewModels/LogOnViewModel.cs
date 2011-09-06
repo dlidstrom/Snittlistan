@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SnittListan.ViewModels
+namespace Snittlistan.ViewModels
 {
 	public class LogOnViewModel
 	{

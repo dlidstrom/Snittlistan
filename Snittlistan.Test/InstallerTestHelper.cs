@@ -2,9 +2,9 @@
 using System.Linq;
 using Castle.MicroKernel;
 using Castle.Windsor;
-using SnittListan.Controllers;
+using Snittlistan.Controllers;
 
-namespace SnittListan.Test
+namespace Snittlistan.Test
 {
 	public static class InstallerTestHelper
 	{

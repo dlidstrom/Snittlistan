@@ -1,8 +1,8 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
-using SnittListan.Helpers;
+using Snittlistan.Helpers;
 
-namespace SnittListan
+namespace Snittlistan
 {
 	public class RouteConfigurator
 	{

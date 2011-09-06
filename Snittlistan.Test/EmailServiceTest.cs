@@ -1,7 +1,7 @@
-﻿using SnittListan.Services;
+﻿using Snittlistan.Services;
 using Xunit;
 
-namespace SnittListan.Test
+namespace Snittlistan.Test
 {
 	public class EmailServiceTest
 	{

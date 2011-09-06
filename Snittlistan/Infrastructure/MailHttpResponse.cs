@@ -1,6 +1,6 @@
 ﻿using System.Web;
 
-namespace SnittListan.Infrastructure
+namespace Snittlistan.Infrastructure
 {
 	public class MailHttpResponse : HttpResponseBase
 	{

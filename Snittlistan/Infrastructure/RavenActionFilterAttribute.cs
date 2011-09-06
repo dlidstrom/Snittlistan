@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using Raven.Client;
 
-namespace SnittListan.Infrastructure
+namespace Snittlistan.Infrastructure
 {
 	/// <summary>
 	/// This filter makes sure to save any outstanding changes.

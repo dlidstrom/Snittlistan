@@ -4,13 +4,13 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Moq;
 using MvcContrib.TestHelper;
-using SnittListan.Controllers;
-using SnittListan.Models;
-using SnittListan.Services;
-using SnittListan.ViewModels;
+using Snittlistan.Controllers;
+using Snittlistan.Models;
+using Snittlistan.Services;
+using Snittlistan.ViewModels;
 using Xunit;
 
-namespace SnittListan.Test
+namespace Snittlistan.Test
 {
 	public class AccountController_Logon : DbTest
 	{

@@ -1,9 +1,9 @@
 ﻿using Castle.Windsor;
-using SnittListan.Installers;
-using SnittListan.Services;
+using Snittlistan.Installers;
+using Snittlistan.Services;
 using Xunit;
 
-namespace SnittListan.Test
+namespace Snittlistan.Test
 {
 	public class ServicesInstallerTest
 	{

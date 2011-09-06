@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
-using SnittListan.Handlers;
-using SnittListan.Services;
+using Snittlistan.Handlers;
+using Snittlistan.Services;
 using Xunit;
 
-namespace SnittListan.Test
+namespace Snittlistan.Test
 {
 	public class SendRegistrationEmailHandlerTest
 	{

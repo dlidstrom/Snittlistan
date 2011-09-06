@@ -3,10 +3,10 @@ using System.Web.Mvc;
 using Castle.Core;
 using Castle.Core.Internal;
 using Castle.Windsor;
-using SnittListan.Installers;
+using Snittlistan.Installers;
 using Xunit;
 
-namespace SnittListan.Test
+namespace Snittlistan.Test
 {
 	public class ControllersInstallerTest
 	{

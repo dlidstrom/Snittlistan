@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using Newtonsoft.Json;
 
-namespace SnittListan.Models
+namespace Snittlistan.Models
 {
 	public class Match
 	{
