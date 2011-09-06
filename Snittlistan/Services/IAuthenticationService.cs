@@ -1,4 +1,4 @@
-﻿namespace SnittListan.Services
+﻿namespace Snittlistan.Services
 {
 	public interface IAuthenticationService
 	{

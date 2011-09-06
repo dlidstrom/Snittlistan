@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 
-namespace SnittListan.Helpers
+namespace Snittlistan.Helpers
 {
 	public class GuidBinder : DefaultModelBinder
 	{

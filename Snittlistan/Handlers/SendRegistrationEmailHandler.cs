@@ -1,14 +1,14 @@
 ﻿using System.IO;
 using System.Web.Mvc;
 using System.Web.Routing;
-using SnittListan.Controllers;
-using SnittListan.Events;
-using SnittListan.Infrastructure;
-using SnittListan.Models;
-using SnittListan.Services;
-using SnittListan.ViewModels;
+using Snittlistan.Controllers;
+using Snittlistan.Events;
+using Snittlistan.Infrastructure;
+using Snittlistan.Models;
+using Snittlistan.Services;
+using Snittlistan.ViewModels;
 
-namespace SnittListan.Handlers
+namespace Snittlistan.Handlers
 {
 	public class SendRegistrationEmailHandler : IHandle<NewUserCreatedEvent>
 	{

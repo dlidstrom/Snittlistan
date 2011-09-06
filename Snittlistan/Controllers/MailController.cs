@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace SnittListan.Controllers
+namespace Snittlistan.Controllers
 {
 	public class MailController : AbstractController
 	{

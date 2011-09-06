@@ -5,12 +5,12 @@ using System.Web.Routing;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
 using Common.Logging;
-using SnittListan.Helpers;
-using SnittListan.Helpers.Attributes;
-using SnittListan.Infrastructure;
-using SnittListan.IoC;
+using Snittlistan.Helpers;
+using Snittlistan.Helpers.Attributes;
+using Snittlistan.Infrastructure;
+using Snittlistan.IoC;
 
-namespace SnittListan
+namespace Snittlistan
 {
 	public class MvcApplication : HttpApplication
 	{

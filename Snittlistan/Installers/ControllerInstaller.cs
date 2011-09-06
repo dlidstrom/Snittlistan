@@ -2,9 +2,9 @@
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using SnittListan.Controllers;
+using Snittlistan.Controllers;
 
-namespace SnittListan.Installers
+namespace Snittlistan.Installers
 {
 	public class ControllerInstaller : IWindsorInstaller
 	{

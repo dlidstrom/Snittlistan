@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using Castle.Core;
 using Castle.Windsor;
-using SnittListan.Events;
-using SnittListan.Handlers;
-using SnittListan.Installers;
+using Snittlistan.Events;
+using Snittlistan.Handlers;
+using Snittlistan.Installers;
 using Xunit;
 
-namespace SnittListan.Test
+namespace Snittlistan.Test
 {
 	public class HandlersInstallerTest
 	{

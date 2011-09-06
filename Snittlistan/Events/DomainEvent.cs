@@ -1,8 +1,8 @@
 ﻿using System;
 using Castle.Windsor;
-using SnittListan.Handlers;
+using Snittlistan.Handlers;
 
-namespace SnittListan.Events
+namespace Snittlistan.Events
 {
 	public static class DomainEvent
 	{

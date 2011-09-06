@@ -1,12 +1,12 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Windsor;
-using SnittListan.Controllers;
-using SnittListan.Installers;
-using SnittListan.IoC;
+using Snittlistan.Controllers;
+using Snittlistan.Installers;
+using Snittlistan.IoC;
 using Xunit;
 
-namespace SnittListan.Test
+namespace Snittlistan.Test
 {
 	public class ControllerFactoryTest
 	{

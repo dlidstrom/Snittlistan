@@ -2,12 +2,12 @@
 *.suo
 *.user
 *.Cache
-SnittListan/bin
-SnittListan/obj
+Snittlistan/bin
+Snittlistan/obj
 
-SnittListan.Test/bin
-SnittListan.Test/obj
-SnittListan/App_Data
-SnittListan/Logs
-SnittListan/SnittListan.Publish.xml
-SnittListan/Web.Release.config
+Snittlistan.Test/bin
+Snittlistan.Test/obj
+Snittlistan/App_Data
+Snittlistan/Logs
+Snittlistan/SnittListan.Publish.xml
+Snittlistan/Web.Release.config

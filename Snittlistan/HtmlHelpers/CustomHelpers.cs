@@ -1,9 +1,9 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
-using SnittListan.ViewModels;
+using Snittlistan.ViewModels;
 
-namespace SnittListan.HtmlHelpers
+namespace Snittlistan.HtmlHelpers
 {
 	public static class CustomHtmlHelpers
 	{

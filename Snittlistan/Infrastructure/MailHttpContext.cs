@@ -3,7 +3,7 @@ using System.Configuration;
 using System.Web;
 using System.Web.Caching;
 
-namespace SnittListan.Infrastructure
+namespace Snittlistan.Infrastructure
 {
 	public class MailHttpContext : HttpContextBase
 	{

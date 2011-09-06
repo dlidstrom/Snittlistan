@@ -1,4 +1,4 @@
-﻿namespace SnittListan.Events
+﻿namespace Snittlistan.Events
 {
 	public interface IDomainEvent
 	{

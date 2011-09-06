@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SnittListan.Events
+namespace Snittlistan.Events
 {
 	public class DomainEventReset : IDisposable
 	{

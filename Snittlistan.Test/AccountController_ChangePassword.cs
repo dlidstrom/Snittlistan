@@ -2,14 +2,14 @@
 using System.Linq;
 using Moq;
 using MvcContrib.TestHelper;
-using SnittListan.Controllers;
-using SnittListan.Helpers;
-using SnittListan.Models;
-using SnittListan.Services;
-using SnittListan.ViewModels;
+using Snittlistan.Controllers;
+using Snittlistan.Helpers;
+using Snittlistan.Models;
+using Snittlistan.Services;
+using Snittlistan.ViewModels;
 using Xunit;
 
-namespace SnittListan.Test
+namespace Snittlistan.Test
 {
 	public class AccountController_ChangePassword : DbTest
 	{

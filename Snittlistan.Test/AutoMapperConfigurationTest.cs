@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Castle.Windsor;
-using SnittListan.Infrastructure;
-using SnittListan.Installers;
+using Snittlistan.Infrastructure;
+using Snittlistan.Installers;
 using Xunit;
 
-namespace SnittListan.Test
+namespace Snittlistan.Test
 {
 	public class AutoMapperConfigurationTest
 	{

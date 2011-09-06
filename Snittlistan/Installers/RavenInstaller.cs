@@ -7,7 +7,7 @@ using Raven.Client;
 using Raven.Client.Embedded;
 using Raven.Database.Server;
 
-namespace SnittListan.Installers
+namespace Snittlistan.Installers
 {
 	public class RavenInstaller : IWindsorInstaller
 	{

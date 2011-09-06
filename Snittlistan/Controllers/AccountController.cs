@@ -4,12 +4,12 @@ using System.Web;
 using System.Web.Mvc;
 using MvcContrib;
 using Raven.Client;
-using SnittListan.Helpers;
-using SnittListan.Models;
-using SnittListan.Services;
-using SnittListan.ViewModels;
+using Snittlistan.Helpers;
+using Snittlistan.Models;
+using Snittlistan.Services;
+using Snittlistan.ViewModels;
 
-namespace SnittListan.Controllers
+namespace Snittlistan.Controllers
 {
 	/// <summary>
 	/// Handles everything related to accounts: creating and validating

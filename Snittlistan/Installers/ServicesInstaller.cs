@@ -1,9 +1,9 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using SnittListan.Services;
+using Snittlistan.Services;
 
-namespace SnittListan.Installers
+namespace Snittlistan.Installers
 {
 	public class ServicesInstaller : IWindsorInstaller
 	{

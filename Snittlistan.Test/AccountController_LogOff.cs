@@ -1,10 +1,10 @@
 ﻿using Moq;
 using MvcContrib.TestHelper;
-using SnittListan.Controllers;
-using SnittListan.Services;
+using Snittlistan.Controllers;
+using Snittlistan.Services;
 using Xunit;
 
-namespace SnittListan.Test
+namespace Snittlistan.Test
 {
 	public class AccountController_LogOff : DbTest
 	{

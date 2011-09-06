@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace SnittListan.Helpers
+namespace Snittlistan.Helpers
 {
 	public static class RouteCollectionExtension
 	{

@@ -1,9 +1,9 @@
 ﻿using MvcContrib.TestHelper;
-using SnittListan.Events;
-using SnittListan.Models;
+using Snittlistan.Events;
+using Snittlistan.Models;
 using Xunit;
 
-namespace SnittListan.Test
+namespace Snittlistan.Test
 {
 	public class UserTest
 	{

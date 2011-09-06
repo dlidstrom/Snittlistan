@@ -7,7 +7,7 @@ using System.Web.Mvc;
 using Elmah;
 using Raven.Client;
 
-namespace SnittListan.Controllers
+namespace Snittlistan.Controllers
 {
 	public class AbstractController : Controller
 	{
