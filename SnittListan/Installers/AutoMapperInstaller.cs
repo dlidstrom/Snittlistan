@@ -9,12 +9,7 @@ namespace SnittListan.Installers
 	{
 		public void Install(IWindsorContainer container, IConfigurationStore store)
 		{
-			container.Register(FindProfiles().Configure(ConfigureProfiles()));
-		}
-
-		private static ConfigureDelegate ConfigureProfiles()
-		{
-			return c => c.LifeStyle.Singleton;
+			container.Register(FindProfiles().LifestyleSingleton());
 		}
 
 		private static BasedOnDescriptor FindProfiles()

@@ -10,12 +10,7 @@ namespace SnittListan.Installers
 	{
 		public void Install(IWindsorContainer container, IConfigurationStore store)
 		{
-			container.Register(FindControllers().Configure(ConfigureControllers()));
-		}
-
-		private static ConfigureDelegate ConfigureControllers()
-		{
-			return c => c.LifeStyle.Transient;
+			container.Register(FindControllers().LifestyleTransient());
 		}
 
 		private static BasedOnDescriptor FindControllers()

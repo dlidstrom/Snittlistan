@@ -13,8 +13,8 @@ namespace SnittListan.Installers
 				AllTypes
 					.FromThisAssembly()
 					.Where(Component.IsInSameNamespaceAs<IEmailService>())
-					.WithService.DefaultInterface()
-					.Configure(c => c.LifeStyle.Transient));
+					.WithServiceDefaultInterfaces()
+					.LifestyleTransient());
 		}
 	}
 }
