@@ -67,7 +67,7 @@ namespace SnittListan.Test
 		public void AllControllersExposeThemselvesAsService()
 		{
 			var controllersWithWrongName = InstallerTestHelper.GetHandlersFor(typeof(IController), container)
-				.Where(c => c.Service != c.ComponentModel.Implementation)
+				.Where(c => c.ComponentModel.Services.Any(s => s != c.ComponentModel.Implementation))
 				.ToArray();
 			Assert.Empty(controllersWithWrongName);
 		}
