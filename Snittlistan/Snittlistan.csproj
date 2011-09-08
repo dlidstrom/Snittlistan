@@ -179,7 +179,6 @@
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="ViewModels\GameViewModel.cs" />
-    <Compile Include="ViewModels\MatchInfoViewModel.cs" />
     <Compile Include="MatchRepository.cs" />
     <Compile Include="Events\DomainEvent.cs" />
     <Compile Include="Events\DomainEventReset.cs" />
