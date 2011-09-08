@@ -4,7 +4,6 @@ using System.Web.Routing;
 using Snittlistan.Controllers;
 using Snittlistan.Events;
 using Snittlistan.Infrastructure;
-using Snittlistan.Models;
 using Snittlistan.Services;
 using Snittlistan.ViewModels;
 
@@ -22,7 +21,7 @@ namespace Snittlistan.Handlers
 		public void Handle(NewUserCreatedEvent @event)
 		{
 			string recipient = @event.User.Email;
-			string subject = "Välkommen till SnittListan!";
+			string subject = "Välkommen till Snittlistan!";
 
 			string body = RenderBody(new RegistrationMailViewModel { ActivationKey = @event.User.ActivationKey });
 
