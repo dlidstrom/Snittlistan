@@ -16,7 +16,6 @@ namespace Snittlistan.Infrastructure
 				.ForMember(x => x.AwayTeam, o => o.MapFrom(y => y.AwayTeam.Name))
 				.ForMember(x => x.AwayTeamScore, o => o.MapFrom(y => y.AwayTeam.Score));
 
-			Mapper.CreateMap<Match, MatchInfoViewModel>();
 			Mapper.CreateMap<Game, MatchViewModel.Game>();
 		}
 	}

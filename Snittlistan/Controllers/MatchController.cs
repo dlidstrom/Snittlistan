@@ -43,7 +43,7 @@ namespace Snittlistan.Controllers
 		/// <returns></returns>
 		public ActionResult Create()
 		{
-			return View(new MatchInfoViewModel());
+			return View(new MatchViewModel());
 		}
 
 		/// <summary>
@@ -52,7 +52,7 @@ namespace Snittlistan.Controllers
 		/// <param name="match"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult Create(MatchInfoViewModel model)
+		public ActionResult Create(MatchViewModel.MatchInfo model)
 		{
 			if (!ModelState.IsValid)
 				return View(model);
@@ -100,7 +100,7 @@ namespace Snittlistan.Controllers
 				new Team(model.Info.HomeTeam, model.Info.HomeTeamScore),
 				new Team(model.Info.AwayTeam, model.Info.AwayTeamScore),
 				model.Info.BitsMatchId);
-			match.Id = model.Id;
+			match.Id = model.Info.Id;
 			Session.Store(match);
 
 			return RedirectToAction("Details", new { id = match.Id });
