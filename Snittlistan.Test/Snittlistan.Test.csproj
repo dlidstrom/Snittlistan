@@ -12,7 +12,7 @@
     <AssemblyName>Snittlistan.Test</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
+    <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -155,7 +155,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ProgramFiles)\MSBuild\StyleCop\v4.5\StyleCop.targets" />
   <PropertyGroup>
-    <PostBuildEvent Condition=" '$(Configuration)' == 'Release' ">$(SolutionDir)packages\xunit.1.8.0.1545\lib\xunit.console.clr4.exe $(TargetPath)</PostBuildEvent>
+    <PostBuildEvent Condition=" '$(Configuration)' == 'Release' And '$(TEAMCITY_PROJECT_NAME)' == '' ">$(SolutionDir)packages\xunit.1.8.0.1545\lib\xunit.console.clr4.exe $(TargetPath)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
