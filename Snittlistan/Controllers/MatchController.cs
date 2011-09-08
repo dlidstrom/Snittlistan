@@ -43,7 +43,7 @@ namespace Snittlistan.Controllers
 		/// <returns></returns>
 		public ActionResult Create()
 		{
-			return View(new MatchViewModel());
+			return View(new MatchViewModel.MatchInfo());
 		}
 
 		/// <summary>
