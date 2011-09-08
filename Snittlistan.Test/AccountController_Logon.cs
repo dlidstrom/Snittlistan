@@ -15,6 +15,19 @@ namespace Snittlistan.Test
 	public class AccountController_Logon : DbTest
 	{
 		[Fact]
+		public void LogonReturnsView()
+		{
+			// Arrange
+			var controller = new AccountController(Session, Mock.Of<IAuthenticationService>());
+
+			// Act
+			var result = controller.LogOn();
+
+			// Assert
+			result.AssertViewRendered().ForView(string.Empty);
+		}
+
+		[Fact]
 		public void UnknownUserCannotLogon()
 		{
 			var service = Mock.Of<IAuthenticationService>();
