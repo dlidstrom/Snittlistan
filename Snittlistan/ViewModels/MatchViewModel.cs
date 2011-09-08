@@ -6,9 +6,6 @@ namespace Snittlistan.ViewModels
 {
 	public class MatchViewModel
 	{
-		[HiddenInput]
-		public int Id { get; set; }
-
 		public MatchInfo Info { get; set; }
 
 		public Game[] HomeTeamGames { get; set; }
@@ -21,6 +18,9 @@ namespace Snittlistan.ViewModels
 			{
 				Date = DateTime.Now.Date;
 			}
+
+			[HiddenInput]
+			public int Id { get; set; }
 
 			[Required, Display(Name = "BITS MatchId")]
 			public int BitsMatchId { get; set; }

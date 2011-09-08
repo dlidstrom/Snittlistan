@@ -4,35 +4,35 @@
 }
 
 <h2>@ViewBag.Title</h2>
-@Html.GenerateEditBackLinks(Model)
+@Html.GenerateEditBackLinks(Model.Info)
 
 <fieldset>
     <legend>Match</legend>
     <table>
         <tr>
-            <td>Datum</td><td>@Html.DisplayFor(model => model.Date)</td>
+            <td>Datum</td><td>@Html.DisplayFor(model => model.Info.Date)</td>
         </tr>
         <tr>
-            <td>Match</td><td>@Html.DisplayFor(model => model.HomeTeam) - @Html.DisplayFor(model => model.AwayTeam)</td>
+            <td>Match</td><td>@Html.DisplayFor(model => model.Info.HomeTeam) - @Html.DisplayFor(model => model.Info.AwayTeam)</td>
         </tr>
         <tr>
-            <td>Resultat</td><td>@Html.DisplayFor(model => model.HomeTeamScore)-@Html.DisplayFor(model => model.AwayTeamScore)</td>
+            <td>Resultat</td><td>@Html.DisplayFor(model => model.Info.HomeTeamScore)-@Html.DisplayFor(model => model.Info.AwayTeamScore)</td>
         </tr>
         <tr>
-            <td>Plats</td><td>@Html.DisplayFor(model => model.Place)</td>
+            <td>Plats</td><td>@Html.DisplayFor(model => model.Info.Place)</td>
         </tr>
         <tr>
-            <td>BITS</td><td>@Html.GenerateBitsLink(Model)</td>
+            <td>BITS</td><td>@Html.GenerateBitsLink(Model.Info)</td>
         </tr>
     </table>
     <div class="games-viewmodel">
         <h3>Hemmalag</h3>
         @Html.Partial("GamesPartial", Model.HomeTeamGames)
-        @Html.ActionLink("Lägg till serie", "AddGame", new { id = Model.Id })
+        @Html.ActionLink("Lägg till serie", "AddGame", new { id = Model.Info.Id })
     </div>
     <div class="games-viewmodel">
         <h3>Bortalag</h3>
         @Html.Partial("GamesPartial", Model.AwayTeamGames)
-        @Html.ActionLink("Lägg till serie", "AddGame", new { id = Model.Id })
+        @Html.ActionLink("Lägg till serie", "AddGame", new { id = Model.Info.Id })
     </div>
 </fieldset>
