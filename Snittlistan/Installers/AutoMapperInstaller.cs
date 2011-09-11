@@ -9,7 +9,7 @@ namespace Snittlistan.Installers
 	{
 		public void Install(IWindsorContainer container, IConfigurationStore store)
 		{
-			container.Register(FindProfiles().LifestyleSingleton());
+			container.Register(FindProfiles().LifestyleSingleton().WithServiceFromInterface(typeof(Profile)));
 		}
 
 		private static BasedOnDescriptor FindProfiles()
