@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -6,15 +7,15 @@ namespace Snittlistan.ViewModels
 {
 	public class MatchViewModel
 	{
-		public MatchInfo Info { get; set; }
+		public MatchDetails Match { get; set; }
 
-		public Game[] HomeTeamGames { get; set; }
+		public IList<Game> HomeTeamGames { get; set; }
 
-		public Game[] AwayTeamGames { get; set; }
+		public IList<Game> AwayTeamGames { get; set; }
 
-		public class MatchInfo
+		public class MatchDetails
 		{
-			public MatchInfo()
+			public MatchDetails()
 			{
 				Date = DateTime.Now.Date;
 			}
@@ -46,8 +47,17 @@ namespace Snittlistan.ViewModels
 
 		public class Game
 		{
-			[Display(Name = "Spelare")]
+			[HiddenInput]
+			public int Id { get; set; }
+
+			[Required, Display(Name = "Spelare")]
 			public string Player { get; set; }
+
+			[Required, Display(Name = "Serie")]
+			public int Serie { get; set; }
+
+			[Required, Display(Name = "Bord")]
+			public int Table { get; set; }
 
 			[Display(Name = "Kägelpoäng")]
 			public int Pins { get; set; }

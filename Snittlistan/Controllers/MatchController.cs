@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using Raven.Client;
 using Snittlistan.Infrastructure;
@@ -9,12 +10,9 @@ namespace Snittlistan.Controllers
 {
 	public class MatchController : AbstractController
 	{
-		private MatchRepository repo;
-
 		public MatchController(IDocumentSession session)
 			: base(session)
 		{
-			repo = new MatchRepository();
 		}
 
 		/// <summary>
@@ -23,7 +21,8 @@ namespace Snittlistan.Controllers
 		/// <returns></returns>
 		public ActionResult Index()
 		{
-			return View(Session.Query<Match>().MapTo<MatchViewModel>());
+			var matches = Session.Query<Match>();
+			return View(matches.MapTo<MatchViewModel.MatchDetails>());
 		}
 
 		/// <summary>
@@ -33,8 +32,15 @@ namespace Snittlistan.Controllers
 		/// <returns></returns>
 		public ActionResult Details(int id)
 		{
-			var match = Session.Load<Match>(id).MapTo<MatchViewModel>();
-			return View(match);
+			var match = Session.Load<Match>(id);
+			var vm = new MatchViewModel
+			{
+				Match = match.MapTo<MatchViewModel.MatchDetails>(),
+				HomeTeamGames = match.HomeTeam.Games.MapTo<MatchViewModel.Game>(),
+				AwayTeamGames = match.AwayTeam.Games.MapTo<MatchViewModel.Game>()
+			};
+
+			return View(vm);
 		}
 
 		/// <summary>
@@ -43,7 +49,7 @@ namespace Snittlistan.Controllers
 		/// <returns></returns>
 		public ActionResult Create()
 		{
-			return View(new MatchViewModel.MatchInfo());
+			return View(new MatchViewModel.MatchDetails());
 		}
 
 		/// <summary>
@@ -52,7 +58,7 @@ namespace Snittlistan.Controllers
 		/// <param name="match"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult Create(MatchViewModel.MatchInfo model)
+		public ActionResult Create(MatchViewModel.MatchDetails model)
 		{
 			if (!ModelState.IsValid)
 				return View(model);
@@ -70,7 +76,7 @@ namespace Snittlistan.Controllers
 
 		public ActionResult AddGame(int matchId)
 		{
-			return View(new GameViewModel { MatchId = matchId });
+			return View();
 		}
 
 		/// <summary>
@@ -80,7 +86,15 @@ namespace Snittlistan.Controllers
 		/// <returns></returns>
 		public ActionResult Edit(int id)
 		{
-			return View(Session.Load<Match>(id).MapTo<MatchViewModel>());
+			var match = Session.Load<Match>(id);
+			var vm = new MatchViewModel
+			{
+				Match = match.MapTo<MatchViewModel.MatchDetails>(),
+				HomeTeamGames = match.HomeTeam.Games.MapTo<MatchViewModel.Game>(),
+				AwayTeamGames = match.AwayTeam.Games.MapTo<MatchViewModel.Game>()
+			};
+
+			return View(vm);
 		}
 
 		/// <summary>
@@ -89,19 +103,15 @@ namespace Snittlistan.Controllers
 		/// <param name="match"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult Edit(MatchViewModel model)
+		public ActionResult Edit(MatchViewModel.MatchDetails model)
 		{
 			if (!ModelState.IsValid)
 				return View(model);
 
-			var match = new Match(
-				model.Info.Place,
-				model.Info.Date,
-				new Team(model.Info.HomeTeam, model.Info.HomeTeamScore),
-				new Team(model.Info.AwayTeam, model.Info.AwayTeamScore),
-				model.Info.BitsMatchId);
-			match.Id = model.Info.Id;
-			Session.Store(match);
+			var match = Session.Load<Match>(model.Id);
+			match.Place = model.Place;
+			match.Date = model.Date;
+			match.BitsMatchId = model.BitsMatchId;
 
 			return RedirectToAction("Details", new { id = match.Id });
 		}
@@ -113,7 +123,8 @@ namespace Snittlistan.Controllers
 		/// <returns></returns>
 		public ActionResult Delete(int id)
 		{
-			return View(repo.Query().Where(m => m.Id == id).Single());
+			var match = Session.Load<Match>(id);
+			return View(match.MapTo<MatchViewModel.MatchDetails>());
 		}
 
 		/// <summary>

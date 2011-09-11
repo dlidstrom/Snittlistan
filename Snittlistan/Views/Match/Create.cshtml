@@ -1,4 +1,4 @@
-﻿@model MatchViewModel.MatchInfo
+﻿@model MatchViewModel.MatchDetails
 
 @{
     ViewBag.Title = "Registrera";
@@ -57,10 +57,10 @@
                 </td>
             </tr>
             <tr>
-                <td class="editor-label">@Html.LabelFor(model => model.Id)</td>
+                <td class="editor-label">@Html.LabelFor(model => model.BitsMatchId)</td>
                 <td class="editor-field">
-                    @Html.EditorFor(model => model.Id)
-                    @Html.ValidationMessageFor(model => model.Id)
+                    @Html.EditorFor(model => model.BitsMatchId)
+                    @Html.ValidationMessageFor(model => model.BitsMatchId)
                 </td>
             </tr>
         </table>

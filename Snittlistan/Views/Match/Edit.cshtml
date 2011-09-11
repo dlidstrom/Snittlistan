@@ -1,4 +1,4 @@
-﻿@model MatchViewModel.MatchInfo
+﻿@model MatchViewModel
 
 @{
     ViewBag.Title = "Edit";
@@ -12,65 +12,73 @@
 
 <h2>Edit</h2>
 
-@using (Html.BeginForm("Create", "Match")) {
+@using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>MatchViewModel</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Id)
+            @Html.LabelFor(model => model.Match.Place)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Id)
-            @Html.ValidationMessageFor(model => model.Id)
+            @Html.EditorFor(model => model.Match.Place)
+            @Html.ValidationMessageFor(model => model.Match.Place)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Place)
+            @Html.LabelFor(model => model.Match.Date)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Place)
-            @Html.ValidationMessageFor(model => model.Place)
+            @Html.EditorFor(model => model.Match.Date)
+            @Html.ValidationMessageFor(model => model.Match.Date)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Date)
+            @Html.LabelFor(model => model.Match.HomeTeam)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Date)
-            @Html.ValidationMessageFor(model => model.Date)
+            @Html.EditorFor(model => model.Match.HomeTeam)
+            @Html.ValidationMessageFor(model => model.Match.HomeTeam)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.HomeTeam)
+            @Html.LabelFor(model => model.Match.HomeTeamScore)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.HomeTeam)
-            @Html.ValidationMessageFor(model => model.HomeTeam)
+            @Html.EditorFor(model => model.Match.HomeTeamScore)
+            @Html.ValidationMessageFor(model => model.Match.HomeTeamScore)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.HomeTeamScore)
+            @Html.LabelFor(model => model.Match.AwayTeam)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.HomeTeamScore)
-            @Html.ValidationMessageFor(model => model.HomeTeamScore)
+            @Html.EditorFor(model => model.Match.AwayTeam)
+            @Html.ValidationMessageFor(model => model.Match.AwayTeam)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.AwayTeam)
+            @Html.LabelFor(model => model.Match.AwayTeamScore)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.AwayTeam)
-            @Html.ValidationMessageFor(model => model.AwayTeam)
+            @Html.EditorFor(model => model.Match.AwayTeamScore)
+            @Html.ValidationMessageFor(model => model.Match.AwayTeamScore)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.AwayTeamScore)
+            @Html.LabelFor(model => model.Match.BitsMatchId)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.AwayTeamScore)
-            @Html.ValidationMessageFor(model => model.AwayTeamScore)
+            @Html.EditorFor(model => model.Match.BitsMatchId)
+            @Html.ValidationMessageFor(model => model.Match.BitsMatchId)
+        </div>
+        <div class="games-viewmodel">
+            <h3>Hemmalag</h3>
+            @Html.EditorFor(model => model.HomeTeamGames, "Games")
+        </div>
+        <div class="games-viewmodel">
+            <h3>Bortalag</h3>
+            @Html.EditorFor(model => model.AwayTeamGames, "Games")
         </div>
 
         <p>

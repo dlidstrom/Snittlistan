@@ -1,4 +1,4 @@
-﻿@model GameViewModel
+﻿@model MatchViewModel.Game
 
 @{
     ViewBag.Title = "Lägg till serie";
@@ -16,7 +16,7 @@
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>Serie</legend>
-
+@*
         <div class="editor-label">
             @Html.LabelFor(model => model.MatchId)
         </div>
@@ -40,7 +40,7 @@
             @Html.EditorFor(model => model.Table)
             @Html.ValidationMessageFor(model => model.Table)
         </div>
-
+*@
         <div class="editor-label">
             @Html.LabelFor(model => model.Player)
         </div>
