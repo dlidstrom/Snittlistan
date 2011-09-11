@@ -1,10 +1,10 @@
-﻿@model IEnumerable<MatchViewModel>
+﻿@model IEnumerable<MatchViewModel.MatchDetails>
 
 @{
     ViewBag.Title = "Matcher";
 }
 
-@helper CreateEditLink(MatchViewModel.MatchInfo item)
+@helper CreateEditLink(MatchViewModel.MatchDetails item)
 {
     if (Request.IsAuthenticated)
     {
@@ -28,13 +28,13 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>@Html.DisplayFor(modelItem => item.Info.Date)</td>
-        <td>@Html.DisplayFor(modelItem => item.Info.HomeTeam) - @Html.DisplayFor(modelItem => item.Info.AwayTeam)</td>
-        <td>@Html.DisplayFor(modelItem => item.Info.HomeTeamScore)-@Html.DisplayFor(modelItem => item.Info.AwayTeamScore)</td>
-        <td>@Html.DisplayFor(modelItem => item.Info.Place)</td>
+        <td>@Html.DisplayFor(modelItem => item.Date)</td>
+        <td>@Html.DisplayFor(modelItem => item.HomeTeam) - @Html.DisplayFor(modelItem => item.AwayTeam)</td>
+        <td>@Html.DisplayFor(modelItem => item.HomeTeamScore)-@Html.DisplayFor(modelItem => item.AwayTeamScore)</td>
+        <td>@Html.DisplayFor(modelItem => item.Place)</td>
         <td>
-            @CreateEditLink(item.Info)
-            @Html.ActionLink("Detaljer", "Details", new { id = item.Info.Id })
+            @CreateEditLink(item)
+            @Html.ActionLink("Detaljer", "Details", new { id = item.Id })
             @* | @Html.ActionLink("Ta bort", "Delete", new { id=item.Id })*@
         </td>
     </tr>

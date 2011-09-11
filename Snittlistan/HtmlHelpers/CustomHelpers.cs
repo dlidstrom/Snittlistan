@@ -14,7 +14,7 @@ namespace Snittlistan.HtmlHelpers
 		/// <param name="html">The HTML helper instance that this method extends.</param>
 		/// <param name="model">Match view model.</param>
 		/// <returns>The HTML markup with edit and back links.</returns>
-		public static MvcHtmlString GenerateEditBackLinks(this HtmlHelper html, MatchViewModel.MatchInfo model)
+		public static MvcHtmlString GenerateEditBackLinks(this HtmlHelper html, MatchViewModel.MatchDetails model)
 		{
 			var builder = new TagBuilder("p");
 
@@ -34,7 +34,7 @@ namespace Snittlistan.HtmlHelpers
 		/// <param name="html">The HTML helper instance that this method extends.</param>
 		/// <param name="model">Match view model.</param>
 		/// <returns>The HTML markup with an anchor link to BITS.</returns>
-		public static MvcHtmlString GenerateBitsLink(this HtmlHelper html, MatchViewModel.MatchInfo model)
+		public static MvcHtmlString GenerateBitsLink(this HtmlHelper html, MatchViewModel.MatchDetails model)
 		{
 			var builder = new TagBuilder("a");
 			builder.MergeAttribute("href", string.Format("http://bits.swebowl.se/MatchFact.aspx?MatchId={0}", model.BitsMatchId));

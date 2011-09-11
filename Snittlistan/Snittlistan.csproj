@@ -178,8 +178,6 @@
     <Compile Include="Controllers\MatchController.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
     <Compile Include="Models\Team.cs" />
-    <Compile Include="ViewModels\GameViewModel.cs" />
-    <Compile Include="MatchRepository.cs" />
     <Compile Include="Events\DomainEvent.cs" />
     <Compile Include="Events\DomainEventReset.cs" />
     <Compile Include="Events\IDomainEvent.cs" />
@@ -420,10 +418,13 @@
     <Content Include="Views\Match\AddGameSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Match\GamesPartial.cshtml" />
+    <Content Include="Views\Match\DisplayTemplates\Games.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Match\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Match\EditorTemplates\Games.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

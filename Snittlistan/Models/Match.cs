@@ -29,16 +29,11 @@ namespace Snittlistan.Models
 		}
 
 		public int Id { get; set; }
-		public string Place { get; private set; }
-		public DateTime Date { get; private set; }
-		public Team HomeTeam { get; private set; }
-		public Team AwayTeam { get; private set; }
-		public int BitsMatchId { get; private set; }
-
-		public int PinscoreForTeam(string team, int serie)
-		{
-			return 0; // Games.Where(g => g.Team == team && g.SerieNumber == serie).Sum(g => g.PinScore);
-		}
+		public string Place { get; set; }
+		public DateTime Date { get; set; }
+		public Team HomeTeam { get; set; }
+		public Team AwayTeam { get; set; }
+		public int BitsMatchId { get; set; }
 
 		public int LaneScoreForTeam(string team)
 		{
