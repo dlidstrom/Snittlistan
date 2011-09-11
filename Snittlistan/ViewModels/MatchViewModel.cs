@@ -9,9 +9,9 @@ namespace Snittlistan.ViewModels
 	{
 		public MatchDetails Match { get; set; }
 
-		public IList<Game> HomeTeamGames { get; set; }
+		public Team HomeTeam { get; set; }
 
-		public IList<Game> AwayTeamGames { get; set; }
+		public Team AwayTeam { get; set; }
 
 		public class MatchDetails
 		{
@@ -31,25 +31,24 @@ namespace Snittlistan.ViewModels
 
 			[Required, Display(Name = "Datum"), DataType(DataType.Date)]
 			public DateTime Date { get; set; }
-
-			[Required, Display(Name = "Hemmalag")]
-			public string HomeTeam { get; set; }
-
-			[Required, Display(Name = "Banpoäng"), Range(0, 20)]
-			public int HomeTeamScore { get; set; }
-
-			[Required, Display(Name = "Bortalag")]
-			public string AwayTeam { get; set; }
-
-			[Required, Display(Name = "Banpoäng"), Range(0, 20)]
-			public int AwayTeamScore { get; set; }
 		}
 
-		public class Game
+		public class Team
 		{
 			[HiddenInput]
 			public int Id { get; set; }
 
+			[Required, Display(Name = "Namn")]
+			public string Name { get; set; }
+
+			[Required, Display(Name = "Banpoäng"), Range(0, 20)]
+			public int Score { get; set; }
+
+			public IList<Game> Games { get; set; }
+		}
+
+		public class Game
+		{
 			[Required, Display(Name = "Spelare")]
 			public string Player { get; set; }
 
