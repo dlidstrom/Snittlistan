@@ -36,8 +36,8 @@ namespace Snittlistan.Controllers
 			var vm = new MatchViewModel
 			{
 				Match = match.MapTo<MatchViewModel.MatchDetails>(),
-				HomeTeamGames = match.HomeTeam.Games.MapTo<MatchViewModel.Game>(),
-				AwayTeamGames = match.AwayTeam.Games.MapTo<MatchViewModel.Game>()
+				HomeTeam = match.HomeTeam.MapTo<MatchViewModel.Team>(),
+				AwayTeam = match.AwayTeam.MapTo<MatchViewModel.Team>()
 			};
 
 			return View(vm);
@@ -66,8 +66,6 @@ namespace Snittlistan.Controllers
 			var match = new Match(
 				model.Place,
 				model.Date,
-				new Team(model.HomeTeam, model.HomeTeamScore),
-				new Team(model.AwayTeam, model.AwayTeamScore),
 				model.BitsMatchId);
 			Session.Store(match);
 
@@ -90,8 +88,8 @@ namespace Snittlistan.Controllers
 			var vm = new MatchViewModel
 			{
 				Match = match.MapTo<MatchViewModel.MatchDetails>(),
-				HomeTeamGames = match.HomeTeam.Games.MapTo<MatchViewModel.Game>(),
-				AwayTeamGames = match.AwayTeam.Games.MapTo<MatchViewModel.Game>()
+				HomeTeam = match.HomeTeam.MapTo<MatchViewModel.Team>(),
+				AwayTeam = match.AwayTeam.MapTo<MatchViewModel.Team>()
 			};
 
 			return View(vm);

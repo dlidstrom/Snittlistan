@@ -17,14 +17,10 @@ namespace Snittlistan.Models
 		public Match(
 			string place,
 			DateTime date,
-			Team homeTeam,
-			Team awayTeam,
 			int bitsMatchId)
 		{
 			Place = place;
 			Date = date;
-			HomeTeam = homeTeam;
-			AwayTeam = awayTeam;
 			BitsMatchId = bitsMatchId;
 		}
 
