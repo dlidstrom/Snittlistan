@@ -13,7 +13,7 @@
     <RootNamespace>Snittlistan</RootNamespace>
     <AssemblyName>Snittlistan</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <MvcBuildViews Condition="'$(TEAMCITY_PROJECT_NAME)'!=''">true</MvcBuildViews>
+    <MvcBuildViews Condition="'$(Configuration)' == 'Release'">true</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
