@@ -3,9 +3,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Castle.Windsor;
 using Moq;
 using Raven.Client;
 using Raven.Client.Embedded;
+using Snittlistan.Infrastructure;
+using Snittlistan.Installers;
 using Snittlistan.Models;
 
 namespace Snittlistan.Test
@@ -16,6 +19,9 @@ namespace Snittlistan.Test
 
 		public DbTest()
 		{
+			// configure AutoMapper too
+			AutoMapperConfiguration
+				.Configure(new WindsorContainer().Install(new AutoMapperInstaller()));
 			store = new EmbeddableDocumentStore
 			{
 				RunInMemory = true
