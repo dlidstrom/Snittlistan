@@ -1,4 +1,4 @@
-﻿@model MatchViewModel.MatchDetails
+﻿@model MatchViewModel
 
 @{
     ViewBag.Title = "Registrera";
@@ -19,48 +19,48 @@
 
         <table class="invis">
             <tr>
-                <td class="editor-label">@Html.LabelFor(model => model.Place)</td>
+                <td class="editor-label">@Html.LabelFor(model => model.Match.Place)</td>
                 <td class="editor-field">
-                    @Html.EditorFor(model => model.Place)
-                    @Html.ValidationMessageFor(model => model.Place)
+                    @Html.EditorFor(model => model.Match.Place)
+                    @Html.ValidationMessageFor(model => model.Match.Place)
                 </td>
             </tr>
             <tr>
-                <td class="editor-label">@Html.LabelFor(model => model.Date)</td>
+                <td class="editor-label">@Html.LabelFor(model => model.Match.Date)</td>
                 <td class="editor-field">
-                    @Html.EditorFor(model => model.Date)
-                    @Html.ValidationMessageFor(model => model.Date)
+                    @Html.EditorFor(model => model.Match.Date)
+                    @Html.ValidationMessageFor(model => model.Match.Date)
                 </td>
             </tr>
             <tr>
-                <td class="editor-label">@Html.LabelFor(model => model.HomeTeam)</td>
+                <td class="editor-label">@Html.LabelFor(model => model.HomeTeam.Name)</td>
                 <td class="editor-field">
-                    @Html.EditorFor(model => model.HomeTeam)
-                    @Html.ValidationMessageFor(model => model.HomeTeam)
+                    @Html.EditorFor(model => model.HomeTeam.Name)
+                    @Html.ValidationMessageFor(model => model.HomeTeam.Name)
                 </td>
-                <td class="editor-label">@Html.LabelFor(model => model.HomeTeamScore)</td>
+                <td class="editor-label">@Html.LabelFor(model => model.HomeTeam.Score)</td>
                 <td class="editor-field">
-                    @Html.EditorFor(model => model.HomeTeamScore)
-                    @Html.ValidationMessageFor(model => model.HomeTeamScore)
-                </td>
-            </tr>
-            <tr>
-                <td class="editor-label">@Html.LabelFor(model => model.AwayTeam)</td>
-                <td class="editor-field">
-                    @Html.EditorFor(model => model.AwayTeam)
-                    @Html.ValidationMessageFor(model => model.AwayTeam)
-                </td>
-                <td class="editor-label">@Html.LabelFor(model => model.AwayTeamScore)</td>
-                <td class="editor-field">
-                    @Html.EditorFor(model => model.AwayTeamScore)
-                    @Html.ValidationMessageFor(model => model.AwayTeamScore)
+                    @Html.EditorFor(model => model.HomeTeam.Score)
+                    @Html.ValidationMessageFor(model => model.HomeTeam.Score)
                 </td>
             </tr>
             <tr>
-                <td class="editor-label">@Html.LabelFor(model => model.BitsMatchId)</td>
+                <td class="editor-label">@Html.LabelFor(model => model.AwayTeam.Name)</td>
                 <td class="editor-field">
-                    @Html.EditorFor(model => model.BitsMatchId)
-                    @Html.ValidationMessageFor(model => model.BitsMatchId)
+                    @Html.EditorFor(model => model.AwayTeam.Name)
+                    @Html.ValidationMessageFor(model => model.AwayTeam.Name)
+                </td>
+                <td class="editor-label">@Html.LabelFor(model => model.AwayTeam.Score)</td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.AwayTeam.Score)
+                    @Html.ValidationMessageFor(model => model.AwayTeam.Score)
+                </td>
+            </tr>
+            <tr>
+                <td class="editor-label">@Html.LabelFor(model => model.Match.BitsMatchId)</td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.Match.BitsMatchId)
+                    @Html.ValidationMessageFor(model => model.Match.BitsMatchId)
                 </td>
             </tr>
         </table>

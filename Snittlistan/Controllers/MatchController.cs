@@ -21,8 +21,14 @@ namespace Snittlistan.Controllers
 		/// <returns></returns>
 		public ActionResult Index()
 		{
-			var matches = Session.Query<Match>();
-			return View(matches.MapTo<MatchViewModel.MatchDetails>());
+			var matches = Session.Query<Match>()
+				.Select(m => new MatchViewModel
+				{
+					Match = m.MapTo<MatchViewModel.MatchDetails>(),
+					HomeTeam = m.HomeTeam.MapTo<MatchViewModel.Team>(),
+					AwayTeam = m.AwayTeam.MapTo<MatchViewModel.Team>()
+				});
+			return View(matches);
 		}
 
 		/// <summary>
@@ -49,7 +55,7 @@ namespace Snittlistan.Controllers
 		/// <returns></returns>
 		public ActionResult Create()
 		{
-			return View(new MatchViewModel.MatchDetails());
+			return View(new MatchViewModel());
 		}
 
 		/// <summary>
@@ -58,15 +64,17 @@ namespace Snittlistan.Controllers
 		/// <param name="match"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult Create(MatchViewModel.MatchDetails model)
+		public ActionResult Create(MatchViewModel model)
 		{
 			if (!ModelState.IsValid)
 				return View(model);
 
 			var match = new Match(
-				model.Place,
-				model.Date,
-				model.BitsMatchId);
+				model.Match.Place,
+				model.Match.Date,
+				model.Match.BitsMatchId);
+			match.HomeTeam = new Team(model.HomeTeam.Name, model.HomeTeam.Score);
+			match.AwayTeam = new Team(model.AwayTeam.Name, model.AwayTeam.Score);
 			Session.Store(match);
 
 			return RedirectToAction("Details", new { id = match.Id });

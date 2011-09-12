@@ -34,35 +34,35 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Match.HomeTeam)
+            @Html.LabelFor(model => model.HomeTeam.Name)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Match.HomeTeam)
-            @Html.ValidationMessageFor(model => model.Match.HomeTeam)
+            @Html.EditorFor(model => model.HomeTeam.Name)
+            @Html.ValidationMessageFor(model => model.HomeTeam.Name)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Match.HomeTeamScore)
+            @Html.LabelFor(model => model.HomeTeam.Score)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Match.HomeTeamScore)
-            @Html.ValidationMessageFor(model => model.Match.HomeTeamScore)
+            @Html.EditorFor(model => model.HomeTeam.Score)
+            @Html.ValidationMessageFor(model => model.HomeTeam.Score)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Match.AwayTeam)
+            @Html.LabelFor(model => model.AwayTeam.Name)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Match.AwayTeam)
-            @Html.ValidationMessageFor(model => model.Match.AwayTeam)
+            @Html.EditorFor(model => model.AwayTeam.Name)
+            @Html.ValidationMessageFor(model => model.AwayTeam.Name)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Match.AwayTeamScore)
+            @Html.LabelFor(model => model.AwayTeam.Score)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Match.AwayTeamScore)
-            @Html.ValidationMessageFor(model => model.Match.AwayTeamScore)
+            @Html.EditorFor(model => model.AwayTeam.Score)
+            @Html.ValidationMessageFor(model => model.AwayTeam.Score)
         </div>
 
         <div class="editor-label">
@@ -74,11 +74,11 @@
         </div>
         <div class="games-viewmodel">
             <h3>Hemmalag</h3>
-            @Html.EditorFor(model => model.HomeTeamGames, "Games")
+            @Html.EditorFor(model => model.HomeTeam.Games, "Games")
         </div>
         <div class="games-viewmodel">
             <h3>Bortalag</h3>
-            @Html.EditorFor(model => model.AwayTeamGames, "Games")
+            @Html.EditorFor(model => model.AwayTeam.Games, "Games")
         </div>
 
         <p>
