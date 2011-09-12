@@ -13,10 +13,10 @@
             <td>Datum</td><td>@Html.DisplayFor(model => model.Match.Date)</td>
         </tr>
         <tr>
-            <td>Match</td><td>@Html.DisplayFor(model => model.Match.HomeTeam) - @Html.DisplayFor(model => model.Match.AwayTeam)</td>
+            <td>Match</td><td>@Html.DisplayFor(model => model.HomeTeam.Name) - @Html.DisplayFor(model => model.AwayTeam.Name)</td>
         </tr>
         <tr>
-            <td>Resultat</td><td>@Html.DisplayFor(model => model.Match.HomeTeamScore)-@Html.DisplayFor(model => model.Match.AwayTeamScore)</td>
+            <td>Resultat</td><td>@Html.DisplayFor(model => model.HomeTeam.Score)-@Html.DisplayFor(model => model.AwayTeam.Score)</td>
         </tr>
         <tr>
             <td>Plats</td><td>@Html.DisplayFor(model => model.Match.Place)</td>
@@ -27,10 +27,10 @@
     </table>
     <div class="games-viewmodel">
         <h3>Hemmalag</h3>
-        @Html.DisplayFor(model => model.HomeTeamGames, "Games")
+        @Html.DisplayFor(model => model.HomeTeam.Games, "Games")
     </div>
     <div class="games-viewmodel">
         <h3>Bortalag</h3>
-        @Html.DisplayFor(model => model.AwayTeamGames, "Games")
+        @Html.DisplayFor(model => model.AwayTeam.Games, "Games")
     </div>
 </fieldset>
