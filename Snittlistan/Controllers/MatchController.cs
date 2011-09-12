@@ -72,9 +72,9 @@ namespace Snittlistan.Controllers
 			var match = new Match(
 				model.Match.Place,
 				model.Match.Date,
-				model.Match.BitsMatchId);
-			match.HomeTeam = new Team(model.HomeTeam.Name, model.HomeTeam.Score);
-			match.AwayTeam = new Team(model.AwayTeam.Name, model.AwayTeam.Score);
+				model.Match.BitsMatchId,
+				new Team(model.HomeTeam.Name, model.HomeTeam.Score),
+				new Team(model.AwayTeam.Name, model.AwayTeam.Score));
 			Session.Store(match);
 
 			return RedirectToAction("Details", new { id = match.Id });

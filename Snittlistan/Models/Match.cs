@@ -13,18 +13,22 @@ namespace Snittlistan.Models
 		public Match(
 			string place,
 			DateTime date,
-			int bitsMatchId)
+			int bitsMatchId,
+			Team homeTeam,
+			Team awayTeam)
 		{
 			Place = place;
 			Date = date;
 			BitsMatchId = bitsMatchId;
+			HomeTeam = homeTeam;
+			AwayTeam = awayTeam;
 		}
 
 		public int Id { get; set; }
 		public string Place { get; set; }
 		public DateTime Date { get; set; }
-		public Team HomeTeam { get; set; }
-		public Team AwayTeam { get; set; }
+		public Team HomeTeam { get; private set; }
+		public Team AwayTeam { get; private set; }
 		public int BitsMatchId { get; set; }
 
 		public int LaneScoreForTeam(string team)
