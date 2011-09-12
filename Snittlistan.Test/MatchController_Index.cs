@@ -41,7 +41,7 @@ namespace Snittlistan.Test
 			// Assert
 			var matches = result.ToArray();
 			matches.Length.ShouldBe(2);
-			matches[0].Match.Place.ShouldBe("P");
+			matches[0].Match.Place.ShouldBe("P1");
 			matches[1].Match.Place.ShouldBe("P2");
 		}
 	}
