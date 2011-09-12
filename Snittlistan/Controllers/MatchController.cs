@@ -19,7 +19,7 @@ namespace Snittlistan.Controllers
 		/// GET: /Match/
 		/// </summary>
 		/// <returns></returns>
-		public ActionResult Index()
+		public ViewResult Index()
 		{
 			var matches = Session.Query<Match>()
 				.Select(m => new MatchViewModel
@@ -36,7 +36,7 @@ namespace Snittlistan.Controllers
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public ActionResult Details(int id)
+		public ViewResult Details(int id)
 		{
 			var match = Session.Load<Match>(id);
 			var vm = new MatchViewModel
