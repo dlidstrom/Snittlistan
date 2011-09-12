@@ -1,7 +1,6 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using Snittlistan.Events;
 using Snittlistan.Handlers;
 
 namespace Snittlistan.Installers
