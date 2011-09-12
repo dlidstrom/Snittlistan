@@ -14,7 +14,8 @@ namespace Snittlistan.Infrastructure
 				.ForMember(x => x.BitsMatchId, o => o.MapFrom(y => y.BitsMatchId));
 
 			Mapper.CreateMap<Game, MatchViewModel.Game>();
-			Mapper.CreateMap<Team, MatchViewModel.Team>();
+			Mapper.CreateMap<Team, MatchViewModel.Team>()
+				.ForMember(t => t.Id, o => o.Ignore());
 		}
 	}
 }
