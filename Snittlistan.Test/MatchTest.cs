@@ -17,8 +17,8 @@ namespace Snittlistan.Test
 				place: "Sollentuna Bowlinghall",
 				date: DateTime.ParseExact("2011-03-26", "yyyy-MM-dd", CultureInfo.InvariantCulture),
 				bitsMatchId: 3003231);
-			var homeTeam = new Team("Sollentuna Bwk", 13);
-			var awayTeam = new Team("Fredrikshof IF", 6);
+			match.HomeTeam = new Team("Sollentuna Bwk", 13);
+			match.AwayTeam = new Team("Fredrikshof IF", 6);
 			new List<Game>
 				{
 					new Game(1, 1, "Mikael Axelsson", 202, 1),
