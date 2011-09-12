@@ -135,6 +135,8 @@
     <Compile Include="EmailServiceTest.cs" />
     <Compile Include="HandlersInstallerTest.cs" />
     <Compile Include="InstallerTestHelper.cs" />
+    <Compile Include="MatchController_Details.cs" />
+    <Compile Include="MatchController_Index.cs" />
     <Compile Include="MatchTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoutesTest.cs" />
