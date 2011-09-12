@@ -21,8 +21,8 @@ namespace Snittlistan.Test
 
 			// Act
 			var model1 = controller.Details(1).Model as MatchViewModel;
-			var model2 = controller.Details(1).Model as MatchViewModel;
-			var model3 = controller.Details(1).Model as MatchViewModel;
+			var model2 = controller.Details(2).Model as MatchViewModel;
+			var model3 = controller.Details(3).Model as MatchViewModel;
 
 			// Assert
 			model1.Match.Id.ShouldBe(1);
