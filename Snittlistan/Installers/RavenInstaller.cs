@@ -5,7 +5,6 @@ using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Raven.Client;
 using Raven.Client.Embedded;
-using Raven.Database.Server;
 
 namespace Snittlistan.Installers
 {
