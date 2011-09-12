@@ -22,6 +22,7 @@ namespace Snittlistan.Controllers
 		public ViewResult Index()
 		{
 			var matches = Session.Query<Match>()
+				.ToList()
 				.Select(m => new MatchViewModel
 				{
 					Match = m.MapTo<MatchViewModel.MatchDetails>(),
