@@ -32,6 +32,7 @@ namespace Snittlistan.Test
 				HomeTeam = homeTeam,
 				AwayTeam = awayTeam
 			});
+			Session.SaveChanges();
 			WaitForNonStaleResults<Match>();
 
 			// Assert
