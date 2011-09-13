@@ -266,6 +266,7 @@
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\Match.cs" />
     <Compile Include="Models\Player.cs" />
+    <Compile Include="ViewModels\CreateMatchViewModel.cs" />
     <Compile Include="ViewModels\LogOnViewModel.cs" />
     <Compile Include="ViewModels\MatchViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
@@ -408,7 +409,7 @@
     <Content Include="Views\Match\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Match\Create.cshtml" />
+    <Content Include="Views\Match\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Match\AddGame.cshtml" />
