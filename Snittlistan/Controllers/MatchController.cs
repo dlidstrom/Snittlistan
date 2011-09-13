@@ -56,26 +56,26 @@ namespace Snittlistan.Controllers
 		/// <returns></returns>
 		public ViewResult Create()
 		{
-			return View(new MatchViewModel());
+			return View(new RegisterMatchViewModel());
 		}
 
 		/// <summary>
-		/// POST: /Match/Create
+		/// POST: /Match/Register
 		/// </summary>
 		/// <param name="match"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult Create(MatchViewModel model)
+		public ActionResult Register(RegisterMatchViewModel model)
 		{
 			if (!ModelState.IsValid)
 				return View(model);
 
 			var match = new Match(
-				model.Match.Place,
-				model.Match.Date,
-				model.Match.BitsMatchId,
-				new Team(model.HomeTeam.Name, model.HomeTeam.Score),
-				new Team(model.AwayTeam.Name, model.AwayTeam.Score));
+				model.Place,
+				model.Date,
+				model.BitsMatchId,
+				new Team(model.HomeTeamName, model.HomeTeamScore),
+				new Team(model.AwayTeamName, model.AwayTeamScore));
 			Session.Store(match);
 
 			return RedirectToAction("Details", new { id = match.Id });

@@ -1,0 +1,76 @@
+﻿@model RegisterMatchViewModel
+
+@{
+    ViewBag.Title = "Registrera";
+}
+
+@section scripts
+{
+    @Content.Script("jquery.validate.min.js", Url)
+    @Content.Script("jquery.validate.unobtrusive.min.js", Url)
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Matchinformation</legend>
+
+        <table class="invis">
+            <tr>
+                <td class="editor-label">@Html.LabelFor(model => model.Place)</td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.Place)
+                    @Html.ValidationMessageFor(model => model.Place)
+                </td>
+            </tr>
+            <tr>
+                <td class="editor-label">@Html.LabelFor(model => model.Date)</td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.Date)
+                    @Html.ValidationMessageFor(model => model.Date)
+                </td>
+            </tr>
+            <tr>
+                <td class="editor-label">@Html.LabelFor(model => model.HomeTeamName)</td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.HomeTeamName)
+                    @Html.ValidationMessageFor(model => model.HomeTeamName)
+                </td>
+                <td class="editor-label">@Html.LabelFor(model => model.HomeTeamScore)</td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.HomeTeamScore)
+                    @Html.ValidationMessageFor(model => model.HomeTeamScore)
+                </td>
+            </tr>
+            <tr>
+                <td class="editor-label">@Html.LabelFor(model => model.AwayTeamName)</td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.AwayTeamName)
+                    @Html.ValidationMessageFor(model => model.AwayTeamName)
+                </td>
+                <td class="editor-label">@Html.LabelFor(model => model.AwayTeamScore)</td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.AwayTeamScore)
+                    @Html.ValidationMessageFor(model => model.AwayTeamScore)
+                </td>
+            </tr>
+            <tr>
+                <td class="editor-label">@Html.LabelFor(model => model.BitsMatchId)</td>
+                <td class="editor-field">
+                    @Html.EditorFor(model => model.BitsMatchId)
+                    @Html.ValidationMessageFor(model => model.BitsMatchId)
+                </td>
+            </tr>
+        </table>
+
+        <p>
+            <input type="submit" value="Skapa" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Tillbaka", "Index")
+</div>

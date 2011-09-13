@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Snittlistan.Test
 {
-	public class MatchController_Create : DbTest
+	public class MatchController_Register : DbTest
 	{
 		[Fact]
 		public void ViewIsCreate()
@@ -26,11 +26,15 @@ namespace Snittlistan.Test
 			};
 			var homeTeam = new MatchViewModel.Team { Name = "HomeTeam", Score = 13 };
 			var awayTeam = new MatchViewModel.Team { Name = "AwayTeam", Score = 6 };
-			var result = controller.Create(new MatchViewModel
+			var result = controller.Register(new RegisterMatchViewModel
 			{
-				Match = matchDetails,
-				HomeTeam = homeTeam,
-				AwayTeam = awayTeam
+				Place = "Somewhere",
+				Date = now,
+				BitsMatchId = 1,
+				HomeTeamName = "HomeTeam",
+				HomeTeamScore = 13,
+				AwayTeamName = "AwayTeam",
+				AwayTeamScore = 6
 			});
 			Session.SaveChanges();
 			WaitForNonStaleResults<Match>();
