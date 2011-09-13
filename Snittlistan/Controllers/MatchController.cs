@@ -54,7 +54,7 @@ namespace Snittlistan.Controllers
 		/// GET: /Match/Create
 		/// </summary>
 		/// <returns></returns>
-		public ActionResult Create()
+		public ViewResult Create()
 		{
 			return View(new MatchViewModel());
 		}
