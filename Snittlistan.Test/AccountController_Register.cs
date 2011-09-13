@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web.Mvc;
 using Moq;
 using MvcContrib.TestHelper;
 using Snittlistan.Controllers;
@@ -94,6 +95,24 @@ namespace Snittlistan.Test
 
 				result.AssertActionRedirect().ToAction("RegisterSuccess");
 			}
+		}
+
+		[Fact]
+		public void CannotRegisterSameEmailTwice()
+		{
+			// Arrange
+			CreateActivatedUser("F", "L", "e@d.com", "some pwd");
+			var controller = new AccountController(Session, Mock.Of<IAuthenticationService>());
+
+			// Act
+			var result = controller.Register(new RegisterViewModel { Email = "e@d.com" });
+
+			// Assert
+			result.AssertViewRendered().ForView(string.Empty);
+			var view = result as ViewResult;
+			view.ShouldNotBeNull("Expected ViewResult");
+			controller.ModelState.Count.ShouldBe(1);
+			controller.ModelState.ContainsKey("Email").ShouldBe(true);
 		}
 	}
 }
