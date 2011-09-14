@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Xunit;
 using MvcContrib.TestHelper;
-using Snittlistan.Models;
 using Snittlistan.Controllers;
+using Snittlistan.Models;
 using Snittlistan.ViewModels;
+using Xunit;
 
 namespace Snittlistan.Test
 {
