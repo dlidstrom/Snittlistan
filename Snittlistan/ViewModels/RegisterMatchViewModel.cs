@@ -5,11 +5,16 @@ namespace Snittlistan.ViewModels
 {
 	public class RegisterMatchViewModel
 	{
-		[Required, Display(Name = "Plats")]
-		public string Place { get; set; }
+		public RegisterMatchViewModel()
+		{
+			Date = DateTime.Now;
+		}
 
 		[Required, Display(Name = "Datum"), DataType(DataType.Date)]
 		public DateTime Date { get; set; }
+
+		[Required, Display(Name = "Plats")]
+		public string Place { get; set; }
 
 		[Required, Display(Name = "BITS MatchId")]
 		public int BitsMatchId { get; set; }
