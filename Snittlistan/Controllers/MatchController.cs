@@ -110,7 +110,7 @@ namespace Snittlistan.Controllers
 		/// <param name="match"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult Edit(MatchViewModel.MatchDetails model)
+		public ActionResult EditDetails(MatchViewModel.MatchDetails model)
 		{
 			if (!ModelState.IsValid)
 				return View(model);

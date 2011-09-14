@@ -1,0 +1,37 @@
+﻿@model MatchViewModel.MatchDetails
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@using (Html.BeginForm("EditDetails", "Match"))
+{
+    @Html.ValidationSummary(true)
+    <table class="invis">
+        <tr>
+            <td class="editor-label">@Html.LabelFor(model => model.Place)</td>
+            <td class="editor-field">
+                @Html.EditorFor(model => model.Place)
+                @Html.ValidationMessageFor(model => model.Place)
+            </td>
+        </tr>
+        <tr>
+            <td class="editor-label">@Html.LabelFor(model => model.Date)</td>
+            <td class="editor-field">
+                @Html.EditorFor(model => model.Date)
+                @Html.ValidationMessageFor(model => model.Date)
+            </td>
+        </tr>
+        <tr>
+            <td class="editor-label">@Html.LabelFor(model => model.BitsMatchId)</td>
+            <td class="editor-field">
+                @Html.EditorFor(model => model.BitsMatchId)
+                @Html.ValidationMessageFor(model => model.BitsMatchId)
+            </td>
+        </tr>
+    </table>
+
+    <p>
+        <input type="submit" value="Spara" />
+    </p>
+}

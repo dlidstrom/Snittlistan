@@ -418,13 +418,19 @@
     <Content Include="Views\Match\AddGameSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Match\DisplayTemplates\Games.cshtml" />
+    <Content Include="Views\Match\DisplayTemplates\Team.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Match\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Match\EditorTemplates\Games.cshtml" />
+    <Content Include="Views\Match\EditorTemplates\Team.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Match\DisplayTemplates\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Match\EditorTemplates\Details.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
