@@ -51,10 +51,10 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
-		/// GET: /Match/Create
+		/// GET: /Match/Register
 		/// </summary>
 		/// <returns></returns>
-		public ViewResult Create()
+		public ViewResult Register()
 		{
 			return View(new RegisterMatchViewModel());
 		}

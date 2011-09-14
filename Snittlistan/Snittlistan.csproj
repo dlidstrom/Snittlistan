@@ -266,7 +266,7 @@
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\Match.cs" />
     <Compile Include="Models\Player.cs" />
-    <Compile Include="ViewModels\CreateMatchViewModel.cs" />
+    <Compile Include="ViewModels\RegisterMatchViewModel.cs" />
     <Compile Include="ViewModels\LogOnViewModel.cs" />
     <Compile Include="ViewModels\MatchViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
