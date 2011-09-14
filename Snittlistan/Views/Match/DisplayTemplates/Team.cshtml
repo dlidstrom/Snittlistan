@@ -1,8 +1,8 @@
-﻿@model IEnumerable<MatchViewModel.Game>
+﻿@model MatchViewModel.Team
 
 <table>
     <tr><th>Namn</th><th>Serie</th><th>Banpoäng</th></tr>
-    @foreach (var game in Model)
+    @foreach (var game in Model.Games)
     {
         <tr><td>@game.Player</td><td>@game.Pins</td><td>@game.Score</td></tr>
     }

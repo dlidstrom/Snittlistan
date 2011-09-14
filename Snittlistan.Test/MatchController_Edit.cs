@@ -22,7 +22,7 @@ namespace Snittlistan.Test
 			// Act
 			var controller = new MatchController(Session);
 			var now = DateTime.Now;
-			var result = controller.Edit(new MatchViewModel.MatchDetails
+			var result = controller.EditDetails(new MatchViewModel.MatchDetails
 			{
 				Id = originalMatch.Id,
 				Place = "NewPlace",
