@@ -10,6 +10,10 @@ namespace Snittlistan.Controllers
 {
 	public class MatchController : AbstractController
 	{
+		/// <summary>
+		/// Initializes a new instance of the MatchController class.
+		/// </summary>
+		/// <param name="session">Session instance.</param>
 		public MatchController(IDocumentSession session)
 			: base(session)
 		{
