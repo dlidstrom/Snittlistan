@@ -101,6 +101,9 @@ namespace Snittlistan.Controllers
 		public ActionResult Edit(int id)
 		{
 			var match = Session.Load<Match>(id);
+			if (match == null)
+				return HttpNotFound();
+
 			var vm = new MatchViewModel
 			{
 				Match = match.MapTo<MatchViewModel.MatchDetails>(),
@@ -123,6 +126,9 @@ namespace Snittlistan.Controllers
 				return View(model);
 
 			var match = Session.Load<Match>(model.Id);
+			if (match == null)
+				return HttpNotFound();
+
 			match.Place = model.Place;
 			match.Date = model.Date;
 			match.BitsMatchId = model.BitsMatchId;
@@ -138,6 +144,9 @@ namespace Snittlistan.Controllers
 		public ActionResult Delete(int id)
 		{
 			var match = Session.Load<Match>(id);
+			if (match == null)
+				return HttpNotFound();
+
 			return View(match.MapTo<MatchViewModel.MatchDetails>());
 		}
 
