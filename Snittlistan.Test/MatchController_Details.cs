@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web.Mvc;
 using MvcContrib.TestHelper;
 using Snittlistan.Controllers;
 using Snittlistan.Models;
@@ -20,11 +21,17 @@ namespace Snittlistan.Test
 			var controller = new MatchController(Session);
 
 			// Act
-			var model1 = controller.Details(1).Model as MatchViewModel;
-			var model2 = controller.Details(2).Model as MatchViewModel;
-			var model3 = controller.Details(3).Model as MatchViewModel;
+			var view1 = controller.Details(1) as ViewResult;
+			var view2 = controller.Details(2) as ViewResult;
+			var view3 = controller.Details(3) as ViewResult;
 
 			// Assert
+			view1.ShouldNotBeNull("Must return ViewResult");
+			view2.ShouldNotBeNull("Must return ViewResult");
+			view3.ShouldNotBeNull("Must return ViewResult");
+			var model1 = view1.Model as MatchViewModel;
+			var model2 = view1.Model as MatchViewModel;
+			var model3 = view1.Model as MatchViewModel;
 			model1.Match.Id.ShouldBe(1);
 			model2.Match.Id.ShouldBe(2);
 			model3.Match.Id.ShouldBe(3);
