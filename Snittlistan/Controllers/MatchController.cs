@@ -37,9 +37,12 @@ namespace Snittlistan.Controllers
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public ViewResult Details(int id)
+		public ActionResult Details(int id)
 		{
 			var match = Session.Load<Match>(id);
+			if (match == null)
+				return HttpNotFound();
+
 			var vm = new MatchViewModel
 			{
 				Match = match.MapTo<MatchViewModel.MatchDetails>(),
