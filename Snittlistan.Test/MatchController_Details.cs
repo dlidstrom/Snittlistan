@@ -30,8 +30,8 @@ namespace Snittlistan.Test
 			view2.ShouldNotBeNull("Must return ViewResult");
 			view3.ShouldNotBeNull("Must return ViewResult");
 			var model1 = view1.Model as MatchViewModel;
-			var model2 = view1.Model as MatchViewModel;
-			var model3 = view1.Model as MatchViewModel;
+			var model2 = view2.Model as MatchViewModel;
+			var model3 = view3.Model as MatchViewModel;
 			model1.Match.Id.ShouldBe(1);
 			model2.Match.Id.ShouldBe(2);
 			model3.Match.Id.ShouldBe(3);
