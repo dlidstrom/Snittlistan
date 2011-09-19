@@ -1,30 +1,29 @@
-﻿using System.Collections.Generic;
-using Castle.MicroKernel.Registration;
-using Castle.Windsor;
+﻿using Moq;
+using MvcContrib.TestHelper;
+using Snittlistan.Events;
 using Snittlistan.Handlers;
+using Snittlistan.Models;
 using Snittlistan.Services;
-using Xunit;
 
 namespace Snittlistan.Test
 {
 	public class SendRegistrationEmailHandlerTest
 	{
-		[Fact(Skip = "Not sure how to assert")]
 		public void ShouldSendMail()
 		{
-			var es = new EmailServiceStub();
-			var handler = new SendRegistrationEmailHandler(es);
-			var container = new WindsorContainer()
-				.Register(Component.For<IEmailService>().ImplementedBy<EmailServiceStub>());
-		}
-
-		public class EmailServiceStub : IEmailService
-		{
-			public List<string> EmailsToSend { get; set; }
-			public void SendMail(string recipient, string subject, string body)
+			var service = Mock.Of<IEmailService>();
+			var recipient = It.Is<string>(s => s == "e@d.com");
+			var subject = It.Is<string>(s => s == "subject");
+			bool mailSent = false;
+			Mock.Get(service)
+				.Setup(s => s.SendMail(recipient, subject, It.IsAny<string>()))
+				.Callback(() => mailSent = true);
+			var handler = new SendRegistrationEmailHandler(service);
+			handler.Handle(new NewUserCreatedEvent
 			{
-				EmailsToSend.Add(recipient + ": " + subject);
-			}
+				User = new User("F", "L", "e@d.com", "some pwd")
+			});
+			mailSent.ShouldBe(true);
 		}
 	}
 }
