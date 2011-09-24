@@ -50,6 +50,16 @@ namespace Snittlistan.Test
 		}
 
 		[Fact]
+		public void CannotPostNonExistingMatch()
+		{
+			var controller = new MatchController(Session);
+			var result = controller.EditDetails(new MatchViewModel.MatchDetails { Id = 1 });
+
+			// Assert
+			result.AssertResultIs<HttpNotFoundResult>();
+		}
+
+		[Fact]
 		public void CanEditTeam()
 		{
 			Assert.True(false, "Not implemented yet");
