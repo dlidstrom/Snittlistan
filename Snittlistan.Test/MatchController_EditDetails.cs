@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web.Mvc;
 using MvcContrib.TestHelper;
 using Snittlistan.Controllers;
 using Snittlistan.Models;
@@ -7,10 +8,10 @@ using Xunit;
 
 namespace Snittlistan.Test
 {
-	public class MatchController_Edit : DbTest
+	public class MatchController_EditDetails : DbTest
 	{
 		[Fact]
-		public void CanEditMatch()
+		public void CanEditDetails()
 		{
 			// Arrange
 			var then = DateTime.Now.AddDays(-1);
@@ -41,7 +42,11 @@ namespace Snittlistan.Test
 		[Fact]
 		public void CannotEditNonExistingMatch()
 		{
-			Assert.True(false, "Not implemented yet");
+			var controller = new MatchController(Session);
+			var result = controller.EditDetails(1);
+
+			// Assert
+			result.AssertResultIs<HttpNotFoundResult>();
 		}
 
 		[Fact]
