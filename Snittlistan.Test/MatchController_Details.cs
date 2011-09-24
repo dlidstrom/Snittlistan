@@ -22,18 +22,18 @@ namespace Snittlistan.Test
 
 			// Act
 			var view1 = controller.Details(1) as ViewResult;
-			var view2 = controller.Details(2) as ViewResult;
-			var view3 = controller.Details(3) as ViewResult;
-
-			// Assert
 			view1.ShouldNotBeNull("Must return ViewResult");
-			view2.ShouldNotBeNull("Must return ViewResult");
-			view3.ShouldNotBeNull("Must return ViewResult");
 			var model1 = view1.Model as MatchViewModel;
-			var model2 = view2.Model as MatchViewModel;
-			var model3 = view3.Model as MatchViewModel;
 			model1.Match.Id.ShouldBe(1);
+
+			var view2 = controller.Details(2) as ViewResult;
+			view2.ShouldNotBeNull("Must return ViewResult");
+			var model2 = view2.Model as MatchViewModel;
 			model2.Match.Id.ShouldBe(2);
+
+			var view3 = controller.Details(3) as ViewResult;
+			view3.ShouldNotBeNull("Must return ViewResult");
+			var model3 = view3.Model as MatchViewModel;
 			model3.Match.Id.ShouldBe(3);
 		}
 	}
