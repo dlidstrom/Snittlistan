@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Snittlistan.Models
 {
@@ -30,16 +31,6 @@ namespace Snittlistan.Models
 		public Team HomeTeam { get; private set; }
 		public Team AwayTeam { get; private set; }
 		public int BitsMatchId { get; set; }
-
-		public int LaneScoreForTeam(string team)
-		{
-			return 0; // Games.Where(g => g.Team == team).Sum(g => g.LaneScore) / 2;
-		}
-
-		public int LaneScoreForTeam(string team, int serie)
-		{
-			return 0; // Games.Where(g => g.Team == team && g.SerieNumber == serie).Sum(g => g.LaneScore) / 2;
-		}
 
 		public string FormattedLaneScore()
 		{

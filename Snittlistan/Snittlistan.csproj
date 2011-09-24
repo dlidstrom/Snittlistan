@@ -178,6 +178,8 @@
     <Compile Include="Controllers\MailController.cs" />
     <Compile Include="Controllers\MatchController.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
+    <Compile Include="Models\Serie.cs" />
+    <Compile Include="Models\Table.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="Events\DomainEvent.cs" />
     <Compile Include="Events\DomainEventReset.cs" />
