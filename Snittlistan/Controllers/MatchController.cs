@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
 using Raven.Client;
 using Snittlistan.Infrastructure;
@@ -93,20 +92,13 @@ namespace Snittlistan.Controllers
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public ActionResult Edit(int id)
+		public ActionResult EditDetails(int id)
 		{
 			var match = Session.Load<Match>(id);
 			if (match == null)
 				return HttpNotFound();
 
-			var vm = new MatchViewModel
-			{
-				Match = match.MapTo<MatchViewModel.MatchDetails>(),
-				HomeTeam = match.HomeTeam.MapTo<TeamViewModel>(),
-				AwayTeam = match.AwayTeam.MapTo<TeamViewModel>()
-			};
-
-			return View(vm);
+			return View(match.MapTo<MatchViewModel.MatchDetails>());
 		}
 
 		/// <summary>
