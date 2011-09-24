@@ -206,6 +206,7 @@
     <Compile Include="IoC\ControllerFactoryInstaller.cs" />
     <Compile Include="Installers\ControllerInstaller.cs" />
     <Compile Include="IoC\WindsorControllerFactory.cs" />
+    <Compile Include="ViewModels\TeamViewModel.cs" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -418,19 +419,19 @@
     <Content Include="Views\Match\AddGameSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Match\DisplayTemplates\Team.cshtml" />
+    <Content Include="Views\Match\DisplayTemplates\TeamDisplay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Match\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Match\EditorTemplates\Team.cshtml" />
+    <Content Include="Views\Match\EditorTemplates\TeamEditor.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Match\DisplayTemplates\Details.cshtml" />
+    <Content Include="Views\Match\DisplayTemplates\MatchDisplay.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Match\EditorTemplates\Details.cshtml" />
+    <Content Include="Views\Match\EditorTemplates\MatchEditor.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

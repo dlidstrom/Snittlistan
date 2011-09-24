@@ -24,17 +24,23 @@ namespace Snittlistan.Test
 				Date = now,
 				Place = "Somewhere"
 			};
-			var homeTeam = new MatchViewModel.Team { Name = "HomeTeam", Score = 13 };
-			var awayTeam = new MatchViewModel.Team { Name = "AwayTeam", Score = 6 };
+			var homeTeam = new TeamViewModel { Name = "HomeTeam", Score = 13 };
+			var awayTeam = new TeamViewModel { Name = "AwayTeam", Score = 6 };
 			var result = controller.Register(new RegisterMatchViewModel
 			{
 				Place = "Somewhere",
 				Date = now,
 				BitsMatchId = 1,
-				HomeTeamName = "HomeTeam",
-				HomeTeamScore = 13,
-				AwayTeamName = "AwayTeam",
-				AwayTeamScore = 6
+				HomeTeam = new TeamViewModel
+				{
+					Name = "HomeTeam",
+					Score = 13
+				},
+				AwayTeam = new TeamViewModel
+				{
+					Name = "AwayTeam",
+					Score = 6
+				}
 			});
 			Session.SaveChanges();
 			WaitForNonStaleResults<Match>();

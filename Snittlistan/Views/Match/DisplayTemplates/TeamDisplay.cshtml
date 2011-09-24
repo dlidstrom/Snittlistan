@@ -1,0 +1,25 @@
+﻿@model TeamViewModel
+
+<table>
+<tr><th>Serie</th><th>Bord</th><th></th><th>Banpoäng</th><th>X</th><th>Miss</th><th>9-</th><th>Hål</th></tr>
+<tr><td rowspan="8">1</td></tr>
+<tr><td rowspan="2">1</td><td>Micke</td><td>202</td><td>5</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>Chrille</td><td>224</td><td>6</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td rowspan="2">2</td><td>Hasse</td><td>202</td><td>5</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>Öberg</td><td>224</td><td>6</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td rowspan="2">3</td><td>Peter</td><td>202</td><td>5</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>Jansson</td><td>224</td><td>6</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td rowspan="2">4</td><td>Tobbe</td><td>202</td><td>5</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>TW</td><td>224</td><td>6</td><td>0</td><td>0</td><td>0</td></tr>
+</table>
+@*
+    @for (int i = 0; i < Model.Series; i++)
+    {
+        var serie = Model.Series[i];
+        <tr><td rowspan="2">i</td></tr>
+        for (int j = 0; j < serie.Tables; j++)
+        {
+            
+        }
+    }
+*@
