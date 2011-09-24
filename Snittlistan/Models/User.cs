@@ -6,6 +6,9 @@ using Snittlistan.Events;
 
 namespace Snittlistan.Models
 {
+	/// <summary>
+	/// Represents a registered user.
+	/// </summary>
 	public class User
 	{
 		private const string ConstantSalt = "CheFe2ra8en9SW";
@@ -33,9 +36,24 @@ namespace Snittlistan.Models
 			HashedPassword = ComputeHashedPassword(password);
 		}
 
+		/// <summary>
+		/// Gets the user id.
+		/// </summary>
 		public string Id { get; private set; }
+
+		/// <summary>
+		/// Gets the email address.
+		/// </summary>
 		public string Email { get; private set; }
+
+		/// <summary>
+		/// Gets a value indicating whether the user is activated.
+		/// </summary>
 		public bool IsActive { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the activation key.
+		/// </summary>
 		public string ActivationKey
 		{
 			get
@@ -49,14 +67,23 @@ namespace Snittlistan.Models
 			set { activationKey = value; }
 		}
 
-		// Other user properties
+		/// <summary>
+		/// Gets the first name.
+		/// </summary>
 		public string FirstName { get; private set; }
+
+		/// <summary>
+		/// Gets the last name.
+		/// </summary>
 		public string LastName { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the hashed password.
+		/// </summary>
 		private string HashedPassword { get; set; }
 
 		/// <summary>
-		/// Password salt, per user.
+		/// Gets or sets the password salt, per user.
 		/// </summary>
 		private Guid PasswordSalt
 		{
@@ -70,27 +97,47 @@ namespace Snittlistan.Models
 			set { passwordSalt = value; }
 		}
 
+		/// <summary>
+		/// Sets the password.
+		/// </summary>
+		/// <param name="password">New password.</param>
 		public void SetPassword(string password)
 		{
 			HashedPassword = ComputeHashedPassword(password);
 		}
 
+		/// <summary>
+		/// Validates a password against the user password.
+		/// </summary>
+		/// <param name="somePassword">Password to validate.</param>
+		/// <returns>True if valid; false otherwise.</returns>
 		public bool ValidatePassword(string somePassword)
 		{
 			return HashedPassword == ComputeHashedPassword(somePassword);
 		}
 
+		/// <summary>
+		/// Initializes a new user. Must be done for new users.
+		/// </summary>
 		public void Initialize()
 		{
 			ActivationKey = Guid.NewGuid().ToString();
 			DomainEvent.Raise(new NewUserCreatedEvent { User = this });
 		}
 
+		/// <summary>
+		/// Activates a user. This allows them to log on.
+		/// </summary>
 		public void Activate()
 		{
 			IsActive = true;
 		}
 
+		/// <summary>
+		/// Computes a hashed password.
+		/// </summary>
+		/// <param name="password">Password to hash.</param>
+		/// <returns>Hashed password.</returns>
 		private string ComputeHashedPassword(string password)
 		{
 			string hashedPassword;

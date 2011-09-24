@@ -7,16 +7,24 @@ namespace Snittlistan.Models
 	{
 		private List<Game> games = new List<Game>();
 
+		/// <summary>
+		/// Initializes a new instance of the Team class.
+		/// </summary>
+		/// <param name="name">Name of the team.</param>
+		/// <param name="score">Total score.</param>
 		public Team(string name, int score)
 		{
 			Name = name;
 			Score = score;
 		}
 
+		/// <summary>
+		/// Gets or sets the name.
+		/// </summary>
 		public string Name { get; set; }
 
 		/// <summary>
-		/// Gets the total score.
+		/// Gets or sets the total score.
 		/// </summary>
 		public int Score { get; set; }
 
