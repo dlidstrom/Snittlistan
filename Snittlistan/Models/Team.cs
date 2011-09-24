@@ -5,8 +5,6 @@ namespace Snittlistan.Models
 {
 	public class Team
 	{
-		private List<Game> games = new List<Game>();
-
 		/// <summary>
 		/// Initializes a new instance of the Team class.
 		/// </summary>
@@ -16,6 +14,7 @@ namespace Snittlistan.Models
 		{
 			Name = name;
 			Score = score;
+			Series = new List<Serie>();
 		}
 
 		/// <summary>
@@ -29,42 +28,34 @@ namespace Snittlistan.Models
 		public int Score { get; set; }
 
 		/// <summary>
+		/// Gets or sets the series.
+		/// </summary>
+		public List<Serie> Series { get; set; }
+
+		/// <summary>
 		/// Gets the total pins.
 		/// </summary>
 		public int Pins
 		{
 			get
 			{
-				return games.Sum(g => g.Pins);
-			}
-		}
-
-		public IEnumerable<Game> Games
-		{
-			get
-			{
-				return games;
+				return Series.Sum(s => s.Pins);
 			}
 		}
 
 		public int ScoreFor(int serie)
 		{
-			return games.Where(g => g.Serie == serie).Sum(g => g.Score) / 2;
+			return Series[serie - 1].Score();
 		}
 
 		public int PinsFor(int serie)
 		{
-			return games.Where(g => g.Serie == serie).Sum(g => g.Pins);
-		}
-
-		public void AddGame(Game game)
-		{
-			games.Add(game);
+			return Series[serie - 1].Pins;
 		}
 
 		public int PinscoreForPlayer(string player)
 		{
-			return games.Where(g => g.Player == player).Sum(g => g.Pins);
+			return Series.Sum(s => s.PinscoreForPlay(player));
 		}
 	}
 }

@@ -40,6 +40,12 @@ namespace Snittlistan.ViewModels
 				SecondGame = new Game();
 			}
 
+			/// <summary>
+			/// Gets or sets the score.
+			/// </summary>
+			[Display(Name = "Banpoäng")]
+			public int Score { get; set; }
+
 			public Game FirstGame { get; set; }
 			public Game SecondGame { get; set; }
 		}
@@ -64,12 +70,6 @@ namespace Snittlistan.ViewModels
 			public int Pins { get; set; }
 
 			/// <summary>
-			/// Gets or sets the score.
-			/// </summary>
-			[Display(Name = "Banpoäng")]
-			public int Score { get; set; }
-
-			/// <summary>
 			/// Gets or sets the number of strikes.
 			/// </summary>
 			[Display(Name = "X")]
@@ -92,6 +92,12 @@ namespace Snittlistan.ViewModels
 			/// </summary>
 			[Display(Name = "Hål")]
 			public int Splits { get; set; }
+
+			/// <summary>
+			/// Gets or sets a value indicating whether all frames were covered.
+			/// </summary>
+			[Display(Name = "Alla täckta")]
+			public bool CoveredAll { get; set; }
 		}
 	}
 }

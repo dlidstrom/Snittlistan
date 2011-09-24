@@ -19,41 +19,130 @@ namespace Snittlistan.Test
 				bitsMatchId: 3003231,
 				homeTeam: new Team("Sollentuna Bwk", 13),
 				awayTeam: new Team("Fredrikshof IF", 6));
-			new List<Game>
+			var series = new List<Serie>
 				{
-					new Game(1, 1, "Mikael Axelsson", 202, 1),
-					new Game(1, 1, "Christer Liedholm", 218, 1),
-					new Game(1, 2, "Kjell Persson", 172, 0),
-					new Game(1, 2, "Peter Sjöberg", 220, 0),
-					new Game(1, 3, "Kjell Jansson", 166, 0),
-					new Game(1, 3, "Hans Norbeck", 194, 0),
-					new Game(1, 4, "Lars Öberg", 222, 1),
-					new Game(1, 4, "Torbjörn Jensen", 204, 1),
-					new Game(2, 1, "Lars Öberg", 182, 1),
-					new Game(2, 1, "Torbjörn Jensen", 211, 1),
-					new Game(2, 2, "Kjell Jansson", 208, 1),
-					new Game(2, 2, "Hans Norbeck", 227, 1),
-					new Game(2, 3, "Kjell Persson", 194, 0),
-					new Game(2, 3, "Peter Sjöberg", 195, 0),
-					new Game(2, 4, "Mikael Axelsson", 206, 0),
-					new Game(2, 4, "Christer Liedholm", 150, 0),
-					new Game(3, 1, "Kjell Persson", 174, 0),
-					new Game(3, 1, "Peter Sjöberg", 182, 0),
-					new Game(3, 2, "Mikael Axelsson", 214, 1),
-					new Game(3, 2, "Christer Liedholm", 176, 1),
-					new Game(3, 3, "Lars Öberg", 168, 0),
-					new Game(3, 3, "Torbjörn Jensen", 199, 0),
-					new Game(3, 4, "Kjell Jansson", 180, 0),
-					new Game(3, 4, "Hans Norbeck", 212, 0),
-					new Game(4, 1, "Kjell Jansson", 189, 0),
-					new Game(4, 1, "Hans Norbeck", 181, 0),
-					new Game(4, 2, "Lars Öberg", 227, 0),
-					new Game(4, 2, "Torbjörn Jensen", 180, 0),
-					new Game(4, 3, "Mikael Axelsson", 223, 1),
-					new Game(4, 3, "Christer Liedholm", 191, 1),
-					new Game(4, 4, "Thomas Gurell", 159, 0),
-					new Game(4, 4, "Peter Sjöberg", 190, 0),
-				}.ForEach(g => match.AwayTeam.AddGame(g));
+					new Serie
+					{
+						Tables = new List<Table>
+						{
+							new Table
+							{
+								Score = 1,
+								FirstGame = new Game("Mikael Axelsson", 202),
+								SecondGame = new Game("Christer Liedholm", 218)
+							},
+							new Table
+							{
+								Score = 0,
+								FirstGame = new Game("Kjell Persson", 172),
+								SecondGame = new Game("Peter Sjöberg", 220),
+							},
+							new Table
+							{
+								Score = 0,
+								FirstGame = new Game("Kjell Jansson", 166),
+								SecondGame = new Game("Hans Norbeck", 194)
+							},
+							new Table
+							{
+								Score = 1,
+								FirstGame = new Game("Lars Öberg", 222),
+								SecondGame = new Game("Torbjörn Jensen", 204)
+							}
+						}
+					},
+					new Serie
+					{
+						Tables = new List<Table>
+						{
+							new Table
+							{
+								Score = 1,
+								FirstGame = new Game("Lars Öberg", 182),
+								SecondGame = new Game("Torbjörn Jensen", 211)
+							},
+							new Table
+							{
+								Score = 1,
+								FirstGame = new Game("Kjell Jansson", 208),
+								SecondGame = new Game("Hans Norbeck", 227)
+							},
+							new Table
+							{
+								Score = 0,
+								FirstGame = new Game("Kjell Persson", 194),
+								SecondGame = new Game("Peter Sjöberg", 195)
+							},
+							new Table
+							{
+								Score = 0,
+								FirstGame = new Game("Mikael Axelsson", 206),
+								SecondGame = new Game("Christer Liedholm", 150)
+							}
+						}
+					},
+					new Serie
+					{
+						Tables = new List<Table>
+						{
+							new Table
+							{
+								Score = 0,
+								FirstGame = new Game("Kjell Persson", 174),
+								SecondGame = new Game("Peter Sjöberg", 182)
+							},
+							new Table
+							{
+								Score = 1,
+								FirstGame = new Game("Mikael Axelsson", 214),
+								SecondGame = new Game("Christer Liedholm", 176)
+							},
+							new Table
+							{
+								Score = 0,
+								FirstGame = new Game("Lars Öberg", 168),
+								SecondGame = new Game("Torbjörn Jensen", 199)
+							},
+							new Table
+							{
+								Score = 0,
+								FirstGame = new Game("Kjell Jansson", 180),
+								SecondGame = new Game("Hans Norbeck", 212)
+							}
+						}
+					},
+					new Serie
+					{
+						Tables = new List<Table>
+						{
+							new Table
+							{
+								Score = 0,
+								FirstGame = new Game("Kjell Jansson", 189),
+								SecondGame = new Game("Hans Norbeck", 181)
+							},
+							new Table
+							{
+								Score = 0,
+								FirstGame = new Game("Lars Öberg", 227),
+								SecondGame = new Game("Torbjörn Jensen", 180)
+							},
+							new Table
+							{
+								Score = 1,
+								FirstGame = new Game("Mikael Axelsson", 223),
+								SecondGame = new Game("Christer Liedholm", 191)
+							},
+							new Table
+							{
+								Score = 0,
+								FirstGame = new Game("Thomas Gurell", 159),
+								SecondGame = new Game("Peter Sjöberg", 190)
+							}
+						}
+					}
+				};
+			match.AwayTeam.Series = series;
 
 			Session.Store(match);
 			Session.SaveChanges();
