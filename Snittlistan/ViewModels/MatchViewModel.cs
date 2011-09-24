@@ -27,7 +27,7 @@ namespace Snittlistan.ViewModels
 			public int BitsMatchId { get; set; }
 
 			[Required, Display(Name = "Plats")]
-			public string Place { get; set; }
+			public string Location { get; set; }
 
 			[Required, Display(Name = "Datum"), DataType(DataType.Date)]
 			public DateTime Date { get; set; }

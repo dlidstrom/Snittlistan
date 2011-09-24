@@ -14,7 +14,7 @@ namespace Snittlistan.Test
 		public MatchTest()
 		{
 			match = new Match(
-				place: "Sollentuna Bowlinghall",
+				location: "Sollentuna Bowlinghall",
 				date: DateTime.ParseExact("2011-03-26", "yyyy-MM-dd", CultureInfo.InvariantCulture),
 				bitsMatchId: 3003231,
 				homeTeam: new Team("Sollentuna Bwk", 13),
