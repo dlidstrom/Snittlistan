@@ -27,7 +27,7 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
-		/// Gets or sets the document session.
+		/// Gets the document session.
 		/// </summary>
 		public new IDocumentSession Session { get; private set; }
 

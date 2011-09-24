@@ -20,7 +20,7 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
-		/// GET: /Match/
+		/// GET: /Match/.
 		/// </summary>
 		/// <returns></returns>
 		public ViewResult Index()
@@ -37,7 +37,7 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
-		/// GET: /Match/Details/5
+		/// GET: /Match/Details/5.
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
@@ -58,7 +58,7 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
-		/// GET: /Match/Register
+		/// GET: /Match/Register.
 		/// </summary>
 		/// <returns></returns>
 		public ViewResult Register()
@@ -67,9 +67,9 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
-		/// POST: /Match/Register
+		/// POST: /Match/Register.
 		/// </summary>
-		/// <param name="match"></param>
+		/// <param name="model"></param>
 		/// <returns></returns>
 		[HttpPost]
 		public ActionResult Register(RegisterMatchViewModel model)
@@ -94,7 +94,7 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
-		/// GET: /Match/Edit/5
+		/// GET: /Match/Edit/5.
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
@@ -115,9 +115,9 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
-		/// POST: /Match/Edit/5
+		/// POST: /Match/Edit/5.
 		/// </summary>
-		/// <param name="match"></param>
+		/// <param name="model"></param>
 		/// <returns></returns>
 		[HttpPost]
 		public ActionResult EditDetails(MatchViewModel.MatchDetails model)
@@ -137,7 +137,7 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
-		/// GET: /Match/Delete/5
+		/// GET: /Match/Delete/5.
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
@@ -151,7 +151,7 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
-		/// POST: /Match/Delete/5
+		/// POST: /Match/Delete/5.
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>

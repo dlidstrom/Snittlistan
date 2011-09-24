@@ -31,7 +31,7 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
-		/// GET: /Account/LogOn
+		/// GET: /Account/LogOn.
 		/// </summary>
 		/// <returns></returns>
 		public ActionResult LogOn()
@@ -40,7 +40,7 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
-		/// POST: /Account/LogOn
+		/// POST: /Account/LogOn.
 		/// </summary>
 		/// <param name="model"></param>
 		/// <param name="returnUrl"></param>
@@ -84,7 +84,7 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
-		/// GET: /Account/LogOff
+		/// GET: /Account/LogOff.
 		/// </summary>
 		/// <returns></returns>
 		public ActionResult LogOff()
@@ -94,7 +94,7 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
-		/// GET: /Account/Register
+		/// GET: /Account/Register.
 		/// </summary>
 		/// <returns></returns>
 		public ActionResult Register()
@@ -103,7 +103,7 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
-		/// POST: /Account/Register
+		/// POST: /Account/Register.
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
@@ -126,7 +126,7 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
-		/// GET: /Account/ChangePassword
+		/// GET: /Account/ChangePassword.
 		/// </summary>
 		/// <returns></returns>
 		[Authorize]
@@ -136,7 +136,7 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
-		/// POST: /Account/ChangePassword
+		/// POST: /Account/ChangePassword.
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
@@ -159,7 +159,7 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
-		/// GET: /Account/ChangePasswordSuccess
+		/// GET: /Account/ChangePasswordSuccess.
 		/// </summary>
 		/// <returns></returns>
 		public ActionResult ChangePasswordSuccess()
@@ -168,7 +168,7 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
-		/// GET: /Account/RegisterSuccess
+		/// GET: /Account/RegisterSuccess.
 		/// </summary>
 		/// <returns></returns>
 		public ActionResult RegisterSuccess()
@@ -177,7 +177,7 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
-		/// GET: /Account/Verify
+		/// GET: /Account/Verify.
 		/// </summary>
 		/// <param name="activationKey">Key to activate user.</param>
 		/// <returns>LogOn or Register view.</returns>
@@ -198,7 +198,7 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
-		/// GET: /Account/VerifySuccess
+		/// GET: /Account/VerifySuccess.
 		/// </summary>
 		/// <returns></returns>
 		public ActionResult VerifySuccess()
