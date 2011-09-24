@@ -36,5 +36,15 @@ namespace Snittlistan.Test
 			var model3 = view3.Model as MatchViewModel;
 			model3.Match.Id.ShouldBe(3);
 		}
+
+		[Fact]
+		public void CannotViewNonExistingMatch()
+		{
+			var controller = new MatchController(Session);
+			var result = controller.Details(1);
+
+			// Assert
+			result.AssertResultIs<HttpNotFoundResult>();
+		}
 	}
 }
