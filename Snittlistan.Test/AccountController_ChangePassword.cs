@@ -55,6 +55,7 @@ namespace Snittlistan.Test
 		/// <summary>
 		/// Creates a user with random password.
 		/// </summary>
+		/// <param name="email"></param>
 		/// <returns></returns>
 		private AccountController CreateUserAndController(string email)
 		{
