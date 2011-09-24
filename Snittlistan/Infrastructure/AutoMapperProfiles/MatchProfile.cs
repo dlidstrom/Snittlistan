@@ -13,8 +13,8 @@ namespace Snittlistan.Infrastructure
 				.ForMember(x => x.Date, o => o.MapFrom(y => y.Date))
 				.ForMember(x => x.BitsMatchId, o => o.MapFrom(y => y.BitsMatchId));
 
-			Mapper.CreateMap<Game, MatchViewModel.Game>();
-			Mapper.CreateMap<Team, MatchViewModel.Team>()
+			Mapper.CreateMap<Game, TeamViewModel.Game>();
+			Mapper.CreateMap<Team, TeamViewModel>()
 				.ForMember(t => t.Id, o => o.Ignore());
 		}
 	}

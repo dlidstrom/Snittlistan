@@ -8,6 +8,9 @@ namespace Snittlistan.ViewModels
 		public RegisterMatchViewModel()
 		{
 			Date = DateTime.Now;
+			Place = string.Empty;
+			HomeTeam = new TeamViewModel();
+			AwayTeam = new TeamViewModel();
 		}
 
 		[Required, Display(Name = "Datum"), DataType(DataType.Date)]
@@ -19,16 +22,10 @@ namespace Snittlistan.ViewModels
 		[Required, Display(Name = "BITS MatchId")]
 		public int BitsMatchId { get; set; }
 
-		[Required, Display(Name = "Hemmalag")]
-		public string HomeTeamName { get; set; }
+		[Display(Name = "Hemmalag")]
+		public TeamViewModel HomeTeam { get; set; }
 
-		[Required, Display(Name = "Banpoäng"), Range(0, 20)]
-		public int HomeTeamScore { get; set; }
-
-		[Required, Display(Name = "Bortalag")]
-		public string AwayTeamName { get; set; }
-
-		[Required, Display(Name = "Banpoäng"), Range(0, 20)]
-		public int AwayTeamScore { get; set; }
+		[Display(Name = "Bortalag")]
+		public TeamViewModel AwayTeam { get; set; }
 	}
 }

@@ -30,8 +30,8 @@ namespace Snittlistan.Controllers
 				.Select(m => new MatchViewModel
 				{
 					Match = m.MapTo<MatchViewModel.MatchDetails>(),
-					HomeTeam = m.HomeTeam.MapTo<MatchViewModel.Team>(),
-					AwayTeam = m.AwayTeam.MapTo<MatchViewModel.Team>()
+					HomeTeam = m.HomeTeam.MapTo<TeamViewModel>(),
+					AwayTeam = m.AwayTeam.MapTo<TeamViewModel>()
 				});
 			return View(matches);
 		}
@@ -50,8 +50,8 @@ namespace Snittlistan.Controllers
 			var vm = new MatchViewModel
 			{
 				Match = match.MapTo<MatchViewModel.MatchDetails>(),
-				HomeTeam = match.HomeTeam.MapTo<MatchViewModel.Team>(),
-				AwayTeam = match.AwayTeam.MapTo<MatchViewModel.Team>()
+				HomeTeam = match.HomeTeam.MapTo<TeamViewModel>(),
+				AwayTeam = match.AwayTeam.MapTo<TeamViewModel>()
 			};
 
 			return View(vm);
@@ -81,8 +81,8 @@ namespace Snittlistan.Controllers
 				model.Place,
 				model.Date,
 				model.BitsMatchId,
-				new Team(model.HomeTeamName, model.HomeTeamScore),
-				new Team(model.AwayTeamName, model.AwayTeamScore));
+				model.HomeTeam.MapTo<Team>(),
+				model.AwayTeam.MapTo<Team>());
 			Session.Store(match);
 
 			return RedirectToAction("Details", new { id = match.Id });
@@ -107,8 +107,8 @@ namespace Snittlistan.Controllers
 			var vm = new MatchViewModel
 			{
 				Match = match.MapTo<MatchViewModel.MatchDetails>(),
-				HomeTeam = match.HomeTeam.MapTo<MatchViewModel.Team>(),
-				AwayTeam = match.AwayTeam.MapTo<MatchViewModel.Team>()
+				HomeTeam = match.HomeTeam.MapTo<TeamViewModel>(),
+				AwayTeam = match.AwayTeam.MapTo<TeamViewModel>()
 			};
 
 			return View(vm);
