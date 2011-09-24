@@ -31,7 +31,7 @@
         <td>@Html.DisplayFor(modelItem => item.Match.Date)</td>
         <td>@Html.DisplayFor(modelItem => item.HomeTeam.Name) - @Html.DisplayFor(modelItem => item.AwayTeam.Name)</td>
         <td>@Html.DisplayFor(modelItem => item.HomeTeam.Score)-@Html.DisplayFor(modelItem => item.AwayTeam.Score)</td>
-        <td>@Html.DisplayFor(modelItem => item.Match.Place)</td>
+        <td>@Html.DisplayFor(modelItem => item.Match.Location)</td>
         <td>
             @*@CreateEditLink(item)*@
             @Html.ActionLink("Visa", "Details", new { id = item.Match.Id })

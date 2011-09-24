@@ -78,7 +78,7 @@ namespace Snittlistan.Controllers
 				return View(model);
 
 			var match = new Match(
-				model.Place,
+				model.Location,
 				model.Date,
 				model.BitsMatchId,
 				model.HomeTeam.MapTo<Team>(),
@@ -124,7 +124,7 @@ namespace Snittlistan.Controllers
 			if (match == null)
 				return HttpNotFound();
 
-			match.Place = model.Place;
+			match.Location = model.Location;
 			match.Date = model.Date;
 			match.BitsMatchId = model.BitsMatchId;
 

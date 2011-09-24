@@ -5,20 +5,22 @@ namespace Snittlistan.Models
 {
 	public class Match
 	{
-		public Match()
-		{
-			Place = string.Empty;
-			Date = DateTime.Now.Date;
-		}
-
+		/// <summary>
+		/// Initializes a new instance of the Match class.
+		/// </summary>
+		/// <param name="location">Match location.</param>
+		/// <param name="date">Match date.</param>
+		/// <param name="bitsMatchId">BITS match id.</param>
+		/// <param name="homeTeam">Home team.</param>
+		/// <param name="awayTeam">Away team.</param>
 		public Match(
-			string place,
+			string location,
 			DateTime date,
 			int bitsMatchId,
 			Team homeTeam,
 			Team awayTeam)
 		{
-			Place = place;
+			Location = location;
 			Date = date;
 			BitsMatchId = bitsMatchId;
 			HomeTeam = homeTeam;
@@ -26,19 +28,10 @@ namespace Snittlistan.Models
 		}
 
 		public int Id { get; set; }
-		public string Place { get; set; }
+		public string Location { get; set; }
 		public DateTime Date { get; set; }
 		public Team HomeTeam { get; private set; }
 		public Team AwayTeam { get; private set; }
 		public int BitsMatchId { get; set; }
-
-		public string FormattedLaneScore()
-		{
-			return string.Empty;
-			////if (HomeGame)
-			////    return string.Format("{0}-{1}", LaneScoreForTeam(), OppTeamLaneScore);
-			////else
-			////    return string.Format("{0}-{1}", OppTeamLaneScore, LaneScoreForTeam());
-		}
 	}
 }

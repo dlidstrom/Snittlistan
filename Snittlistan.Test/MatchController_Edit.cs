@@ -25,7 +25,7 @@ namespace Snittlistan.Test
 			var result = controller.EditDetails(new MatchViewModel.MatchDetails
 			{
 				Id = originalMatch.Id,
-				Place = "NewPlace",
+				Location = "NewPlace",
 				Date = now,
 				BitsMatchId = 2
 			});
@@ -33,7 +33,7 @@ namespace Snittlistan.Test
 			// Assert
 			result.AssertActionRedirect().ToAction("Details").WithParameter("id", originalMatch.Id);
 			var match = Session.Load<Match>(originalMatch.Id);
-			match.Place.ShouldBe("NewPlace");
+			match.Location.ShouldBe("NewPlace");
 			match.Date.ShouldBe(now);
 			match.BitsMatchId.ShouldBe(2);
 		}

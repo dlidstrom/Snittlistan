@@ -8,7 +8,7 @@ namespace Snittlistan.ViewModels
 		public RegisterMatchViewModel()
 		{
 			Date = DateTime.Now;
-			Place = string.Empty;
+			Location = string.Empty;
 			HomeTeam = new TeamViewModel();
 			AwayTeam = new TeamViewModel();
 		}
@@ -17,7 +17,7 @@ namespace Snittlistan.ViewModels
 		public DateTime Date { get; set; }
 
 		[Required, Display(Name = "Plats")]
-		public string Place { get; set; }
+		public string Location { get; set; }
 
 		[Required, Display(Name = "BITS MatchId")]
 		public int BitsMatchId { get; set; }

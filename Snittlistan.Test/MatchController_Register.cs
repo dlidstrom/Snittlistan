@@ -22,13 +22,13 @@ namespace Snittlistan.Test
 			{
 				BitsMatchId = 1,
 				Date = now,
-				Place = "Somewhere"
+				Location = "Somewhere"
 			};
 			var homeTeam = new TeamViewModel { Name = "HomeTeam", Score = 13 };
 			var awayTeam = new TeamViewModel { Name = "AwayTeam", Score = 6 };
 			var result = controller.Register(new RegisterMatchViewModel
 			{
-				Place = "Somewhere",
+				Location = "Somewhere",
 				Date = now,
 				BitsMatchId = 1,
 				HomeTeam = new TeamViewModel
@@ -47,7 +47,7 @@ namespace Snittlistan.Test
 
 			// Assert
 			var match = Session.Query<Match>().Single();
-			match.Place.ShouldBe("Somewhere");
+			match.Location.ShouldBe("Somewhere");
 			match.BitsMatchId.ShouldBe(1);
 			match.Date.ShouldBe(now);
 			match.HomeTeam.Name.ShouldBe("HomeTeam");
