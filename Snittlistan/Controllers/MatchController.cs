@@ -88,11 +88,6 @@ namespace Snittlistan.Controllers
 			return RedirectToAction("Details", new { id = match.Id });
 		}
 
-		public ActionResult AddGame(int matchId)
-		{
-			return View();
-		}
-
 		/// <summary>
 		/// GET: /Match/Edit/5.
 		/// </summary>

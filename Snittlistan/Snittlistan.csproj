@@ -413,12 +413,6 @@
     <Content Include="Views\Match\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Match\AddGame.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Match\AddGameSuccess.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Match\DisplayTemplates\TeamDisplay.cshtml" />
   </ItemGroup>
   <ItemGroup>
