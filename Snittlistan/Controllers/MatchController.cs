@@ -150,6 +150,7 @@ namespace Snittlistan.Controllers
 		/// </summary>
 		/// <param name="vm">Team view model.</param>
 		/// <returns></returns>
+		[HttpPost]
 		public ActionResult EditTeam(EditTeamViewModel vm)
 		{
 			var match = Session.Load<Match>(vm.Id);
