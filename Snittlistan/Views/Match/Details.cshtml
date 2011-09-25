@@ -18,7 +18,7 @@
         @Html.DisplayFor(model => model.HomeTeam, "TeamDisplay")
         @if (Request.IsAuthenticated)
         {
-            <p>@Html.ActionLink("Redigera", "EditHomeTeam", new { id = Model.Match.Id })</p>
+            <p>@Html.ActionLink("Redigera", "EditTeam", new { id = Model.Match.Id, isHomeTeam = true })</p>
         }
     </div>
     <div class="games-viewmodel">
@@ -26,7 +26,7 @@
         @Html.DisplayFor(model => model.AwayTeam, "TeamDisplay")
         @if (Request.IsAuthenticated)
         {
-            <p>@Html.ActionLink("Redigera", "EditAwayTeam", new { id = Model.Match.Id })</p>
+            <p>@Html.ActionLink("Redigera", "EditTeam", new { id = Model.Match.Id, isHomeTeam = false })</p>
         }
     </div>
 </fieldset>

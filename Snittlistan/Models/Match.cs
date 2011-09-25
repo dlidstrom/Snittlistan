@@ -30,8 +30,8 @@ namespace Snittlistan.Models
 		public int Id { get; set; }
 		public string Location { get; set; }
 		public DateTime Date { get; set; }
-		public Team HomeTeam { get; private set; }
-		public Team AwayTeam { get; private set; }
+		public Team HomeTeam { get; set; }
+		public Team AwayTeam { get; set; }
 		public int BitsMatchId { get; set; }
 	}
 }
