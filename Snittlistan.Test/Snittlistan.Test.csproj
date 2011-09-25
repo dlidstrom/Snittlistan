@@ -132,6 +132,7 @@
     <Compile Include="AutoMapperInstallerTest.cs" />
     <Compile Include="ControllerFactoryTest.cs" />
     <Compile Include="ControllersInstallerTest.cs" />
+    <Compile Include="MatchController_EditTeam.cs" />
     <Compile Include="DbTest.cs" />
     <Compile Include="EmailServiceTest.cs" />
     <Compile Include="HandlersInstallerTest.cs" />

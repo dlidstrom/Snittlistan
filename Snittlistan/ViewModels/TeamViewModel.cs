@@ -17,9 +17,6 @@ namespace Snittlistan.ViewModels
 			Series = new List<Serie> { new Serie() };
 		}
 
-		[HiddenInput]
-		public int Id { get; set; }
-
 		/// <summary>
 		/// Gets or sets the name.
 		/// </summary>

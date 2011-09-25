@@ -58,11 +58,5 @@ namespace Snittlistan.Test
 			// Assert
 			result.AssertResultIs<HttpNotFoundResult>();
 		}
-
-		[Fact]
-		public void CanEditTeam()
-		{
-			Assert.True(false, "Not implemented yet");
-		}
 	}
 }

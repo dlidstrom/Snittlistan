@@ -124,6 +124,47 @@ namespace Snittlistan.Controllers
 		}
 
 		/// <summary>
+		/// GET: /Match/EditTeam/5.
+		/// </summary>
+		/// <param name="id">Match identifier.</param>
+		/// <param name="isHomeTeam">True if home team; false if away team.</param>
+		/// <returns></returns>
+		public ActionResult EditTeam(int id, bool isHomeTeam)
+		{
+			var match = Session.Load<Match>(id);
+			if (match == null)
+				return HttpNotFound();
+
+			var vm = new EditTeamViewModel
+			{
+				Id = id,
+				IsHomeTeam = isHomeTeam,
+				Team = match.HomeTeam.MapTo<TeamViewModel>()
+			};
+
+			return View(vm);
+		}
+
+		/// <summary>
+		/// POST: /Match/EditTeam/5.
+		/// </summary>
+		/// <param name="vm">Team view model.</param>
+		/// <returns></returns>
+		public ActionResult EditTeam(EditTeamViewModel vm)
+		{
+			var match = Session.Load<Match>(vm.Id);
+			if (match == null)
+				return HttpNotFound();
+
+			if (vm.IsHomeTeam)
+				match.HomeTeam = vm.Team.MapTo<Team>();
+			else
+				match.AwayTeam = vm.Team.MapTo<Team>();
+
+			return RedirectToAction("Details", new { id = vm.Id });
+		}
+
+		/// <summary>
 		/// GET: /Match/Delete/5.
 		/// </summary>
 		/// <param name="id"></param>

@@ -209,6 +209,7 @@
     <Compile Include="IoC\ControllerFactoryInstaller.cs" />
     <Compile Include="Installers\ControllerInstaller.cs" />
     <Compile Include="IoC\WindsorControllerFactory.cs" />
+    <Compile Include="ViewModels\EditTeamViewModel.cs" />
     <Compile Include="ViewModels\TeamViewModel.cs" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -429,6 +430,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Match\EditDetails.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Match\EditTeam.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
