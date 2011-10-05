@@ -11,6 +11,7 @@
             <td>@Html.LabelFor(model => model.Table1.Game1.Misses)</td>
             <td>@Html.LabelFor(model => model.Table1.Game1.OnePinMisses)</td>
             <td>@Html.LabelFor(model => model.Table1.Game1.Splits)</td>
+            <td>@Html.LabelFor(model => model.Table1.Game1.CoveredAll)</td>
         </tr>
     </thead>
     <tbody>
@@ -23,6 +24,7 @@
             <td>@Html.TextBoxFor(model => model.Table1.Game1.Misses, new { type = "number" })</td>
             <td>@Html.TextBoxFor(model => model.Table1.Game1.OnePinMisses, new { type = "number" })</td>
             <td>@Html.TextBoxFor(model => model.Table1.Game1.Splits, new { type = "number" })</td>
+            <td>@Html.EditorFor(model => model.Table1.Game1.CoveredAll)</td>
         </tr>
         <tr>
             <td>@Html.EditorFor(model => model.Table1.Game2.Player)</td>
@@ -31,6 +33,7 @@
             <td>@Html.TextBoxFor(model => model.Table1.Game2.Misses, new { type = "number" })</td>
             <td>@Html.TextBoxFor(model => model.Table1.Game2.OnePinMisses, new { type = "number" })</td>
             <td>@Html.TextBoxFor(model => model.Table1.Game2.Splits, new { type = "number" })</td>
+            <td>@Html.EditorFor(model => model.Table1.Game2.CoveredAll)</td>
         </tr>
         <tr>
             <td rowspan="2">2</td>
@@ -41,6 +44,7 @@
             <td>@Html.TextBoxFor(model => model.Table2.Game1.Misses, new { type = "number" })</td>
             <td>@Html.TextBoxFor(model => model.Table2.Game1.OnePinMisses, new { type = "number" })</td>
             <td>@Html.TextBoxFor(model => model.Table2.Game1.Splits, new { type = "number" })</td>
+            <td>@Html.EditorFor(model => model.Table2.Game1.CoveredAll)</td>
         </tr>
         <tr>
             <td>@Html.EditorFor(model => model.Table2.Game2.Player)</td>
@@ -49,6 +53,7 @@
             <td>@Html.TextBoxFor(model => model.Table2.Game2.Misses, new { type = "number" })</td>
             <td>@Html.TextBoxFor(model => model.Table2.Game2.OnePinMisses, new { type = "number" })</td>
             <td>@Html.TextBoxFor(model => model.Table2.Game2.Splits, new { type = "number" })</td>
+            <td>@Html.EditorFor(model => model.Table2.Game2.CoveredAll)</td>
         </tr>
         <tr>
             <td rowspan="2">3</td>
@@ -59,6 +64,7 @@
             <td>@Html.TextBoxFor(model => model.Table3.Game1.Misses, new { type = "number" })</td>
             <td>@Html.TextBoxFor(model => model.Table3.Game1.OnePinMisses, new { type = "number" })</td>
             <td>@Html.TextBoxFor(model => model.Table3.Game1.Splits, new { type = "number" })</td>
+            <td>@Html.EditorFor(model => model.Table3.Game1.CoveredAll)</td>
         </tr>
         <tr>
             <td>@Html.EditorFor(model => model.Table3.Game2.Player)</td>
@@ -67,6 +73,7 @@
             <td>@Html.TextBoxFor(model => model.Table3.Game2.Misses, new { type = "number" })</td>
             <td>@Html.TextBoxFor(model => model.Table3.Game2.OnePinMisses, new { type = "number" })</td>
             <td>@Html.TextBoxFor(model => model.Table3.Game2.Splits, new { type = "number" })</td>
+            <td>@Html.EditorFor(model => model.Table3.Game2.CoveredAll)</td>
         </tr>
         <tr>
             <td rowspan="2">4</td>
@@ -77,6 +84,7 @@
             <td>@Html.TextBoxFor(model => model.Table4.Game1.Misses, new { type = "number" })</td>
             <td>@Html.TextBoxFor(model => model.Table4.Game1.OnePinMisses, new { type = "number" })</td>
             <td>@Html.TextBoxFor(model => model.Table4.Game1.Splits, new { type = "number" })</td>
+            <td>@Html.EditorFor(model => model.Table4.Game1.CoveredAll)</td>
         </tr>
         <tr>
             <td>@Html.EditorFor(model => model.Table4.Game2.Player)</td>
@@ -85,6 +93,7 @@
             <td>@Html.TextBoxFor(model => model.Table4.Game2.Misses, new { type = "number" })</td>
             <td>@Html.TextBoxFor(model => model.Table4.Game2.OnePinMisses, new { type = "number" })</td>
             <td>@Html.TextBoxFor(model => model.Table4.Game2.Splits, new { type = "number" })</td>
+            <td>@Html.EditorFor(model => model.Table4.Game2.CoveredAll)</td>
         </tr>
     </tbody>
 </table>
