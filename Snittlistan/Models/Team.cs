@@ -43,11 +43,21 @@ namespace Snittlistan.Models
 			}
 		}
 
+		/// <summary>
+		/// Returns the score for a serie.
+		/// </summary>
+		/// <param name="serie">Serie index (1-based).</param>
+		/// <returns></returns>
 		public int ScoreFor(int serie)
 		{
 			return Series[serie - 1].Score();
 		}
 
+		/// <summary>
+		/// Returns the total pins for a serie.
+		/// </summary>
+		/// <param name="serie">Serie number (1-based).</param>
+		/// <returns>Total pins for the specified serie.</returns>
 		public int PinsFor(int serie)
 		{
 			return Series[serie - 1].Pins;
