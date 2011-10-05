@@ -12,17 +12,18 @@
 
 <h2>@ViewBag.Title</h2>
 
-<fieldset>
-    <legend>Matchinformation</legend>
-    @using (Html.BeginForm())
-    {
-        @Html.ValidationSummary(true)
-        @Html.EditorFor(model => model.Team, "TeamEditor")
-        <p>
-            <input type="submit" value="Spara" />
-        </p>
-    }
-</fieldset>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Matchinformation</legend>
+            @Html.EditorFor(model => model.Team, "TeamEditor")
+
+            <p>
+                <input type="submit" value="Spara" />
+            </p>
+    </fieldset>
+}
 
 <div>
     @Html.ActionLink("Tillbaka", "Details", new { id = Model.Id })

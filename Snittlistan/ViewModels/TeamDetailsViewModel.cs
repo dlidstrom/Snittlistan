@@ -1,60 +1,36 @@
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Snittlistan.ViewModels
 {
-	/// <summary>
-	/// Represents a team.
-	/// </summary>
-	public class TeamViewModel
+	public class TeamDetailsViewModel
 	{
 		/// <summary>
-		/// Initializes a new instance of the TeamViewModel class.
+		/// Initializes a new instance of the TeamDetailsViewModel class.
 		/// </summary>
-		public TeamViewModel()
+		public TeamDetailsViewModel()
 		{
-			Serie1 = new Serie();
-			Serie2 = new Serie();
-			Serie3 = new Serie();
-			Serie4 = new Serie();
+			FirstSerie = new Serie();
+			SecondSerie = new Serie();
+			ThirdSerie = new Serie();
+			FourthSerie = new Serie();
 		}
 
 		/// <summary>
 		/// Gets or sets the name.
 		/// </summary>
-		[Display(Name = "Namn")]
+		[Required, Display(Name = "Namn")]
 		public string Name { get; set; }
 
 		/// <summary>
 		/// Gets or sets the score.
 		/// </summary>
-		[Display(Name = "Banpoäng"), Range(0, 20)]
+		[Required, Display(Name = "Banpoäng"), Range(0, 20)]
 		public int Score { get; set; }
 
-		/// <summary>
-		/// Gets or sets the first serie.
-		/// </summary>
-		[Display(Name = "Serie 1")]
-		public Serie Serie1 { get; set; }
-
-		/// <summary>
-		/// Gets or sets the second serie.
-		/// </summary>
-		[Display(Name = "Serie 2")]
-		public Serie Serie2 { get; set; }
-
-		/// <summary>
-		/// Gets or sets the third serie.
-		/// </summary>
-		[Display(Name = "Serie 3")]
-		public Serie Serie3 { get; set; }
-
-		/// <summary>
-		/// Gets or sets the fourth serie.
-		/// </summary>
-		[Display(Name = "Serie 4")]
-		public Serie Serie4 { get; set; }
+		public Serie FirstSerie { get; set; }
+		public Serie SecondSerie { get; set; }
+		public Serie ThirdSerie { get; set; }
+		public Serie FourthSerie { get; set; }
 
 		/// <summary>
 		/// Represents a serie in a match.
@@ -66,31 +42,16 @@ namespace Snittlistan.ViewModels
 			/// </summary>
 			public Serie()
 			{
-				Table1 = new Table();
-				Table2 = new Table();
-				Table3 = new Table();
-				Table4 = new Table();
+				FirstTable = new Table();
+				SecondTable = new Table();
+				ThirdTable = new Table();
+				FourthTable = new Table();
 			}
 
-			/// <summary>
-			/// Gets or sets table 1.
-			/// </summary>
-			public Table Table1 { get; set; }
-
-			/// <summary>
-			/// Gets or sets table 2.
-			/// </summary>
-			public Table Table2 { get; set; }
-
-			/// <summary>
-			/// Gets or sets table 3.
-			/// </summary>
-			public Table Table3 { get; set; }
-
-			/// <summary>
-			/// Gets or sets table 4.
-			/// </summary>
-			public Table Table4 { get; set; }
+			public Table FirstTable { get; set; }
+			public Table SecondTable { get; set; }
+			public Table ThirdTable { get; set; }
+			public Table FourthTable { get; set; }
 		}
 
 		/// <summary>
@@ -103,8 +64,8 @@ namespace Snittlistan.ViewModels
 			/// </summary>
 			public Table()
 			{
-				Game1 = new Game();
-				Game2 = new Game();
+				FirstGame = new Game();
+				SecondGame = new Game();
 			}
 
 			/// <summary>
@@ -116,12 +77,12 @@ namespace Snittlistan.ViewModels
 			/// <summary>
 			/// Gets or sets the first game.
 			/// </summary>
-			public Game Game1 { get; set; }
+			public Game FirstGame { get; set; }
 
 			/// <summary>
 			/// Gets or sets the second game.
 			/// </summary>
-			public Game Game2 { get; set; }
+			public Game SecondGame { get; set; }
 		}
 		
 		/// <summary>
@@ -140,7 +101,7 @@ namespace Snittlistan.ViewModels
 			/// <summary>
 			/// Gets or sets the player name.
 			/// </summary>
-			[Display(Name = "Spelare")]
+			[Required, Display(Name = "Spelare")]
 			public string Player { get; set; }
 
 			/// <summary>

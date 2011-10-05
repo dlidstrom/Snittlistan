@@ -33,14 +33,12 @@ namespace Snittlistan.Models
 		public List<Serie> Series { get; set; }
 
 		/// <summary>
-		/// Gets the total pins.
+		/// Returns the total pins.
 		/// </summary>
-		public int Pins
+		/// <returns>Total pins.</returns>
+		public int Pins()
 		{
-			get
-			{
-				return Series.Sum(s => s.Pins);
-			}
+			return Series.Sum(s => s.Pins());
 		}
 
 		/// <summary>
@@ -60,12 +58,17 @@ namespace Snittlistan.Models
 		/// <returns>Total pins for the specified serie.</returns>
 		public int PinsFor(int serie)
 		{
-			return Series[serie - 1].Pins;
+			return Series[serie - 1].Pins();
 		}
 
-		public int PinscoreForPlayer(string player)
+		/// <summary>
+		/// Returns the total pins for a player.
+		/// </summary>
+		/// <param name="player">Player name.</param>
+		/// <returns>Total pins for player in all series.</returns>
+		public int PinsForPlayer(string player)
 		{
-			return Series.Sum(s => s.PinscoreForPlay(player));
+			return Series.Sum(s => s.PinsForPlayer(player));
 		}
 	}
 }

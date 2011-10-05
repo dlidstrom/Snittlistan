@@ -26,11 +26,11 @@ namespace Snittlistan.Controllers
 		{
 			var matches = Session.Query<Match>()
 				.ToList()
-				.Select(m => new MatchViewModel
+				.Select(match => new MatchViewModel
 				{
-					Match = m.MapTo<MatchViewModel.MatchDetails>(),
-					HomeTeam = m.HomeTeam.MapTo<TeamViewModel>(),
-					AwayTeam = m.AwayTeam.MapTo<TeamViewModel>()
+					Match = match.MapTo<MatchViewModel.MatchDetails>(),
+					HomeTeam = match.HomeTeam.MapTo<TeamSummaryViewModel>(),
+					AwayTeam = match.AwayTeam.MapTo<TeamSummaryViewModel>()
 				});
 			return View(matches);
 		}
@@ -49,8 +49,8 @@ namespace Snittlistan.Controllers
 			var vm = new MatchViewModel
 			{
 				Match = match.MapTo<MatchViewModel.MatchDetails>(),
-				HomeTeam = match.HomeTeam.MapTo<TeamViewModel>(),
-				AwayTeam = match.AwayTeam.MapTo<TeamViewModel>()
+				HomeTeam = match.HomeTeam.MapTo<TeamSummaryViewModel>(),
+				AwayTeam = match.AwayTeam.MapTo<TeamSummaryViewModel>()
 			};
 
 			return View(vm);
@@ -135,11 +135,13 @@ namespace Snittlistan.Controllers
 			if (match == null)
 				return HttpNotFound();
 
+			TeamViewModel teamViewModel = isHomeTeam ? match.HomeTeam.MapTo<TeamViewModel>()
+				: match.AwayTeam.MapTo<TeamViewModel>();
 			var vm = new EditTeamViewModel
 			{
 				Id = id,
 				IsHomeTeam = isHomeTeam,
-				Team = match.HomeTeam.MapTo<TeamViewModel>()
+				Team = teamViewModel
 			};
 
 			return View(vm);
