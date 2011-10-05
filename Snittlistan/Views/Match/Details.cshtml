@@ -13,20 +13,16 @@
     {
         <p>@Html.ActionLink("Redigera", "EditDetails", new { id = Model.Match.Id })</p>
     }
-    <div class="games-viewmodel">
-        <h3>Hemmalag</h3>
-        @Html.DisplayFor(model => model.HomeTeam, "TeamDisplay")
-        @if (Request.IsAuthenticated)
-        {
-            <p>@Html.ActionLink("Redigera", "EditTeam", new { id = Model.Match.Id, isHomeTeam = true })</p>
-        }
-    </div>
-    <div class="games-viewmodel">
-        <h3>Bortalag</h3>
-        @Html.DisplayFor(model => model.AwayTeam, "TeamDisplay")
-        @if (Request.IsAuthenticated)
-        {
-            <p>@Html.ActionLink("Redigera", "EditTeam", new { id = Model.Match.Id, isHomeTeam = false })</p>
-        }
-    </div>
+    <h3>Hemmalag</h3>
+    @Html.DisplayFor(model => model.HomeTeam, "TeamDisplay")
+    @if (Request.IsAuthenticated)
+    {
+        <p>@Html.ActionLink("Redigera", "EditTeam", new { id = Model.Match.Id, isHomeTeam = true })</p>
+    }
+    <h3>Bortalag</h3>
+    @Html.DisplayFor(model => model.AwayTeam, "TeamDisplay")
+    @if (Request.IsAuthenticated)
+    {
+        <p>@Html.ActionLink("Redigera", "EditTeam", new { id = Model.Match.Id, isHomeTeam = false })</p>
+    }
 </fieldset>

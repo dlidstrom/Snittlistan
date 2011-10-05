@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace Snittlistan.Models
 {
@@ -13,14 +11,12 @@ namespace Snittlistan.Models
 		public List<Table> Tables { get; set; }
 
 		/// <summary>
-		/// Gets the total pins for this serie.
+		/// Returns the total pins for this serie.
 		/// </summary>
-		public int Pins
+		/// <returns>Total pins.</returns>
+		public int Pins()
 		{
-			get
-			{
-				return Tables.Sum(t => t.Pins);
-			}
+			return Tables.Sum(t => t.Pins());
 		}
 
 		/// <summary>
@@ -32,9 +28,14 @@ namespace Snittlistan.Models
 			return Tables.Sum(t => t.Score);
 		}
 
-		public int PinscoreForPlay(string player)
+		/// <summary>
+		/// Returns the pins for a player.
+		/// </summary>
+		/// <param name="player">Player name.</param>
+		/// <returns>Pins for player.</returns>
+		public int PinsForPlayer(string player)
 		{
-			return Tables.Sum(t => t.PinscoreForPlayer(player));
+			return Tables.Sum(t => t.PinsForPlayer(player));
 		}
 	}
 }

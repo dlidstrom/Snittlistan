@@ -2,43 +2,25 @@
 
 <table class="invis">
     <tr>
-        <td class="editor-label">@ViewData["label"]</td>
+        <td class="editor-label">@Html.LabelFor(model => model.Name)</td>
         <td class="editor-field">
             @Html.EditorFor(model => model.Name)
             @Html.ValidationMessageFor(model => model.Name)
         </td>
     </tr>
+    <tr>
+        <td class="editor-label">@Html.LabelFor(model => model.Score)</td>
+        <td class="editor-field">
+            @Html.EditorFor(model => model.Score)
+            @Html.ValidationMessageFor(model => model.Score)
+        </td>
+    </tr>
 </table>
-
-<table>
-     <tr><td>Serie</td><td>Bord</td><td>Spelare</td><td>Banpoäng</td><td>X</td><td>Miss</td><td>9-</td><td>Hål</td></tr>
-     @for (int i = 1; i <= Model.Series.Count; i++)
-     {
-         var serie = Model.Series[i - 1];
-         for (int j = 1; j <= serie.Tables.Count; j++)
-         {
-             var table = serie.Tables[j - 1];
-             <tr>
-                 @if (j == 1)
-                 {
-                     <td rowspan="8">@i</td>
-                 }
-                 <td rowspan="2">@j</td>
-                 <td>@table.FirstGame.Player</td>
-                 <td>@table.FirstGame.Pins</td>
-                 <td>@table.FirstGame.Strikes</td>
-                 <td>@table.FirstGame.Misses</td>
-                 <td>@table.FirstGame.OnePinMisses</td>
-                 <td>@table.FirstGame.Splits</td>
-             </tr>
-             <tr>
-                 <td>@table.SecondGame.Player</td>
-                 <td>@table.SecondGame.Pins</td>
-                 <td>@table.SecondGame.Strikes</td>
-                 <td>@table.SecondGame.Misses</td>
-                 <td>@table.SecondGame.OnePinMisses</td>
-                 <td>@table.SecondGame.Splits</td>
-             </tr>
-         }
-    }
-</table>
+<h3>@Html.LabelFor(model => model.Serie1)</h3>
+@Html.EditorFor(model => model.Serie1, "SerieEditor")
+<h3>@Html.LabelFor(model => model.Serie2)</h3>
+@Html.EditorFor(model => model.Serie2, "SerieEditor")
+<h3>@Html.LabelFor(model => model.Serie3)</h3>
+@Html.EditorFor(model => model.Serie3, "SerieEditor")
+<h3>@Html.LabelFor(model => model.Serie4)</h3>
+@Html.EditorFor(model => model.Serie4, "SerieEditor")

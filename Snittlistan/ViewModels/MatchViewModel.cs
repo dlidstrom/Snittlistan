@@ -9,9 +9,9 @@ namespace Snittlistan.ViewModels
 	{
 		public MatchDetails Match { get; set; }
 
-		public TeamViewModel HomeTeam { get; set; }
+		public TeamSummaryViewModel HomeTeam { get; set; }
 
-		public TeamViewModel AwayTeam { get; set; }
+		public TeamSummaryViewModel AwayTeam { get; set; }
 
 		public class MatchDetails
 		{
