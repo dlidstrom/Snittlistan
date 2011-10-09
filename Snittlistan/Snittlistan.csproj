@@ -212,7 +212,6 @@
     <Compile Include="Installers\ControllerInstaller.cs" />
     <Compile Include="IoC\WindsorControllerFactory.cs" />
     <Compile Include="ViewModels\EditTeamViewModel.cs" />
-    <Compile Include="ViewModels\TeamDetailsViewModel.cs" />
     <Compile Include="ViewModels\TeamSummaryViewModel.cs" />
     <Compile Include="ViewModels\TeamViewModel.cs" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
