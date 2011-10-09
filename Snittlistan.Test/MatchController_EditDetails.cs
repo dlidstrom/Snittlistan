@@ -58,5 +58,20 @@ namespace Snittlistan.Test
 			// Assert
 			result.AssertResultIs<HttpNotFoundResult>();
 		}
+
+		[Fact]
+		public void CorrectView()
+		{
+			// Arrange
+			var match = TestData.CreateMatch();
+			Session.Store(match);
+
+			// Act
+			var controller = new MatchController(Session);
+			var result = controller.EditDetails(match.Id);
+
+			// Assert
+			result.AssertViewRendered().ForView(string.Empty);
+		}
 	}
 }
