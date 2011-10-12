@@ -63,7 +63,7 @@ namespace Snittlistan.Test
 		public void CorrectView()
 		{
 			// Arrange
-			var match = TestData.CreateMatch();
+			var match = DbSeed.CreateMatch();
 			Session.Store(match);
 
 			// Act

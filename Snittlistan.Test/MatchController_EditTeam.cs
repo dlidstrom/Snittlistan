@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using MvcContrib.TestHelper;
 using Snittlistan.Controllers;
-using Snittlistan.Infrastructure;
+using Snittlistan.Infrastructure.AutoMapper;
 using Snittlistan.Models;
 using Snittlistan.ViewModels;
 using Xunit;
@@ -25,7 +25,7 @@ namespace Snittlistan.Test
 			{
 				Id = originalMatch.Id,
 				IsHomeTeam = false,
-				Team = TestData.CreateMatch().AwayTeam.MapTo<TeamViewModel>()
+				Team = DbSeed.CreateMatch().AwayTeam.MapTo<TeamViewModel>()
 			});
 
 			// Assert
@@ -58,7 +58,7 @@ namespace Snittlistan.Test
 		public void CorrectView()
 		{
 			// Arrange
-			var match = TestData.CreateMatch();
+			var match = DbSeed.CreateMatch();
 			Session.Store(match);
 
 			// Act
