@@ -13,7 +13,7 @@ namespace Snittlistan.Test
 
 		public MatchTest()
 		{
-			match = TestData.CreateMatch();
+			match = DbSeed.CreateMatch();
 			Session.Store(match);
 			Session.SaveChanges();
 			match = Session.Load<Match>(match.Id);
