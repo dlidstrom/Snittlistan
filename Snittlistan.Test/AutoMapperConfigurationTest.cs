@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Castle.Windsor;
-using Snittlistan.Infrastructure;
+using Snittlistan.Infrastructure.AutoMapper;
 using Snittlistan.Installers;
 using Xunit;
 

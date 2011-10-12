@@ -4,7 +4,7 @@ using AutoMapper;
 using Snittlistan.Models;
 using Snittlistan.ViewModels;
 
-namespace Snittlistan.Infrastructure
+namespace Snittlistan.Infrastructure.AutoMapper.Profiles
 {
 	public class MatchProfile : Profile
 	{
@@ -29,29 +29,8 @@ namespace Snittlistan.Infrastructure
 			Mapper.CreateMap<Game, TeamViewModel.Game>();
 
 			// viewmodel -> model
-			Mapper.CreateMap<TeamViewModel, Team>()
-				.ConstructUsing(vm => new Team(vm.Name, vm.Score))
-				.ForMember(
-					m => m.Series,
-					o => o.MapFrom(
-						vm => new List<Serie>
-						{
-							vm.Serie1.MapTo<Serie>(),
-							vm.Serie2.MapTo<Serie>(),
-							vm.Serie3.MapTo<Serie>(),
-							vm.Serie4.MapTo<Serie>()
-						}));
-			Mapper.CreateMap<TeamViewModel.Serie, Serie>()
-				.ForMember(
-					m => m.Tables,
-					o => o.MapFrom(
-						vm => new List<Table>
-						{
-							vm.Table1.MapTo<Table>(),
-							vm.Table2.MapTo<Table>(),
-							vm.Table3.MapTo<Table>(),
-							vm.Table4.MapTo<Table>()
-						}));
+			Mapper.CreateMap<TeamViewModel, Team>().ConvertUsing<TeamViewModelConverter>();
+			Mapper.CreateMap<TeamViewModel.Serie, Serie>().ConvertUsing<TeamViewModelSerieConverter>();
 			Mapper.CreateMap<TeamViewModel.Table, Table>();
 			Mapper.CreateMap<TeamViewModel.Game, Game>();
 		}
