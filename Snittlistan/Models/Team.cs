@@ -1,10 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace Snittlistan.Models
 {
+	/// <summary>
+	/// Represents a team in a match.
+	/// </summary>
 	public class Team
 	{
+		[JsonProperty(PropertyName = "Series")]
+		private List<Serie> series;
+
 		/// <summary>
 		/// Initializes a new instance of the Team class.
 		/// </summary>
@@ -14,7 +21,20 @@ namespace Snittlistan.Models
 		{
 			Name = name;
 			Score = score;
-			Series = new List<Serie>();
+			series = new List<Serie>();
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the Team class.
+		/// </summary>
+		/// <param name="name">Name of the team.</param>
+		/// <param name="score">Total score.</param>
+		/// <param name="series">Series played by team.</param>
+		public Team(string name, int score, IEnumerable<Serie> series)
+		{
+			Name = name;
+			Score = score;
+			this.series = new List<Serie>(series);
 		}
 
 		/// <summary>
@@ -28,9 +48,12 @@ namespace Snittlistan.Models
 		public int Score { get; set; }
 
 		/// <summary>
-		/// Gets or sets the series.
+		/// Gets the series.
 		/// </summary>
-		public List<Serie> Series { get; set; }
+		public IEnumerable<Serie> Series
+		{
+			get { return series; }
+		}
 
 		/// <summary>
 		/// Returns the total pins.
@@ -48,7 +71,7 @@ namespace Snittlistan.Models
 		/// <returns></returns>
 		public int ScoreFor(int serie)
 		{
-			return Series[serie - 1].Score();
+			return Series.ElementAt(serie - 1).Score();
 		}
 
 		/// <summary>
@@ -58,7 +81,7 @@ namespace Snittlistan.Models
 		/// <returns>Total pins for the specified serie.</returns>
 		public int PinsFor(int serie)
 		{
-			return Series[serie - 1].Pins();
+			return Series.ElementAt(serie - 1).Pins();
 		}
 
 		/// <summary>

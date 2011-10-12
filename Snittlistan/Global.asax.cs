@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
 using Common.Logging;
+using Raven.Client;
 using Snittlistan.Helpers;
 using Snittlistan.Helpers.Attributes;
 using Snittlistan.Infrastructure;
+using Snittlistan.Infrastructure.AutoMapper;
 using Snittlistan.IoC;
+using Snittlistan.Models;
 
 namespace Snittlistan
 {

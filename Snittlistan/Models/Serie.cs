@@ -1,14 +1,33 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace Snittlistan.Models
 {
+	/// <summary>
+	/// Represents a serie in a match.
+	/// </summary>
 	public class Serie
 	{
+		[JsonProperty(PropertyName = "Tables")]
+		private List<Table> tables;
+
 		/// <summary>
-		/// Gets or sets the tables.
+		/// Initializes a new instance of the Serie class.
 		/// </summary>
-		public List<Table> Tables { get; set; }
+		/// <param name="tables">Tables of the serie.</param>
+		public Serie(IEnumerable<Table> tables)
+		{
+			this.tables = new List<Table>(tables);
+		}
+
+		/// <summary>
+		/// Gets the tables.
+		/// </summary>
+		public IEnumerable<Table> Tables
+		{
+			get { return tables; }
+		}
 
 		/// <summary>
 		/// Returns the total pins for this serie.

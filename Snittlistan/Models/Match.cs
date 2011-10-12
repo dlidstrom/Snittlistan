@@ -1,9 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Snittlistan.Models
 {
+	/// <summary>
+	/// Represents a league match.
+	/// </summary>
 	public class Match
 	{
+		[JsonProperty(PropertyName = "Teams")]
+		private List<Team> teams;
+
 		/// <summary>
 		/// Initializes a new instance of the Match class.
 		/// </summary>
@@ -22,15 +30,55 @@ namespace Snittlistan.Models
 			Location = location;
 			Date = date;
 			BitsMatchId = bitsMatchId;
-			HomeTeam = homeTeam;
-			AwayTeam = awayTeam;
+			teams = new List<Team> { homeTeam, awayTeam };
 		}
 
+		/// <summary>
+		/// Gets or sets the match id.
+		/// </summary>
 		public int Id { get; set; }
+
+		/// <summary>
+		/// Gets or sets the match location.
+		/// </summary>
 		public string Location { get; set; }
+
+		/// <summary>
+		/// Gets or sets the match date.
+		/// </summary>
 		public DateTime Date { get; set; }
-		public Team HomeTeam { get; set; }
-		public Team AwayTeam { get; set; }
+
+		/// <summary>
+		/// Gets or sets the home team.
+		/// </summary>
+		[JsonIgnore]
+		public Team HomeTeam
+		{
+			get { return teams[0]; }
+			set { teams[0] = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the away team.
+		/// </summary>
+		[JsonIgnore]
+		public Team AwayTeam
+		{
+			get { return teams[1]; }
+			set { teams[1] = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the BITS match id.
+		/// </summary>
 		public int BitsMatchId { get; set; }
+
+		/// <summary>
+		/// Gets the teams.
+		/// </summary>
+		public IEnumerable<Team> Teams
+		{
+			get { return teams; }
+		}
 	}
 }

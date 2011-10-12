@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using Raven.Client;
-using Snittlistan.Infrastructure;
+using Snittlistan.Infrastructure.AutoMapper;
 using Snittlistan.Models;
 using Snittlistan.ViewModels;
 

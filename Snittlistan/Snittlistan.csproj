@@ -178,8 +178,12 @@
     <Compile Include="Controllers\MailController.cs" />
     <Compile Include="Controllers\MatchController.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
-    <Compile Include="Infrastructure\AutoMapperProfiles\SerieResolver.cs" />
-    <Compile Include="Infrastructure\AutoMapperProfiles\TableResolver.cs" />
+    <Compile Include="Infrastructure\AutoMapper\Profiles\SerieResolver.cs" />
+    <Compile Include="Infrastructure\AutoMapper\Profiles\TableResolver.cs" />
+    <Compile Include="Infrastructure\AutoMapper\Profiles\TeamViewModelConverter.cs" />
+    <Compile Include="Infrastructure\AutoMapper\Profiles\TeamViewModelSerieConverter.cs" />
+    <Compile Include="Infrastructure\Indexes\Matches_PlayersStats.cs" />
+    <Compile Include="Infrastructure\Indexes\PlayerStats.cs" />
     <Compile Include="Models\Serie.cs" />
     <Compile Include="Models\Table.cs" />
     <Compile Include="Models\Team.cs" />
@@ -191,8 +195,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Handlers\IHandle.cs" />
-    <Compile Include="Infrastructure\AutoMapperConfiguration.cs" />
-    <Compile Include="Infrastructure\AutoMapperExtensions.cs" />
+    <Compile Include="Infrastructure\AutoMapper\AutoMapperConfiguration.cs" />
+    <Compile Include="Infrastructure\AutoMapper\AutoMapperExtensions.cs" />
     <Compile Include="Infrastructure\MailHttpContext.cs" />
     <Compile Include="Infrastructure\MailHttpResponse.cs" />
     <Compile Include="Handlers\SendRegistrationEmailHandler.cs" />
@@ -202,7 +206,7 @@
     <Compile Include="Helpers\JavaScriptException.cs" />
     <Compile Include="Helpers\LowercaseRoute.cs" />
     <Compile Include="Helpers\RouteCollectionExtension.cs" />
-    <Compile Include="Infrastructure\AutoMapperProfiles\MatchProfile.cs" />
+    <Compile Include="Infrastructure\AutoMapper\Profiles\MatchProfile.cs" />
     <Compile Include="Infrastructure\RavenActionFilterAttribute.cs" />
     <Compile Include="Installers\AutoMapperInstaller.cs" />
     <Compile Include="Installers\HandlersInstaller.cs" />
