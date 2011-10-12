@@ -7,7 +7,7 @@ using Castle.Windsor;
 using Moq;
 using Raven.Client;
 using Raven.Client.Embedded;
-using Snittlistan.Infrastructure;
+using Snittlistan.Infrastructure.AutoMapper;
 using Snittlistan.Installers;
 using Snittlistan.Models;
 
@@ -15,18 +15,18 @@ namespace Snittlistan.Test
 {
 	public abstract class DbTest : IDisposable
 	{
-		private readonly IDocumentStore store;
+		protected readonly IDocumentStore Store;
 
 		public DbTest()
 		{
 			// configure AutoMapper too
 			AutoMapperConfiguration
 				.Configure(new WindsorContainer().Install(new AutoMapperInstaller()));
-			store = new EmbeddableDocumentStore
+			Store = new EmbeddableDocumentStore
 			{
 				RunInMemory = true
 			}.Initialize();
-			Session = store.OpenSession();
+			Session = Store.OpenSession();
 		}
 
 		public IDocumentSession Session { get; private set; }
@@ -34,6 +34,7 @@ namespace Snittlistan.Test
 		public void Dispose()
 		{
 			Session.Dispose();
+			Store.Dispose();
 		}
 
 		public void WaitForNonStaleResults<T>() where T : class
