@@ -51,6 +51,19 @@ namespace Snittlistan
 
 			// configure AutoMapper
 			AutoMapperConfiguration.Configure(container);
+
+#if DEBUG
+			using (var session = Container.Resolve<IDocumentStore>().OpenSession())
+			{
+				var match = session.Query<Match>().SingleOrDefault(m => m.BitsMatchId == 3003231);
+				if (match == null)
+				{
+					session.Store(DbSeed.CreateMatch());
+				}
+
+				session.SaveChanges();
+			}
+#endif
 		}
 
 		protected void Application_End()
