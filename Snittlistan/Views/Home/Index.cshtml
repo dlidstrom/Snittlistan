@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<Snittlistan.Infrastructure.Indexes.Matches_PlayerStats.Results>
+
+@{
     ViewBag.Title = "Snittlistan";
 }
 
@@ -6,6 +8,21 @@
 <p>
     Här kan du se de senaste resultaten.
 </p>
+
+<table>
+    <thead>
+        <tr><th>Namn</th><th>Medel</th><th>Högsta</th><th>Lägsta</th></tr>
+    </thead>
+    @foreach (var stat in Model)
+    {
+        <tr>
+            <td>@stat.Player</td>
+            <td>@(string.Format("{0:F1}", (double)stat.TotalPins / stat.Count))</td>
+            <td>@stat.Max</td>
+            <td>@stat.Min</td>
+        </tr>
+    }
+</table>
 <table>
 <tr><th>Namn</th><th>Medel</th><th>Högsta</th><th>Lägsta</th><th>Senaste 20</th><th>Form</th></tr>
 <tr><td>Christer Liedholm</td><td>207,0</td><td>300</td><td>150</td><td>205,8</td><td>-1</td></tr>
