@@ -147,6 +147,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoutesTest.cs" />
     <Compile Include="SendRegistrationEmailHandlerTest.cs" />
+    <Compile Include="SerializationTest.cs" />
     <Compile Include="ServicesInstallerTest.cs" />
     <Compile Include="TestData.cs" />
     <Compile Include="UserTest.cs" />
