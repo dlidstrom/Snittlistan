@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Windsor;
+using MvcContrib.TestHelper;
 using Snittlistan.Controllers;
 using Snittlistan.Installers;
 using Snittlistan.IoC;
@@ -11,7 +12,7 @@ namespace Snittlistan.Test
 	public class ControllerFactoryTest
 	{
 		[Fact]
-		public void CanCreateHomeController()
+		public void CanCreateController()
 		{
 			var container = new WindsorContainer()
 				.Install(new ControllerFactoryInstaller())
@@ -20,8 +21,8 @@ namespace Snittlistan.Test
 			IControllerFactory factory = null;
 			Assert.DoesNotThrow(() => factory = container.Resolve<IControllerFactory>());
 			IController controller = null;
-			Assert.DoesNotThrow(() => controller = factory.CreateController(new RequestContext(), typeof(HomeController).Name.Replace("Controller", string.Empty)));
-			Assert.NotNull(controller);
+			Assert.DoesNotThrow(() => controller = factory.CreateController(new RequestContext(), typeof(ErrorController).Name.Replace("Controller", string.Empty)));
+			controller.ShouldNotBeNull("Failed to create controller");
 		}
 	}
 }
