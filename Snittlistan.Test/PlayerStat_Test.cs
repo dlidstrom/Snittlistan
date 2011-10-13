@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using MvcContrib.TestHelper;
-using Raven.Client.Indexes;
 using Snittlistan.Infrastructure.Indexes;
 using Snittlistan.Models;
 using Xunit;
@@ -13,7 +13,7 @@ namespace Snittlistan.Test
 		public void VerifyIndex()
 		{
 			// Arrange
-			IndexCreation.CreateIndexes(typeof(Matches_PlayerStats).Assembly, Store);
+			IndexCreator.CreateIndexes(Store);
 
 			// Act
 			var match = DbSeed.CreateMatch();

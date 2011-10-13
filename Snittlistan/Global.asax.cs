@@ -11,6 +11,7 @@ using Snittlistan.Helpers;
 using Snittlistan.Helpers.Attributes;
 using Snittlistan.Infrastructure;
 using Snittlistan.Infrastructure.AutoMapper;
+using Snittlistan.Infrastructure.Indexes;
 using Snittlistan.IoC;
 using Snittlistan.Models;
 
@@ -51,6 +52,10 @@ namespace Snittlistan
 
 			// configure AutoMapper
 			AutoMapperConfiguration.Configure(container);
+
+			// create indexes
+			using (var store = Container.Resolve<IDocumentStore>())
+				IndexCreator.CreateIndexes(store);
 
 #if DEBUG
 			using (var session = Container.Resolve<IDocumentStore>().OpenSession())
