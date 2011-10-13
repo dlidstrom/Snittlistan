@@ -1,11 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using Snittlistan.Events;
-
-namespace Snittlistan.Models
+﻿namespace Snittlistan.Models
 {
+	using System;
+	using System.Linq;
+	using System.Security.Cryptography;
+	using System.Text;
+	using Snittlistan.Events;
+
 	/// <summary>
 	/// Represents a registered user.
 	/// </summary>

@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-
-namespace Snittlistan.Models
+﻿namespace Snittlistan.Models
 {
+	using System;
+	using System.Collections.Generic;
+	using Newtonsoft.Json;
+
 	/// <summary>
 	/// Represents a league match.
 	/// </summary>
@@ -11,6 +11,26 @@ namespace Snittlistan.Models
 	{
 		[JsonProperty(PropertyName = "Teams")]
 		private List<Team> teams;
+
+		/// <summary>
+		/// Initializes a new instance of the Match class.
+		/// </summary>
+		/// <param name="location">Match location.</param>
+		/// <param name="date">Match date.</param>
+		/// <param name="bitsMatchId">BITS match id.</param>
+		/// <param name="teams">Teams that played the match.</param>
+		[JsonConstructor]
+		public Match(
+			string location,
+			DateTime date,
+			int bitsMatchId,
+			IEnumerable<Team> teams)
+		{
+			Location = location;
+			Date = date;
+			BitsMatchId = bitsMatchId;
+			this.teams = new List<Team>(teams);
+		}
 
 		/// <summary>
 		/// Initializes a new instance of the Match class.

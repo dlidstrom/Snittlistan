@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-namespace Snittlistan.Models
+﻿namespace Snittlistan.Models
 {
+	using System.Collections.Generic;
+	using Newtonsoft.Json;
+
 	/// <summary>
 	/// Represents a table in a serie.
 	/// </summary>
@@ -20,6 +21,16 @@ namespace Snittlistan.Models
 				new Game(string.Empty, 0),
 				new Game(string.Empty, 0)
 			};
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the Table class.
+		/// </summary>
+		/// <param name="games">Games in the table.</param>
+		[JsonConstructor]
+		public Table(IEnumerable<Game> games)
+		{
+			this.games = new List<Game>(games);
 		}
 
 		/// <summary>
