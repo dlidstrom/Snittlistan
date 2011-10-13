@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading;
 using MvcContrib.TestHelper;
 using Snittlistan.Infrastructure.Indexes;
-using Snittlistan.Models;
 using Xunit;
 
 namespace Snittlistan.Test
@@ -19,11 +18,12 @@ namespace Snittlistan.Test
 			var match = DbSeed.CreateMatch();
 			Session.Store(match);
 			Session.SaveChanges();
-			Matches_PlayerStats.Results stats = Session.Query<Matches_PlayerStats.Results, Matches_PlayerStats>()
+			var stats = Session.Query<Matches_PlayerStats.Results, Matches_PlayerStats>()
 				.Customize(c => c.WaitForNonStaleResults())
-				.Single(s => s.Player == "Mikael Axelsson");
+				.SingleOrDefault(s => s.Player == "Mikael Axelsson");
 
 			// Assert
+			stats.ShouldNotBeNull("Failed to read from index");
 			stats.Count.ShouldBe(4);
 			stats.TotalPins.ShouldBe(845);
 			stats.Max.ShouldBe(223);
