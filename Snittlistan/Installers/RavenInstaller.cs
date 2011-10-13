@@ -6,8 +6,6 @@ using Castle.Windsor;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Embedded;
-using Raven.Client.Indexes;
-using Snittlistan.Infrastructure.Indexes;
 
 namespace Snittlistan.Installers
 {
@@ -43,7 +41,6 @@ namespace Snittlistan.Installers
 
 			store.Initialize();
 			store.Conventions.IdentityPartsSeparator = "-";
-			IndexCreation.CreateIndexes(typeof(Matches_PlayerStats).Assembly, store);
 			return store;
 		}
 	}

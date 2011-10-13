@@ -185,6 +185,7 @@
     <Compile Include="Infrastructure\AutoMapper\Profiles\TeamViewModelConverter.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\TeamViewModelSerieConverter.cs" />
     <Compile Include="Infrastructure\Indexes\Matches_PlayersStats.cs" />
+    <Compile Include="Infrastructure\Indexes\IndexCreator.cs" />
     <Compile Include="Models\Serie.cs" />
     <Compile Include="Models\Table.cs" />
     <Compile Include="Models\Team.cs" />
