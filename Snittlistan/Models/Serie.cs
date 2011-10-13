@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json;
-
-namespace Snittlistan.Models
+﻿namespace Snittlistan.Models
 {
+	using System.Collections.Generic;
+	using System.Linq;
+	using Newtonsoft.Json;
+
 	/// <summary>
 	/// Represents a serie in a match.
 	/// </summary>

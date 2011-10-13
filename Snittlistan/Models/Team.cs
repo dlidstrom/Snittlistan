@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json;
-
-namespace Snittlistan.Models
+﻿namespace Snittlistan.Models
 {
+	using System.Collections.Generic;
+	using System.Linq;
+	using Newtonsoft.Json;
+
 	/// <summary>
 	/// Represents a team in a match.
 	/// </summary>
@@ -30,6 +30,7 @@ namespace Snittlistan.Models
 		/// <param name="name">Name of the team.</param>
 		/// <param name="score">Total score.</param>
 		/// <param name="series">Series played by team.</param>
+		[JsonConstructor]
 		public Team(string name, int score, IEnumerable<Serie> series)
 		{
 			Name = name;
