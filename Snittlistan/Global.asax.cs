@@ -54,8 +54,7 @@ namespace Snittlistan
 			AutoMapperConfiguration.Configure(container);
 
 			// create indexes
-			using (var store = Container.Resolve<IDocumentStore>())
-				IndexCreator.CreateIndexes(store);
+			IndexCreator.CreateIndexes(Container.Resolve<IDocumentStore>());
 
 #if DEBUG
 			using (var session = Container.Resolve<IDocumentStore>().OpenSession())
