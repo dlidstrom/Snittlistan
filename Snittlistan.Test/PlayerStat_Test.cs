@@ -19,8 +19,8 @@ namespace Snittlistan.Test
 			var match = DbSeed.CreateMatch();
 			Session.Store(match);
 			Session.SaveChanges();
-			WaitForNonStaleResults<Match>();
 			Matches_PlayerStats.Results stats = Session.Query<Matches_PlayerStats.Results, Matches_PlayerStats>()
+				.Customize(c => c.WaitForNonStaleResults())
 				.Single(s => s.Player == "Mikael Axelsson");
 
 			// Assert
