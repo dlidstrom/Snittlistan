@@ -178,6 +178,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MailController.cs" />
     <Compile Include="Controllers\MatchController.cs" />
+    <Compile Include="Controllers\WelcomeController.cs" />
     <Compile Include="DbSeed.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\SerieResolver.cs" />
