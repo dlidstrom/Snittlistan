@@ -11,15 +11,32 @@
 
 <table>
     <thead>
-        <tr><th>Namn</th><th>Medel</th><th>Högsta</th><th>Lägsta</th></tr>
-    </thead>
-    @foreach (var stat in Model)
-    {
         <tr>
-            <td>@stat.Player</td>
-            <td>@(string.Format("{0:F1}", (double)stat.TotalPins / stat.Count))</td>
-            <td>@stat.Max</td>
-            <td>@stat.Min</td>
+            <th>Namn</th>
+            <th>Serier</th>
+            <th>Medel</th>
+            <th>Högsta</th>
+            <th>Lägsta</th>
+            <th>X</th>
+            <th>Miss</th>
+            <th>9-</th>
+            <th>Hål</th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @foreach (var stat in Model)
+        {
+            <tr>
+                <td>@stat.Player</td>
+                <td>@stat.Series</td>
+                <td>@(string.Format("{0:F1}", (double)stat.Pins / stat.Series))</td>
+                <td>@stat.Max</td>
+                <td>@stat.Min</td>
+                <td>@(string.Format("{0:F2}", (double)stat.Strikes / stat.Series))</td>
+                <td>@(string.Format("{0:F2}", (double)stat.Misses / stat.Series))</td>
+                <td>@(string.Format("{0:F2}", (double)stat.OnePinMisses / stat.Series))</td>
+                <td>@(string.Format("{0:F2}", (double)stat.Splits / stat.Series))</td>
+            </tr>
+        }
+    </tbody>
 </table>

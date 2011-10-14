@@ -17,7 +17,7 @@ namespace Snittlistan.Controllers
 		public ActionResult Index()
 		{
 			var stats = Session.Query<Matches_PlayerStats.Results, Matches_PlayerStats>()
-				.OrderByDescending(s => s.TotalPins)
+				.OrderByDescending(s => s.Pins)
 				.ToList();
 
 			return View(stats);

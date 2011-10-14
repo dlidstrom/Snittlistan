@@ -19,10 +19,14 @@ namespace Snittlistan.Infrastructure.Indexes
 							 select new
 							 {
 								 Player = game.Player,
-								 TotalPins = game.Pins,
-								 Count = 1,
+								 Pins = game.Pins,
+								 Series = 1,
 								 Max = game.Pins,
-								 Min = game.Pins
+								 Min = game.Pins,
+								 Strikes = game.Strikes,
+								 Misses = game.Misses,
+								 OnePinMisses = game.OnePinMisses,
+								 Splits = game.Splits
 							 };
 
 			Reduce = results => from result in results
@@ -30,20 +34,28 @@ namespace Snittlistan.Infrastructure.Indexes
 								select new
 								{
 									Player = stat.Key,
-									TotalPins = stat.Sum(s => s.TotalPins),
-									Count = stat.Sum(s => s.Count),
+									Pins = stat.Sum(s => s.Pins),
+									Series = stat.Sum(s => s.Series),
 									Max = stat.Max(s => s.Max),
-									Min = stat.Min(s => s.Min)
+									Min = stat.Min(s => s.Min),
+									Strikes = stat.Sum(s => s.Strikes),
+									Misses = stat.Sum(s => s.Misses),
+									OnePinMisses = stat.Sum(s => s.OnePinMisses),
+									Splits = stat.Sum(s => s.Splits)
 								};
 		}
 
 		public class Results
 		{
 			public string Player { get; set; }
-			public int TotalPins { get; set; }
-			public int Count { get; set; }
+			public int Pins { get; set; }
+			public int Series { get; set; }
 			public int Max { get; set; }
 			public int Min { get; set; }
+			public int Strikes { get; set; }
+			public int Misses { get; set; }
+			public int OnePinMisses { get; set; }
+			public int Splits { get; set; }
 		}
 	}
 }
