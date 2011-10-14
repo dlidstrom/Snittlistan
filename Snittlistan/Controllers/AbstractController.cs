@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using Elmah;
 using Raven.Client;
+using Snittlistan.Models;
 
 namespace Snittlistan.Controllers
 {
@@ -35,25 +36,12 @@ namespace Snittlistan.Controllers
 		{
 			base.OnActionExecuting(filterContext);
 
-			if (HttpContext.Request.UserLanguages == null)
-				return;
-
-			// try to set culture
-			foreach (var lang in HttpContext.Request.UserLanguages)
+			// make sure there's an admin user
+			if (Session.Load<User>("Admin") == null)
 			{
-				try
-				{
-					var ci = new CultureInfo(lang);
-					Thread.CurrentThread.CurrentCulture = ci;
-					Thread.CurrentThread.CurrentUICulture = ci;
-					break;
-				}
-				catch (Exception ex)
-				{
-					ErrorSignal
-						.FromCurrentContext()
-						.Raise(ex);
-				}
+				// first launch
+				Response.Redirect("/welcome");
+				Response.End();
 			}
 		}
 	}

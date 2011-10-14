@@ -47,5 +47,11 @@ namespace Snittlistan.Test
 			verify.Values["activationKey"] = guid.ToString();
 			verify.ShouldMapTo<AccountController>(c => c.Verify(guid));
 		}
+
+		[Fact]
+		public void Welcome()
+		{
+			"~/welcome".ShouldMapTo<WelcomeController>(c => c.Index());
+		}
 	}
 }
