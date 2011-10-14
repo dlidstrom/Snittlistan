@@ -37,9 +37,9 @@
 		}
 
 		/// <summary>
-		/// Gets the user id.
+		/// Gets or sets the user id.
 		/// </summary>
-		public string Id { get; private set; }
+		public string Id { get; set; }
 
 		/// <summary>
 		/// Gets the email address.
