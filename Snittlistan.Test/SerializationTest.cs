@@ -1,19 +1,23 @@
 ﻿namespace Snittlistan.Test
 {
+	using System.IO;
+	using System.Text;
 	using Newtonsoft.Json;
 	using Snittlistan.Models;
 	using Xunit;
 
-	public class SerializationTest
+	public class SerializationTest : DbTest
 	{
 		[Fact]
 		public void CanSerializeMatch()
 		{
 			// Arrange
-			string output = JsonConvert.SerializeObject(DbSeed.CreateMatch());
+			var serializer = Store.Conventions.CreateSerializer();
+			var builder = new StringBuilder();
 
 			// Act
-			var match = JsonConvert.DeserializeObject<Match>(output);
+			serializer.Serialize(new StringWriter(builder), DbSeed.CreateMatch());
+			var match = serializer.Deserialize<Match>(new JsonTextReader(new StringReader(builder.ToString())));
 
 			// Assert
 			TestData.VerifyMatch(match);
