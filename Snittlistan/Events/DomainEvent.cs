@@ -46,7 +46,7 @@ namespace Snittlistan.Events
 
 		public static DomainEventReset Disable()
 		{
-            RaiseAction = e => { };
+			RaiseAction = e => { };
 
 			return new DomainEventReset();
 		}
