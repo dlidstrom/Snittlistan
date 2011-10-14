@@ -17,17 +17,17 @@ namespace Snittlistan.Controllers
 	/// </summary>
 	public class AccountController : AbstractController
 	{
-		private readonly IAuthenticationService authenticationServce;
+		private readonly IAuthenticationService authenticationService;
 
 		/// <summary>
 		/// Initializes a new instance of the AccountController class.
 		/// </summary>
 		/// <param name="session">Document session.</param>
-		/// <param name="authenticationServce">Authentication service.</param>
-		public AccountController(IDocumentSession session, IAuthenticationService authenticationServce)
+		/// <param name="authenticationService">Authentication service.</param>
+		public AccountController(IDocumentSession session, IAuthenticationService authenticationService)
 			: base(session)
 		{
-			this.authenticationServce = authenticationServce;
+			this.authenticationService = authenticationService;
 		}
 
 		/// <summary>
@@ -69,7 +69,7 @@ namespace Snittlistan.Controllers
 			if (!ModelState.IsValid)
 				return View(model);
 
-			authenticationServce.SetAuthCookie(model.Email, model.RememberMe);
+			authenticationService.SetAuthCookie(model.Email, model.RememberMe);
 
 			if (Url.IsLocalUrl(returnUrl)
 				&& returnUrl.Length > 1
@@ -89,7 +89,7 @@ namespace Snittlistan.Controllers
 		/// <returns></returns>
 		public ActionResult LogOff()
 		{
-			authenticationServce.SignOut();
+			authenticationService.SignOut();
 			return this.RedirectToAction<HomeController>(c => c.Index());
 		}
 
