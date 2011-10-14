@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Snittlistan.Infrastructure.Indexes.Matches_PlayerStats.Results>
+﻿@model List<Snittlistan.Infrastructure.Indexes.Matches_PlayerStats.Results>
 
 @{
     ViewBag.Title = "Snittlistan";
@@ -12,6 +12,7 @@
 <table>
     <thead>
         <tr>
+            <th></th>
             <th>Namn</th>
             <th>Serier</th>
             <th>Medel</th>
@@ -24,9 +25,11 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var stat in Model)
+        @for (int i=0; i<Model.Count; i++)
         {
+            var stat = Model[i];
             <tr>
+                <td>@(i+1)</td>
                 <td>@stat.Player</td>
                 <td>@stat.Series</td>
                 <td>@(string.Format("{0:F1}", (double)stat.Pins / stat.Series))</td>

@@ -26,7 +26,8 @@ namespace Snittlistan.Infrastructure.Indexes
 								 Strikes = game.Strikes,
 								 Misses = game.Misses,
 								 OnePinMisses = game.OnePinMisses,
-								 Splits = game.Splits
+								 Splits = game.Splits,
+								 Average = game.Pins
 							 };
 
 			Reduce = results => from result in results
@@ -41,14 +42,15 @@ namespace Snittlistan.Infrastructure.Indexes
 									Strikes = stat.Sum(s => s.Strikes),
 									Misses = stat.Sum(s => s.Misses),
 									OnePinMisses = stat.Sum(s => s.OnePinMisses),
-									Splits = stat.Sum(s => s.Splits)
+									Splits = stat.Sum(s => s.Splits),
+									Average = stat.Sum(s => s.Pins) / stat.Sum(s => s.Series)
 								};
 		}
 
 		public class Results
 		{
 			public string Player { get; set; }
-			public int Pins { get; set; }
+			public double Pins { get; set; }
 			public int Series { get; set; }
 			public int Max { get; set; }
 			public int Min { get; set; }
@@ -56,6 +58,7 @@ namespace Snittlistan.Infrastructure.Indexes
 			public int Misses { get; set; }
 			public int OnePinMisses { get; set; }
 			public int Splits { get; set; }
+			public double Average { get; set; }
 		}
 	}
 }
