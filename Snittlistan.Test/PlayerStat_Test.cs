@@ -24,10 +24,14 @@ namespace Snittlistan.Test
 
 			// Assert
 			stats.ShouldNotBeNull("Failed to read from index");
-			stats.Count.ShouldBe(4);
-			stats.TotalPins.ShouldBe(845);
+			stats.Series.ShouldBe(4);
+			stats.Pins.ShouldBe(845);
 			stats.Max.ShouldBe(223);
 			stats.Min.ShouldBe(202);
+			stats.Strikes.ShouldBe(5);
+			stats.Misses.ShouldBe(2);
+			stats.OnePinMisses.ShouldBe(1);
+			stats.Splits.ShouldBe(2);
 		}
 	}
 }
