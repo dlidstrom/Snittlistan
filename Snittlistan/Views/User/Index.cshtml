@@ -1,0 +1,50 @@
+﻿@model IEnumerable<UserViewModel>
+
+@{
+    ViewBag.Title = "Användare";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Skapa ny", "Create")
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>Namn</th>
+            <th>E-postadress</th>
+            <th>Aktiv</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>
+                <td>
+                    @Html.ActionLink("Redigera", "Edit", new { id=item.Id }) |
+                    @Html.ActionLink("Visa", "Details", new { id=item.Id }) |
+                    @Html.ActionLink("Ta bort", "Delete", new { id = item.Id }) |
+                    @if (item.IsActive)
+                    {
+                        @Html.ActionLink("Avaktivera", "Deactivate", new { id = item.Id })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Aktivera", "Activate", new { id = item.Id })
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

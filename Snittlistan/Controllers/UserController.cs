@@ -1,0 +1,123 @@
+﻿using System.Linq;
+using System.Web.Mvc;
+using MvcContrib;
+using Raven.Client;
+using Snittlistan.Helpers;
+using Snittlistan.Infrastructure.AutoMapper;
+using Snittlistan.Models;
+using Snittlistan.ViewModels;
+
+namespace Snittlistan.Controllers
+{
+	public class UserController : AdminController
+	{
+		public UserController(IDocumentSession session)
+			: base(session)
+		{ }
+
+		public ActionResult Index()
+		{
+			var users = Session.Query<User>()
+				.MapTo<UserViewModel>()
+				.ToList();
+
+			return View(users);
+		}
+
+		public ActionResult Edit(string id)
+		{
+			var user = Session.Load<User>(id);
+			if (user == null)
+				return HttpNotFound();
+
+			return View(user.MapTo<EditUserViewModel>());
+		}
+
+		[HttpPost]
+		public ActionResult Edit(EditUserViewModel vm)
+		{
+			User user = Session.Load<User>(vm.Id);
+			if (user == null)
+				return HttpNotFound();
+
+			var newUser = new User(vm.FirstName, vm.LastName, vm.Email, vm.Password)
+			{
+				Id = vm.Id
+			};
+
+			if (vm.IsActive)
+				newUser.Activate();
+
+			Session.Advanced.Evict(user);
+			Session.Store(newUser);
+
+			return this.RedirectToAction(c => c.Index());
+		}
+
+		public ActionResult Details(string id)
+		{
+			var user = Session.Load<User>(id);
+			if (user == null)
+				return HttpNotFound();
+
+			return View(user.MapTo<UserViewModel>());
+		}
+
+		public ActionResult Delete(string id)
+		{
+			var user = Session.Load<User>(id);
+			if (user == null)
+				return HttpNotFound();
+
+			return View(user.MapTo<UserViewModel>());
+		}
+
+		[HttpPost, ActionName("Delete")]
+		public ActionResult DeleteConfirmed(string id)
+		{
+			try
+			{
+				// TODO: Add delete logic here
+				return RedirectToAction("Index");
+			}
+			catch
+			{
+				return View();
+			}
+		}
+
+		public ActionResult Create()
+		{
+			return View(new RegisterViewModel());
+		}
+
+		[HttpPost]
+		public ActionResult Create(RegisterViewModel user)
+		{
+			// an existing user cannot be registered again
+			if (Session.FindUserByEmail(user.Email).SingleOrDefault() != null)
+				ModelState.AddModelError("Email", "Användaren finns redan");
+
+			// redisplay form if any errors at this point
+			if (!ModelState.IsValid)
+				return View(user);
+
+			var newUser = new User(user.FirstName, user.LastName, user.Email, user.Password);
+			Session.Store(newUser);
+
+			return this.RedirectToAction(c => c.Index());
+		}
+
+		public ActionResult Activate(string id)
+		{
+			// todo: ajax
+			return this.RedirectToAction(c => c.Index());
+		}
+
+		public ActionResult Deactivate(string id)
+		{
+			// todo: ajax
+			return this.RedirectToAction(c => c.Index());
+		}
+	}
+}
