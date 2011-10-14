@@ -39,7 +39,7 @@ namespace Snittlistan.Controllers
 				adminUser.FirstName,
 				adminUser.LastName,
 				adminUser.Email,
-				adminUser.Email)
+				adminUser.Password)
 				{
 					Id = "Admin"
 				};
