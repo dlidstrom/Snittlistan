@@ -1,0 +1,30 @@
+﻿@model UserViewModel
+
+@{
+    ViewBag.Title = "Detaljer";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<fieldset>
+    <legend>Användare</legend>
+
+    <div class="display-label">@Html.LabelFor(model => model.Name)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.Email)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Email)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.IsActive)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsActive)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Redigera", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Tillbaka", "Index")
+</p>
