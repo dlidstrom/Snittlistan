@@ -14,9 +14,12 @@
 
 <h2>@ViewBag.Title</h2>
 
-<p>
-    @Html.ActionLink("Registrera ny", "Register")
-</p>
+@if (Request.IsAuthenticated)
+{
+    <p>
+        @Html.ActionLink("Registrera ny", "Register")
+    </p>
+}
 <table>
     <tr>
         <th>Datum</th>
@@ -33,9 +36,7 @@
         <td>@Html.DisplayFor(modelItem => item.HomeTeam.Score)-@Html.DisplayFor(modelItem => item.AwayTeam.Score)</td>
         <td>@Html.DisplayFor(modelItem => item.Match.Location)</td>
         <td>
-            @*@CreateEditLink(item)*@
             @Html.ActionLink("Visa", "Details", new { id = item.Match.Id })
-            @* | @Html.ActionLink("Ta bort", "Delete", new { id=item.Id })*@
         </td>
     </tr>
 }

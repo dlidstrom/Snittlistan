@@ -60,6 +60,7 @@ namespace Snittlistan.Controllers
 		/// GET: /Match/Register.
 		/// </summary>
 		/// <returns></returns>
+		[Authorize]
 		public ViewResult Register()
 		{
 			return View(new RegisterMatchViewModel());
@@ -70,7 +71,7 @@ namespace Snittlistan.Controllers
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		[HttpPost]
+		[HttpPost, Authorize]
 		public ActionResult Register(RegisterMatchViewModel model)
 		{
 			if (!ModelState.IsValid)
@@ -92,6 +93,7 @@ namespace Snittlistan.Controllers
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
+		[Authorize]
 		public ActionResult EditDetails(int id)
 		{
 			var match = Session.Load<Match>(id);
@@ -106,7 +108,7 @@ namespace Snittlistan.Controllers
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		[HttpPost]
+		[HttpPost, Authorize]
 		public ActionResult EditDetails(MatchViewModel.MatchDetails model)
 		{
 			if (!ModelState.IsValid)
@@ -129,6 +131,7 @@ namespace Snittlistan.Controllers
 		/// <param name="id">Match identifier.</param>
 		/// <param name="isHomeTeam">True if home team; false if away team.</param>
 		/// <returns></returns>
+		[Authorize]
 		public ActionResult EditTeam(int id, bool isHomeTeam)
 		{
 			var match = Session.Load<Match>(id);
@@ -152,7 +155,7 @@ namespace Snittlistan.Controllers
 		/// </summary>
 		/// <param name="vm">Team view model.</param>
 		/// <returns></returns>
-		[HttpPost]
+		[HttpPost, Authorize]
 		public ActionResult EditTeam(EditTeamViewModel vm)
 		{
 			var match = Session.Load<Match>(vm.Id);
@@ -172,6 +175,7 @@ namespace Snittlistan.Controllers
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
+		[Authorize]
 		public ActionResult Delete(int id)
 		{
 			var match = Session.Load<Match>(id);
@@ -186,7 +190,7 @@ namespace Snittlistan.Controllers
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		[HttpPost, ActionName("Delete")]
+		[HttpPost, ActionName("Delete"), Authorize]
 		public ActionResult DeleteConfirmed(string id)
 		{
 			try
