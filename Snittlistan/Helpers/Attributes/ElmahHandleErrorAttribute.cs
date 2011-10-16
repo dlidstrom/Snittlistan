@@ -41,7 +41,8 @@ namespace Snittlistan.Helpers.Attributes
 				return false;
 
 			var testContext = new ErrorFilterModule.AssertionHelperContext(
-									  context.Exception, HttpContext.Current);
+				context.Exception,
+				HttpContext.Current);
 
 			return config.Assertion.Test(testContext);
 		}
