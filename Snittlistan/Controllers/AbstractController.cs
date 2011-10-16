@@ -10,7 +10,7 @@ using Snittlistan.Models;
 
 namespace Snittlistan.Controllers
 {
-	public class AbstractController : Controller
+	public abstract class AbstractController : Controller
 	{
 		/// <summary>
 		/// Initializes a new instance of the AbstractController class.
