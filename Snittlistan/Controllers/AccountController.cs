@@ -148,7 +148,7 @@ namespace Snittlistan.Controllers
 				.FirstOrDefault();
 
 			if (user == null)
-				ModelState.AddModelError("Email",  "Användaren existerar inte.");
+				ModelState.AddModelError("Email", "Användaren existerar inte.");
 
 			// redisplay form if any errors at this point
 			if (!ModelState.IsValid)
