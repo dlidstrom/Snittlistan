@@ -54,5 +54,19 @@ namespace Snittlistan.Test
 			match.HomeTeam.Score.ShouldBe(13);
 			match.AwayTeam.Score.ShouldBe(6);
 		}
+
+		[Fact]
+		public void WhenErrorReturnView()
+		{
+			// Arrange
+			var controller = new MatchController(Session);
+			controller.ModelState.AddModelError("key", "error");
+
+			// Act
+			var result = controller.Register(null);
+
+			// Assert
+			result.AssertViewRendered().ForView(string.Empty);
+		}
 	}
 }
