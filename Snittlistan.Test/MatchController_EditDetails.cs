@@ -73,5 +73,19 @@ namespace Snittlistan.Test
 			// Assert
 			result.AssertViewRendered().ForView(string.Empty);
 		}
+
+		[Fact]
+		public void WhenErrorReturnView()
+		{
+			// Arrange
+			var controller = new MatchController(Session);
+			controller.ModelState.AddModelError("key", "error");
+
+			// Act
+			var result = controller.EditDetails(null);
+
+			// Assert
+			result.AssertViewRendered().ForView(string.Empty);
+		}
 	}
 }
