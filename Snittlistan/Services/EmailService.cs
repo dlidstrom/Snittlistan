@@ -1,16 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Net;
-using System.Net.Configuration;
-using System.Net.Mail;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Configuration;
-using Elmah;
-
-namespace Snittlistan.Services
+﻿namespace Snittlistan.Services
 {
+	using System.Collections.Generic;
+	using System.Configuration;
+	using System.Linq;
+	using System.Net;
+	using System.Net.Configuration;
+	using System.Net.Mail;
+	using System.Threading.Tasks;
+	using System.Web;
+	using System.Web.Configuration;
+	using Elmah;
+
+	/// <summary>
+	/// Used to send email.
+	/// </summary>
 	public class EmailService : IEmailService
 	{
 		private string host;
@@ -20,6 +23,9 @@ namespace Snittlistan.Services
 		private MailAddress from;
 		private List<MailAddress> moderatorEmails;
 
+		/// <summary>
+		/// Initializes a new instance of the EmailService class.
+		/// </summary>
 		public EmailService()
 		{
 			// fetch settings from web.config
@@ -37,6 +43,14 @@ namespace Snittlistan.Services
 				.ToList();
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the EmailService class.
+		/// </summary>
+		/// <param name="host">Smtp host address.</param>
+		/// <param name="port">Smtp host port.</param>
+		/// <param name="username">User name.</param>
+		/// <param name="password">User password.</param>
+		/// <param name="moderators">List of moderator addresses.</param>
 		public EmailService(string host, int port, string username, string password, IEnumerable<string> moderators)
 		{
 			this.host = host;
@@ -47,6 +61,12 @@ namespace Snittlistan.Services
 			this.moderatorEmails = moderators.Select(e => new MailAddress(e.Trim())).ToList();
 		}
 
+		/// <summary>
+		/// Send mail to a recipient and the moderators.
+		/// </summary>
+		/// <param name="recipient">Mail recipient.</param>
+		/// <param name="subject">Mail subject.</param>
+		/// <param name="body">Mail body (as html).</param>
 		public void SendMail(string recipient, string subject, string body)
 		{
 			// execute asynchronously

@@ -38,7 +38,7 @@
 		/// <summary>
 		/// GET: /User/Edit/5.
 		/// </summary>
-		/// <param name="id">User id.</param>
+		/// <param name="id">User identifier.</param>
 		/// <returns></returns>
 		public ActionResult Edit(string id)
 		{
