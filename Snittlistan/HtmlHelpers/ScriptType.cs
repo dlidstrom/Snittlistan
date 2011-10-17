@@ -23,6 +23,11 @@
 		JQueryUI,
 
 		/// <summary>
+		/// User interface localization files.
+		/// </summary>
+		JQueryUII18N,
+
+		/// <summary>
 		/// Modernizer library.
 		/// </summary>
 		Modernizr
