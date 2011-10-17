@@ -183,10 +183,8 @@
     <Compile Include="Controllers\WelcomeController.cs" />
     <Compile Include="DbSeed.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Profiles\SerieResolver.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Profiles\TableResolver.cs" />
+    <Compile Include="Infrastructure\AutoMapper\Profiles\PairResolver.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\TeamViewModelConverter.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Profiles\TeamViewModelSerieConverter.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\UserProfile.cs" />
     <Compile Include="Infrastructure\Indexes\Matches_PlayersStats.cs" />
     <Compile Include="Infrastructure\Indexes\IndexCreator.cs" />
@@ -394,7 +392,7 @@
     <Content Include="Views\Match\EditTeam.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Match\EditorTemplates\SerieEditor.cshtml" />
+    <Content Include="Views\Match\EditorTemplates\PairEditor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Welcome\Index.cshtml" />
@@ -414,6 +412,9 @@
   <ItemGroup>
     <Content Include="Views\User\Edit.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Match\EditorTemplates\SerieEditor.cshtml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <Import Project="$(ProgramFiles)\MSBuild\StyleCop\v4.5\StyleCop.targets" />
@@ -430,11 +431,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50253</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:56255/</IISUrl>
+          <IISUrl>http://localhost:63818/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -41,8 +41,10 @@
                 </td>
             </tr>
         </table>
-        @Html.EditorFor(model => model.HomeTeam, "TeamEditor", new { label = Html.LabelFor(model => model.HomeTeam) })
-        @Html.EditorFor(model => model.AwayTeam, "TeamEditor", new { label = Html.LabelFor(model => model.AwayTeam) })
+        <h2>Hemmalag</h2>
+        @Html.EditorFor(model => model.HomeTeam, "TeamEditor")
+        <h2>Bortalag</h2>
+        @Html.EditorFor(model => model.AwayTeam, "TeamEditor")
 
         <p>
             <input type="submit" value="Skapa" />
