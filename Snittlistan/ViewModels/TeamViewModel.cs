@@ -75,21 +75,25 @@ namespace Snittlistan.ViewModels
 			/// <summary>
 			/// Gets or sets serie 1.
 			/// </summary>
+			[Display(Name = "1")]
 			public Serie Serie1 { get; set; }
 
 			/// <summary>
 			/// Gets or sets serie 2.
 			/// </summary>
+			[Display(Name = "2")]
 			public Serie Serie2 { get; set; }
 
 			/// <summary>
 			/// Gets or sets serie 3.
 			/// </summary>
+			[Display(Name = "3")]
 			public Serie Serie3 { get; set; }
 
 			/// <summary>
 			/// Gets or sets serie 4.
 			/// </summary>
+			[Display(Name = "4")]
 			public Serie Serie4 { get; set; }
 		}
 
@@ -123,7 +127,7 @@ namespace Snittlistan.ViewModels
 			/// </summary>
 			public Game Game2 { get; set; }
 		}
-		
+
 		/// <summary>
 		/// Represents a game in a serie.
 		/// </summary>
