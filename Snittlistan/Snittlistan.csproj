@@ -183,7 +183,9 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\WelcomeController.cs" />
     <Compile Include="DbSeed.cs" />
+    <Compile Include="HtmlHelpers\CssType.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
+    <Compile Include="HtmlHelpers\ScriptType.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\PairResolver.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\TeamViewModelConverter.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\UserProfile.cs" />

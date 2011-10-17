@@ -6,8 +6,11 @@
 
 @section scripts
 {
-    @Content.Script("jquery.validate.min.js", Url)
-    @Content.Script("jquery.validate.unobtrusive.min.js", Url)
+    @Content.Script(ScriptType.JQueryValidate)
+    @Content.Script(ScriptType.JQueryValidateUnobtrusive)
+    @Content.Script(ScriptType.JQueryUI)
+    @Content.Css(CssType.Blitzer)
+    @Content.Script("date-picker.min.js", Url)
 }
 
 <h2>@ViewBag.Title</h2>

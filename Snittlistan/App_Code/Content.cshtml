@@ -1,8 +1,33 @@
 ﻿@using System.Web.Mvc
+@using Snittlistan.HtmlHelpers
 
 @helper Script(string scriptName, UrlHelper url)
 {
 	<script src="@url.Content("~/Content/js/" + scriptName)" type="text/javascript"></script>
+}
+
+@helper Script(ScriptType type)
+{
+    string src = string.Empty;
+    switch (type)
+    {
+        case ScriptType.JQuery:
+            src = "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.4.min.js";
+            break;
+        case ScriptType.JQueryValidate:
+            src = "http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js";
+            break;
+        case ScriptType.JQueryValidateUnobtrusive:
+            src = "http://ajax.aspnetcdn.com/ajax/mvc/3.0/jquery.validate.unobtrusive.min.js";
+            break;
+        case ScriptType.JQueryUI:
+            src = "http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.16/jquery-ui.min.js";
+            break;
+        case ScriptType.Modernizr:
+            src = "http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.0.6-development-only.js";
+            break;
+    }
+    <script src="@src" type="text/javascript"></script>
 }
 
 @helper GA()
@@ -28,4 +53,17 @@
 @helper Css(string scriptName, UrlHelper url)
 {
     <link href="@url.Content("~/Content/css/" + scriptName)" rel="stylesheet" type="text/css" />
+}
+
+@helper Css(CssType type)
+{
+    string src = string.Empty;
+    switch (type)
+    {
+        case CssType.Blitzer:
+            src = "http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/themes/blitzer/jquery-ui.css";
+            break;
+    }
+    
+    <link href="@src" rel="Stylesheet" type="text/css" />
 }
