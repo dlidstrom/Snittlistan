@@ -1,20 +1,31 @@
-﻿using System.Linq;
-using System.Web.Mvc;
-using MvcContrib;
-using Raven.Client;
-using Snittlistan.Helpers;
-using Snittlistan.Infrastructure.AutoMapper;
-using Snittlistan.Models;
-using Snittlistan.ViewModels;
-
-namespace Snittlistan.Controllers
+﻿namespace Snittlistan.Controllers
 {
+	using System.Linq;
+	using System.Web.Mvc;
+	using MvcContrib;
+	using Raven.Client;
+	using Snittlistan.Helpers;
+	using Snittlistan.Infrastructure.AutoMapper;
+	using Snittlistan.Models;
+	using Snittlistan.ViewModels;
+
+	/// <summary>
+	/// User administration.
+	/// </summary>
 	public class UserController : AdminController
 	{
+		/// <summary>
+		/// Initializes a new instance of the UserController class.
+		/// </summary>
+		/// <param name="session">Document session.</param>
 		public UserController(IDocumentSession session)
 			: base(session)
 		{ }
 
+		/// <summary>
+		/// GET: /User/Index.
+		/// </summary>
+		/// <returns></returns>
 		public ActionResult Index()
 		{
 			var users = Session.Query<User>()
@@ -24,6 +35,11 @@ namespace Snittlistan.Controllers
 			return View(users);
 		}
 
+		/// <summary>
+		/// GET: /User/Edit/5.
+		/// </summary>
+		/// <param name="id">User id.</param>
+		/// <returns></returns>
 		public ActionResult Edit(string id)
 		{
 			var user = Session.Load<User>(id);
@@ -33,6 +49,11 @@ namespace Snittlistan.Controllers
 			return View(user.MapTo<EditUserViewModel>());
 		}
 
+		/// <summary>
+		/// POST: /User/Edit.
+		/// </summary>
+		/// <param name="vm"></param>
+		/// <returns></returns>
 		[HttpPost]
 		public ActionResult Edit(EditUserViewModel vm)
 		{
