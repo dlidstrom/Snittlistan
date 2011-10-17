@@ -42,21 +42,21 @@
 		/// <summary>
 		/// POST: /Account/LogOn.
 		/// </summary>
-		/// <param name="model"></param>
+		/// <param name="vm"></param>
 		/// <param name="returnUrl"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult LogOn(LogOnViewModel model, string returnUrl)
+		public ActionResult LogOn(LogOnViewModel vm, string returnUrl)
 		{
 			// find the user in question
-			var user = Session.FindUserByEmail(model.Email)
+			var user = Session.FindUserByEmail(vm.Email)
 				.FirstOrDefault();
 
 			if (user == null)
 			{
 				ModelState.AddModelError("Email", "Användaren existerar inte.");
 			}
-			else if (!user.ValidatePassword(model.Password))
+			else if (!user.ValidatePassword(vm.Password))
 			{
 				ModelState.AddModelError("Password", "Lösenordet stämmer inte!");
 			}
@@ -67,9 +67,9 @@
 
 			// redisplay form if any errors at this point
 			if (!ModelState.IsValid)
-				return View(model);
+				return View(vm);
 
-			authenticationService.SetAuthCookie(model.Email, model.RememberMe);
+			authenticationService.SetAuthCookie(vm.Email, vm.RememberMe);
 
 			if (Url.IsLocalUrl(returnUrl)
 				&& returnUrl.Length > 1
