@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <title>@ViewBag.Title</title>
     @Content.Favicon(Url)
-    <link href="@Url.Content("~/Content/css/Site.css")" rel="stylesheet" type="text/css" />
+    @Content.Css("Site.css", Url)
     @Content.GA()
 </head>
 <body>
