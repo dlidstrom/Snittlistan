@@ -11,8 +11,8 @@
 
 @section scripts
 {
-    @Content.Script("jquery.validate.min.js", Url)
-    @Content.Script("jquery.validate.unobtrusive.min.js", Url)
+    @Content.Script(ScriptType.JQueryValidate)
+    @Content.Script(ScriptType.JQueryValidateUnobtrusive)
 }
 
 @Html.ValidationSummary(true, "Inloggningen gick inte att genomföra. Försök gärna igen.")

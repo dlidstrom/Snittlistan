@@ -2,10 +2,11 @@
 @{
     ViewBag.Title = "Register";
 }
+
 @section Scripts
 {
-    @Content.Script("jquery.validate.min.js", Url)
-    @Content.Script("jquery.validate.unobtrusive.min.js", Url)
+    @Content.Script(ScriptType.JQueryValidate)
+    @Content.Script(ScriptType.JQueryValidateUnobtrusive)
 }
 <h2>Gå med</h2>
 <p>
