@@ -1,18 +1,18 @@
-﻿using System;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using MvcContrib;
-using Raven.Client;
-using Snittlistan.Helpers;
-using Snittlistan.Models;
-using Snittlistan.Services;
-using Snittlistan.ViewModels;
-
-namespace Snittlistan.Controllers
+﻿namespace Snittlistan.Controllers
 {
+	using System;
+	using System.Linq;
+	using System.Web;
+	using System.Web.Mvc;
+	using MvcContrib;
+	using Raven.Client;
+	using Snittlistan.Helpers;
+	using Snittlistan.Models;
+	using Snittlistan.Services;
+	using Snittlistan.ViewModels;
+
 	/// <summary>
-	/// Handles everything related to accounts: creating and validating
+	/// Handles user-actions related to accounts: registering and validating
 	/// new users, logging in and logging out.
 	/// </summary>
 	public class AccountController : AbstractController
