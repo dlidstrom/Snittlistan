@@ -8,6 +8,7 @@ using Moq;
 using Raven.Client;
 using Raven.Client.Embedded;
 using Snittlistan.Infrastructure.AutoMapper;
+using Snittlistan.Infrastructure.Indexes;
 using Snittlistan.Installers;
 using Snittlistan.Models;
 
@@ -26,6 +27,9 @@ namespace Snittlistan.Test
 			{
 				RunInMemory = true
 			}.Initialize();
+
+			// add indexes
+			IndexCreator.CreateIndexes(Store);
 			Session = Store.OpenSession();
 		}
 

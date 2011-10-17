@@ -189,6 +189,7 @@
     <Compile Include="Infrastructure\AutoMapper\Profiles\PairResolver.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\TeamViewModelConverter.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\UserProfile.cs" />
+    <Compile Include="Infrastructure\Indexes\Match_ByDate.cs" />
     <Compile Include="Infrastructure\Indexes\Matches_PlayersStats.cs" />
     <Compile Include="Infrastructure\Indexes\IndexCreator.cs" />
     <Compile Include="Models\Serie.cs" />

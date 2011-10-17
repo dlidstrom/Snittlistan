@@ -12,12 +12,11 @@ namespace Snittlistan.Test
 		public void VerifyIndex()
 		{
 			// Arrange
-			IndexCreator.CreateIndexes(Store);
-
-			// Act
 			var match = DbSeed.CreateMatch();
 			Session.Store(match);
 			Session.SaveChanges();
+
+			// Act
 			var stats = Session.Query<Matches_PlayerStats.Results, Matches_PlayerStats>()
 				.Customize(c => c.WaitForNonStaleResults())
 				.SingleOrDefault(s => s.Player == "Mikael Axelsson");

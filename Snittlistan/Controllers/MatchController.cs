@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using Raven.Client;
 using Snittlistan.Infrastructure.AutoMapper;
+using Snittlistan.Infrastructure.Indexes;
 using Snittlistan.Models;
 using Snittlistan.ViewModels;
 
@@ -24,7 +25,7 @@ namespace Snittlistan.Controllers
 		/// <returns></returns>
 		public ViewResult Index()
 		{
-			var matches = Session.Query<Match>()
+			var matches = Session.Query<Match, Match_ByDate>()
 				.OrderByDescending(m => m.Date)
 				.ToList()
 				.Select(match => new MatchViewModel
