@@ -1,99 +1,22 @@
 ﻿@model TeamViewModel.Serie
 
-<table class="team-editor">
-    <thead>
-        <tr>
-            <td>Serie</td>
-            <td>@Html.LabelFor(model => model.Game1.Player)</td>
-            <td>@Html.LabelFor(model => model.Game1.Pins)</td>
-            <td>@Html.LabelFor(model => model.Score)</td>
-            <td>@Html.LabelFor(model => model.Game1.Strikes)</td>
-            <td>@Html.LabelFor(model => model.Game1.Misses)</td>
-            <td>@Html.LabelFor(model => model.Game1.OnePinMisses)</td>
-            <td>@Html.LabelFor(model => model.Game1.Splits)</td>
-            <td>@Html.LabelFor(model => model.Game1.CoveredAll)</td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td rowspan="2">1</td>
-            <td>@Html.EditorFor(model => model.Game1.Player)</td>
-            <td>@Html.TextBoxFor(model => model.Game1.Pins, new { type = "number" })</td>
-            <td rowspan="2">@Html.TextBoxFor(model => model.Score, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game1.Strikes, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game1.Misses, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game1.OnePinMisses, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game1.Splits, new { type = "number" })</td>
-            <td>@Html.EditorFor(model => model.Game1.CoveredAll)</td>
-        </tr>
-        <tr>
-            <td>@Html.EditorFor(model => model.Game2.Player)</td>
-            <td>@Html.TextBoxFor(model => model.Game2.Pins, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game2.Strikes, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game2.Misses, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game2.OnePinMisses, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game2.Splits, new { type = "number" })</td>
-            <td>@Html.EditorFor(model => model.Game2.CoveredAll)</td>
-        </tr>
-        <tr>
-            <td rowspan="2">2</td>
-            <td>@Html.EditorFor(model => model.Game1.Player)</td>
-            <td>@Html.TextBoxFor(model => model.Game1.Pins, new { type = "number" })</td>
-            <td rowspan="2">@Html.TextBoxFor(model => model.Score, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game1.Strikes, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game1.Misses, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game1.OnePinMisses, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game1.Splits, new { type = "number" })</td>
-            <td>@Html.EditorFor(model => model.Game1.CoveredAll)</td>
-        </tr>
-        <tr>
-            <td>@Html.EditorFor(model => model.Game2.Player)</td>
-            <td>@Html.TextBoxFor(model => model.Game2.Pins, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game2.Strikes, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game2.Misses, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game2.OnePinMisses, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game2.Splits, new { type = "number" })</td>
-            <td>@Html.EditorFor(model => model.Game2.CoveredAll)</td>
-        </tr>
-        <tr>
-            <td rowspan="2">3</td>
-            <td>@Html.EditorFor(model => model.Game1.Player)</td>
-            <td>@Html.TextBoxFor(model => model.Game1.Pins, new { type = "number" })</td>
-            <td rowspan="2">@Html.TextBoxFor(model => model.Score, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game1.Strikes, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game1.Misses, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game1.OnePinMisses, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game1.Splits, new { type = "number" })</td>
-            <td>@Html.EditorFor(model => model.Game1.CoveredAll)</td>
-        </tr>
-        <tr>
-            <td>@Html.EditorFor(model => model.Game2.Player)</td>
-            <td>@Html.TextBoxFor(model => model.Game2.Pins, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game2.Strikes, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game2.Misses, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game2.OnePinMisses, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game2.Splits, new { type = "number" })</td>
-            <td>@Html.EditorFor(model => model.Game2.CoveredAll)</td>
-        </tr>
-        <tr>
-            <td rowspan="2">4</td>
-            <td>@Html.EditorFor(model => model.Game1.Player)</td>
-            <td>@Html.TextBoxFor(model => model.Game1.Pins, new { type = "number" })</td>
-            <td rowspan="2">@Html.TextBoxFor(model => model.Score, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game1.Strikes, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game1.Misses, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game1.OnePinMisses, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game1.Splits, new { type = "number" })</td>
-            <td>@Html.EditorFor(model => model.Game1.CoveredAll)</td>
-        </tr>
-        <tr>
-            <td>@Html.EditorFor(model => model.Game2.Player)</td>
-            <td>@Html.TextBoxFor(model => model.Game2.Pins, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game2.Strikes, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game2.Misses, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game2.OnePinMisses, new { type = "number" })</td>
-            <td>@Html.TextBoxFor(model => model.Game2.Splits, new { type = "number" })</td>
-            <td>@Html.EditorFor(model => model.Game2.CoveredAll)</td>
-        </tr>
-    </tbody>
-</table>
+<tr>
+    <td rowspan="2">@ViewData["label"]</td>
+    <td>@Html.EditorFor(model => model.Game1.Player)</td>
+    <td>@Html.TextBoxFor(model => model.Game1.Pins, new { type = "number" })</td>
+    <td rowspan="2">@Html.TextBoxFor(model => model.Score, new { type = "number" })</td>
+    <td>@Html.TextBoxFor(model => model.Game1.Strikes, new { type = "number" })</td>
+    <td>@Html.TextBoxFor(model => model.Game1.Misses, new { type = "number" })</td>
+    <td>@Html.TextBoxFor(model => model.Game1.OnePinMisses, new { type = "number" })</td>
+    <td>@Html.TextBoxFor(model => model.Game1.Splits, new { type = "number" })</td>
+    <td>@Html.EditorFor(model => model.Game1.CoveredAll)</td>
+</tr>
+<tr>
+    <td>@Html.EditorFor(model => model.Game2.Player)</td>
+    <td>@Html.TextBoxFor(model => model.Game2.Pins, new { type = "number" })</td>
+    <td>@Html.TextBoxFor(model => model.Game2.Strikes, new { type = "number" })</td>
+    <td>@Html.TextBoxFor(model => model.Game2.Misses, new { type = "number" })</td>
+    <td>@Html.TextBoxFor(model => model.Game2.OnePinMisses, new { type = "number" })</td>
+    <td>@Html.TextBoxFor(model => model.Game2.Splits, new { type = "number" })</td>
+    <td>@Html.EditorFor(model => model.Game2.CoveredAll)</td>
+</tr>
