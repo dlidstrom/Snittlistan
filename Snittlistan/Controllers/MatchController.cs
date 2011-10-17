@@ -171,39 +171,5 @@ namespace Snittlistan.Controllers
 
 			return RedirectToAction("Details", new { id = vm.Id });
 		}
-
-		/// <summary>
-		/// GET: /Match/Delete/5.
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		[Authorize]
-		public ActionResult Delete(int id)
-		{
-			var match = Session.Load<Match>(id);
-			if (match == null)
-				return HttpNotFound();
-
-			return View(match.MapTo<MatchViewModel.MatchDetails>());
-		}
-
-		/// <summary>
-		/// POST: /Match/Delete/5.
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		[HttpPost, ActionName("Delete"), Authorize]
-		public ActionResult DeleteConfirmed(string id)
-		{
-			try
-			{
-				// TODO: Add delete logic here
-				return RedirectToAction("Index");
-			}
-			catch
-			{
-				return View();
-			}
-		}
 	}
 }
