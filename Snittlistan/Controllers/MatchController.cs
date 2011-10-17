@@ -25,6 +25,7 @@ namespace Snittlistan.Controllers
 		public ViewResult Index()
 		{
 			var matches = Session.Query<Match>()
+				.OrderByDescending(m => m.Date)
 				.ToList()
 				.Select(match => new MatchViewModel
 				{
