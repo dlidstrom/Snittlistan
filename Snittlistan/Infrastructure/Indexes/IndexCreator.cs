@@ -8,7 +8,7 @@ namespace Snittlistan.Infrastructure.Indexes
 	{
 		public static void CreateIndexes(IDocumentStore store)
 		{
-			var typeCatalog = new TypeCatalog(typeof(Matches_PlayerStats));
+			var typeCatalog = new TypeCatalog(typeof(Matches_PlayerStats), typeof(Match_ByDate));
 			IndexCreation.CreateIndexes(new CompositionContainer(typeCatalog), store);
 		}
 	}
