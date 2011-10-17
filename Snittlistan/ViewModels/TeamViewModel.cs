@@ -114,7 +114,7 @@ namespace Snittlistan.ViewModels
 			/// <summary>
 			/// Gets or sets the score.
 			/// </summary>
-			[Display(Name = "Banpoäng")]
+			[Display(Name = "Banpoäng"), Range(0, 1)]
 			public int Score { get; set; }
 
 			/// <summary>
@@ -150,31 +150,31 @@ namespace Snittlistan.ViewModels
 			/// <summary>
 			/// Gets or sets the number of pins.
 			/// </summary>
-			[Display(Name = "Kägelpoäng")]
+			[Display(Name = "Kägelpoäng"), Range(0, 300)]
 			public int Pins { get; set; }
 
 			/// <summary>
 			/// Gets or sets the number of strikes.
 			/// </summary>
-			[Display(Name = "X")]
+			[Display(Name = "X"), Range(0, 12)]
 			public int Strikes { get; set; }
 
 			/// <summary>
 			/// Gets or sets the number of misses.
 			/// </summary>
-			[Display(Name = "Miss")]
+			[Display(Name = "Miss"), Range(0, 12)]
 			public int Misses { get; set; }
 
 			/// <summary>
 			/// Gets or sets the number of one-pin misses.
 			/// </summary>
-			[Display(Name = "9-")]
+			[Display(Name = "9-"), Range(0, 12)]
 			public int OnePinMisses { get; set; }
 
 			/// <summary>
 			/// Gets or sets the number of splits.
 			/// </summary>
-			[Display(Name = "Hål")]
+			[Display(Name = "Hål"), Range(0, 12)]
 			public int Splits { get; set; }
 
 			/// <summary>
