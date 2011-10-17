@@ -1,8 +1,10 @@
 ﻿@using System.Web.Mvc
+
 @helper Script(string scriptName, UrlHelper url)
 {
 	<script src="@url.Content("~/Content/js/" + scriptName)" type="text/javascript"></script>
 }
+
 @helper GA()
 {
 	<script type="text/javascript">
@@ -17,7 +19,13 @@
 		})();
 	</script>
 }
+
 @helper Favicon(UrlHelper url)
 {
     <link rel="shortcut icon" type="image/x-icon" href="@url.Content("~/favicon.ico")" />
+}
+
+@helper Css(string scriptName, UrlHelper url)
+{
+    <link href="@url.Content("~/Content/css/" + scriptName)" rel="stylesheet" type="text/css" />
 }
