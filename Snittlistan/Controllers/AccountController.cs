@@ -140,8 +140,7 @@
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		[Authorize]
-		[HttpPost]
+		[HttpPost, Authorize]
 		public ActionResult ChangePassword(ChangePasswordViewModel model)
 		{
 			var user = Session.FindUserByEmail(model.Email)
