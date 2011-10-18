@@ -7,7 +7,7 @@ namespace Snittlistan.ViewModels
 	/// <summary>
 	/// Represents a team.
 	/// </summary>
-	public class TeamViewModel
+	public abstract class TeamViewModel
 	{
 		/// <summary>
 		/// Initializes a new instance of the TeamViewModel class.

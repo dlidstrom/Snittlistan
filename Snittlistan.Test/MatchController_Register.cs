@@ -24,19 +24,19 @@ namespace Snittlistan.Test
 				Date = now,
 				Location = "Somewhere"
 			};
-			var homeTeam = new TeamViewModel { Name = "HomeTeam", Score = 13 };
-			var awayTeam = new TeamViewModel { Name = "AwayTeam", Score = 6 };
+			var homeTeam = new HomeTeamViewModel { Name = "HomeTeam", Score = 13 };
+			var awayTeam = new AwayTeamViewModel { Name = "AwayTeam", Score = 6 };
 			var result = controller.Register(new RegisterMatchViewModel
 			{
 				Location = "Somewhere",
 				Date = now,
 				BitsMatchId = 1,
-				HomeTeam = new TeamViewModel
+				HomeTeam = new HomeTeamViewModel
 				{
 					Name = "HomeTeam",
 					Score = 13
 				},
-				AwayTeam = new TeamViewModel
+				AwayTeam = new AwayTeamViewModel
 				{
 					Name = "AwayTeam",
 					Score = 6
