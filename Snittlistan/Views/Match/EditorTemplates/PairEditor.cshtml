@@ -15,9 +15,9 @@
         </tr>
     </thead>
     <tbody>
-        @Html.EditorFor(model => model.Serie1, "SerieEditor", new { label = @Html.LabelFor(model => model.Serie1) })
-        @Html.EditorFor(model => model.Serie2, "SerieEditor", new { label = @Html.LabelFor(model => model.Serie2) })
-        @Html.EditorFor(model => model.Serie3, "SerieEditor", new { label = @Html.LabelFor(model => model.Serie3) })
-        @Html.EditorFor(model => model.Serie4, "SerieEditor", new { label = @Html.LabelFor(model => model.Serie4) })
+        @Html.EditorFor(model => model.Serie1, "SerieEditor", new { label = @Html.LabelFor(model => model.Serie1), pair = ViewData["pair"], valueUpdate = "afterkeydown" })
+        @Html.EditorFor(model => model.Serie2, "SerieEditor", new { label = @Html.LabelFor(model => model.Serie2), pair = ViewData["pair"], valueUpdate = "never" })
+        @Html.EditorFor(model => model.Serie3, "SerieEditor", new { label = @Html.LabelFor(model => model.Serie3), pair = ViewData["pair"], valueUpdate = "never" })
+        @Html.EditorFor(model => model.Serie4, "SerieEditor", new { label = @Html.LabelFor(model => model.Serie4), pair = ViewData["pair"], valueUpdate = "never" })
     </tbody>
 </table>
