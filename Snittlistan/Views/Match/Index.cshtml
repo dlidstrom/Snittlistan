@@ -14,12 +14,10 @@
 
 <h2>@ViewBag.Title</h2>
 
-@if (Request.IsAuthenticated)
-{
-    <p>
-        @Html.ActionLink("Registrera ny", "Register")
-    </p>
-}
+<p>
+    @Html.ActionLink("Registrera ny", "Register")
+</p>
+
 <table>
     <tr>
         <th>Datum</th>
