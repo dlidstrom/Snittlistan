@@ -140,8 +140,8 @@ namespace Snittlistan.Controllers
 			if (match == null)
 				return HttpNotFound();
 
-			TeamViewModel teamViewModel = isHomeTeam ? match.HomeTeam.MapTo<TeamViewModel>()
-				: match.AwayTeam.MapTo<TeamViewModel>();
+			TeamViewModel teamViewModel = isHomeTeam ? (TeamViewModel)match.HomeTeam.MapTo<HomeTeamViewModel>()
+				: (TeamViewModel)match.AwayTeam.MapTo<AwayTeamViewModel>();
 			var vm = new EditTeamViewModel
 			{
 				Id = id,
