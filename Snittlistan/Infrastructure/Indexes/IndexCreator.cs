@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.Composition.Hosting;
+using System.Linq;
+using System.Reflection;
 using Raven.Client;
 using Raven.Client.Indexes;
 
@@ -8,7 +10,12 @@ namespace Snittlistan.Infrastructure.Indexes
 	{
 		public static void CreateIndexes(IDocumentStore store)
 		{
-			var typeCatalog = new TypeCatalog(typeof(Matches_PlayerStats), typeof(Match_ByDate));
+			var indexes = from type in Assembly.GetExecutingAssembly().GetTypes()
+						  where
+							  type.IsSubclassOf(typeof(AbstractIndexCreationTask))
+						  select type;
+
+			var typeCatalog = new TypeCatalog(indexes.ToArray());
 			IndexCreation.CreateIndexes(new CompositionContainer(typeCatalog), store);
 		}
 	}
