@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using Raven.Client;
+using Snittlistan.Helpers;
 using Snittlistan.Infrastructure.AutoMapper;
 using Snittlistan.Infrastructure.Indexes;
 using Snittlistan.Models;
@@ -75,6 +76,9 @@ namespace Snittlistan.Controllers
 		[HttpPost, Authorize]
 		public ActionResult Register(RegisterMatchViewModel model)
 		{
+			if (Session.FindByBitsId(model.BitsMatchId).SingleOrDefault() != null)
+				ModelState.AddModelError("BitsMatchId", "Matchen redan registrerad");
+
 			if (!ModelState.IsValid)
 				return View(model);
 

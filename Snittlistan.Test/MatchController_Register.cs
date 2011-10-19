@@ -55,7 +55,40 @@ namespace Snittlistan.Test
 			controller.ModelState.AddModelError("key", "error");
 
 			// Act
-			var result = controller.Register(null);
+			var result = controller.Register(new RegisterMatchViewModel());
+
+			// Assert
+			result.AssertViewRendered().ForView(string.Empty);
+		}
+
+		[Fact]
+		public void CannotRegisterSameBitsIdTwice()
+		{
+			// Arrange
+			var controller = new MatchController(Session);
+			var now = DateTime.Now;
+			RegisterMatchViewModel vm = new RegisterMatchViewModel
+			{
+				Location = "Somewhere",
+				Date = now,
+				BitsMatchId = 1,
+				HomeTeam = new HomeTeamViewModel
+				{
+					Name = "HomeTeam",
+					Score = 13
+				},
+				AwayTeam = new AwayTeamViewModel
+				{
+					Name = "AwayTeam",
+					Score = 6
+				}
+			};
+			controller.Register(vm);
+			Session.SaveChanges();
+			var match = Session.Load<Match>(1);
+
+			// Act
+			var result = controller.Register(vm);
 
 			// Assert
 			result.AssertViewRendered().ForView(string.Empty);
