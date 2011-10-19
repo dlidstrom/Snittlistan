@@ -18,14 +18,6 @@ namespace Snittlistan.Test
 
 			// Act
 			var now = DateTime.Now;
-			var matchDetails = new MatchViewModel.MatchDetails
-			{
-				BitsMatchId = 1,
-				Date = now,
-				Location = "Somewhere"
-			};
-			var homeTeam = new HomeTeamViewModel { Name = "HomeTeam", Score = 13 };
-			var awayTeam = new AwayTeamViewModel { Name = "AwayTeam", Score = 6 };
 			var result = controller.Register(new RegisterMatchViewModel
 			{
 				Location = "Somewhere",
