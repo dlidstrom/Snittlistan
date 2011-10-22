@@ -92,34 +92,10 @@
 			var serie4tables = series.ElementAt(3).Tables;
 			var seriesInOrder = new List<Serie>
 			{
-				new Serie(new List<Table>
-					{
-						serie1tables.ElementAt(0),
-						serie1tables.ElementAt(1),
-						serie1tables.ElementAt(2),
-						serie1tables.ElementAt(3)
-					}),
-				new Serie(new List<Table>
-					{
-						serie2tables.ElementAt(2),
-						serie2tables.ElementAt(3),
-						serie2tables.ElementAt(0),
-						serie2tables.ElementAt(1)
-					}),
-				new Serie(new List<Table>
-					{
-						serie3tables.ElementAt(3),
-						serie3tables.ElementAt(2),
-						serie3tables.ElementAt(1),
-						serie3tables.ElementAt(0)
-					}),
-				new Serie(new List<Table>
-					{
-						serie4tables.ElementAt(1),
-						serie4tables.ElementAt(0),
-						serie4tables.ElementAt(3),
-						serie4tables.ElementAt(2)
-					})
+				CreateSerie(serie1tables, 0, 1, 2, 3),
+				CreateSerie(serie2tables, 2, 3, 0, 1),
+				CreateSerie(serie3tables, 3, 2, 1, 0),
+				CreateSerie(serie4tables, 1, 0, 3, 2)
 			};
 
 			return new Team(name, score, seriesInOrder) { HomeTeam = true };
@@ -142,34 +118,10 @@
 			var serie4tables = series.ElementAt(3).Tables;
 			var seriesInOrder = new List<Serie>
 			{
-				new Serie(new List<Table>
-					{
-						serie1tables.ElementAt(0),
-						serie1tables.ElementAt(1),
-						serie1tables.ElementAt(2),
-						serie1tables.ElementAt(3)
-					}),
-				new Serie(new List<Table>
-					{
-						serie2tables.ElementAt(3),
-						serie2tables.ElementAt(2),
-						serie2tables.ElementAt(1),
-						serie2tables.ElementAt(0)
-					}),
-				new Serie(new List<Table>
-					{
-						serie3tables.ElementAt(1),
-						serie3tables.ElementAt(0),
-						serie3tables.ElementAt(3),
-						serie3tables.ElementAt(2)
-					}),
-				new Serie(new List<Table>
-					{
-						serie4tables.ElementAt(2),
-						serie4tables.ElementAt(3),
-						serie4tables.ElementAt(0),
-						serie4tables.ElementAt(1)
-					})
+				CreateSerie(serie1tables, 0, 1, 2, 3),
+				CreateSerie(serie2tables, 3, 2, 1, 0),
+				CreateSerie(serie3tables, 1, 0, 3, 2),
+				CreateSerie(serie4tables, 2, 3, 0, 1)
 			};
 
 			return new Team(name, score, seriesInOrder) { HomeTeam = false };
@@ -229,6 +181,17 @@
 				return series[serie].Tables.ElementAt(homeScheme[pair][serie]);
 			else
 				return series[serie].Tables.ElementAt(awayScheme[pair][serie]);
+		}
+
+		private static Serie CreateSerie(IEnumerable<Table> tables, int i1, int i2, int i3, int i4)
+		{
+			return new Serie(new List<Table>
+			{
+				tables.ElementAt(i1),
+				tables.ElementAt(i2),
+				tables.ElementAt(i3),
+				tables.ElementAt(i4)
+			});
 		}
 	}
 }
