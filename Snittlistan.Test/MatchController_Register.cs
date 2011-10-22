@@ -23,12 +23,12 @@ namespace Snittlistan.Test
 				Location = "Somewhere",
 				Date = now,
 				BitsMatchId = 1,
-				HomeTeam = new HomeTeamViewModel
+				HomeTeam = new TeamViewModel
 				{
 					Name = "HomeTeam",
 					Score = 13
 				},
-				AwayTeam = new AwayTeamViewModel
+				AwayTeam = new TeamViewModel
 				{
 					Name = "AwayTeam",
 					Score = 6
@@ -72,12 +72,12 @@ namespace Snittlistan.Test
 				Location = "Somewhere",
 				Date = now,
 				BitsMatchId = 1,
-				HomeTeam = new HomeTeamViewModel
+				HomeTeam = new TeamViewModel
 				{
 					Name = "HomeTeam",
 					Score = 13
 				},
-				AwayTeam = new AwayTeamViewModel
+				AwayTeam = new TeamViewModel
 				{
 					Name = "AwayTeam",
 					Score = 6

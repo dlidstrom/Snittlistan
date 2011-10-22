@@ -25,8 +25,9 @@ namespace Snittlistan.Test
 			{
 				Id = originalMatch.Id,
 				IsHomeTeam = false,
-				Team = DbSeed.CreateMatch().AwayTeam.MapTo<AwayTeamViewModel>()
+				Team = DbSeed.CreateMatch().AwayTeam.MapTo<TeamViewModel>()
 			});
+			Session.SaveChanges();
 
 			// Assert
 			result.AssertActionRedirect().ToAction("Details").WithParameter("id", originalMatch.Id);
