@@ -86,16 +86,12 @@
 		/// <param name="series">Team series.</param>
 		public static Team CreateHomeTeam(string name, int score, IEnumerable<Serie> series)
 		{
-			var serie1tables = series.ElementAt(0).Tables;
-			var serie2tables = series.ElementAt(1).Tables;
-			var serie3tables = series.ElementAt(2).Tables;
-			var serie4tables = series.ElementAt(3).Tables;
 			var seriesInOrder = new List<Serie>
 			{
-				CreateSerie(serie1tables, 0, 1, 2, 3),
-				CreateSerie(serie2tables, 2, 3, 0, 1),
-				CreateSerie(serie3tables, 3, 2, 1, 0),
-				CreateSerie(serie4tables, 1, 0, 3, 2)
+				CreateSerie(series.ElementAt(0).Tables, 0, 1, 2, 3),
+				CreateSerie(series.ElementAt(1).Tables, 2, 3, 0, 1),
+				CreateSerie(series.ElementAt(2).Tables, 3, 2, 1, 0),
+				CreateSerie(series.ElementAt(3).Tables, 1, 0, 3, 2)
 			};
 
 			return new Team(name, score, seriesInOrder) { HomeTeam = true };
@@ -112,16 +108,12 @@
 		/// <param name="series">Team series.</param>
 		public static Team CreateAwayTeam(string name, int score, IEnumerable<Serie> series)
 		{
-			var serie1tables = series.ElementAt(0).Tables;
-			var serie2tables = series.ElementAt(1).Tables;
-			var serie3tables = series.ElementAt(2).Tables;
-			var serie4tables = series.ElementAt(3).Tables;
 			var seriesInOrder = new List<Serie>
 			{
-				CreateSerie(serie1tables, 0, 1, 2, 3),
-				CreateSerie(serie2tables, 3, 2, 1, 0),
-				CreateSerie(serie3tables, 1, 0, 3, 2),
-				CreateSerie(serie4tables, 2, 3, 0, 1)
+				CreateSerie(series.ElementAt(0).Tables, 0, 1, 2, 3),
+				CreateSerie(series.ElementAt(1).Tables, 3, 2, 1, 0),
+				CreateSerie(series.ElementAt(2).Tables, 1, 0, 3, 2),
+				CreateSerie(series.ElementAt(3).Tables, 2, 3, 0, 1)
 			};
 
 			return new Team(name, score, seriesInOrder) { HomeTeam = false };
