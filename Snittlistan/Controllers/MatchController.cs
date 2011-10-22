@@ -86,8 +86,8 @@ namespace Snittlistan.Controllers
 				model.Location,
 				model.Date,
 				model.BitsMatchId,
-				model.HomeTeam.MapTo<Team>(),
-				model.AwayTeam.MapTo<Team>());
+				model.HomeTeam.MapTo<HomeTeamFactory>().CreateTeam(),
+				model.AwayTeam.MapTo<AwayTeamFactory>().CreateTeam());
 			Session.Store(match);
 
 			return RedirectToAction("Details", new { id = match.Id });
@@ -143,8 +143,9 @@ namespace Snittlistan.Controllers
 			if (match == null)
 				return HttpNotFound();
 
-			TeamViewModel teamViewModel = isHomeTeam ? (TeamViewModel)match.HomeTeam.MapTo<HomeTeamViewModel>()
-				: (TeamViewModel)match.AwayTeam.MapTo<AwayTeamViewModel>();
+			var teamViewModel = isHomeTeam
+				? match.HomeTeam.MapTo<TeamViewModel>()
+				: match.AwayTeam.MapTo<TeamViewModel>();
 			var vm = new EditTeamViewModel
 			{
 				Id = id,
@@ -168,9 +169,9 @@ namespace Snittlistan.Controllers
 				return HttpNotFound();
 
 			if (vm.IsHomeTeam)
-				match.HomeTeam = vm.Team.MapTo<Team>();
+				match.HomeTeam = vm.Team.MapTo<HomeTeamFactory>().CreateTeam();
 			else
-				match.AwayTeam = vm.Team.MapTo<Team>();
+				match.AwayTeam = vm.Team.MapTo<AwayTeamFactory>().CreateTeam();
 
 			return RedirectToAction("Details", new { id = vm.Id });
 		}

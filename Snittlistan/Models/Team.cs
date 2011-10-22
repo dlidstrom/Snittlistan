@@ -9,6 +9,22 @@
 	/// </summary>
 	public class Team
 	{
+		private static Dictionary<int, int[]> homeScheme = new Dictionary<int, int[]>
+		{
+			{ 0, new int[] { 0, 2, 3, 1 } },
+			{ 1, new int[] { 1, 3, 2, 0 } },
+			{ 2, new int[] { 2, 0, 1, 3 } },
+			{ 3, new int[] { 3, 1, 0, 2 } },
+		};
+
+		private static Dictionary<int, int[]> awayScheme = new Dictionary<int, int[]>
+		{
+			{ 0, new int[] { 0, 3, 1, 2 } },
+			{ 1, new int[] { 1, 2, 0, 3 } },
+			{ 2, new int[] { 2, 1, 3, 0 } },
+			{ 3, new int[] { 3, 0, 2, 1 } },
+		};
+
 		[JsonProperty(PropertyName = "Series")]
 		private List<Serie> series;
 
@@ -56,6 +72,109 @@
 			get { return series; }
 		}
 
+		[JsonProperty]
+		private bool HomeTeam { get; set; }
+
+		/// <summary>
+		/// H1-B1 H2-B2 H3-B3 H4-B4
+		/// H3-B4 H4-B3 H1-B2 H2-B1
+		/// H4-B2 H3-B1 H2-B4 H1-B3
+		/// H2-B3 H1-B4 H4-B1 H3-B2.
+		/// </summary>
+		/// <param name="name">Name of team.</param>
+		/// <param name="score">Team score.</param>
+		/// <param name="series">Team series.</param>
+		public static Team CreateHomeTeam(string name, int score, IEnumerable<Serie> series)
+		{
+			var serie1tables = series.ElementAt(0).Tables;
+			var serie2tables = series.ElementAt(1).Tables;
+			var serie3tables = series.ElementAt(2).Tables;
+			var serie4tables = series.ElementAt(3).Tables;
+			var seriesInOrder = new List<Serie>
+			{
+				new Serie(new List<Table>
+					{
+						serie1tables.ElementAt(0),
+						serie1tables.ElementAt(1),
+						serie1tables.ElementAt(2),
+						serie1tables.ElementAt(3)
+					}),
+				new Serie(new List<Table>
+					{
+						serie2tables.ElementAt(2),
+						serie2tables.ElementAt(3),
+						serie2tables.ElementAt(0),
+						serie2tables.ElementAt(1)
+					}),
+				new Serie(new List<Table>
+					{
+						serie3tables.ElementAt(3),
+						serie3tables.ElementAt(2),
+						serie3tables.ElementAt(1),
+						serie3tables.ElementAt(0)
+					}),
+				new Serie(new List<Table>
+					{
+						serie4tables.ElementAt(1),
+						serie4tables.ElementAt(0),
+						serie4tables.ElementAt(3),
+						serie4tables.ElementAt(2)
+					})
+			};
+
+			return new Team(name, score, seriesInOrder) { HomeTeam = true };
+		}
+
+		/// <summary>
+		/// H1-B1 H2-B2 H3-B3 H4-B4
+		/// H3-B4 H4-B3 H1-B2 H2-B1
+		/// H4-B2 H3-B1 H2-B4 H1-B3
+		/// H2-B3 H1-B4 H4-B1 H3-B2.
+		/// </summary>
+		/// <param name="name">Name of team.</param>
+		/// <param name="score">Team score.</param>
+		/// <param name="series">Team series.</param>
+		public static Team CreateAwayTeam(string name, int score, IEnumerable<Serie> series)
+		{
+			var serie1tables = series.ElementAt(0).Tables;
+			var serie2tables = series.ElementAt(1).Tables;
+			var serie3tables = series.ElementAt(2).Tables;
+			var serie4tables = series.ElementAt(3).Tables;
+			var seriesInOrder = new List<Serie>
+			{
+				new Serie(new List<Table>
+					{
+						serie1tables.ElementAt(0),
+						serie1tables.ElementAt(1),
+						serie1tables.ElementAt(2),
+						serie1tables.ElementAt(3)
+					}),
+				new Serie(new List<Table>
+					{
+						serie2tables.ElementAt(3),
+						serie2tables.ElementAt(2),
+						serie2tables.ElementAt(1),
+						serie2tables.ElementAt(0)
+					}),
+				new Serie(new List<Table>
+					{
+						serie3tables.ElementAt(1),
+						serie3tables.ElementAt(0),
+						serie3tables.ElementAt(3),
+						serie3tables.ElementAt(2)
+					}),
+				new Serie(new List<Table>
+					{
+						serie4tables.ElementAt(2),
+						serie4tables.ElementAt(3),
+						serie4tables.ElementAt(0),
+						serie4tables.ElementAt(1)
+					})
+			};
+
+			return new Team(name, score, seriesInOrder) { HomeTeam = false };
+		}
+
 		/// <summary>
 		/// Returns the total pins.
 		/// </summary>
@@ -93,6 +212,23 @@
 		public int PinsForPlayer(string player)
 		{
 			return Series.Sum(s => s.PinsForPlayer(player));
+		}
+
+		/// <summary>
+		/// H1-B1 H2-B2 H3-B3 H4-B4
+		/// H3-B4 H4-B3 H1-B2 H2-B1
+		/// H4-B2 H3-B1 H2-B4 H1-B3
+		/// H2-B3 H1-B4 H4-B1 H3-B2.
+		/// </summary>
+		/// <param name="serie">Serie to fetch.</param>
+		/// <param name="pair">Pair to fetch.</param>
+		/// <returns>Serie for pair.</returns>
+		public Table TableAt(int serie, int pair)
+		{
+			if (HomeTeam)
+				return series[serie].Tables.ElementAt(homeScheme[pair][serie]);
+			else
+				return series[serie].Tables.ElementAt(awayScheme[pair][serie]);
 		}
 	}
 }

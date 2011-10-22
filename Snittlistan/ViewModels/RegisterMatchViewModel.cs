@@ -15,8 +15,8 @@ namespace Snittlistan.ViewModels
 		{
 			Date = DateTime.Now;
 			Location = string.Empty;
-			HomeTeam = new HomeTeamViewModel();
-			AwayTeam = new AwayTeamViewModel();
+			HomeTeam = new TeamViewModel();
+			AwayTeam = new TeamViewModel();
 		}
 
 		/// <summary>
@@ -41,12 +41,12 @@ namespace Snittlistan.ViewModels
 		/// Gets or sets the home team.
 		/// </summary>
 		[Display(Name = "Hemmalag")]
-		public HomeTeamViewModel HomeTeam { get; set; }
+		public TeamViewModel HomeTeam { get; set; }
 
 		/// <summary>
 		/// Gets or sets the away team.
 		/// </summary>
 		[Display(Name = "Bortalag")]
-		public AwayTeamViewModel AwayTeam { get; set; }
+		public TeamViewModel AwayTeam { get; set; }
 	}
 }
