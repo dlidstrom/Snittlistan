@@ -26,7 +26,6 @@ namespace Snittlistan.Test
 			stats.Series.ShouldBe(4);
 			stats.Pins.ShouldBe(845.0);
 			stats.Max.ShouldBe(223);
-			stats.Min.ShouldBe(202);
 			stats.Strikes.ShouldBe(5);
 			stats.Misses.ShouldBe(2);
 			stats.OnePinMisses.ShouldBe(1);

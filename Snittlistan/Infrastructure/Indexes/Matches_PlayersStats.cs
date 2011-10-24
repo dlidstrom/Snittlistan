@@ -22,7 +22,6 @@ namespace Snittlistan.Infrastructure.Indexes
 								 Pins = game.Pins,
 								 Series = 1,
 								 Max = game.Pins,
-								 Min = game.Pins,
 								 Strikes = game.Strikes,
 								 Misses = game.Misses,
 								 OnePinMisses = game.OnePinMisses,
@@ -38,7 +37,6 @@ namespace Snittlistan.Infrastructure.Indexes
 									Pins = stat.Sum(s => s.Pins),
 									Series = stat.Sum(s => s.Series),
 									Max = stat.Max(s => s.Max),
-									Min = stat.Min(s => s.Min),
 									Strikes = stat.Sum(s => s.Strikes),
 									Misses = stat.Sum(s => s.Misses),
 									OnePinMisses = stat.Sum(s => s.OnePinMisses),
@@ -53,7 +51,6 @@ namespace Snittlistan.Infrastructure.Indexes
 			public double Pins { get; set; }
 			public int Series { get; set; }
 			public int Max { get; set; }
-			public int Min { get; set; }
 			public int Strikes { get; set; }
 			public int Misses { get; set; }
 			public int OnePinMisses { get; set; }
