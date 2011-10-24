@@ -17,7 +17,6 @@
             <th>Serier</th>
             <th>Medel</th>
             <th>Högsta</th>
-            <th>Lägsta</th>
             <th>X</th>
             <th>Miss</th>
             <th>9-</th>
@@ -34,7 +33,6 @@
                 <td>@stat.Series</td>
                 <td>@(string.Format("{0:F1}", (double)stat.Pins / stat.Series))</td>
                 <td>@stat.Max</td>
-                <td>@stat.Min</td>
                 <td>@(string.Format("{0:F2}", (double)stat.Strikes / stat.Series))</td>
                 <td>@(string.Format("{0:F2}", (double)stat.Misses / stat.Series))</td>
                 <td>@(string.Format("{0:F2}", (double)stat.OnePinMisses / stat.Series))</td>
