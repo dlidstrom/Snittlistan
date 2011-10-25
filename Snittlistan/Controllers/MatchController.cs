@@ -63,6 +63,7 @@ namespace Snittlistan.Controllers
 		/// GET: /Match/Register.
 		/// </summary>
 		/// <returns></returns>
+		[Authorize]
 		public ViewResult Register()
 		{
 			return View(new RegisterMatchViewModel());
