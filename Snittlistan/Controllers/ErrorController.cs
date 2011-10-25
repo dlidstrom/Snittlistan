@@ -8,7 +8,7 @@ using Snittlistan.Helpers;
 
 namespace Snittlistan.Controllers
 {
-	public class ErrorController : AbstractController
+	public class ErrorController : Controller
 	{
 		public void LogJavaScriptError(string message)
 		{

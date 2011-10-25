@@ -5,7 +5,7 @@ namespace Snittlistan.Controllers
 	/// <summary>
 	/// Used to send email.
 	/// </summary>
-	public class MailController : AbstractController
+	public class MailController : Controller
 	{
 	}
 }
