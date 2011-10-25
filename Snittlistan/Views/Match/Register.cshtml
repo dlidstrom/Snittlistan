@@ -39,6 +39,7 @@
 }
 
 <h2>@ViewBag.Title</h2>
+<p>@Html.ActionLink("Tillbaka", "Index")</p>
 
 @using (Html.BeginForm())
 {
@@ -81,7 +82,3 @@
         </p>
     </fieldset>
 }
-
-<div>
-    @Html.ActionLink("Tillbaka", "Index")
-</div>

@@ -11,6 +11,7 @@
 }
 
 <h2>@ViewBag.Title</h2>
+<p>@Html.ActionLink("Tillbaka", "Details", new { id = Model.Id })</p>
 
 @using (Html.BeginForm())
 {
@@ -24,7 +25,3 @@
             </p>
     </fieldset>
 }
-
-<div>
-    @Html.ActionLink("Tillbaka", "Details", new { id = Model.Id })
-</div>
