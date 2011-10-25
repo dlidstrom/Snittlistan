@@ -176,6 +176,7 @@
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\ElmahController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MailController.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\WelcomeController.cs" />
     <Compile Include="DbSeed.cs" />
+    <Compile Include="Helpers\Results\ElmahResult.cs" />
     <Compile Include="HtmlHelpers\CssType.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
     <Compile Include="HtmlHelpers\ScriptType.cs" />

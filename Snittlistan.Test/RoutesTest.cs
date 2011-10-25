@@ -53,5 +53,13 @@ namespace Snittlistan.Test
 		{
 			"~/welcome".ShouldMapTo<WelcomeController>(c => c.Index());
 		}
+
+		[Fact]
+		public void ElmahRoute()
+		{
+			"~/admin/elmah".ShouldMapTo<ElmahController>(c => c.Index(null));
+			"~/admin/elmah/detail".ShouldMapTo<ElmahController>(c => c.Index("detail"));
+			"~/admin/elmah/stylesheet".ShouldMapTo<ElmahController>(c => c.Index("stylesheet"));
+		}
 	}
 }

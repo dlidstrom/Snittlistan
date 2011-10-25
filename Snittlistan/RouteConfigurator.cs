@@ -20,10 +20,10 @@ namespace Snittlistan
 
 			// robots.txt
 			routes.IgnoreRoute("{file}.txt");
-			routes.IgnoreRoute("admin/elmah.axd/{*pathInfo}");
 
 			ConfigureAccount();
 			ConfigureHome();
+			ConfigureElmah();
 
 			// default route
 			routes.MapRouteLowerCase(
@@ -48,6 +48,14 @@ namespace Snittlistan
 				"{action}",
 				new { controller = "Home" },
 				new { action = "About" });
+		}
+
+		private void ConfigureElmah()
+		{
+			routes.MapRouteLowerCase(
+				"ElmahController-internal",
+				"admin/elmah/{type}",
+				new { controller = "Elmah", action = "Index", type = UrlParameter.Optional });
 		}
 	}
 }
