@@ -15,12 +15,6 @@ namespace Snittlistan.Controllers
 		/// <summary>
 		/// Initializes a new instance of the AbstractController class.
 		/// </summary>
-		public AbstractController()
-		{ }
-
-		/// <summary>
-		/// Initializes a new instance of the AbstractController class.
-		/// </summary>
 		/// <param name="session">Document session.</param>
 		public AbstractController(IDocumentSession session)
 		{
