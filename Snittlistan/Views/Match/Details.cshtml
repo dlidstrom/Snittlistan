@@ -11,7 +11,8 @@
     @Html.DisplayFor(model => model.Match, "MatchDisplay")
     @if (Request.IsAuthenticated)
     {
-        <p>@Html.ActionLink("Redigera", "EditDetails", new { id = Model.Match.Id })</p>
+        <p>@Html.ActionLink("Redigera", "EditDetails", new { id = Model.Match.Id })
+        | @Html.ActionLink("Ta bort", "Delete", new { id = Model.Match.Id })</p>
     }
     <h3>Hemmalag</h3>
     @Html.DisplayFor(model => model.HomeTeam, "TeamDisplay")
