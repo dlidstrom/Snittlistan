@@ -26,7 +26,8 @@ namespace Snittlistan.Infrastructure.Indexes
 								 Misses = game.Misses,
 								 OnePinMisses = game.OnePinMisses,
 								 Splits = game.Splits,
-								 Average = game.Pins
+								 Average = game.Pins,
+								 CoveredAll = game.CoveredAll ? 1 : 0
 							 };
 
 			Reduce = results => from result in results
@@ -41,7 +42,8 @@ namespace Snittlistan.Infrastructure.Indexes
 									Misses = stat.Sum(s => s.Misses),
 									OnePinMisses = stat.Sum(s => s.OnePinMisses),
 									Splits = stat.Sum(s => s.Splits),
-									Average = stat.Sum(s => s.Pins) / stat.Sum(s => s.Series)
+									Average = stat.Sum(s => s.Pins) / stat.Sum(s => s.Series),
+									CoveredAll = stat.Sum(s => s.CoveredAll)
 								};
 		}
 
@@ -56,6 +58,7 @@ namespace Snittlistan.Infrastructure.Indexes
 			public int OnePinMisses { get; set; }
 			public int Splits { get; set; }
 			public double Average { get; set; }
+			public int CoveredAll { get; set; }
 		}
 	}
 }

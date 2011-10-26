@@ -17,7 +17,14 @@ namespace Snittlistan
 						new Table
 						{
 							Score = 1,
-							Game1 = new Game("Mikael Axelsson", 202) { Strikes = 5, Misses = 2, OnePinMisses = 1, Splits = 2 },
+							Game1 = new Game("Mikael Axelsson", 202)
+							{
+								Strikes = 5,
+								Misses = 2,
+								OnePinMisses = 1,
+								Splits = 2,
+								CoveredAll = true
+							},
 							Game2 = new Game("Christer Liedholm", 218)
 						},
 						new Table
