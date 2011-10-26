@@ -31,6 +31,7 @@ namespace Snittlistan.Test
 			stats.OnePinMisses.ShouldBe(1);
 			stats.Splits.ShouldBe(2);
 			stats.Average.ShouldBe(211.25);
+			stats.CoveredAll.ShouldBe(1);
 		}
 	}
 }
