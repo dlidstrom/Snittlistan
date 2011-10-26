@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
+using MvcContrib;
 using Raven.Client;
 using Snittlistan.Helpers;
 using Snittlistan.Infrastructure.AutoMapper;
@@ -175,6 +176,28 @@ namespace Snittlistan.Controllers
 				match.AwayTeam = vm.Team.MapTo<AwayTeamFactory>().CreateTeam();
 
 			return RedirectToAction("Details", new { id = vm.Id });
+		}
+
+		[Authorize]
+		public ActionResult Delete(int id)
+		{
+			var match = Session.Load<Match>(id);
+			if (match == null)
+				return HttpNotFound();
+
+			return View(match.MapTo<MatchViewModel.MatchDetails>());
+		}
+
+		[Authorize, HttpPost]
+		public ActionResult Delete(MatchViewModel.MatchDetails vm)
+		{
+			var match = Session.Load<Match>(vm.Id);
+			if (match == null)
+				return HttpNotFound();
+
+			Session.Delete(match);
+
+			return this.RedirectToAction(c => c.Index());
 		}
 	}
 }
