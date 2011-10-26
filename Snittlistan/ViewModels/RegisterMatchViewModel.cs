@@ -22,19 +22,22 @@ namespace Snittlistan.ViewModels
 		/// <summary>
 		/// Gets or sets the match date.
 		/// </summary>
-		[Required, Display(Name = "Datum"), DataType(DataType.Date)]
+		[Required(ErrorMessage = "Ange datum")]
+		[Display(Name = "Datum"), DataType(DataType.Date)]
 		public DateTime Date { get; set; }
 
 		/// <summary>
 		/// Gets or sets the match location.
 		/// </summary>
-		[Required, Display(Name = "Plats")]
+		[Required(ErrorMessage = "Ange plats")]
+		[Display(Name = "Plats")]
 		public string Location { get; set; }
 
 		/// <summary>
 		/// Gets or sets the bits match id.
 		/// </summary>
-		[Required, Display(Name = "BITS MatchId")]
+		[Required(ErrorMessage = "BITS matchid")]
+		[Display(Name = "BITS MatchId")]
 		public int BitsMatchId { get; set; }
 
 		/// <summary>

@@ -23,13 +23,15 @@ namespace Snittlistan.ViewModels
 		/// <summary>
 		/// Gets or sets the name.
 		/// </summary>
-		[Required, Display(Name = "Namn")]
+		[Required(ErrorMessage = "Ange namn")]
+		[Display(Name = "Namn")]
 		public string Name { get; set; }
 
 		/// <summary>
 		/// Gets or sets the score.
 		/// </summary>
-		[Required, Display(Name = "Banpoäng"), Range(0, 20)]
+		[Required(ErrorMessage = "Ange banpoäng")]
+		[Display(Name = "Banpoäng"), Range(0, 20)]
 		public int Score { get; set; }
 
 		/// <summary>
