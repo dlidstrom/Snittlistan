@@ -13,6 +13,11 @@
 		JQueryValidate,
 
 		/// <summary>
+		/// Localization of jQuery validation.
+		/// </summary>
+		JQueryValidateLocalized,
+
+		/// <summary>
 		/// ASP.NET jQuery Validate Unobtrusive.
 		/// </summary>
 		JQueryValidateUnobtrusive,

@@ -8,7 +8,7 @@ namespace Snittlistan.ViewModels
 		[HiddenInput]
 		public string Email { get; set; }
 
-		[Required]
+		[Required(ErrorMessage = "Ange nytt lösenord")]
 		[StringLength(100, ErrorMessage = "Ditt lösenord måste vara minst {2} tecken långt.", MinimumLength = 6)]
 		[DataType(DataType.Password)]
 		[Display(Name = "Lösenord")]

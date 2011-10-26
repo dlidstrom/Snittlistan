@@ -4,10 +4,12 @@ namespace Snittlistan.ViewModels
 {
 	public class LogOnViewModel
 	{
-		[Required, DataType(DataType.EmailAddress), Display(Name = "E-postadress")]
+		[Required(ErrorMessage = "Ange e-postadress")]
+		[DataType(DataType.EmailAddress), Display(Name = "E-postadress")]
 		public string Email { get; set; }
 
-		[Required, DataType(DataType.Password), Display(Name = "Lösenord")]
+		[Required(ErrorMessage = "Ange lösenord")]
+		[DataType(DataType.Password), Display(Name = "Lösenord")]
 		public string Password { get; set; }
 
 		[Display(Name = "Kom ihåg mig?")]

@@ -23,13 +23,16 @@ namespace Snittlistan.ViewModels
 			[HiddenInput]
 			public int Id { get; set; }
 
-			[Required, Display(Name = "BITS MatchId")]
+			[Required(ErrorMessage = "Ange BITS matchid")]
+			[Display(Name = "BITS MatchId")]
 			public int BitsMatchId { get; set; }
 
-			[Required, Display(Name = "Plats")]
+			[Required(ErrorMessage = "Ange plats")]
+			[Display(Name = "Plats")]
 			public string Location { get; set; }
 
-			[Required, Display(Name = "Datum"), DataType(DataType.Date)]
+			[Required(ErrorMessage = "Ange datum")]
+			[Display(Name = "Datum"), DataType(DataType.Date)]
 			public DateTime Date { get; set; }
 		}
 	}
