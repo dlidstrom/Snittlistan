@@ -6,6 +6,7 @@ using Castle.Windsor;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Embedded;
+using Raven.Client.MvcIntegration;
 
 namespace Snittlistan.Installers
 {
@@ -41,6 +42,7 @@ namespace Snittlistan.Installers
 
 			store.Initialize();
 			store.Conventions.IdentityPartsSeparator = "-";
+			RavenProfiler.InitializeFor(store);
 			return store;
 		}
 	}
