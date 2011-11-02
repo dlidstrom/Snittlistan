@@ -4,6 +4,7 @@
 	using System.Linq;
 	using System.Security.Cryptography;
 	using System.Text;
+	using Newtonsoft.Json;
 	using Snittlistan.Events;
 
 	/// <summary>
@@ -76,6 +77,18 @@
 		/// Gets the last name.
 		/// </summary>
 		public string LastName { get; private set; }
+
+		/// <summary>
+		/// Gets the name of the user.
+		/// </summary>
+		[JsonIgnore]
+		public string Name
+		{
+			get
+			{
+				return string.Format("{0} {1}", FirstName, LastName);
+			}
+		}
 
 		/// <summary>
 		/// Gets or sets the hashed password.
