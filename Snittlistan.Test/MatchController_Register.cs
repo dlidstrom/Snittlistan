@@ -85,7 +85,6 @@ namespace Snittlistan.Test
 			};
 			controller.Register(vm);
 			Session.SaveChanges();
-			var match = Session.Load<Match>(1);
 
 			// Act
 			var result = controller.Register(vm);
