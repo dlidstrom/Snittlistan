@@ -17,75 +17,74 @@ using Snittlistan.Models;
 
 namespace Snittlistan
 {
-	public class MvcApplication : HttpApplication
-	{
-		private static readonly ILog logger = LogManager.GetCurrentClassLogger();
-		private static IWindsorContainer container;
+    public class MvcApplication : HttpApplication
+    {
+        private static readonly ILog logger = LogManager.GetCurrentClassLogger();
+        private static IWindsorContainer container;
 
-		public static IWindsorContainer Container
-		{
-			get { return container; }
-		}
+        public static IWindsorContainer Container
+        {
+            get { return container; }
+        }
 
-		public static void RegisterGlobalFilters(GlobalFilterCollection filters)
-		{
-			filters.Add(new ElmahHandleErrorAttribute());
-			filters.Add(new HandleErrorAttribute());
-			filters.Add(new RavenActionFilterAttribute());
-		}
+        public static void RegisterGlobalFilters(GlobalFilterCollection filters)
+        {
+            filters.Add(new ElmahHandleErrorAttribute());
+            filters.Add(new HandleErrorAttribute());
+            filters.Add(new RavenActionFilterAttribute());
+        }
 
-		protected void Application_Start()
-		{
-			logger.Info("Application Starting");
-			AreaRegistration.RegisterAllAreas();
+        protected void Application_Start()
+        {
+            logger.Info("Application Starting");
+            AreaRegistration.RegisterAllAreas();
 
-			RegisterGlobalFilters(GlobalFilters.Filters);
+            RegisterGlobalFilters(GlobalFilters.Filters);
 
-			// initialize container and controller factory
-			InitializeContainer();
+            // initialize container and controller factory
+            InitializeContainer();
 
-			// register routes
-			new RouteConfigurator(RouteTable.Routes).Configure();
+            // register routes
+            new RouteConfigurator(RouteTable.Routes).Configure();
 
-			// add model binders
-			ModelBinders.Binders.Add(typeof(Guid), new GuidBinder());
+            // add model binders
+            ModelBinders.Binders.Add(typeof(Guid), new GuidBinder());
 
-			// configure AutoMapper
-			AutoMapperConfiguration.Configure(container);
+            // configure AutoMapper
+            AutoMapperConfiguration.Configure(container);
 
-			// create indexes
-			IndexCreator.CreateIndexes(Container.Resolve<IDocumentStore>());
+            // create indexes
+            IndexCreator.CreateIndexes(Container.Resolve<IDocumentStore>());
 
 #if DEBUG
-			using (var session = Container.Resolve<IDocumentStore>().OpenSession())
-			{
-				var match = session.Query<Match>().SingleOrDefault(m => m.BitsMatchId == 3003231);
-				if (match == null)
-				{
-					session.Store(DbSeed.CreateMatch());
-				}
+            using (var session = Container.Resolve<IDocumentStore>().OpenSession())
+            {
+                var match = session.Query<Match>().SingleOrDefault(m => m.BitsMatchId == 3003231);
+                if (match == null)
+                {
+                    session.Store(DbSeed.CreateMatch());
+                }
 
-				session.SaveChanges();
-			}
+                session.SaveChanges();
+            }
 #endif
-		}
+        }
 
-		protected void Application_End()
-		{
-			logger.Info("Application Ending");
-			container.Dispose();
-		}
+        protected void Application_End()
+        {
+            logger.Info("Application Ending");
+            container.Dispose();
+        }
 
-		private void InitializeContainer()
-		{
-			if (container == null)
-			{
-				container = new WindsorContainer()
-					.Install(FromAssembly.This());
-			}
+        private void InitializeContainer()
+        {
+            if (container == null)
+            {
+                container = new WindsorContainer()
+                    .Install(FromAssembly.This());
+            }
 
-			var controllerFactory = new WindsorControllerFactory(container.Kernel);
-			ControllerBuilder.Current.SetControllerFactory(controllerFactory);
-		}
-	}
+            DependencyResolver.SetResolver(new WindsorDependencyResolver(container));
+        }
+    }
 }
