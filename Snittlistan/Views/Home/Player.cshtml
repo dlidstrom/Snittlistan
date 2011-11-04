@@ -1,0 +1,28 @@
+﻿@model PlayerMatches
+
+@{
+    ViewBag.Title = Model.Player;
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table>
+    <tr>
+        <th>Plats</th>
+        <th>Klubb</th>
+        <th>Datum</th>
+        <th>Medel</th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.Stats) {
+    <tr>
+        <td>@Html.DisplayFor(modelItem => item.Location)</td>
+        <td>@Html.DisplayFor(modelItem => item.Team)</td>
+        <td>@Html.DisplayFor(modelItem => item.Date)</td>
+        <td>@string.Format("{0:F1}", (double)item.Pins / item.Series)</td>
+        <td>@Html.ActionLink("Visa", "Details", "Match", new { id = item.MatchId.Substring(8) }, new { })</td>
+    </tr>
+}
+
+</table>

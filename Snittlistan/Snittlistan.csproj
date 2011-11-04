@@ -171,6 +171,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Infrastructure\Indexes\Player_ByMatch.cs" />
     <Compile Include="IoC\WindsorDependencyResolver.cs" />
     <Content Include="Content\js\date-picker.js" />
     <Compile Include="Controllers\AbstractController.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="Models\TeamFactory.cs" />
     <Compile Include="ViewModels\EditTeamViewModel.cs" />
     <Compile Include="ViewModels\EditUserViewModel.cs" />
+    <Compile Include="ViewModels\PlayerMatches.cs" />
     <Compile Include="ViewModels\TeamSummaryViewModel.cs" />
     <Compile Include="ViewModels\TeamViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
@@ -363,6 +365,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Match\Delete.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Player.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
