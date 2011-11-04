@@ -52,7 +52,7 @@ namespace Snittlistan.Test
 			bool loggedOn = false;
 			var service = Mock.Of<IAuthenticationService>();
 			Mock.Get(service)
-				.Setup(s => s.SetAuthCookie(It.Is<string>(e => e == "e@d.com"), It.IsAny<bool>()))
+				.Setup(s => s.SetAuthCookie(It.Is<string>(e => e == "F L"), It.IsAny<bool>()))
 				.Callback(() => loggedOn = true);
 
 			var controller3 = new AccountController(Session, service);

@@ -100,7 +100,7 @@ namespace Snittlistan.Test
 
 			var service = Mock.Of<IAuthenticationService>();
 			Mock.Get(service)
-				.Setup(x => x.SetAuthCookie(It.Is<string>(s => s == "e@d.com"), It.Is<bool>(b => b == false)))
+				.Setup(x => x.SetAuthCookie(It.Is<string>(s => s == "F L"), It.Is<bool>(b => b == false)))
 				.Callback(cookieSetAction);
 
 			var controller = new AccountController(Session, service);
