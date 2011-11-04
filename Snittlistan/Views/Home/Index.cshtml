@@ -25,7 +25,7 @@
             var stat = Model[i];
             <tr>
                 <td>@(i+1)</td>
-                <td>@stat.Player</td>
+                <td>@Html.ActionLink(stat.Player, "Player", new { player = stat.Player })</td>
                 <td>@stat.Series</td>
                 <td>@(string.Format("{0:F1}", (double)stat.Pins / stat.Series))</td>
                 <td>@stat.Max</td>

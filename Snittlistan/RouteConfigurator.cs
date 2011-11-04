@@ -26,7 +26,7 @@ namespace Snittlistan
 			ConfigureElmah();
 
 			// default route
-			routes.MapRouteLowerCase(
+			routes.MapRoute(
 				"Default", // Route name
 				"{controller}/{action}/{id}", // URL with parameters
 				new { controller = "Home", action = "Index", id = UrlParameter.Optional }); // Parameter defaults
@@ -34,6 +34,7 @@ namespace Snittlistan
 
 		private void ConfigureAccount()
 		{
+			// ~/logon|register|verify
 			routes.MapRouteLowerCase(
 				"AccountController-Action",
 				"{action}",
@@ -43,6 +44,7 @@ namespace Snittlistan
 
 		private void ConfigureHome()
 		{
+			// ~/about
 			routes.MapRouteLowerCase(
 				"HomeController-Action",
 				"{action}",
