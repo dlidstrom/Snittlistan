@@ -74,7 +74,7 @@ h5, h6 {
 /* you can specify a greater or lesser percentage for the 
 page width. Or, you can specify an exact pixel width. */
 .page {
-	width: 960px;
+	max-width: 800px;
 	margin: auto;
 }
 
