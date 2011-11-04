@@ -27,7 +27,7 @@ namespace Snittlistan.Controllers
 		/// <returns></returns>
 		public ActionResult Index()
 		{
-			var stats = Session.Query<Matches_PlayerStats.Results, Matches_PlayerStats>()
+            var stats = Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
 				.OrderByDescending(s => s.Average)
 				.ToList();
 
