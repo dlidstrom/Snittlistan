@@ -17,7 +17,7 @@ namespace Snittlistan.Test
 			Session.SaveChanges();
 
 			// Act
-			var stats = Session.Query<Matches_PlayerStats.Results, Matches_PlayerStats>()
+			var stats = Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
 				.Customize(c => c.WaitForNonStaleResults())
 				.SingleOrDefault(s => s.Player == "Mikael Axelsson");
 
