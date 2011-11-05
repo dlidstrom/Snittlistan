@@ -13,6 +13,8 @@
         <th>Datum</th>
         <th>Resultat</th>
         <th>Medel</th>
+        <th>X</th>
+        <th>Miss</th>
         <th>Serier</th>
         <th></th>
     </tr>
@@ -24,6 +26,8 @@
         <td>@Html.DisplayFor(modelItem => item.Date)</td>
         <td>@item.Pins</td>
         <td>@string.Format("{0:F1}", (double)item.Pins / item.Series)</td>
+        <td>@item.Strikes</td>
+        <td>@item.Misses</td>
         <td>@item.Series</td>
         <td>@Html.ActionLink("Visa", "Details", "Match", new { id = item.MatchId.Substring(8) }, new { })</td>
     </tr>

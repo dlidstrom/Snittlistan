@@ -1,10 +1,10 @@
 ﻿namespace Snittlistan.Infrastructure.Indexes
 {
-	using System;
-	using System.ComponentModel.DataAnnotations;
-	using System.Linq;
-	using Raven.Client.Indexes;
-	using Snittlistan.Models;
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
+    using Raven.Client.Indexes;
+    using Snittlistan.Models;
 
     public class Player_ByMatch : AbstractIndexCreationTask<Match, Player_ByMatch.Result>
     {
@@ -17,43 +17,49 @@
                              from game in table.Games
                              select new
                              {
-								 Player = game.Player,
+                                 Player = game.Player,
                                  MatchId = match.Id,
                                  BitsMatchId = match.BitsMatchId,
-								 Location = match.Location,
-								 Team = team.Name,
+                                 Location = match.Location,
+                                 Team = team.Name,
                                  Date = match.Date,
                                  Pins = game.Pins,
-								 Series = 1
+                                 Series = 1,
+                                 Strikes = game.Strikes,
+                                 Misses = game.Misses
                              };
 
-			Reduce = results => from result in results
+            Reduce = results => from result in results
                                 group result by new { result.Player, result.MatchId, result.BitsMatchId, result.Location, result.Date, result.Team } into games
-								select new
-								{
-									Player = games.Key.Player,
+                                select new
+                                {
+                                    Player = games.Key.Player,
                                     MatchId = games.Key.MatchId,
                                     BitsMatchId = (int)games.Key.BitsMatchId,
-									Location = games.Key.Location,
-									Team = games.Key.Team,
-									Date = games.Key.Date,
-									Pins = games.Sum(g => g.Pins),
-									Series = games.Sum(g => g.Series)
-								};
+                                    Location = games.Key.Location,
+                                    Team = games.Key.Team,
+                                    Date = games.Key.Date,
+                                    Pins = games.Sum(g => g.Pins),
+                                    Series = games.Sum(g => g.Series),
+                                    Strikes = games.Sum(g => g.Strikes),
+                                    Misses = games.Sum(g => g.Misses)
+                                };
         }
 
         public class Result
         {
             public string Player { get; set; }
-			public string MatchId { get; set; }
+            public string MatchId { get; set; }
             public int BitsMatchId { get; set; }
-			public string Location { get; set; }
-			public string Team { get; set; }
+            public string Location { get; set; }
+            public string Team { get; set; }
 
-			[DataType(DataType.Date)]
-			public DateTime Date { get; set; }
-			public double Pins { get; set; }
-			public int Series { get; set; }
+            [DataType(DataType.Date)]
+            public DateTime Date { get; set; }
+            public double Pins { get; set; }
+            public int Series { get; set; }
+            public int Strikes { get; set; }
+            public int Misses { get; set; }
         }
     }
 }
