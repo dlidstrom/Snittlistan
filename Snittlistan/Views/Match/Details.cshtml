@@ -1,9 +1,7 @@
 ﻿@model MatchViewModel
 @{
-    ViewBag.Title = "Detaljer";
+    ViewBag.Title = string.Format("Match {0}-{1}", Model.HomeTeam.Name, Model.AwayTeam.Name);
 }
-
-<h2>@ViewBag.Title</h2>
 
 <fieldset>
     <legend>Match</legend>
