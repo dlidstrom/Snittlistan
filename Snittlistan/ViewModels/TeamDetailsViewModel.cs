@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace Snittlistan.ViewModels
+﻿namespace Snittlistan.ViewModels
 {
-	public class TeamSummaryViewModel
-	{
-		[Display(Name = "Namn")]
-		public string Name { get; set; }
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
-		[Display(Name = "Banpoäng")]
-		public int Score { get; set; }
+    public class TeamDetailsViewModel
+    {
+        [Display(Name = "Namn")]
+        public string Name { get; set; }
+
+        [Display(Name = "Banpoäng")]
+        public int Score { get; set; }
 
         public List<Serie> Series { get; set; }
 
@@ -31,5 +31,5 @@ namespace Snittlistan.ViewModels
             public string Player { get; set; }
             public int Pins { get; set; }
         }
-	}
+    }
 }
