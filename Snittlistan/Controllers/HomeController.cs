@@ -48,7 +48,8 @@
 
             var q = Session.Query<Player_ByMatch.Result, Player_ByMatch>()
                 .Where(r => r.Player == player)
-                .OrderByDescending(r => r.BitsMatchId);
+                .OrderByDescending(r => r.Date)
+                .ThenByDescending(r => r.BitsMatchId);
 
             return View(new PlayerMatches { Player = player, Stats = q.ToList() });
         }
