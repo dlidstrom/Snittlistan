@@ -17,8 +17,9 @@
                              from game in table.Games
                              select new
                              {
-								 MatchId = match.Id,
 								 Player = game.Player,
+                                 MatchId = match.Id,
+                                 BitsMatchId = match.BitsMatchId,
 								 Location = match.Location,
 								 Team = team.Name,
                                  Date = match.Date,
@@ -27,11 +28,12 @@
                              };
 
 			Reduce = results => from result in results
-								group result by new { result.MatchId, result.Player, result.Location, result.Date, result.Team } into games
+                                group result by new { result.Player, result.MatchId, result.BitsMatchId, result.Location, result.Date, result.Team } into games
 								select new
 								{
-									MatchId = games.Key.MatchId,
 									Player = games.Key.Player,
+                                    MatchId = games.Key.MatchId,
+                                    BitsMatchId = (int)games.Key.BitsMatchId,
 									Location = games.Key.Location,
 									Team = games.Key.Team,
 									Date = games.Key.Date,
@@ -44,6 +46,7 @@
         {
             public string Player { get; set; }
 			public string MatchId { get; set; }
+            public int BitsMatchId { get; set; }
 			public string Location { get; set; }
 			public string Team { get; set; }
 
