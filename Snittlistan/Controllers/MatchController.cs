@@ -33,8 +33,8 @@ namespace Snittlistan.Controllers
 				.Select(match => new MatchViewModel
 				{
 					Match = match.MapTo<MatchViewModel.MatchDetails>(),
-					HomeTeam = match.HomeTeam.MapTo<TeamSummaryViewModel>(),
-					AwayTeam = match.AwayTeam.MapTo<TeamSummaryViewModel>()
+					HomeTeam = match.HomeTeam.MapTo<TeamDetailsViewModel>(),
+                    AwayTeam = match.AwayTeam.MapTo<TeamDetailsViewModel>()
 				});
 			return View(matches);
 		}
@@ -53,8 +53,8 @@ namespace Snittlistan.Controllers
 			var vm = new MatchViewModel
 			{
 				Match = match.MapTo<MatchViewModel.MatchDetails>(),
-				HomeTeam = match.HomeTeam.MapTo<TeamSummaryViewModel>(),
-				AwayTeam = match.AwayTeam.MapTo<TeamSummaryViewModel>()
+				HomeTeam = match.HomeTeam.MapTo<TeamDetailsViewModel>(),
+                AwayTeam = match.AwayTeam.MapTo<TeamDetailsViewModel>()
 			};
 
 			return View(vm);

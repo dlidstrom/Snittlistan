@@ -12,11 +12,11 @@ namespace Snittlistan.Infrastructure.AutoMapper.Profiles
         {
             // model -> viewmodel
             Mapper.CreateMap<Match, MatchViewModel.MatchDetails>();
-            Mapper.CreateMap<Team, TeamSummaryViewModel>();
-            Mapper.CreateMap<Serie, TeamSummaryViewModel.Serie>();
-            Mapper.CreateMap<Table, TeamSummaryViewModel.Table>()
+            Mapper.CreateMap<Team, TeamDetailsViewModel>();
+            Mapper.CreateMap<Serie, TeamDetailsViewModel.Serie>();
+            Mapper.CreateMap<Table, TeamDetailsViewModel.Table>()
                 .ForMember(vm => vm.Total, o => o.ResolveUsing(m => m.Game1.Pins + m.Game2.Pins));
-            Mapper.CreateMap<Game, TeamSummaryViewModel.Game>();
+            Mapper.CreateMap<Game, TeamDetailsViewModel.Game>();
             Mapper.CreateMap<Team, TeamViewModel>()
                 .ForMember(vm => vm.Pair1, o => o.ResolveUsing(new PairResolver { Pair = 0 }))
                 .ForMember(vm => vm.Pair2, o => o.ResolveUsing(new PairResolver { Pair = 1 }))
