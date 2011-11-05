@@ -36,8 +36,16 @@
             return View(stats);
         }
 
+        /// <summary>
+        /// GET: /Home/Player.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
         public ActionResult Player(string player)
         {
+            if (string.IsNullOrWhiteSpace(player))
+                return HttpNotFound();
+
 			var q = Session.Query<Player_ByMatch.Result, Player_ByMatch>()
 				.Where(r => r.Player == player)
 				.OrderBy(r => r.Date)
