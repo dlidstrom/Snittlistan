@@ -10,6 +10,9 @@ namespace Snittlistan.Infrastructure.AutoMapper.Profiles
 
         protected override string ResolveCore(Game source)
         {
+            if (source == null || source.Player == null)
+                return string.Empty;
+
             string shortenedName = source.Player;
             var match = regex.Match(shortenedName);
             if (match.Groups["Forename2"].Success)
