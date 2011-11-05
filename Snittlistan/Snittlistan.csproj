@@ -171,6 +171,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Infrastructure\AutoMapper\Profiles\NameShortenerResolver.cs" />
     <Compile Include="Infrastructure\Indexes\Player_ByMatch.cs" />
     <Compile Include="IoC\WindsorDependencyResolver.cs" />
     <Content Include="Content\js\date-picker.js" />

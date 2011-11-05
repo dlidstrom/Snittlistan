@@ -16,7 +16,8 @@ namespace Snittlistan.Infrastructure.AutoMapper.Profiles
             Mapper.CreateMap<Serie, TeamDetailsViewModel.Serie>();
             Mapper.CreateMap<Table, TeamDetailsViewModel.Table>()
                 .ForMember(vm => vm.Total, o => o.ResolveUsing(m => m.Game1.Pins + m.Game2.Pins));
-            Mapper.CreateMap<Game, TeamDetailsViewModel.Game>();
+            Mapper.CreateMap<Game, TeamDetailsViewModel.Game>()
+                .ForMember(vm => vm.Player, o => o.ResolveUsing<NameShortenerResolver>());
             Mapper.CreateMap<Team, TeamViewModel>()
                 .ForMember(vm => vm.Pair1, o => o.ResolveUsing(new PairResolver { Pair = 0 }))
                 .ForMember(vm => vm.Pair2, o => o.ResolveUsing(new PairResolver { Pair = 1 }))
