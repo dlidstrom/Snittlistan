@@ -46,12 +46,11 @@
             if (string.IsNullOrWhiteSpace(player))
                 return HttpNotFound();
 
-			var q = Session.Query<Player_ByMatch.Result, Player_ByMatch>()
-				.Where(r => r.Player == player)
-				.OrderBy(r => r.Date)
-				.ThenBy(r => r.MatchId);
+            var q = Session.Query<Player_ByMatch.Result, Player_ByMatch>()
+                .Where(r => r.Player == player)
+                .OrderByDescending(r => r.BitsMatchId);
 
-			return View(new PlayerMatches { Player = player, Stats = q.ToList() });
+            return View(new PlayerMatches { Player = player, Stats = q.ToList() });
         }
 
         /// <summary>
