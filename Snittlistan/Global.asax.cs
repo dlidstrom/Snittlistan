@@ -31,6 +31,7 @@ namespace Snittlistan
         {
             filters.Add(new ElmahHandleErrorAttribute());
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new UserTrackerLogAttribute());
             filters.Add(new RavenActionFilterAttribute());
         }
 
