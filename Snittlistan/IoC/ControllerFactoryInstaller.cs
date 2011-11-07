@@ -10,7 +10,9 @@ namespace Snittlistan.IoC
 		public void Install(IWindsorContainer container, IConfigurationStore store)
 		{
 			container.Register(
-					Component.For<IControllerFactory>().ImplementedBy<WindsorControllerFactory>().LifestyleSingleton());
+					Component.For<IControllerFactory>()
+                    .ImplementedBy<WindsorControllerFactory>()
+                    .LifestyleTransient());
 		}
 	}
 }
