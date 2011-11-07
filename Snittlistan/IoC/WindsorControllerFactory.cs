@@ -28,7 +28,7 @@
 
             try
             {
-                return kernel.Resolve<IController>(controllerName);
+                return kernel.Resolve<IController>(controllerName + "Controller");
             }
             catch (ComponentNotFoundException ex)
             {
