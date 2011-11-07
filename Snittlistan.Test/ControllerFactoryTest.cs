@@ -21,7 +21,7 @@ namespace Snittlistan.Test
 			IControllerFactory factory = null;
 			Assert.DoesNotThrow(() => factory = container.Resolve<IControllerFactory>());
 			IController controller = null;
-			Assert.DoesNotThrow(() => controller = factory.CreateController(new RequestContext(), typeof(ErrorController).Name.Replace("Controller", string.Empty)));
+			Assert.DoesNotThrow(() => controller = factory.CreateController(new RequestContext(), typeof(ErrorController).Name));
 			controller.ShouldNotBeNull("Failed to create controller");
 		}
 	}
