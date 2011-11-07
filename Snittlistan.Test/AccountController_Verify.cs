@@ -32,7 +32,7 @@ namespace Snittlistan.Test
 			VerifyActivationKeyForUser(user)
 				.AssertActionRedirect()
 				.ToAction("VerifySuccess");
-			var storedUser = Session.FindUserByEmail("e@d.com").SingleOrDefault();
+			var storedUser = Session.FindUserByEmail("e@d.com");
 			storedUser.ShouldNotBeNull("Failed to find user");
 			storedUser.IsActive.ShouldBe(true);
 		}

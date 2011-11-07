@@ -21,7 +21,7 @@ namespace Snittlistan.Test
 				WaitForNonStaleResults<User>();
 			}
 
-			var user = Session.FindUserByEmail("e@d.com").Single();
+			var user = Session.FindUserByEmail("e@d.com");
 			user.ActivationKey.ShouldBe(original.ActivationKey);
 			user.Email.ShouldBe(original.Email);
 			user.FirstName.ShouldBe(original.FirstName);
@@ -39,7 +39,6 @@ namespace Snittlistan.Test
 
 			Session
 				.FindUserByEmail("e@d.com")
-				.Single()
 				.ValidatePassword("some pwd")
 				.ShouldBe(true);
 		}

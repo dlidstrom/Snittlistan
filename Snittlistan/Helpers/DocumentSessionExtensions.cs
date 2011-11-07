@@ -7,9 +7,9 @@ namespace Snittlistan.Helpers
 {
 	public static class DocumentSessionExtensions
 	{
-		public static IQueryable<User> FindUserByEmail(this IDocumentSession sess, string email)
+		public static User FindUserByEmail(this IDocumentSession sess, string email)
 		{
-			return sess.Query<User>().Where(u => u.Email == email);
+            return sess.Query<User>().FirstOrDefault(u => u.Email == email);
 		}
 
 		public static IQueryable<User> FindUserByActivationKey(this IDocumentSession sess, string key)

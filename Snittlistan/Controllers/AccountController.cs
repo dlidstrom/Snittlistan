@@ -49,8 +49,7 @@
 		public ActionResult LogOn(LogOnViewModel vm, string returnUrl)
 		{
 			// find the user in question
-			var user = Session.FindUserByEmail(vm.Email)
-				.FirstOrDefault();
+            var user = Session.FindUserByEmail(vm.Email);
 
 			if (user == null)
 			{
@@ -111,7 +110,7 @@
 		public ActionResult Register(RegisterViewModel model)
 		{
 			// an existing user cannot be registered again
-			if (Session.FindUserByEmail(model.Email).FirstOrDefault() != null)
+			if (Session.FindUserByEmail(model.Email) != null)
 				ModelState.AddModelError("Email", "Adressen finns redan.");
 
 			// redisplay form if any errors at this point
@@ -143,8 +142,7 @@
 		[HttpPost, Authorize]
 		public ActionResult ChangePassword(ChangePasswordViewModel model)
 		{
-			var user = Session.FindUserByEmail(model.Email)
-				.FirstOrDefault();
+			var user = Session.FindUserByEmail(model.Email);
 
 			if (user == null)
 				ModelState.AddModelError("Email", "Användaren existerar inte.");

@@ -38,7 +38,7 @@ namespace Snittlistan.Test
 			WaitForNonStaleResults<User>();
 
 			// verify
-			var registeredUser = Session.FindUserByEmail("e@d.com").SingleOrDefault();
+			var registeredUser = Session.FindUserByEmail("e@d.com");
 			registeredUser.ShouldNotBeNull("Should find user after registration");
 			var key = registeredUser.ActivationKey;
 
