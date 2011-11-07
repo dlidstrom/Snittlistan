@@ -199,5 +199,10 @@ namespace Snittlistan.Controllers
 
 			return this.RedirectToAction(c => c.Index());
 		}
+
+        public ActionResult Create()
+        {
+            return RedirectToActionPermanent("Register");
+        }
 	}
 }
