@@ -68,7 +68,7 @@
 			if (!ModelState.IsValid)
 				return View(vm);
 
-			authenticationService.SetAuthCookie(user.Name, vm.RememberMe);
+			authenticationService.SetAuthCookie(user.Email, vm.RememberMe);
 
 			if (Url.IsLocalUrl(returnUrl)
 				&& returnUrl.Length > 1
