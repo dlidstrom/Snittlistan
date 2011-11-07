@@ -7,6 +7,7 @@ using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Embedded;
 using Raven.Client.MvcIntegration;
+using Snittlistan.Infrastructure.Indexes;
 
 namespace Snittlistan.Installers
 {
@@ -42,7 +43,10 @@ namespace Snittlistan.Installers
 
 			store.Initialize();
 			store.Conventions.IdentityPartsSeparator = "-";
-			RavenProfiler.InitializeFor(store);
+
+            // create indexes
+            IndexCreator.CreateIndexes(store);
+            RavenProfiler.InitializeFor(store);
 			return store;
 		}
 	}
