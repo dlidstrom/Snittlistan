@@ -51,7 +51,7 @@ namespace Snittlistan.Test
 			// let indexing do its job
 			WaitForNonStaleResults<User>();
 
-			var user = Session.FindUserByEmail("email").SingleOrDefault();
+			var user = Session.FindUserByEmail("email");
 			user.ShouldNotBeNull("Should find it");
 			user.FirstName.ShouldBe("first name");
 			user.LastName.ShouldBe("last name");

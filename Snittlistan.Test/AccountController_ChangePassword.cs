@@ -39,7 +39,7 @@ namespace Snittlistan.Test
 			result.AssertActionRedirect().ToAction("ChangePasswordSuccess");
 
 			// also make sure password actually changed
-			var user = Session.FindUserByEmail("e@d.com").SingleOrDefault();
+			var user = Session.FindUserByEmail("e@d.com");
 			user.ShouldNotBeNull("Did not find user");
 			user.ValidatePassword("newpass").ShouldBe(true);
 		}

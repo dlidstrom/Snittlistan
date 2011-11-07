@@ -116,7 +116,7 @@
 		public ActionResult Create(RegisterViewModel user)
 		{
 			// an existing user cannot be registered again
-			if (Session.FindUserByEmail(user.Email).SingleOrDefault() != null)
+			if (Session.FindUserByEmail(user.Email) != null)
 				ModelState.AddModelError("Email", "Användaren finns redan");
 
 			// redisplay form if any errors at this point
