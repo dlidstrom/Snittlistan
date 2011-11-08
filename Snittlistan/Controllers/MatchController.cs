@@ -78,7 +78,7 @@ namespace Snittlistan.Controllers
 		[HttpPost, Authorize]
 		public ActionResult Register(RegisterMatchViewModel model)
 		{
-			if (Session.FindByBitsId(model.BitsMatchId).SingleOrDefault() != null)
+			if (Session.FindByBitsId(model.BitsMatchId) != null)
 				ModelState.AddModelError("BitsMatchId", "Matchen redan registrerad");
 
 			if (!ModelState.IsValid)

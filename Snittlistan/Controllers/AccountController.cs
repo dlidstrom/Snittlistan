@@ -180,8 +180,7 @@
 		/// <returns>LogOn or Register view.</returns>
 		public ActionResult Verify(Guid activationKey)
 		{
-			var user = Session.FindUserByActivationKey(activationKey.ToString())
-				.FirstOrDefault();
+			var user = Session.FindUserByActivationKey(activationKey.ToString());
 
 			if (user == null)
 				return this.RedirectToAction(c => c.Register());
