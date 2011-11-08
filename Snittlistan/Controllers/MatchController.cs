@@ -202,7 +202,12 @@ namespace Snittlistan.Controllers
 
         public ActionResult Create()
         {
-            return RedirectToActionPermanent("Register");
+            return RedirectToActionPermanent("Index");
+        }
+
+        public ActionResult Edit()
+        {
+            return RedirectToActionPermanent("Index");
         }
 	}
 }
