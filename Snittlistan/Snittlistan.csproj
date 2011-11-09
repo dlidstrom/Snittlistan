@@ -171,8 +171,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Controllers\ValidationController.cs" />
     <Compile Include="Helpers\Attributes\UserTrackerLogAttribute.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\NameShortenerResolver.cs" />
+    <Compile Include="Infrastructure\Indexes\Players.cs" />
     <Compile Include="Infrastructure\Indexes\Player_ByMatch.cs" />
     <Compile Include="Installers\ActionInvokerInstaller.cs" />
     <Compile Include="Infrastructure\InjectingActionInvoker.cs" />
@@ -240,7 +243,10 @@
     <Compile Include="ViewModels\TeamDetailsViewModel.cs" />
     <Compile Include="ViewModels\TeamViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
+    <Content Include="Content\js\jquery-1.6.4-vsdoc.js" />
+    <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\knockout-1.3.0beta.js" />
+    <Content Include="Content\js\match-register.js" />
     <Content Include="robots.txt" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\Match.cs" />
