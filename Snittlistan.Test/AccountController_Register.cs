@@ -1,118 +1,117 @@
-﻿using System;
-using System.Linq;
-using System.Web.Mvc;
-using Moq;
-using MvcContrib.TestHelper;
-using Snittlistan.Controllers;
-using Snittlistan.Events;
-using Snittlistan.Helpers;
-using Snittlistan.Models;
-using Snittlistan.Services;
-using Snittlistan.ViewModels;
-using Xunit;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
-	public class AccountController_Register : DbTest
-	{
-		[Fact]
-		public void ShouldInitializeNewUser()
-		{
-			NewUserCreatedEvent ev = null;
-			using (DomainEvent.TestWith(e => ev = (NewUserCreatedEvent)e))
-			{
-				var controller = new AccountController(Session, Mock.Of<IAuthenticationService>());
-				controller.Register(new RegisterViewModel
-				{
-					FirstName = "first name",
-					LastName = "last name",
-					Email = "email",
-				});
-			}
+    using System;
+    using System.Web.Mvc;
+    using Moq;
+    using MvcContrib.TestHelper;
+    using Snittlistan.Controllers;
+    using Snittlistan.Events;
+    using Snittlistan.Helpers;
+    using Snittlistan.Models;
+    using Snittlistan.Services;
+    using Snittlistan.ViewModels;
+    using Xunit;
 
-			ev.ShouldNotBeNull("No event raised");
-		}
+    public class AccountController_Register : DbTest
+    {
+        [Fact]
+        public void ShouldInitializeNewUser()
+        {
+            NewUserCreatedEvent ev = null;
+            using (DomainEvent.TestWith(e => ev = (NewUserCreatedEvent)e))
+            {
+                var controller = new AccountController(Session, Mock.Of<IAuthenticationService>());
+                controller.Register(new RegisterViewModel
+                {
+                    FirstName = "first name",
+                    LastName = "last name",
+                    Email = "email",
+                });
+            }
 
-		[Fact]
-		public void ShouldCreateInitializedUser()
-		{
-			var controller = new AccountController(Session, Mock.Of<IAuthenticationService>());
-			using (DomainEvent.Disable())
-				controller.Register(new RegisterViewModel
-				{
-					FirstName = "first name",
-					LastName = "last name",
-					Email = "email",
-				});
+            ev.ShouldNotBeNull("No event raised");
+        }
 
-			// normally done by infrastructure (special action filter)
-			Session.SaveChanges();
+        [Fact]
+        public void ShouldCreateInitializedUser()
+        {
+            var controller = new AccountController(Session, Mock.Of<IAuthenticationService>());
+            using (DomainEvent.Disable())
+                controller.Register(new RegisterViewModel
+                {
+                    FirstName = "first name",
+                    LastName = "last name",
+                    Email = "email",
+                });
 
-			// let indexing do its job
-			WaitForNonStaleResults<User>();
+            // normally done by infrastructure (special action filter)
+            Session.SaveChanges();
 
-			var user = Session.FindUserByEmail("email");
-			user.ShouldNotBeNull("Should find it");
-			user.FirstName.ShouldBe("first name");
-			user.LastName.ShouldBe("last name");
-			user.Email.ShouldBe("email");
-			user.IsActive.ShouldBe(false);
-		}
+            // let indexing do its job
+            WaitForNonStaleResults<User>();
 
-		[Fact]
-		public void RegisterDoesNotLogin()
-		{
-			using (DomainEvent.Disable())
-			{
-				var authService = Mock.Of<IAuthenticationService>();
+            var user = Session.FindUserByEmail("email");
+            user.ShouldNotBeNull("Should find it");
+            user.FirstName.ShouldBe("first name");
+            user.LastName.ShouldBe("last name");
+            user.Email.ShouldBe("email");
+            user.IsActive.ShouldBe(false);
+        }
 
-				// assert through mock object
-				Mock.Get(authService)
-					.Setup(s => s.SetAuthCookie(It.IsAny<string>(), It.IsAny<bool>()))
-					.Throws(new Exception("Register should not set authorization cookie"));
-				var controller = new AccountController(Session, authService);
-				var result = controller.Register(new RegisterViewModel
-				{
-					FirstName = "f",
-					LastName = "l",
-					Email = "email"
-				});
-			}
-		}
+        [Fact]
+        public void RegisterDoesNotLogin()
+        {
+            using (DomainEvent.Disable())
+            {
+                var authService = Mock.Of<IAuthenticationService>();
 
-		[Fact]
-		public void SuccessfulRegisterRedirectsToSuccessPage()
-		{
-			using (DomainEvent.Disable())
-			{
-				var controller = new AccountController(Session, Mock.Of<IAuthenticationService>());
-				var result = controller.Register(new RegisterViewModel
-				{
-					FirstName = "f",
-					LastName = "l",
-					Email = "email"
-				});
+                // assert through mock object
+                Mock.Get(authService)
+                    .Setup(s => s.SetAuthCookie(It.IsAny<string>(), It.IsAny<bool>()))
+                    .Throws(new Exception("Register should not set authorization cookie"));
+                var controller = new AccountController(Session, authService);
+                var result = controller.Register(new RegisterViewModel
+                {
+                    FirstName = "f",
+                    LastName = "l",
+                    Email = "email"
+                });
+            }
+        }
 
-				result.AssertActionRedirect().ToAction("RegisterSuccess");
-			}
-		}
+        [Fact]
+        public void SuccessfulRegisterRedirectsToSuccessPage()
+        {
+            using (DomainEvent.Disable())
+            {
+                var controller = new AccountController(Session, Mock.Of<IAuthenticationService>());
+                var result = controller.Register(new RegisterViewModel
+                {
+                    FirstName = "f",
+                    LastName = "l",
+                    Email = "email"
+                });
 
-		[Fact]
-		public void CannotRegisterSameEmailTwice()
-		{
-			// Arrange
-			CreateActivatedUser("F", "L", "e@d.com", "some pwd");
-			var controller = new AccountController(Session, Mock.Of<IAuthenticationService>());
+                result.AssertActionRedirect().ToAction("RegisterSuccess");
+            }
+        }
 
-			// Act
-			var result = controller.Register(new RegisterViewModel { Email = "e@d.com" });
+        [Fact]
+        public void CannotRegisterSameEmailTwice()
+        {
+            // Arrange
+            CreateActivatedUser("F", "L", "e@d.com", "some pwd");
+            var controller = new AccountController(Session, Mock.Of<IAuthenticationService>());
 
-			// Assert
-			result.AssertViewRendered().ForView(string.Empty);
-			var view = result as ViewResult;
-			view.ShouldNotBeNull("Expected ViewResult");
-			controller.ModelState.Count.ShouldBe(1);
-			controller.ModelState.ContainsKey("Email").ShouldBe(true);
-		}
-	}
+            // Act
+            var result = controller.Register(new RegisterViewModel { Email = "e@d.com" });
+
+            // Assert
+            result.AssertViewRendered().ForView(string.Empty);
+            var view = result as ViewResult;
+            view.ShouldNotBeNull("Expected ViewResult");
+            controller.ModelState.Count.ShouldBe(1);
+            controller.ModelState.ContainsKey("Email").ShouldBe(true);
+        }
+    }
 }

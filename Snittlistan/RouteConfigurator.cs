@@ -1,63 +1,63 @@
-﻿using System.Web.Mvc;
-using System.Web.Routing;
-using Snittlistan.Helpers;
-
-namespace Snittlistan
+﻿namespace Snittlistan
 {
-	public class RouteConfigurator
-	{
-		private readonly RouteCollection routes;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+    using Snittlistan.Helpers;
 
-		public RouteConfigurator(RouteCollection routes)
-		{
-			this.routes = routes;
-		}
+    public class RouteConfigurator
+    {
+        private readonly RouteCollection routes;
 
-		public void Configure()
-		{
-			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-			routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
+        public RouteConfigurator(RouteCollection routes)
+        {
+            this.routes = routes;
+        }
 
-			// robots.txt
-			routes.IgnoreRoute("{file}.txt");
+        public void Configure()
+        {
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
 
-			ConfigureAccount();
-			ConfigureHome();
-			ConfigureElmah();
+            // robots.txt
+            routes.IgnoreRoute("{file}.txt");
 
-			// default route
-			routes.MapRoute(
-				"Default", // Route name
-				"{controller}/{action}/{id}", // URL with parameters
-				new { controller = "Home", action = "Index", id = UrlParameter.Optional }); // Parameter defaults
-		}
+            ConfigureAccount();
+            ConfigureHome();
+            ConfigureElmah();
 
-		private void ConfigureAccount()
-		{
-			// ~/logon|register|verify
-			routes.MapRouteLowerCase(
-				"AccountController-Action",
-				"{action}",
-				new { controller = "Account" },
-				new { action = "LogOn|Register|Verify" });
-		}
+            // default route
+            routes.MapRoute(
+                "Default", // Route name
+                "{controller}/{action}/{id}", // URL with parameters
+                new { controller = "Home", action = "Index", id = UrlParameter.Optional }); // Parameter defaults
+        }
 
-		private void ConfigureHome()
-		{
-			// ~/about
-			routes.MapRouteLowerCase(
-				"HomeController-Action",
-				"{action}",
-				new { controller = "Home" },
-				new { action = "About" });
-		}
+        private void ConfigureAccount()
+        {
+            // ~/logon|register|verify
+            routes.MapRouteLowerCase(
+                "AccountController-Action",
+                "{action}",
+                new { controller = "Account" },
+                new { action = "LogOn|Register|Verify" });
+        }
 
-		private void ConfigureElmah()
-		{
-			routes.MapRouteLowerCase(
-				"ElmahController-internal",
-				"admin/elmah/{type}",
-				new { controller = "Elmah", action = "Index", type = UrlParameter.Optional });
-		}
-	}
+        private void ConfigureHome()
+        {
+            // ~/about
+            routes.MapRouteLowerCase(
+                "HomeController-Action",
+                "{action}",
+                new { controller = "Home" },
+                new { action = "About" });
+        }
+
+        private void ConfigureElmah()
+        {
+            routes.MapRouteLowerCase(
+                "ElmahController-internal",
+                "admin/elmah/{type}",
+                new { controller = "Elmah", action = "Index", type = UrlParameter.Optional });
+        }
+    }
 }

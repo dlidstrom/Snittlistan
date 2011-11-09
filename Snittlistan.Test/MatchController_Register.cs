@@ -1,96 +1,96 @@
-﻿using System;
-using System.Linq;
-using MvcContrib.TestHelper;
-using Snittlistan.Controllers;
-using Snittlistan.Models;
-using Snittlistan.ViewModels;
-using Xunit;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
-	public class MatchController_Register : DbTest
-	{
-		[Fact]
-		public void ViewIsCreate()
-		{
-			// Arrange
-			var controller = new MatchController(Session);
+    using System;
+    using System.Linq;
+    using MvcContrib.TestHelper;
+    using Snittlistan.Controllers;
+    using Snittlistan.Models;
+    using Snittlistan.ViewModels;
+    using Xunit;
 
-			// Act
-			var now = DateTime.Now;
-			var result = controller.Register(new RegisterMatchViewModel
-			{
-				Location = "Somewhere",
-				Date = now,
-				BitsMatchId = 1,
-				HomeTeam = new TeamViewModel
-				{
-					Name = "HomeTeam",
-					Score = 13
-				},
-				AwayTeam = new TeamViewModel
-				{
-					Name = "AwayTeam",
-					Score = 6
-				}
-			});
-			Session.SaveChanges();
-			WaitForNonStaleResults<Match>();
+    public class MatchController_Register : DbTest
+    {
+        [Fact]
+        public void ViewIsCreate()
+        {
+            // Arrange
+            var controller = new MatchController(Session);
 
-			// Assert
-			var match = Session.Query<Match>().Single();
-			match.Location.ShouldBe("Somewhere");
-			match.BitsMatchId.ShouldBe(1);
-			match.Date.ShouldBe(now);
-			match.HomeTeam.Name.ShouldBe("HomeTeam");
-			match.HomeTeam.Score.ShouldBe(13);
-			match.AwayTeam.Score.ShouldBe(6);
-		}
+            // Act
+            var now = DateTime.Now;
+            var result = controller.Register(new RegisterMatchViewModel
+            {
+                Location = "Somewhere",
+                Date = now,
+                BitsMatchId = 1,
+                HomeTeam = new TeamViewModel
+                {
+                    Name = "HomeTeam",
+                    Score = 13
+                },
+                AwayTeam = new TeamViewModel
+                {
+                    Name = "AwayTeam",
+                    Score = 6
+                }
+            });
+            Session.SaveChanges();
+            WaitForNonStaleResults<Match>();
 
-		[Fact]
-		public void WhenErrorReturnView()
-		{
-			// Arrange
-			var controller = new MatchController(Session);
-			controller.ModelState.AddModelError("key", "error");
+            // Assert
+            var match = Session.Query<Match>().Single();
+            match.Location.ShouldBe("Somewhere");
+            match.BitsMatchId.ShouldBe(1);
+            match.Date.ShouldBe(now);
+            match.HomeTeam.Name.ShouldBe("HomeTeam");
+            match.HomeTeam.Score.ShouldBe(13);
+            match.AwayTeam.Score.ShouldBe(6);
+        }
 
-			// Act
-			var result = controller.Register(new RegisterMatchViewModel());
+        [Fact]
+        public void WhenErrorReturnView()
+        {
+            // Arrange
+            var controller = new MatchController(Session);
+            controller.ModelState.AddModelError("key", "error");
 
-			// Assert
-			result.AssertViewRendered().ForView(string.Empty);
-		}
+            // Act
+            var result = controller.Register(new RegisterMatchViewModel());
 
-		[Fact]
-		public void CannotRegisterSameBitsIdTwice()
-		{
-			// Arrange
-			var controller = new MatchController(Session);
-			var now = DateTime.Now;
-			RegisterMatchViewModel vm = new RegisterMatchViewModel
-			{
-				Location = "Somewhere",
-				Date = now,
-				BitsMatchId = 1,
-				HomeTeam = new TeamViewModel
-				{
-					Name = "HomeTeam",
-					Score = 13
-				},
-				AwayTeam = new TeamViewModel
-				{
-					Name = "AwayTeam",
-					Score = 6
-				}
-			};
-			controller.Register(vm);
-			Session.SaveChanges();
+            // Assert
+            result.AssertViewRendered().ForView(string.Empty);
+        }
 
-			// Act
-			var result = controller.Register(vm);
+        [Fact]
+        public void CannotRegisterSameBitsIdTwice()
+        {
+            // Arrange
+            var controller = new MatchController(Session);
+            var now = DateTime.Now;
+            RegisterMatchViewModel vm = new RegisterMatchViewModel
+            {
+                Location = "Somewhere",
+                Date = now,
+                BitsMatchId = 1,
+                HomeTeam = new TeamViewModel
+                {
+                    Name = "HomeTeam",
+                    Score = 13
+                },
+                AwayTeam = new TeamViewModel
+                {
+                    Name = "AwayTeam",
+                    Score = 6
+                }
+            };
+            controller.Register(vm);
+            Session.SaveChanges();
 
-			// Assert
-			result.AssertViewRendered().ForView(string.Empty);
-		}
-	}
+            // Act
+            var result = controller.Register(vm);
+
+            // Assert
+            result.AssertViewRendered().ForView(string.Empty);
+        }
+    }
 }

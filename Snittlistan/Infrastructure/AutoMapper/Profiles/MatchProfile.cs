@@ -1,38 +1,35 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
-using Snittlistan.Models;
-using Snittlistan.ViewModels;
-
-namespace Snittlistan.Infrastructure.AutoMapper.Profiles
+﻿namespace Snittlistan.Infrastructure.AutoMapper.Profiles
 {
-    public class MatchProfile : Profile
+    using Snittlistan.Models;
+    using Snittlistan.ViewModels;
+
+    public class MatchProfile : global::AutoMapper.Profile
     {
         protected override void Configure()
         {
             // model -> viewmodel
-            Mapper.CreateMap<Match, MatchViewModel.MatchDetails>();
-            Mapper.CreateMap<Team, TeamDetailsViewModel>();
-            Mapper.CreateMap<Serie, TeamDetailsViewModel.Serie>();
-            Mapper.CreateMap<Table, TeamDetailsViewModel.Table>()
+            global::AutoMapper.Mapper.CreateMap<Match, MatchViewModel.MatchDetails>();
+            global::AutoMapper.Mapper.CreateMap<Team, TeamDetailsViewModel>();
+            global::AutoMapper.Mapper.CreateMap<Serie, TeamDetailsViewModel.Serie>();
+            global::AutoMapper.Mapper.CreateMap<Table, TeamDetailsViewModel.Table>()
                 .ForMember(vm => vm.Total, o => o.ResolveUsing(m => m.Game1.Pins + m.Game2.Pins));
-            Mapper.CreateMap<Game, TeamDetailsViewModel.Game>()
+            global::AutoMapper.Mapper.CreateMap<Game, TeamDetailsViewModel.Game>()
                 .ForMember(vm => vm.Player, o => o.ResolveUsing<NameShortenerResolver>());
-            Mapper.CreateMap<Team, TeamViewModel>()
+            global::AutoMapper.Mapper.CreateMap<Team, TeamViewModel>()
                 .ForMember(vm => vm.Pair1, o => o.ResolveUsing(new PairResolver { Pair = 0 }))
                 .ForMember(vm => vm.Pair2, o => o.ResolveUsing(new PairResolver { Pair = 1 }))
                 .ForMember(vm => vm.Pair3, o => o.ResolveUsing(new PairResolver { Pair = 2 }))
                 .ForMember(vm => vm.Pair4, o => o.ResolveUsing(new PairResolver { Pair = 3 }));
-            Mapper.CreateMap<Table, TeamViewModel.Serie>();
-            Mapper.CreateMap<Game, TeamViewModel.Game>();
+            global::AutoMapper.Mapper.CreateMap<Table, TeamViewModel.Serie>();
+            global::AutoMapper.Mapper.CreateMap<Game, TeamViewModel.Game>();
 
             // viewmodel -> model
-            Mapper.CreateMap<TeamViewModel, HomeTeamFactory>()
+            global::AutoMapper.Mapper.CreateMap<TeamViewModel, HomeTeamFactory>()
                 .ConvertUsing<TeamViewModelConverter<HomeTeamFactory>>();
-            Mapper.CreateMap<TeamViewModel, AwayTeamFactory>()
+            global::AutoMapper.Mapper.CreateMap<TeamViewModel, AwayTeamFactory>()
                 .ConvertUsing<TeamViewModelConverter<AwayTeamFactory>>();
-            Mapper.CreateMap<TeamViewModel.Serie, Table>();
-            Mapper.CreateMap<TeamViewModel.Game, Game>();
+            global::AutoMapper.Mapper.CreateMap<TeamViewModel.Serie, Table>();
+            global::AutoMapper.Mapper.CreateMap<TeamViewModel.Game, Game>();
         }
     }
 }

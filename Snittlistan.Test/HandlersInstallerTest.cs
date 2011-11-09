@@ -1,36 +1,37 @@
-﻿using System.Linq;
-using Castle.Core;
-using Castle.Windsor;
-using Snittlistan.Events;
-using Snittlistan.Handlers;
-using Snittlistan.Installers;
-using Xunit;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
-	public class HandlersInstallerTest
-	{
-		private readonly IWindsorContainer container;
+    using System.Linq;
+    using Castle.Core;
+    using Castle.Windsor;
+    using MvcContrib.TestHelper;
+    using Snittlistan.Events;
+    using Snittlistan.Handlers;
+    using Snittlistan.Installers;
+    using Xunit;
 
-		public HandlersInstallerTest()
-		{
-			container = new WindsorContainer().Install(new HandlersInstaller());
-		}
+    public class HandlersInstallerTest
+    {
+        private readonly IWindsorContainer container;
 
-		[Fact]
-		public void InstallsHandlerForNewUserCreatedEvent()
-		{
-			var handler = InstallerTestHelper.GetHandlersFor(typeof(IHandle<NewUserCreatedEvent>), container);
-			Assert.Equal(1, handler.Length);
-		}
+        public HandlersInstallerTest()
+        {
+            container = new WindsorContainer().Install(new HandlersInstaller());
+        }
 
-		[Fact]
-		public void HandlersAreTransient()
-		{
-			var nonTransientControllers = InstallerTestHelper.GetHandlersFor(typeof(IHandle<>), container)
-				.Where(c => c.ComponentModel.LifestyleType != LifestyleType.Transient)
-				.ToArray();
-			Assert.Empty(nonTransientControllers);
-		}
-	}
+        [Fact]
+        public void InstallsHandlerForNewUserCreatedEvent()
+        {
+            var handler = InstallerTestHelper.GetHandlersFor(typeof(IHandle<NewUserCreatedEvent>), container);
+            handler.Length.ShouldBe(1);
+        }
+
+        [Fact]
+        public void HandlersAreTransient()
+        {
+            var nonTransientControllers = InstallerTestHelper.GetHandlersFor(typeof(IHandle<>), container)
+                .Where(c => c.ComponentModel.LifestyleType != LifestyleType.Transient)
+                .ToArray();
+            Assert.Empty(nonTransientControllers);
+        }
+    }
 }

@@ -1,19 +1,19 @@
-﻿using Castle.MicroKernel.Registration;
-using Castle.MicroKernel.SubSystems.Configuration;
-using Castle.Windsor;
-using Snittlistan.Handlers;
-
-namespace Snittlistan.Installers
+﻿namespace Snittlistan.Installers
 {
-	public class HandlersInstaller : IWindsorInstaller
-	{
-		public void Install(IWindsorContainer container, IConfigurationStore store)
-		{
-			container.Register(
-				AllTypes.FromThisAssembly()
-				.BasedOn(typeof(IHandle<>))
-				.If(Component.IsInSameNamespaceAs<SendRegistrationEmailHandler>())
-				.Configure(c => c.LifestyleTransient()));
-		}
-	}
+    using Castle.MicroKernel.Registration;
+    using Castle.MicroKernel.SubSystems.Configuration;
+    using Castle.Windsor;
+    using Snittlistan.Handlers;
+
+    public class HandlersInstaller : IWindsorInstaller
+    {
+        public void Install(IWindsorContainer container, IConfigurationStore store)
+        {
+            container.Register(
+                AllTypes.FromThisAssembly()
+                .BasedOn(typeof(IHandle<>))
+                .If(Component.IsInSameNamespaceAs<SendRegistrationEmailHandler>())
+                .Configure(c => c.LifestyleTransient()));
+        }
+    }
 }

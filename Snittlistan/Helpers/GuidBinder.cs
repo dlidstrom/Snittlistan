@@ -1,19 +1,19 @@
-﻿using System;
-using System.Web.Mvc;
-
-namespace Snittlistan.Helpers
+﻿namespace Snittlistan.Helpers
 {
-	public class GuidBinder : DefaultModelBinder
-	{
-		public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
-		{
-			var value = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
+    using System;
+    using System.Web.Mvc;
 
-			Guid guid;
-			if (value != null && Guid.TryParse(value.AttemptedValue, out guid))
-				return guid;
+    public class GuidBinder : DefaultModelBinder
+    {
+        public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
+        {
+            var value = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
 
-			return Guid.Empty;
-		}
-	}
+            Guid guid;
+            if (value != null && Guid.TryParse(value.AttemptedValue, out guid))
+                return guid;
+
+            return Guid.Empty;
+        }
+    }
 }

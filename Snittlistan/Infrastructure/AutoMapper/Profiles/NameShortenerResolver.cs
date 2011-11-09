@@ -1,10 +1,9 @@
-﻿using System.Text.RegularExpressions;
-using AutoMapper;
-using Snittlistan.Models;
-
-namespace Snittlistan.Infrastructure.AutoMapper.Profiles
+﻿namespace Snittlistan.Infrastructure.AutoMapper.Profiles
 {
-    public class NameShortenerResolver : ValueResolver<Game, string>
+    using System.Text.RegularExpressions;
+    using Snittlistan.Models;
+
+    public class NameShortenerResolver : global::AutoMapper.ValueResolver<Game, string>
     {
         private static readonly Regex regex = new Regex(@"(?<Forename1>\w+)(?<Forename2>-\w+)? (?<Surname>\w+)");
 
