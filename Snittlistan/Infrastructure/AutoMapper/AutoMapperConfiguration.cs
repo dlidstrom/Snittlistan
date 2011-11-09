@@ -1,17 +1,16 @@
-﻿using AutoMapper;
-using Castle.Windsor;
-
-namespace Snittlistan.Infrastructure.AutoMapper
+﻿namespace Snittlistan.Infrastructure.AutoMapper
 {
-	public static class AutoMapperConfiguration
-	{
-		public static void Configure(IWindsorContainer container)
-		{
-			var handlers = container.ResolveAll<Profile>();
-			foreach (var handler in handlers)
-			{
-				Mapper.AddProfile(handler);
-			}
-		}
-	}
+    using Castle.Windsor;
+
+    public static class AutoMapperConfiguration
+    {
+        public static void Configure(IWindsorContainer container)
+        {
+            var handlers = container.ResolveAll<global::AutoMapper.Profile>();
+            foreach (var handler in handlers)
+            {
+                global::AutoMapper.Mapper.AddProfile(handler);
+            }
+        }
+    }
 }

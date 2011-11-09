@@ -1,12 +1,17 @@
-﻿using System.Web;
-
-namespace Snittlistan.Infrastructure
+﻿namespace Snittlistan.Infrastructure
 {
-	public class MailHttpResponse : HttpResponseBase
-	{
-		public override string ApplyAppPathModifier(string virtualPath)
-		{
-			return virtualPath;
-		}
-	}
+    using System.Web;
+
+    public class MailHttpResponse : HttpResponseBase
+    {
+        /// <summary>
+        /// Is this really necessary.
+        /// </summary>
+        /// <param name="virtualPath"></param>
+        /// <returns></returns>
+        public override string ApplyAppPathModifier(string virtualPath)
+        {
+            return virtualPath;
+        }
+    }
 }

@@ -1,11 +1,11 @@
-﻿using System;
-
-namespace Snittlistan.Helpers
+﻿namespace Snittlistan.Helpers
 {
-	public class JavaScriptException : Exception
-	{
-		public JavaScriptException(string message)
-			: base(message)
-		{ }
-	}
+    using System;
+
+    public class JavaScriptException : Exception
+    {
+        public JavaScriptException(string message)
+            : base(message)
+        { }
+    }
 }

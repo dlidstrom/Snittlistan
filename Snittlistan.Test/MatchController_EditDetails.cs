@@ -1,91 +1,91 @@
-﻿using System;
-using System.Web.Mvc;
-using MvcContrib.TestHelper;
-using Snittlistan.Controllers;
-using Snittlistan.Models;
-using Snittlistan.ViewModels;
-using Xunit;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
-	public class MatchController_EditDetails : DbTest
-	{
-		[Fact]
-		public void CanEditDetails()
-		{
-			// Arrange
-			var then = DateTime.Now.AddDays(-1);
-			Match originalMatch = new Match("Place", then, 1, new Team("Home", 13), new Team("Away", 6));
-			Session.Store(originalMatch);
-			Session.SaveChanges();
-			WaitForNonStaleResults<Match>();
+    using System;
+    using System.Web.Mvc;
+    using MvcContrib.TestHelper;
+    using Snittlistan.Controllers;
+    using Snittlistan.Models;
+    using Snittlistan.ViewModels;
+    using Xunit;
 
-			// Act
-			var controller = new MatchController(Session);
-			var now = DateTime.Now;
-			var result = controller.EditDetails(new MatchViewModel.MatchDetails
-			{
-				Id = originalMatch.Id,
-				Location = "NewPlace",
-				Date = now,
-				BitsMatchId = 2
-			});
+    public class MatchController_EditDetails : DbTest
+    {
+        [Fact]
+        public void CanEditDetails()
+        {
+            // Arrange
+            var then = DateTime.Now.AddDays(-1);
+            Match originalMatch = new Match("Place", then, 1, new Team("Home", 13), new Team("Away", 6));
+            Session.Store(originalMatch);
+            Session.SaveChanges();
+            WaitForNonStaleResults<Match>();
 
-			// Assert
-			result.AssertActionRedirect().ToAction("Details").WithParameter("id", originalMatch.Id);
-			var match = Session.Load<Match>(originalMatch.Id);
-			match.Location.ShouldBe("NewPlace");
-			match.Date.ShouldBe(now);
-			match.BitsMatchId.ShouldBe(2);
-		}
+            // Act
+            var controller = new MatchController(Session);
+            var now = DateTime.Now;
+            var result = controller.EditDetails(new MatchViewModel.MatchDetails
+            {
+                Id = originalMatch.Id,
+                Location = "NewPlace",
+                Date = now,
+                BitsMatchId = 2
+            });
 
-		[Fact]
-		public void CannotEditNonExistingMatch()
-		{
-			var controller = new MatchController(Session);
-			var result = controller.EditDetails(1);
+            // Assert
+            result.AssertActionRedirect().ToAction("Details").WithParameter("id", originalMatch.Id);
+            var match = Session.Load<Match>(originalMatch.Id);
+            match.Location.ShouldBe("NewPlace");
+            match.Date.ShouldBe(now);
+            match.BitsMatchId.ShouldBe(2);
+        }
 
-			// Assert
-			result.AssertResultIs<HttpNotFoundResult>();
-		}
+        [Fact]
+        public void CannotEditNonExistingMatch()
+        {
+            var controller = new MatchController(Session);
+            var result = controller.EditDetails(1);
 
-		[Fact]
-		public void CannotPostNonExistingMatch()
-		{
-			var controller = new MatchController(Session);
-			var result = controller.EditDetails(new MatchViewModel.MatchDetails { Id = 1 });
+            // Assert
+            result.AssertResultIs<HttpNotFoundResult>();
+        }
 
-			// Assert
-			result.AssertResultIs<HttpNotFoundResult>();
-		}
+        [Fact]
+        public void CannotPostNonExistingMatch()
+        {
+            var controller = new MatchController(Session);
+            var result = controller.EditDetails(new MatchViewModel.MatchDetails { Id = 1 });
 
-		[Fact]
-		public void CorrectView()
-		{
-			// Arrange
-			var match = DbSeed.CreateMatch();
-			Session.Store(match);
+            // Assert
+            result.AssertResultIs<HttpNotFoundResult>();
+        }
 
-			// Act
-			var controller = new MatchController(Session);
-			var result = controller.EditDetails(match.Id);
+        [Fact]
+        public void CorrectView()
+        {
+            // Arrange
+            var match = DbSeed.CreateMatch();
+            Session.Store(match);
 
-			// Assert
-			result.AssertViewRendered().ForView(string.Empty);
-		}
+            // Act
+            var controller = new MatchController(Session);
+            var result = controller.EditDetails(match.Id);
 
-		[Fact]
-		public void WhenErrorReturnView()
-		{
-			// Arrange
-			var controller = new MatchController(Session);
-			controller.ModelState.AddModelError("key", "error");
+            // Assert
+            result.AssertViewRendered().ForView(string.Empty);
+        }
 
-			// Act
-			var result = controller.EditDetails(null);
+        [Fact]
+        public void WhenErrorReturnView()
+        {
+            // Arrange
+            var controller = new MatchController(Session);
+            controller.ModelState.AddModelError("key", "error");
 
-			// Assert
-			result.AssertViewRendered().ForView(string.Empty);
-		}
-	}
+            // Act
+            var result = controller.EditDetails(null);
+
+            // Assert
+            result.AssertViewRendered().ForView(string.Empty);
+        }
+    }
 }

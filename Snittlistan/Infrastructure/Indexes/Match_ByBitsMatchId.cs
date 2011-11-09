@@ -1,16 +1,28 @@
-﻿using System.Linq;
-using Raven.Abstractions.Indexing;
-using Raven.Client.Indexes;
-using Snittlistan.Models;
-
-namespace Snittlistan.Infrastructure.Indexes
+﻿namespace Snittlistan.Infrastructure.Indexes
 {
-	public class Match_ByBitsMatchId : AbstractIndexCreationTask<Match>
-	{
-		public Match_ByBitsMatchId()
-		{
-			Map = matches => from match in matches
-							 select new { match.BitsMatchId };
-		}
-	}
+    using System.Linq;
+    using Raven.Abstractions.Indexing;
+    using Raven.Client.Indexes;
+    using Snittlistan.Models;
+
+    public class Match_ByBitsMatchId : AbstractIndexCreationTask<Match, Match_ByBitsMatchId.Result>
+    {
+        public Match_ByBitsMatchId()
+        {
+            Map = matches => from match in matches
+                             select new { BitsMatchId = match.BitsMatchId };
+
+            Reduce = results => from result in results
+                                group result by result.BitsMatchId into g
+                                select new
+                                {
+                                    BitsMatchId = g.Key
+                                };
+        }
+
+        public class Result
+        {
+            public int BitsMatchId { get; set; }
+        }
+    }
 }

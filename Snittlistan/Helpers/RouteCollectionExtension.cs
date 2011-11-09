@@ -1,38 +1,38 @@
-﻿using System;
-using System.Web.Mvc;
-using System.Web.Routing;
-
-namespace Snittlistan.Helpers
+﻿namespace Snittlistan.Helpers
 {
-	public static class RouteCollectionExtension
-	{
-		public static Route MapRouteLowerCase(this RouteCollection routes, string name, string url, object defaults)
-		{
-			return routes.MapRouteLowerCase(name, url, defaults, null);
-		}
+    using System;
+    using System.Web.Mvc;
+    using System.Web.Routing;
 
-		public static Route MapRouteLowerCase(this RouteCollection routes, string name, string url, object defaults, object constraints)
-		{
-			if (routes == null)
-			{
-				throw new ArgumentNullException("routes");
-			}
+    public static class RouteCollectionExtension
+    {
+        public static Route MapRouteLowerCase(this RouteCollection routes, string name, string url, object defaults)
+        {
+            return routes.MapRouteLowerCase(name, url, defaults, null);
+        }
 
-			if (url == null)
-			{
-				throw new ArgumentNullException("url");
-			}
+        public static Route MapRouteLowerCase(this RouteCollection routes, string name, string url, object defaults, object constraints)
+        {
+            if (routes == null)
+            {
+                throw new ArgumentNullException("routes");
+            }
 
-			Route route = new LowercaseRoute(url, new MvcRouteHandler())
-			{
-				Defaults = new RouteValueDictionary(defaults),
-				Constraints = new RouteValueDictionary(constraints),
-				DataTokens = new RouteValueDictionary(),
-			};
+            if (url == null)
+            {
+                throw new ArgumentNullException("url");
+            }
 
-			routes.Add(name, route);
+            Route route = new LowercaseRoute(url, new MvcRouteHandler())
+            {
+                Defaults = new RouteValueDictionary(defaults),
+                Constraints = new RouteValueDictionary(constraints),
+                DataTokens = new RouteValueDictionary(),
+            };
 
-			return route;
-		}
-	}
+            routes.Add(name, route);
+
+            return route;
+        }
+    }
 }

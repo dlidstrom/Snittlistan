@@ -1,71 +1,71 @@
-﻿using System.Configuration;
-using System.Web.Mvc;
-using MvcContrib;
-using Raven.Client;
-using Snittlistan.Models;
-using Snittlistan.ViewModels;
-
-namespace Snittlistan.Controllers
+﻿namespace Snittlistan.Controllers
 {
-	public class WelcomeController : AbstractController
-	{
-		public WelcomeController(IDocumentSession session)
-			: base(session)
-		{ }
+    using System.Configuration;
+    using System.Web.Mvc;
+    using MvcContrib;
+    using Raven.Client;
+    using Snittlistan.Models;
+    using Snittlistan.ViewModels;
 
-		public ActionResult Index()
-		{
-			AssertAdminUserExists();
+    public class WelcomeController : AbstractController
+    {
+        public WelcomeController(IDocumentSession session)
+            : base(session)
+        { }
 
-			string email = "admin@" + ConfigurationManager.AppSettings["Domain"];
-			var vm = new RegisterViewModel
-			{
-				Email = email,
-				ConfirmEmail = email
-			};
+        public ActionResult Index()
+        {
+            AssertAdminUserExists();
 
-			return View(vm);
-		}
+            string email = "admin@" + ConfigurationManager.AppSettings["Domain"];
+            var vm = new RegisterViewModel
+            {
+                Email = email,
+                ConfirmEmail = email
+            };
 
-		[HttpPost]
-		public ActionResult CreateAdmin(RegisterViewModel adminUser)
-		{
-			AssertAdminUserExists();
+            return View(vm);
+        }
 
-			if (!ModelState.IsValid)
-				return View("Index");
+        [HttpPost]
+        public ActionResult CreateAdmin(RegisterViewModel adminUser)
+        {
+            AssertAdminUserExists();
 
-			var user = new User(
-				adminUser.FirstName,
-				adminUser.LastName,
-				adminUser.Email,
-				adminUser.Password)
-				{
-					Id = "Admin"
-				};
-			user.Activate();
-			Session.Store(user);
+            if (!ModelState.IsValid)
+                return View("Index");
 
-			return this.RedirectToAction(c => c.Success());
-		}
+            var user = new User(
+                adminUser.FirstName,
+                adminUser.LastName,
+                adminUser.Email,
+                adminUser.Password)
+                {
+                    Id = "Admin"
+                };
+            user.Activate();
+            Session.Store(user);
 
-		public ActionResult Success()
-		{
-			return View();
-		}
+            return this.RedirectToAction(c => c.Success());
+        }
 
-		protected override void OnActionExecuting(ActionExecutingContext filterContext)
-		{
-			// don't load the non-existing admin user
-		}
+        public ActionResult Success()
+        {
+            return View();
+        }
 
-		private void AssertAdminUserExists()
-		{
-			if (Session.Load<User>("Admin") != null)
-			{
-				Response.Redirect("/");
-				Response.End();
-			}
-		}
-	}
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            // don't load the non-existing admin user
+        }
+
+        private void AssertAdminUserExists()
+        {
+            if (Session.Load<User>("Admin") != null)
+            {
+                Response.Redirect("/");
+                Response.End();
+            }
+        }
+    }
 }

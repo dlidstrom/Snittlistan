@@ -1,18 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Snittlistan.ViewModels
+﻿namespace Snittlistan.ViewModels
 {
-	public class LogOnViewModel
-	{
-		[Required(ErrorMessage = "Ange e-postadress")]
-		[DataType(DataType.EmailAddress), Display(Name = "E-postadress")]
-		public string Email { get; set; }
+    using System.ComponentModel.DataAnnotations;
 
-		[Required(ErrorMessage = "Ange lösenord")]
-		[DataType(DataType.Password), Display(Name = "Lösenord")]
-		public string Password { get; set; }
+    public class LogOnViewModel
+    {
+        [Required(ErrorMessage = "Ange e-postadress")]
+        [DataType(DataType.EmailAddress), Display(Name = "E-postadress")]
+        public string Email { get; set; }
 
-		[Display(Name = "Kom ihåg mig?")]
-		public bool RememberMe { get; set; }
-	}
+        [Required(ErrorMessage = "Ange lösenord")]
+        [DataType(DataType.Password), Display(Name = "Lösenord")]
+        public string Password { get; set; }
+
+        [Display(Name = "Kom ihåg mig?")]
+        public bool RememberMe { get; set; }
+    }
 }

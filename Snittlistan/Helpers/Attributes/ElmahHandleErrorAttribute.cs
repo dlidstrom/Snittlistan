@@ -1,56 +1,56 @@
-﻿using System;
-using System.Web;
-using System.Web.Mvc;
-using Elmah;
-
-namespace Snittlistan.Helpers.Attributes
+﻿namespace Snittlistan.Helpers.Attributes
 {
-	public class ElmahHandleErrorAttribute : HandleErrorAttribute
-	{
-		public override void OnException(ExceptionContext context)
-		{
-			base.OnException(context);
+    using System;
+    using System.Web;
+    using System.Web.Mvc;
+    using Elmah;
 
-			var e = context.Exception;
-			if (!context.ExceptionHandled   // if unhandled, will be logged anyhow
-				|| RaiseErrorSignal(e)      // prefer signaling, if possible
-				|| IsFiltered(context))     // filtered?
-				return;
+    public class ElmahHandleErrorAttribute : HandleErrorAttribute
+    {
+        public override void OnException(ExceptionContext context)
+        {
+            base.OnException(context);
 
-			LogException(e);
-		}
+            var e = context.Exception;
+            if (!context.ExceptionHandled   // if unhandled, will be logged anyhow
+                || RaiseErrorSignal(e)      // prefer signaling, if possible
+                || IsFiltered(context))     // filtered?
+                return;
 
-		private static bool RaiseErrorSignal(Exception e)
-		{
-			var context = HttpContext.Current;
-			if (context == null)
-				return false;
-			var signal = ErrorSignal.FromContext(context);
-			if (signal == null)
-				return false;
-			signal.Raise(e, context);
-			return true;
-		}
+            LogException(e);
+        }
 
-		private static bool IsFiltered(ExceptionContext context)
-		{
-			var config = context.HttpContext.GetSection("elmah/errorFilter")
-						 as ErrorFilterConfiguration;
+        private static bool RaiseErrorSignal(Exception e)
+        {
+            var context = HttpContext.Current;
+            if (context == null)
+                return false;
+            var signal = ErrorSignal.FromContext(context);
+            if (signal == null)
+                return false;
+            signal.Raise(e, context);
+            return true;
+        }
 
-			if (config == null)
-				return false;
+        private static bool IsFiltered(ExceptionContext context)
+        {
+            var config = context.HttpContext.GetSection("elmah/errorFilter")
+                         as ErrorFilterConfiguration;
 
-			var testContext = new ErrorFilterModule.AssertionHelperContext(
-				context.Exception,
-				HttpContext.Current);
+            if (config == null)
+                return false;
 
-			return config.Assertion.Test(testContext);
-		}
+            var testContext = new ErrorFilterModule.AssertionHelperContext(
+                context.Exception,
+                HttpContext.Current);
 
-		private static void LogException(Exception e)
-		{
-			var context = HttpContext.Current;
-			ErrorLog.GetDefault(context).Log(new Error(e, context));
-		}
-	}
+            return config.Assertion.Test(testContext);
+        }
+
+        private static void LogException(Exception e)
+        {
+            var context = HttpContext.Current;
+            ErrorLog.GetDefault(context).Log(new Error(e, context));
+        }
+    }
 }

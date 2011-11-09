@@ -1,11 +1,11 @@
-﻿using System.Web.Mvc;
-
-namespace Snittlistan.Controllers
+﻿namespace Snittlistan.Controllers
 {
-	/// <summary>
-	/// Used to send email.
-	/// </summary>
-	public class MailController : Controller
-	{
-	}
+    using System.Web.Mvc;
+
+    /// <summary>
+    /// Used to render email content.
+    /// </summary>
+    public class MailController : Controller
+    {
+    }
 }

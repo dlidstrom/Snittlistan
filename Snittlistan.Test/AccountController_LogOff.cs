@@ -1,26 +1,26 @@
-﻿using Moq;
-using MvcContrib.TestHelper;
-using Snittlistan.Controllers;
-using Snittlistan.Services;
-using Xunit;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
-	public class AccountController_LogOff : DbTest
-	{
-		[Fact]
-		public void ShouldSignOut()
-		{
-			var service = Mock.Of<IAuthenticationService>();
-			bool signedOut = false;
-			Mock.Get(service)
-				.Setup(s => s.SignOut())
-				.Callback(() => signedOut = true);
+    using Moq;
+    using MvcContrib.TestHelper;
+    using Snittlistan.Controllers;
+    using Snittlistan.Services;
+    using Xunit;
 
-			var controller = new AccountController(Session, service);
-			var result = controller.LogOff();
-			result.AssertActionRedirect().ToController("Home").ToAction("Index");
-			signedOut.ShouldBe(true);
-		}
-	}
+    public class AccountController_LogOff : DbTest
+    {
+        [Fact]
+        public void ShouldSignOut()
+        {
+            var service = Mock.Of<IAuthenticationService>();
+            bool signedOut = false;
+            Mock.Get(service)
+                .Setup(s => s.SignOut())
+                .Callback(() => signedOut = true);
+
+            var controller = new AccountController(Session, service);
+            var result = controller.LogOff();
+            result.AssertActionRedirect().ToController("Home").ToAction("Index");
+            signedOut.ShouldBe(true);
+        }
+    }
 }

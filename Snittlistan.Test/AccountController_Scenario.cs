@@ -1,65 +1,64 @@
-﻿using System;
-using System.Linq;
-using Moq;
-using MvcContrib.TestHelper;
-using Snittlistan.Controllers;
-using Snittlistan.Events;
-using Snittlistan.Helpers;
-using Snittlistan.Models;
-using Snittlistan.Services;
-using Snittlistan.ViewModels;
-using Xunit;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
-	public class AccountController_Scenario : DbTest
-	{
-		[Fact]
-		public void CanLogOnAfterRegisteringAndVerifyingAccount()
-		{
-			// register
-			var model = new RegisterViewModel
-				{
-					FirstName = "F",
-					LastName = "L",
-					Email = "e@d.com",
-					ConfirmEmail = "e@d.com",
-					Password = "some pwd"
-				};
+    using System;
+    using Moq;
+    using MvcContrib.TestHelper;
+    using Snittlistan.Controllers;
+    using Snittlistan.Events;
+    using Snittlistan.Helpers;
+    using Snittlistan.Models;
+    using Snittlistan.Services;
+    using Snittlistan.ViewModels;
+    using Xunit;
 
-			var controller1 = new AccountController(Session, Mock.Of<IAuthenticationService>());
-			using (DomainEvent.Disable())
-				controller1.Register(model);
+    public class AccountController_Scenario : DbTest
+    {
+        [Fact]
+        public void CanLogOnAfterRegisteringAndVerifyingAccount()
+        {
+            // register
+            var model = new RegisterViewModel
+                {
+                    FirstName = "F",
+                    LastName = "L",
+                    Email = "e@d.com",
+                    ConfirmEmail = "e@d.com",
+                    Password = "some pwd"
+                };
 
-			// normally done by infrastructure (special action filter)
-			Session.SaveChanges();
+            var controller1 = new AccountController(Session, Mock.Of<IAuthenticationService>());
+            using (DomainEvent.Disable())
+                controller1.Register(model);
 
-			// let indexing do its job
-			WaitForNonStaleResults<User>();
+            // normally done by infrastructure (special action filter)
+            Session.SaveChanges();
 
-			// verify
-			var registeredUser = Session.FindUserByEmail("e@d.com");
-			registeredUser.ShouldNotBeNull("Should find user after registration");
-			var key = registeredUser.ActivationKey;
+            // let indexing do its job
+            WaitForNonStaleResults<User>();
 
-			var controller2 = new AccountController(Session, Mock.Of<IAuthenticationService>());
-			controller2.Verify(Guid.Parse(key));
+            // verify
+            var registeredUser = Session.FindUserByEmail("e@d.com");
+            registeredUser.ShouldNotBeNull("Should find user after registration");
+            var key = registeredUser.ActivationKey;
 
-			// let indexing do its job
-			WaitForNonStaleResults<User>();
+            var controller2 = new AccountController(Session, Mock.Of<IAuthenticationService>());
+            controller2.Verify(Guid.Parse(key));
 
-			// logon
-			bool loggedOn = false;
-			var service = Mock.Of<IAuthenticationService>();
-			Mock.Get(service)
+            // let indexing do its job
+            WaitForNonStaleResults<User>();
+
+            // logon
+            bool loggedOn = false;
+            var service = Mock.Of<IAuthenticationService>();
+            Mock.Get(service)
                 .Setup(s => s.SetAuthCookie(It.Is<string>(e => e == "e@d.com"), It.IsAny<bool>()))
-				.Callback(() => loggedOn = true);
+                .Callback(() => loggedOn = true);
 
-			var controller3 = new AccountController(Session, service);
-			controller3.Url = CreateUrlHelper();
-			controller3.LogOn(new LogOnViewModel { Email = "e@d.com", Password = "some pwd" }, string.Empty);
+            var controller3 = new AccountController(Session, service);
+            controller3.Url = CreateUrlHelper();
+            controller3.LogOn(new LogOnViewModel { Email = "e@d.com", Password = "some pwd" }, string.Empty);
 
-			loggedOn.ShouldBe(true);
-		}
-	}
+            loggedOn.ShouldBe(true);
+        }
+    }
 }
