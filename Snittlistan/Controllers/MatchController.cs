@@ -80,7 +80,7 @@
         [HttpPost, Authorize]
         public ActionResult Register(RegisterMatchViewModel model)
         {
-            if (Session.FindByBitsId(model.BitsMatchId) != null)
+            if (Session.BitsIdExists(model.BitsMatchId))
                 ModelState.AddModelError("BitsMatchId", "Matchen redan registrerad");
 
             if (!ModelState.IsValid)

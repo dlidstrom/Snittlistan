@@ -19,11 +19,11 @@
                 .FirstOrDefault(u => u.ActivationKey == key);
         }
 
-        public static Match FindByBitsId(this IDocumentSession sess, int id)
+        public static bool BitsIdExists(this IDocumentSession sess, int id)
         {
-            return sess.Query<Match, Match_ByBitsMatchId>()
-                .Customize(c => c.WaitForNonStaleResultsAsOfNow())
-                .FirstOrDefault(m => m.BitsMatchId == id);
+            return sess.Query<Match_ByBitsMatchId.Result, Match_ByBitsMatchId>()
+                .Customize(c => c.WaitForNonStaleResultsAsOfLastWrite())
+                .FirstOrDefault(m => m.BitsMatchId == id) != null;
         }
     }
 }
