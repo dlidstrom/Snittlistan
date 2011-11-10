@@ -50,10 +50,5 @@
         /// Gets or sets a value indicating whether all frames were covered (no misses).
         /// </summary>
         public bool CoveredAll { get; set; }
-
-        public override string ToString()
-        {
-            return string.Format("{0}={1}", Player, Pins);
-        }
     }
 }
