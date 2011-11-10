@@ -8,7 +8,12 @@
     <tr>
         <td class="editor-label">@Html.LabelFor(model => model.Name)</td>
         <td class="editor-field">
-            @Html.EditorFor(model => model.Name)
+            @Html.TextBoxFor(
+                model => model.Name,
+                new
+                {
+                    data_autocomplete = Url.Action("TeamsQuickSearch", "Search")
+                })
             @Html.ValidationMessageFor(model => model.Name)
         </td>
     </tr>
