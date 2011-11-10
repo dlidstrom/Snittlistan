@@ -5,6 +5,9 @@
     <title>@ViewBag.Title</title>
     @Content.Favicon(Url)
     @Content.Css("Site.css", Url)
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
     @Content.GA()
     @*@Raven.Client.MvcIntegration.RavenProfiler.CurrentRequestSessions()*@
 </head>
