@@ -14,7 +14,7 @@
     @Content.Css(CssType.Blitzer)
     @Content.Script("date-picker.min.js", Url)
     @Content.Script("knockout-1.3.0beta.js", Url)
-    @Content.Script("match-register.min.js", Url)
+    @Content.Script("autocomplete.min.js", Url)
 
 <script type="text/javascript">
     var viewModel = {
@@ -51,17 +51,23 @@
 
         <table class="invis">
             <tr>
+                <td class="editor-label">@Html.LabelFor(model => model.Location)</td>
+                <td class="editor-field">
+                    @Html.TextBoxFor(
+                        model => model.Location,
+                        new
+                        {
+                            data_autocomplete = Url.Action("LocationsQuickSearch", "Search"),
+                            autofocus = "autofocus"
+                        })
+                    @Html.ValidationMessageFor(model => model.Location)
+                </td>
+            </tr>
+            <tr>
                 <td class="editor-label">@Html.LabelFor(model => model.Date)</td>
                 <td class="editor-field">
                     @Html.EditorFor(model => model.Date)
                     @Html.ValidationMessageFor(model => model.Date)
-                </td>
-            </tr>
-            <tr>
-                <td class="editor-label">@Html.LabelFor(model => model.Location)</td>
-                <td class="editor-field">
-                    @Html.EditorFor(model => model.Location)
-                    @Html.ValidationMessageFor(model => model.Location)
                 </td>
             </tr>
             <tr>

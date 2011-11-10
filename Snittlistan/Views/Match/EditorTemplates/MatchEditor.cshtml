@@ -4,7 +4,13 @@
     <tr>
         <td class="editor-label">@Html.LabelFor(model => model.Location)</td>
         <td class="editor-field">
-            @Html.EditorFor(model => model.Location)
+            @Html.TextBoxFor(
+                model => model.Location,
+                new
+                {
+                    data_autocomplete = Url.Action("LocationsQuickSearch", "Search"),
+                    autofocus = "autofocus"
+                })
             @Html.ValidationMessageFor(model => model.Location)
         </td>
     </tr>
