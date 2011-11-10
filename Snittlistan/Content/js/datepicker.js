@@ -1,5 +1,8 @@
-﻿$(document).ready(function () {
+﻿/// <reference path="jquery-1.6.4-vsdoc.js" />
+/// <reference path="jquery-ui.js" />
 
-    $(":input[data-datepicker]").datepicker($.datepicker.regional["sv"]);
-
+$(function () {
+    $(":input[data-datepicker]").each(function () {
+        $(this).datepicker($.datepicker.regional["sv"]);
+    });
 });
