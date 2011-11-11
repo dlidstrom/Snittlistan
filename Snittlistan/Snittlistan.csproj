@@ -175,6 +175,7 @@
     <Compile Include="Controllers\ValidationController.cs" />
     <Compile Include="Helpers\Attributes\UserTrackerLogAttribute.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\NameShortenerResolver.cs" />
+    <Compile Include="Infrastructure\Indexes\User_ByEmail.cs" />
     <Compile Include="Infrastructure\Indexes\Locations.cs" />
     <Compile Include="Infrastructure\Indexes\Teams.cs" />
     <Compile Include="Infrastructure\Indexes\Players.cs" />
