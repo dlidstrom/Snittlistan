@@ -1,7 +1,6 @@
 ﻿namespace Snittlistan.Infrastructure.Indexes
 {
     using System.Linq;
-    using Raven.Abstractions.Indexing;
     using Raven.Client.Indexes;
     using Snittlistan.Models;
 
