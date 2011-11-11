@@ -18,6 +18,11 @@
 
     public class MvcApplication : HttpApplication
     {
+#if DEBUG
+        private static readonly bool isDebug = true;
+#else
+        private static readonly bool isDebug = false;
+#endif
         private static readonly ILog logger = LogManager.GetCurrentClassLogger();
         private static IWindsorContainer container;
 
@@ -25,6 +30,8 @@
         {
             get { return container; }
         }
+
+        public static bool IsDebug { get { return isDebug; } }
 
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
@@ -53,18 +60,22 @@
             // configure AutoMapper
             AutoMapperConfiguration.Configure(container);
 
-#if DEBUG
-            using (var session = Container.Resolve<IDocumentStore>().OpenSession())
+            if (IsDebug)
             {
-                var match = session.Query<Match>().SingleOrDefault(m => m.BitsMatchId == 3003231);
-                if (match == null)
+                // always release through container, even though
+                // store is a singleton
+                var store = Container.Resolve<IDocumentStore>();
+                using (var session = store.OpenSession())
                 {
-                    session.Store(DbSeed.CreateMatch());
+                    if (!session.BitsIdExists(3003231))
+                    {
+                        session.Store(DbSeed.CreateMatch());
+                        session.SaveChanges();
+                    }
                 }
 
-                session.SaveChanges();
+                Container.Release(store);
             }
-#endif
         }
 
         protected void Application_End()
