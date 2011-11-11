@@ -13,12 +13,6 @@
 
     public class RavenInstaller : IWindsorInstaller
     {
-#if DEBUG
-        private bool runningInDebug = true;
-#else
-        private static bool runningInDebug = false;
-#endif
-
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(
@@ -36,7 +30,7 @@
         {
             // run with server when debugging, and embedded in production
             IDocumentStore store = null;
-            if (runningInDebug)
+            if (MvcApplication.IsDebug)
                 store = new DocumentStore { ConnectionStringName = "RavenDB" };
             else
                 store = new EmbeddableDocumentStore { DataDirectory = AppDomain.CurrentDomain.GetData("DataDirectory").ToString() };
