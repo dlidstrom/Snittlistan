@@ -24,6 +24,7 @@
             // Assert
             stats.ShouldNotBeNull("Failed to read from index");
             stats.Series.ShouldBe(4);
+            stats.Score.ShouldBe(3);
             stats.Pins.ShouldBe(845.0);
             stats.Max.ShouldBe(223);
             stats.Strikes.ShouldBe(5);

@@ -10,6 +10,7 @@
             <th></th>
             <th>Namn</th>
             <th>Serier</th>
+            <th>Banpoäng</th>
             <th>Medel</th>
             <th>Högsta</th>
             <th>X</th>
@@ -27,6 +28,7 @@
                 <td>@(i+1)</td>
                 <td>@Html.ActionLink(stat.Player, "Player", new { player = stat.Player })</td>
                 <td>@stat.Series</td>
+                <td>@(string.Format("{0:F2}", (double)stat.Score / stat.Series))</td>
                 <td>@(string.Format("{0:F1}", (double)stat.Pins / stat.Series))</td>
                 <td>@stat.Max</td>
                 <td>@(string.Format("{0:F2}", (double)stat.Strikes / stat.Series))</td>
