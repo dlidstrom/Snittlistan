@@ -21,6 +21,7 @@
                                  Player = game.Player,
                                  Pins = game.Pins,
                                  Series = 1,
+                                 Score = table.Score,
                                  Max = game.Pins,
                                  Strikes = game.Strikes,
                                  Misses = game.Misses,
@@ -37,6 +38,7 @@
                                     Player = stat.Key,
                                     Pins = stat.Sum(s => s.Pins),
                                     Series = stat.Sum(s => s.Series),
+                                    Score = stat.Sum(s => s.Score),
                                     Max = stat.Max(s => s.Max),
                                     Strikes = stat.Sum(s => s.Strikes),
                                     Misses = stat.Sum(s => s.Misses),
@@ -52,6 +54,7 @@
             public string Player { get; set; }
             public double Pins { get; set; }
             public int Series { get; set; }
+            public int Score { get; set; }
             public int Max { get; set; }
             public int Strikes { get; set; }
             public int Misses { get; set; }
