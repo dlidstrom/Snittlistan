@@ -1,6 +1,7 @@
 ﻿namespace Snittlistan.Installers
 {
     using System;
+    using System.IO;
     using Castle.MicroKernel;
     using Castle.MicroKernel.Registration;
     using Castle.MicroKernel.SubSystems.Configuration;
@@ -33,7 +34,12 @@
             if (MvcApplication.IsDebug)
                 store = new DocumentStore { ConnectionStringName = "RavenDB" };
             else
-                store = new EmbeddableDocumentStore { DataDirectory = AppDomain.CurrentDomain.GetData("DataDirectory").ToString() };
+            {
+                store = new EmbeddableDocumentStore
+                {
+                    DataDirectory = Path.Combine(AppDomain.CurrentDomain.GetData("DataDirectory").ToString(), "Database")
+                };
+            }
 
             store.Initialize();
             store.Conventions.IdentityPartsSeparator = "-";
