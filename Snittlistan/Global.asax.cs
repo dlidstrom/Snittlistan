@@ -1,7 +1,6 @@
 ﻿namespace Snittlistan
 {
     using System;
-    using System.Linq;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
@@ -14,7 +13,6 @@
     using Snittlistan.Infrastructure;
     using Snittlistan.Infrastructure.AutoMapper;
     using Snittlistan.IoC;
-    using Snittlistan.Models;
 
     public class MvcApplication : HttpApplication
     {
