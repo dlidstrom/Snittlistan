@@ -1,9 +1,7 @@
 ﻿namespace Snittlistan.Infrastructure.Indexes
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using Raven.Client.Indexes;
     using Snittlistan.Models;
 
@@ -52,14 +50,15 @@
         public class Result
         {
             public string Player { get; set; }
+            public DateTime Date { get; set; }
             public double Pins { get; set; }
             public int Series { get; set; }
-            public int Score { get; set; }
+            public double Score { get; set; }
             public int Max { get; set; }
-            public int Strikes { get; set; }
-            public int Misses { get; set; }
-            public int OnePinMisses { get; set; }
-            public int Splits { get; set; }
+            public double Strikes { get; set; }
+            public double Misses { get; set; }
+            public double OnePinMisses { get; set; }
+            public double Splits { get; set; }
             public double Average { get; set; }
             public int CoveredAll { get; set; }
         }
