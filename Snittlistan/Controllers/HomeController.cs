@@ -37,20 +37,7 @@
             var last20 = Session.Query<Pins_Last20.Result, Pins_Last20>()
                 .ToDictionary(s => s.Player, s => s.Pins);
 
-            var vm = stats.Select(s => new PlayerStatsViewModel
-            {
-                Player = s.Player,
-                Series = s.Series,
-                AverageScore = s.Score / s.Series,
-                AveragePins = s.Pins / s.Series,
-                Max = s.Max,
-                AverageStrikes = s.Strikes / s.Series,
-                AverageMisses = s.Misses / s.Series,
-                AverageOnePinMisses = s.OnePinMisses / s.Series,
-                AverageSplits = s.Splits / s.Series,
-                CoveredAll = s.CoveredAll,
-                AverageLast20 = last20[s.Player]
-            }).ToList();
+            var vm = stats.Select(s => new PlayerStatsViewModel(s, last20)).ToList();
 
             return View(vm);
         }
