@@ -51,7 +51,7 @@
                 .OrderByDescending(r => r.Date)
                 .ThenByDescending(r => r.BitsMatchId);
 
-            return View(new PlayerMatches { Player = player, Stats = q.ToList() });
+            return View(new PlayerMatchesViewModel { Player = player, Stats = q.ToList() });
         }
 
         /// <summary>

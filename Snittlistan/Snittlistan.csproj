@@ -242,7 +242,8 @@
     <Compile Include="Models\TeamFactory.cs" />
     <Compile Include="ViewModels\EditTeamViewModel.cs" />
     <Compile Include="ViewModels\EditUserViewModel.cs" />
-    <Compile Include="ViewModels\PlayerMatches.cs" />
+    <Compile Include="ViewModels\PlayerMatchesViewModel.cs" />
+    <Compile Include="ViewModels\PlayerStatsViewModel.cs" />
     <Compile Include="ViewModels\TeamDetailsViewModel.cs" />
     <Compile Include="ViewModels\TeamViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
