@@ -27,10 +27,10 @@
             stats.Score.ShouldBe(3.0);
             stats.Pins.ShouldBe(845.0);
             stats.Max.ShouldBe(223);
-            stats.Strikes.ShouldBe(5);
-            stats.Misses.ShouldBe(2);
-            stats.OnePinMisses.ShouldBe(1);
-            stats.Splits.ShouldBe(2);
+            stats.Strikes.ShouldBe(5.0);
+            stats.Misses.ShouldBe(2.0);
+            stats.OnePinMisses.ShouldBe(1.0);
+            stats.Splits.ShouldBe(2.0);
             stats.Average.ShouldBe(211.25);
             stats.CoveredAll.ShouldBe(1);
         }
