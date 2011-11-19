@@ -5,6 +5,7 @@
     <title>@ViewBag.Title</title>
     @Content.Favicon(Url)
     @Content.Css("Site.css", Url)
+    @Content.Css(CssType.Blitzer)
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -37,6 +38,8 @@
     </div>
     @Content.Script(ScriptType.JQuery)
     @Content.Script(ScriptType.Modernizr)
+    @Content.Script(ScriptType.JQueryUI)
+    @Content.Script(ScriptType.JQueryUII18N)
     <script type="text/javascript">
         var logErrorUrl = '@Url.Action("LogJavaScriptError", "Error")';
     </script>
