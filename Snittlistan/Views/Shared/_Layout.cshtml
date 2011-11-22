@@ -36,12 +36,18 @@
             @RenderSection("footer", false)
         </footer>
     </div>
+    <div id="feedbackTab"></div>
     @Content.Script(ScriptType.JQuery)
     @Content.Script(ScriptType.Modernizr)
     @Content.Script(ScriptType.JQueryUI)
     @Content.Script(ScriptType.JQueryUII18N)
     <script type="text/javascript">
         var logErrorUrl = '@Url.Action("LogJavaScriptError", "Error")';
+        $(function () {
+            $("#feedbackTab").click(function () {
+                window.location.href = "mailto:dlidstrom@gmail.com?Subject=Önskemål Snittlistan";
+            });
+        });
     </script>
     @Content.Script("stacktrace.min.js", Url)
     @RenderSection("scripts", false)

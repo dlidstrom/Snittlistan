@@ -345,3 +345,16 @@ div#title {
 table.team-editor input[type="number"] {
 	width: 30px;
 }
+
+/* Feedback tab */
+#feedbackTab {
+    background-image: url(images/feedback.png);
+    background-repeat: no-repeat;
+    right: 0;
+    position: fixed;
+    width: 32px;
+    height: 150px;
+    top: 150px;
+    z-index: 1;
+    cursor: pointer;
+}
