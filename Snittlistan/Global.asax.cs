@@ -57,23 +57,6 @@
 
             // configure AutoMapper
             AutoMapperConfiguration.Configure(container);
-
-            if (IsDebug)
-            {
-                // always release through container, even though
-                // store is a singleton
-                var store = Container.Resolve<IDocumentStore>();
-                using (var session = store.OpenSession())
-                {
-                    if (!session.BitsIdExists(3003231))
-                    {
-                        session.Store(DbSeed.CreateMatch());
-                        session.SaveChanges();
-                    }
-                }
-
-                Container.Release(store);
-            }
         }
 
         protected void Application_End()
