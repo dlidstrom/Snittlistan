@@ -8,19 +8,19 @@
     @Html.DisplayFor(model => model.Match, "MatchDisplay")
     @if (Request.IsAuthenticated)
     {
-        <p>@Html.ActionLink("Redigera", "EditDetails", new { id = Model.Match.Id })
-        | @Html.ActionLink("Ta bort", "Delete", new { id = Model.Match.Id })</p>
+        <p>@Html.ActionLink("Redigera", "EditDetails", new { id = Model.Match.Id }, new { data_button = "data_button" })
+        | @Html.ActionLink("Ta bort", "Delete", new { id = Model.Match.Id }, new { data_button = "data_button" })</p>
     }
     <h3>Hemmalag</h3>
     @Html.DisplayFor(model => model.HomeTeam, "TeamDisplay")
     @if (Request.IsAuthenticated)
     {
-        <p>@Html.ActionLink("Redigera", "EditTeam", new { id = Model.Match.Id, isHomeTeam = true })</p>
+        <p>@Html.ActionLink("Redigera", "EditTeam", new { id = Model.Match.Id, isHomeTeam = true }, new { data_button = "data_button" })</p>
     }
     <h3>Bortalag</h3>
     @Html.DisplayFor(model => model.AwayTeam, "TeamDisplay")
     @if (Request.IsAuthenticated)
     {
-        <p>@Html.ActionLink("Redigera", "EditTeam", new { id = Model.Match.Id, isHomeTeam = false })</p>
+        <p>@Html.ActionLink("Redigera", "EditTeam", new { id = Model.Match.Id, isHomeTeam = false }, new { data_button = "data_button" })</p>
     }
 </fieldset>
