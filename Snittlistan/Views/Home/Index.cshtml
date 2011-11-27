@@ -19,6 +19,7 @@
             <th>Hål</th>
             <th>Täckta</th>
             <th>Senaste 20</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -27,7 +28,7 @@
             var stat = Model[i];
             <tr>
                 <td>@(i+1)</td>
-                <td>@Html.ActionLink(stat.Player, "Player", new { player = stat.Player })</td>
+                <td>@stat.Player</td>
                 <td>@stat.Series</td>
                 <td>@(string.Format("{0:F2}", stat.AverageScore))</td>
                 <td>@(string.Format("{0:F1}", stat.AveragePins))</td>
@@ -38,6 +39,7 @@
                 <td>@(string.Format("{0:F2}", stat.AverageSplits))</td>
                 <td>@stat.CoveredAll</td>
                 <td>@string.Format("{0:F1}", stat.AverageLast20)</td>
+                <td>@Html.ActionLink("Visa", "Player", new { player = stat.Player }, new { data_button = "data_button" })</td>
             </tr>
         }
     </tbody>
