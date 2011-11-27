@@ -1,4 +1,4 @@
-﻿namespace Snittlistan.Helpers
+﻿namespace Snittlistan.Infrastructure
 {
     using System.Web.Routing;
 

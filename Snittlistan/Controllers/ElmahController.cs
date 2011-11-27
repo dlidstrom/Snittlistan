@@ -1,7 +1,7 @@
 ﻿namespace Snittlistan.Controllers
 {
     using System.Web.Mvc;
-    using Snittlistan.Helpers.Results;
+    using Snittlistan.Infrastructure.Results;
 
     [Authorize]
     public class ElmahController : Controller

@@ -1,4 +1,4 @@
-﻿namespace Snittlistan.Helpers.Attributes
+﻿namespace Snittlistan.Infrastructure.Attributes
 {
     using System;
     using System.Web;

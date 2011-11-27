@@ -1,4 +1,4 @@
-﻿namespace Snittlistan.Helpers.Results
+﻿namespace Snittlistan.Infrastructure.Results
 {
     using System.Web;
     using System.Web.Mvc;
