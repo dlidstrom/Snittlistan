@@ -61,6 +61,13 @@
             public double Splits { get; set; }
             public double Average { get; set; }
             public int CoveredAll { get; set; }
+
+            public double AverageScore { get { return Score / Series; } }
+            public double AveragePins { get { return Pins / Series; } }
+            public double AverageStrikes { get { return Strikes / Series; } }
+            public double AverageMisses { get { return Misses / Series; } }
+            public double AverageOnePinMisses { get { return OnePinMisses / Series; } }
+            public double AverageSplits { get { return Splits / Series; } }
         }
     }
 }

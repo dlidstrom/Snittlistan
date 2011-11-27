@@ -57,7 +57,19 @@
                 .OrderByDescending(r => r.Date)
                 .ThenByDescending(r => r.BitsMatchId);
 
-            return View(new PlayerMatchesViewModel { Player = player, Stats = q.ToList() });
+            var results = Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
+                .SingleOrDefault(r => r.Player == player);
+
+            var last20 = Session.Query<Pins_Last20.Result, Pins_Last20>()
+                .SingleOrDefault(r => r.Player == player);
+
+            return View(new PlayerMatchesViewModel
+            {
+                Player = player,
+                Stats = q.ToList(),
+                Results = results ?? new Matches_PlayerStats.Result(),
+                Last20 = last20 ?? new Pins_Last20.Result()
+            });
         }
 
         /// <summary>

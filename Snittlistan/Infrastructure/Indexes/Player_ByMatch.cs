@@ -58,8 +58,8 @@
             public DateTime Date { get; set; }
             public double Pins { get; set; }
             public int Series { get; set; }
-            public int Strikes { get; set; }
-            public int Misses { get; set; }
+            public double Strikes { get; set; }
+            public double Misses { get; set; }
         }
     }
 }

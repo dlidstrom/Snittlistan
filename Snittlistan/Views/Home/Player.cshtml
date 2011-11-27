@@ -32,5 +32,57 @@
         <td>@Html.ActionLink("Visa", "Details", "Match", new { id = item.MatchId.Substring(8) }, new { })</td>
     </tr>
 }
+</table>
 
+<h2>Medel per serie</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Banpoäng</th>
+            <th>Medel</th>
+            <th>Högsta</th>
+            <th>X</th>
+            <th>Miss</th>
+            <th>9-</th>
+            <th>Hål</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@(string.Format("{0:F2}", Model.Results.AverageScore))</td>
+            <td>@(string.Format("{0:F1}", Model.Results.AveragePins))</td>
+            <td>@Model.Last20.Max</td>
+            <td>@(string.Format("{0:F2}", Model.Results.AverageStrikes))</td>
+            <td>@(string.Format("{0:F2}", Model.Results.AverageMisses))</td>
+            <td>@(string.Format("{0:F2}", Model.Results.AverageOnePinMisses))</td>
+            <td>@(string.Format("{0:F2}", Model.Results.AverageSplits))</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Senaste 20 serierna</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Banpoäng</th>
+            <th>Medel</th>
+            <th>Högsta</th>
+            <th>X</th>
+            <th>Miss</th>
+            <th>9-</th>
+            <th>Hål</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@(string.Format("{0:F2}", Model.Last20.Score))</td>
+            <td>@(string.Format("{0:F1}", Model.Last20.Pins))</td>
+            <td>@Model.Last20.Max</td>
+            <td>@(string.Format("{0:F2}", Model.Last20.Strikes))</td>
+            <td>@(string.Format("{0:F2}", Model.Last20.Misses))</td>
+            <td>@(string.Format("{0:F2}", Model.Last20.OnePinMisses))</td>
+            <td>@(string.Format("{0:F2}", Model.Last20.Splits))</td>
+        </tr>
+    </tbody>
 </table>
