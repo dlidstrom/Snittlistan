@@ -2,7 +2,7 @@
 {
     using System.Web.Mvc;
     using Elmah;
-    using Snittlistan.Helpers;
+    using Snittlistan.Infrastructure;
 
     public class ErrorController : Controller
     {

@@ -173,7 +173,7 @@
   <ItemGroup>
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\ValidationController.cs" />
-    <Compile Include="Helpers\Attributes\UserTrackerLogAttribute.cs" />
+    <Compile Include="Infrastructure\Attributes\UserTrackerLogAttribute.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\NameShortenerResolver.cs" />
     <Compile Include="Infrastructure\Indexes\Pins_Last20.cs" />
     <Compile Include="Infrastructure\Indexes\User_ByEmail.cs" />
@@ -197,7 +197,7 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\WelcomeController.cs" />
     <Compile Include="DbSeed.cs" />
-    <Compile Include="Helpers\Results\ElmahResult.cs" />
+    <Compile Include="Infrastructure\Results\ElmahResult.cs" />
     <Compile Include="HtmlHelpers\CssType.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
     <Compile Include="HtmlHelpers\ScriptType.cs" />
@@ -226,12 +226,12 @@
     <Compile Include="Infrastructure\MailHttpContext.cs" />
     <Compile Include="Infrastructure\MailHttpResponse.cs" />
     <Compile Include="Handlers\SendRegistrationEmailHandler.cs" />
-    <Compile Include="Helpers\Attributes\ElmahHandleErrorAttribute.cs" />
+    <Compile Include="Infrastructure\Attributes\ElmahHandleErrorAttribute.cs" />
     <Compile Include="Helpers\DocumentSessionExtensions.cs" />
-    <Compile Include="Helpers\GuidBinder.cs" />
-    <Compile Include="Helpers\JavaScriptException.cs" />
-    <Compile Include="Helpers\LowercaseRoute.cs" />
-    <Compile Include="Helpers\RouteCollectionExtension.cs" />
+    <Compile Include="Infrastructure\GuidBinder.cs" />
+    <Compile Include="Infrastructure\JavaScriptException.cs" />
+    <Compile Include="Infrastructure\LowercaseRoute.cs" />
+    <Compile Include="Infrastructure\RouteCollectionExtension.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\MatchProfile.cs" />
     <Compile Include="Infrastructure\RavenActionFilterAttribute.cs" />
     <Compile Include="Installers\AutoMapperInstaller.cs" />

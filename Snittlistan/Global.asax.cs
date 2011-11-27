@@ -7,10 +7,8 @@
     using Castle.Windsor;
     using Castle.Windsor.Installer;
     using Common.Logging;
-    using Raven.Client;
-    using Snittlistan.Helpers;
-    using Snittlistan.Helpers.Attributes;
     using Snittlistan.Infrastructure;
+    using Snittlistan.Infrastructure.Attributes;
     using Snittlistan.Infrastructure.AutoMapper;
     using Snittlistan.IoC;
 

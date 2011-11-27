@@ -2,7 +2,7 @@
 {
     using System.Web.Mvc;
     using System.Web.Routing;
-    using Snittlistan.Helpers;
+    using Snittlistan.Infrastructure;
 
     public class RouteConfigurator
     {
