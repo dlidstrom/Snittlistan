@@ -38,7 +38,7 @@
 }
 
 <h2>@ViewBag.Title</h2>
-<p>@Html.ActionLink("Tillbaka", "Index")</p>
+<p>@Html.ActionLink("Tillbaka", "Index", new { }, new { data_button = "data_button" })</p>
 
 @using (Html.BeginForm())
 {

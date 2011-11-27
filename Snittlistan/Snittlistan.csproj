@@ -185,6 +185,7 @@
     <Compile Include="Infrastructure\InjectingActionInvoker.cs" />
     <Compile Include="IoC\WindsorDependencyResolver.cs" />
     <Content Include="Content\css\images\feedback.png" />
+    <Content Include="Content\js\button.js" />
     <Content Include="Content\js\datepicker.js" />
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="Controllers\AccountController.cs" />

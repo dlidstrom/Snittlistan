@@ -25,6 +25,6 @@
     </div>
 </fieldset>
 <p>
-    @Html.ActionLink("Redigera", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Tillbaka", "Index")
+    @Html.ActionLink("Redigera", "Edit", new { id = Model.Id }, new { data_button = "data_button" }) |
+    @Html.ActionLink("Tillbaka", "Index", new { }, new { data_button = "data_button" })
 </p>

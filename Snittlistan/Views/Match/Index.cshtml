@@ -8,14 +8,14 @@
 {
     if (Request.IsAuthenticated)
     {
-        <text>@Html.ActionLink("Redigera", "Edit", new { id = item.Match.Id }) |</text>
+        <text>@Html.ActionLink("Redigera", "Edit", new { id = item.Match.Id }, new { data_button = "data_button" }) |</text>
     }
 }
 
 <h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink("Registrera ny", "Register")
+    @Html.ActionLink("Registrera ny", "Register", new { }, new { data_button = "data_button" })
 </p>
 
 <table>
@@ -34,7 +34,7 @@
         <td>@Html.DisplayFor(modelItem => item.HomeTeam.Score)-@Html.DisplayFor(modelItem => item.AwayTeam.Score)</td>
         <td>@Html.DisplayFor(modelItem => item.Match.Location)</td>
         <td>
-            @Html.ActionLink("Visa", "Details", new { id = item.Match.Id })
+            @Html.ActionLink("Visa", "Details", new { id = item.Match.Id }, new { data_button = "data_button" })
         </td>
     </tr>
 }
