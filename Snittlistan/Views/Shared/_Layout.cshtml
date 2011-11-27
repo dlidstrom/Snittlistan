@@ -43,13 +43,9 @@
     @Content.Script(ScriptType.JQueryUII18N)
     <script type="text/javascript">
         var logErrorUrl = '@Url.Action("LogJavaScriptError", "Error")';
-        $(function () {
-            $("#feedbackTab").click(function () {
-                window.location.href = "mailto:dlidstrom@gmail.com?Subject=Önskemål Snittlistan";
-            });
-        });
     </script>
     @Content.Script("stacktrace.min.js", Url)
+    @Content.Script("feedback.min.js", Url)
     @RenderSection("scripts", false)
 </body>
 </html>
