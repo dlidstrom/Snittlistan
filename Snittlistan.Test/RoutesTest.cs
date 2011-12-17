@@ -61,5 +61,12 @@
             "~/admin/elmah/detail".ShouldMapTo<ElmahController>(c => c.Index("detail"));
             "~/admin/elmah/stylesheet".ShouldMapTo<ElmahController>(c => c.Index("stylesheet"));
         }
+
+        [Fact]
+        public void HackerRoutes()
+        {
+            "~/awstats/awstats.pl".ShouldMapTo<HackerController>(c => c.Index());
+            "~/awstats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|".ShouldMapTo<HackerController>(c => c.Index());
+        }
     }
 }

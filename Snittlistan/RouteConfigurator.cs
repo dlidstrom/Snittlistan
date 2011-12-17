@@ -24,6 +24,7 @@
             ConfigureAccount();
             ConfigureHome();
             ConfigureElmah();
+            ConfigureHacker();
 
             // default route
             routes.MapRoute(
@@ -39,7 +40,7 @@
                 "AccountController-Action",
                 "{action}",
                 new { controller = "Account" },
-                new { action = "LogOn|Register|Verify" });
+                new { action = "^LogOn$|^Register$|^Verify$" });
         }
 
         private void ConfigureHome()
@@ -58,6 +59,14 @@
                 "ElmahController-internal",
                 "admin/elmah/{type}",
                 new { controller = "Elmah", action = "Index", type = UrlParameter.Optional });
+        }
+
+        private void ConfigureHacker()
+        {
+            routes.MapRoute(
+                "Hacker-Routes",
+                "awstats/{ignore}",
+                new { controller = "Hacker", action = "Index" });
         }
     }
 }
