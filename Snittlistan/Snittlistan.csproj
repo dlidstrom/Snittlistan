@@ -171,6 +171,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\GoogleController.cs" />
     <Compile Include="Controllers\HackerController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\ValidationController.cs" />

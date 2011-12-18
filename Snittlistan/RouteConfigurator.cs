@@ -25,6 +25,7 @@
             ConfigureHome();
             ConfigureElmah();
             ConfigureHacker();
+            GoogleRedirects();
 
             // default route
             routes.MapRoute(
@@ -67,6 +68,14 @@
                 "Hacker-Routes",
                 "awstats/{ignore}",
                 new { controller = "Hacker", action = "Index" });
+        }
+
+        private void GoogleRedirects()
+        {
+            routes.MapRoute(
+                "Google-Redirects",
+                "dlcoubfux.html",
+                new { controller = "Google", action = "Index" });
         }
     }
 }
