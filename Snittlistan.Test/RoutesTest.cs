@@ -65,8 +65,52 @@
         [Fact]
         public void HackerRoutes()
         {
+            "~/apps/phpalbum/main.php".ShouldMapTo<HackerController>(c => c.Index());
+            "~/apps/phpalbum/main.php?cmd=setquality&var1=1%27.passthru%28%27id%27%29.%27;".ShouldMapTo<HackerController>(c => c.Index());
+            "~/apps/phpAlbum/main.php".ShouldMapTo<HackerController>(c => c.Index());
+            "~/apps/phpAlbum/main.php?cmd=setquality&var1=1%27.passthru%28%27id%27%29.%27;".ShouldMapTo<HackerController>(c => c.Index());
+            "~/awstatstotals.php".ShouldMapTo<HackerController>(c => c.Index());
+            "~/awstatstotals.php?sort=%7b%24%7bpassthru%28chr(105)%2echr(100)%29%7d%7d%7b%24%7bexit%28%29%7d%7d".ShouldMapTo<HackerController>(c => c.Index());
+            "~/awstats/awstatstotals.php".ShouldMapTo<HackerController>(c => c.Index());
+            "~/awstats/awstatstotals.php?sort=%7b%24%7bpassthru%28chr(105)%2echr(100)%29%7d%7d%7b%24%7bexit%28%29%7d%7d".ShouldMapTo<HackerController>(c => c.Index());
             "~/awstats/awstats.pl".ShouldMapTo<HackerController>(c => c.Index());
             "~/awstats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|".ShouldMapTo<HackerController>(c => c.Index());
+            "~/awstatstotals/awstatstotals.php".ShouldMapTo<HackerController>(c => c.Index());
+            "~/awstatstotals/awstatstotals.php?sort=%7b%24%7bpassthru%28chr(105)%2echr(100)%29%7d%7d%7b%24%7bexit%28%29%7d%7d".ShouldMapTo<HackerController>(c => c.Index());
+            "~/catalog".ShouldMapTo<HackerController>(c => c.Index());
+            "~/cgi-bin/awstats.pl".ShouldMapTo<HackerController>(c => c.Index());
+            "~/cgi-bin/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|".ShouldMapTo<HackerController>(c => c.Index());
+            "~/cgi-bin/awstats/awstats.pl".ShouldMapTo<HackerController>(c => c.Index());
+            "~/cgi-bin/awstats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|".ShouldMapTo<HackerController>(c => c.Index());
+            "~/cgi-bin/stats/awstats.pl".ShouldMapTo<HackerController>(c => c.Index());
+            "~/cgi-bin/stats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|".ShouldMapTo<HackerController>(c => c.Index());
+            "~/cgi/awstats/awstats.pl".ShouldMapTo<HackerController>(c => c.Index());
+            "~/cgi/awstats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|".ShouldMapTo<HackerController>(c => c.Index());
+            "~/index.php".ShouldMapTo<HackerController>(c => c.Index());
+            "~/index.php?option=com_simpledownload&controller=../../../../../../../../../../../../../../../proc/self/environ%00".ShouldMapTo<HackerController>(c => c.Index());
+            "~/main.php".ShouldMapTo<HackerController>(c => c.Index());
+            "~/main.php?cmd=setquality&var1=1%27.passthru%28%27id%27%29.%27;".ShouldMapTo<HackerController>(c => c.Index());
+            "~/phpalbum/main.php".ShouldMapTo<HackerController>(c => c.Index());
+            "~/phpalbum/main.php?cmd=setquality&var1=1%27.passthru%28%27id%27%29.%27;".ShouldMapTo<HackerController>(c => c.Index());
+            "~/phpAlbum/main.php".ShouldMapTo<HackerController>(c => c.Index());
+            "~/phpAlbum/main.php?cmd=setquality&var1=1%27.passthru%28%27id%27%29.%27;".ShouldMapTo<HackerController>(c => c.Index());
+            "~/scgi-bin/awstats.pl".ShouldMapTo<HackerController>(c => c.Index());
+            "~/scgi-bin/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|".ShouldMapTo<HackerController>(c => c.Index());
+            "~/scgi-bin/awstats/awstats.pl".ShouldMapTo<HackerController>(c => c.Index());
+            "~/scgi-bin/awstats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|".ShouldMapTo<HackerController>(c => c.Index());
+            "~/scgi-bin/stats/awstats.pl".ShouldMapTo<HackerController>(c => c.Index());
+            "~/scgi-bin/stats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|".ShouldMapTo<HackerController>(c => c.Index());
+            "~/scgi/awstats/awstats.pl".ShouldMapTo<HackerController>(c => c.Index());
+            "~/scgi/awstats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|".ShouldMapTo<HackerController>(c => c.Index());
+            "~/scripts/awstats.pl".ShouldMapTo<HackerController>(c => c.Index());
+            "~/scripts/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|".ShouldMapTo<HackerController>(c => c.Index());
+            "~/site.php".ShouldMapTo<HackerController>(c => c.Index());
+            "~/site.php?a={%24{passthru%28chr%28105%29.chr%28100%29%29}}".ShouldMapTo<HackerController>(c => c.Index());
+            "~/stat/awstatstotals.php".ShouldMapTo<HackerController>(c => c.Index());
+            "~/stat/awstatstotals.php?sort=%7b%24%7bpassthru%28chr(105)%2echr(100)%29%7d%7d%7b%24%7bexit%28%29%7d%7d".ShouldMapTo<HackerController>(c => c.Index());
+            "~/stats/awstats.pl".ShouldMapTo<HackerController>(c => c.Index());
+            "~/stats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|".ShouldMapTo<HackerController>(c => c.Index());
+            "~/shop".ShouldMapTo<HackerController>(c => c.Index());
         }
 
         [Fact]

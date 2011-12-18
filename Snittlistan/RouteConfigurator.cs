@@ -66,8 +66,9 @@
         {
             routes.MapRoute(
                 "Hacker-Routes",
-                "awstats/{ignore}",
-                new { controller = "Hacker", action = "Index" });
+                "{*php}",
+                new { controller = "Hacker", action = "Index" },
+                new { php = @".*\.php.*|catalog|^s?cgi(\-bin)?.*|^scripts.*|^(aw)?stats.*|^shop.*" });
         }
 
         private void GoogleRedirects()
