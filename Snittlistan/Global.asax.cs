@@ -19,7 +19,7 @@
 #else
         private static readonly bool isDebug = false;
 #endif
-        private static readonly ILog logger = LogManager.GetCurrentClassLogger();
+        private static readonly ILog log = LogManager.GetCurrentClassLogger();
         private static IWindsorContainer container;
 
         public static IWindsorContainer Container
@@ -39,7 +39,7 @@
 
         protected void Application_Start()
         {
-            logger.Info("Application Starting");
+            log.Info("Application Starting");
             AreaRegistration.RegisterAllAreas();
 
             RegisterGlobalFilters(GlobalFilters.Filters);
@@ -59,7 +59,7 @@
 
         protected void Application_End()
         {
-            logger.Info("Application Ending");
+            log.Info("Application Ending");
             container.Dispose();
         }
 
