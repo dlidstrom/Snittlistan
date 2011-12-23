@@ -4,6 +4,7 @@
     using System.Web.Mvc;
     using System.Web.Routing;
     using Castle.MicroKernel;
+    using Snittlistan.Controllers;
 
     public class WindsorControllerFactory : DefaultControllerFactory
     {
@@ -30,9 +31,9 @@
             {
                 return kernel.Resolve<IController>(controllerName + "Controller");
             }
-            catch (ComponentNotFoundException ex)
+            catch (ComponentNotFoundException)
             {
-                throw new ApplicationException(string.Format("No controller '{0}' found", controllerName), ex);
+                return new NotFoundController();
             }
         }
     }
