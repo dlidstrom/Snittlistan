@@ -32,6 +32,15 @@
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters
                 new { controller = "Home", action = "Index", id = UrlParameter.Optional }); // Parameter defaults
+
+            RouteTable.Routes.MapRoute(
+                            "NotFound",
+                            "notfound",
+                            new { controller = "NotFound", action = "NotFound" });
+            RouteTable.Routes.MapRoute(
+                            "NotFound-Catch-All",
+                            "{*any}",
+                            new { controller = "NotFound", action = "NotFound" });
         }
 
         private void ConfigureAccount()

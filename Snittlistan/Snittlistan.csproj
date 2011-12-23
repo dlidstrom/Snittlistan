@@ -185,6 +185,8 @@
     <Compile Include="Infrastructure\Indexes\Player_ByMatch.cs" />
     <Compile Include="Installers\ActionInvokerInstaller.cs" />
     <Compile Include="Infrastructure\InjectingActionInvoker.cs" />
+    <Compile Include="Controllers\NotFoundController.cs" />
+    <Compile Include="Infrastructure\Results\NotFoundViewResult.cs" />
     <Compile Include="IoC\WindsorDependencyResolver.cs" />
     <Content Include="Content\css\images\feedback.png" />
     <Content Include="Content\css\images\fuckoff.jpg" />
@@ -392,6 +394,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Hacker\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\NotFound.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
