@@ -25,7 +25,6 @@
             ConfigureHome();
             ConfigureElmah();
             ConfigureHacker();
-            GoogleRedirects();
 
             // default route
             routes.MapRoute(
@@ -33,14 +32,8 @@
                 "{controller}/{action}/{id}", // URL with parameters
                 new { controller = "Home", action = "Index", id = UrlParameter.Optional }); // Parameter defaults
 
-            RouteTable.Routes.MapRoute(
-                            "NotFound",
-                            "notfound",
-                            new { controller = "NotFound", action = "NotFound" });
-            RouteTable.Routes.MapRoute(
-                            "NotFound-Catch-All",
-                            "{*any}",
-                            new { controller = "NotFound", action = "NotFound" });
+            NotFoundRoute();
+            CatchAllRoute();
         }
 
         private void ConfigureAccount()
@@ -80,12 +73,22 @@
                 new { php = @".*\.php.*|catalog|^s?cgi(\-bin)?.*|^scripts.*|^(aw)?stats.*|^shop.*" });
         }
 
-        private void GoogleRedirects()
+        private void NotFoundRoute()
+        {
+            // To allow IIS to execute "/notfound" when requesting something which is disallowed,
+            // such as /bin or /add_data.
+            routes.MapRoute(
+                "NotFound",
+                "notfound",
+                new { controller = "NotFound", action = "NotFound" });
+        }
+
+        private void CatchAllRoute()
         {
             routes.MapRoute(
-                "Google-Redirects",
-                "dlcoubfux.html",
-                new { controller = "Google", action = "Index" });
+                "NotFound-Catch-All",
+                "{*any}",
+                new { controller = "NotFound", action = "NotFound" });
         }
     }
 }

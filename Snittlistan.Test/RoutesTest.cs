@@ -112,13 +112,5 @@
             "~/stats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|".ShouldMapTo<HackerController>(c => c.Index());
             "~/shop".ShouldMapTo<HackerController>(c => c.Index());
         }
-
-        [Fact]
-        public void Redirects()
-        {
-            "~/dlcoubfux.html".ShouldMapTo<GoogleController>(c => c.Index());
-            var result = new GoogleController().Index();
-            result.AssertActionRedirect().ToController("Home").ToAction("Index");
-        }
     }
 }

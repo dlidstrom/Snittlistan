@@ -1,7 +1,7 @@
 ﻿namespace Snittlistan.Controllers
 {
-    using System.Collections.Generic;
     using System.Linq;
+    using System.Web;
     using System.Web.Mvc;
     using MvcContrib;
     using Raven.Client;
@@ -50,7 +50,7 @@
         {
             var match = Session.Load<Match>(id);
             if (match == null)
-                return HttpNotFound();
+                throw new HttpException(404, "Match not found");
 
             var vm = new MatchViewModel
             {
@@ -107,7 +107,7 @@
         {
             var match = Session.Load<Match>(id);
             if (match == null)
-                return HttpNotFound();
+                throw new HttpException(404, "Match not found");
 
             return View(match.MapTo<MatchViewModel.MatchDetails>());
         }
@@ -125,7 +125,7 @@
 
             var match = Session.Load<Match>(model.Id);
             if (match == null)
-                return HttpNotFound();
+                throw new HttpException(404, "Match not found");
 
             match.Location = model.Location;
             match.Date = model.Date;
@@ -145,7 +145,7 @@
         {
             var match = Session.Load<Match>(id);
             if (match == null)
-                return HttpNotFound();
+                throw new HttpException(404, "Match not found");
 
             var teamViewModel = isHomeTeam
                 ? match.HomeTeam.MapTo<TeamViewModel>()
@@ -170,7 +170,7 @@
         {
             var match = Session.Load<Match>(vm.Id);
             if (match == null)
-                return HttpNotFound();
+                throw new HttpException(404, "Match not found");
 
             if (vm.IsHomeTeam)
                 match.HomeTeam = vm.Team.MapTo<HomeTeamFactory>().CreateTeam();
@@ -185,7 +185,7 @@
         {
             var match = Session.Load<Match>(id);
             if (match == null)
-                return HttpNotFound();
+                throw new HttpException(404, "Match not found");
 
             return View(match.MapTo<MatchViewModel.MatchDetails>());
         }
@@ -195,7 +195,7 @@
         {
             var match = Session.Load<Match>(vm.Id);
             if (match == null)
-                return HttpNotFound();
+                throw new HttpException(404, "Match not found");
 
             Session.Delete(match);
 
