@@ -46,7 +46,7 @@
             }
             catch (HttpException ex)
             {
-                ex.ErrorCode.ShouldBe(404);
+                ex.GetHttpCode().ShouldBe(404);
             }
         }
 
@@ -61,7 +61,7 @@
             }
             catch (HttpException ex)
             {
-                ex.ErrorCode.ShouldBe(404);
+                ex.GetHttpCode().ShouldBe(404);
             }
         }
 
