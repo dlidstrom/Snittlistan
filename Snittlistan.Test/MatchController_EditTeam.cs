@@ -1,7 +1,7 @@
 ﻿namespace Snittlistan.Test
 {
     using System;
-    using System.Web.Mvc;
+    using System.Web;
     using MvcContrib.TestHelper;
     using Snittlistan.Controllers;
     using Snittlistan.Infrastructure.AutoMapper;
@@ -39,20 +39,30 @@
         public void CannotEditNonExistingMatch()
         {
             var controller = new MatchController(Session);
-            var result = controller.EditTeam(1, true);
-
-            // Assert
-            result.AssertResultIs<HttpNotFoundResult>();
+            try
+            {
+                controller.EditTeam(1, true);
+                Assert.False(true, "Should throw");
+            }
+            catch (HttpException ex)
+            {
+                ex.ErrorCode.ShouldBe(404);
+            }
         }
 
         [Fact]
         public void CannotPostNonExistingMatch()
         {
             var controller = new MatchController(Session);
-            var result = controller.EditTeam(new EditTeamViewModel { Id = 1 });
-
-            // Assert
-            result.AssertResultIs<HttpNotFoundResult>();
+            try
+            {
+                controller.EditTeam(new EditTeamViewModel { Id = 1 });
+                Assert.False(true, "Should throw");
+            }
+            catch (HttpException ex)
+            {
+                ex.ErrorCode.ShouldBe(404);
+            }
         }
 
         [Fact]

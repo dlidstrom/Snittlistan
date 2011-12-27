@@ -1,6 +1,7 @@
 ﻿namespace Snittlistan.Test
 {
     using System;
+    using System.Web;
     using System.Web.Mvc;
     using MvcContrib.TestHelper;
     using Snittlistan.Controllers;
@@ -41,10 +42,15 @@
         public void CannotViewNonExistingMatch()
         {
             var controller = new MatchController(Session);
-            var result = controller.Details(1);
-
-            // Assert
-            result.AssertResultIs<HttpNotFoundResult>();
+            try
+            {
+                controller.Details(1);
+                Assert.False(true, "Should throw");
+            }
+            catch (HttpException ex)
+            {
+                ex.ErrorCode.ShouldBe(404);
+            }
         }
     }
 }
