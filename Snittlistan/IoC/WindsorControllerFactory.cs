@@ -5,6 +5,7 @@
     using System.Web.Routing;
     using Castle.MicroKernel;
     using Snittlistan.Controllers;
+    using Snittlistan.Infrastructure;
 
     public class WindsorControllerFactory : DefaultControllerFactory
     {
@@ -29,7 +30,11 @@
 
             try
             {
-                return kernel.Resolve<IController>(controllerName + "Controller");
+                var controller = kernel.Resolve<IController>(controllerName + "Controller");
+                var controllerWithInvoker = controller as Controller;
+                if (controllerWithInvoker != null)
+                    controllerWithInvoker.ActionInvoker = new ActionInvokerWrapper(controllerWithInvoker.ActionInvoker);
+                return controller;
             }
             catch (ComponentNotFoundException)
             {

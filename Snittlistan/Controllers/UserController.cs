@@ -1,6 +1,7 @@
 ﻿namespace Snittlistan.Controllers
 {
     using System.Linq;
+    using System.Web;
     using System.Web.Mvc;
     using MvcContrib;
     using Raven.Client;
@@ -44,7 +45,7 @@
         {
             var user = Session.Load<User>(id);
             if (user == null)
-                return HttpNotFound();
+                throw new HttpException(404, "User not found");
 
             return View(user.MapTo<EditUserViewModel>());
         }
@@ -59,7 +60,7 @@
         {
             User user = Session.Load<User>(vm.Id);
             if (user == null)
-                return HttpNotFound();
+                throw new HttpException(404, "User not found");
 
             var newUser = new User(vm.FirstName, vm.LastName, vm.Email, vm.Password)
             {
@@ -79,7 +80,7 @@
         {
             var user = Session.Load<User>(id);
             if (user == null)
-                return HttpNotFound();
+                throw new HttpException(404, "User not found");
 
             return View(user.MapTo<UserViewModel>());
         }
@@ -88,7 +89,7 @@
         {
             var user = Session.Load<User>(id);
             if (user == null)
-                return HttpNotFound();
+                throw new HttpException(404, "User not found");
 
             return View(user.MapTo<UserViewModel>());
         }

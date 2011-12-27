@@ -50,7 +50,7 @@
         public ActionResult Player(string player)
         {
             if (string.IsNullOrWhiteSpace(player))
-                return HttpNotFound();
+                throw new HttpException(404, "Player not found");
 
             var q = Session.Query<Player_ByMatch.Result, Player_ByMatch>()
                 .Where(r => r.Player == player)
