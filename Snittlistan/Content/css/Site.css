@@ -230,6 +230,12 @@ table.invis td {
 	border: 0 none;
 }
 
+/* Sortable table
+----------------------------------------------------------*/
+table[data-sortable="true"] th {
+	cursor: pointer;
+}
+
 /* MISC  
 ----------------------------------------------------------*/
 .clear {
@@ -348,19 +354,19 @@ table.team-editor input[type="number"] {
 
 /* Feedback tab */
 #feedbackTab {
-    background-image: url(images/feedback.png);
-    background-repeat: no-repeat;
-    right: 0;
-    position: fixed;
-    width: 32px;
-    height: 96px;
-    top: 150px;
-    z-index: 1;
-    cursor: pointer;
+	background-image: url(images/feedback.png);
+	background-repeat: no-repeat;
+	right: 0;
+	position: fixed;
+	width: 32px;
+	height: 96px;
+	top: 150px;
+	z-index: 1;
+	cursor: pointer;
 }
 
 /* Buttons within tables
 ----------------------------------------------------------*/
 .ui-button-text-only .ui-button-text {
-    padding: 0 9px 0 7px;
+	padding: 0 9px 0 7px;
 }
