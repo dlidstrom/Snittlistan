@@ -159,7 +159,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(ProgramFiles)\MSBuild\StyleCop\v4.5\StyleCop.targets" />
+  <Import Project="$(ProgramFiles)\MSBuild\StyleCop\v4.7\StyleCop.targets" />
   <PropertyGroup>
     <PostBuildEvent Condition=" '$(Configuration)' == 'Release' And '$(TEAMCITY_PROJECT_NAME)' == '' ">$(SolutionDir)packages\xunit.1.8.0.1545\lib\xunit.console.clr4.exe $(TargetPath)</PostBuildEvent>
   </PropertyGroup>
