@@ -4,10 +4,16 @@
     ViewBag.Title = "Snittlistan";
 }
 
-<table>
+@section scripts
+{
+    @Content.Script("jquery.tablesorter.min.js", Url)
+    @Content.Script("sortable.min.js", Url)
+}
+
+<table data-sortable="true">
     <thead>
         <tr>
-            <th></th>
+            <th>&#9650; &#9660;</th>
             <th>Namn</th>
             <th>Serier</th>
             <th>Banpoäng</th>
