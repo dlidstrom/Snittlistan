@@ -6,6 +6,7 @@
     using System.Net;
     using System.Net.Configuration;
     using System.Net.Mail;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Configuration;
@@ -62,6 +63,15 @@
         }
 
         /// <summary>
+        /// Gets or sets the reset event. Use to wait for email to be sent.
+        /// </summary>
+        public AutoResetEvent ResetEvent
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Send mail to a recipient and the moderators.
         /// </summary>
         /// <param name="recipient">Mail recipient.</param>
@@ -102,6 +112,9 @@
                 smtpClient.Credentials = new NetworkCredential { UserName = this.username, Password = this.password };
                 smtpClient.Send(mailMessage);
             }
+
+            if (ResetEvent != null)
+                ResetEvent.Set();
         }
     }
 }
