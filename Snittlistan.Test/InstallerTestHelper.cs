@@ -10,17 +10,22 @@
     {
         public static IHandler[] GetAllHandlers(IWindsorContainer container)
         {
-            return GetHandlersFor(typeof(object), container);
+            return container.Kernel.GetAssignableHandlers(typeof(object));
         }
 
         public static IHandler[] GetHandlersFor(Type type, IWindsorContainer container)
+        {
+            return container.Kernel.GetHandlers(type);
+        }
+
+        public static IHandler[] GetAssignableHandlers(Type type, IWindsorContainer container)
         {
             return container.Kernel.GetAssignableHandlers(type);
         }
 
         public static Type[] GetImplementationTypesFor(Type type, IWindsorContainer container)
         {
-            return GetHandlersFor(type, container)
+            return GetAssignableHandlers(type, container)
                 .Select(h => h.ComponentModel.Implementation)
                 .OrderBy(t => t.Name)
                 .ToArray();

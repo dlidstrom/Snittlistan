@@ -22,7 +22,7 @@
         public void AllControllersImplementIController()
         {
             var allHandlers = InstallerTestHelper.GetAllHandlers(container);
-            var controllerHandlers = InstallerTestHelper.GetHandlersFor(typeof(IController), container);
+            var controllerHandlers = InstallerTestHelper.GetAssignableHandlers(typeof(IController), container);
             Assert.NotEmpty(allHandlers);
             Assert.Equal(allHandlers, controllerHandlers);
         }
@@ -30,9 +30,8 @@
         [Fact]
         public void AllControllersAreRegistered()
         {
-            //// Is<TType> is a helper extension method from Windsor
-            //// which behaves like 'is' keyword in C# but at a Type, not instance level
-
+            // Is<TType> is a helper extension method from Windsor
+            // which behaves like 'is' keyword in C# but at a Type, not instance level
             var allControllers = InstallerTestHelper.GetPublicClassesFromApplicationAssembly(c => c.Is<IController>());
             var registeredControllers = InstallerTestHelper.GetImplementationTypesFor(typeof(IController), container);
             Assert.Equal(allControllers, registeredControllers);
@@ -57,7 +56,7 @@
         [Fact]
         public void AllControllersAreTransient()
         {
-            var nonTransientControllers = InstallerTestHelper.GetHandlersFor(typeof(IController), container)
+            var nonTransientControllers = InstallerTestHelper.GetAssignableHandlers(typeof(IController), container)
                 .Where(c => c.ComponentModel.LifestyleType != LifestyleType.Transient)
                 .ToArray();
             Assert.Empty(nonTransientControllers);
@@ -66,7 +65,7 @@
         [Fact]
         public void AllControllersExposeThemselvesAsService()
         {
-            var controllersWithWrongName = InstallerTestHelper.GetHandlersFor(typeof(IController), container)
+            var controllersWithWrongName = InstallerTestHelper.GetAssignableHandlers(typeof(IController), container)
                 .Where(c => !c.ComponentModel.Services.SequenceEqual(new[] { c.ComponentModel.Implementation }))
                 .ToArray();
             Assert.Empty(controllersWithWrongName);

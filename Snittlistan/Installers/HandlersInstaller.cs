@@ -12,6 +12,7 @@
             container.Register(
                 AllTypes.FromThisAssembly()
                 .BasedOn(typeof(IHandle<>))
+                .WithServiceFromInterface(typeof(IHandle<>))
                 .If(Component.IsInSameNamespaceAs<SendRegistrationEmailHandler>())
                 .Configure(c => c.LifestyleTransient()));
         }
