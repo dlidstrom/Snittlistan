@@ -2,7 +2,7 @@
 /// <reference path="jquery-ui.js" />
 
 $(function () {
-    $(":input[data-datepicker]").each(function () {
+    $("input[data-datepicker]").each(function () {
         $(this).datepicker($.datepicker.regional["sv"]);
     });
 });
