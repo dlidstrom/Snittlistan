@@ -51,6 +51,7 @@
             matches[0].AwayTeamName.ShouldNotBeNull("Missing away team name");
             matches[0].AwayTeamName.ShouldBe("Away3");
             matches[0].AwayTeamScore.ShouldBe(14);
+            matches[0].Type.ShouldBe("4x4");
             matches[1].Location.ShouldBe("P2");
             matches[1].HomeTeamName.ShouldNotBeNull("Missing home team name");
             matches[1].HomeTeamName.ShouldBe("Home2");
@@ -58,6 +59,7 @@
             matches[1].AwayTeamName.ShouldNotBeNull("Missing away team name");
             matches[1].AwayTeamName.ShouldBe("Away2");
             matches[1].AwayTeamScore.ShouldBe(4);
+            matches[1].Type.ShouldBe("8x4");
             matches[2].Location.ShouldBe("P1");
             matches[2].HomeTeamName.ShouldNotBeNull("Missing home team name");
             matches[2].HomeTeamName.ShouldBe("Home");
@@ -65,6 +67,7 @@
             matches[2].AwayTeamName.ShouldNotBeNull("Missing away team name");
             matches[2].AwayTeamName.ShouldBe("Away");
             matches[2].AwayTeamScore.ShouldBe(2);
+            matches[2].Type.ShouldBe("8x4");
         }
     }
 }

@@ -35,7 +35,7 @@
         <td>@Html.DisplayFor(modelItem => item.HomeTeamScore)-@Html.DisplayFor(modelItem => item.AwayTeamScore)</td>
         <td>@Html.DisplayFor(modelItem => item.Location)</td>
         <td>
-            @Html.ActionLink("Visa", "Details8x4", new { id = item.Id }, new { data_button = "data_button" })
+            @Html.ActionLink("Visa", string.Format("Details{0}", item.Type), new { id = item.Id }, new { data_button = "data_button" })
         </td>
     </tr>
 }
