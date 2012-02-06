@@ -49,11 +49,19 @@
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
+            string matchId = Session.Advanced.GetDocumentId(match);
+            var results = Session.Query<Player_ByMatch.Result, Player_ByMatch>()
+                .Where(x => x.MatchId == matchId)
+                .OrderByDescending(x => x.Team)
+                .ThenByDescending(x => x.Pins);
+
             var vm = new Match8x4ViewModel
             {
                 Match = match.MapTo<Match8x4ViewModel.MatchDetails>(),
                 HomeTeam = match.HomeTeam.MapTo<Team8x4DetailsViewModel>(),
-                AwayTeam = match.AwayTeam.MapTo<Team8x4DetailsViewModel>()
+                HomeTeamResults = results.Where(g => g.Team == match.HomeTeam.Name).ToList(),
+                AwayTeam = match.AwayTeam.MapTo<Team8x4DetailsViewModel>(),
+                AwayTeamResults = results.Where(g => g.Team == match.AwayTeam.Name).ToList(),
             };
 
             return View(vm);
@@ -339,11 +347,19 @@
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
+            string matchId = Session.Advanced.GetDocumentId(match);
+            var results = Session.Query<Player_ByMatch.Result, Player_ByMatch>()
+                .Where(x => x.MatchId == matchId)
+                .OrderByDescending(x => x.Team)
+                .ThenByDescending(x => x.Pins);
+
             var vm = new Match4x4ViewModel
             {
                 Match = match.MapTo<Match4x4ViewModel.MatchDetails>(),
                 HomeTeam = match.HomeTeam.MapTo<Team4x4DetailsViewModel>(),
-                AwayTeam = match.AwayTeam.MapTo<Team4x4DetailsViewModel>()
+                HomeTeamResults = results.Where(r => r.Team == match.HomeTeam.Name).ToList(),
+                AwayTeam = match.AwayTeam.MapTo<Team4x4DetailsViewModel>(),
+                AwayTeamResults = results.Where(r => r.Team == match.AwayTeam.Name).ToList(),
             };
 
             return View(vm);

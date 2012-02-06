@@ -4,14 +4,17 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
+    using Snittlistan.Infrastructure.Indexes;
 
     public class Match8x4ViewModel
     {
         public MatchDetails Match { get; set; }
 
         public Team8x4DetailsViewModel HomeTeam { get; set; }
+        public List<Player_ByMatch.Result> HomeTeamResults { get; set; }
 
         public Team8x4DetailsViewModel AwayTeam { get; set; }
+        public List<Player_ByMatch.Result> AwayTeamResults { get; set; }
 
         public class MatchDetails
         {
