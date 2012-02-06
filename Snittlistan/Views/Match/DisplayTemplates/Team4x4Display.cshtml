@@ -19,7 +19,7 @@
         <th colspan="2">Serie 4</th>
         <th colspan="2">Total</th>
     </tr>
-    @for (int i = 0; i < 4; i++)
+    @for (int i = 0; i < @Model.Series.Count; i++)
     {
         <tr>
             <td>@Model.Series[0].Games[i].Player</td>
