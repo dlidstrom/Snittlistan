@@ -404,7 +404,7 @@
     <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Match\Delete.cshtml" />
+    <Content Include="Views\Match\Delete8x4.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Player.cshtml" />
