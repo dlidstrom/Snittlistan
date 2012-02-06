@@ -15,6 +15,7 @@
                                         select new
                                         {
                                             Id = match.Id,
+                                            Type = "4x4",
                                             Date = match.Date,
                                             Location = match.Location,
                                             HomeTeamName = match.Teams.ElementAt(0).Name,
@@ -27,6 +28,7 @@
                                         select new
                                         {
                                             Id = match.Id,
+                                            Type = "8x4",
                                             Date = match.Date,
                                             Location = match.Location,
                                             HomeTeamName = match.Teams.ElementAt(0).Name,
@@ -35,6 +37,7 @@
                                             AwayTeamScore = match.Teams.ElementAt(1).Score
                                         });
 
+            Store(x => x.Type, FieldStorage.Yes);
             Store(x => x.HomeTeamName, FieldStorage.Yes);
             Store(x => x.HomeTeamScore, FieldStorage.Yes);
             Store(x => x.AwayTeamName, FieldStorage.Yes);
@@ -44,6 +47,8 @@
         public class Result
         {
             public int Id { get; set; }
+
+            public string Type { get; set; }
 
             [Display(Name = "Datum"), DataType(DataType.Date)]
             public DateTime Date { get; set; }

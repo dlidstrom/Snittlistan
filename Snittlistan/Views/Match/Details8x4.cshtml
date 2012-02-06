@@ -5,20 +5,20 @@
 
 <fieldset>
     <legend>Match</legend>
-    @Html.DisplayFor(model => model.Match, "MatchDisplay")
+    @Html.DisplayFor(model => model.Match, "Match8x4Display")
     @if (Request.IsAuthenticated)
     {
         <p>@Html.ActionLink("Redigera", "EditDetails8x4", new { id = Model.Match.Id }, new { data_button = "data_button" })
         | @Html.ActionLink("Ta bort", "Delete8x4", new { id = Model.Match.Id }, new { data_button = "data_button" })</p>
     }
     <h3>Hemmalag</h3>
-    @Html.DisplayFor(model => model.HomeTeam, "TeamDisplay")
+    @Html.DisplayFor(model => model.HomeTeam, "Team8x4Display")
     @if (Request.IsAuthenticated)
     {
         <p>@Html.ActionLink("Redigera", "EditTeam8x4", new { id = Model.Match.Id, isHomeTeam = true }, new { data_button = "data_button" })</p>
     }
     <h3>Bortalag</h3>
-    @Html.DisplayFor(model => model.AwayTeam, "TeamDisplay")
+    @Html.DisplayFor(model => model.AwayTeam, "Team8x4Display")
     @if (Request.IsAuthenticated)
     {
         <p>@Html.ActionLink("Redigera", "EditTeam8x4", new { id = Model.Match.Id, isHomeTeam = false }, new { data_button = "data_button" })</p>

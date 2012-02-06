@@ -29,7 +29,7 @@
         <td>@item.Strikes</td>
         <td>@item.Misses</td>
         <td>@item.Series</td>
-        <td>@Html.ActionLink("Visa", "Details", "Match", new { id = item.MatchId.Substring(8) }, new { data_button = "data_button" })</td>
+        <td>@Html.ActionLink("Visa", string.Format("Details{0}", item.Type), "Match", new { id = item.MatchId.Split(new char[] { '-' }).ElementAt(1) }, new { data_button = "data_button" })</td>
     </tr>
 }
 </table>
