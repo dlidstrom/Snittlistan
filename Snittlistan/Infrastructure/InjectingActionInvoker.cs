@@ -32,7 +32,7 @@
                     catch (Exception ex)
                     {
                         var message = string.Format("Error setting property {0} on type {1}, See inner exception for more information.", property.Name, type.FullName);
-                        throw new ComponentActivatorException(message, ex);
+                        throw new ComponentActivatorException(message, ex, null);
                     }
                 }
             }
