@@ -374,7 +374,7 @@
     <Content Include="Views\Match\EditDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Match\EditTeam.cshtml" />
+    <Content Include="Views\Match\EditTeam8x4.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Match\EditorTemplates\PairEditor.cshtml" />
