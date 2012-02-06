@@ -13,74 +13,14 @@
     }
     <h3>Hemmalag</h3>
     @Html.DisplayFor(model => model.HomeTeam, "Team8x4Display")
-    <h4>Resultat</h4>
-    <table>
-        <thead>
-            <tr>
-                <th>Spelare</th>
-                <th>Banpoäng</th>
-                <th>Resultat</th>
-                <th>X</th>
-                <th>Miss</th>
-                <th>Serier</th>
-                <th>Medel</th>
-                <th>Bästa serie</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.HomeTeamResults)
-            {
-                <tr>
-                    <td>@item.Player</td>
-                    <td>@item.Score</td>
-                    <td>@item.Pins</td>
-                    <td>@item.Strikes</td>
-                    <td>@item.Misses</td>
-                    <td>@item.Series</td>
-                    <td>@string.Format("{0:F2}", item.Pins / item.Series)</td>
-                    <td>@item.Max</td>
-                </tr>
-            }
-            <tr></tr>
-        </tbody>
-    </table>
+    @Html.DisplayFor(model => model.HomeTeamResults, "TeamResults")
     @if (Request.IsAuthenticated)
     {
         <p>@Html.ActionLink("Redigera", "EditTeam8x4", new { id = Model.Match.Id, isHomeTeam = true }, new { data_button = "data_button" })</p>
     }
     <h3>Bortalag</h3>
     @Html.DisplayFor(model => model.AwayTeam, "Team8x4Display")
-    <h4>Resultat</h4>
-    <table>
-        <thead>
-            <tr>
-                <th>Spelare</th>
-                <th>Banpoäng</th>
-                <th>Resultat</th>
-                <th>X</th>
-                <th>Miss</th>
-                <th>Serier</th>
-                <th>Medel</th>
-                <th>Bästa serie</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.AwayTeamResults)
-            {
-                <tr>
-                    <td>@item.Player</td>
-                    <td>@item.Score</td>
-                    <td>@item.Pins</td>
-                    <td>@item.Strikes</td>
-                    <td>@item.Misses</td>
-                    <td>@item.Series</td>
-                    <td>@string.Format("{0:F2}", item.Pins / item.Series)</td>
-                    <td>@item.Max</td>
-                </tr>
-            }
-            <tr></tr>
-        </tbody>
-    </table>
+    @Html.DisplayFor(model => model.AwayTeamResults, "TeamResults")
     @if (Request.IsAuthenticated)
     {
         <p>@Html.ActionLink("Redigera", "EditTeam8x4", new { id = Model.Match.Id, isHomeTeam = false }, new { data_button = "data_button" })</p>
