@@ -8,7 +8,8 @@
     using Snittlistan.Helpers;
     using Snittlistan.Infrastructure.AutoMapper;
     using Snittlistan.Models;
-    using Snittlistan.ViewModels;
+    using Snittlistan.ViewModels.Account;
+    using Snittlistan.ViewModels.Admin;
 
     /// <summary>
     /// User administration.

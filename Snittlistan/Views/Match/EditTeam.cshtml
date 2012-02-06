@@ -1,4 +1,4 @@
-﻿@model EditTeamViewModel
+﻿@model EditTeam8x4ViewModel
 
 @{
     ViewBag.Title = "Redigera";
@@ -13,14 +13,14 @@
 }
 
 <h2>@ViewBag.Title</h2>
-<p>@Html.ActionLink("Tillbaka", "Details", new { id = Model.Id }, new { data_button = "data_button" })</p>
+<p>@Html.ActionLink("Tillbaka", "Details8x4", new { id = Model.Id }, new { data_button = "data_button" })</p>
 
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>Matchinformation</legend>
-            @Html.EditorFor(model => model.Team, "TeamEditor")
+            @Html.EditorFor(model => model.Team, "TeamEditor8x4")
 
             <p>
                 <input type="submit" value="Spara" />

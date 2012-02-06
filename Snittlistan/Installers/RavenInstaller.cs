@@ -11,13 +11,32 @@
     using Raven.Client.Embedded;
     using Raven.Client.MvcIntegration;
     using Snittlistan.Infrastructure.Indexes;
+    using Snittlistan.Models;
 
     public class RavenInstaller : IWindsorInstaller
     {
+        public static IDocumentStore InitializeStore(IDocumentStore store)
+        {
+            store.Initialize();
+            store.Conventions.IdentityPartsSeparator = "-";
+            store.Conventions.FindTypeTagName = type =>
+            {
+                if (type == typeof(Match8x4))
+                    return "Matches";
+
+                return DocumentConvention.DefaultTypeTagName(type);
+            };
+
+            // create indexes
+            IndexCreator.CreateIndexes(store);
+            RavenProfiler.InitializeFor(store);
+            return store;
+        }
+
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(
-                    Component.For<IDocumentStore>().Instance(CreateDocumentStore()).LifestyleSingleton(),
+                    Component.For<IDocumentStore>().Instance(InitializeStore(CreateDocumentStore())).LifestyleSingleton(),
                     Component.For<IDocumentSession>().UsingFactoryMethod(GetDocumentSession).LifestylePerWebRequest());
         }
 
@@ -27,7 +46,7 @@
             return store.OpenSession();
         }
 
-        private IDocumentStore CreateDocumentStore()
+        private static IDocumentStore CreateDocumentStore()
         {
             // run with server when debugging, and embedded in production
             IDocumentStore store = null;
@@ -41,12 +60,6 @@
                 };
             }
 
-            store.Initialize();
-            store.Conventions.IdentityPartsSeparator = "-";
-
-            // create indexes
-            IndexCreator.CreateIndexes(store);
-            RavenProfiler.InitializeFor(store);
             return store;
         }
     }

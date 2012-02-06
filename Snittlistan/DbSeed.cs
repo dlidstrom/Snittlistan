@@ -6,16 +6,16 @@
 
     public class DbSeed
     {
-        public static Match CreateMatch()
+        public static Match8x4 Create8x4Match()
         {
-            var series = new List<Serie>
+            var series = new List<Serie8x4>
             {
-                new Serie(new List<Table>
+                new Serie8x4(new List<Table8x4>
                 {
-                    new Table
+                    new Table8x4
                     {
                         Score = 1,
-                        Game1 = new Game("Mikael Axelsson", 202)
+                        Game1 = new Game8x4("Mikael Axelsson", 202)
                         {
                             Strikes = 5,
                             Misses = 2,
@@ -23,116 +23,158 @@
                             Splits = 2,
                             CoveredAll = true
                         },
-                        Game2 = new Game("Christer Liedholm", 218)
+                        Game2 = new Game8x4("Christer Liedholm", 218)
                     },
-                    new Table
+                    new Table8x4
                     {
                         Score = 0,
-                        Game1 = new Game("Kjell Persson", 172),
-                        Game2 = new Game("Peter Sjöberg", 220),
+                        Game1 = new Game8x4("Kjell Persson", 172),
+                        Game2 = new Game8x4("Peter Sjöberg", 220),
                     },
-                    new Table
+                    new Table8x4
                     {
                         Score = 0,
-                        Game1 = new Game("Kjell Jansson", 166),
-                        Game2 = new Game("Hans Norbeck", 194)
+                        Game1 = new Game8x4("Kjell Jansson", 166),
+                        Game2 = new Game8x4("Hans Norbeck", 194)
                     },
-                    new Table
+                    new Table8x4
                     {
                         Score = 1,
-                        Game1 = new Game("Lars Öberg", 222),
-                        Game2 = new Game("Torbjörn Jensen", 204)
+                        Game1 = new Game8x4("Lars Öberg", 222),
+                        Game2 = new Game8x4("Torbjörn Jensen", 204)
                     }
                 }),
-                new Serie(new List<Table>
+                new Serie8x4(new List<Table8x4>
                 {
-                    new Table
+                    new Table8x4
                     {
                         Score = 1,
-                        Game1 = new Game("Lars Öberg", 182),
-                        Game2 = new Game("Torbjörn Jensen", 211)
+                        Game1 = new Game8x4("Lars Öberg", 182),
+                        Game2 = new Game8x4("Torbjörn Jensen", 211)
                     },
-                    new Table
+                    new Table8x4
                     {
                         Score = 1,
-                        Game1 = new Game("Kjell Jansson", 208),
-                        Game2 = new Game("Hans Norbeck", 227)
+                        Game1 = new Game8x4("Kjell Jansson", 208),
+                        Game2 = new Game8x4("Hans Norbeck", 227)
                     },
-                    new Table
+                    new Table8x4
                     {
                         Score = 0,
-                        Game1 = new Game("Kjell Persson", 194),
-                        Game2 = new Game("Peter Sjöberg", 195)
+                        Game1 = new Game8x4("Kjell Persson", 194),
+                        Game2 = new Game8x4("Peter Sjöberg", 195)
                     },
-                    new Table
+                    new Table8x4
                     {
                         Score = 0,
-                        Game1 = new Game("Mikael Axelsson", 206),
-                        Game2 = new Game("Christer Liedholm", 150)
+                        Game1 = new Game8x4("Mikael Axelsson", 206),
+                        Game2 = new Game8x4("Christer Liedholm", 150)
                     }
                 }),
-                new Serie(new List<Table>
+                new Serie8x4(new List<Table8x4>
                 {
-                    new Table
+                    new Table8x4
                     {
                         Score = 0,
-                        Game1 = new Game("Kjell Persson", 174),
-                        Game2 = new Game("Peter Sjöberg", 182)
+                        Game1 = new Game8x4("Kjell Persson", 174),
+                        Game2 = new Game8x4("Peter Sjöberg", 182)
                     },
-                    new Table
+                    new Table8x4
                     {
                         Score = 1,
-                        Game1 = new Game("Mikael Axelsson", 214),
-                        Game2 = new Game("Christer Liedholm", 176)
+                        Game1 = new Game8x4("Mikael Axelsson", 214),
+                        Game2 = new Game8x4("Christer Liedholm", 176)
                     },
-                    new Table
+                    new Table8x4
                     {
                         Score = 0,
-                        Game1 = new Game("Lars Öberg", 168),
-                        Game2 = new Game("Torbjörn Jensen", 199)
+                        Game1 = new Game8x4("Lars Öberg", 168),
+                        Game2 = new Game8x4("Torbjörn Jensen", 199)
                     },
-                    new Table
+                    new Table8x4
                     {
                         Score = 0,
-                        Game1 = new Game("Kjell Jansson", 180),
-                        Game2 = new Game("Hans Norbeck", 212)
+                        Game1 = new Game8x4("Kjell Jansson", 180),
+                        Game2 = new Game8x4("Hans Norbeck", 212)
                     }
                 }),
-                new Serie(new List<Table>
+                new Serie8x4(new List<Table8x4>
                 {
-                    new Table
+                    new Table8x4
                     {
                         Score = 0,
-                        Game1 = new Game("Kjell Jansson", 189),
-                        Game2 = new Game("Hans Norbeck", 181)
+                        Game1 = new Game8x4("Kjell Jansson", 189),
+                        Game2 = new Game8x4("Hans Norbeck", 181)
                     },
-                    new Table
+                    new Table8x4
                     {
                         Score = 0,
-                        Game1 = new Game("Lars Öberg", 227),
-                        Game2 = new Game("Torbjörn Jensen", 180)
+                        Game1 = new Game8x4("Lars Öberg", 227),
+                        Game2 = new Game8x4("Torbjörn Jensen", 180)
                     },
-                    new Table
+                    new Table8x4
                     {
                         Score = 1,
-                        Game1 = new Game("Mikael Axelsson", 223),
-                        Game2 = new Game("Christer Liedholm", 191)
+                        Game1 = new Game8x4("Mikael Axelsson", 223),
+                        Game2 = new Game8x4("Christer Liedholm", 191)
                     },
-                    new Table
+                    new Table8x4
                     {
                         Score = 0,
-                        Game1 = new Game("Thomas Gurell", 159),
-                        Game2 = new Game("Peter Sjöberg", 190)
+                        Game1 = new Game8x4("Thomas Gurell", 159),
+                        Game2 = new Game8x4("Peter Sjöberg", 190)
                     }
                 }),
             };
-            var match = new Match(
+            var match = new Match8x4(
                 location: "Sollentuna Bowlinghall",
                 date: new DateTime(2011, 03, 26),
                 bitsMatchId: 3003231,
-                homeTeam: new Team("Sollentuna Bwk", 13),
-                awayTeam: new Team("Fredrikshof IF", 6, series));
+                homeTeam: new Team8x4("Sollentuna Bwk", 13),
+                awayTeam: new Team8x4("Fredrikshof IF", 6, series));
 
+            return match;
+        }
+
+        public static Match4x4 Create4x4Match()
+        {
+            var series = new List<Serie4x4>
+            {
+                new Serie4x4(new List<Game4x4>
+                {
+                    new Game4x4("Tomas Gustavsson", 160, 0),
+                    new Game4x4("Markus Norbeck", 154, 0),
+                    new Game4x4("Lars Norbeck", 169, 1),
+                    new Game4x4("Matz Classon", 140, 0),
+                }),
+                new Serie4x4(new List<Game4x4>
+                {
+                    new Game4x4("Tomas Gustavsson", 141, 0),
+                    new Game4x4("Markus Norbeck", 114, 0),
+                    new Game4x4("Lars Norbeck", 163, 1),
+                    new Game4x4("Matz Classon", 127, 0),
+                }),
+                new Serie4x4(new List<Game4x4>
+                {
+                    new Game4x4("Tomas Gustavsson", 128, 1),
+                    new Game4x4("Markus Norbeck", 165, 0),
+                    new Game4x4("Lars Norbeck", 231, 1),
+                    new Game4x4("Matz Classon", 165, 0),
+                }),
+                new Serie4x4(new List<Game4x4>
+                {
+                    new Game4x4("Tomas Gustavsson", 132, 0),
+                    new Game4x4("Markus Norbeck", 165, 0),
+                    new Game4x4("Lars Norbeck", 154, 1),
+                    new Game4x4("Matz Classon", 162, 1),
+                })
+            };
+
+            var match = new Match4x4(
+                    location: "Bowl-O-Rama",
+                    date: new DateTime(2012, 01, 28),
+                    homeTeam: new Team4x4("Fredrikshof C", 6, series),
+                    awayTeam: new Team4x4("Librex", 14));
             return match;
         }
     }

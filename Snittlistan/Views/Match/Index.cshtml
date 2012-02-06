@@ -1,21 +1,22 @@
-﻿@model IEnumerable<MatchViewModel>
+﻿@model IEnumerable<Snittlistan.Infrastructure.Indexes.Match_ByDate.Result>
 
 @{
     ViewBag.Title = "Matcher";
 }
 
-@helper CreateEditLink(MatchViewModel item)
+@helper CreateEditLink(Snittlistan.Infrastructure.Indexes.Match_ByDate.Result item)
 {
     if (Request.IsAuthenticated)
     {
-        <text>@Html.ActionLink("Redigera", "Edit", new { id = item.Match.Id }, new { data_button = "data_button" }) |</text>
+        <text>@Html.ActionLink("Redigera", "Edit", new { id = item.Id }, new { data_button = "data_button" }) |</text>
     }
 }
 
 <h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink("Registrera ny", "Register", new { }, new { data_button = "data_button" })
+    @Html.ActionLink("Registrera ny 8x4", "Register8x4", new { }, new { data_button = "data_button" })
+    @Html.ActionLink("Registrera ny 4x4", "Register4x4", new { }, new { data_button = "data_button" })
 </p>
 
 <table>
@@ -29,12 +30,12 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>@Html.DisplayFor(modelItem => item.Match.Date)</td>
-        <td>@Html.DisplayFor(modelItem => item.HomeTeam.Name) - @Html.DisplayFor(modelItem => item.AwayTeam.Name)</td>
-        <td>@Html.DisplayFor(modelItem => item.HomeTeam.Score)-@Html.DisplayFor(modelItem => item.AwayTeam.Score)</td>
-        <td>@Html.DisplayFor(modelItem => item.Match.Location)</td>
+        <td>@Html.DisplayFor(modelItem => item.Date)</td>
+        <td>@Html.DisplayFor(modelItem => item.HomeTeamName) - @Html.DisplayFor(modelItem => item.AwayTeamName)</td>
+        <td>@Html.DisplayFor(modelItem => item.HomeTeamScore)-@Html.DisplayFor(modelItem => item.AwayTeamScore)</td>
+        <td>@Html.DisplayFor(modelItem => item.Location)</td>
         <td>
-            @Html.ActionLink("Visa", "Details", new { id = item.Match.Id }, new { data_button = "data_button" })
+            @Html.ActionLink("Visa", "Details8x4", new { id = item.Id }, new { data_button = "data_button" })
         </td>
     </tr>
 }

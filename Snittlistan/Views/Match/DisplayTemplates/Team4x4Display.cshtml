@@ -1,0 +1,35 @@
+﻿@model Team4x4DetailsViewModel
+
+<table class="invis">
+    <tr>
+        <td class="editor-label">@Html.LabelFor(model => model.Name)</td>
+        <td class="editor-field">@Html.DisplayFor(model => model.Name)</td>
+    </tr>
+    <tr>
+        <td class="editor-label">@Html.LabelFor(model => model.Score)</td>
+        <td class="editor-field">@Html.DisplayFor(model => model.Score)</td>
+    </tr>
+</table>
+<table>
+    <tr>
+        <th>Spelare</th>
+        <th colspan="2">Serie 1</th>
+        <th colspan="2">Serie 2</th>
+        <th colspan="2">Serie 3</th>
+        <th colspan="2">Serie 4</th>
+        <th colspan="2">Total</th>
+    </tr>
+    @for (int i = 0; i < 4; i++)
+    {
+        <tr>
+            <td>@Model.Series[0].Games[i].Player</td>
+            @for (int j = 0; j < Model.Series.Count; j++)
+            {
+                <td>@Model.Series[j].Games[i].Pins</td>
+                <td>@Model.Series[j].Games[i].Score</td>
+            }
+            <td>@Model.Series.Sum(s => s.Games[i].Pins)</td>
+            <td>@Model.Series.Sum(s => s.Games[i].Score)</td>
+        </tr>
+    }
+</table>

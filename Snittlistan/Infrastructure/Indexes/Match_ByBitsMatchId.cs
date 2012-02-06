@@ -5,7 +5,7 @@
     using Raven.Client.Indexes;
     using Snittlistan.Models;
 
-    public class Match_ByBitsMatchId : AbstractIndexCreationTask<Match, Match_ByBitsMatchId.Result>
+    public class Match_ByBitsMatchId : AbstractIndexCreationTask<Match8x4, Match_ByBitsMatchId.Result>
     {
         public Match_ByBitsMatchId()
         {

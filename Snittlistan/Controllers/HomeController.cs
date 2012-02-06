@@ -31,8 +31,8 @@
         public ActionResult Index()
         {
             var stats = Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
-                .OrderByDescending(s => s.Average)
-                .ToList();
+                .ToList()
+                .OrderByDescending(s => s.AveragePins);
 
             var last20 = Session.Query<Pins_Last20.Result, Pins_Last20>()
                 .ToDictionary(s => s.Player, s => s.Pins);

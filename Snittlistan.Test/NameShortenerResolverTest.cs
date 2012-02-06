@@ -5,7 +5,7 @@
     using Snittlistan.Infrastructure.AutoMapper;
     using Snittlistan.Installers;
     using Snittlistan.Models;
-    using Snittlistan.ViewModels;
+    using Snittlistan.ViewModels.Match;
     using Xunit;
 
     public class NameShortenerResolverTest
@@ -20,10 +20,10 @@
         public void SimpleCase()
         {
             // Arrange
-            var game = new Game("Daniel Lidström", 200);
+            var game = new Game8x4("Daniel Lidström", 200);
 
             // Act
-            var shortenedName = game.MapTo<TeamDetailsViewModel.Game>().Player;
+            var shortenedName = game.MapTo<Team8x4DetailsViewModel.Game>().Player;
 
             // Assert
             shortenedName.ShouldBe("D. Lidström");
@@ -33,10 +33,10 @@
         public void DoubleName()
         {
             // Arrange
-            var game = new Game("Karl-Erik Frick", 200);
+            var game = new Game8x4("Karl-Erik Frick", 200);
 
             // Act
-            var shortenedName = game.MapTo<TeamDetailsViewModel.Game>().Player;
+            var shortenedName = game.MapTo<Team8x4DetailsViewModel.Game>().Player;
 
             // Assert
             shortenedName.ShouldBe("K-E. Frick");
@@ -46,10 +46,10 @@
         public void PlayerNull()
         {
             // Arrange
-            var game = new Game(null, 0);
+            var game = new Game8x4(null, 0);
 
             // Act
-            var shortenedName = game.MapTo<TeamDetailsViewModel.Game>().Player;
+            var shortenedName = game.MapTo<Team8x4DetailsViewModel.Game>().Player;
 
             // Assert
             shortenedName.ShouldBe(string.Empty);

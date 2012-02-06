@@ -1,0 +1,40 @@
+﻿@model Team4x4ViewModel
+
+@{
+    // used in serie editors
+    int team = Convert.ToInt32(ViewData["team"]);
+}
+
+<table class="invis">
+    <tr>
+        <td class="editor-label">@Html.LabelFor(model => model.Name)</td>
+        <td class="editor-field">
+            @Html.TextBoxFor(
+                model => model.Name,
+                new
+                {
+                    data_autocomplete = Url.Action("TeamsQuickSearch", "Search")
+                })
+            @Html.ValidationMessageFor(model => model.Name)
+        </td>
+    </tr>
+    <tr>
+        <td class="editor-label">@Html.LabelFor(model => model.Score)</td>
+        <td class="editor-field">
+            @Html.EditorFor(model => model.Score)
+            @Html.ValidationMessageFor(model => model.Score)
+        </td>
+    </tr>
+</table>
+
+<h3>@Html.LabelFor(model => model.Serie1)</h3>
+@Html.EditorFor(model => model.Serie1, "Serie4Editor", new { serie = 0, valueUpdate = "afterkeydown" })
+
+<h3>@Html.LabelFor(model => model.Serie2)</h3>
+@Html.EditorFor(model => model.Serie2, "Serie4Editor", new { serie = 1, valueUpdate = "never" })
+
+<h3>@Html.LabelFor(model => model.Serie3)</h3>
+@Html.EditorFor(model => model.Serie3, "Serie4Editor", new { serie = 2, valueUpdate = "never" })
+
+<h3>@Html.LabelFor(model => model.Serie4)</h3>
+@Html.EditorFor(model => model.Serie4, "Serie4Editor", new { serie = 3, valueUpdate = "never" })

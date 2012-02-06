@@ -8,7 +8,7 @@
     using Snittlistan.Helpers;
     using Snittlistan.Models;
     using Snittlistan.Services;
-    using Snittlistan.ViewModels;
+    using Snittlistan.ViewModels.Account;
     using Xunit;
 
     public class AccountController_Scenario : DbTest

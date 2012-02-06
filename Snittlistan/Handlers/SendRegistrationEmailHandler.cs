@@ -7,7 +7,7 @@
     using Snittlistan.Events;
     using Snittlistan.Infrastructure;
     using Snittlistan.Services;
-    using Snittlistan.ViewModels;
+    using Snittlistan.ViewModels.Account;
 
     public class SendRegistrationEmailHandler : IHandle<NewUserCreatedEvent>
     {

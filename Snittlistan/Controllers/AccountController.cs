@@ -8,7 +8,7 @@
     using Snittlistan.Helpers;
     using Snittlistan.Models;
     using Snittlistan.Services;
-    using Snittlistan.ViewModels;
+    using Snittlistan.ViewModels.Account;
 
     /// <summary>
     /// Handles user-actions related to accounts: registering and validating
