@@ -1,0 +1,29 @@
+﻿@model EditTeam4x4ViewModel
+
+@{
+    ViewBag.Title = "Redigera";
+}
+
+@section scripts
+{
+    @Content.Script(ScriptType.JQueryValidate)
+    @Content.Script(ScriptType.JQueryValidateLocalized)
+    @Content.Script(ScriptType.JQueryValidateUnobtrusive)
+    @Content.Script("autocomplete.min.js", Url)
+}
+
+<h2>@ViewBag.Title</h2>
+<p>@Html.ActionLink("Tillbaka", "Details4x4", new { id = Model.Id }, new { data_button = "data_button" })</p>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Matchinformation</legend>
+            @Html.EditorFor(model => model.Team, "TeamEditor4x4")
+
+            <p>
+                <input type="submit" value="Spara" />
+            </p>
+    </fieldset>
+}

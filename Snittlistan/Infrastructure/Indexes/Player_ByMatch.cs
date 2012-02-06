@@ -14,6 +14,7 @@
                                         from team in match.Teams
                                         from serie in team.Series
                                         from game in serie.Games
+                                        where game.Player != null
                                         select new
                                         {
                                             Type = "4x4",
@@ -23,7 +24,9 @@
                                             Location = match.Location,
                                             Team = team.Name,
                                             Date = match.Date,
+                                            Score = game.Score,
                                             Pins = game.Pins,
+                                            Max = game.Pins,
                                             Series = 1,
                                             Strikes = game.Strikes,
                                             Misses = game.Misses
@@ -34,6 +37,7 @@
                                         from serie in team.Series
                                         from table in serie.Tables
                                         from game in table.Games
+                                        where game.Player != null
                                         select new
                                         {
                                             Type = "8x4",
@@ -43,7 +47,9 @@
                                             Location = match.Location,
                                             Team = team.Name,
                                             Date = match.Date,
+                                            Score = table.Score,
                                             Pins = game.Pins,
+                                            Max = game.Pins,
                                             Series = 1,
                                             Strikes = game.Strikes,
                                             Misses = game.Misses
@@ -60,7 +66,9 @@
                                     Location = games.Key.Location,
                                     Team = games.Key.Team,
                                     Date = games.Key.Date,
+                                    Score = games.Sum(g => g.Score),
                                     Pins = games.Sum(g => g.Pins),
+                                    Max = games.Max(g => g.Max),
                                     Series = games.Sum(g => g.Series),
                                     Strikes = games.Sum(g => g.Strikes),
                                     Misses = games.Sum(g => g.Misses)
@@ -78,7 +86,9 @@
 
             [DataType(DataType.Date)]
             public DateTime Date { get; set; }
+            public double Score { get; set; }
             public double Pins { get; set; }
+            public int Max { get; set; }
             public int Series { get; set; }
             public double Strikes { get; set; }
             public double Misses { get; set; }
