@@ -306,6 +306,28 @@
             return RedirectToAction("Details4x4", new { id = vm.Id });
         }
 
+        [Authorize]
+        public ActionResult Delete4x4(int id)
+        {
+            var match = Session.Load<Match4x4>(id);
+            if (match == null)
+                throw new HttpException(404, "Match not found");
+
+            return View(match.MapTo<Match4x4ViewModel.MatchDetails>());
+        }
+
+        [Authorize, HttpPost]
+        public ActionResult Delete4x4(Match4x4ViewModel.MatchDetails vm)
+        {
+            var match = Session.Load<Match4x4>(vm.Id);
+            if (match == null)
+                throw new HttpException(404, "Match not found");
+
+            Session.Delete(match);
+
+            return this.RedirectToAction(c => c.Index());
+        }
+
         /// <summary>
         /// GET: /Match/Details4x4/5.
         /// </summary>
