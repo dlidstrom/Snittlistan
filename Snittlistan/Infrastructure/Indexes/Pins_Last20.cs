@@ -6,27 +6,44 @@
     using Raven.Client.Indexes;
     using Snittlistan.Models;
 
-    public class Pins_Last20 : AbstractIndexCreationTask<Match8x4, Pins_Last20.Result>
+    public class Pins_Last20 : AbstractMultiMapIndexCreationTask<Pins_Last20.Result>
     {
         public Pins_Last20()
         {
-            Map = matches => from match in matches
-                             from team in match.Teams
-                             from serie in team.Series
-                             from table in serie.Tables
-                             from game in table.Games
-                             select new
-                             {
-                                 Player = game.Player,
-                                 Date = match.Date,
-                                 Pins = game.Pins,
-                                 Score = table.Score,
-                                 Max = game.Pins,
-                                 Strikes = game.Strikes,
-                                 Misses = game.Misses,
-                                 OnePinMisses = game.OnePinMisses,
-                                 Splits = game.Splits
-                             };
+            AddMap<Match4x4>(matches => from match in matches
+                                        from team in match.Teams
+                                        from serie in team.Series
+                                        from game in serie.Games
+                                        select new
+                                        {
+                                            Player = game.Player,
+                                            Date = match.Date,
+                                            Pins = game.Pins,
+                                            Score = game.Score,
+                                            Max = game.Pins,
+                                            Strikes = game.Strikes,
+                                            Misses = game.Misses,
+                                            OnePinMisses = game.OnePinMisses,
+                                            Splits = game.Splits
+                                        });
+
+            AddMap<Match8x4>(matches => from match in matches
+                                        from team in match.Teams
+                                        from serie in team.Series
+                                        from table in serie.Tables
+                                        from game in table.Games
+                                        select new
+                                        {
+                                            Player = game.Player,
+                                            Date = match.Date,
+                                            Pins = game.Pins,
+                                            Score = table.Score,
+                                            Max = game.Pins,
+                                            Strikes = game.Strikes,
+                                            Misses = game.Misses,
+                                            OnePinMisses = game.OnePinMisses,
+                                            Splits = game.Splits
+                                        });
 
             Reduce = results => from result in results
                                 group result by result.Player into g
