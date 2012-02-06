@@ -4,7 +4,7 @@
     using Raven.Client.Indexes;
     using Snittlistan.Models;
 
-    public class Players : AbstractIndexCreationTask<Match, Players.Result>
+    public class Players : AbstractIndexCreationTask<Match8x4, Players.Result>
     {
         public Players()
         {

@@ -5,9 +5,9 @@
     /// </summary>
     public class HomeTeamFactory : TeamFactory
     {
-        public override Team CreateTeam()
+        public override Team8x4 CreateTeam()
         {
-            return Team.CreateHomeTeam(Name, Score, Series);
+            return Team8x4.CreateHomeTeam(Name, Score, Series);
         }
     }
 }

@@ -6,7 +6,7 @@
     using Raven.Client.Indexes;
     using Snittlistan.Models;
 
-    public class Pins_Last20 : AbstractIndexCreationTask<Match, Pins_Last20.Result>
+    public class Pins_Last20 : AbstractIndexCreationTask<Match8x4, Pins_Last20.Result>
     {
         public Pins_Last20()
         {

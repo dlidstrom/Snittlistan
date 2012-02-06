@@ -1,4 +1,4 @@
-﻿@model TeamViewModel.Pair
+﻿@model Team8x4ViewModel.Pair
 
 <table class="team-editor">
     <thead>
@@ -17,7 +17,7 @@
     <tbody>
         @Html.EditorFor(
             model => model.Serie1,
-            "SerieEditor",
+            "Serie2Editor",
             new
             {
                 label = @Html.LabelFor(model => model.Serie1),
@@ -26,7 +26,7 @@
             })
         @Html.EditorFor(
             model => model.Serie2,
-            "SerieEditor",
+            "Serie2Editor",
             new
             {
                 label = @Html.LabelFor(model => model.Serie2),
@@ -35,7 +35,7 @@
             })
         @Html.EditorFor(
             model => model.Serie3,
-            "SerieEditor",
+            "Serie2Editor",
             new
             {
                 label = @Html.LabelFor(model => model.Serie3),
@@ -44,7 +44,7 @@
             })
         @Html.EditorFor(
             model => model.Serie4,
-            "SerieEditor",
+            "Serie2Editor",
             new
             {
                 label = @Html.LabelFor(model => model.Serie4),

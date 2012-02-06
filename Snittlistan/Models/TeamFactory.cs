@@ -4,10 +4,10 @@
 
     public abstract class TeamFactory
     {
-        public List<Serie> Series { get; set; }
+        public List<Serie8x4> Series { get; set; }
         public string Name { get; set; }
         public int Score { get; set; }
 
-        public abstract Team CreateTeam();
+        public abstract Team8x4 CreateTeam();
     }
 }

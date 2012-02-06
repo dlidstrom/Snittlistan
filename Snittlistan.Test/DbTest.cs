@@ -10,7 +10,6 @@
     using Raven.Client;
     using Raven.Client.Embedded;
     using Snittlistan.Infrastructure.AutoMapper;
-    using Snittlistan.Infrastructure.Indexes;
     using Snittlistan.Installers;
     using Snittlistan.Models;
 
@@ -23,13 +22,11 @@
             // configure AutoMapper too
             AutoMapperConfiguration
                 .Configure(new WindsorContainer().Install(new AutoMapperInstaller()));
-            Store = new EmbeddableDocumentStore
-            {
-                RunInMemory = true
-            }.Initialize();
 
-            // add indexes
-            IndexCreator.CreateIndexes(Store);
+            Store = new EmbeddableDocumentStore { RunInMemory = true };
+
+            // initialize
+            RavenInstaller.InitializeStore(Store);
             Session = Store.OpenSession();
         }
 

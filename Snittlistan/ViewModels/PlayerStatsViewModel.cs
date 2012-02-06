@@ -16,7 +16,7 @@
         }
 
         public string Player { get { return result.Player; } }
-        public int Series { get { return result.Series; } }
+        public double Series { get { return result.Series; } }
         public double AverageScore { get { return result.AverageScore; } }
         public double AveragePins { get { return result.AveragePins; } }
         public int Max { get { return result.Max; } }

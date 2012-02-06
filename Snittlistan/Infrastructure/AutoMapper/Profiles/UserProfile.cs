@@ -1,7 +1,7 @@
 ﻿namespace Snittlistan.Infrastructure.AutoMapper.Profiles
 {
     using Snittlistan.Models;
-    using Snittlistan.ViewModels;
+    using Snittlistan.ViewModels.Admin;
 
     public class UserProfile : global::AutoMapper.Profile
     {
