@@ -6,33 +6,54 @@
     using Raven.Client.Indexes;
     using Snittlistan.Models;
 
-    public class Player_ByMatch : AbstractIndexCreationTask<Match8x4, Player_ByMatch.Result>
+    public class Player_ByMatch : AbstractMultiMapIndexCreationTask<Player_ByMatch.Result>
     {
         public Player_ByMatch()
         {
-            Map = matches => from match in matches
-                             from team in match.Teams
-                             from serie in team.Series
-                             from table in serie.Tables
-                             from game in table.Games
-                             select new
-                             {
-                                 Player = game.Player,
-                                 MatchId = match.Id,
-                                 BitsMatchId = match.BitsMatchId,
-                                 Location = match.Location,
-                                 Team = team.Name,
-                                 Date = match.Date,
-                                 Pins = game.Pins,
-                                 Series = 1,
-                                 Strikes = game.Strikes,
-                                 Misses = game.Misses
-                             };
+            AddMap<Match4x4>(matches => from match in matches
+                                        from team in match.Teams
+                                        from serie in team.Series
+                                        from game in serie.Games
+                                        select new
+                                        {
+                                            Type = "4x4",
+                                            Player = game.Player,
+                                            MatchId = match.Id,
+                                            BitsMatchId = 0,
+                                            Location = match.Location,
+                                            Team = team.Name,
+                                            Date = match.Date,
+                                            Pins = game.Pins,
+                                            Series = 1,
+                                            Strikes = game.Strikes,
+                                            Misses = game.Misses
+                                        });
+
+            AddMap<Match8x4>(matches => from match in matches
+                                        from team in match.Teams
+                                        from serie in team.Series
+                                        from table in serie.Tables
+                                        from game in table.Games
+                                        select new
+                                        {
+                                            Type = "8x4",
+                                            Player = game.Player,
+                                            MatchId = match.Id,
+                                            BitsMatchId = match.BitsMatchId,
+                                            Location = match.Location,
+                                            Team = team.Name,
+                                            Date = match.Date,
+                                            Pins = game.Pins,
+                                            Series = 1,
+                                            Strikes = game.Strikes,
+                                            Misses = game.Misses
+                                        });
 
             Reduce = results => from result in results
-                                group result by new { result.Player, result.MatchId, result.BitsMatchId, result.Location, result.Date, result.Team } into games
+                                group result by new { result.Type, result.Player, result.MatchId, result.BitsMatchId, result.Location, result.Date, result.Team } into games
                                 select new
                                 {
+                                    Type = games.Key.Type,
                                     Player = games.Key.Player,
                                     MatchId = games.Key.MatchId,
                                     BitsMatchId = (int)games.Key.BitsMatchId,
@@ -48,6 +69,7 @@
 
         public class Result
         {
+            public string Type { get; set; }
             public string Player { get; set; }
             public string MatchId { get; set; }
             public int BitsMatchId { get; set; }
