@@ -32,18 +32,18 @@
             160, 154, 169, 140, 141, 114, 163, 127, 128, 165, 231, 165, 132, 165, 154, 162
         };
 
-        public static void VerifyMatch(Match8x4 match)
+        public static void VerifyTeam(Team8x4 team)
         {
-            match.AwayTeam.Name.ShouldBe("Fredrikshof IF");
-            match.AwayTeam.PinsForPlayer("Mikael Axelsson").ShouldBe(845);
-            match.AwayTeam.PinsForPlayer("Hans Norbeck").ShouldBe(814);
-            match.AwayTeam.PinsForPlayer("Lars Öberg").ShouldBe(799);
-            match.AwayTeam.PinsForPlayer("Torbjörn Jensen").ShouldBe(794);
-            match.AwayTeam.PinsForPlayer("Peter Sjöberg").ShouldBe(787);
-            match.AwayTeam.PinsForPlayer("Kjell Jansson").ShouldBe(743);
-            match.AwayTeam.PinsForPlayer("Christer Liedholm").ShouldBe(735);
-            match.AwayTeam.PinsForPlayer("Kjell Persson").ShouldBe(540);
-            match.AwayTeam.PinsForPlayer("Thomas Gurell").ShouldBe(159);
+            team.Name.ShouldBe("Fredrikshof IF");
+            team.PinsForPlayer("Mikael Axelsson").ShouldBe(845);
+            team.PinsForPlayer("Hans Norbeck").ShouldBe(814);
+            team.PinsForPlayer("Lars Öberg").ShouldBe(799);
+            team.PinsForPlayer("Torbjörn Jensen").ShouldBe(794);
+            team.PinsForPlayer("Peter Sjöberg").ShouldBe(787);
+            team.PinsForPlayer("Kjell Jansson").ShouldBe(743);
+            team.PinsForPlayer("Christer Liedholm").ShouldBe(735);
+            team.PinsForPlayer("Kjell Persson").ShouldBe(540);
+            team.PinsForPlayer("Thomas Gurell").ShouldBe(159);
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 4; j++)
@@ -51,22 +51,22 @@
                     int result1 = result8x4[(i * 4) + j][0];
                     int result2 = result8x4[(i * 4) + j][1];
 
-                    match.AwayTeam.Series.ElementAt(i).Tables.ElementAt(j).Game1.Pins.ShouldBe(result1);
-                    match.AwayTeam.Series.ElementAt(i).Tables.ElementAt(j).Game2.Pins.ShouldBe(result2);
+                    team.Series.ElementAt(i).Tables.ElementAt(j).Game1.Pins.ShouldBe(result1);
+                    team.Series.ElementAt(i).Tables.ElementAt(j).Game2.Pins.ShouldBe(result2);
                 }
             }
 
-            match.AwayTeam.Series.Count().ShouldBe(4);
-            match.AwayTeam.Pins().ShouldBe(6216);
-            match.AwayTeam.PinsFor(1).ShouldBe(1598);
-            match.AwayTeam.PinsFor(2).ShouldBe(1573);
-            match.AwayTeam.PinsFor(3).ShouldBe(1505);
-            match.AwayTeam.PinsFor(4).ShouldBe(1540);
-            match.AwayTeam.ScoreFor(1).ShouldBe(2);
-            match.AwayTeam.ScoreFor(2).ShouldBe(2);
-            match.AwayTeam.ScoreFor(3).ShouldBe(1);
-            match.AwayTeam.ScoreFor(4).ShouldBe(1);
-            match.AwayTeam.Score.ShouldBe(6);
+            team.Series.Count().ShouldBe(4);
+            team.Pins().ShouldBe(6216);
+            team.PinsFor(1).ShouldBe(1598);
+            team.PinsFor(2).ShouldBe(1573);
+            team.PinsFor(3).ShouldBe(1505);
+            team.PinsFor(4).ShouldBe(1540);
+            team.ScoreFor(1).ShouldBe(2);
+            team.ScoreFor(2).ShouldBe(2);
+            team.ScoreFor(3).ShouldBe(1);
+            team.ScoreFor(4).ShouldBe(1);
+            team.Score.ShouldBe(6);
         }
 
         public static void VerifyTeam(Team4x4 team)

@@ -21,7 +21,7 @@
             var match = serializer.Deserialize<Match8x4>(new JsonTextReader(new StringReader(text)));
 
             // Assert
-            TestData.VerifyMatch(match);
+            TestData.VerifyTeam(match.AwayTeam);
         }
 
         [Fact]
