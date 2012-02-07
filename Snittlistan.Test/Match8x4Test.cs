@@ -25,7 +25,7 @@
         [Fact]
         public void VerifyValues()
         {
-            TestData.VerifyMatch(match);
+            TestData.VerifyTeam(match.AwayTeam);
         }
 
         [Fact]

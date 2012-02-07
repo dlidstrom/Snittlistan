@@ -32,7 +32,7 @@
             // Assert
             result.AssertActionRedirect().ToAction("Details8x4").WithParameter("id", originalMatch.Id);
             var match = Session.Load<Match8x4>(originalMatch.Id);
-            TestData.VerifyMatch(match);
+            TestData.VerifyTeam(match.AwayTeam);
         }
 
         [Fact]
