@@ -211,12 +211,13 @@
         /// GET: /Match/Register.
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         public ViewResult Register4x4()
         {
             return View(new Register4x4MatchViewModel());
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public ActionResult Register4x4(Register4x4MatchViewModel model)
         {
             if (!ModelState.IsValid)
