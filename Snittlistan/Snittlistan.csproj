@@ -368,10 +368,10 @@
     <Content Include="Views\Match\DisplayTemplates\Match8x4Display.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Match\EditorTemplates\MatchEditor.cshtml" />
+    <Content Include="Views\Match\EditorTemplates\MatchEditor8x4.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Match\EditDetails.cshtml" />
+    <Content Include="Views\Match\EditDetails8x4.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Match\EditTeam8x4.cshtml" />
@@ -441,6 +441,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Match\DisplayTemplates\TeamResults.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Match\EditDetails4x4.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Match\EditorTemplates\MatchEditor4x4.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
