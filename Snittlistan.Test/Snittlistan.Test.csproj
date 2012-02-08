@@ -148,6 +148,7 @@
     <Compile Include="MatchController_Details8x4.cs" />
     <Compile Include="MatchController_Index.cs" />
     <Compile Include="Match8x4Test.cs" />
+    <Compile Include="Match_ByBitsMatchIdTest.cs" />
     <Compile Include="NameShortenerResolverTest.cs" />
     <Compile Include="PlayerStat_Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

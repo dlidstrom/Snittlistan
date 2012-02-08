@@ -10,14 +10,7 @@
         public Match_ByBitsMatchId()
         {
             Map = matches => from match in matches
-                             select new { BitsMatchId = match.BitsMatchId };
-
-            Reduce = results => from result in results
-                                group result by result.BitsMatchId into g
-                                select new
-                                {
-                                    BitsMatchId = g.Key
-                                };
+                             select new { match.BitsMatchId };
         }
 
         public class Result
