@@ -52,8 +52,7 @@
             string matchId = Session.Advanced.GetDocumentId(match);
             var results = Session.Query<Player_ByMatch.Result, Player_ByMatch>()
                 .Where(x => x.MatchId == matchId)
-                .OrderByDescending(x => x.Team)
-                .ThenByDescending(x => x.Pins);
+                .OrderByDescending(x => x.Pins);
 
             var vm = new Match8x4ViewModel
             {
@@ -351,8 +350,7 @@
             string matchId = Session.Advanced.GetDocumentId(match);
             var results = Session.Query<Player_ByMatch.Result, Player_ByMatch>()
                 .Where(x => x.MatchId == matchId)
-                .OrderByDescending(x => x.Team)
-                .ThenByDescending(x => x.Pins);
+                .OrderByDescending(x => x.Pins);
 
             var vm = new Match4x4ViewModel
             {
