@@ -21,6 +21,7 @@
                                             Series = 1,
                                             Score = table.Score,
                                             Max = game.Pins,
+                                            GamesWithStats = 1,
                                             Strikes = game.Strikes,
                                             Misses = game.Misses,
                                             OnePinMisses = game.OnePinMisses,
@@ -39,6 +40,7 @@
                                             Series = 1,
                                             Score = game.Score,
                                             Max = game.Pins,
+                                            GamesWithStats = game.Strikes != null ? 1 : 0,
                                             Strikes = game.Strikes,
                                             Misses = game.Misses,
                                             OnePinMisses = game.OnePinMisses,
@@ -55,6 +57,7 @@
                                     Series = stat.Sum(s => s.Series),
                                     Score = stat.Sum(s => s.Score),
                                     Max = stat.Max(s => s.Max),
+                                    GamesWithStats = stat.Sum(x => x.GamesWithStats),
                                     Strikes = stat.Sum(s => s.Strikes),
                                     Misses = stat.Sum(s => s.Misses),
                                     OnePinMisses = stat.Sum(s => s.OnePinMisses),
@@ -71,6 +74,7 @@
             public double Series { get; set; }
             public double Score { get; set; }
             public int Max { get; set; }
+            public int GamesWithStats { get; set; }
             public double Strikes { get; set; }
             public double Misses { get; set; }
             public double OnePinMisses { get; set; }
@@ -79,10 +83,10 @@
 
             public double AverageScore { get { return Score / Series; } }
             public double AveragePins { get { return Pins / Series; } }
-            public double AverageStrikes { get { return Strikes / Series; } }
-            public double AverageMisses { get { return Misses / Series; } }
-            public double AverageOnePinMisses { get { return OnePinMisses / Series; } }
-            public double AverageSplits { get { return Splits / Series; } }
+            public double AverageStrikes { get { return Strikes / GamesWithStats; } }
+            public double AverageMisses { get { return Misses / GamesWithStats; } }
+            public double AverageOnePinMisses { get { return OnePinMisses / GamesWithStats; } }
+            public double AverageSplits { get { return Splits / GamesWithStats; } }
         }
     }
 }

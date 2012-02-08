@@ -133,6 +133,7 @@
     <Compile Include="AutoMapperInstallerTest.cs" />
     <Compile Include="ControllerFactoryTest.cs" />
     <Compile Include="ControllersInstallerTest.cs" />
+    <Compile Include="HomeController_Player.cs" />
     <Compile Include="MatchController_EditTeam4x4.cs" />
     <Compile Include="MatchController_EditDetails4x4.cs" />
     <Compile Include="MatchController_Details4x4.cs" />
