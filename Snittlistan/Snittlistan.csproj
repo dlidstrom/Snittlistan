@@ -16,6 +16,8 @@
     <MvcBuildViews Condition="'$(Configuration)' == 'Release'">true</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <StyleCopTreatErrorsAsWarnings>true</StyleCopTreatErrorsAsWarnings>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Snittlistan\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -482,4 +484,5 @@
     <PreBuildEvent>if exist $(ProjectDir)\obj\Release\Package rmdir /S /Q $(ProjectDir)\obj\Release\Package
 if exist $(ProjectDir)\obj\Release\TransformWebConfig rmdir /S /Q $(ProjectDir)\obj\Release\TransformWebConfig</PreBuildEvent>
   </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>
