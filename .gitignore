@@ -2,6 +2,7 @@
 *.suo
 *.user
 *.Cache
+packages
 Snittlistan/bin
 Snittlistan/obj
 
