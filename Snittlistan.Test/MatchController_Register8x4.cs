@@ -17,7 +17,7 @@
             var controller = new MatchController(Session);
 
             // Act
-            var now = DateTime.Now;
+            var now = DateTimeOffset.Now;
             var result = controller.Register8x4(new Register8x4MatchViewModel
             {
                 Location = "Somewhere",

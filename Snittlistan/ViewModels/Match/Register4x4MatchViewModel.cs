@@ -10,7 +10,7 @@
         /// </summary>
         public Register4x4MatchViewModel()
         {
-            Date = DateTime.Now;
+            Date = DateTimeOffset.Now;
             Location = string.Empty;
             HomeTeam = new Team4x4ViewModel();
             AwayTeam = new Team4x4ViewModel();
@@ -21,7 +21,7 @@
         /// </summary>
         [Required(ErrorMessage = "Ange datum")]
         [Display(Name = "Datum"), DataType(DataType.Date)]
-        public DateTime Date { get; set; }
+        public DateTimeOffset Date { get; set; }
 
         /// <summary>
         /// Gets or sets the match location.

@@ -85,7 +85,7 @@
             public string Team { get; set; }
 
             [DataType(DataType.Date)]
-            public DateTime Date { get; set; }
+            public DateTimeOffset Date { get; set; }
             public double Score { get; set; }
             public double Pins { get; set; }
             public int Max { get; set; }

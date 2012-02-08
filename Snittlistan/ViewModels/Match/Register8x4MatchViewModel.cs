@@ -25,7 +25,7 @@
         /// </summary>
         [Required(ErrorMessage = "Ange datum")]
         [Display(Name = "Datum"), DataType(DataType.Date)]
-        public DateTime Date { get; set; }
+        public DateTimeOffset Date { get; set; }
 
         /// <summary>
         /// Gets or sets the match location.

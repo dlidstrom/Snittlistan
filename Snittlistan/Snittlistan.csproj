@@ -401,7 +401,7 @@
     <Content Include="Views\Match\EditorTemplates\Serie2Editor.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DateTimeOffset.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Match\Delete8x4.cshtml" />

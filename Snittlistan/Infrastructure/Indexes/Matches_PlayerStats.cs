@@ -66,7 +66,7 @@
         public class Result
         {
             public string Player { get; set; }
-            public DateTime Date { get; set; }
+            public DateTimeOffset Date { get; set; }
             public double Pins { get; set; }
             public double Series { get; set; }
             public double Score { get; set; }
