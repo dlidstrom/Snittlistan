@@ -69,7 +69,7 @@
       <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="MvcContrib.TestHelper, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvcContrib.Mvc3.TestHelper-ci.3.0.95.0\lib\MvcContrib.TestHelper.dll</HintPath>
+      <HintPath>..\packages\MvcContrib.Mvc3.TestHelper-ci.3.0.96.0\lib\MvcContrib.TestHelper.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.0.5.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -175,7 +175,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ProgramFiles)\MSBuild\StyleCop\v4.7\StyleCop.targets" />
   <PropertyGroup>
-    <PostBuildEvent Condition=" '$(Configuration)' == 'Release' And '$(TEAMCITY_PROJECT_NAME)' == '' ">$(SolutionDir)packages\xunit.1.8.0.1545\lib\xunit.console.clr4.exe $(TargetPath)</PostBuildEvent>
+    <PostBuildEvent Condition=" '$(Configuration)' == 'Release' And '$(TEAMCITY_PROJECT_NAME)' == '' ">$(SolutionDir)packages\xunit.1.9.0.1566\lib\xunit.console.clr4.exe $(TargetPath)</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
