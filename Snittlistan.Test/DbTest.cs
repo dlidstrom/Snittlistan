@@ -30,7 +30,7 @@
             Session = Store.OpenSession();
         }
 
-        public IDocumentSession Session { get; private set; }
+        protected IDocumentSession Session { get; private set; }
 
         public void Dispose()
         {
@@ -38,12 +38,12 @@
             Store.Dispose();
         }
 
-        public void WaitForNonStaleResults<T>() where T : class
+        protected void WaitForNonStaleResults<T>() where T : class
         {
             Session.Query<T>().Customize(x => x.WaitForNonStaleResults()).ToList();
         }
 
-        public UrlHelper CreateUrlHelper()
+        protected UrlHelper CreateUrlHelper()
         {
             var context = Mock.Of<HttpContextBase>();
             var routes = new RouteCollection();
@@ -51,7 +51,7 @@
             return new UrlHelper(new RequestContext(Mock.Get(context).Object, new RouteData()), routes);
         }
 
-        public User CreateActivatedUser(string firstName, string lastName, string email, string password)
+        protected User CreateActivatedUser(string firstName, string lastName, string email, string password)
         {
             var user = new User(
                 firstName: firstName,
