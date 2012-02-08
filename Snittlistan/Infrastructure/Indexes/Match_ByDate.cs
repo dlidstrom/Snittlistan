@@ -51,7 +51,7 @@
             public string Type { get; set; }
 
             [Display(Name = "Datum"), DataType(DataType.Date)]
-            public DateTime Date { get; set; }
+            public DateTimeOffset Date { get; set; }
 
             public string HomeTeamName { get; set; }
             public int HomeTeamScore { get; set; }

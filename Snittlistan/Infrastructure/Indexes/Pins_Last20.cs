@@ -17,7 +17,7 @@
                                         select new
                                         {
                                             Player = game.Player,
-                                            Date = match.Date,
+                                            Date = match.Date.Date,
                                             Pins = game.Pins,
                                             Score = game.Score,
                                             Max = game.Pins,
@@ -35,7 +35,7 @@
                                         select new
                                         {
                                             Player = game.Player,
-                                            Date = match.Date,
+                                            Date = match.Date.Date,
                                             Pins = game.Pins,
                                             Score = table.Score,
                                             Max = game.Pins,
@@ -64,7 +64,7 @@
         public class Result
         {
             public string Player { get; set; }
-            public string Date { get; set; }
+            public DateTime Date { get; set; }
             public double Score { get; set; }
             public double Pins { get; set; }
             public int Max { get; set; }

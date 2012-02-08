@@ -20,7 +20,7 @@
         {
             public MatchDetails()
             {
-                Date = DateTime.Now.Date;
+                Date = DateTimeOffset.Now.Date;
             }
 
             [HiddenInput]
@@ -36,7 +36,7 @@
 
             [Required(ErrorMessage = "Ange datum")]
             [Display(Name = "Datum"), DataType(DataType.Date)]
-            public DateTime Date { get; set; }
+            public DateTimeOffset Date { get; set; }
         }
     }
 }

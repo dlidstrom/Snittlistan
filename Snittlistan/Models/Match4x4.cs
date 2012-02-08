@@ -22,7 +22,7 @@
         [JsonConstructor]
         public Match4x4(
             string location,
-            DateTime date,
+            DateTimeOffset date,
             IEnumerable<Team4x4> teams)
         {
             Location = location;
@@ -39,7 +39,7 @@
         /// <param name="awayTeam">Away team.</param>
         public Match4x4(
             string location,
-            DateTime date,
+            DateTimeOffset date,
             Team4x4 homeTeam,
             Team4x4 awayTeam)
         {
@@ -61,7 +61,7 @@
         /// <summary>
         /// Gets or sets the match date.
         /// </summary>
-        public DateTime Date { get; set; }
+        public DateTimeOffset Date { get; set; }
 
         /// <summary>
         /// Gets or sets the home team.

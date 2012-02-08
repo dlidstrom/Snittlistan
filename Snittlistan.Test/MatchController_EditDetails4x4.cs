@@ -22,7 +22,7 @@
 
             // Act
             var controller = new MatchController(Session);
-            var now = DateTime.Now;
+            var now = DateTimeOffset.Now;
             var result = controller.EditDetails4x4(new Match4x4ViewModel.MatchDetails
             {
                 Id = originalMatch.Id,
