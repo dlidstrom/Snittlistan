@@ -1,0 +1,29 @@
+﻿@model Match8x4ViewModel.MatchDetails
+
+@{
+    ViewBag.Title = "Redigera";
+}
+
+@section scripts
+{
+    @Content.Script(ScriptType.JQueryValidate)
+    @Content.Script(ScriptType.JQueryValidateLocalized)
+    @Content.Script(ScriptType.JQueryValidateUnobtrusive)
+    @Content.Script("datepicker.min.js", Url)
+    @Content.Script("autocomplete.min.js", Url)
+}
+
+<h2>@ViewBag.Title</h2>
+<p>@Html.ActionLink("Tillbaka", "Details8x4", new { id = Model.Id }, new { data_button = "data_button" })</p>
+
+<fieldset>
+    <legend>Matchinformation</legend>
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+        @Html.EditorFor(model => model, "MatchEditor8x4")
+        <p>
+            <input type="submit" value="Spara" />
+        </p>
+    }
+</fieldset>

@@ -1,4 +1,4 @@
-﻿@model Match8x4ViewModel.MatchDetails
+﻿@model Match4x4ViewModel.MatchDetails
 
 @{
     ViewBag.Title = "Redigera";
@@ -14,14 +14,14 @@
 }
 
 <h2>@ViewBag.Title</h2>
-<p>@Html.ActionLink("Tillbaka", "Details8x4", new { id = Model.Id }, new { data_button = "data_button" })</p>
+<p>@Html.ActionLink("Tillbaka", "Details4x4", new { id = Model.Id }, new { data_button = "data_button" })</p>
 
 <fieldset>
     <legend>Matchinformation</legend>
     @using (Html.BeginForm())
     {
         @Html.ValidationSummary(true)
-        @Html.EditorFor(model => model, "MatchEditor")
+        @Html.EditorFor(model => model, "MatchEditor4x4")
         <p>
             <input type="submit" value="Spara" />
         </p>
