@@ -4,6 +4,7 @@
     using System.Web.Mvc;
     using System.Web.UI;
     using Raven.Client;
+    using Raven.Client.Linq;
     using Snittlistan.Infrastructure.Indexes;
 
     /// <summary>
@@ -20,6 +21,7 @@
         public JsonResult IsBitsMatchIdAvailable(int bitsMatchId)
         {
             var id = Session.Query<Match_ByBitsMatchId.Result, Match_ByBitsMatchId>()
+                .AsProjection<Match_ByBitsMatchId.Result>()
                 .SingleOrDefault(m => m.BitsMatchId == bitsMatchId);
 
             // true is valid

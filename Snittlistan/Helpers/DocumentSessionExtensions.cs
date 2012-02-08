@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using Raven.Client;
+    using Raven.Client.Linq;
     using Snittlistan.Infrastructure.Indexes;
     using Snittlistan.Models;
 
@@ -23,7 +24,8 @@
         {
             return sess.Query<Match_ByBitsMatchId.Result, Match_ByBitsMatchId>()
                 .Customize(c => c.WaitForNonStaleResultsAsOfLastWrite())
-                .FirstOrDefault(m => m.BitsMatchId == id) != null;
+                .AsProjection<Match_ByBitsMatchId.Result>()
+                .SingleOrDefault(m => m.BitsMatchId == id) != null;
         }
     }
 }
