@@ -27,6 +27,7 @@
                                             Score = game.Score,
                                             Pins = game.Pins,
                                             Max = game.Pins,
+                                            HasStats = game.Strikes != null ? 1 : 0,
                                             Series = 1,
                                             Strikes = game.Strikes,
                                             Misses = game.Misses
@@ -50,6 +51,7 @@
                                             Score = table.Score,
                                             Pins = game.Pins,
                                             Max = game.Pins,
+                                            HasStats = 1,
                                             Series = 1,
                                             Strikes = game.Strikes,
                                             Misses = game.Misses
@@ -69,6 +71,7 @@
                                     Score = games.Sum(g => g.Score),
                                     Pins = games.Sum(g => g.Pins),
                                     Max = games.Max(g => g.Max),
+                                    HasStats = games.Sum(x => x.HasStats),
                                     Series = games.Sum(g => g.Series),
                                     Strikes = games.Sum(g => g.Strikes),
                                     Misses = games.Sum(g => g.Misses)
@@ -89,9 +92,15 @@
             public double Score { get; set; }
             public double Pins { get; set; }
             public int Max { get; set; }
+            public int HasStats { get; set; }
             public int Series { get; set; }
             public double Strikes { get; set; }
             public double Misses { get; set; }
+
+            public double AverageScore { get { return Score / Series; } }
+            public double AveragePins { get { return Pins / Series; } }
+            public double AverageStrikes { get { return Strikes / HasStats; } }
+            public double AverageMisses { get { return Misses / HasStats; } }
         }
     }
 }

@@ -47,7 +47,7 @@
         /// </summary>
         /// <param name="player"></param>
         /// <returns></returns>
-        public ActionResult Player(string player)
+        public ViewResult Player(string player)
         {
             if (string.IsNullOrWhiteSpace(player))
                 throw new HttpException(404, "Player not found");

@@ -4,6 +4,14 @@
     ViewBag.Title = Model.Player;
 }
 
+@helper FormatValue(Snittlistan.Infrastructure.Indexes.Player_ByMatch.Result result, Func<Snittlistan.Infrastructure.Indexes.Player_ByMatch.Result, double> val)
+{
+    if (result.HasStats > 0)
+    {
+        <text>@val.Invoke(result)</text>
+    }
+}
+
 <h2>@ViewBag.Title</h2>
 
 <table>
@@ -26,8 +34,8 @@
         <td>@Html.DisplayFor(modelItem => item.Date)</td>
         <td>@item.Pins</td>
         <td>@string.Format("{0:F1}", (double)item.Pins / item.Series)</td>
-        <td>@item.Strikes</td>
-        <td>@item.Misses</td>
+        <td>@FormatValue(item, i => i.Strikes)</td>
+        <td>@FormatValue(item, i => i.Misses)</td>
         <td>@item.Series</td>
         <td>@Html.ActionLink("Visa", string.Format("Details{0}", item.Type), "Match", new { id = item.MatchId.Split(new char[] { '-' }).ElementAt(1) }, new { data_button = "data_button" })</td>
     </tr>
@@ -36,8 +44,8 @@
         <tr>
             <td colspan="4">Per serie:</td>
             <td>@string.Format("{0:F1}", Model.Stats.Sum(g => g.Pins) / Model.Stats.Sum(g => g.Series))</td>
-            <td>@string.Format("{0:F2}", Model.Stats.Sum(g => g.Strikes) / Model.Stats.Sum(g => g.Series))</td>
-            <td>@string.Format("{0:F2}", Model.Stats.Sum(g => g.Misses) / Model.Stats.Sum(g => g.Series))</td>
+            <td>@string.Format("{0:F2}", Model.AverageStrikes)</td>
+            <td>@string.Format("{0:F2}", Model.AverageMisses)</td>
             <td>@Model.Stats.Sum(g => g.Series)</td>
             <td></td>
         </tr>
@@ -89,10 +97,10 @@
             <td>@(string.Format("{0:F2}", Model.Last20.Score))</td>
             <td>@(string.Format("{0:F1}", Model.Last20.Pins))</td>
             <td>@Model.Last20.Max</td>
-            <td>@(string.Format("{0:F2}", Model.Last20.Strikes))</td>
-            <td>@(string.Format("{0:F2}", Model.Last20.Misses))</td>
-            <td>@(string.Format("{0:F2}", Model.Last20.OnePinMisses))</td>
-            <td>@(string.Format("{0:F2}", Model.Last20.Splits))</td>
+            <td>@(string.Format("{0:F2}", Model.Last20.AverageStrikes))</td>
+            <td>@(string.Format("{0:F2}", Model.Last20.AverageMisses))</td>
+            <td>@(string.Format("{0:F2}", Model.Last20.AverageOnePinMisses))</td>
+            <td>@(string.Format("{0:F2}", Model.Last20.AverageSplits))</td>
         </tr>
     </tbody>
 </table>
