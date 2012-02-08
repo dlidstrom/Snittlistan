@@ -10,17 +10,11 @@
         {
             Map = matches => from match in matches
                              from team in match.Teams
-                             select new
-                             {
-                                 Team = team.Name,
-                             };
+                             select new { Team = team.Name };
 
             Reduce = results => from result in results
                                 group result by result.Team into g
-                                select new
-                                {
-                                    Team = g.Key
-                                };
+                                select new Result { Team = g.Key };
         }
 
         public class Result

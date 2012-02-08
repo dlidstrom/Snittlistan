@@ -9,14 +9,11 @@
         public Locations()
         {
             Map = matches => from match in matches
-                             select new
-                             {
-                                 Location = match.Location
-                             };
+                             select new { match.Location };
 
             Reduce = results => from result in results
                                 group result by result.Location into g
-                                select new
+                                select new Result
                                 {
                                     Location = g.Key
                                 };

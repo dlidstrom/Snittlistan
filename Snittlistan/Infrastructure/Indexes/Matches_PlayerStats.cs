@@ -16,16 +16,16 @@
                                         from game in table.Games
                                         select new
                                         {
-                                            Player = game.Player,
-                                            Pins = game.Pins,
+                                            game.Player,
+                                            game.Pins,
                                             Series = 1,
-                                            Score = table.Score,
+                                            table.Score,
                                             Max = game.Pins,
                                             GamesWithStats = 1,
-                                            Strikes = game.Strikes,
-                                            Misses = game.Misses,
-                                            OnePinMisses = game.OnePinMisses,
-                                            Splits = game.Splits,
+                                            game.Strikes,
+                                            game.Misses,
+                                            game.OnePinMisses,
+                                            game.Splits,
                                             CoveredAll = game.CoveredAll ? 1 : 0
                                         });
 
@@ -35,22 +35,22 @@
                                         from game in serie.Games
                                         select new
                                         {
-                                            Player = game.Player,
-                                            Pins = game.Pins,
+                                            game.Player,
+                                            game.Pins,
                                             Series = 1,
-                                            Score = game.Score,
+                                            game.Score,
                                             Max = game.Pins,
                                             GamesWithStats = game.Strikes != null ? 1 : 0,
-                                            Strikes = game.Strikes,
-                                            Misses = game.Misses,
-                                            OnePinMisses = game.OnePinMisses,
-                                            Splits = game.Splits,
+                                            game.Strikes,
+                                            game.Misses,
+                                            game.OnePinMisses,
+                                            game.Splits,
                                             CoveredAll = game.CoveredAll ? 1 : 0
                                         });
 
             Reduce = results => from result in results
                                 group result by result.Player into stat
-                                select new
+                                select new Result
                                 {
                                     Player = stat.Key,
                                     Pins = stat.Sum(s => s.Pins),

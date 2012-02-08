@@ -16,10 +16,10 @@
                                         from game in serie.Games
                                         select new
                                         {
-                                            Player = game.Player,
-                                            Date = match.Date.Date,
-                                            Pins = game.Pins,
-                                            Score = game.Score,
+                                            game.Player,
+                                            match.Date.Date,
+                                            game.Pins,
+                                            game.Score,
                                             Max = game.Pins,
                                             GamesWithStats = game.Strikes != null ? 1 : 0,
                                             TotalStrikes = game.Strikes,
@@ -35,10 +35,10 @@
                                         from game in table.Games
                                         select new
                                         {
-                                            Player = game.Player,
-                                            Date = match.Date.Date,
-                                            Pins = game.Pins,
-                                            Score = table.Score,
+                                            game.Player,
+                                            match.Date.Date,
+                                            game.Pins,
+                                            table.Score,
                                             Max = game.Pins,
                                             GamesWithStats = 1,
                                             TotalStrikes = game.Strikes,
@@ -49,7 +49,7 @@
 
             Reduce = results => from result in results
                                 group result by result.Player into g
-                                select new
+                                select new Result
                                 {
                                     Player = g.Key,
                                     Date = g.OrderByDescending(x => x.Date).Take(20).First().Date,
