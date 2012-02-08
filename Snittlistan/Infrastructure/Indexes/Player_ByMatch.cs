@@ -17,20 +17,20 @@
                                         where game.Player != null
                                         select new
                                         {
-                                            Type = "4x4",
-                                            Player = game.Player,
-                                            MatchId = match.Id,
+                                            game.Player,
+                                            match.Location,
+                                            match.Date,
+                                            game.Score,
+                                            game.Pins,
+                                            game.Strikes,
+                                            game.Misses,
                                             BitsMatchId = 0,
-                                            Location = match.Location,
+                                            Type = "4x4",
+                                            MatchId = match.Id,
                                             Team = team.Name,
-                                            Date = match.Date,
-                                            Score = game.Score,
-                                            Pins = game.Pins,
                                             Max = game.Pins,
                                             HasStats = game.Strikes != null ? 1 : 0,
-                                            Series = 1,
-                                            Strikes = game.Strikes,
-                                            Misses = game.Misses
+                                            Series = 1
                                         });
 
             AddMap<Match8x4>(matches => from match in matches
@@ -41,25 +41,25 @@
                                         where game.Player != null
                                         select new
                                         {
+                                            game.Player,
+                                            match.Location,
+                                            match.Date,
+                                            table.Score,
+                                            game.Pins,
+                                            game.Strikes,
+                                            game.Misses,
+                                            match.BitsMatchId,
                                             Type = "8x4",
-                                            Player = game.Player,
                                             MatchId = match.Id,
-                                            BitsMatchId = match.BitsMatchId,
-                                            Location = match.Location,
                                             Team = team.Name,
-                                            Date = match.Date,
-                                            Score = table.Score,
-                                            Pins = game.Pins,
                                             Max = game.Pins,
                                             HasStats = 1,
-                                            Series = 1,
-                                            Strikes = game.Strikes,
-                                            Misses = game.Misses
+                                            Series = 1
                                         });
 
             Reduce = results => from result in results
                                 group result by new { result.Type, result.Player, result.MatchId, result.BitsMatchId, result.Location, result.Date, result.Team } into games
-                                select new
+                                select new Result
                                 {
                                     Type = games.Key.Type,
                                     Player = games.Key.Player,

@@ -14,10 +14,10 @@
             AddMap<Match4x4>(matches => from match in matches
                                         select new
                                         {
-                                            Id = match.Id,
+                                            match.Id,
                                             Type = "4x4",
-                                            Date = match.Date,
-                                            Location = match.Location,
+                                            match.Date,
+                                            match.Location,
                                             HomeTeamName = match.Teams.ElementAt(0).Name,
                                             HomeTeamScore = match.Teams.ElementAt(0).Score,
                                             AwayTeamName = match.Teams.ElementAt(1).Name,
@@ -27,10 +27,10 @@
             AddMap<Match8x4>(matches => from match in matches
                                         select new
                                         {
-                                            Id = match.Id,
+                                            match.Id,
                                             Type = "8x4",
-                                            Date = match.Date,
-                                            Location = match.Location,
+                                            match.Date,
+                                            match.Location,
                                             HomeTeamName = match.Teams.ElementAt(0).Name,
                                             HomeTeamScore = match.Teams.ElementAt(0).Score,
                                             AwayTeamName = match.Teams.ElementAt(1).Name,

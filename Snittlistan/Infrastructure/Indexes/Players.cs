@@ -13,17 +13,11 @@
                              from serie in team.Series
                              from table in serie.Tables
                              from game in table.Games
-                             select new
-                             {
-                                 Player = game.Player,
-                             };
+                             select new { game.Player, };
 
             Reduce = results => from result in results
                                 group result by result.Player into g
-                                select new
-                                {
-                                    Player = g.Key
-                                };
+                                select new Result { Player = g.Key };
         }
 
         public class Result
