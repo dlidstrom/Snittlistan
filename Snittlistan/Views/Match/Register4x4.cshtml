@@ -11,64 +11,12 @@
     @Content.Script(ScriptType.JQueryValidateUnobtrusive)
     @Content.Script("conditional-validation.min.js", Url)
     @Content.Script("datepicker.min.js", Url)
-    @Content.Script("knockout-2.0.0.js", Url)
     @Content.Script("autocomplete.min.js", Url)
-
-<script type="text/javascript">
-    var viewModel = {
-        // first player
-        team_1_player1: ko.observable("@Model.HomeTeam.Serie1.Game1.Player"),
-        team_1_player1_strikes0: ko.observable(""),
-        team_1_player1_strikes1: ko.observable(""),
-        team_1_player1_strikes2: ko.observable(""),
-        team_1_player1_strikes3: ko.observable(""),
-        // second player
-        team_1_player2: ko.observable("@Model.HomeTeam.Serie1.Game2.Player"),
-        team_1_player2_strikes0: ko.observable(""),
-        team_1_player2_strikes1: ko.observable(""),
-        team_1_player2_strikes2: ko.observable(""),
-        team_1_player2_strikes3: ko.observable(""),
-        // third player
-        team_1_player3: ko.observable("@Model.HomeTeam.Serie1.Game3.Player"),
-        team_1_player3_strikes0: ko.observable(""),
-        team_1_player3_strikes1: ko.observable(""),
-        team_1_player3_strikes2: ko.observable(""),
-        team_1_player3_strikes3: ko.observable(""),
-        // fourth player
-        team_1_player4: ko.observable("@Model.HomeTeam.Serie1.Game4.Player"),
-        team_1_player4_strikes0: ko.observable(""),
-        team_1_player4_strikes1: ko.observable(""),
-        team_1_player4_strikes2: ko.observable(""),
-        team_1_player4_strikes3: ko.observable(""),
-
-        // first player
-        team_2_player1: ko.observable("@Model.AwayTeam.Serie1.Game1.Player"),
-        team_2_player1_strikes0: ko.observable(""),
-        team_2_player1_strikes1: ko.observable(""),
-        team_2_player1_strikes2: ko.observable(""),
-        team_2_player1_strikes3: ko.observable(""),
-        // second player
-        team_2_player2: ko.observable("@Model.AwayTeam.Serie1.Game2.Player"),
-        team_2_player2_strikes0: ko.observable(""),
-        team_2_player2_strikes1: ko.observable(""),
-        team_2_player2_strikes2: ko.observable(""),
-        team_2_player2_strikes3: ko.observable(""),
-        // third player
-        team_2_player3: ko.observable("@Model.AwayTeam.Serie1.Game3.Player"),
-        team_2_player3_strikes0: ko.observable(""),
-        team_2_player3_strikes1: ko.observable(""),
-        team_2_player3_strikes2: ko.observable(""),
-        team_2_player3_strikes3: ko.observable(""),
-        // fourth player
-        team_2_player4: ko.observable("@Model.AwayTeam.Serie1.Game4.Player"),
-        team_2_player4_strikes0: ko.observable(""),
-        team_2_player4_strikes1: ko.observable(""),
-        team_2_player4_strikes2: ko.observable(""),
-        team_2_player4_strikes3: ko.observable("")
-    };
-
-    ko.applyBindings(viewModel);
-</script>
+    @Content.Script("knockout-2.0.0.js", Url)
+    <script type="text/javascript">
+    var initialData = @(Html.Raw(Json.Encode(Model)));
+    </script>
+    @Content.Script("team4x4.min.js", Url)
 }
 
 <h2>@ViewBag.Title</h2>

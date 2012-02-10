@@ -26,7 +26,7 @@
                 {
                     Name = "HomeTeam",
                     Score = 13,
-                    Serie1 = new Team4x4ViewModel.Serie
+                    Player1 = new Team4x4ViewModel.Player
                     {
                         Game1 = new Team4x4ViewModel.Game
                         {

@@ -1,7 +1,7 @@
 ﻿@model Team4x4ViewModel
 
 @{
-    // used in serie editors
+    // used in player editors
     int team = Convert.ToInt32(ViewData["team"]);
 }
 
@@ -27,14 +27,14 @@
     </tr>
 </table>
 
-<h3>@Html.LabelFor(model => model.Serie1)</h3>
-@Html.EditorFor(model => model.Serie1, "Serie4Editor", new { serie = 0, valueUpdate = "afterkeydown" })
+<h3>@Html.LabelFor(model => model.Player1)</h3>
+@Html.EditorFor(model => model.Player1, "PlayerEditor", new { player = 1 })
 
-<h3>@Html.LabelFor(model => model.Serie2)</h3>
-@Html.EditorFor(model => model.Serie2, "Serie4Editor", new { serie = 1, valueUpdate = "never" })
+<h3>@Html.LabelFor(model => model.Player2)</h3>
+@Html.EditorFor(model => model.Player2, "PlayerEditor", new { player = 2 })
 
-<h3>@Html.LabelFor(model => model.Serie3)</h3>
-@Html.EditorFor(model => model.Serie3, "Serie4Editor", new { serie = 2, valueUpdate = "never" })
+<h3>@Html.LabelFor(model => model.Player3)</h3>
+@Html.EditorFor(model => model.Player3, "PlayerEditor", new { player = 3 })
 
-<h3>@Html.LabelFor(model => model.Serie4)</h3>
-@Html.EditorFor(model => model.Serie4, "Serie4Editor", new { serie = 3, valueUpdate = "never" })
+<h3>@Html.LabelFor(model => model.Player4)</h3>
+@Html.EditorFor(model => model.Player4, "PlayerEditor", new { player = 4 })

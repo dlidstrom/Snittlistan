@@ -16,31 +16,31 @@
                 {
                     new Serie4x4(new List<Game4x4>
                     {
-                        vm.Serie1.Game1.MapTo<Game4x4>(),
-                        vm.Serie1.Game2.MapTo<Game4x4>(),
-                        vm.Serie1.Game3.MapTo<Game4x4>(),
-                        vm.Serie1.Game4.MapTo<Game4x4>()
+                        vm.Player1.Game1.MapTo<Game4x4>(),
+                        vm.Player2.Game1.MapTo<Game4x4>(),
+                        vm.Player3.Game1.MapTo<Game4x4>(),
+                        vm.Player4.Game1.MapTo<Game4x4>()
                     }),
                     new Serie4x4(new List<Game4x4>
                     {
-                        vm.Serie2.Game1.MapTo<Game4x4>(),
-                        vm.Serie2.Game2.MapTo<Game4x4>(),
-                        vm.Serie2.Game3.MapTo<Game4x4>(),
-                        vm.Serie2.Game4.MapTo<Game4x4>()
+                        vm.Player1.Game2.MapTo<Game4x4>(),
+                        vm.Player2.Game2.MapTo<Game4x4>(),
+                        vm.Player3.Game2.MapTo<Game4x4>(),
+                        vm.Player4.Game2.MapTo<Game4x4>()
                     }),
                     new Serie4x4(new List<Game4x4>
                     {
-                        vm.Serie3.Game1.MapTo<Game4x4>(),
-                        vm.Serie3.Game2.MapTo<Game4x4>(),
-                        vm.Serie3.Game3.MapTo<Game4x4>(),
-                        vm.Serie3.Game4.MapTo<Game4x4>()
+                        vm.Player1.Game3.MapTo<Game4x4>(),
+                        vm.Player2.Game3.MapTo<Game4x4>(),
+                        vm.Player3.Game3.MapTo<Game4x4>(),
+                        vm.Player4.Game3.MapTo<Game4x4>()
                     }),
                     new Serie4x4(new List<Game4x4>
                     {
-                        vm.Serie4.Game1.MapTo<Game4x4>(),
-                        vm.Serie4.Game2.MapTo<Game4x4>(),
-                        vm.Serie4.Game3.MapTo<Game4x4>(),
-                        vm.Serie4.Game4.MapTo<Game4x4>()
+                        vm.Player1.Game4.MapTo<Game4x4>(),
+                        vm.Player2.Game4.MapTo<Game4x4>(),
+                        vm.Player3.Game4.MapTo<Game4x4>(),
+                        vm.Player4.Game4.MapTo<Game4x4>()
                     })
                 });
         }

@@ -13,10 +13,10 @@ namespace Snittlistan.ViewModels.Match
         /// </summary>
         public Team4x4ViewModel()
         {
-            Serie1 = new Serie();
-            Serie2 = new Serie();
-            Serie3 = new Serie();
-            Serie4 = new Serie();
+            Player1 = new Player();
+            Player2 = new Player();
+            Player3 = new Player();
+            Player4 = new Player();
         }
 
         /// <summary>
@@ -34,38 +34,38 @@ namespace Snittlistan.ViewModels.Match
         public int Score { get; set; }
 
         /// <summary>
-        /// Gets or sets serie 1.
+        /// Gets or sets player 1.
         /// </summary>
-        [Display(Name = "Serie 1")]
-        public Serie Serie1 { get; set; }
+        [Display(Name = "Spelare 1")]
+        public Player Player1 { get; set; }
 
         /// <summary>
-        /// Gets or sets serie 2.
+        /// Gets or sets player 2.
         /// </summary>
-        [Display(Name = "Serie 2")]
-        public Serie Serie2 { get; set; }
+        [Display(Name = "Spelare 2")]
+        public Player Player2 { get; set; }
 
         /// <summary>
-        /// Gets or sets serie 3.
+        /// Gets or sets player 3.
         /// </summary>
-        [Display(Name = "Serie 3")]
-        public Serie Serie3 { get; set; }
+        [Display(Name = "Spelare 3")]
+        public Player Player3 { get; set; }
 
         /// <summary>
-        /// Gets or sets serie 4.
+        /// Gets or sets player 4.
         /// </summary>
-        [Display(Name = "Serie 4")]
-        public Serie Serie4 { get; set; }
+        [Display(Name = "Spelare 4")]
+        public Player Player4 { get; set; }
 
         /// <summary>
-        /// Represents a serie in a match.
+        /// Represents a player in a match.
         /// </summary>
-        public class Serie
+        public class Player
         {
             /// <summary>
-            /// Initializes a new instance of the Serie class.
+            /// Initializes a new instance of the Player class.
             /// </summary>
-            public Serie()
+            public Player()
             {
                 Game1 = new Game();
                 Game2 = new Game();
