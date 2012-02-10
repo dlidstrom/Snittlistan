@@ -10,7 +10,7 @@
     {
         public static User FindUserByEmail(this IDocumentSession sess, string email)
         {
-            return sess.Query<User>()
+            return sess.Query<User, User_ByEmail>()
                 .FirstOrDefault(u => u.Email == email);
         }
 

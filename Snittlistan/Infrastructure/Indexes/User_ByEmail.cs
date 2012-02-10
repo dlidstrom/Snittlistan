@@ -9,7 +9,7 @@
         public User_ByEmail()
         {
             Map = users => from user in users
-                           select new { user.Email };
+                           select new { user.Email, user.ActivationKey };
         }
     }
 }
