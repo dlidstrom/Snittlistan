@@ -1,4 +1,4 @@
-﻿namespace Snittlistan
+﻿namespace Snittlistan.Test
 {
     using System;
     using System.Collections.Generic;
