@@ -9,7 +9,14 @@
     @Content.Script(ScriptType.JQueryValidate)
     @Content.Script(ScriptType.JQueryValidateLocalized)
     @Content.Script(ScriptType.JQueryValidateUnobtrusive)
+    @Content.Script("conditional-validation.min.js", Url)
+    @Content.Script("datepicker.min.js", Url)
     @Content.Script("autocomplete.min.js", Url)
+    @Content.Script("knockout-2.0.0.js", Url)
+    <script type="text/javascript">
+    var initialData = @(Html.Raw(Json.Encode(Model)));
+    </script>
+    @Content.Script("team4x4.js", Url)
 }
 
 <h2>@ViewBag.Title</h2>
@@ -20,7 +27,7 @@
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>Matchinformation</legend>
-            @Html.EditorFor(model => model.Team, "TeamEditor4x4")
+            @Html.EditorFor(model => model.Team, "TeamEditor4x4", new { team = 1 })
 
             <p>
                 <input type="submit" value="Spara" />

@@ -1,9 +1,8 @@
-﻿@model Team4x4ViewModel.Serie
+﻿@model Team4x4ViewModel.Player
 
 @{
     int team = Convert.ToInt32(ViewData["team"]);
-    int serie = Convert.ToInt32(ViewData["serie"]);
-    string valueUpdate = Convert.ToString(ViewData["valueUpdate"]);
+    int player = Convert.ToInt32(ViewData["player"]);
 }
 
 <table class="team-editor">
@@ -20,13 +19,13 @@
         </tr>
     </thead>
     <tbody>
-        @* First player *@
+        @* First serie *@
         <tr>
             <td>@Html.TextBoxFor(
                     model => model.Game1.Player,
                     new
                     {
-                        data_bind = string.Format("value: team_{0}_player1, valueUpdate: '{1}'", team, valueUpdate),
+                        data_bind = string.Format("value: team_{0}_player{1}, valueUpdate: 'afterkeydown'", team, player),
                         data_autocomplete = Url.Action("PlayersQuickSearch", "Search")
                     })</td>
             <td>@Html.TextBoxFor(model => model.Game1.Score, new { type = "number" })</td>
@@ -36,34 +35,34 @@
                 new
                 {
                     type = "number",
-                    data_bind = string.Format("value: team_{0}_player1_strikes{1}, valueUpdate: 'afterkeydown'", team, serie)
+                    data_bind = string.Format("value: team_{0}_player{1}_strikes1, valueUpdate: 'afterkeydown'", team, player)
                 })</td>
             <td>@Html.TextBoxFor(
                 model => model.Game1.Misses,
                 new
                 {
                     type = "number",
-                    data_bind = string.Format("enable: team_{0}_player1_strikes{1}, css: {{ 'input-validation-error': team_{0}_player1_strikes{1} }}", team, serie)
+                    data_bind = string.Format("enable: team_{0}_player{1}_strikes1, css: {{ 'input-validation-error': team_{0}_player{1}_strikes1 }}", team, player)
                 })</td>
             <td>@Html.TextBoxFor(
                 model => model.Game1.OnePinMisses,
                 new
                 {
                     type = "number",
-                    data_bind = string.Format("enable: team_{0}_player1_strikes{1}, css: {{ 'input-validation-error': team_{0}_player1_strikes{1} }}", team, serie)
+                    data_bind = string.Format("enable: team_{0}_player{1}_strikes1, css: {{ 'input-validation-error': team_{0}_player{1}_strikes1 }}", team, player)
                 })</td>
             <td>@Html.TextBoxFor(
                 model => model.Game1.Splits,
                 new
                 {
                     type = "number",
-                    data_bind = string.Format("enable: team_{0}_player1_strikes{1}, css: {{ 'input-validation-error': team_{0}_player1_strikes{1} }}", team, serie)
+                    data_bind = string.Format("enable: team_{0}_player{1}_strikes1, css: {{ 'input-validation-error': team_{0}_player{1}_strikes1 }}", team, player)
                 })</td>
             <td>@Html.CheckBoxFor(
                 model => model.Game1.CoveredAll,
                 new
                 {
-                    data_bind = string.Format("enable: team_{0}_player1_strikes{1}", team, serie)
+                    data_bind = string.Format("enable: team_{0}_player{1}_strikes1", team, player)
                 })</td>
         </tr>
         @* Second player *@
@@ -72,7 +71,7 @@
                 model => model.Game2.Player,
                 new
                 {
-                    data_bind = string.Format("value: team_{0}_player2, valueUpdate: '{1}'", team, valueUpdate),
+                    data_bind = string.Format("value: team_{0}_player{1}, valueUpdate: 'never'", team, player),
                     data_autocomplete = Url.Action("PlayersQuickSearch", "Search")
                 })</td>
             <td>@Html.TextBoxFor(model => model.Game2.Score, new { type = "number" })</td>
@@ -82,34 +81,34 @@
                 new
                 {
                     type = "number",
-                    data_bind = string.Format("value: team_{0}_player2_strikes{1}, valueUpdate: 'afterkeydown'", team, serie)
+                    data_bind = string.Format("value: team_{0}_player{1}_strikes2, valueUpdate: 'afterkeydown'", team, player)
                 })</td>
             <td>@Html.TextBoxFor(
                 model => model.Game2.Misses,
                 new
                 {
                     type = "number",
-                    data_bind = string.Format("enable: team_{0}_player2_strikes{1}, css: {{ 'input-validation-error': team_{0}_player2_strikes{1} }}", team, serie)
+                    data_bind = string.Format("enable: team_{0}_player{1}_strikes2, css: {{ 'input-validation-error': team_{0}_player{1}_strikes2 }}", team, player)
                 })</td>
             <td>@Html.TextBoxFor(
                 model => model.Game2.OnePinMisses,
                 new
                 {
                     type = "number",
-                    data_bind = string.Format("enable: team_{0}_player2_strikes{1}, css: {{ 'input-validation-error': team_{0}_player2_strikes{1} }}", team, serie)
+                    data_bind = string.Format("enable: team_{0}_player{1}_strikes2, css: {{ 'input-validation-error': team_{0}_player{1}_strikes2 }}", team, player)
                 })</td>
             <td>@Html.TextBoxFor(
                 model => model.Game2.Splits,
                 new
                 {
                     type = "number",
-                    data_bind = string.Format("enable: team_{0}_player2_strikes{1}, css: {{ 'input-validation-error': team_{0}_player2_strikes{1} }}", team, serie)
+                    data_bind = string.Format("enable: team_{0}_player{1}_strikes2, css: {{ 'input-validation-error': team_{0}_player{1}_strikes2 }}", team, player)
                 })</td>
             <td>@Html.CheckBoxFor(
                 model => model.Game2.CoveredAll,
                 new
                 {
-                    data_bind = string.Format("enable: team_{0}_player2_strikes{1}", team, serie)
+                    data_bind = string.Format("enable: team_{0}_player{1}_strikes2", team, player)
                 })</td>
         </tr>
         @* Third player *@
@@ -118,7 +117,7 @@
                     model => model.Game3.Player,
                     new
                     {
-                        data_bind = string.Format("value: team_{0}_player3, valueUpdate: '{1}'", team, valueUpdate),
+                        data_bind = string.Format("value: team_{0}_player{1}, valueUpdate: 'never'", team, player),
                         data_autocomplete = Url.Action("PlayersQuickSearch", "Search")
                     })</td>
             <td>@Html.TextBoxFor(model => model.Game3.Score, new { type = "number" })</td>
@@ -128,34 +127,34 @@
                 new
                 {
                     type = "number",
-                    data_bind = string.Format("value: team_{0}_player3_strikes{1}, valueUpdate: 'afterkeydown'", team, serie)
+                    data_bind = string.Format("value: team_{0}_player{1}_strikes3, valueUpdate: 'afterkeydown'", team, player)
                 })</td>
             <td>@Html.TextBoxFor(
                 model => model.Game3.Misses,
                 new
                 {
                     type = "number",
-                    data_bind = string.Format("enable: team_{0}_player3_strikes{1}, css: {{ 'input-validation-error': team_{0}_player3_strikes{1} }}", team, serie)
+                    data_bind = string.Format("enable: team_{0}_player{1}_strikes3, css: {{ 'input-validation-error': team_{0}_player{1}_strikes3 }}", team, player)
                 })</td>
             <td>@Html.TextBoxFor(
                 model => model.Game3.OnePinMisses,
                 new
                 {
                     type = "number",
-                    data_bind = string.Format("enable: team_{0}_player3_strikes{1}, css: {{ 'input-validation-error': team_{0}_player3_strikes{1} }}", team, serie)
+                    data_bind = string.Format("enable: team_{0}_player{1}_strikes3, css: {{ 'input-validation-error': team_{0}_player{1}_strikes3 }}", team, player)
                 })</td>
             <td>@Html.TextBoxFor(
                 model => model.Game3.Splits,
                 new
                 {
                     type = "number",
-                    data_bind = string.Format("enable: team_{0}_player3_strikes{1}, css: {{ 'input-validation-error': team_{0}_player3_strikes{1} }}", team, serie)
+                    data_bind = string.Format("enable: team_{0}_player{1}_strikes3, css: {{ 'input-validation-error': team_{0}_player{1}_strikes3 }}", team, player)
                 })</td>
             <td>@Html.CheckBoxFor(
                 model => model.Game3.CoveredAll,
                 new
                 {
-                    data_bind = string.Format("enable: team_{0}_player3_strikes{1}", team, serie)
+                    data_bind = string.Format("enable: team_{0}_player{1}_strikes3", team, player)
                 })</td>
         </tr>
         @* Fourth player *@
@@ -164,7 +163,7 @@
                 model => model.Game4.Player,
                 new
                 {
-                    data_bind = string.Format("value: team_{0}_player4, valueUpdate: '{1}'", team, valueUpdate),
+                    data_bind = string.Format("value: team_{0}_player{1}, valueUpdate: 'never'", team, player),
                     data_autocomplete = Url.Action("PlayersQuickSearch", "Search")
                 })</td>
             <td>@Html.TextBoxFor(model => model.Game4.Score, new { type = "number" })</td>
@@ -174,34 +173,34 @@
                 new
                 {
                     type = "number",
-                    data_bind = string.Format("value: team_{0}_player4_strikes{1}, valueUpdate: 'afterkeydown'", team, serie)
+                    data_bind = string.Format("value: team_{0}_player{1}_strikes4, valueUpdate: 'afterkeydown'", team, player)
                 })</td>
             <td>@Html.TextBoxFor(
                 model => model.Game4.Misses,
                 new
                 {
                     type = "number",
-                    data_bind = string.Format("enable: team_{0}_player4_strikes{1}, css: {{ 'input-validation-error': team_{0}_player4_strikes{1} }}", team, serie)
+                    data_bind = string.Format("enable: team_{0}_player{1}_strikes4, css: {{ 'input-validation-error': team_{0}_player{1}_strikes4 }}", team, player)
                 })</td>
             <td>@Html.TextBoxFor(
                 model => model.Game4.OnePinMisses,
                 new
                 {
                     type = "number",
-                    data_bind = string.Format("enable: team_{0}_player4_strikes{1}, css: {{ 'input-validation-error': team_{0}_player4_strikes{1} }}", team, serie)
+                    data_bind = string.Format("enable: team_{0}_player{1}_strikes4, css: {{ 'input-validation-error': team_{0}_player{1}_strikes4 }}", team, player)
                 })</td>
             <td>@Html.TextBoxFor(
                 model => model.Game4.Splits,
                 new
                 {
                     type = "number",
-                    data_bind = string.Format("enable: team_{0}_player4_strikes{1}, css: {{ 'input-validation-error': team_{0}_player4_strikes{1} }}", team, serie)
+                    data_bind = string.Format("enable: team_{0}_player{1}_strikes4, css: {{ 'input-validation-error': team_{0}_player{1}_strikes4 }}", team, player)
                 })</td>
             <td>@Html.CheckBoxFor(
                 model => model.Game4.CoveredAll,
                 new
                 {
-                    data_bind = string.Format("enable: team_{0}_player4_strikes{1}", team, serie)
+                    data_bind = string.Format("enable: team_{0}_player{1}_strikes4", team, player)
                 })</td>
         </tr>
     </tbody>

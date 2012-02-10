@@ -179,7 +179,7 @@
     <Compile Include="Controllers\ValidationController.cs" />
     <Compile Include="Infrastructure\ActionInvokerWrapper.cs" />
     <Compile Include="Infrastructure\Attributes\UserTrackerLogAttribute.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Profiles\SerieResolver.cs" />
+    <Compile Include="Infrastructure\AutoMapper\Profiles\PlayerResolver.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\NameShortener.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\Match4x4Profile.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\Team4x4ViewModelConverter.cs" />
@@ -280,6 +280,7 @@
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
     <Content Include="Content\js\autocomplete.js" />
+    <Content Include="Content\js\team4x4.js" />
     <Content Include="robots.txt" />
     <Compile Include="Models\Game8x4.cs" />
     <Compile Include="Models\Match8x4.cs" />
@@ -425,7 +426,7 @@
     <Content Include="Views\Match\EditorTemplates\TeamEditor4x4.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Match\EditorTemplates\Serie4Editor.cshtml" />
+    <Content Include="Views\Match\EditorTemplates\PlayerEditor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Match\Details4x4.cshtml" />
