@@ -43,7 +43,7 @@
     <script type="text/javascript">
         var logErrorUrl = '@Url.Action("LogJavaScriptError", "Error")';
     </script>
-    @Content.Script("stacktrace.min.js", Url)
+    @Content.Script("stacktrace.js", Url)
     @Content.Script("feedback.min.js", Url)
     @Content.Script("button.min.js", Url)
     @RenderSection("scripts", false)
