@@ -83,10 +83,10 @@
 
             public double AverageScore { get { return Score / Series; } }
             public double AveragePins { get { return Pins / Series; } }
-            public double AverageStrikes { get { return Strikes / GamesWithStats; } }
-            public double AverageMisses { get { return Misses / GamesWithStats; } }
-            public double AverageOnePinMisses { get { return OnePinMisses / GamesWithStats; } }
-            public double AverageSplits { get { return Splits / GamesWithStats; } }
+            public double AverageStrikes { get { return Strikes / Math.Max(1, GamesWithStats); } }
+            public double AverageMisses { get { return Misses / Math.Max(1, GamesWithStats); } }
+            public double AverageOnePinMisses { get { return OnePinMisses / Math.Max(1, GamesWithStats); } }
+            public double AverageSplits { get { return Splits / Math.Max(1, GamesWithStats); } }
         }
     }
 }
