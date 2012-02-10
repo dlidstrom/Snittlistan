@@ -4,16 +4,22 @@
     using Raven.Client.Indexes;
     using Snittlistan.Models;
 
-    public class Players : AbstractIndexCreationTask<Match8x4, Players.Result>
+    public class Players : AbstractMultiMapIndexCreationTask<Players.Result>
     {
         public Players()
         {
-            Map = matches => from match in matches
-                             from team in match.Teams
-                             from serie in team.Series
-                             from table in serie.Tables
-                             from game in table.Games
-                             select new { game.Player, };
+            AddMap<Match8x4>(matches => from match in matches
+                                        from team in match.Teams
+                                        from serie in team.Series
+                                        from table in serie.Tables
+                                        from game in table.Games
+                                        select new { game.Player });
+
+            AddMap<Match4x4>(matches => from match in matches
+                                        from team in match.Teams
+                                        from serie in team.Series
+                                        from game in serie.Games
+                                        select new { game.Player });
 
             Reduce = results => from result in results
                                 group result by result.Player into g
