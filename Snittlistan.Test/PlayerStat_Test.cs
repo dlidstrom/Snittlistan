@@ -33,6 +33,10 @@
             stats.OnePinMisses.ShouldBe(1.0);
             stats.Splits.ShouldBe(2.0);
             stats.AveragePins.ShouldBe(211.25);
+            stats.AverageStrikes.ShouldBe(5.0);
+            stats.AverageMisses.ShouldBe(2.0);
+            stats.AverageOnePinMisses.ShouldBe(1);
+            stats.AverageSplits.ShouldBe(2);
             stats.CoveredAll.ShouldBe(1);
         }
 

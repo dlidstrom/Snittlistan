@@ -29,22 +29,22 @@
         /// <summary>
         /// Gets or sets the number of strikes.
         /// </summary>
-        public int Strikes { get; set; }
+        public int? Strikes { get; set; }
 
         /// <summary>
         /// Gets or sets the number of misses.
         /// </summary>
-        public int Misses { get; set; }
+        public int? Misses { get; set; }
 
         /// <summary>
         /// Gets or sets the number of one-pin misses.
         /// </summary>
-        public int OnePinMisses { get; set; }
+        public int? OnePinMisses { get; set; }
 
         /// <summary>
         /// Gets or sets the number of splits.
         /// </summary>
-        public int Splits { get; set; }
+        public int? Splits { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether all frames were covered (no misses).
