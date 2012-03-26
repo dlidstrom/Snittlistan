@@ -83,5 +83,40 @@
             result.Last20.Pins.ShouldBe(561.0 / 4);
             result.Last20.Score.ShouldBe(0.25);
         }
+
+        [Fact]
+        public void Handles8x4Correctly()
+        {
+            // Arrange
+            Session.Store(DbSeed.Create8x4Match());
+
+            Session.SaveChanges();
+            Session.Query<Player_ByMatch.Result, Player_ByMatch>()
+                .Customize(x => x.WaitForNonStaleResults())
+                .ToList();
+            Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
+                .Customize(x => x.WaitForNonStaleResults())
+                .ToList();
+            Session.Query<Pins_Last20.Result, Pins_Last20>()
+                .Customize(x => x.WaitForNonStaleResults())
+                .ToList();
+            var controller = new HomeController(Session);
+
+            // Act
+            var result = controller.Player("Mikael Axelsson").Model as PlayerMatchesViewModel;
+
+            // Assert
+            result.ShouldNotBeNull("Expected PlayerMatchesViewModel");
+            result.AverageStrikes.ShouldBe(5.0);
+            result.AverageMisses.ShouldBe(2.0);
+            result.Last20.GamesWithStats.ShouldBe(1);
+            result.Last20.Max.ShouldBe(202);
+            result.Last20.AverageStrikes.ShouldBe(5.0);
+            result.Last20.AverageMisses.ShouldBe(2.0);
+            result.Last20.AverageOnePinMisses.ShouldBe(1.0);
+            result.Last20.AverageSplits.ShouldBe(2.0);
+            result.Last20.Pins.ShouldBe(845.0 / 4);
+            result.Last20.Score.ShouldBe(0.25);
+        }
     }
 }
