@@ -1,23 +1,22 @@
 ﻿namespace Snittlistan.Test
 {
     using System;
-    using System.Linq;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
     using Castle.Windsor;
+    using Infrastructure.AutoMapper;
+    using Installers;
+    using Models;
     using Moq;
     using Raven.Client;
     using Raven.Client.Embedded;
-    using Snittlistan.Infrastructure.AutoMapper;
-    using Snittlistan.Installers;
-    using Snittlistan.Models;
 
     public abstract class DbTest : IDisposable
     {
         protected readonly IDocumentStore Store;
 
-        public DbTest()
+        protected DbTest()
         {
             // configure AutoMapper too
             AutoMapperConfiguration
@@ -43,7 +42,7 @@
             Session.Query<T>().Customize(x => x.WaitForNonStaleResults()).ToList();
         }
 
-        protected UrlHelper CreateUrlHelper()
+        protected static UrlHelper CreateUrlHelper()
         {
             var context = Mock.Of<HttpContextBase>();
             var routes = new RouteCollection();

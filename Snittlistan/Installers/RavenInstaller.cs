@@ -6,12 +6,12 @@
     using Castle.MicroKernel.Registration;
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
+    using Infrastructure.Indexes;
+    using Models;
     using Raven.Client;
     using Raven.Client.Document;
     using Raven.Client.Embedded;
     using Raven.Client.MvcIntegration;
-    using Snittlistan.Infrastructure.Indexes;
-    using Snittlistan.Models;
 
     public class RavenInstaller : IWindsorInstaller
     {
@@ -19,13 +19,8 @@
         {
             store.Initialize();
             store.Conventions.IdentityPartsSeparator = "-";
-            store.Conventions.FindTypeTagName = type =>
-            {
-                if (type == typeof(Match8x4))
-                    return "Matches";
-
-                return DocumentConvention.DefaultTypeTagName(type);
-            };
+            store.Conventions.DefaultQueryingConsistency = ConsistencyOptions.QueryYourWrites;
+            store.Conventions.FindTypeTagName = type => type == typeof(Match8x4) ? "Matches" : DocumentConvention.DefaultTypeTagName(type);
 
             // create indexes
             IndexCreator.CreateIndexes(store);
@@ -36,8 +31,8 @@
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(
-                    Component.For<IDocumentStore>().Instance(InitializeStore(CreateDocumentStore())).LifestyleSingleton(),
-                    Component.For<IDocumentSession>().UsingFactoryMethod(GetDocumentSession).LifestylePerWebRequest());
+                Component.For<IDocumentStore>().Instance(InitializeStore(CreateDocumentStore())).LifestyleSingleton(),
+                Component.For<IDocumentSession>().UsingFactoryMethod(GetDocumentSession).LifestylePerWebRequest());
         }
 
         private static IDocumentSession GetDocumentSession(IKernel kernel)
