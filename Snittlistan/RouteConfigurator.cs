@@ -28,9 +28,9 @@
 
             // default route
             routes.MapRoute(
-                "Default", // Route name
-                "{controller}/{action}/{id}", // URL with parameters
-                new { controller = "Home", action = "Index", id = UrlParameter.Optional }); // Parameter defaults
+                name: "Default", // Route name
+                url: "{controller}/{action}/{id}", // URL with parameters
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }); // Parameter defaults
 
             NotFoundRoute();
             CatchAllRoute();
@@ -40,37 +40,37 @@
         {
             // ~/logon|register|verify
             routes.MapRouteLowerCase(
-                "AccountController-Action",
-                "{action}",
-                new { controller = "Account" },
-                new { action = "^LogOn$|^Register$|^Verify$" });
+                name: "AccountController-Action",
+                url: "{action}",
+                defaults: new { controller = "Account" },
+                constraints: new { action = "^LogOn$|^Register$|^Verify$" });
         }
 
         private void ConfigureHome()
         {
             // ~/about
             routes.MapRouteLowerCase(
-                "HomeController-Action",
-                "{action}",
-                new { controller = "Home" },
-                new { action = "About" });
+                name: "HomeController-Action",
+                url: "{action}",
+                defaults: new { controller = "Home" },
+                constraints: new { action = "About" });
         }
 
         private void ConfigureElmah()
         {
             routes.MapRouteLowerCase(
-                "ElmahController-internal",
-                "admin/elmah/{type}",
-                new { controller = "Elmah", action = "Index", type = UrlParameter.Optional });
+                name: "ElmahController-internal",
+                url: "admin/elmah/{type}",
+                defaults: new { controller = "Elmah", action = "Index", type = UrlParameter.Optional });
         }
 
         private void ConfigureHacker()
         {
             routes.MapRoute(
-                "Hacker-Routes",
-                "{*php}",
-                new { controller = "Hacker", action = "Index" },
-                new { php = @".*\.php.*|catalog|^s?cgi(\-bin)?.*|^scripts.*|^(aw)?stats.*|^shop.*" });
+                name: "Hacker-Routes",
+                url: "{*php}",
+                defaults: new { controller = "Hacker", action = "Index" },
+                constraints: new { php = @".*\.php.*|catalog|^s?cgi(\-bin)?.*|^scripts.*|^(aw)?stats.*|^shop.*" });
         }
 
         private void NotFoundRoute()
@@ -78,17 +78,17 @@
             // To allow IIS to execute "/notfound" when requesting something which is disallowed,
             // such as /bin or /add_data.
             routes.MapRoute(
-                "NotFound",
-                "notfound",
-                new { controller = "NotFound", action = "NotFound" });
+                name: "NotFound",
+                url: "notfound",
+                defaults: new { controller = "NotFound", action = "NotFound" });
         }
 
         private void CatchAllRoute()
         {
             routes.MapRoute(
-                "NotFound-Catch-All",
-                "{*any}",
-                new { controller = "NotFound", action = "NotFound" });
+                name: "NotFound-Catch-All",
+                url: "{*any}",
+                defaults: new { controller = "NotFound", action = "NotFound" });
         }
     }
 }

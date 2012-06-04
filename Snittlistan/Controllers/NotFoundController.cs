@@ -2,7 +2,7 @@ namespace Snittlistan.Controllers
 {
     using System.Web.Mvc;
     using System.Web.Routing;
-    using Snittlistan.Infrastructure.Results;
+    using Infrastructure.Results;
 
     public class NotFoundController : IController
     {

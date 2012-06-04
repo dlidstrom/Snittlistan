@@ -2,8 +2,8 @@
 {
     using System;
     using System.Linq;
+    using Models;
     using Raven.Client.Indexes;
-    using Snittlistan.Models;
 
     public class Matches_PlayerStats : AbstractMultiMapIndexCreationTask<Matches_PlayerStats.Result>
     {

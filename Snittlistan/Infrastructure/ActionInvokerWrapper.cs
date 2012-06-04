@@ -1,11 +1,7 @@
 ﻿namespace Snittlistan.Infrastructure
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
-    using Snittlistan.Controllers;
+    using Controllers;
 
     /// <summary>
     /// Wraps another IActionInvoker except it handles the case of an action method
