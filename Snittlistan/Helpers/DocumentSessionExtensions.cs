@@ -23,7 +23,6 @@
         public static bool BitsIdExists(this IDocumentSession sess, int id)
         {
             return sess.Query<Match_ByBitsMatchId.Result, Match_ByBitsMatchId>()
-                .Customize(c => c.WaitForNonStaleResultsAsOfLastWrite())
                 .AsProjection<Match_ByBitsMatchId.Result>()
                 .SingleOrDefault(m => m.BitsMatchId == id) != null;
         }

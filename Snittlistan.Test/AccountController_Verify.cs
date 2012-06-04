@@ -26,7 +26,6 @@
             var user = new User("F", "L", "e@d.com", "some pwd");
             Session.Store(user);
             Session.SaveChanges();
-            WaitForNonStaleResults<User>();
 
             VerifyActivationKeyForUser(user)
                 .AssertActionRedirect()

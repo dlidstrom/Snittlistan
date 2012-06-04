@@ -18,7 +18,6 @@
             Session.Store(new Match4x4("P1", DateTime.Now, new Team4x4("Home1", 4), new Team4x4("Away1", 7)) { Id = 1 });
             Session.Store(new Match4x4("P2", DateTime.Now, new Team4x4("Home2", 5), new Team4x4("Away2", 8)) { Id = 2 });
             Session.Store(new Match4x4("P3", DateTime.Now, new Team4x4("Home3", 6), new Team4x4("Away3", 9)) { Id = 3 });
-            WaitForNonStaleResults<Match4x4>();
             var controller = new MatchController(Session);
 
             // Act

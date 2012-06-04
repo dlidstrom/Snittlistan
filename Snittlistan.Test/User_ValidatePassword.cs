@@ -17,7 +17,6 @@
                 original.Activate();
                 Session.Store(original);
                 Session.SaveChanges();
-                WaitForNonStaleResults<User>();
             }
 
             var user = Session.FindUserByEmail("e@d.com");
@@ -34,7 +33,6 @@
         {
             Session.Store(new User("F", "L", "e@d.com", "some pwd"));
             Session.SaveChanges();
-            WaitForNonStaleResults<User>();
 
             Session
                 .FindUserByEmail("e@d.com")

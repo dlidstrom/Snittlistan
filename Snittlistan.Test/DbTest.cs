@@ -37,11 +37,6 @@
             Store.Dispose();
         }
 
-        protected void WaitForNonStaleResults<T>() where T : class
-        {
-            Session.Query<T>().Customize(x => x.WaitForNonStaleResults()).ToList();
-        }
-
         protected static UrlHelper CreateUrlHelper()
         {
             var context = Mock.Of<HttpContextBase>();
@@ -60,7 +55,6 @@
             user.Activate();
             Session.Store(user);
             Session.SaveChanges();
-            WaitForNonStaleResults<User>();
             return user;
         }
     }
