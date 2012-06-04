@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Infrastructure.Indexes;
+    using Models;
     using MvcContrib.TestHelper;
-    using Snittlistan.Infrastructure.Indexes;
-    using Snittlistan.Models;
     using Xunit;
 
     public class PlayerStat_Test : DbTest

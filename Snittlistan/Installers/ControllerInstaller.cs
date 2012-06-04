@@ -4,7 +4,7 @@
     using Castle.MicroKernel.Registration;
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
-    using Snittlistan.Controllers;
+    using Controllers;
 
     public class ControllerInstaller : IWindsorInstaller
     {

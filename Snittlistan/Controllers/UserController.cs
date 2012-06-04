@@ -3,13 +3,13 @@
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
+    using Helpers;
+    using Infrastructure.AutoMapper;
+    using Models;
     using MvcContrib;
     using Raven.Client;
-    using Snittlistan.Helpers;
-    using Snittlistan.Infrastructure.AutoMapper;
-    using Snittlistan.Models;
-    using Snittlistan.ViewModels.Account;
-    using Snittlistan.ViewModels.Admin;
+    using ViewModels.Account;
+    using ViewModels.Admin;
 
     /// <summary>
     /// User administration.
@@ -59,7 +59,7 @@
         [HttpPost]
         public ActionResult Edit(EditUserViewModel vm)
         {
-            User user = Session.Load<User>(vm.Id);
+            var user = Session.Load<User>(vm.Id);
             if (user == null)
                 throw new HttpException(404, "User not found");
 
