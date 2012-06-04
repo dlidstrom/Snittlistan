@@ -489,4 +489,5 @@
 if exist $(ProjectDir)\obj\Release\TransformWebConfig rmdir /S /Q $(ProjectDir)\obj\Release\TransformWebConfig</PreBuildEvent>
   </PropertyGroup>
   <Import Project="$(ProjectDir)\..\.nuget\nuget.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>
