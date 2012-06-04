@@ -18,7 +18,6 @@
             Match8x4 originalMatch = new Match8x4("Place", then, 1, new Team8x4("Home", 13), new Team8x4("Away", 6));
             Session.Store(originalMatch);
             Session.SaveChanges();
-            WaitForNonStaleResults<Match8x4>();
 
             // Act
             var controller = new MatchController(Session);

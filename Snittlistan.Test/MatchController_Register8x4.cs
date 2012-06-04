@@ -35,7 +35,6 @@
                 }
             });
             Session.SaveChanges();
-            WaitForNonStaleResults<Match8x4>();
 
             // Assert
             var match = Session.Query<Match8x4>().Single();

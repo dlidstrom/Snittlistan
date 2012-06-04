@@ -33,9 +33,6 @@
             // normally done by infrastructure (special action filter)
             Session.SaveChanges();
 
-            // let indexing do its job
-            WaitForNonStaleResults<User>();
-
             // verify
             var registeredUser = Session.FindUserByEmail("e@d.com");
             registeredUser.ShouldNotBeNull("Should find user after registration");
@@ -43,9 +40,6 @@
 
             var controller2 = new AccountController(Session, Mock.Of<IAuthenticationService>());
             controller2.Verify(Guid.Parse(key));
-
-            // let indexing do its job
-            WaitForNonStaleResults<User>();
 
             // logon
             bool loggedOn = false;

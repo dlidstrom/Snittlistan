@@ -47,9 +47,6 @@
             // normally done by infrastructure (special action filter)
             Session.SaveChanges();
 
-            // let indexing do its job
-            WaitForNonStaleResults<User>();
-
             var user = Session.FindUserByEmail("email");
             user.ShouldNotBeNull("Should find it");
             user.FirstName.ShouldBe("first name");

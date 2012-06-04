@@ -18,7 +18,6 @@
             Session.Store(new Match8x4("P1", DateTime.Now, 1, new Team8x4("Home1", 4), new Team8x4("Away1", 7)) { Id = 1 });
             Session.Store(new Match8x4("P2", DateTime.Now, 2, new Team8x4("Home2", 5), new Team8x4("Away2", 8)) { Id = 2 });
             Session.Store(new Match8x4("P3", DateTime.Now, 3, new Team8x4("Home3", 6), new Team8x4("Away3", 9)) { Id = 3 });
-            WaitForNonStaleResults<Match8x4>();
             var controller = new MatchController(Session);
 
             // Act

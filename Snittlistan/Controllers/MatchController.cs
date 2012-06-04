@@ -30,7 +30,6 @@
         public ViewResult Index()
         {
             var matches = Session.Query<Match_ByDate.Result, Match_ByDate>()
-                .Customize(x => x.WaitForNonStaleResults())
                 .OrderByDescending(m => m.Date)
                 .AsProjection<Match_ByDate.Result>()
                 .ToList();
