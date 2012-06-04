@@ -7,10 +7,10 @@
     using Castle.Windsor;
     using Castle.Windsor.Installer;
     using Common.Logging;
-    using Snittlistan.Infrastructure;
-    using Snittlistan.Infrastructure.Attributes;
-    using Snittlistan.Infrastructure.AutoMapper;
-    using Snittlistan.IoC;
+    using Infrastructure;
+    using Infrastructure.Attributes;
+    using Infrastructure.AutoMapper;
+    using IoC;
 
     public class MvcApplication : HttpApplication
     {
@@ -63,7 +63,7 @@
             container.Dispose();
         }
 
-        private void InitializeContainer()
+        private static void InitializeContainer()
         {
             if (container == null)
             {

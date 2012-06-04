@@ -3,9 +3,9 @@
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
+    using Infrastructure.Indexes;
     using Raven.Client;
     using Raven.Client.Linq;
-    using Infrastructure.Indexes;
     using ViewModels;
 
     /// <summary>
