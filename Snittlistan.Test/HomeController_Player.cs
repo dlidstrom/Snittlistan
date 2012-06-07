@@ -56,11 +56,16 @@
                     awayTeam: new Team4x4("Librex", 14)));
 
             Session.SaveChanges();
+
+            // wait for map/reduce indexing to do its work
             Session.Query<Player_ByMatch.Result, Player_ByMatch>()
+                .Customize(c => c.WaitForNonStaleResultsAsOfNow())
                 .ToList();
             Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
+                .Customize(c => c.WaitForNonStaleResultsAsOfNow())
                 .ToList();
             Session.Query<Pins_Last20.Result, Pins_Last20>()
+                .Customize(c => c.WaitForNonStaleResultsAsOfNow())
                 .ToList();
             var controller = new HomeController(Session);
 

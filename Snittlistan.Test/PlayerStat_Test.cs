@@ -19,7 +19,7 @@
 
             // Act
             var stats = Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
-                .Customize(c => c.WaitForNonStaleResults())
+                .Customize(c => c.WaitForNonStaleResultsAsOfNow())
                 .SingleOrDefault(s => s.Player == "Mikael Axelsson");
 
             // Assert
@@ -49,7 +49,7 @@
 
             // Act
             var stats = Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
-                .Customize(c => c.WaitForNonStaleResults())
+                .Customize(c => c.WaitForNonStaleResultsAsOfNow())
                 .SingleOrDefault(s => s.Player == "Lars Norbeck");
 
             // Assert
@@ -110,7 +110,8 @@
 
             // Act
             var stats = Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
-                .Customize(c => c.WaitForNonStaleResults())
+                .Customize(c => c.WaitForNonStaleResultsAsOfNow())
+                .ToList()
                 .SingleOrDefault(s => s.Player == "Tomas Gustavsson");
 
             // Assert
