@@ -20,7 +20,7 @@
                                             game.Pins,
                                             Series = 1,
                                             table.Score,
-                                            Max = game.Pins,
+                                            BestGame = game.Pins,
                                             GamesWithStats = 1,
                                             game.Strikes,
                                             game.Misses,
@@ -39,7 +39,7 @@
                                             game.Pins,
                                             Series = 1,
                                             game.Score,
-                                            Max = game.Pins,
+                                            BestGame = game.Pins,
                                             GamesWithStats = game.Strikes != null ? 1 : 0,
                                             game.Strikes,
                                             game.Misses,
@@ -56,7 +56,7 @@
                                     Pins = stat.Sum(s => s.Pins),
                                     Series = stat.Sum(s => s.Series),
                                     Score = stat.Sum(s => s.Score),
-                                    Max = stat.Max(s => s.Max),
+                                    BestGame = stat.Max(s => s.BestGame),
                                     GamesWithStats = stat.Sum(x => x.GamesWithStats),
                                     Strikes = stat.Sum(s => s.Strikes),
                                     Misses = stat.Sum(s => s.Misses),
@@ -72,7 +72,7 @@
             public double Pins { get; set; }
             public double Series { get; set; }
             public double Score { get; set; }
-            public int Max { get; set; }
+            public int BestGame { get; set; }
             public int GamesWithStats { get; set; }
             public double Strikes { get; set; }
             public double Misses { get; set; }

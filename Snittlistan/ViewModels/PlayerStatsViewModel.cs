@@ -19,7 +19,7 @@
         public double Series { get { return result.Series; } }
         public double AverageScore { get { return result.AverageScore; } }
         public double AveragePins { get { return result.AveragePins; } }
-        public int Max { get { return result.Max; } }
+        public int BestGame { get { return result.BestGame; } }
         public double AverageStrikes { get { return result.AverageStrikes; } }
         public double AverageMisses { get { return result.AverageMisses; } }
         public double AverageOnePinMisses { get { return result.AverageOnePinMisses; } }

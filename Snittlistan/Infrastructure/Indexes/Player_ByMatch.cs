@@ -78,6 +78,9 @@
                                 };
         }
 
+        /// <summary>
+        /// Represents a single game result.
+        /// </summary>
         public class Result
         {
             public string Type { get; set; }
