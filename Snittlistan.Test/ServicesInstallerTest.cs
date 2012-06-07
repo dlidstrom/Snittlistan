@@ -18,7 +18,7 @@
         [Fact]
         public void InstallsFormsAuthenticationService()
         {
-            Assert.NotNull(container.Resolve<IAuthenticationService>());
+            container.Resolve<IAuthenticationService>().ShouldNotBeNull("Expected IAuthenticationService in container");
         }
 
         [Fact]
