@@ -27,7 +27,7 @@
             stats.Series.ShouldBe(4.0);
             stats.Score.ShouldBe(3.0);
             stats.Pins.ShouldBe(845.0);
-            stats.Max.ShouldBe(223);
+            stats.BestGame.ShouldBe(223);
             stats.Strikes.ShouldBe(5.0);
             stats.Misses.ShouldBe(2.0);
             stats.OnePinMisses.ShouldBe(1.0);
@@ -57,7 +57,7 @@
             stats.Series.ShouldBe(4.0);
             stats.Score.ShouldBe(4.0);
             stats.Pins.ShouldBe(717.0);
-            stats.Max.ShouldBe(231);
+            stats.BestGame.ShouldBe(231);
             stats.AveragePins.ShouldBe(179.25);
         }
 
@@ -119,7 +119,7 @@
             stats.Series.ShouldBe(8.0);
             stats.Score.ShouldBe(2.0);
             stats.Pins.ShouldBe(1122.0);
-            stats.Max.ShouldBe(160);
+            stats.BestGame.ShouldBe(160);
             stats.AveragePins.ShouldBe(140.25);
             stats.AverageMisses.ShouldBe(3.0);
             stats.AverageStrikes.ShouldBe(5.0);
