@@ -2,14 +2,13 @@
 {
     using System;
     using System.Web.Mvc;
+    using Controllers;
+    using Events;
+    using Helpers;
     using Moq;
     using MvcContrib.TestHelper;
-    using Snittlistan.Controllers;
-    using Snittlistan.Events;
-    using Snittlistan.Helpers;
-    using Snittlistan.Models;
-    using Snittlistan.Services;
-    using Snittlistan.ViewModels.Account;
+    using Services;
+    using ViewModels.Account;
     using Xunit;
 
     public class AccountController_Register : DbTest

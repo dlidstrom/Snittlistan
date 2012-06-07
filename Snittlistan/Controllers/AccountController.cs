@@ -1,14 +1,13 @@
 ﻿namespace Snittlistan.Controllers
 {
     using System;
-    using System.Web;
     using System.Web.Mvc;
+    using Helpers;
+    using Models;
     using MvcContrib;
     using Raven.Client;
-    using Snittlistan.Helpers;
-    using Snittlistan.Models;
-    using Snittlistan.Services;
-    using Snittlistan.ViewModels.Account;
+    using Services;
+    using ViewModels.Account;
 
     /// <summary>
     /// Handles user-actions related to accounts: registering and validating

@@ -2,10 +2,10 @@
 {
     using System.Configuration;
     using System.Web.Mvc;
+    using Models;
     using MvcContrib;
     using Raven.Client;
-    using Snittlistan.Models;
-    using Snittlistan.ViewModels.Account;
+    using ViewModels.Account;
 
     public class WelcomeController : AbstractController
     {

@@ -2,10 +2,10 @@
 {
     using System;
     using System.Linq;
+    using Controllers;
+    using Models;
     using MvcContrib.TestHelper;
-    using Snittlistan.Controllers;
-    using Snittlistan.Models;
-    using Snittlistan.ViewModels.Match;
+    using ViewModels.Match;
     using Xunit;
 
     public class MatchController_Register8x4 : DbTest

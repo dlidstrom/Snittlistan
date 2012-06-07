@@ -3,10 +3,10 @@
     using System.Web.Mvc;
     using System.Web.Routing;
     using Castle.Windsor;
+    using Controllers;
+    using Installers;
+    using IoC;
     using MvcContrib.TestHelper;
-    using Snittlistan.Controllers;
-    using Snittlistan.Installers;
-    using Snittlistan.IoC;
     using Xunit;
 
     public class ControllerFactoryTest

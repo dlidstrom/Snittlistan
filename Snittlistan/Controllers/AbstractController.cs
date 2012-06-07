@@ -2,8 +2,8 @@
 {
     using System;
     using System.Web.Mvc;
+    using Models;
     using Raven.Client;
-    using Snittlistan.Models;
 
     public abstract class AbstractController : Controller
     {

@@ -3,10 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Controllers;
+    using Infrastructure.Indexes;
+    using Models;
     using MvcContrib.TestHelper;
-    using Snittlistan.Controllers;
-    using Snittlistan.Infrastructure.Indexes;
-    using Snittlistan.Models;
     using Xunit;
 
     public class MatchController_Index : DbTest

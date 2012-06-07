@@ -1,9 +1,8 @@
 ﻿namespace Snittlistan.Infrastructure.Indexes
 {
     using System.Linq;
-    using Raven.Abstractions.Indexing;
+    using Models;
     using Raven.Client.Indexes;
-    using Snittlistan.Models;
 
     public class Match_ByBitsMatchId : AbstractIndexCreationTask<Match8x4, Match_ByBitsMatchId.Result>
     {

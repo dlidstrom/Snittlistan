@@ -11,7 +11,7 @@
     public class Match4x4
     {
         [JsonProperty(PropertyName = "Teams")]
-        private List<Team4x4> teams;
+        private readonly List<Team4x4> teams;
 
         /// <summary>
         /// Initializes a new instance of the Match4x4 class.

@@ -1,7 +1,7 @@
 ﻿namespace Snittlistan.Test
 {
+    using Models;
     using MvcContrib.TestHelper;
-    using Snittlistan.Models;
     using Xunit;
 
     public class Match4x4Test : DbTest

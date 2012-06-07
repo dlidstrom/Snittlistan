@@ -1,16 +1,16 @@
 ﻿namespace Snittlistan.ViewModels
 {
     using System.Collections.Generic;
-    using Snittlistan.Infrastructure.Indexes;
+    using Infrastructure.Indexes;
 
     public class PlayerStatsViewModel
     {
-        private Matches_PlayerStats.Result result;
+        private readonly Matches_PlayerStats.Result result;
 
         public PlayerStatsViewModel(Matches_PlayerStats.Result result, IDictionary<string, double> last20)
         {
             this.result = result;
-            double averageLast20 = 0.0;
+            double averageLast20;
             last20.TryGetValue(result.Player, out averageLast20);
             AverageLast20 = averageLast20;
         }

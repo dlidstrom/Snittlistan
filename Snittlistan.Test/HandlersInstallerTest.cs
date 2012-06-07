@@ -3,10 +3,10 @@
     using System.Linq;
     using Castle.Core;
     using Castle.Windsor;
+    using Events;
+    using Handlers;
+    using Installers;
     using MvcContrib.TestHelper;
-    using Snittlistan.Events;
-    using Snittlistan.Handlers;
-    using Snittlistan.Installers;
     using Xunit;
 
     public class HandlersInstallerTest

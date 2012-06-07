@@ -10,7 +10,7 @@
     public class Table8x4
     {
         [JsonProperty(PropertyName = "Games")]
-        private List<Game8x4> games;
+        private readonly List<Game8x4> games;
 
         /// <summary>
         /// Initializes a new instance of the Table8x4 class.

@@ -4,8 +4,8 @@
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
+    using Events;
     using Newtonsoft.Json;
-    using Snittlistan.Events;
 
     /// <summary>
     /// Represents a registered user.

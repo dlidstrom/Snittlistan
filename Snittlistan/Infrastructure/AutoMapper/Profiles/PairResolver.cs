@@ -1,9 +1,8 @@
 ﻿namespace Snittlistan.Infrastructure.AutoMapper.Profiles
 {
     using System.Linq;
-    using AutoMapper;
-    using Snittlistan.Models;
-    using Snittlistan.ViewModels.Match;
+    using Models;
+    using ViewModels.Match;
 
     public class PairResolver : global::AutoMapper.ValueResolver<Team8x4, Team8x4ViewModel.Pair>
     {

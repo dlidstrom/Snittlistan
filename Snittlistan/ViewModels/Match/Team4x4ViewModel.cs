@@ -1,7 +1,7 @@
 namespace Snittlistan.ViewModels.Match
 {
     using System.ComponentModel.DataAnnotations;
-    using Snittlistan.Infrastructure.Validation;
+    using Infrastructure.Validation;
 
     /// <summary>
     /// Represents a team.

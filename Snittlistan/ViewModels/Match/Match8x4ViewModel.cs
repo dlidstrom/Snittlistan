@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
-    using Snittlistan.Infrastructure.Indexes;
+    using Infrastructure.Indexes;
 
     public class Match8x4ViewModel
     {

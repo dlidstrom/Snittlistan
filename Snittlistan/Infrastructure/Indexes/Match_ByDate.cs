@@ -3,9 +3,9 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
+    using Models;
     using Raven.Abstractions.Indexing;
     using Raven.Client.Indexes;
-    using Snittlistan.Models;
 
     public class Match_ByDate : AbstractMultiMapIndexCreationTask<Match_ByDate.Result>
     {

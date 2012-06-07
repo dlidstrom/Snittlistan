@@ -1,12 +1,12 @@
 ﻿namespace Snittlistan.Test
 {
     using System;
+    using Controllers;
+    using Models;
     using Moq;
     using MvcContrib.TestHelper;
-    using Snittlistan.Controllers;
-    using Snittlistan.Models;
-    using Snittlistan.Services;
-    using Snittlistan.ViewModels.Account;
+    using Services;
+    using ViewModels.Account;
     using Xunit;
 
     public class AccountController_Logon : DbTest

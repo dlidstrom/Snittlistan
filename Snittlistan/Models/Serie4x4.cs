@@ -10,7 +10,7 @@
     public class Serie4x4
     {
         [JsonProperty(PropertyName = "Games")]
-        private List<Game4x4> games;
+        private readonly List<Game4x4> games;
 
         /// <summary>
         /// Initializes a new instance of the Serie4x4 class.

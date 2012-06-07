@@ -2,8 +2,8 @@
 {
     using System.IO;
     using System.Text;
+    using Models;
     using Newtonsoft.Json;
-    using Snittlistan.Models;
     using Xunit;
 
     public class SerializationTest : DbTest

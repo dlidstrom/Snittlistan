@@ -1,7 +1,7 @@
 ﻿namespace Snittlistan.Infrastructure.AutoMapper.Profiles
 {
-    using Snittlistan.Models;
-    using Snittlistan.ViewModels.Match;
+    using Models;
+    using ViewModels.Match;
 
     public class Match4x4Profile : global::AutoMapper.Profile
     {
