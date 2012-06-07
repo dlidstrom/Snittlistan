@@ -15,6 +15,27 @@
 
     public class RavenInstaller : IWindsorInstaller
     {
+        private readonly DocumentStoreMode mode;
+
+        /// <summary>
+        /// Initializes a new instance of the RavenInstaller class.
+        /// Raven mode is determined depending on debug or release:
+        /// run with server when debugging, and embedded in production.
+        /// </summary>
+        public RavenInstaller()
+        {
+            mode = MvcApplication.IsDebug ? DocumentStoreMode.Server : DocumentStoreMode.Embeddable;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the RavenInstaller class.
+        /// </summary>
+        /// <param name="mode">Indicates which mode Raven will be run in.</param>
+        public RavenInstaller(DocumentStoreMode mode)
+        {
+            this.mode = mode;
+        }
+
         public static IDocumentStore InitializeStore(IDocumentStore store)
         {
             store.Initialize();
@@ -41,18 +62,23 @@
             return store.OpenSession();
         }
 
-        private static IDocumentStore CreateDocumentStore()
+        private IDocumentStore CreateDocumentStore()
         {
-            // run with server when debugging, and embedded in production
-            IDocumentStore store = null;
-            if (MvcApplication.IsDebug)
-                store = new DocumentStore { ConnectionStringName = "RavenDB" };
-            else
+            IDocumentStore store;
+            switch (mode)
             {
-                store = new EmbeddableDocumentStore
-                {
-                    DataDirectory = Path.Combine(AppDomain.CurrentDomain.GetData("DataDirectory").ToString(), "Database")
-                };
+                case DocumentStoreMode.InMemory:
+                    store = new EmbeddableDocumentStore { RunInMemory = true };
+                    break;
+                case DocumentStoreMode.Server:
+                    store = new DocumentStore { ConnectionStringName = "RavenDB" };
+                    break;
+                default:
+                    store = new EmbeddableDocumentStore
+                                {
+                                    DataDirectory = Path.Combine(AppDomain.CurrentDomain.GetData("DataDirectory").ToString(), "Database")
+                                };
+                    break;
             }
 
             return store;
