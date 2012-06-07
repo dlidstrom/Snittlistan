@@ -195,6 +195,7 @@
     <Compile Include="Infrastructure\InjectingActionInvoker.cs" />
     <Compile Include="Controllers\NotFoundController.cs" />
     <Compile Include="Infrastructure\Results\NotFoundViewResult.cs" />
+    <Compile Include="Installers\DocumentStoreMode.cs" />
     <Compile Include="IoC\WindsorDependencyResolver.cs" />
     <Content Include="Content\css\images\feedback.png" />
     <Content Include="Content\css\images\fuckoff.jpg" />
