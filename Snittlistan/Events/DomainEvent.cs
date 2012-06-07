@@ -2,7 +2,7 @@
 {
     using System;
     using Castle.Windsor;
-    using Snittlistan.Handlers;
+    using Handlers;
 
     /// <summary>
     /// Used to raise events within the domain model.

@@ -1,8 +1,8 @@
 ﻿namespace Snittlistan.Infrastructure.AutoMapper.Profiles
 {
     using System.Collections.Generic;
-    using Snittlistan.Models;
-    using Snittlistan.ViewModels.Match;
+    using Models;
+    using ViewModels.Match;
 
     public class Team4x4ViewModelConverter : global::AutoMapper.ITypeConverter<Team4x4ViewModel, Team4x4>
     {

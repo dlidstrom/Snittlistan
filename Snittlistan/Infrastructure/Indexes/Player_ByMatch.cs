@@ -3,8 +3,8 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
+    using Models;
     using Raven.Client.Indexes;
-    using Snittlistan.Models;
 
     public class Player_ByMatch : AbstractMultiMapIndexCreationTask<Player_ByMatch.Result>
     {
@@ -64,7 +64,7 @@
                                     Type = games.Key.Type,
                                     Player = games.Key.Player,
                                     MatchId = games.Key.MatchId,
-                                    BitsMatchId = (int)games.Key.BitsMatchId,
+                                    BitsMatchId = games.Key.BitsMatchId,
                                     Location = games.Key.Location,
                                     Team = games.Key.Team,
                                     Date = games.Key.Date,
@@ -96,11 +96,6 @@
             public int Series { get; set; }
             public double Strikes { get; set; }
             public double Misses { get; set; }
-
-            public double AverageScore { get { return Score / Series; } }
-            public double AveragePins { get { return Pins / Series; } }
-            public double AverageStrikes { get { return Strikes / HasStats; } }
-            public double AverageMisses { get { return Misses / HasStats; } }
         }
     }
 }

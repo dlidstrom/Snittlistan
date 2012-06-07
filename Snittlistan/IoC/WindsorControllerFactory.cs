@@ -4,8 +4,8 @@
     using System.Web.Mvc;
     using System.Web.Routing;
     using Castle.MicroKernel;
-    using Snittlistan.Controllers;
-    using Snittlistan.Infrastructure;
+    using Controllers;
+    using Infrastructure;
 
     public class WindsorControllerFactory : DefaultControllerFactory
     {

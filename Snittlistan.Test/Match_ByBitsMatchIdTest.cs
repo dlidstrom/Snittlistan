@@ -1,7 +1,7 @@
 ﻿namespace Snittlistan.Test
 {
+    using Helpers;
     using MvcContrib.TestHelper;
-    using Snittlistan.Helpers;
     using Xunit;
 
     public class Match_ByBitsMatchIdTest : DbTest

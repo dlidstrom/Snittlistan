@@ -1,10 +1,10 @@
 ﻿namespace Snittlistan.Helpers
 {
     using System.Linq;
+    using Infrastructure.Indexes;
+    using Models;
     using Raven.Client;
     using Raven.Client.Linq;
-    using Snittlistan.Infrastructure.Indexes;
-    using Snittlistan.Models;
 
     public static class DocumentSessionExtensions
     {

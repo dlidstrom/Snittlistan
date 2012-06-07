@@ -3,10 +3,10 @@
     using System;
     using System.Web;
     using System.Web.Mvc;
+    using Controllers;
+    using Models;
     using MvcContrib.TestHelper;
-    using Snittlistan.Controllers;
-    using Snittlistan.Models;
-    using Snittlistan.ViewModels.Match;
+    using ViewModels.Match;
     using Xunit;
 
     public class MatchController_Details4x4 : DbTest

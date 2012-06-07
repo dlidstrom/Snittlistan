@@ -3,8 +3,8 @@
     using System;
     using System.Web.Mvc;
     using System.Web.Routing;
+    using Controllers;
     using MvcContrib.TestHelper;
-    using Snittlistan.Controllers;
     using Xunit;
 
     public class RoutesTest : IDisposable

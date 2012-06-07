@@ -2,8 +2,8 @@
 {
     using System.Linq;
     using System.Web.Mvc;
+    using Infrastructure.Indexes;
     using Raven.Client;
-    using Snittlistan.Infrastructure.Indexes;
 
     public class SearchController : AbstractController
     {

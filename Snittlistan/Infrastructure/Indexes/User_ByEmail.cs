@@ -1,8 +1,8 @@
 ﻿namespace Snittlistan.Infrastructure.Indexes
 {
     using System.Linq;
+    using Models;
     using Raven.Client.Indexes;
-    using Snittlistan.Models;
 
     public class User_ByEmail : AbstractIndexCreationTask<User>
     {

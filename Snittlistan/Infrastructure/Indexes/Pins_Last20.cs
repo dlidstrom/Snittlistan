@@ -2,9 +2,8 @@
 {
     using System;
     using System.Linq;
-    using Raven.Abstractions.Indexing;
+    using Models;
     using Raven.Client.Indexes;
-    using Snittlistan.Models;
 
     public class Pins_Last20 : AbstractMultiMapIndexCreationTask<Pins_Last20.Result>
     {

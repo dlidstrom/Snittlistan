@@ -10,7 +10,7 @@
     public class Team4x4
     {
         [JsonProperty(PropertyName = "Series")]
-        private List<Serie4x4> series;
+        private readonly List<Serie4x4> series;
 
         /// <summary>
         /// Initializes a new instance of the Team4x4 class.

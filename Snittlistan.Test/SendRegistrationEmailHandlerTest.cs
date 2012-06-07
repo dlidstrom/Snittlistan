@@ -1,11 +1,11 @@
 ﻿namespace Snittlistan.Test
 {
+    using Events;
+    using Handlers;
+    using Models;
     using Moq;
     using MvcContrib.TestHelper;
-    using Snittlistan.Events;
-    using Snittlistan.Handlers;
-    using Snittlistan.Models;
-    using Snittlistan.Services;
+    using Services;
     using Xunit;
 
     public class SendRegistrationEmailHandlerTest

@@ -2,11 +2,11 @@
 {
     using System;
     using System.Web;
+    using Controllers;
+    using Infrastructure.AutoMapper;
+    using Models;
     using MvcContrib.TestHelper;
-    using Snittlistan.Controllers;
-    using Snittlistan.Infrastructure.AutoMapper;
-    using Snittlistan.Models;
-    using Snittlistan.ViewModels.Match;
+    using ViewModels.Match;
     using Xunit;
 
     public class MatchController_EditTeam4x4 : DbTest

@@ -2,12 +2,12 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Models;
     using MvcContrib.TestHelper;
-    using Snittlistan.Models;
 
-    public class TestData
+    public static class TestData
     {
-        private static Dictionary<int, int[]> result8x4 = new Dictionary<int, int[]>
+        private static readonly Dictionary<int, int[]> Result8X4 = new Dictionary<int, int[]>
         {
             { 0, new int[] { 202, 218 } },
             { 1, new int[] { 172, 220 } },
@@ -48,8 +48,8 @@
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    int result1 = result8x4[(i * 4) + j][0];
-                    int result2 = result8x4[(i * 4) + j][1];
+                    int result1 = Result8X4[(i * 4) + j][0];
+                    int result2 = Result8X4[(i * 4) + j][1];
 
                     team.Series.ElementAt(i).Tables.ElementAt(j).Game1.Pins.ShouldBe(result1);
                     team.Series.ElementAt(i).Tables.ElementAt(j).Game2.Pins.ShouldBe(result2);

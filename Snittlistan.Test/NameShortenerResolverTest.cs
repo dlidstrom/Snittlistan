@@ -1,11 +1,11 @@
 ﻿namespace Snittlistan.Test
 {
     using Castle.Windsor;
+    using Infrastructure.AutoMapper;
+    using Installers;
+    using Models;
     using MvcContrib.TestHelper;
-    using Snittlistan.Infrastructure.AutoMapper;
-    using Snittlistan.Installers;
-    using Snittlistan.Models;
-    using Snittlistan.ViewModels.Match;
+    using ViewModels.Match;
     using Xunit;
 
     public class NameShortenerResolverTest

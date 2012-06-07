@@ -1,6 +1,6 @@
 ﻿namespace Snittlistan.Events
 {
-    using Snittlistan.Models;
+    using Models;
 
     /// <summary>
     /// Raised when a new user is created.

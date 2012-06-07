@@ -3,14 +3,14 @@
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
+    using Helpers;
+    using Infrastructure.AutoMapper;
+    using Infrastructure.Indexes;
+    using Models;
     using MvcContrib;
     using Raven.Client;
     using Raven.Client.Linq;
-    using Snittlistan.Helpers;
-    using Snittlistan.Infrastructure.AutoMapper;
-    using Snittlistan.Infrastructure.Indexes;
-    using Snittlistan.Models;
-    using Snittlistan.ViewModels.Match;
+    using ViewModels.Match;
 
     public class MatchController : AbstractController
     {

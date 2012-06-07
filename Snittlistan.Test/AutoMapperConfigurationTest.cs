@@ -2,8 +2,8 @@
 {
     using AutoMapper;
     using Castle.Windsor;
-    using Snittlistan.Infrastructure.AutoMapper;
-    using Snittlistan.Installers;
+    using Infrastructure.AutoMapper;
+    using Installers;
     using Xunit;
 
     public class AutoMapperConfigurationTest

@@ -2,7 +2,7 @@
 {
     using System.Threading;
     using MvcContrib.TestHelper;
-    using Snittlistan.Services;
+    using Services;
     using Xunit;
 
     public class EmailServiceTest

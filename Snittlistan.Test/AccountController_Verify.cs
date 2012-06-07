@@ -2,12 +2,12 @@
 {
     using System;
     using System.Web.Mvc;
+    using Controllers;
+    using Helpers;
+    using Models;
     using Moq;
     using MvcContrib.TestHelper;
-    using Snittlistan.Controllers;
-    using Snittlistan.Helpers;
-    using Snittlistan.Models;
-    using Snittlistan.Services;
+    using Services;
     using Xunit;
 
     public class AccountController_Verify : DbTest

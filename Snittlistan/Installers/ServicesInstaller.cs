@@ -3,7 +3,7 @@
     using Castle.MicroKernel.Registration;
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
-    using Snittlistan.Services;
+    using Services;
 
     public class ServicesInstaller : IWindsorInstaller
     {

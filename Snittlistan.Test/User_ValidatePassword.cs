@@ -1,9 +1,9 @@
 ﻿namespace Snittlistan.Test
 {
+    using Events;
+    using Helpers;
+    using Models;
     using MvcContrib.TestHelper;
-    using Snittlistan.Events;
-    using Snittlistan.Helpers;
-    using Snittlistan.Models;
     using Xunit;
 
     public class User_ValidatePassword : DbTest

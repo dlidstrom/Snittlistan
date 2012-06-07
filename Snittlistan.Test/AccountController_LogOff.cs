@@ -1,9 +1,9 @@
 ﻿namespace Snittlistan.Test
 {
+    using Controllers;
     using Moq;
     using MvcContrib.TestHelper;
-    using Snittlistan.Controllers;
-    using Snittlistan.Services;
+    using Services;
     using Xunit;
 
     public class AccountController_LogOff : DbTest

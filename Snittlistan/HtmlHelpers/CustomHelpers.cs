@@ -1,7 +1,7 @@
 ﻿namespace Snittlistan.HtmlHelpers
 {
     using System.Web.Mvc;
-    using Snittlistan.ViewModels.Match;
+    using ViewModels.Match;
 
     public static class CustomHtmlHelpers
     {

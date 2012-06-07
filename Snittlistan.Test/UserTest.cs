@@ -1,8 +1,8 @@
 ﻿namespace Snittlistan.Test
 {
+    using Events;
+    using Models;
     using MvcContrib.TestHelper;
-    using Snittlistan.Events;
-    using Snittlistan.Models;
     using Xunit;
 
     public class UserTest

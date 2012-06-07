@@ -3,9 +3,9 @@
     using System.Linq;
     using System.Web.Mvc;
     using System.Web.UI;
+    using Infrastructure.Indexes;
     using Raven.Client;
     using Raven.Client.Linq;
-    using Snittlistan.Infrastructure.Indexes;
 
     /// <summary>
     /// Do not cache results from validation.
