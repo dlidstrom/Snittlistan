@@ -94,13 +94,13 @@
 
             Session.SaveChanges();
             Session.Query<Player_ByMatch.Result, Player_ByMatch>()
-                .Customize(x => x.WaitForNonStaleResults())
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .ToList();
             Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
-                .Customize(x => x.WaitForNonStaleResults())
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .ToList();
             Session.Query<Pins_Last20.Result, Pins_Last20>()
-                .Customize(x => x.WaitForNonStaleResults())
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .ToList();
             var controller = new HomeController(Session);
 
