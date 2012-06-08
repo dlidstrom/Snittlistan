@@ -11,7 +11,7 @@
         /// Initializes a new instance of the AbstractController class.
         /// </summary>
         /// <param name="session">Document session.</param>
-        public AbstractController(IDocumentSession session)
+        protected AbstractController(IDocumentSession session)
         {
             Session = session;
         }
@@ -19,7 +19,7 @@
         /// <summary>
         /// Gets the document session.
         /// </summary>
-        public new IDocumentSession Session { get; private set; }
+        protected new IDocumentSession Session { get; private set; }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
