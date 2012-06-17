@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Newtonsoft.Json;
+    using Raven.Imports.Newtonsoft.Json;
 
     /// <summary>
     /// Represents a league match.
@@ -11,7 +11,7 @@
     public class Match8x4
     {
         [JsonProperty(PropertyName = "Teams")]
-        private List<Team8x4> teams;
+        private readonly List<Team8x4> teams;
 
         /// <summary>
         /// Initializes a new instance of the Match8x4 class.

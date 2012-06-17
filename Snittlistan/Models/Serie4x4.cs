@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Newtonsoft.Json;
+    using Raven.Imports.Newtonsoft.Json;
 
     /// <summary>
     /// Represents a serie in a 4-vs-4 match.

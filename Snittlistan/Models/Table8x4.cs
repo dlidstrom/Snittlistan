@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Newtonsoft.Json;
+    using Raven.Imports.Newtonsoft.Json;
 
     /// <summary>
     /// Represents a table in a serie.
@@ -29,7 +29,9 @@
         /// </summary>
         /// <param name="games">Games in the table.</param>
         [JsonConstructor]
+// ReSharper disable UnusedMember.Global
         public Table8x4(IEnumerable<Game8x4> games)
+// ReSharper restore UnusedMember.Global
         {
             this.games = games.ToList();
         }
@@ -85,10 +87,7 @@
         {
             if (Game1.Player == player)
                 return Game1.Pins;
-            else if (Game2.Player == player)
-                return Game2.Pins;
-            else
-                return 0;
+            return Game2.Player == player ? Game2.Pins : 0;
         }
 
         public override string ToString()
