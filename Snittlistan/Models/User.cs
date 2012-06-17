@@ -5,7 +5,6 @@
     using System.Security.Cryptography;
     using System.Text;
     using Events;
-    using Newtonsoft.Json;
 
     /// <summary>
     /// Represents a registered user.
@@ -53,19 +52,13 @@
         public bool IsActive { get; private set; }
 
         /// <summary>
-        /// Gets or sets the activation key.
+        /// Gets the activation key.
         /// </summary>
         public string ActivationKey
         {
-            get
-            {
-                if (activationKey == null)
-                    activationKey = Guid.NewGuid().ToString();
+            get { return activationKey ?? (activationKey = Guid.NewGuid().ToString()); }
 
-                return activationKey;
-            }
-
-            set { activationKey = value; }
+            private set { activationKey = value; }
         }
 
         /// <summary>
@@ -79,24 +72,12 @@
         public string LastName { get; private set; }
 
         /// <summary>
-        /// Gets the name of the user.
-        /// </summary>
-        [JsonIgnore]
-        public string Name
-        {
-            get
-            {
-                return string.Format("{0} {1}", FirstName, LastName);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the hashed password.
         /// </summary>
         private string HashedPassword { get; set; }
 
         /// <summary>
-        /// Gets or sets the password salt, per user.
+        /// Gets the password salt, per user.
         /// </summary>
         private Guid PasswordSalt
         {
@@ -106,8 +87,6 @@
                     passwordSalt = Guid.NewGuid();
                 return passwordSalt;
             }
-
-            set { passwordSalt = value; }
         }
 
         /// <summary>

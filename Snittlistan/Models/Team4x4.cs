@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Newtonsoft.Json;
+    using Raven.Imports.Newtonsoft.Json;
 
     /// <summary>
     /// Represents a team in a match.
@@ -39,14 +39,14 @@
         }
 
         /// <summary>
-        /// Gets or sets the name.
+        /// Gets the name.
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
         /// <summary>
-        /// Gets or sets the total score.
+        /// Gets the total score.
         /// </summary>
-        public int Score { get; set; }
+        public int Score { get; private set; }
 
         /// <summary>
         /// Gets the series.

@@ -2,31 +2,31 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Newtonsoft.Json;
+    using Raven.Imports.Newtonsoft.Json;
 
     /// <summary>
     /// Represents a team in a match.
     /// </summary>
     public class Team8x4
     {
-        private static Dictionary<int, int[]> homeScheme = new Dictionary<int, int[]>
+        private static readonly Dictionary<int, int[]> HomeScheme = new Dictionary<int, int[]>
         {
-            { 0, new int[] { 0, 2, 3, 1 } },
-            { 1, new int[] { 1, 3, 2, 0 } },
-            { 2, new int[] { 2, 0, 1, 3 } },
-            { 3, new int[] { 3, 1, 0, 2 } },
+            { 0, new[] { 0, 2, 3, 1 } },
+            { 1, new[] { 1, 3, 2, 0 } },
+            { 2, new[] { 2, 0, 1, 3 } },
+            { 3, new[] { 3, 1, 0, 2 } },
         };
 
-        private static Dictionary<int, int[]> awayScheme = new Dictionary<int, int[]>
+        private static readonly Dictionary<int, int[]> AwayScheme = new Dictionary<int, int[]>
         {
-            { 0, new int[] { 0, 3, 1, 2 } },
-            { 1, new int[] { 1, 2, 0, 3 } },
-            { 2, new int[] { 2, 1, 3, 0 } },
-            { 3, new int[] { 3, 0, 2, 1 } },
+            { 0, new[] { 0, 3, 1, 2 } },
+            { 1, new[] { 1, 2, 0, 3 } },
+            { 2, new[] { 2, 1, 3, 0 } },
+            { 3, new[] { 3, 0, 2, 1 } },
         };
 
         [JsonProperty(PropertyName = "Series")]
-        private List<Serie8x4> series;
+        private readonly List<Serie8x4> series;
 
         /// <summary>
         /// Initializes a new instance of the Team8x4 class.
@@ -55,14 +55,14 @@
         }
 
         /// <summary>
-        /// Gets or sets the name.
+        /// Gets the name.
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
         /// <summary>
-        /// Gets or sets the total score.
+        /// Gets the total score.
         /// </summary>
-        public int Score { get; set; }
+        public int Score { get; private set; }
 
         /// <summary>
         /// Gets the series.
@@ -170,9 +170,8 @@
         public Table8x4 TableAt(int serie, int pair)
         {
             if (HomeTeam)
-                return series[serie].Tables.ElementAt(homeScheme[pair][serie]);
-            else
-                return series[serie].Tables.ElementAt(awayScheme[pair][serie]);
+                return series[serie].Tables.ElementAt(HomeScheme[pair][serie]);
+            return series[serie].Tables.ElementAt(AwayScheme[pair][serie]);
         }
 
         private static Serie8x4 CreateSerie(IEnumerable<Table8x4> tables, int i1, int i2, int i3, int i4)

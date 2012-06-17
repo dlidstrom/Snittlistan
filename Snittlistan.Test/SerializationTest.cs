@@ -3,7 +3,7 @@
     using System.IO;
     using System.Text;
     using Models;
-    using Newtonsoft.Json;
+    using Raven.Imports.Newtonsoft.Json;
     using Xunit;
 
     public class SerializationTest : DbTest

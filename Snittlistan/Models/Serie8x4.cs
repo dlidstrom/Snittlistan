@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Newtonsoft.Json;
+    using Raven.Imports.Newtonsoft.Json;
 
     /// <summary>
     /// Represents a serie in a match.
@@ -10,7 +10,7 @@
     public class Serie8x4
     {
         [JsonProperty(PropertyName = "Tables")]
-        private List<Table8x4> tables;
+        private readonly List<Table8x4> tables;
 
         /// <summary>
         /// Initializes a new instance of the Serie8x4 class.

@@ -11,7 +11,6 @@
     using Raven.Client;
     using Raven.Client.Document;
     using Raven.Client.Embedded;
-    using Raven.Client.MvcIntegration;
 
     public class RavenInstaller : IWindsorInstaller
     {
@@ -45,7 +44,6 @@
 
             // create indexes
             IndexCreator.CreateIndexes(store);
-            RavenProfiler.InitializeFor(store);
             return store;
         }
 
