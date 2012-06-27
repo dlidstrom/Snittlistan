@@ -26,6 +26,12 @@
         }
 
         [Fact]
+        public void V2Route()
+        {
+            "~/v2".ShouldMapTo<HomeController>(c => c.V2());
+        }
+
+        [Fact]
         public void LowerCaseRoutes()
         {
             "~/account/register".ShouldMapTo<AccountController>(c => c.Register());

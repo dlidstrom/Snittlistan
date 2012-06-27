@@ -77,5 +77,10 @@
         {
             return View();
         }
+
+        public ActionResult V2()
+        {
+            return View();
+        }
     }
 }
