@@ -25,6 +25,7 @@
             ConfigureHome();
             ConfigureElmah();
             ConfigureHacker();
+            V2Route();
 
             // default route
             routes.MapRoute(
@@ -71,6 +72,11 @@
                 url: "{*php}",
                 defaults: new { controller = "Hacker", action = "Index" },
                 constraints: new { php = @".*\.php.*|catalog|^s?cgi(\-bin)?.*|^scripts.*|^(aw)?stats.*|^shop.*" });
+        }
+
+        private void V2Route()
+        {
+            routes.MapRoute("V2-route", "v2", new { controller = "Home", action = "V2" });
         }
 
         private void NotFoundRoute()
