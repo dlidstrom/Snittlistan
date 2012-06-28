@@ -5,6 +5,7 @@
     using System.Security.Cryptography;
     using System.Text;
     using Events;
+    using Raven.Imports.Newtonsoft.Json;
 
     /// <summary>
     /// Represents a registered user.
@@ -34,6 +35,25 @@
             LastName = lastName;
             Email = email;
             HashedPassword = ComputeHashedPassword(password);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the User class. This constructor is
+        /// used when deserializing an entity stored in Raven.
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="email"></param>
+        /// <param name="hashedPassword"></param>
+        /// <param name="passwordSalt"></param>
+        [JsonConstructor]
+        private User(string firstName, string lastName, string email, string hashedPassword, Guid passwordSalt)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            HashedPassword = hashedPassword;
+            this.passwordSalt = passwordSalt;
         }
 
         /// <summary>
