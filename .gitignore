@@ -1,15 +1,33 @@
 
-*.suo
+#ignore thumbnails created by windows
+Thumbs.db
+#Ignore files build by Visual Studio
+*.obj
+*.exe
+*.pdb
 *.user
-*.Cache
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+[Bb]in
+[Dd]ebug*/
+*.lib
+*.sbr
+obj/
+[Rr]elease*/
+_ReSharper*/
+[Tt]est[Rr]esult*
 packages
-Snittlistan/bin
-Snittlistan/obj
-
-Snittlistan.Test/bin
-Snittlistan.Test/obj
 Snittlistan/App_Data
-Snittlistan/Logs
-Snittlistan/Snittlistan.Publish.xml
 Snittlistan/Web.Release.config
-_ReSharper.*
+Snittlistan/Snittlistan.Publish.xml
