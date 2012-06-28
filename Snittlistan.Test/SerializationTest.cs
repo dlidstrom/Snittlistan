@@ -39,5 +39,26 @@
             // Assert
             TestData.VerifyTeam(match.HomeTeam);
         }
+
+        [Fact]
+        public void CanSerializeUser()
+        {
+            // Arrange
+            var user = new User("firstName", "lastName", "e@d.com", "some-pass");
+
+            // Act
+            using (var session = Store.OpenSession())
+            {
+                session.Store(user);
+                session.SaveChanges();
+            }
+
+            // Assert
+            using (var session = Store.OpenSession())
+            {
+                var loadedUser = session.Load<User>(user.Id);
+                Assert.True(loadedUser.ValidatePassword("some-pass"), "Password validation failed");
+            }
+        }
     }
 }
