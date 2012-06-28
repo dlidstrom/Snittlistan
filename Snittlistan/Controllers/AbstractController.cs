@@ -26,14 +26,13 @@
             base.OnActionExecuting(filterContext);
 
             // make sure there's an admin user
-            using (Session.Advanced.DocumentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5)))
-                if (Session.Load<User>("Admin") == null)
-                {
-                    // first launch
-                    Session.Advanced.DocumentStore.DisableAggressiveCaching();
-                    Response.Redirect("/welcome");
-                    Response.End();
-                }
+            if (Session.Load<User>("Admin") == null)
+            {
+                // first launch
+                Session.Advanced.DocumentStore.DisableAggressiveCaching();
+                Response.Redirect("/welcome");
+                Response.End();
+            }
         }
     }
 }

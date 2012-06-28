@@ -473,6 +473,9 @@
   <ItemGroup>
     <Content Include="Views\Home\V2.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Welcome\Reset.cshtml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <Import Project="$(ProgramFiles)\MSBuild\StyleCop\v4.7\StyleCop.targets" />
