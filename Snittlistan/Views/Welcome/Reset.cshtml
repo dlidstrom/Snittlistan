@@ -9,7 +9,7 @@
 
 @using (Html.BeginForm())
 {
-    <p>Enter maintenance security token:</p>
+    <p>Enter maintenance authentication token:</p>
     @Html.EditorFor(model => model, null, "token")
     <input type="submit" value="Reset" />
 }
