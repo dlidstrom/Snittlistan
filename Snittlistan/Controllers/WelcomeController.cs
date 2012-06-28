@@ -1,7 +1,10 @@
 ﻿namespace Snittlistan.Controllers
 {
+    using System;
     using System.Configuration;
+    using System.Threading;
     using System.Web.Mvc;
+    using Common.Logging;
     using Models;
     using MvcContrib;
     using Raven.Client;
@@ -9,15 +12,36 @@
 
     public class WelcomeController : AbstractController
     {
+        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+        const string MaintenanceAuthenticationTokenConstant = "Maintenance Authentication Token";
+
         public WelcomeController(IDocumentSession session)
             : base(session)
         { }
+
+        /// <summary>
+        /// Gets the maintenance authentication token.
+        /// </summary>
+        private string MaintenanceAuthenticationToken
+        {
+            get
+            {
+                if (HttpContext.Session != null && string.IsNullOrWhiteSpace((string)HttpContext.Session[MaintenanceAuthenticationTokenConstant]))
+                {
+                    var value = Guid.NewGuid().ToString();
+                    HttpContext.Session[MaintenanceAuthenticationTokenConstant] = value;
+                    Log.InfoFormat("Maintenance Authentication Token: {0}", value);
+                }
+
+                return HttpContext.Session != null ? (string)HttpContext.Session[MaintenanceAuthenticationTokenConstant] : null;
+            }
+        }
 
         public ActionResult Index()
         {
             AssertAdminUserExists();
 
-            string email = "admin@" + ConfigurationManager.AppSettings["Domain"];
+            var email = string.Format("admin@{0}", ConfigurationManager.AppSettings["Domain"]);
             var vm = new RegisterViewModel
             {
                 Email = email,
@@ -52,6 +76,29 @@
         public ActionResult Success()
         {
             return View();
+        }
+
+        public ActionResult Reset()
+        {
+            return View(string.Empty);
+        }
+
+        [HttpPost]
+        public ActionResult Reset(string token)
+        {
+            if (token != MaintenanceAuthenticationToken)
+            {
+                // wait a few seconds, to safeguard against attacks
+                Thread.Sleep(5000);
+                return View("Reset", null, token);
+            }
+
+            var user = Session.Load<User>("Admin");
+            Session.Delete(user);
+            Session.SaveChanges();
+
+            // expect base controller to redirect to /welcome
+            return this.RedirectToAction<HomeController>(c => c.Index());
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)

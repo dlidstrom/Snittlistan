@@ -22,6 +22,7 @@
             routes.IgnoreRoute("{file}.txt");
 
             ConfigureAccount();
+            ConfigureReset();
             ConfigureHome();
             ConfigureElmah();
             ConfigureHacker();
@@ -45,6 +46,15 @@
                 url: "{action}",
                 defaults: new { controller = "Account" },
                 constraints: new { action = "^LogOn$|^Register$|^Verify$" });
+        }
+
+        private void ConfigureReset()
+        {
+            routes.MapRouteLowerCase(
+                name: "WelcomeController-Reset",
+                url: "{action}",
+                defaults: new { controller = "Welcome" },
+                constraints: new { action = "^reset$" });
         }
 
         private void ConfigureHome()

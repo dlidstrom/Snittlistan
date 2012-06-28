@@ -61,6 +61,12 @@
         }
 
         [Fact]
+        public void Reset()
+        {
+            "~/reset".ShouldMapTo<WelcomeController>(c => c.Reset());
+        }
+
+        [Fact]
         public void ElmahRoute()
         {
             "~/admin/elmah".ShouldMapTo<ElmahController>(c => c.Index(null));
