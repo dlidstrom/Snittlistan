@@ -6,7 +6,7 @@
     [Authorize]
     public abstract class AdminController : AbstractController
     {
-        public AdminController(IDocumentSession session)
+        protected AdminController(IDocumentSession session)
             : base(session)
         { }
     }
