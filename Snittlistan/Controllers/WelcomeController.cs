@@ -13,7 +13,7 @@
     public class WelcomeController : AbstractController
     {
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
-        const string MaintenanceAuthenticationTokenConstant = "Maintenance Authentication Token";
+        private const string MaintenanceAuthenticationTokenConstant = "Maintenance Authentication Token";
 
         public WelcomeController(IDocumentSession session)
             : base(session)
@@ -30,7 +30,6 @@
                 {
                     var value = Guid.NewGuid().ToString();
                     HttpContext.Session[MaintenanceAuthenticationTokenConstant] = value;
-                    Log.InfoFormat("Maintenance Authentication Token: {0}", value);
                 }
 
                 return HttpContext.Session != null ? (string)HttpContext.Session[MaintenanceAuthenticationTokenConstant] : null;
@@ -80,6 +79,7 @@
 
         public ActionResult Reset()
         {
+            Log.InfoFormat("Maintenance Authentication Token: {0}", MaintenanceAuthenticationToken);
             return View(string.Empty);
         }
 
