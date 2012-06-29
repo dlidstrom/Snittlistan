@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using Models;
 
-    public class DbSeed
+    public static class DbSeed
     {
         public static Match8x4 Create8x4Match()
         {
