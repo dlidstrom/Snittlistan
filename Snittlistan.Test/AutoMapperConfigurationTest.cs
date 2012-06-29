@@ -3,7 +3,7 @@
     using AutoMapper;
     using Castle.Windsor;
     using Infrastructure.AutoMapper;
-    using Installers;
+    using Infrastructure.Installers;
     using Xunit;
 
     public class AutoMapperConfigurationTest

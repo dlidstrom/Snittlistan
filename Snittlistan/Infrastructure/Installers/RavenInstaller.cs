@@ -1,4 +1,4 @@
-﻿namespace Snittlistan.Installers
+﻿namespace Snittlistan.Infrastructure.Installers
 {
     using System;
     using System.IO;
@@ -6,7 +6,7 @@
     using Castle.MicroKernel.Registration;
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
-    using Infrastructure.Indexes;
+    using Indexes;
     using Models;
     using Raven.Client;
     using Raven.Client.Document;

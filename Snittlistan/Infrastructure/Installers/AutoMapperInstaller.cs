@@ -1,6 +1,6 @@
-﻿namespace Snittlistan.Installers
+﻿namespace Snittlistan.Infrastructure.Installers
 {
-    using AutoMapper;
+    using global::AutoMapper;
     using Castle.MicroKernel.Registration;
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;

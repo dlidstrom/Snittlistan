@@ -6,7 +6,7 @@
     using System.Web.Routing;
     using Castle.Windsor;
     using Infrastructure.AutoMapper;
-    using Installers;
+    using Infrastructure.Installers;
     using Models;
     using Moq;
     using Raven.Client;

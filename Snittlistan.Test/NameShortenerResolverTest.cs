@@ -2,7 +2,7 @@
 {
     using Castle.Windsor;
     using Infrastructure.AutoMapper;
-    using Installers;
+    using Infrastructure.Installers;
     using Models;
     using MvcContrib.TestHelper;
     using ViewModels.Match;

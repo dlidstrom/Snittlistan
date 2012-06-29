@@ -1,7 +1,7 @@
 ﻿namespace Snittlistan.Test
 {
     using Castle.Windsor;
-    using Installers;
+    using Infrastructure.Installers;
     using MvcContrib.TestHelper;
     using Services;
     using Xunit;
