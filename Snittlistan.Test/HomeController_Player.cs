@@ -112,13 +112,13 @@
             result.AverageStrikes.ShouldBe(5.0);
             result.AverageMisses.ShouldBe(2.0);
             result.Last20.GamesWithStats.ShouldBe(1);
-            result.Last20.Max.ShouldBe(202);
+            result.Last20.Max.ShouldBe(223);
             result.Last20.AverageStrikes.ShouldBe(5.0);
             result.Last20.AverageMisses.ShouldBe(2.0);
             result.Last20.AverageOnePinMisses.ShouldBe(1.0);
             result.Last20.AverageSplits.ShouldBe(2.0);
             result.Last20.Pins.ShouldBe(845.0 / 4);
-            result.Last20.Score.ShouldBe(0.25);
+            result.Last20.Score.ShouldBe(0.75);
         }
     }
 }

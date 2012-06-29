@@ -39,7 +39,7 @@
                                             game.Pins,
                                             table.Score,
                                             Max = game.Pins,
-                                            GamesWithStats = 1,
+                                            GamesWithStats = game.Strikes != null ? 1 : 0,
                                             TotalStrikes = game.Strikes,
                                             TotalMisses = game.Misses,
                                             TotalOnePinMisses = game.OnePinMisses,

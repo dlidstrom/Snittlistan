@@ -21,7 +21,7 @@
                                             Series = 1,
                                             table.Score,
                                             BestGame = game.Pins,
-                                            GamesWithStats = 1,
+                                            GamesWithStats = game.Strikes != null ? 1 : 0,
                                             game.Strikes,
                                             game.Misses,
                                             game.OnePinMisses,
