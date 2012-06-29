@@ -29,7 +29,6 @@
             if (Session.Load<User>("Admin") == null)
             {
                 // first launch
-                Session.Advanced.DocumentStore.DisableAggressiveCaching();
                 Response.Redirect("/welcome");
                 Response.End();
             }
