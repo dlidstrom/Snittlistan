@@ -8,8 +8,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>@ViewBag.Title</title>
         <link href="@Url.Content("~/Content/bootstrap/css/bootstrap.min.css")" rel="stylesheet" type="text/css" />
-        <link href="@Url.Content("~/Content/css/main.css")" rel="stylesheet" type="text/css" />
+        <style type="text/css">
+            body
+            {
+                /* necessary so that header doesn't hide content */
+                padding-top: 40px;
+            }
+        </style>
         <link href="@Url.Content("~/Content/bootstrap/css/bootstrap-responsive.min.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/css/main.css")" rel="stylesheet" type="text/css" />
     </head>
     <body>
         <div class="navbar navbar-fixed-top">
@@ -47,22 +54,62 @@
             </div>
         </div>
         <div class="container-fluid">
+            <div class="page-header">
+                <h1>
+                    Matchomgångar
+                </h1>
+            </div>
             <div class="row-fluid">
                 <div class="span12">
-                    <h1>
-                        Matchomgångar
-                    </h1>
+                    <h2>Kommande</h2>
                 </div>
             </div>
             <div class="row-fluid">
-                <div class="span6">
-                    <h3>Kommande</h3>
-                </div>
-                <div class="span6">
-                    <h3>Senaste</h3>
+                <div class="span12">
+                    <table class="table table-condensed well-small">
+                        <thead>
+                            <tr>
+                                <th>Omgång</th>
+                                <th>Lag</th>
+                                <th>När</th>
+                                <th>Var</th>
+                                <th>Motstånd</th>
+                                <th>Kan</th>
+                                <th>Kan inte</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="2" class="turn">1</td>
+                                <td>Fredrikshof A</td>
+                                <td>lör, den 1 sep, 10:00</td>
+                                <td>Åkeshov</td>
+                                <td>KK Strike</td>
+                                <td><span class="badge badge-success">5</span></td>
+                                <td><span class="badge badge-warning">4</span></td>
+                            </tr>
+                            <tr>
+                                <td>Fredrikshof A</td>
+                                <td>lör, den 1 sep, 11:40</td>
+                                <td>Åkeshov</td>
+                                <td>Djurgården</td>
+                                <td><span class="badge badge-success">7</span></td>
+                                <td><span class="badge badge-warning">2</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
+@*            <div class="row-fluid">
+                <div class="span12 well-small">
+                    <h4>Senaste</h4>
+                    <div class="span3">Åkeshov</div>
+                    <div class="span3">Fredrikshof A</div>
+                    <div class="span3">8 - 12</div>
+                    <div class="span3"><a href="#">Resultat</a></div>
+                </div>
+            </div>
+*@        </div>
 
         @* Use content delivery networks *@
         @Content.Script(ScriptType.JQuery)
