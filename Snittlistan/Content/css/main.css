@@ -1,4 +1,11 @@
-﻿body 
+﻿.navbar .brand
 {
-    padding: 40px 0 0 0;
+    font-weight: bold;
+    text-shadow: 0 1px 0 rgba(255, 255, 0, 0.1), rgba(255, 255, 0, .125) 0 0 30px;
+    color: black;
+}
+
+td.turn
+{
+    vertical-align: middle;
 }
