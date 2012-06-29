@@ -5,7 +5,7 @@
     using Castle.Windsor;
     using Events;
     using Handlers;
-    using Installers;
+    using Infrastructure.Installers;
     using MvcContrib.TestHelper;
     using Xunit;
 

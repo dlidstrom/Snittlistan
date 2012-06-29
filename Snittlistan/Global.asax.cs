@@ -10,7 +10,7 @@
     using Infrastructure;
     using Infrastructure.Attributes;
     using Infrastructure.AutoMapper;
-    using IoC;
+    using Infrastructure.IoC;
 
     public class MvcApplication : HttpApplication
     {

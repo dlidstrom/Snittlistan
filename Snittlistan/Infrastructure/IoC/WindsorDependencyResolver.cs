@@ -1,4 +1,4 @@
-namespace Snittlistan.IoC
+namespace Snittlistan.Infrastructure.IoC
 {
     using System;
     using System.Collections.Generic;

@@ -4,7 +4,7 @@
     using System.IO;
     using System.Text;
     using Castle.Windsor;
-    using Installers;
+    using Infrastructure.Installers;
     using Models;
     using Raven.Client;
 

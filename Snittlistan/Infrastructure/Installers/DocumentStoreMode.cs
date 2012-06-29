@@ -1,4 +1,4 @@
-namespace Snittlistan.Installers
+namespace Snittlistan.Infrastructure.Installers
 {
     public enum DocumentStoreMode
     {

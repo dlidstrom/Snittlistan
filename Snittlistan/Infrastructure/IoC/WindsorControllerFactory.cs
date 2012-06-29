@@ -1,11 +1,11 @@
-﻿namespace Snittlistan.IoC
+﻿namespace Snittlistan.Infrastructure.IoC
 {
     using System;
     using System.Web.Mvc;
     using System.Web.Routing;
     using Castle.MicroKernel;
-    using Controllers;
-    using Infrastructure;
+    using Snittlistan.Controllers;
+    using Snittlistan.Infrastructure;
 
     public class WindsorControllerFactory : DefaultControllerFactory
     {

@@ -1,19 +1,17 @@
-﻿namespace Snittlistan.Installers
+﻿namespace Snittlistan.Infrastructure.IoC
 {
+    using System.Web.Mvc;
     using Castle.MicroKernel.Registration;
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
-    using Services;
 
-    public class ServicesInstaller : IWindsorInstaller
+    public class ControllerFactoryInstaller : IWindsorInstaller
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(
-                AllTypes
-                    .FromThisAssembly()
-                    .Where(Component.IsInSameNamespaceAs<IEmailService>())
-                    .WithServiceDefaultInterfaces()
+                    Component.For<IControllerFactory>()
+                    .ImplementedBy<WindsorControllerFactory>()
                     .LifestyleTransient());
         }
     }

@@ -1,9 +1,9 @@
-﻿namespace Snittlistan.Installers
+﻿namespace Snittlistan.Infrastructure.Installers
 {
     using Castle.MicroKernel.Registration;
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
-    using Handlers;
+    using Snittlistan.Handlers;
 
     public class HandlersInstaller : IWindsorInstaller
     {

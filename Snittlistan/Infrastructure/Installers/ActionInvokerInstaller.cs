@@ -1,4 +1,4 @@
-﻿namespace Snittlistan.Installers
+﻿namespace Snittlistan.Infrastructure.Installers
 {
     using Castle.MicroKernel.Registration;
     using Castle.MicroKernel.SubSystems.Configuration;

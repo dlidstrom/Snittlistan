@@ -4,8 +4,8 @@
     using System.Web.Routing;
     using Castle.Windsor;
     using Controllers;
-    using Installers;
-    using IoC;
+    using Infrastructure.Installers;
+    using Infrastructure.IoC;
     using MvcContrib.TestHelper;
     using Xunit;
 

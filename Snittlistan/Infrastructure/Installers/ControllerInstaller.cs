@@ -1,10 +1,10 @@
-﻿namespace Snittlistan.Installers
+﻿namespace Snittlistan.Infrastructure.Installers
 {
     using System.Web.Mvc;
     using Castle.MicroKernel.Registration;
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
-    using Controllers;
+    using Snittlistan.Controllers;
 
     public class ControllerInstaller : IWindsorInstaller
     {
