@@ -9,3 +9,9 @@ td.turn
 {
     vertical-align: middle;
 }
+
+button.btn 
+{
+    /* prevent buttons from wrapping text */
+    white-space: nowrap;
+}
