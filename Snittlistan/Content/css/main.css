@@ -1,4 +1,11 @@
-﻿.navbar .brand
+﻿@team-a-color: rgb(123, 208, 72);
+@team-f-color: rgb(201, 188, 190);
+@team-b-color: rgb(249, 87, 60);
+@miss-free-color: darkorange;
+@personal-best-color: gold;
+@season-best-color: silver;
+
+.navbar .brand
 {
     font-weight: bold;
     text-shadow: 0 1px 0 rgba(255, 255, 0, 0.1), rgba(255, 255, 0, .125) 0 0 30px;
@@ -11,13 +18,66 @@ td.game-table
     font-weight: bold;
 }
 
+/* */
+table.team-of-week tfoot
+{
+    border-top: 2px solid black;
+}
+
 button.btn 
 {
     /* prevent buttons from wrapping text */
     white-space: nowrap;
 }
 
-h3 em {
+.team-label (@color)
+{
+    background-color: @color;
+    text-transform: uppercase;
+}
+
+.label-team-a
+{
+    .team-label(@team-a-color);
+}
+
+.label-team-f
+{
+    .team-label(@team-f-color);
+}
+
+.label-team-b
+{
+    .team-label(@team-b-color);
+}
+
+.accomplishment-label (@color)
+{
+    background-color: @color;
+    text-transform: uppercase;
+    color: black;
+    text-shadow: 0 1px 1px #fff;
+    border: solid 1px black;
+    padding: 1px 4px 0;
+}
+
+.label-miss-free
+{
+    .accomplishment-label(@miss-free-color);
+}
+
+.label-personal-best
+{
+    .accomplishment-label(@personal-best-color);
+}
+
+.label-season-best
+{
+    .accomplishment-label(@season-best-color);
+}
+
+h3 em
+{
     color: gray;
     font-style: normal;
 }
