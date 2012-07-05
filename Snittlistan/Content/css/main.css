@@ -4,6 +4,7 @@
 @miss-free-color: darkorange;
 @personal-best-color: gold;
 @season-best-color: silver;
+@game-300-color: red;
 
 .navbar .brand
 {
@@ -74,6 +75,11 @@ button.btn
 .label-season-best
 {
     .accomplishment-label(@season-best-color);
+}
+
+.label-300
+{
+    .accomplishment-label(@game-300-color);
 }
 
 h3 em
