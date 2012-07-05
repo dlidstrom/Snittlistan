@@ -21,10 +21,12 @@ h3 em {
     font-style: normal;
 }
 
-dd em
+dl em
 {
+    /* make emphasized elements stand out in definition lists */
     font-weight: bold;
     font-style: normal;
+    color: black;
 }
 
 dt
