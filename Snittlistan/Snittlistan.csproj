@@ -296,6 +296,7 @@
     <Content Include="Content\js\jquery.tablesorter.min.js" />
     <Content Include="Content\js\autocomplete.js" />
     <Content Include="Content\js\team4x4.js" />
+    <Content Include="Content\less-1.3.0.min.js" />
     <Content Include="robots.txt" />
     <Compile Include="Models\Game8x4.cs" />
     <Compile Include="Models\Match8x4.cs" />
