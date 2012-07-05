@@ -5,9 +5,10 @@
     color: black;
 }
 
-td.turn
+td.game-table
 {
     vertical-align: middle;
+    font-weight: bold;
 }
 
 button.btn 
