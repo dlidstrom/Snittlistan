@@ -57,7 +57,7 @@ button.btn
     background-color: @color;
     text-transform: uppercase;
     color: black;
-    text-shadow: 0 1px 1px #fff;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.6);
     border: solid 1px black;
     padding: 1px 4px 0;
 }
