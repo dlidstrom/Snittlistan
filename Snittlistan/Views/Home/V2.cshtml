@@ -1,4 +1,4 @@
-Ôªø@{
+@{
     ViewBag.Title = "Snittlistan V2";
     Layout = "";
 }
@@ -22,146 +22,43 @@
         <![endif]-->
     </head>
     <body>
-        <section class="navbar navbar-fixed-top">
-            <section class="navbar-inner">
-                <div class="container-fluid">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="@Url.Action("v2")">@ViewBag.Title</a>
-                    <div class="nav-collapse">
-                        <ul class="nav">
-                            <li>
-                                <a href="#">
-                                    <i class="icon-user icon-white"></i>
-                                    Spelare
-                                </a>
-                            </li>
-                            <li class="active">
-                                <a href="#">
-                                    <i class="icon-calendar icon-white"></i>
-                                    Kommande matchomg√•ngar
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i class="icon-list-alt icon-white"></i>
-                                    Uttagningar
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-        </section>
+        @Html.Partial("_Navbar")
         <section class="container-fluid">
             <section class="page-header">
                 <h1>
-                    Kommande matchomg√•ngar
+                    MatchomgÂngar
                 </h1>
-                <p>Anm√§l din n√§rvaro.</p>
             </section>
-            <h3>Omg√•ng 1 (8 sep&minus;9 sep)</h3>
-            <button class="btn btn-primary">Tillg√§nglig hela helgen</button>
             <div class="row-fluid">
-                <div class="span4">
-                    <section class="well well-small">
-                        <h4>Fredrikshof A</h4>
-                        <table class="table table-condensed">
-                            <tr>
-                                <td>Brandbergen, 8 sep, 10:00, Vendels√∂ BK</td>
-                                <td>
-                                    <button class="btn btn-success btn-small">
-                                        <i class="icon-ok icon-white"></i>
-                                        Kan
-                                    </button>
-                                    <button class="btn btn-danger btn-small">
-                                        <i class="icon-remove icon-white"></i>
-                                        Kan inte
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <span class="badge badge-success">5</span>
-                                    <span class="badge badge-important">4</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Brandbergen, 8 sep, 10:00, Vendels√∂ BK</td>
-                                <td>
-                                    <button class="btn btn-success btn-small">
-                                        <i class="icon-ok icon-white"></i>
-                                        Kan
-                                    </button>
-                                    <button class="btn btn-danger btn-small">
-                                        <i class="icon-remove icon-white"></i>
-                                        Kan inte
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <span class="badge badge-success">5</span>
-                                    <span class="badge badge-important">4</span>
-                                </td>
-                            </tr>
-                        </table>
-                    </section>
+                <h2>Kommande</h2>
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <div class="alert alert-info">
+                        <button class="close" data-dismiss="alert">
+                            <i class="icon-pencil"></i>
+                        </button>
+                        Om du inte kan medverka, v‰nligen meddela detta sÂ tidigt som mˆjligt.
+                    </div>
                 </div>
-                <div class="span4">
-                    <section class="well well-small">
-                        <h4>Fredrikshof F</h4>
-                        <table class="table table-condensed">
-                            <tr>
-                                <td>Birka, 8 sep, 10:00, IFK Stockholm</td>
-                                <td>
-                                    <button class="btn btn-success btn-small">
-                                        <i class="icon-ok icon-white"></i>
-                                        Kan
-                                    </button>
-                                    <button class="btn btn-danger btn-small">
-                                        <i class="icon-remove icon-white"></i>
-                                        Kan inte
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <span class="badge badge-success">7</span>
-                                    <span class="badge badge-important">1</span>
-                                </td>
-                            </tr>
-                        </table>
-                    </section>
-                </div>
-                <div class="span4">
-                    <section class="well well-small">
-                        <h4>Fredrikshof B</h4>
-                        <table class="table table-condensed">
-                            <tr>
-                                <td>Bowl-O-Rama, 8 sep, 10:00, KKT B</td>
-                                <td>
-                                    <button class="btn btn-success btn-small">
-                                        <i class="icon-ok icon-white"></i>
-                                        Kan
-                                    </button>
-                                    <button class="btn btn-danger btn-small">
-                                        <i class="icon-remove icon-white"></i>
-                                        Kan inte
-                                    </button>
-                                </td>
-                                <td>
-                                    <span class="badge badge-success">3</span>
-                                    <span class="badge badge-important">2</span>
-                                </td>
-                            </tr>
-                        </table>
-                    </section>
+                <div class="span6">
+                    <div class="alert alert-error">
+                        <button class="close" data-dismiss="alert">&times;</button>
+                        <strong>Logga in</strong> fˆr att meddela din frÂnvaro.
+                    </div>
                 </div>
             </div>
+            <div class="row-fluid">
+                @Html.Partial("_Turn3")
+            </div>
+            <div class="row-fluid">
+                <h2>Avklarade</h2>
+            </div>
+            <div class="row-fluid">
+                @Html.Partial("_CompletedTurns")
+            </div>
+            @*@Html.Partial("_Turn1")
+            @Html.Partial("_Turn2")*@
         </section>
 
         @* Use content delivery networks *@
@@ -172,5 +69,19 @@
 
         @* local scripts *@
         <script type="text/javascript" src="@Url.Content("~/Content/bootstrap/js/bootstrap.min.js")"></script>
+        <script type="text/javascript">
+            $("button").click(function () {
+                if ($(this).hasClass("active")) {
+                    // active when clicked
+                    $(this).removeClass("btn-warning");
+                    $(this).addClass("btn-inverse");
+                }
+                else {
+                    // inactive when clicked
+                    $(this).removeClass("btn-inverse");
+                    $(this).addClass("btn-warning");
+                }
+            });
+        </script>
     </body>
 </html>

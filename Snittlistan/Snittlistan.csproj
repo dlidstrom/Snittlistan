@@ -476,6 +476,21 @@
   <ItemGroup>
     <Content Include="Views\Welcome\Reset.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\_Navbar.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\_Turn1.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\_Turn2.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\_Turn3.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\_CompletedTurns.cshtml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <Import Project="$(ProgramFiles)\MSBuild\StyleCop\v4.7\StyleCop.targets" />
