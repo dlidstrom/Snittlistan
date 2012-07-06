@@ -1,131 +1,99 @@
-﻿@team-a-color: rgb(123, 208, 72);
-@team-f-color: rgb(201, 188, 190);
-@team-b-color: rgb(249, 87, 60);
-@miss-free-color: darkorange;
-@personal-best-color: gold;
-@season-best-color: silver;
-@game-300-color: red;
-
-.navbar .brand
-{
-    font-weight: bold;
-    text-shadow: 0 1px 0 rgba(255, 255, 0, 0.1), rgba(255, 255, 0, .125) 0 0 30px;
-    color: black;
+﻿.navbar .brand {
+  font-weight: bold;
+  text-shadow: 0 1px 0 rgba(255, 255, 0, 0.1), rgba(255, 255, 0, 0.125) 0 0 30px;
+  color: black;
 }
-
-td.game-table
-{
-    vertical-align: middle;
-    font-weight: bold;
+td.game-table {
+  vertical-align: middle;
+  font-weight: bold;
 }
-
 /* team of the week */
-table.team-of-week tfoot
-{
-    border-top: 2px solid black;
+table.team-of-week tfoot {
+  border-top: 2px solid black;
 }
-
-table.table-medals
-{
-    th
-    {
-        border: none;
-        padding: 1px 2px;
-    }
-    td
-    {
-        border: none;
-        padding: 1px 2px;
-    }
-    td:first-child
-    {
-        text-align: right;
-    }
+table.table-medals th {
+  border: none;
+  padding: 1px 2px;
+  text-align: center;
 }
-
-button.btn 
-{
-    /* prevent buttons from wrapping text */
-    white-space: nowrap;
+table.table-medals td {
+  border: none;
+  padding: 1px 2px;
 }
-
-.team-label (@color)
-{
-    background-color: @color;
-    text-transform: uppercase;
+table.table-medals td:first-child {
+  text-align: right;
 }
+button.btn {
+  /* prevent buttons from wrapping text */
 
-.label-team-a
-{
-    .team-label(@team-a-color);
+  white-space: nowrap;
 }
-
-.label-team-f
-{
-    .team-label(@team-f-color);
+.label-team-a {
+  background-color: #7bd048;
+  text-transform: uppercase;
 }
-
-.label-team-b
-{
-    .team-label(@team-b-color);
+.label-team-f {
+  background-color: #c9bcbe;
+  text-transform: uppercase;
 }
-
-.accomplishment-label (@color)
-{
-    background-color: @color;
-    text-transform: uppercase;
-    color: black;
-    text-shadow: 0 1px 1px rgba(255,255,255,0.6);
-    border: solid 1px black;
-    padding: 1px 4px 0;
+.label-team-b {
+  background-color: #f9573c;
+  text-transform: uppercase;
 }
-
-.label-miss-free
-{
-    .accomplishment-label(@miss-free-color);
+.label-miss-free {
+  background-color: darkorange;
+  text-transform: uppercase;
+  color: black;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
+  border: solid 1px black;
+  padding: 1px 4px 0;
 }
-
-.label-personal-best
-{
-    .accomplishment-label(@personal-best-color);
+.label-personal-best {
+  background-color: gold;
+  text-transform: uppercase;
+  color: black;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
+  border: solid 1px black;
+  padding: 1px 4px 0;
 }
-
-.label-season-best
-{
-    .accomplishment-label(@season-best-color);
+.label-season-best {
+  background-color: silver;
+  text-transform: uppercase;
+  color: black;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
+  border: solid 1px black;
+  padding: 1px 4px 0;
 }
-
-.label-300
-{
-    .accomplishment-label(@game-300-color);
+.label-300 {
+  background-color: red;
+  text-transform: uppercase;
+  color: black;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
+  border: solid 1px black;
+  padding: 1px 4px 0;
 }
-
-h2 em
-{
-    color: gray;
-    font-style: normal;
+h2 em {
+  color: gray;
+  font-style: normal;
 }
+dl em {
+  /* make emphasized elements stand out in definition lists */
 
-dl em
-{
-    /* make emphasized elements stand out in definition lists */
-    font-weight: bold;
-    font-style: normal;
-    color: black;
+  font-weight: bold;
+  font-style: normal;
+  color: black;
 }
-
-dt
-{
-    color: gray;
+dt {
+  color: gray;
 }
-
 /* media queries */
-@media (min-width: 768px) and (max-width: 979px)
-{
-    /* reduce width of definition list on iPad */
-    .dl-horizontal
-    {
-        dt { width: 80px; }
-        dd { margin-left: 90px; }
-    }
+@media (min-width: 768px) and (max-width: 979px) {
+  /* reduce width of definition list on iPad */
+  
+  .dl-horizontal dt {
+    width: 80px;
+  }
+  .dl-horizontal dd {
+    margin-left: 90px;
+  }
 }
