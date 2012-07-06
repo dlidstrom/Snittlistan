@@ -54,18 +54,22 @@
             </div>
             <div class="row-fluid">
                 <h2>Avklarade<i class="icon-question-sign" title="Avklarade omgångar" data-placement="right" data-content="Den här delen kommer vara en egen sida."></i></h2>
-                <dl class="dl-horizontal">
-                    <dt><span class="label label-personal-best">PB</span></dt><dd>Personbästa</dd>
-                    <dt><span class="label label-season-best">SB</span></dt><dd>Säsongsbästa</dd>
-                    <dt><span class="label label-miss-free">missfri</span></dt><dd>En serie med enbart täckta rutor</dd>
-                    <dt><span class="label label-300">300</span></dt><dd>En 300-serie</dd>
-                </dl>
+                <div class="span6">
+                    <table class="table table-medals">
+                        <tr style="border: none"><th colspan="2" style="text-align: center">Medaljer</th></tr>
+                        <tr><td><span class="label label-personal-best">PB</span></td><td>Personbästa</td></tr>
+                        <tr><td><span class="label label-season-best">SB</span></td><td>Säsongsbästa</td></tr>
+                        <tr><td><span class="label label-miss-free">missfri</span></td><td>En serie med enbart täckta rutor</td></tr>
+                        <tr><td><span class="label label-300">300</span></td><td>En 300-serie</td></tr>
+                    </table>
+                </div>
             </div>
             <div class="row-fluid">
                 @Html.Partial("_CompletedTurns")
             </div>
-            @*@Html.Partial("_Turn1")
-            @Html.Partial("_Turn2")*@
+            <div class="row-fluid">
+                <i class="icon-question-sign" title="Att göra" data-placement="right" data-content="Lägg till vy för spelare. En spelares medaljer ska visas. Lägg till förklaring på medaljerna (eller titel åtminstone). Lägg till vy för att göra laguttagningen."></i>
+            </div>
         </section>
 
         @* Use content delivery networks *@

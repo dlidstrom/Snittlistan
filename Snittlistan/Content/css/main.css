@@ -19,10 +19,28 @@ td.game-table
     font-weight: bold;
 }
 
-/* */
+/* team of the week */
 table.team-of-week tfoot
 {
     border-top: 2px solid black;
+}
+
+table.table-medals
+{
+    th
+    {
+        border: none;
+        padding: 1px 2px;
+    }
+    td
+    {
+        border: none;
+        padding: 1px 2px;
+    }
+    td:first-child
+    {
+        text-align: right;
+    }
 }
 
 button.btn 
@@ -82,7 +100,7 @@ button.btn
     .accomplishment-label(@game-300-color);
 }
 
-h3 em
+h2 em
 {
     color: gray;
     font-style: normal;
@@ -99,4 +117,15 @@ dl em
 dt
 {
     color: gray;
+}
+
+/* media queries */
+@media (min-width: 768px) and (max-width: 979px)
+{
+    /* reduce width of definition list on iPad */
+    .dl-horizontal
+    {
+        dt { width: 80px; }
+        dd { margin-left: 90px; }
+    }
 }
