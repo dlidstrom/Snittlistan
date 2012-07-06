@@ -1,4 +1,5 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip/=5E81B34E_002DA864_002D4F3C_002D8B13_002D9843FB029EA7_002Fd_003AContent_002Fd_003Acss_002Ff_003Amain_002Echirp_002Eless/@EntryIndexedValue">5E81B34E-A864-4F3C-8B13-9843FB029EA7/d:Content/d:css/f:main.chirp.less</s:String>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/AnalysisEnabled/@EntryValue">SOLUTION</s:String>
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CssFormatter/BRACE_STYLE/@EntryValue">NEXT_LINE</s:String>
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/JavaScriptFormatSpaces/SPACE_BEFORE_METHOD_PARENTHESES/@EntryValue">True</s:Boolean>
