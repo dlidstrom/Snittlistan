@@ -29,15 +29,15 @@ button.btn {
   white-space: nowrap;
 }
 .label-team-a {
-  background-color: #7bd048;
+  background-color: MediumSeaGreen;
   text-transform: uppercase;
 }
 .label-team-f {
-  background-color: #c9bcbe;
+  background-color: LightSeaGreen;
   text-transform: uppercase;
 }
 .label-team-b {
-  background-color: #f9573c;
+  background-color: Teal;
   text-transform: uppercase;
 }
 .label-miss-free {
