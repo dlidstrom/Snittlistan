@@ -5,9 +5,9 @@ table.table-medals th{border:0;padding:1px 2px;text-align:center}
 table.table-medals td{border:0;padding:1px 2px}
 table.table-medals td:first-child{text-align:right}
 button.btn{white-space:nowrap}
-.label-team-a{background-color:#7bd048;text-transform:uppercase}
-.label-team-f{background-color:#c9bcbe;text-transform:uppercase}
-.label-team-b{background-color:#f9573c;text-transform:uppercase}
+.label-team-a{background-color:MediumSeaGreen;text-transform:uppercase}
+.label-team-f{background-color:LightSeaGreen;text-transform:uppercase}
+.label-team-b{background-color:Teal;text-transform:uppercase}
 .label-miss-free{background-color:darkorange;text-transform:uppercase;color:black;text-shadow:0 1px 1px rgba(255,255,255,0.6);border:solid 1px black;padding:1px 4px 0}
 .label-personal-best{background-color:gold;text-transform:uppercase;color:black;text-shadow:0 1px 1px rgba(255,255,255,0.6);border:solid 1px black;padding:1px 4px 0}
 .label-season-best{background-color:silver;text-transform:uppercase;color:black;text-shadow:0 1px 1px rgba(255,255,255,0.6);border:solid 1px black;padding:1px 4px 0}
