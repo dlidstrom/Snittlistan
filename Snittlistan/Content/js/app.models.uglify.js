@@ -1,4 +1,4 @@
-﻿$(function ($, backbone, _, handlebars, app, undefined) {
+﻿$(function ($, backbone, app, undefined) {
     "use strict";
     var models = { };
 
@@ -11,4 +11,4 @@
     });
 
     app.Models = models;
-}($, Backbone, _, Handlebars, window.App = window.App || { }));
+}($, Backbone, window.App = window.App || { }));

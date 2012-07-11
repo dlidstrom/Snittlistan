@@ -1,4 +1,4 @@
-﻿$(function ($, backbone, _, handlebars, app, undefined) {
+﻿$(function ($, backbone, app, undefined) {
     "use strict";
     var collections = { };
 
@@ -9,4 +9,4 @@
     });
 
     app.Collections = collections;
-}($, Backbone, _, Handlebars, window.App || { }));
+}($, Backbone, window.App || { }));

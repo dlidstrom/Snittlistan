@@ -1,4 +1,4 @@
-﻿$(function ($, backbone, _, app, undefined) {
+﻿$(function ($, backbone, app, undefined) {
     "use strict";
     var views = { };
 
@@ -27,4 +27,4 @@
     });
 
     app.Views = views;
-}($, Backbone, _, window.App = window.App || { }));
+}($, Backbone, window.App = window.App || { }));
