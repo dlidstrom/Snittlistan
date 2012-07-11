@@ -23,15 +23,10 @@
     </head>
     <body>
         @Html.Partial("_Navbar")
-        <section class="container-fluid">
+        <div class="container-fluid">
             <section class="page-header">
-                <h1>
-                    Matchomgångar
-                </h1>
+                <h1>Kommande matchomgångar</h1>
             </section>
-            <div class="row-fluid">
-                <h2>Kommande</h2>
-            </div>
             <div class="row-fluid">
                 <div class="span6">
                     <div class="alert alert-info">
@@ -68,9 +63,9 @@
                 @Html.Partial("_CompletedTurns")
             </div>
             <div class="row-fluid">
-                <i class="icon-question-sign" title="Att göra" data-placement="right" data-content="Lägg till vy för spelare. En spelares medaljer ska visas. Lägg till förklaring på medaljerna (eller titel åtminstone). Lägg till vy för att göra laguttagningen."></i>
+                <i class="icon-question-sign" title="Att g?ra" data-placement="right" data-content="L?gg till vy f?r spelare. En spelares medaljer ska visas. L?gg till f?rklaring p? medaljerna (eller titel ?tminstone). L?gg till vy f?r att g?ra laguttagningen."></i>
             </div>
-        </section>
+        </div>
 
         @* Use content delivery networks *@
         @Content.Script(ScriptType.JQuery)
