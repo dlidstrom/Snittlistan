@@ -347,6 +347,7 @@
     <Compile Include="Services\IEmailService.cs" />
     <Compile Include="Services\IAuthenticationService.cs" />
     <Compile Include="ViewModels\Account\ChangePasswordViewModel.cs" />
+    <Content Include="Views\Home\_Player.cshtml" />
     <None Include="Content\jasmine\lib\jasmine-1.2.0\MIT.LICENSE" />
   </ItemGroup>
   <ItemGroup>
