@@ -116,7 +116,7 @@
             <script type="text/javascript" src="@Url.Content("~/Content/js/app.views.min.js")"></script>
         }
         <script type="text/javascript">
-            $(function ($, backbone, _, handlebars, app, undefined) {
+            $(function ($, backbone, _, app, undefined) {
                 "use strict";
 
                 //var turns = new Turns();
@@ -132,7 +132,7 @@
                 // render
                 var turns_view = new app.Views.Turns({ collection: turns });
                 turns_view.render();
-            }($, Backbone, _, Handlebars, window.App));
+            }($, Backbone, _, window.App));
         </script>
     </body>
 </html>
