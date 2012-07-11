@@ -93,9 +93,46 @@
         <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js"></script>
         <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0.beta6/handlebars.min.js"></script>
 
+        @* templates *@
+        <script id="turn-template" type="text/x-handlebars-template">
+            <h2>{{number}}</h2>
+        </script>
+
         @* local scripts *@
         <script type="text/javascript" src="@Url.Content("~/Content/bootstrap/js/bootstrap.min.js")"></script>
         <script type="text/javascript" src="@Url.Content("~/Content/js/v2-buttons.min.js")"></script>
-        <script type="text/javascript" src="@Url.Content("~/Content/js/v2.min.js")"></script>
+        @if (Html.IsDebug())
+        {
+            <script type="text/javascript" src="@Url.Content("~/Content/js/app.utils.uglify.js")"></script>
+            <script type="text/javascript" src="@Url.Content("~/Content/js/app.models.uglify.js")"></script>
+            <script type="text/javascript" src="@Url.Content("~/Content/js/app.collections.uglify.js")"></script>
+            <script type="text/javascript" src="@Url.Content("~/Content/js/app.views.uglify.js")"></script>
+        }
+        else
+        {
+            <script type="text/javascript" src="@Url.Content("~/Content/js/app.utils.min.js")"></script>
+            <script type="text/javascript" src="@Url.Content("~/Content/js/app.models.min.js")"></script>
+            <script type="text/javascript" src="@Url.Content("~/Content/js/app.collections.min.js")"></script>
+            <script type="text/javascript" src="@Url.Content("~/Content/js/app.views.min.js")"></script>
+        }
+        <script type="text/javascript">
+            $(function ($, backbone, _, handlebars, app, undefined) {
+                "use strict";
+
+                //var turns = new Turns();
+                //turns.fetch();
+                var turns = new app.Collections.Turns();
+                turns.reset(
+                    [
+                        { number: 1 },
+                        { number: 2 }
+                    ]);
+                app.turns = turns;
+
+                // render
+                var turns_view = new app.Views.Turns({ collection: turns });
+                turns_view.render();
+            }($, Backbone, _, Handlebars, window.App));
+        </script>
     </body>
 </html>
