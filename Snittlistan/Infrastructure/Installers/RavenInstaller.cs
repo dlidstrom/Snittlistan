@@ -23,7 +23,7 @@
         /// </summary>
         public RavenInstaller()
         {
-            mode = MvcApplication.IsDebug ? DocumentStoreMode.Server : DocumentStoreMode.Embeddable;
+            mode = MvcApplication.IsDebugConfig ? DocumentStoreMode.Server : DocumentStoreMode.Embeddable;
         }
 
         /// <summary>

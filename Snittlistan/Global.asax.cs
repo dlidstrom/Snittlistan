@@ -15,11 +15,11 @@
     public class MvcApplication : HttpApplication
     {
 #if DEBUG
-        private static readonly bool isDebug = true;
+        private const bool IsDebug = true;
 #else
         private static readonly bool isDebug = false;
 #endif
-        private static readonly ILog log = LogManager.GetCurrentClassLogger();
+        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
         private static IWindsorContainer container;
 
         public static IWindsorContainer Container
@@ -27,19 +27,11 @@
             get { return container; }
         }
 
-        public static bool IsDebug { get { return isDebug; } }
-
-        public static void RegisterGlobalFilters(GlobalFilterCollection filters)
-        {
-            filters.Add(new ElmahHandleErrorAttribute());
-            filters.Add(new HandleErrorAttribute());
-            filters.Add(new UserTrackerLogAttribute());
-            filters.Add(new RavenActionFilterAttribute());
-        }
+        public static bool IsDebugConfig { get { return IsDebug; } }
 
         protected void Application_Start()
         {
-            log.Info("Application Starting");
+            Log.Info("Application Starting");
             AreaRegistration.RegisterAllAreas();
 
             RegisterGlobalFilters(GlobalFilters.Filters);
@@ -59,8 +51,16 @@
 
         protected void Application_End()
         {
-            log.Info("Application Ending");
+            Log.Info("Application Ending");
             container.Dispose();
+        }
+
+        private static void RegisterGlobalFilters(GlobalFilterCollection filters)
+        {
+            filters.Add(new ElmahHandleErrorAttribute());
+            filters.Add(new HandleErrorAttribute());
+            filters.Add(new UserTrackerLogAttribute());
+            filters.Add(new RavenActionFilterAttribute());
         }
 
         private static void InitializeContainer()
