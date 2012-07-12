@@ -1,6 +1,8 @@
 @{
     ViewBag.Title = "Snittlistan V2";
     Layout = "";
+    Bundles.Reference("Content/js/app");
+    Bundles.Reference("Content/css/main.less");
 }
 <!DOCTYPE html>
 <html lang="se">
@@ -15,7 +17,7 @@
             }
         </style>
         <link href="http://current.bootstrapcdn.com/bootstrap-v204/css/bootstrap-combined.min.css" rel="stylesheet" type="text/css" />
-        <link href="@Url.Content("~/Content/css/main.min.css")" rel="stylesheet" type="text/css" />
+        @Bundles.RenderStylesheets()
         <!--[if lt IE 9]>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6/html5shiv.min.js"></script>
         <![endif]-->
@@ -99,20 +101,7 @@
 
         @* local scripts *@
         <script type="text/javascript" src="@Url.Content("~/Content/js/v2-buttons.min.js")"></script>
-        @if (Html.IsDebug())
-        {
-            <script type="text/javascript" src="@Url.Content("~/Content/js/app.utils.uglify.js")"></script>
-            <script type="text/javascript" src="@Url.Content("~/Content/js/app.models.uglify.js")"></script>
-            <script type="text/javascript" src="@Url.Content("~/Content/js/app.collections.uglify.js")"></script>
-            <script type="text/javascript" src="@Url.Content("~/Content/js/app.views.uglify.js")"></script>
-        }
-        else
-        {
-            <script type="text/javascript" src="@Url.Content("~/Content/js/app.utils.min.js")"></script>
-            <script type="text/javascript" src="@Url.Content("~/Content/js/app.models.min.js")"></script>
-            <script type="text/javascript" src="@Url.Content("~/Content/js/app.collections.min.js")"></script>
-            <script type="text/javascript" src="@Url.Content("~/Content/js/app.views.min.js")"></script>
-        }
+        @Bundles.RenderScripts()
         <script type="text/javascript">
             $(function ($, backbone, _, app, undefined) {
                 "use strict";
