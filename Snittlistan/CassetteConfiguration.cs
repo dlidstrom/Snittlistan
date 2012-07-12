@@ -1,6 +1,8 @@
 namespace Snittlistan
 {
+    using Cassette;
     using Cassette.Configuration;
+    using Cassette.HtmlTemplates;
     using Cassette.Scripts;
     using Cassette.Stylesheets;
 
@@ -19,11 +21,17 @@ namespace Snittlistan
             // So you probably want to tweak these defaults!
             bundles.AddPerIndividualFile<StylesheetBundle>("Content/css");
             bundles.AddPerSubDirectory<ScriptBundle>("Content/js/app");
+            bundles.Add<HtmlTemplateBundle>(
+                "Content/templates",
+                bundle =>
+                {
+                    bundle.Processor = new HoganPipeline { JavaScriptVariableName = "Templates" };
+                });
 
             // To combine files, try something like this instead:
             //   bundles.Add<StylesheetBundle>("Content");
             // In production mode, all of ~/Content will be combined into a single bundle.
-            
+
             // If you want a bundle per folder, try this:
             //   bundles.AddPerSubDirectory<ScriptBundle>("Scripts");
             // Each immediate sub-directory of ~/Scripts will be combined into its own bundle.

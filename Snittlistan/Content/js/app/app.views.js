@@ -1,16 +1,16 @@
-﻿$(function ($, backbone, app, undefined) {
+﻿$(function ($, window, backbone, app, undefined) {
     "use strict";
     var views = { };
 
     // turn view
     views.Turn = backbone.View.extend({
-        template: app.TemplateCache.get('#turn-template'),
+        template: window.Templates['turn-template'],
         initialize: function (options) {
             this.container = $('#main');
             options.model.bind('change', this.render, this);
         },
         render: function () {
-            $(this.el).html(this.template(this.model.toJSON()));
+            $(this.el).html(this.template.render(this.model.toJSON()));
             this.container.append($(this.el));
             return this;
         }
@@ -27,4 +27,4 @@
     });
 
     app.Views = views;
-}($, Backbone, window.App = window.App || { }));
+}($, window, Backbone, window.App = window.App || { }));
