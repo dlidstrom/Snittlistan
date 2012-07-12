@@ -17,7 +17,7 @@
 #if DEBUG
         private const bool IsDebug = true;
 #else
-        private static readonly bool isDebug = false;
+        private const bool IsDebug = false;
 #endif
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
         private static IWindsorContainer container;
