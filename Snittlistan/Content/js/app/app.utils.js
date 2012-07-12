@@ -1,11 +1,9 @@
-﻿(function ($, handlebars, app, undefined) {
+﻿(function ($, window, app, undefined) {
     "use strict";
 
     app.TemplateCache = {
-        get: function (selector) {
-            this.templates = this.templates || { };
-
-            var template = this.templates[selector];
+        get: function (name) {
+            var template = this.templates[name];
             if (!template) {
                 var tmpl = $(selector).html();
                 if (typeof tmpl === undefined || tmpl === null) {
@@ -18,4 +16,4 @@
             return template;
         }
     };
-}($, Handlebars, window.App = window.App || { }));
+}($, window, window.App = window.App || { }));
