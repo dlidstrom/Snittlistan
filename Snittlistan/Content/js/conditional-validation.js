@@ -1,7 +1,4 @@
-﻿/// <reference path="jquery-1.6.4-vsdoc.js" />
-/// <reference path="jquery.validate.unobtrusive.js" />
-
-$.validator.addMethod('requiredifexists',
+﻿$.validator.addMethod('requiredifexists',
     function (value, element, parameters) {
         var id = '#' + parameters['dependentproperty'];
 
