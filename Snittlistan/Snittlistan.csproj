@@ -213,7 +213,6 @@
     <Content Include="Content\css\images\feedback.png" />
     <Content Include="Content\css\images\fuckoff.jpg" />
     <None Include="Content\css\main.less" />
-    <Content Include="Content\handlebars\handlebars-1.0.0.beta.6.js" />
     <Content Include="Content\hogan\hogan.js" />
     <Content Include="Content\jasmine\lib\jasmine-1.2.0\jasmine-html.js" />
     <Content Include="Content\jasmine\lib\jasmine-1.2.0\jasmine.css" />
