@@ -1,6 +1,6 @@
-﻿/// <reference path="app.models.js" />
+﻿// @reference app.models.js
 
-$(function ($, backbone, app, undefined) {
+(function ($, backbone, app, undefined) {
     "use strict";
     var collections = { };
 

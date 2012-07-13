@@ -1,10 +1,10 @@
-﻿$(function ($, window, backbone, app, undefined) {
+﻿(function ($, backbone, app, undefined) {
     "use strict";
     var views = { };
 
     // turn view
     views.Turn = backbone.View.extend({
-        template: window.Templates['turn-template'],
+        template: window.JST['turn-template'],
         initialize: function (options) {
             this.container = $('#main');
             options.model.bind('change', this.render, this);
@@ -27,4 +27,4 @@
     });
 
     app.Views = views;
-}($, window, Backbone, window.App = window.App || { }));
+}($, Backbone, window.App = window.App || { }));
