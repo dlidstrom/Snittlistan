@@ -6,11 +6,11 @@
     using System.Web.Routing;
     using Castle.Windsor;
     using Castle.Windsor.Installer;
-    using Common.Logging;
     using Infrastructure;
     using Infrastructure.Attributes;
     using Infrastructure.AutoMapper;
     using Infrastructure.IoC;
+    using NLog;
 
     public class MvcApplication : HttpApplication
     {
@@ -19,7 +19,7 @@
 #else
         private const bool IsDebug = false;
 #endif
-        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private static IWindsorContainer container;
 
         public static IWindsorContainer Container
