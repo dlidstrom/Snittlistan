@@ -1,4 +1,4 @@
-﻿$(function ($, backbone, app, undefined) {
+﻿(function ($, backbone, app, undefined) {
     "use strict";
     var models = { };
 
