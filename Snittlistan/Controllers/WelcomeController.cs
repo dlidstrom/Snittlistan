@@ -4,15 +4,15 @@
     using System.Configuration;
     using System.Threading;
     using System.Web.Mvc;
-    using Common.Logging;
     using Models;
     using MvcContrib;
+    using NLog;
     using Raven.Client;
     using ViewModels.Account;
 
     public class WelcomeController : AbstractController
     {
-        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private const string MaintenanceAuthenticationTokenConstant = "Maintenance Authentication Token";
 
         public WelcomeController(IDocumentSession session)
@@ -79,7 +79,7 @@
 
         public ActionResult Reset()
         {
-            Log.InfoFormat("Maintenance Authentication Token: {0}", MaintenanceAuthenticationToken);
+            Log.Info("Maintenance Authentication Token: {0}", MaintenanceAuthenticationToken);
             return View(string.Empty);
         }
 

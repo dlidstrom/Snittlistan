@@ -6,11 +6,11 @@
     using System.Text;
     using System.Web;
     using System.Web.Mvc;
-    using Common.Logging;
+    using NLog;
 
     public class UserTrackerLogAttribute : ActionFilterAttribute
     {
-        private static readonly ILog logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
@@ -32,7 +32,7 @@
             if (!string.IsNullOrEmpty(routeId))
                 message.AppendFormat("RouteId={0}|", routeId);
 
-            logger.Info(message.ToString());
+            Log.Info(message.ToString());
             base.OnActionExecuted(filterContext);
         }
 
