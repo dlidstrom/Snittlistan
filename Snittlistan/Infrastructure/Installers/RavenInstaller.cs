@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Reflection;
     using Castle.MicroKernel;
     using Castle.MicroKernel.Registration;
     using Castle.MicroKernel.SubSystems.Configuration;
@@ -41,6 +42,7 @@
             store.Conventions.IdentityPartsSeparator = "-";
             store.Conventions.DefaultQueryingConsistency = ConsistencyOptions.QueryYourWrites;
             store.Conventions.FindTypeTagName = type => type == typeof(Match8x4) ? "Matches" : DocumentConvention.DefaultTypeTagName(type);
+            store.Conventions.FindIdentityProperty = FindIdentityProperty;
 
             // create indexes
             IndexCreator.CreateIndexes(store);
@@ -52,6 +54,12 @@
             container.Register(
                 Component.For<IDocumentStore>().Instance(InitializeStore(CreateDocumentStore())).LifestyleSingleton(),
                 Component.For<IDocumentSession>().UsingFactoryMethod(GetDocumentSession).LifestylePerWebRequest());
+        }
+
+        private static bool FindIdentityProperty(PropertyInfo property)
+        {
+            var attribute = Attribute.GetCustomAttribute(property, typeof(IdAttribute));
+            return attribute != null || property.Name == "Id";
         }
 
         private static IDocumentSession GetDocumentSession(IKernel kernel)
