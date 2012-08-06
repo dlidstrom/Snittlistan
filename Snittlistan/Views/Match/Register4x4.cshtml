@@ -2,6 +2,11 @@
 
 @{
     ViewBag.Title = "Registrera";
+    Bundles.Reference("Content/js/conditional-validation.js", "page");
+    Bundles.Reference("Content/js/datepicker.js", "page");
+    Bundles.Reference("Content/js/autocomplete.js", "page");
+    Bundles.Reference("Content/js/knockout-2.0.0.js", "page");
+    Bundles.Reference("Content/js/team4x4.js", "page");
 }
 
 @section scripts
@@ -9,14 +14,10 @@
     @Content.Script(ScriptType.JQueryValidate)
     @Content.Script(ScriptType.JQueryValidateLocalized)
     @Content.Script(ScriptType.JQueryValidateUnobtrusive)
-    @Content.Script("conditional-validation.min.js", Url)
-    @Content.Script("datepicker.min.js", Url)
-    @Content.Script("autocomplete.min.js", Url)
-    @Content.Script("knockout-2.0.0.js", Url)
     <script type="text/javascript">
     var initialData = @(Html.Raw(Json.Encode(Model)));
     </script>
-    @Content.Script("team4x4.min.js", Url)
+    @Bundles.RenderScripts("page")
 }
 
 <h2>@ViewBag.Title</h2>

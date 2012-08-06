@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{
+    Bundles.Reference("Content/js/stacktrace.js");
+    Bundles.Reference("Content/js/feedback.js");
+    Bundles.Reference("Content/js/button.js");
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,9 +11,7 @@
     @Content.Favicon(Url)
     @Content.Css(CssType.Blitzer)
     @Content.Css("Site.css", Url)
-    <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
     @Content.GA()
     @*@Raven.Client.MvcIntegration.RavenProfiler.CurrentRequestSessions()*@
 </head>
@@ -43,9 +46,7 @@
     <script type="text/javascript">
         var logErrorUrl = '@Url.Action("LogJavaScriptError", "Error")';
     </script>
-    @Content.Script("stacktrace.js", Url)
-    @Content.Script("feedback.min.js", Url)
-    @Content.Script("button.min.js", Url)
+    @Bundles.RenderScripts()
     @RenderSection("scripts", false)
 </body>
 </html>
