@@ -1,8 +1,7 @@
-﻿namespace Snittlistan
+﻿namespace Snittlistan.Infrastructure
 {
     using System.Web.Mvc;
     using System.Web.Routing;
-    using Infrastructure;
 
     public class RouteConfigurator
     {

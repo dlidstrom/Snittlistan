@@ -1,4 +1,4 @@
-namespace Snittlistan
+namespace Snittlistan.Infrastructure
 {
     using System.IO;
     using Cassette;
@@ -13,7 +13,6 @@ namespace Snittlistan
     {
         public void Configure(BundleCollection bundles)
         {
-            // TODO: Configure your bundles here...
             // Please read http://getcassette.net/documentation/configuration
 
             // This default configuration treats each file as a separate 'bundle'.

@@ -5,6 +5,7 @@
     using System.Web.Mvc;
     using System.Web.Routing;
     using Castle.Windsor;
+    using Infrastructure;
     using Infrastructure.AutoMapper;
     using Infrastructure.Installers;
     using Models;
