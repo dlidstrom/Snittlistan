@@ -4,6 +4,7 @@
     using System.Web.Mvc;
     using System.Web.Routing;
     using Controllers;
+    using Infrastructure;
     using MvcContrib.TestHelper;
     using Xunit;
 
