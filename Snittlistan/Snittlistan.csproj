@@ -46,7 +46,7 @@
       <HintPath>..\packages\AutoMapper.2.1.267\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="BouncyCastle.Crypto, Version=1.7.4137.9688, Culture=neutral, PublicKeyToken=a4292a325f69b123, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Database.1.2.2033-Unstable\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.1.2.2058-Unstable\lib\net40\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
     <Reference Include="Cassette, Version=2.0.0.17340, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -79,22 +79,22 @@
       <HintPath>..\packages\elmah.corelibrary.1.2.1\lib\Elmah.dll</HintPath>
     </Reference>
     <Reference Include="Esent.Interop, Version=1.7.0.0, Culture=neutral, PublicKeyToken=8dd49bbdae3f61af, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Database.1.2.2033-Unstable\lib\net40\Esent.Interop.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.1.2.2058-Unstable\lib\net40\Esent.Interop.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.NRefactory, Version=3.0.0.3800, Culture=neutral, PublicKeyToken=efe927acf176eea2, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Database.1.2.2033-Unstable\lib\net40\ICSharpCode.NRefactory.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.1.2.2058-Unstable\lib\net40\ICSharpCode.NRefactory.dll</HintPath>
     </Reference>
     <Reference Include="Jurassic">
       <HintPath>..\packages\Jurassic.2.1.1\lib\Jurassic.dll</HintPath>
     </Reference>
     <Reference Include="Lucene.Net, Version=2.9.4.1, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Database.1.2.2033-Unstable\lib\net40\Lucene.Net.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.1.2.2058-Unstable\lib\net40\Lucene.Net.dll</HintPath>
     </Reference>
     <Reference Include="Lucene.Net.Contrib.Spatial, Version=2.9.1.2, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Database.1.2.2033-Unstable\lib\net40\Lucene.Net.Contrib.Spatial.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.1.2.2058-Unstable\lib\net40\Lucene.Net.Contrib.Spatial.dll</HintPath>
     </Reference>
     <Reference Include="Lucene.Net.Contrib.SpellChecker, Version=2.9.2.1, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Database.1.2.2033-Unstable\lib\net40\Lucene.Net.Contrib.SpellChecker.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.1.2.2058-Unstable\lib\net40\Lucene.Net.Contrib.SpellChecker.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Mvc">
@@ -108,39 +108,27 @@
       <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Abstractions, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Client.1.2.2033-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Client.1.2.2058-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Backup, Version=1.2.0.0, Culture=neutral, processorArchitecture=x86">
       <ExecutableExtension>.exe</ExecutableExtension>
-      <HintPath>..\packages\RavenDB.Database.1.2.2033-Unstable\lib\net40\Raven.Backup.exe</HintPath>
+      <HintPath>..\packages\RavenDB.Database.1.2.2058-Unstable\lib\net40\Raven.Backup.exe</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Embedded, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Embedded.1.2.2033-Unstable\lib\net40\Raven.Client.Embedded.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Embedded.1.2.2058-Unstable\lib\net40\Raven.Client.Embedded.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Lightweight, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Client.1.2.2033-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Client.1.2.2058-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Database, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Database.1.2.2033-Unstable\lib\net40\Raven.Database.dll</HintPath>
-    </Reference>
-    <Reference Include="Raven.Imports.SignalR, Version=0.5.2.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Database.1.2.2033-Unstable\lib\net40\Raven.Imports.SignalR.dll</HintPath>
-    </Reference>
-    <Reference Include="Raven.Imports.SignalR.Client, Version=0.5.2.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Client.1.2.2033-Unstable\lib\net40\Raven.Imports.SignalR.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="Raven.Imports.SignalR.Hosting.Common, Version=0.5.2.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Database.1.2.2033-Unstable\lib\net40\Raven.Imports.SignalR.Hosting.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Raven.Imports.SignalR.Hosting.Self, Version=0.5.2.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Database.1.2.2033-Unstable\lib\net40\Raven.Imports.SignalR.Hosting.Self.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.1.2.2058-Unstable\lib\net40\Raven.Database.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Smuggler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=x86">
       <ExecutableExtension>.exe</ExecutableExtension>
-      <HintPath>..\packages\RavenDB.Database.1.2.2033-Unstable\lib\net40\Raven.Smuggler.exe</HintPath>
+      <HintPath>..\packages\RavenDB.Database.1.2.2058-Unstable\lib\net40\Raven.Smuggler.exe</HintPath>
     </Reference>
     <Reference Include="Spatial4n.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9f9456e1ca16d45e, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Database.1.2.2033-Unstable\lib\net40\Spatial4n.Core.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.1.2.2058-Unstable\lib\net40\Spatial4n.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data.Entity" />
@@ -195,6 +183,10 @@
     <Compile Include="Infrastructure\Results\NotFoundViewResult.cs" />
     <Compile Include="Infrastructure\Installers\DocumentStoreMode.cs" />
     <Compile Include="Infrastructure\IoC\WindsorDependencyResolver.cs" />
+    <Content Include="..\packages\RavenDB.Embedded.1.2.2058-Unstable\tools\Raven.Studio.xap">
+      <Link>Raven.Studio.xap</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\backbone\backbone-0.9.2\backbone-min.js" />
     <Content Include="Content\bootstrap\css\bootstrap-responsive.css" />
     <Content Include="Content\bootstrap\css\bootstrap-responsive.min.css" />
@@ -318,7 +310,6 @@
     <Content Include="Content\js\specs\specs.mammal.js" />
     <Content Include="Content\templates\turn-template.html" />
     <Content Include="Content\underscore\underscore-1.3.3\underscore-min.js" />
-    <Content Include="Raven.Studio.xap" />
     <Content Include="robots.txt" />
     <Compile Include="Models\Game8x4.cs" />
     <Compile Include="Models\Match8x4.cs" />
