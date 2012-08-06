@@ -185,6 +185,9 @@
     <Compile Include="Infrastructure\Indexes\Teams.cs" />
     <Compile Include="Infrastructure\Indexes\Players.cs" />
     <Compile Include="Infrastructure\Indexes\Player_ByMatch.cs" />
+    <Compile Include="Infrastructure\IdAttribute.cs" />
+    <Compile Include="Infrastructure\SessionProvider\RavenSessionStateStoreProvider.cs" />
+    <Compile Include="Infrastructure\SessionProvider\SessionState.cs" />
     <Compile Include="Infrastructure\Validation\RequiredIfExistsAttribute.cs" />
     <Compile Include="Infrastructure\Installers\ActionInvokerInstaller.cs" />
     <Compile Include="Infrastructure\InjectingActionInvoker.cs" />
