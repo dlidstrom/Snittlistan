@@ -1,6 +1,7 @@
 ﻿namespace Snittlistan.Controllers
 {
     using System;
+    using System.Diagnostics;
     using System.Web.Mvc;
     using Helpers;
     using Models;
@@ -66,6 +67,7 @@
             if (!ModelState.IsValid)
                 return View(vm);
 
+            Debug.Assert(user != null, "user != null");
             authenticationService.SetAuthCookie(user.Email, vm.RememberMe);
 
             if (Url.IsLocalUrl(returnUrl)
