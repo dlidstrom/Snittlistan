@@ -203,7 +203,6 @@
     <Content Include="Content\jasmine\lib\jasmine-1.2.0\jasmine-html.js" />
     <Content Include="Content\jasmine\lib\jasmine-1.2.0\jasmine.css" />
     <Content Include="Content\jasmine\lib\jasmine-1.2.0\jasmine.js" />
-    <Content Include="Content\js\app\app.collections.js" />
     <Content Include="Content\js\app\app.views.js" />
     <Content Include="Content\js\models\mammal.min.js">
       <DependentUpon>mammal.uglify.js</DependentUpon>
