@@ -1,11 +1,13 @@
 ﻿namespace Snittlistan.Infrastructure.SessionProvider
 {
     using System;
+    using System.Collections.Specialized;
     using System.Configuration;
     using System.IO;
     using System.Linq;
     using System.Web;
     using System.Web.Configuration;
+    using System.Web.Hosting;
     using System.Web.SessionState;
     using NLog;
     using Raven.Abstractions.Exceptions;
@@ -45,20 +47,20 @@
         /// </summary>
         public string ApplicationName { get; set; }
 
-        public override void Initialize(string name, System.Collections.Specialized.NameValueCollection config)
+        public override void Initialize(string name, NameValueCollection config)
         {
             if (config == null)
                 throw new ArgumentNullException("config");
 
             try
             {
-                Logger.Debug(
-                    "Beginning Initialize. Name= {0}. Config={1}",
-                    name,
-                    config.AllKeys.Aggregate(string.Empty, (aggregate, next) => string.Format("{0}{1}:{2}", aggregate, next, config[next])));
-
                 if (string.IsNullOrEmpty(name))
                     name = "RavenSessionStateStore";
+
+                Logger.Debug(
+                    "Beginning Initialize. Name={0}. Config={1}",
+                    name,
+                    config.AllKeys.Aggregate(string.Empty, (aggregate, next) => string.Format("{0}{1}:{2}", aggregate, next, config[next])));
 
                 base.Initialize(name, config);
 
@@ -68,7 +70,7 @@
 
                 ApplicationName = ConfigurationManager.AppSettings["ApplicationName"];
                 if (string.IsNullOrWhiteSpace(ApplicationName))
-                    ApplicationName = System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath;
+                    ApplicationName = HostingEnvironment.ApplicationVirtualPath;
 
                 sessionStateConfig = (SessionStateSection)ConfigurationManager.GetSection("system.web/sessionState");
 
