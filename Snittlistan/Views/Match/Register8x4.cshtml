@@ -2,6 +2,8 @@
 
 @{
     ViewBag.Title = "Registrera";
+    Bundles.Reference("Content/js/datepicker.js", "page");
+    Bundles.Reference("Content/js/autocomplete.js", "page");
 }
 
 @section scripts
@@ -9,9 +11,8 @@
     @Content.Script(ScriptType.JQueryValidate)
     @Content.Script(ScriptType.JQueryValidateLocalized)
     @Content.Script(ScriptType.JQueryValidateUnobtrusive)
-    @Content.Script("datepicker.min.js", Url)
     @Content.Script("knockout-1.3.0beta.js", Url)
-    @Content.Script("autocomplete.min.js", Url)
+    @Bundles.RenderScripts("page")
 
 <script type="text/javascript">
     var viewModel = {

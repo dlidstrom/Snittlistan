@@ -1,5 +1,6 @@
 namespace Snittlistan
 {
+    using System.IO;
     using Cassette;
     using Cassette.HtmlTemplates;
     using Cassette.Scripts;
@@ -21,6 +22,9 @@ namespace Snittlistan
             // bundles.AddPerIndividualFile<StylesheetBundle>("Content");
             // bundles.AddPerIndividualFile<ScriptBundle>("Scripts");
             bundles.AddPerIndividualFile<StylesheetBundle>("Content/css");
+            bundles.AddPerIndividualFile<ScriptBundle>(
+                "Content/js",
+                new FileSearch { SearchOption = SearchOption.TopDirectoryOnly });
             bundles.AddPerSubDirectory<ScriptBundle>("Content/js/app");
             bundles.AddPerIndividualFile<ScriptBundle>("Content/hogan");
             bundles.Add<HtmlTemplateBundle>("Content/templates");
@@ -28,7 +32,7 @@ namespace Snittlistan
             // To combine files, try something like this instead:
             //   bundles.Add<StylesheetBundle>("Content");
             // In production mode, all of ~/Content will be combined into a single bundle.
-            
+
             // If you want a bundle per folder, try this:
             //   bundles.AddPerSubDirectory<ScriptBundle>("Scripts");
             // Each immediate sub-directory of ~/Scripts will be combined into its own bundle.

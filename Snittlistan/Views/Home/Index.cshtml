@@ -2,12 +2,12 @@
 
 @{
     ViewBag.Title = "Snittlistan";
+    Bundles.Reference("Content/js/sortable.js");
 }
 
 @section scripts
 {
     @Content.Script("jquery.tablesorter.min.js", Url)
-    @Content.Script("sortable.min.js", Url)
 }
 
 <table data-sortable="true">
@@ -29,11 +29,11 @@
         </tr>
     </thead>
     <tbody>
-        @for (int i=0; i<Model.Count; i++)
+        @for (int i = 0; i < Model.Count; i++)
         {
             var stat = Model[i];
             <tr>
-                <td>@(i+1)</td>
+                <td>@(i + 1)</td>
                 <td>@stat.Player</td>
                 <td>@stat.Series</td>
                 <td>@(string.Format("{0:F2}", stat.AverageScore))</td>
