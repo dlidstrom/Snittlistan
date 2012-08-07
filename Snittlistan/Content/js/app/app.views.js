@@ -25,6 +25,15 @@
             });
         }
     });
+    
+    // header view
+    views.Header = backbone.View.extend({
+        template: window.JST['header-template'],
+        render: function () {
+            this.$el.html(this.template.render({ title: "Home" }));
+            return this.el;
+        }
+    });
 
     app.Views = views;
 }($, Backbone, window.App = window.App || { }));
