@@ -24,6 +24,7 @@
         <!--[if lt IE 9]><script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6/html5shiv.min.js"></script><![endif]-->
     </head>
     <body>
+        <section id="header"></section>
         @*
         @Html.Partial("_Navbar")
         *@
@@ -98,25 +99,13 @@
         <script type="text/javascript" src="@Url.Content("~/Content/js/v2-buttons.min.js")"></script>
         @Bundles.RenderScripts("hogan")
         @Bundles.RenderHtmlTemplates()
-        @Bundles.RenderScripts()
+        @* Place initial data here. *@
         <script type="text/javascript">
             (function (app, undefined) {
                 "use strict";
-
-                //var turns = new Turns();
-                //turns.fetch();
-                var turns = new app.Collections.Turns();
-                turns.reset(
-                    [
-                        { number: 1 },
-                        { number: 2 }
-                    ]);
-                app.turns = turns;
-
-                // render
-                var turns_view = new app.Views.Turns({ collection: turns });
-                turns_view.render();
-            }(window.App));
+                app.initial_data = [{ number: 1 }, { number: 2 }];
+            }(window.App = window.App || { }));
         </script>
+        @Bundles.RenderScripts()
     </body>
 </html>
