@@ -1,0 +1,83 @@
+﻿<i class="icon-question-sign pull-right" title="Kvittens" data-content="Visas när man är inloggad. Här är knappen 'Jag kan spela' också synlig då man är uttagen i laget."></i>
+<section class="well well-small">
+    <dl class="dl-horizontal">
+        <dt>lag</dt>
+        <dd><em>{{team}}</em></dd>
+        <dt>plats</dt>
+        <dd>{{location}}</dd>
+        <dt>motstånd</dt>
+        <dd>{{opponent}}</dd>
+        <dt>när</dt>
+        <dd><em>{{date}}</em></dd>
+        <dt>tackat nej</dt>
+        <dd>
+            {{^declined}}
+            <span class="badge badge-success">0</span>
+            {{/declined}}
+            {{#declined}}
+            <span class="badge badge-warning">{{count}}</span>
+            {{names}}
+            {{/declined}}
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>svar</dt>
+        <dd>
+            <button class="btn btn-success btn-small" data-toggle="button">
+                <i class="icon-ok icon-white"></i>
+                Jag kan spela
+            </button>
+            <button class="btn btn-inverse btn-small" data-toggle="button">
+                <i class="icon-remove icon-white"></i>
+                Kan inte spela
+            </button>
+        </dd>
+    </dl>
+    <table class="table table-condensed">
+        <tr>
+            <th>Bord</th><th>Namn</th><th>Svar</th>
+        </tr>
+        <tr>
+            <td rowspan="2" class="game-table">1</td>
+            <td>Christer Liedholm<i class="icon-question-sign" title="Spelare" data-placement="bottom" data-content="Här vill jag att man ska kunna öppna information om spelaren."></i></td>
+            <td>Ja</td>
+        </tr>
+        <tr>
+            <td>Mikael Axelsson</td>
+            <td>Ja</td>
+        </tr>
+        <tr>
+            <td rowspan="2" class="game-table">2</td>
+            <td>Thomas Wallgren</td>
+            <td>Ja</td>
+        </tr>
+        <tr>
+            <td>Torbjörn Jensen</td>
+            <td>Ja</td>
+        </tr>
+        <tr>
+            <td rowspan="2" class="game-table">3</td>
+            <td>Kjell Persson</td>
+            <td>Ja</td>
+        </tr>
+        <tr>
+            <td>Peter Sjöberg</td>
+            <td>Ja</td>
+        </tr>
+        <tr>
+            <td rowspan="2" class="game-table">4</td>
+            <td>Alf Kindblom</td>
+            <td>Ja</td>
+        </tr>
+        <tr>
+            <td>Daniel Lidström</td>
+            <td>Ja</td>
+        </tr>
+        <tr>
+            <td>Reserv</td>
+            <td>Daniel Solvander</td>
+            <td>Ja</td>
+        </tr>
+    </table>
+    <i class="icon-question-sign" title="Dubbelmatcher" data-placement="right" data-content="Här ska man kunna bygga vidare med fler matcher. Det kommer behövas de helger då vi har dubbelmatch."></i>
+</section>

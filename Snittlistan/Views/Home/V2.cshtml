@@ -24,10 +24,7 @@
         <!--[if lt IE 9]><script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6/html5shiv.min.js"></script><![endif]-->
     </head>
     <body>
-        <section id="header"></section>
-        @*
-        @Html.Partial("_Navbar")
-        *@
+        @* header will be placed here *@
         <div id="main" class="container-fluid">
             @*
             <section class="page-header">
@@ -103,8 +100,48 @@
         <script type="text/javascript">
             (function (app, undefined) {
                 "use strict";
-                app.initial_data = [{ number: 1 }, { number: 2 }];
-            }(window.App = window.App || { }));
+                app.initial_data = [
+                    {
+                        turn: 2,
+                        startDate: '22 sep',
+                        endDate: '23 sep',
+                        rosters: [
+                            {
+                                team: 'Fredrikshof A',
+                                location: 'Birka',
+                                opponent: 'Stockholm IFK',
+                                date: 'lördag den 22 september 2012, 10:00',
+                                declined: {
+                                    count: 2,
+                                    names: 'Kjell Jansson, Christer Liedholm'
+                                }
+                            },
+                            {
+                                team: 'Fredrikshof F',
+                                location: 'Bowl-O-Rama',
+                                opponent: 'AIK F',
+                                date: 'lördag den 22 september 2012, 11:40',
+                                declined: {
+                                    count: 1,
+                                    names: 'Daniel Lidström'
+                                }
+                            },
+                            {
+                                team: 'Fredrikshof B',
+                                location: 'Bowl-O-Rama',
+                                opponent: 'Hellas B',
+                                date: 'söndag den 23 september 2012, 10:00',
+                                declined: null
+                            }
+                        ]
+                    }/*,
+                    {
+                        turn: 3,
+                        startDate: '29 sep',
+                        endDate: '30 sep'
+                    }*/
+                ];
+            } (window.App = window.App || {}));
         </script>
         @Bundles.RenderScripts()
     </body>

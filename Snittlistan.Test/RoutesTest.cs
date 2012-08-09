@@ -30,6 +30,7 @@
         public void V2Route()
         {
             "~/v2".ShouldMapTo<HomeController>(c => c.V2());
+            "~/v2/turns".ShouldMapTo<HomeController>(c => c.V2());
         }
 
         [Fact]
