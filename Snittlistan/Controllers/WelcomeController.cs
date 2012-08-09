@@ -12,8 +12,8 @@
 
     public class WelcomeController : AbstractController
     {
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private const string MaintenanceAuthenticationTokenConstant = "Maintenance Authentication Token";
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         public WelcomeController(IDocumentSession session)
             : base(session)
