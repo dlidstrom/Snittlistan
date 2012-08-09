@@ -151,6 +151,7 @@
             if (!ModelState.IsValid)
                 return View(model);
 
+            Debug.Assert(user != null, "user != null");
             user.SetPassword(model.NewPassword);
             return this.RedirectToAction(c => c.ChangePasswordSuccess());
         }

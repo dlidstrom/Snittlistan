@@ -4,7 +4,7 @@
 
     public static class NameShortener
     {
-        private static readonly Regex regex = new Regex(@"(?<Forename1>\w+)(?<Forename2>-\w+)? (?<Surname>\w+)");
+        private static readonly Regex ForenameSurnameRegex = new Regex(@"(?<Forename1>\w+)(?<Forename2>-\w+)? (?<Surname>\w+)");
 
         public static string Shorten(string name)
         {
@@ -12,7 +12,7 @@
                 return string.Empty;
 
             string shortenedName = name;
-            var match = regex.Match(shortenedName);
+            var match = ForenameSurnameRegex.Match(shortenedName);
             if (match.Groups["Forename2"].Success)
             {
                 shortenedName = string.Format(
