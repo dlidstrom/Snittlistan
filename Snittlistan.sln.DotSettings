@@ -4,8 +4,10 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=5E81B34E_002DA864_002D4F3C_002D8B13_002D9843FB029EA7_002Fd_003AContent_002Fd_003Abackbone/@EntryIndexedValue">ExplicitlyExcluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=5E81B34E_002DA864_002D4F3C_002D8B13_002D9843FB029EA7_002Fd_003AContent_002Fd_003Abootstrap/@EntryIndexedValue">ExplicitlyExcluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=5E81B34E_002DA864_002D4F3C_002D8B13_002D9843FB029EA7_002Fd_003AContent_002Fd_003Acss_002Ff_003Amain_002Eless/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=5E81B34E_002DA864_002D4F3C_002D8B13_002D9843FB029EA7_002Fd_003AContent_002Fd_003Aexternal/@EntryIndexedValue">ExplicitlyExcluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=5E81B34E_002DA864_002D4F3C_002D8B13_002D9843FB029EA7_002Fd_003AContent_002Fd_003Ajasmine/@EntryIndexedValue">ExplicitlyExcluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/AnalysisEnabled/@EntryValue">SOLUTION</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=StyleCop_002ESA1126/@EntryIndexedValue">DO_NOT_SHOW</s:String>
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/SPACE_WITHIN_SINGLE_LINE_ARRAY_INITIALIZER_BRACES/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CssFormatter/BRACE_STYLE/@EntryValue">NEXT_LINE</s:String>
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/JavaScriptFormatSpaces/SPACE_BEFORE_METHOD_PARENTHESES/@EntryValue">True</s:Boolean>
