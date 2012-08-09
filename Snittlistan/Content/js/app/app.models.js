@@ -1,6 +1,6 @@
 ﻿(function ($, backbone, app, undefined) {
     "use strict";
-    var models = { };
+    var models = {};
 
     // turn model
     models.Turn = backbone.Model.extend({
@@ -10,9 +10,14 @@
         url: '/turns'
     });
 
+    // roster model
+    models.Roster = backbone.Model.extend({
+        url: '/rosters'
+    });
+
     app.Models = models;
 
-    var collections = { };
+    var collections = {};
 
     // turns collection
     collections.Turns = backbone.Collection.extend({
@@ -20,5 +25,11 @@
         url: '/turns'
     });
 
+    // rosters collection
+    collections.Rosters = backbone.Collection.extend({
+        model: app.Models.Roster,
+        url: '/rosters'
+    });
+
     app.Collections = collections;
-}($, Backbone, window.App = window.App || { }));
+} ($, Backbone, window.App = window.App || {}));

@@ -5,27 +5,34 @@
 
     //var turns = new Turns();
     //turns.fetch();
-    var turns = new app.Collections.Turns();
-    turns.reset(app.initial_data);
-    app.turns = turns;
-
-    // render
-    var turns_view = new app.Views.Turns({ collection: turns });
-    turns_view.render();
 
     // application router
     var router = backbone.Router.extend({
         initialize: function () {
-            $("#header").html(new app.Views.Header().render());
+            $("body").prepend(new app.Views.Header().render());
+            var turns = new app.Collections.Turns(app.initial_data);
+            app.turns = turns;
         },
         routes: {
-            "": "home"
+            "turns": "turns",
+            "*other": "main"
         },
-        home: function () {
+        main: function () {
+            this.turns();
+            alert("Main");
+        },
+        turns: function () {
+            var turns_view = new app.Views.Turns({ collection: app.turns, el: $("#main") });
+            turns_view.render();
         }
     });
 
     app.Router = router;
     app.router = new app.Router();
-    backbone.history.start();
+    $(function () {
+        // Because hash-based history in Internet Explorer
+        // relies on an <iframe>, be sure to only call start()
+        // after the DOM is ready.
+        backbone.history.start({ pushState: true });
+    });
 }($, Backbone, window.App = window.App || { }));
