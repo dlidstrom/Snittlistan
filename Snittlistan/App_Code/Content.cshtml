@@ -1,9 +1,16 @@
 ﻿@using System.Web.Mvc
 @using Snittlistan.HtmlHelpers
 
+@* Used to include internal javascript *@
 @helper Script(string scriptName, UrlHelper url)
 {
     <script src="@url.Content("~/Content/js/" + scriptName)" type="text/javascript"></script>
+}
+
+@* Used to include external javascript *@
+@helper External(string scriptName, UrlHelper url)
+{
+    <script src="@url.Content("~/Content/external/" + scriptName)" type="text/javascript"></script>
 }
 
 @helper Script(ScriptType type)
