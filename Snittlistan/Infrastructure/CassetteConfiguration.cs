@@ -25,7 +25,7 @@ namespace Snittlistan.Infrastructure
                 "Content/js",
                 new FileSearch { SearchOption = SearchOption.TopDirectoryOnly });
             bundles.AddPerSubDirectory<ScriptBundle>("Content/js/app");
-            bundles.AddPerIndividualFile<ScriptBundle>("Content/hogan");
+            bundles.AddPerIndividualFile<ScriptBundle>("Content/external/hogan");
             bundles.Add<HtmlTemplateBundle>("Content/templates");
 
             // To combine files, try something like this instead:
