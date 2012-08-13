@@ -1,5 +1,6 @@
 ﻿// @reference app.models.js
-// @reference app.views.js
+// @reference app.views.header.js
+// @reference app.views.turns.js
 (function ($, backbone, app, undefined) {
     "use strict";
 
