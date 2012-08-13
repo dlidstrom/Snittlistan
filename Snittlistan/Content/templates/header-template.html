@@ -8,22 +8,22 @@
         <a class="brand" href="#">{{title}}</a>
         <div class="nav-collapse">
             <ul class="nav">
-                <li>
+                <li id="menu-players" class="{{menuPlayersState}}">
                     <a href="#">
                         <i class="icon-user icon-white"></i>
                         Spelare
                     </a>
                 </li>
-                <li class="active">
+                <li id="menu-turns" class="{{menuTurnsState}}">
                     <a href="#">
                         <i class="icon-calendar icon-white"></i>
-                        Matchomgångar
+                        Kommande matchomgångar
                     </a>
                 </li>
-                <li>
+                <li id="menu-completed" class="{{menuCompletedState}}">
                     <a href="#">
                         <i class="icon-list-alt icon-white"></i>
-                        Uttagningar
+                        Avklarade omgångar
                     </a>
                 </li>
             </ul>
