@@ -206,7 +206,10 @@
     <Content Include="Content\external\jasmine\lib\jasmine-1.2.0\jasmine.css" />
     <Content Include="Content\external\jasmine\lib\jasmine-1.2.0\jasmine.js" />
     <Content Include="Content\js\app\app.js" />
-    <Content Include="Content\js\app\app.views.js" />
+    <Content Include="Content\js\app\app.views.animation_buffer.js" />
+    <Content Include="Content\js\app\app.views.turns.js" />
+    <Content Include="Content\js\app\app.views.rosters.js" />
+    <Content Include="Content\js\app\app.views.header.js" />
     <Content Include="Content\js\models\mammal.min.js">
       <DependentUpon>mammal.uglify.js</DependentUpon>
     </Content>
@@ -347,6 +350,7 @@
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\css\Site.css" />
     <Content Include="Views\_ViewStart.cshtml" />
