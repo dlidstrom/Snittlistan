@@ -2,6 +2,39 @@
     "use strict";
     var models = {};
 
+    // application state
+    models.AppState = backbone.Model.extend({
+        url: '/appstate',
+        defaults: {
+            page: 'turns',
+            title: 'Snittlistan V2',
+            menuPlayersState: '',
+            menuTurnsState: 'active',
+            menuCompletedState: ''
+        },
+        playersMenu: function () {
+            this.set({
+                menuPlayersState: 'active',
+                menuTurnsState: '',
+                menuCompletedState: ''
+            });
+        },
+        turnsMenu: function () {
+            this.set({
+                menuPlayersState: '',
+                menuTurnsState: 'active',
+                menuCompletedState: ''
+            });
+        },
+        completedMenu: function () {
+            this.set({
+                menuPlayersState: '',
+                menuTurnsState: '',
+                menuCompletedState: 'active'
+            });
+        }
+    });
+
     // turn model
     models.Turn = backbone.Model.extend({
         initialize: function (options) {

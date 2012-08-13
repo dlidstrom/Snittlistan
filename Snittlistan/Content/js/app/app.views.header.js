@@ -13,10 +13,25 @@
         template: window.JST['header-template'],
         initialize: function (options) {
             _.bindAll(this);
+            this.model.bind('change', this.render);
         },
         render: function () {
-            this.$el.html(this.template.render({ title: "Home" }));
-            return this.el;
+            this.$el.html(this.template.render(this.model.toJSON()));
+            return this;
+        },
+        events: {
+            "click li#menu-players a": "players",
+            "click li#menu-turns a": "turns",
+            "click li#menu-completed a": "completed"
+        },
+        players: function () {
+            this.trigger('players');
+        },
+        turns: function () {
+            this.trigger('turns');
+        },
+        completed: function() {
+            this.trigger('completed');
         }
     });
 
