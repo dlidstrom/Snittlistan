@@ -2,6 +2,11 @@
     "use strict";
     var models = app.Models || { };
 
+    // players-list model
+    models.PlayersList = backbone.Model.extend({
+        url: '/players'
+    });
+
     // player model
     models.Player = backbone.Model.extend({
         url: '/players'
@@ -11,7 +16,7 @@
 
     var collections = app.Collections || { };
 
-    // playerss collection
+    // players collection
     collections.Players = backbone.Collection.extend({
         model: app.Models.Player,
         url: '/players'
