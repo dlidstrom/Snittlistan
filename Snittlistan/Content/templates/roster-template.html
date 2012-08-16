@@ -9,25 +9,23 @@
         <dd>{{opponent}}</dd>
         <dt>när</dt>
         <dd><em>{{date}}</em></dd>
-        <dt>tackat nej</dt>
-        <dd>
-            {{^declined}}
-            <span class="badge badge-success">0</span>
-            {{/declined}}
-            {{#declined}}
-            <span class="badge badge-warning">{{count}}</span>
-            {{names}}
-            {{/declined}}
-        </dd>
+        <!--
+            <dt>tackat nej</dt>
+            <dd>
+                <span class="badge badge-{{declinedClass}}">{{declinedCount}}</span>
+                {{declinedNames}}
+            </dd>
+            -->
     </dl>
+<!--
     <dl class="dl-horizontal">
         <dt>svar</dt>
         <dd>
-            <button class="btn btn-success btn-large" data-toggle="button">
+            <button class="btn btn-success btn-large can-play">
                 <i class="icon-ok icon-white"></i>
                 Jag kan spela
             </button>
-            <button class="btn btn-inverse btn-large" data-toggle="button">
+            <button class="btn btn-warning btn-large cannot-play">
                 <i class="icon-remove icon-white"></i>
                 Jag kan inte spela
             </button>
@@ -80,4 +78,5 @@
         </tr>
     </table>
     <i class="icon-question-sign" title="Dubbelmatcher" data-placement="right" data-content="Här ska man kunna bygga vidare med fler matcher. Det kommer behövas de helger då vi har dubbelmatch."></i>
+    -->
 </section>

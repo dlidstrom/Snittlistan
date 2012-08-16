@@ -210,6 +210,9 @@
     <Content Include="Content\js\app\app.views.turns.js" />
     <Content Include="Content\js\app\app.views.rosters.js" />
     <Content Include="Content\js\app\app.views.header.js" />
+    <Content Include="Content\js\app\app.models.rosters.js" />
+    <Content Include="Content\js\app\app.models.appstate.js" />
+    <Content Include="Content\js\app\app.models.players.js" />
     <Content Include="Content\js\models\mammal.min.js">
       <DependentUpon>mammal.uglify.js</DependentUpon>
     </Content>
@@ -314,6 +317,7 @@
     <Content Include="Content\js\team4x4.js" />
     <Content Include="Content\js\specs\specs.mammal.js" />
     <Content Include="Content\templates\header-template.html" />
+    <Content Include="Content\templates\player-template.html" />
     <Content Include="Content\templates\roster-template.html" />
     <Content Include="Content\templates\turn-template.html" />
     <Content Include="Content\external\underscore\underscore-1.3.3\underscore-min.js" />
@@ -336,7 +340,7 @@
     <Compile Include="ViewModels\Account\ChangePasswordViewModel.cs" />
     <Content Include="Views\Home\_Player.cshtml" />
     <None Include="Content\external\jasmine\lib\jasmine-1.2.0\MIT.LICENSE" />
-    <Content Include="Content\js\app\app.models.js" />
+    <Content Include="Content\js\app\app.models.turns.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\js\stacktrace.js" />
