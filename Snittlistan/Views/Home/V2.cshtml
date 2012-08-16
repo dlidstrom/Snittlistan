@@ -1,3 +1,4 @@
+@model InitialDataViewModel
 @{
     ViewBag.Title = "Snittlistan V2";
     Layout = "";
@@ -99,45 +100,8 @@
         <script type="text/javascript">
             (function (app, undefined) {
                 "use strict";
-                app.turns_initial_data = [
-                    {
-                        turn: 2,
-                        startDate: '22 sep',
-                        endDate: '23 sep',
-                        rosters: [
-                            {
-                                team: 'Fredrikshof A',
-                                location: 'Birka',
-                                opponent: 'Stockholm IFK',
-                                date: 'lördag den 22 september 2012, 10:00',
-                                declinedClass: 'warning',
-                                declinedCount: 2,
-                                declinedNames: 'Kjell Jansson, Christer Liedholm'
-                            },
-                            {
-                                team: 'Fredrikshof F',
-                                location: 'Bowl-O-Rama',
-                                opponent: 'AIK F',
-                                date: 'lördag den 22 september 2012, 11:40',
-                                declinedClass: 'warning',
-                                declinedCount: 2,
-                                declinedNames: 'Daniel Lidström, Daniel Solvander'
-                            },
-                            {
-                                team: 'Fredrikshof B',
-                                location: 'Bowl-O-Rama',
-                                opponent: 'Hellas B',
-                                date: 'söndag den 23 september 2012, 10:00',
-                                declinedClass: 'success',
-                                declinedCount: 0,
-                                declinedNames: ''
-                            }
-                        ]
-                    }
-                ];
-                app.players_initial_data = [
-                ];
-            } (window.App = window.App || {}));
+                app.initial_data = @Html.ToJson(Model);
+            }(window.App = window.App || { }));
         </script>
         @Bundles.RenderScripts()
     </body>

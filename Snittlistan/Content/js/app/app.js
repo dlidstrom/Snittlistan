@@ -3,6 +3,7 @@
 // @reference app.models.turns.js
 // @reference app.views.header.js
 // @reference app.views.turns.js
+// @reference app.views.players.js
 (function ($, backbone, app, undefined) {
     "use strict";
 
@@ -33,6 +34,7 @@
             // save references to models
             this.appState = options.app_state;
             this.turns = options.turns;
+            this.players = options.players;
             // use appstate to handle navigation
             var that = this;
             this.appState.on('turns', function () {
@@ -67,13 +69,15 @@
         },
         // show players
         players: function () {
+            var players_view = new app.Views.PlayersList({ model: this.players });
+            this.showView("#main", players_view);
         }
     }))({
         // initialize data here, and keep inside the router
         // application state keeps track of current page
         app_state: new app.Models.AppState(),
-        turns: new app.Collections.Turns(app.turns_initial_data),
-        players: new app.Collections.Players(app.players_initial_data)
+        turns: new app.Collections.Turns(app.initial_data.turns),
+        players: new app.Models.PlayersList({ players: app.initial_data.players })
     });
 
     $(function () {

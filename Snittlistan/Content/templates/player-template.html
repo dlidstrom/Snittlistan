@@ -2,13 +2,15 @@
     <li class="span2">
         <a href="#" class="thumbnail">
             <img src="http://placehold.it/160x120" alt="" />
-            <h3>Christer Liedholm</h3>
-            <p>Medlem sedan 1973</p>
+            <h3>{{name}}</h3>
+            <p>Medlem sedan {{joined}}.</p>
         </a>
     </li>
 </ul>
 <h3>Matcher</h3>
 <table class="table table-condensed">
     <tr><th>Datum</th><th>Resultat</th></tr>
-    <tr><td>2011-11-14</td><td>913</td></tr>
+    {{#matches}}
+    <tr><td>{{date}}</td><td>{{result}}</td></tr>
+    {{/matches}}
 </table>

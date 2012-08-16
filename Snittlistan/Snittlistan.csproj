@@ -157,6 +157,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ViewModels\InitialDataViewModel.cs" />
     <Compile Include="Infrastructure\CassetteConfiguration.cs" />
     <Compile Include="Controllers\HackerController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
@@ -185,6 +186,9 @@
     <Compile Include="Infrastructure\Results\NotFoundViewResult.cs" />
     <Compile Include="Infrastructure\Installers\DocumentStoreMode.cs" />
     <Compile Include="Infrastructure\IoC\WindsorDependencyResolver.cs" />
+    <Compile Include="ViewModels\PlayerViewModel.cs" />
+    <Compile Include="ViewModels\RosterViewModel.cs" />
+    <Compile Include="ViewModels\TurnsViewModel.cs" />
     <Content Include="..\packages\RavenDB.Embedded.1.2.2064-Unstable\tools\Raven.Studio.xap">
       <Link>Raven.Studio.xap</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -213,6 +217,7 @@
     <Content Include="Content\js\app\app.models.rosters.js" />
     <Content Include="Content\js\app\app.models.appstate.js" />
     <Content Include="Content\js\app\app.models.players.js" />
+    <Content Include="Content\js\app\app.views.players.js" />
     <Content Include="Content\js\models\mammal.min.js">
       <DependentUpon>mammal.uglify.js</DependentUpon>
     </Content>
@@ -317,6 +322,7 @@
     <Content Include="Content\js\team4x4.js" />
     <Content Include="Content\js\specs\specs.mammal.js" />
     <Content Include="Content\templates\header-template.html" />
+    <Content Include="Content\templates\player-list-template.htm" />
     <Content Include="Content\templates\player-template.html" />
     <Content Include="Content\templates\roster-template.html" />
     <Content Include="Content\templates\turn-template.html" />
@@ -371,7 +377,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\js\views\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
