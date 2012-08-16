@@ -2,7 +2,7 @@
 (function ($, backbone, app, undefined) {
     "use strict";
 
-    var views = app.Views || {};
+    var views = app.Views || { };
 
     // turn view
     views.Turn = backbone.View.extend({
@@ -36,4 +36,4 @@
     });
 
     app.Views = views;
-} ($, Backbone, window.App = window.App || {}));
+}($, Backbone, window.App = window.App || { }));

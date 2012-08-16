@@ -93,14 +93,13 @@
         <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js" type="text/javascript"></script>
 
         @* local scripts *@
-        <script type="text/javascript" src="@Url.Content("~/Content/js/v2-buttons.min.js")"></script>
         @Bundles.RenderScripts("hogan")
         @Bundles.RenderHtmlTemplates()
         @* Place initial data here. *@
         <script type="text/javascript">
             (function (app, undefined) {
                 "use strict";
-                app.initial_data = [
+                app.turns_initial_data = [
                     {
                         turn: 2,
                         startDate: '22 sep',
@@ -111,35 +110,32 @@
                                 location: 'Birka',
                                 opponent: 'Stockholm IFK',
                                 date: 'lördag den 22 september 2012, 10:00',
-                                declined: {
-                                    count: 2,
-                                    names: 'Kjell Jansson, Christer Liedholm'
-                                }
+                                declinedClass: 'warning',
+                                declinedCount: 2,
+                                declinedNames: 'Kjell Jansson, Christer Liedholm'
                             },
                             {
                                 team: 'Fredrikshof F',
                                 location: 'Bowl-O-Rama',
                                 opponent: 'AIK F',
                                 date: 'lördag den 22 september 2012, 11:40',
-                                declined: {
-                                    count: 1,
-                                    names: 'Daniel Lidström'
-                                }
+                                declinedClass: 'warning',
+                                declinedCount: 2,
+                                declinedNames: 'Daniel Lidström, Daniel Solvander'
                             },
                             {
                                 team: 'Fredrikshof B',
                                 location: 'Bowl-O-Rama',
                                 opponent: 'Hellas B',
                                 date: 'söndag den 23 september 2012, 10:00',
-                                declined: null
+                                declinedClass: 'success',
+                                declinedCount: 0,
+                                declinedNames: ''
                             }
                         ]
-                    }/*,
-                    {
-                        turn: 3,
-                        startDate: '29 sep',
-                        endDate: '30 sep'
-                    }*/
+                    }
+                ];
+                app.players_initial_data = [
                 ];
             } (window.App = window.App || {}));
         </script>

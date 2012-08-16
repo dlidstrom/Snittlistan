@@ -11,27 +11,30 @@
         tagName: 'section',
         className: 'navbar navbar-fixed-top',
         template: window.JST['header-template'],
-        initialize: function (options) {
+        initialize: function () {
             _.bindAll(this);
-            this.model.bind('change', this.render);
+            this.model.on('change', this.render);
+        },
+        beforeClose: function () {
+            this.model.off('change', this.render);
         },
         render: function () {
             this.$el.html(this.template.render(this.model.toJSON()));
             return this;
         },
         events: {
-            "click li#menu-players a": "players",
-            "click li#menu-turns a": "turns",
-            "click li#menu-completed a": "completed"
+            'click li#menu-players a': 'players',
+            'click li#menu-turns a': 'turns',
+            'click li#menu-completed a': 'completed'
         },
         players: function () {
-            this.trigger('players');
+            this.model.playersMenu();
         },
         turns: function () {
-            this.trigger('turns');
+            this.model.turnsMenu();
         },
         completed: function() {
-            this.trigger('completed');
+            this.model.completedMenu();
         }
     });
 

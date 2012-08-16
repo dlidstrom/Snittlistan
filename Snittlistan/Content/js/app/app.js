@@ -1,4 +1,6 @@
-﻿// @reference app.models.js
+﻿// @reference app.models.appstate.js
+// @reference app.models.players.js
+// @reference app.models.turns.js
 // @reference app.views.header.js
 // @reference app.views.turns.js
 (function ($, backbone, app, undefined) {
@@ -7,57 +9,72 @@
     //var turns = new Turns();
     //turns.fetch();
 
+    // define a custom close method
+    // if special clean-up is necessary,
+    // create a beforeClose function
+    // see http://lostechies.com/derickbailey/2011/09/15/zombies-run-managing-page-transitions-in-backbone-apps/
+    backbone.View.prototype.close = function () {
+        if (this.beforeClose)
+            this.beforeClose();
+        this.remove();
+        this.unbind();
+    };
+
     // application router, create as instantiated singleton
     app.router = new (backbone.Router.extend({
-        initialize: function () {
-            _.bindAll(this);
-            // application state keeps track of current page
-            app.app_state = new app.Models.AppState();
-            // place a header first in the body element
-            this.header = new app.Views.Header({ model: app.app_state });
-            this.header.bind('players', this.menuOnPlayers);
-            this.header.bind('turns', this.menuOnTurns);
-            this.header.bind('completed', this.menuOnCompleted);
-            $("body").prepend(this.header.render().el);
-
-            // initialize turns from server
-            var turns = new app.Collections.Turns(app.initial_data);
-            app.turns = turns;
-        },
         routes: {
-            'v2/players': 'players',
             'v2/turns': 'turns',
             'v2/completed': 'completed',
-            '*other': 'main'
+            'v2/players': 'players',
+            '*other': 'turns'
         },
-        // main entry point
-        main: function () {
-            this.turns();
+        initialize: function (options) {
+            _.bindAll(this);
+            // save references to models
+            this.appState = options.app_state;
+            this.turns = options.turns;
+            // use appstate to handle navigation
+            var that = this;
+            this.appState.on('turns', function () {
+                that.navigate('v2/turns');
+            });
+            this.appState.on('completed', function () {
+                that.navigate('v2/completed');
+            });
+            this.appState.on('players', function () {
+                that.navigate('v2/players');
+            });
+            // place a header first in the body element
+            this.header = new app.Views.Header({ model: options.app_state });
+            $("body").prepend(this.header.render().el);
         },
-        menuOnPlayers: function () {
-            this.navigate('v2/players');
+        // handles views
+        showView: function (selector, view) {
+            if (this.currentView)
+                this.currentView.close();
+            $(selector).html(view.render().el);
+            this.currentView = view;
+            return view;
         },
-        menuOnTurns: function () {
-            this.navigate('v2/turns');
-        },
-        menuOnCompleted: function () {
-            this.navigate('v2/completed');
-        },
-        // show players
-        players: function () {
-            app.app_state.playersMenu();
-        },
+        // routes
         // show coming turns
         turns: function () {
-            var turns_view = new app.Views.Turns({ collection: app.turns });
-            $("#main").html(turns_view.render().el);
-            app.app_state.turnsMenu();
+            var turns_view = new app.Views.Turns({ collection: this.turns });
+            this.showView("#main", turns_view);
         },
         // show completed turns
         completed: function () {
-            app.app_state.completedMenu();
+        },
+        // show players
+        players: function () {
         }
-    }))();
+    }))({
+        // initialize data here, and keep inside the router
+        // application state keeps track of current page
+        app_state: new app.Models.AppState(),
+        turns: new app.Collections.Turns(app.turns_initial_data),
+        players: new app.Collections.Players(app.players_initial_data)
+    });
 
     $(function () {
         // Because hash-based history in Internet Explorer

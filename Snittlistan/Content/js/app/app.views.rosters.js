@@ -1,7 +1,7 @@
 ﻿(function ($, backbone, app, undefined) {
     "use strict";
 
-    var views = app.Views || {};
+    var views = app.Views || { };
 
     // roster view
     views.Roster = backbone.View.extend({
@@ -9,10 +9,38 @@
         template: window.JST['roster-template'],
         initialize: function (options) {
             _.bindAll(this);
+            this.model.on('change', this.render);
+        },
+        beforeClose: function () {
+            this.model.off('change', this.render);
         },
         render: function () {
             this.$el.html(this.template.render(this.model.toJSON()));
             return this;
+        },
+        events: {
+            'click .can-play': 'canPlay',
+            'click .cannot-play': 'cannotPlay'
+        },
+        canPlay: function () {
+            var declined_names = this.model.get('declinedNames');
+            var declined_new = declined_names == '' ? [] : declined_names.split(', ');
+            declined_new.pop();
+            this.model.set({
+                declinedCount: declined_new.length,
+                declinedNames: declined_new.join(', '),
+                declinedClass: declined_new.length ? 'warning' : 'success'
+            });
+        },
+        cannotPlay: function () {
+            var declined_names = this.model.get('declinedNames');
+            var declined_new = declined_names == '' ? [] : declined_names.split(', ');
+            declined_new.push('Daniel Lidström');
+            this.model.set({
+                declinedCount: declined_new.length,
+                declinedNames: declined_new.join(', '),
+                declinedClass: declined_new.length ? 'warning' : 'success'
+            });
         }
     });
 
@@ -33,4 +61,4 @@
     });
 
     app.Views = views;
-} ($, Backbone, window.App = window.App || {}));
+}($, Backbone, window.App = window.App || { }));
