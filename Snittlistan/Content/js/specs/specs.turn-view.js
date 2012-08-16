@@ -1,5 +1,5 @@
 ﻿describe("Turn view", function () {
-    var turnsView;
+    var turns_view;
 
     beforeEach(function () {
         var turns = new App.Collections.Turns();
@@ -39,7 +39,7 @@
                 ]
             }
         ]);
-        this.turnsView = new App.Views.Turns({ model: turns });
+        this.turns_view = new App.Views.Turns({ model: turns });
     });
 
     it("lists all matches", function () {
