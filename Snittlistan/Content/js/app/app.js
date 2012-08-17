@@ -35,17 +35,6 @@
             this.appState = options.app_state;
             this.turns = options.turns;
             this.players = options.players;
-            // use appstate to handle navigation
-            var that = this;
-            this.appState.on('turns', function () {
-                that.navigate('v2/turns');
-            });
-            this.appState.on('completed', function () {
-                that.navigate('v2/completed');
-            });
-            this.appState.on('players', function () {
-                that.navigate('v2/players');
-            });
             // place a header first in the body element
             this.header = new app.Views.Header({ model: options.app_state });
             $("body").prepend(this.header.render().el);
@@ -61,14 +50,20 @@
         // routes
         // show coming turns
         turns: function () {
+            // adjust appState
+            this.appState.turnsMenu();
             var turns_view = new app.Views.Turns({ collection: this.turns });
             this.showView("#main", turns_view);
         },
         // show completed turns
         completed: function () {
+            // adjust appState
+            this.appState.completedMenu();
         },
         // show players
         players: function () {
+            // adjust appState
+            this.appState.playersMenu();
             var players_view = new app.Views.PlayersList({ model: this.players });
             this.showView("#main", players_view);
         }

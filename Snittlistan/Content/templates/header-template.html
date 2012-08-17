@@ -8,27 +8,25 @@
         <a class="brand" href="#">{{title}}</a>
         <div class="nav-collapse">
             <ul class="nav">
-                <li id="menu-players" class="{{menuPlayersState}}">
-                    <a href="#">
+                <li id="menu-players" class="{{playersMenu}}">
+                    <a href="players">
                         <i class="icon-user icon-white"></i>
                         Spelare
                     </a>
                 </li>
-                <li id="menu-turns" class="{{menuTurnsState}}">
-                    <a href="#">
+                <li id="menu-turns" class="{{turnsMenu}}">
+                    <a href="turns">
                         <i class="icon-calendar icon-white"></i>
                         Kommande matchomgångar
                     </a>
                 </li>
-            <!--
-                <li id="menu-completed" class="{{menuCompletedState}}">
-                    <a href="#">
-                        <i class="icon-list-alt icon-white"></i>
-                        Avklarade omgångar
-                    </a>
-                </li>
-                -->
             </ul>
+            <form class="navbar-search">
+                <input type="text" class="search-query span2" placeholder="Sök" />
+            </form>
+            <p class="navbar-text">
+                Text i navbar
+            </p>
         </div>
     </div>
 </section>
