@@ -322,7 +322,7 @@
     <Content Include="Content\js\team4x4.js" />
     <Content Include="Content\js\specs\specs.mammal.js" />
     <Content Include="Content\templates\header-template.html" />
-    <Content Include="Content\templates\player-list-template.htm" />
+    <Content Include="Content\templates\player-list-template.html" />
     <Content Include="Content\templates\player-template.html" />
     <Content Include="Content\templates\roster-template.html" />
     <Content Include="Content\templates\turn-template.html" />
