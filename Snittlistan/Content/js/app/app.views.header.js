@@ -21,20 +21,6 @@
         render: function () {
             this.$el.html(this.template.render(this.model.toJSON()));
             return this;
-        },
-        events: {
-            'click li#menu-players a': 'players',
-            'click li#menu-turns a': 'turns',
-            'click li#menu-completed a': 'completed'
-        },
-        players: function () {
-            this.model.playersMenu();
-        },
-        turns: function () {
-            this.model.turnsMenu();
-        },
-        completed: function() {
-            this.model.completedMenu();
         }
     });
 
