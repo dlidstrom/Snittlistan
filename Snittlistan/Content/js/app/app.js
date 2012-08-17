@@ -24,9 +24,9 @@
     // application router, create as instantiated singleton
     app.router = new (backbone.Router.extend({
         routes: {
-            'v2/turns': 'turns',
-            'v2/completed': 'completed',
-            'v2/players': 'players',
+            'turns': 'turns',
+            'completed': 'completed',
+            'players': 'players',
             '*other': 'turns'
         },
         initialize: function (options) {
@@ -35,8 +35,16 @@
             this.appState = options.app_state;
             this.turns = options.turns;
             this.players = options.players;
+            // notify appState when changing routes
+            var self = this;
+            _(this.routes).each(function (route) {
+                self.on('route:' + route, function () {
+                    // TODO: Need error handling
+                    self.appState[route + 'Menu']();
+                });
+            });
             // place a header first in the body element
-            this.header = new app.Views.Header({ model: options.app_state });
+            this.header = new app.Views.Header({ model: options.app_state, router: this });
             $("body").prepend(this.header.render().el);
         },
         // handles views
@@ -50,20 +58,14 @@
         // routes
         // show coming turns
         turns: function () {
-            // adjust appState
-            this.appState.turnsMenu();
             var turns_view = new app.Views.Turns({ collection: this.turns });
             this.showView("#main", turns_view);
         },
         // show completed turns
         completed: function () {
-            // adjust appState
-            this.appState.completedMenu();
         },
         // show players
         players: function () {
-            // adjust appState
-            this.appState.playersMenu();
             var players_view = new app.Views.PlayersList({ model: this.players });
             this.showView("#main", players_view);
         }
@@ -79,6 +81,6 @@
         // Because hash-based history in Internet Explorer
         // relies on an <iframe>, be sure to only call start()
         // after the DOM is ready.
-        backbone.history.start({ pushState: true });
+        backbone.history.start({ pushState: true, root: '/v2/' });
     });
 }($, Backbone, window.App = window.App || { }));
