@@ -5,8 +5,7 @@
 
     // players-list view
     views.PlayersList = backbone.View.extend({
-        tagName: 'table',
-        className: 'table table-condensed',
+        className: 'row-fluid',
         template: window.JST['player-list-template'],
         initialize: function (options) {
             _.bindAll(this);

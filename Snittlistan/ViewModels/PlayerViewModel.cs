@@ -4,6 +4,9 @@ namespace Snittlistan.ViewModels
 
     public class PlayerViewModel
     {
+        [JsonProperty(PropertyName = "index")]
+        public int Index { get; set; }
+
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
     }

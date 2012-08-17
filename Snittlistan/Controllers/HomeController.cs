@@ -127,7 +127,13 @@
                 {
                     new PlayerViewModel
                         {
+                            Index = 1,
                             Name = "Daniel Lidström"
+                        },
+                    new PlayerViewModel
+                        {
+                            Index = 2,
+                            Name = "Daniel Solvander"
                         }
                 };
             return View(new InitialDataViewModel
