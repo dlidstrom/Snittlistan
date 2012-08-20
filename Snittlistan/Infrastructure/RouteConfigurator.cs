@@ -85,7 +85,7 @@
 
         private void V2Route()
         {
-            routes.MapRoute("V2-route", "v2/{*route}", new { controller = "Home", action = "V2" });
+            routes.MapRoute("V2-route", "v2/{*route}", new { controller = "App", action = "Index" });
         }
 
         private void NotFoundRoute()

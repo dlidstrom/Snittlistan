@@ -157,6 +157,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AppController.cs" />
     <Compile Include="ViewModels\InitialDataViewModel.cs" />
     <Compile Include="Infrastructure\CassetteConfiguration.cs" />
     <Compile Include="Controllers\HackerController.cs" />
@@ -507,7 +508,7 @@
     <Content Include="Views\User\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\V2.cshtml" />
+    <Content Include="Views\App\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Welcome\Reset.cshtml" />

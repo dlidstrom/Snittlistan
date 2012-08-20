@@ -29,8 +29,8 @@
         [Fact]
         public void V2Route()
         {
-            "~/v2".ShouldMapTo<HomeController>(c => c.V2());
-            "~/v2/turns".ShouldMapTo<HomeController>(c => c.V2());
+            "~/v2".ShouldMapTo<AppController>(c => c.Index());
+            "~/v2/turns".ShouldMapTo<AppController>(c => c.Index());
         }
 
         [Fact]
