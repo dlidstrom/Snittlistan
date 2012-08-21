@@ -39,8 +39,10 @@
             var self = this;
             _(this.routes).each(function (route) {
                 self.on('route:' + route, function () {
-                    // TODO: Need error handling
-                    self.appState[route + 'Menu']();
+                    var f = self.appState[route + 'Menu'];
+                    if (f === null || typeof f !== 'function')
+                        throw Error('Missing handler for ' + route + 'Menu in appState');
+                    f.apply(self.appState);
                 });
             });
             // place a header first in the body element
