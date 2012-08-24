@@ -10,27 +10,31 @@
             title: 'Snittlistan V2',
             playersMenu: '',
             turnsMenu: '',
-            completedMenu: ''
+            resultsMenu: '',
+            addTurnMenu: ''
+        },
+        addTurnMenu: function () {
+            this.turnsMenu();
         },
         playersMenu: function () {
             this.set({
                 playersMenu: 'active',
                 turnsMenu: '',
-                completedMenu: ''
+                resultsMenu: ''
             });
         },
         turnsMenu: function () {
             this.set({
                 playersMenu: '',
                 turnsMenu: 'active',
-                completedMenu: ''
+                resultsMenu: ''
             });
         },
-        completedMenu: function () {
+        resultsMenu: function () {
             this.set({
                 playersMenu: '',
                 turnsMenu: '',
-                completedMenu: 'active'
+                resultsMenu: 'active'
             });
         }
     });

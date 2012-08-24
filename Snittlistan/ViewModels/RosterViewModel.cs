@@ -7,6 +7,9 @@ namespace Snittlistan.ViewModels
         [JsonProperty(PropertyName = "team")]
         public string Team { get; set; }
 
+        [JsonProperty(PropertyName = "team_level")]
+        public string TeamLevel { get; set; }
+
         [JsonProperty(PropertyName = "location")]
         public string Location { get; set; }
 

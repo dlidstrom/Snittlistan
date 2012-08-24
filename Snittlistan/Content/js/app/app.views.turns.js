@@ -24,6 +24,10 @@
         className: 'row-fluid',
         initialize: function (options) {
             _.bindAll(this);
+            this.collection.on('add', this.addTurn);
+        },
+        beforeClose: function () {
+            this.collection.off('add', this.addTurn);
         },
         render: function () {
             this.collection.each(this.addTurn);
@@ -31,7 +35,9 @@
         },
         addTurn: function (turn) {
             // let the turn view render directly in this element
-            new app.Views.Turn({ model: turn, el: this.el }).render();
+            var view = new app.Views.Turn({ model: turn, el: this.el });
+            view.render();
+            turn.on('remove', view.remove, view);
         }
     });
 

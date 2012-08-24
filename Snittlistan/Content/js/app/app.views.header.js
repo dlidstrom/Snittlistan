@@ -1,8 +1,9 @@
 ﻿// @reference app.session.js
+// @reference app.views.login.js
 (function ($, backbone, app, undefined) {
     "use strict";
 
-    var views = app.Views || {};
+    var views = app.Views || { };
 
     // header view
     // handle active page using an application-state model,
@@ -13,8 +14,9 @@
         className: 'navbar navbar-fixed-top navbar-inverse',
         template: window.JST['header-template'],
         events: {
-            'click li#menu-players a': 'players',
-            'click li#menu-turns a': 'turns',
+            'click li a': 'clicked',
+            'click li a i': 'clickedImage',
+            'click button#menu-login': 'login',
             'click button#menu-logout': 'logOut'
         },
         initialize: function (options) {
@@ -25,7 +27,7 @@
         },
         beforeClose: function () {
             this.model.off('change', this.render);
-            app.auth.off('change', this.render);
+            app.session.off('all', this.render);
         },
         render: function () {
             var combined_model = this.model.toJSON();
@@ -36,13 +38,18 @@
             this.$el.html(this.template.render(combined_model));
             return this;
         },
-        players: function () {
-            this.router.navigate('players', { trigger: true });
+        clicked: function (event) {
+            var href = $(event.target).attr('href');
+            this.router.navigate(href, { trigger: true });
             return false;
         },
-        turns: function () {
-            this.router.navigate('turns', { trigger: true });
+        clickedImage: function (event) {
+            var href = $(event.target).parent().attr('href');
+            this.router.navigate(href, { trigger: true });
             return false;
+        },
+        login: function () {
+            app.Modals.show(new app.Views.Login());
         },
         logOut: function () {
             app.session.logOut();
@@ -51,4 +58,4 @@
     });
 
     app.Views = views;
-} ($, Backbone, window.App = window.App || {}));
+}($, Backbone, window.App = window.App || { }));

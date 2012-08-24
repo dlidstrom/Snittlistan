@@ -5,19 +5,25 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </a>
-        <a class="brand" href="#">{{title}}</a>
+        <span class="brand">{{title}}</span>
         <div class="nav-collapse">
             <ul class="nav">
+                <li id="menu-turns" class="{{turnsMenu}}">
+                    <a href="turns">
+                        <i class="icon-calendar icon-white"></i>
+                        Omgångar
+                    </a>
+                </li>
+                <li id="menu-results" class="{{resultsMenu}}">
+                    <a href="results">
+                        <i class="icon-list icon-white"></i>
+                        Resultat
+                    </a>
+                </li>
                 <li id="menu-players" class="{{playersMenu}}">
                     <a href="players">
                         <i class="icon-user icon-white"></i>
                         Spelare
-                    </a>
-                </li>
-                <li id="menu-turns" class="{{turnsMenu}}">
-                    <a href="turns">
-                        <i class="icon-calendar icon-white"></i>
-                        Kommande matchomgångar
                     </a>
                 </li>
             </ul>
@@ -31,7 +37,7 @@
             </p>
             {{/session.isAuthenticated}}
             {{^session.isAuthenticated}}
-            <button class="btn btn-small btn-primary pull-right" data-toggle="modal" data-target="#login-modal">
+            <button id="menu-login" class="btn btn-small btn-primary pull-right">
                 <i class="icon-user icon-white"></i>
                 Logga in
             </button>
