@@ -27,6 +27,13 @@
         }
 
         [Fact]
+        public void ApiRoute()
+        {
+            RouteTable.Routes.Maps("POST", "~/api/session", new { controller = "Api", action = "Session" });
+            RouteTable.Routes.Maps("DELETE", "~/api/session", new { controller = "Api", action = "Session" });
+        }
+
+        [Fact]
         public void V2Route()
         {
             "~/v2".ShouldMapTo<AppController>(c => c.Index());

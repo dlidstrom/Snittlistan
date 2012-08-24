@@ -4,8 +4,15 @@
 // @reference app.views.header.js
 // @reference app.views.turns.js
 // @reference app.views.players.js
+// @reference app.views.login.js
 (function ($, backbone, app, undefined) {
     "use strict";
+
+    // links:
+    // Edit/read-only views: http://stackoverflow.com/questions/10863497/switching-between-readonly-view-and-edit-view-in-backbone-js
+    // Backbone filters: http://coenraets.org/blog/2012/01/backbone-js-lessons-learned-and-improved-sample-app/
+    // How to handle login: http://stackoverflow.com/questions/7220020/backbone-js-how-to-handle-login
+    // Handling user login: http://stackoverflow.com/questions/5808655/backbone-js-handling-if-a-user-is-logged-in-or-not
 
     //var turns = new Turns();
     //turns.fetch();
@@ -24,9 +31,9 @@
     // application router, create as instantiated singleton
     app.router = new (backbone.Router.extend({
         routes: {
-            'turns': 'turns',
-            'completed': 'completed',
-            'players': 'players',
+            turns: 'turns',
+            completed: 'completed',
+            players: 'players',
             '*other': 'turns'
         },
         initialize: function (options) {
@@ -46,7 +53,10 @@
                 });
             });
             // place a header first in the body element
-            this.header = new app.Views.Header({ model: options.app_state, router: this });
+            this.header = new app.Views.Header({
+                model: options.app_state,
+                router: this
+            });
             $("body").prepend(this.header.render().el);
         },
         // handles views

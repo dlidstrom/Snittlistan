@@ -40,6 +40,7 @@
             InitializeContainer();
 
             // register routes
+            // Routes.Start();
             new RouteConfigurator(RouteTable.Routes).Configure();
 
             // add model binders

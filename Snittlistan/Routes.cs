@@ -1,6 +1,7 @@
 namespace Snittlistan
 {
     using System.Web.Routing;
+    using Controllers;
     using RestfulRouting;
 
     public class Routes : RouteSet
@@ -13,6 +14,7 @@ namespace Snittlistan
 
         public override void Map(IMapper map)
         {
+            map.Root<AppController>(x => x.Index());
             map.DebugRoute("routedebug");
             /*
              * TODO: Add your routes here.
