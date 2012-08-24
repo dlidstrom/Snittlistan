@@ -10,7 +10,7 @@
     // http://stackoverflow.com/questions/10926071/highlighting-menu-submenu-in-accordance-with-the-rendered-view
     views.Header = backbone.View.extend({
         tagName: 'section',
-        className: 'navbar navbar-fixed-top',
+        className: 'navbar navbar-fixed-top navbar-inverse',
         template: window.JST['header-template'],
         events: {
             'click li#menu-players a': 'players',
