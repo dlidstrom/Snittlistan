@@ -167,7 +167,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ApiController.cs" />
     <Compile Include="Controllers\AppController.cs" />
+    <Compile Include="Helpers\InputError.cs" />
+    <Compile Include="Routes.cs" />
+    <Compile Include="ViewModels\SessionViewModel.cs" />
     <Compile Include="ViewModels\InitialDataViewModel.cs" />
     <Compile Include="Infrastructure\CassetteConfiguration.cs" />
     <Compile Include="Controllers\HackerController.cs" />
@@ -221,6 +225,8 @@
     <Content Include="Content\external\jasmine\lib\jasmine-1.2.0\jasmine.css" />
     <Content Include="Content\external\jasmine\lib\jasmine-1.2.0\jasmine.js" />
     <Content Include="Content\js\app\app.js" />
+    <Content Include="Content\js\app\app.modals.js" />
+    <Content Include="Content\js\app\app.session.js" />
     <Content Include="Content\js\app\app.views.animation_buffer.js" />
     <Content Include="Content\js\app\app.views.turns.js" />
     <Content Include="Content\js\app\app.views.rosters.js" />

@@ -1,10 +1,16 @@
 ﻿namespace Snittlistan.Controllers
 {
     using System.Web.Mvc;
+    using Raven.Client;
     using ViewModels;
 
-    public class AppController : Controller
+    public class AppController : AbstractController
     {
+        public AppController(IDocumentSession session)
+            : base(session)
+        {
+        }
+
         public ActionResult Index()
         {
             var turns = new TurnsViewModel[]
@@ -63,8 +69,14 @@
                             Name = "Daniel Solvander"
                         }
                 };
+
             return View(new InitialDataViewModel
             {
+                Session = new SessionViewModel
+                    {
+                        IsAuthenticated = Request.IsAuthenticated,
+                        Email = Request.IsAuthenticated ? User.Identity.Name : string.Empty
+                    },
                 Turns = turns,
                 Players = players
             });

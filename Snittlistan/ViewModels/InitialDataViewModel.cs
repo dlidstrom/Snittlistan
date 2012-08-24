@@ -4,6 +4,9 @@ namespace Snittlistan.ViewModels
 
     public class InitialDataViewModel
     {
+        [JsonProperty(PropertyName = "session")]
+        public SessionViewModel Session { get; set; }
+
         [JsonProperty(PropertyName = "turns")]
         public TurnsViewModel[] Turns { get; set; }
 

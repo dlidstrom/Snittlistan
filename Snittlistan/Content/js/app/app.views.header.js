@@ -1,4 +1,5 @@
-﻿(function ($, backbone, app, undefined) {
+﻿// @reference app.session.js
+(function ($, backbone, app, undefined) {
     "use strict";
 
     var views = app.Views || {};
@@ -13,18 +14,26 @@
         template: window.JST['header-template'],
         events: {
             'click li#menu-players a': 'players',
-            'click li#menu-turns a': 'turns'
+            'click li#menu-turns a': 'turns',
+            'click button#menu-logout': 'logOut'
         },
         initialize: function (options) {
             _.bindAll(this);
             this.model.on('change', this.render);
             this.router = options.router;
+            app.session.on('all', this.render);
         },
         beforeClose: function () {
             this.model.off('change', this.render);
+            app.auth.off('change', this.render);
         },
         render: function () {
-            this.$el.html(this.template.render(this.model.toJSON()));
+            var combined_model = this.model.toJSON();
+            combined_model.session = {
+                isAuthenticated: app.session.isAuthenticated,
+                email: app.session.email
+            };
+            this.$el.html(this.template.render(combined_model));
             return this;
         },
         players: function () {
@@ -33,6 +42,10 @@
         },
         turns: function () {
             this.router.navigate('turns', { trigger: true });
+            return false;
+        },
+        logOut: function () {
+            app.session.logOut();
             return false;
         }
     });
