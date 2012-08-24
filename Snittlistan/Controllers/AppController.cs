@@ -25,6 +25,7 @@
                                     new RosterViewModel
                                         {
                                             Team = "Fredrikshof A",
+                                            TeamLevel = "a",
                                             Location = "Birka",
                                             Opponent = "Stockholm IFK",
                                             Date = "lördag den 22 september 2012, 10:00",
@@ -35,6 +36,7 @@
                                     new RosterViewModel
                                         {
                                             Team = "Fredrikshof F",
+                                            TeamLevel = "f",
                                             Location = "Bowl-O-Rama",
                                             Opponent = "AIK F",
                                             Date = "lördag den 22 september 2012, 11:40",
@@ -45,6 +47,7 @@
                                     new RosterViewModel
                                         {
                                             Team = "Fredrikshof B",
+                                            TeamLevel = "b",
                                             Location = "Bowl-O-Rama",
                                             Opponent = "Hellas B",
                                             Date = "söndag den 23 september 2012, 10:00",
@@ -70,16 +73,17 @@
                         }
                 };
 
-            return View(new InitialDataViewModel
-            {
-                Session = new SessionViewModel
-                    {
-                        IsAuthenticated = Request.IsAuthenticated,
-                        Email = Request.IsAuthenticated ? User.Identity.Name : string.Empty
-                    },
-                Turns = turns,
-                Players = players
-            });
+            var vm = new InitialDataViewModel
+                {
+                    Session = new SessionViewModel
+                        {
+                            IsAuthenticated = Request.IsAuthenticated,
+                            Email = Request.IsAuthenticated ? User.Identity.Name : string.Empty
+                        },
+                    Turns = turns,
+                    Players = players
+                };
+            return View(vm);
         }
     }
 }

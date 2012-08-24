@@ -2,9 +2,7 @@
 {
     using System.Net;
     using System.Web.Mvc;
-    using System.Web.Security;
     using Helpers;
-    using Models;
     using Raven.Client;
     using Services;
 

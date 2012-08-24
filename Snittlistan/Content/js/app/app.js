@@ -4,6 +4,7 @@
 // @reference app.views.header.js
 // @reference app.views.turns.js
 // @reference app.views.players.js
+// @reference app.views.results.js
 (function ($, backbone, app, undefined) {
     "use strict";
 
@@ -30,9 +31,10 @@
     // application router, create as instantiated singleton
     app.router = new (backbone.Router.extend({
         routes: {
-            turns: 'turns',
-            completed: 'completed',
-            players: 'players',
+            'turns': 'turns',
+            'turns/add': 'addTurn',
+            'results': 'results',
+            'players': 'players',
             '*other': 'turns'
         },
         initialize: function (options) {
@@ -70,15 +72,27 @@
         // show coming turns
         turns: function () {
             var turns_view = new app.Views.Turns({ collection: this.turns });
-            this.showView("#main", turns_view);
+            this.showView('#main', turns_view);
+        },
+        addTurn: function () {
+            //var n = prompt('Give the turn a name:', 'Turn');
+            this.turns.add(new app.Models.Turn({
+                turn: 11,
+                startDate: '8 okt',
+                endDate: '9 okt'
+            }));
+            this.navigate('turns', { trigger: true });
+            return false;
         },
         // show completed turns
-        completed: function () {
+        results: function () {
+            var results_view = new app.Views.Results();
+            this.showView('#main', results_view);
         },
         // show players
         players: function () {
             var players_view = new app.Views.PlayersList({ model: this.players });
-            this.showView("#main", players_view);
+            this.showView('#main', players_view);
         }
     }))({
         // initialize data here, and keep inside the router
