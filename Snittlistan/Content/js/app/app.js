@@ -4,7 +4,6 @@
 // @reference app.views.header.js
 // @reference app.views.turns.js
 // @reference app.views.players.js
-// @reference app.views.login.js
 (function ($, backbone, app, undefined) {
     "use strict";
 
