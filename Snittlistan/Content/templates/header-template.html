@@ -27,24 +27,34 @@
                     </a>
                 </li>
             </ul>
-            {{#session.isAuthenticated}}
-            <button id="menu-logout" class="btn btn-small btn-primary pull-right">
-                <i class="icon-user icon-white"></i>
-                Logga ut
-            </button>
-            <p class="navbar-text pull-right">
-                Inloggad som {{session.email}}
-            </p>
-            {{/session.isAuthenticated}}
-            {{^session.isAuthenticated}}
-            <button id="menu-login" class="btn btn-small btn-primary pull-right">
-                <i class="icon-user icon-white"></i>
-                Logga in
-            </button>
-            <p class="navbar-text pull-right">
-                Inte inloggad
-            </p>
-            {{/session.isAuthenticated}}
+            <ul class="nav pull-right">
+                {{#session.isAuthenticated}}
+                <li>
+                    <p class="navbar-text">
+                        Inloggad som {{session.email}}
+                    </p>
+                </li>
+                <li>
+                    <button id="menu-logout" class="btn btn-small btn-primary">
+                        <i class="icon-user icon-white"></i>
+                        Logga ut
+                    </button>
+                </li>
+                {{/session.isAuthenticated}}
+                {{^session.isAuthenticated}}
+                <li>
+                    <p class="navbar-text pull-right">
+                        Inte inloggad
+                    </p>
+                </li>
+                <li>
+                    <button id="menu-login" class="btn btn-small btn-primary pull-right">
+                        <i class="icon-user icon-white"></i>
+                        Logga in
+                    </button>
+                </li>
+                {{/session.isAuthenticated}}
+            </ul>
         </div>
     </div>
 </section>
