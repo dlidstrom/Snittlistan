@@ -35,7 +35,7 @@
                 self.trigger('session:loggedOut');
                 console.log(JSON.stringify(data));
             }).error(function (data) {
-                self.trigger('session:loggedOutFailed');
+                self.trigger('session:loggedOutError');
                 console.log(JSON.stringify(data));
             });
         }
