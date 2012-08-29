@@ -1,0 +1,47 @@
+﻿<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h3>{{& title}}</h3>
+</div>
+<form class="form-horizontal">
+    <div class="modal-body">
+    <p>{{paragraph}}</p>
+        {{#controls}}
+        {{#select}}
+        <div class="control-group">
+            <label class="control-label" for="{{name}}">{{label}}:</label>
+            <div class="controls">
+                <select name="{{name}}"
+                {{#autofocus}}
+                        autofocus="autofocus"
+                {{/autofocus}}
+                        >
+                    {{#options}}
+                    <option>{{.}}</option>
+                    {{/options}}
+                </select>
+            </div>
+        </div>
+        {{/select}}
+        {{#input}}
+        <div class="control-group">
+            <label class="control-label" for="{{name}}">{{label}}:</label>
+            <div class="controls">
+                <input type="{{type}}" name="{{name}}" placeholder="{{placeholder}}"
+                {{#required}}
+                       required="required"
+                {{/required}}
+                       />
+            </div>
+        </div>
+        {{/input}}
+        {{/controls}}
+    </div>
+    <div class="modal-footer">
+        <div class="control-group">
+            <div class="controls">
+                <button class="btn btn-primary" type="submit">Spara</button>
+                <button class="btn" data-type="hide">Avbryt</button>
+            </div>
+        </div>
+    </div>
+</form>
