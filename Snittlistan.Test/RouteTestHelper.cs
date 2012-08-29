@@ -18,16 +18,12 @@ namespace Snittlistan.Test
 
             foreach (var property in GetProperties(expectations))
             {
-                string.Equals(
+                var equal = string.Equals(
                     property.Value.ToString(),
                     routeData.Values[property.Name].ToString(),
-                    StringComparison.OrdinalIgnoreCase)
-                    .ShouldEqual(
-                        true,
-                        string.Format(
-                            "Expected '{0}', not '{1}' for '{2}'.",
-                            property.Value,
-                            routeData.Values[property.Name], property.Name));
+                    StringComparison.OrdinalIgnoreCase);
+                var message = string.Format("Expected '{0}', not '{1}' for '{2}'.", property.Value, routeData.Values[property.Name], property.Name);
+                equal.ShouldEqual(true, message);
             }
         }
 
