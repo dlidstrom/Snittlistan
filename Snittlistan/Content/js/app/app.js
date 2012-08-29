@@ -32,7 +32,6 @@
     app.router = new (backbone.Router.extend({
         routes: {
             'turns': 'turns',
-            'turns/add': 'addTurn',
             'results': 'results',
             'players': 'players',
             '*other': 'turns'
@@ -42,6 +41,7 @@
             // save references to models
             this.appState = options.app_state;
             this.turns = options.turns;
+            this.seasons = options.seasons;
             this.players = options.players;
             // notify appState when changing routes
             var self = this;
@@ -59,40 +59,49 @@
                 router: this
             });
             $("body").prepend(this.header.render().el);
+            // listen to login/logout
+            var that = this;
+            app.session.on('all', function () {
+                that.showView(that.currentSelector, that.currentGetView);
+            });
         },
         // handles views
-        showView: function (selector, view) {
+        showView: function (selector, get_view) {
             if (this.currentView)
                 this.currentView.close();
+            var view = get_view.call(this);
             $(selector).html(view.render().el);
             this.currentView = view;
+            this.currentGetView = get_view;
+            this.currentSelector = selector;
             return view;
         },
+/*        render: function () {
+            // re-render current view
+            this.showView(this.currentSelector, this.currentGetView);
+        },*/
         // routes
         // show coming turns
         turns: function () {
-            var turns_view = new app.Views.Turns({ collection: this.turns });
-            this.showView('#main', turns_view);
-        },
-        addTurn: function () {
-            //var n = prompt('Give the turn a name:', 'Turn');
-            this.turns.add(new app.Models.Turn({
-                turn: 11,
-                startDate: '8 okt',
-                endDate: '9 okt'
-            }));
-            this.navigate('turns', { trigger: true });
-            return false;
+            this.showView('#main', function () {
+                return new app.Views.Turns({
+                    collection: this.turns,
+                    seasonStart: 2012,
+                    seasonEnd: 2013
+                });
+            });
         },
         // show completed turns
         results: function () {
-            var results_view = new app.Views.Results();
-            this.showView('#main', results_view);
+            this.showView('#main', function () {
+                return new app.Views.Results();
+            });
         },
         // show players
         players: function () {
-            var players_view = new app.Views.PlayersList({ model: this.players });
-            this.showView('#main', players_view);
+            this.showView('#main', function () {
+                return new app.Views.PlayersList({ model: this.players });
+            });
         }
     }))({
         // initialize data here, and keep inside the router
