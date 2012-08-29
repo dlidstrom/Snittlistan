@@ -4,15 +4,31 @@
 </div>
 <div class="modal-body">
     <p>Logga in genom att ange din e-postadress och ditt lösenord.</p>
-    <form id="login-form" class="well">
-        <label>E-postadress:</label>
-        <input type="email" name="email" placeholder="E-postadress" />
-        <label>Lösenord:</label>
-        <input type="password" name="password" placeholder="Lösenord" />
-        <label class="checkbox">
-            <input type="checkbox" name="remember" />Kom ihåg mig
-        </label>
-        <button id="login-button" class="btn btn-primary" type="submit">Logga in</button>
-        <button class="btn" data-type="hide">Avbryt</button>
+    <form class="well form-horizontal">
+        <div class="control-group">
+            <label class="control-label" for="email">E-postadress:</label>
+            <div class="controls">
+                <input type="email" name="email" placeholder="E-postadress" autofocus="autofocus" required="required" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="password">Lösenord:</label>
+            <div class="controls">
+                <input type="password" name="password" placeholder="Lösenord" required="required" />
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <label class="checkbox">
+                    <input type="checkbox" name="remember" /> Kom ihåg mig
+                </label>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button class="btn btn-primary" type="submit">Logga in</button>
+                <button class="btn" data-type="hide">Avbryt</button>
+            </div>
+        </div>
     </form>
 </div>
