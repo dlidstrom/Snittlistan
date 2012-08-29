@@ -239,6 +239,7 @@
     <Content Include="Content\js\app\app.views.players.js" />
     <Content Include="Content\js\app\app.views.results.js" />
     <Content Include="Content\js\app\app.views.login.js" />
+    <Content Include="Content\js\app\app.views.turns.new.js" />
     <Content Include="Content\js\models\mammal.min.js">
       <DependentUpon>mammal.uglify.js</DependentUpon>
     </Content>
@@ -342,7 +343,10 @@
     <Content Include="Content\js\autocomplete.js" />
     <Content Include="Content\js\team4x4.js" />
     <Content Include="Content\js\specs\specs.mammal.js" />
-    <Content Include="Content\templates\add-turn-template.html" />
+    <Content Include="Content\templates\modal-template.html" />
+    <Content Include="Content\templates\turns-template.html" />
+    <Content Include="Content\templates\turn-new-template.html" />
+    <Content Include="Content\templates\turn-admin-template.html" />
     <Content Include="Content\templates\login-modal-template.html" />
     <Content Include="Content\templates\header-template.html" />
     <Content Include="Content\templates\player-list-template.html" />
