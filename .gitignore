@@ -29,3 +29,4 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 packages
 Snittlistan.Web/Web.Release.config
+Snittlistan.Web/Snittlistan.Publish.xml
