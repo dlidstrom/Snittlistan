@@ -2,10 +2,11 @@
 {
     using System;
     using System.Linq;
-    using Controllers;
-    using Models;
-    using MvcContrib.TestHelper;
-    using ViewModels.Match;
+
+    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Models;
+    using Snittlistan.Web.ViewModels.Match;
+
     using Xunit;
 
     public class MatchController_Register8x4 : DbTest
@@ -18,32 +19,32 @@
 
             // Act
             var now = DateTimeOffset.Now;
-            var result = controller.Register8x4(new Register8x4MatchViewModel
-            {
-                Location = "Somewhere",
-                Date = now,
-                BitsMatchId = 1,
-                HomeTeam = new Team8x4ViewModel
+            controller.Register8x4(new Register8x4MatchViewModel
                 {
-                    Name = "HomeTeam",
-                    Score = 13
-                },
-                AwayTeam = new Team8x4ViewModel
-                {
-                    Name = "AwayTeam",
-                    Score = 6
-                }
-            });
+                    Location = "Somewhere",
+                    Date = now,
+                    BitsMatchId = 1,
+                    HomeTeam = new Team8x4ViewModel
+                        {
+                            Name = "HomeTeam",
+                            Score = 13
+                        },
+                    AwayTeam = new Team8x4ViewModel
+                        {
+                            Name = "AwayTeam",
+                            Score = 6
+                        }
+                });
             Session.SaveChanges();
 
             // Assert
             var match = Session.Query<Match8x4>().Single();
-            match.Location.ShouldBe("Somewhere");
-            match.BitsMatchId.ShouldBe(1);
-            match.Date.ShouldBe(now);
-            match.HomeTeam.Name.ShouldBe("HomeTeam");
-            match.HomeTeam.Score.ShouldBe(13);
-            match.AwayTeam.Score.ShouldBe(6);
+            Assert.Equal("Somewhere", match.Location);
+            Assert.Equal(1, match.BitsMatchId);
+            Assert.Equal(now, match.Date);
+            Assert.Equal("HomeTeam", match.HomeTeam.Name);
+            Assert.Equal(13, match.HomeTeam.Score);
+            Assert.Equal(6, match.AwayTeam.Score);
         }
 
         [Fact]
@@ -66,7 +67,7 @@
             // Arrange
             var controller = new MatchController(Session);
             var now = DateTime.Now;
-            Register8x4MatchViewModel vm = new Register8x4MatchViewModel
+            var vm = new Register8x4MatchViewModel
             {
                 Location = "Somewhere",
                 Date = now,

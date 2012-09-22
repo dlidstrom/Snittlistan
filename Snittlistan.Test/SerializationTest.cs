@@ -2,8 +2,11 @@
 {
     using System.IO;
     using System.Text;
-    using Models;
+
     using Raven.Imports.Newtonsoft.Json;
+
+    using Snittlistan.Web.Models;
+
     using Xunit;
 
     public class SerializationTest : DbTest

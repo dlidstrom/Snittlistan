@@ -1,13 +1,15 @@
 ﻿namespace Snittlistan.Test
 {
     using System;
-    using Controllers;
-    using Helpers;
-    using Models;
+
     using Moq;
-    using MvcContrib.TestHelper;
-    using Services;
-    using ViewModels.Account;
+
+    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Helpers;
+    using Snittlistan.Web.Models;
+    using Snittlistan.Web.Services;
+    using Snittlistan.Web.ViewModels.Account;
+
     using Xunit;
 
     public class AccountController_ChangePassword : DbTest
@@ -28,19 +30,20 @@
         public void ChangePasswordSuccess()
         {
             var controller = CreateUserAndController("e@d.com");
-            var result = controller.ChangePassword(new ChangePasswordViewModel
-            {
-                Email = "e@d.com",
-                NewPassword = "newpass",
-                ConfirmPassword = "newpass"
-            });
+            var result = controller.ChangePassword(
+                new ChangePasswordViewModel
+                    {
+                        Email = "e@d.com",
+                        NewPassword = "newpass",
+                        ConfirmPassword = "newpass"
+                    });
 
             result.AssertActionRedirect().ToAction("ChangePasswordSuccess");
 
             // also make sure password actually changed
             var user = Session.FindUserByEmail("e@d.com");
-            user.ShouldNotBeNull("Did not find user");
-            user.ValidatePassword("newpass").ShouldBe(true);
+            Assert.NotNull(user);
+            Assert.True(user.ValidatePassword("newpass"));
         }
 
         [Fact]
@@ -59,7 +62,7 @@
         private AccountController CreateUserAndController(string email)
         {
             // add a user
-            Session.Store(new User("F", "L", email, password: Guid.NewGuid().ToString()));
+            Session.Store(new User("F", "L", email, Guid.NewGuid().ToString()));
             Session.SaveChanges();
 
             return new AccountController(Session, Mock.Of<IAuthenticationService>());

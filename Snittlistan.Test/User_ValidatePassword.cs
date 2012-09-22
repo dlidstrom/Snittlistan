@@ -1,9 +1,9 @@
 ﻿namespace Snittlistan.Test
 {
-    using Events;
-    using Helpers;
-    using Models;
-    using MvcContrib.TestHelper;
+    using Snittlistan.Web.Events;
+    using Snittlistan.Web.Helpers;
+    using Snittlistan.Web.Models;
+
     using Xunit;
 
     public class User_ValidatePassword : DbTest
@@ -20,12 +20,12 @@
             }
 
             var user = Session.FindUserByEmail("e@d.com");
-            user.ActivationKey.ShouldBe(original.ActivationKey);
-            user.Email.ShouldBe(original.Email);
-            user.FirstName.ShouldBe(original.FirstName);
-            user.Id.ShouldBe(original.Id);
-            user.IsActive.ShouldBe(original.IsActive);
-            user.LastName.ShouldBe(original.LastName);
+            Assert.Equal(original.ActivationKey, user.ActivationKey);
+            Assert.Equal(original.Email, user.Email);
+            Assert.Equal(original.FirstName, user.FirstName);
+            Assert.Equal(original.Id, user.Id);
+            Assert.Equal(original.IsActive, user.IsActive);
+            Assert.Equal(original.LastName, user.LastName);
         }
 
         [Fact]
@@ -34,10 +34,8 @@
             Session.Store(new User("F", "L", "e@d.com", "some pwd"));
             Session.SaveChanges();
 
-            Session
-                .FindUserByEmail("e@d.com")
-                .ValidatePassword("some pwd")
-                .ShouldBe(true);
+            bool valid = Session.FindUserByEmail("e@d.com").ValidatePassword("some pwd");
+            Assert.True(valid);
         }
     }
 }

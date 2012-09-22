@@ -2,10 +2,11 @@
 {
     using System;
     using System.Web;
-    using Controllers;
-    using Models;
-    using MvcContrib.TestHelper;
-    using ViewModels.Match;
+
+    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Models;
+    using Snittlistan.Web.ViewModels.Match;
+
     using Xunit;
 
     public class MatchController_EditDetails4x4 : DbTest
@@ -32,8 +33,8 @@
             // Assert
             result.AssertActionRedirect().ToAction("Details4x4").WithParameter("id", originalMatch.Id);
             var match = Session.Load<Match4x4>(originalMatch.Id);
-            match.Location.ShouldBe("NewPlace");
-            match.Date.ShouldBe(now);
+            Assert.Equal("NewPlace", match.Location);
+            Assert.Equal(now, match.Date);
         }
 
         [Fact]
@@ -47,7 +48,7 @@
             }
             catch (HttpException ex)
             {
-                ex.GetHttpCode().ShouldBe(404);
+                Assert.Equal(404, ex.GetHttpCode());
             }
         }
 
@@ -62,7 +63,7 @@
             }
             catch (HttpException ex)
             {
-                ex.GetHttpCode().ShouldBe(404);
+                Assert.Equal(404, ex.GetHttpCode());
             }
         }
 

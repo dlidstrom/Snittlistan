@@ -2,10 +2,11 @@
 {
     using System;
     using System.Linq;
-    using Controllers;
-    using Models;
-    using MvcContrib.TestHelper;
-    using ViewModels.Match;
+
+    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Models;
+    using Snittlistan.Web.ViewModels.Match;
+
     using Xunit;
 
     public class MatchController_Register4x4 : DbTest
@@ -18,43 +19,43 @@
 
             // Act
             var now = DateTimeOffset.Now;
-            var result = controller.Register4x4(new Register4x4MatchViewModel
-            {
-                Location = "Somewhere",
-                Date = now,
-                HomeTeam = new Team4x4ViewModel
+            controller.Register4x4(new Register4x4MatchViewModel
                 {
-                    Name = "HomeTeam",
-                    Score = 13,
-                    Player1 = new Team4x4ViewModel.Player
-                    {
-                        Game1 = new Team4x4ViewModel.Game
+                    Location = "Somewhere",
+                    Date = now,
+                    HomeTeam = new Team4x4ViewModel
                         {
-                            Player = "Lennart Axelsson",
-                            Pins = 155,
-                            Score = 1
+                            Name = "HomeTeam",
+                            Score = 13,
+                            Player1 = new Team4x4ViewModel.Player
+                                {
+                                    Game1 = new Team4x4ViewModel.Game
+                                        {
+                                            Player = "Lennart Axelsson",
+                                            Pins = 155,
+                                            Score = 1
+                                        }
+                                }
+                        },
+                    AwayTeam = new Team4x4ViewModel
+                        {
+                            Name = "AwayTeam",
+                            Score = 6
                         }
-                    }
-                },
-                AwayTeam = new Team4x4ViewModel
-                {
-                    Name = "AwayTeam",
-                    Score = 6
-                }
-            });
+                });
             Session.SaveChanges();
 
             // Assert
             var match = Session.Query<Match4x4>().Single();
-            match.Location.ShouldBe("Somewhere");
-            match.Date.ShouldBe(now);
-            match.HomeTeam.Name.ShouldBe("HomeTeam");
-            match.HomeTeam.Score.ShouldBe(13);
+            Assert.Equal("Somewhere", match.Location);
+            Assert.Equal(now, match.Date);
+            Assert.Equal("HomeTeam", match.HomeTeam.Name);
+            Assert.Equal(13, match.HomeTeam.Score);
             var game = match.HomeTeam.Series.ElementAt(0).Games.ElementAt(0);
-            game.Pins.ShouldBe(155);
-            game.Player.ShouldBe("Lennart Axelsson");
-            game.Score.ShouldBe(1);
-            match.AwayTeam.Score.ShouldBe(6);
+            Assert.Equal(155, game.Pins);
+            Assert.Equal("Lennart Axelsson", game.Player);
+            Assert.Equal(1, game.Score);
+            Assert.Equal(6, match.AwayTeam.Score);
         }
 
         [Fact]

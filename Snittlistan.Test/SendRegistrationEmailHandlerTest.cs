@@ -1,11 +1,12 @@
 ﻿namespace Snittlistan.Test
 {
-    using Events;
-    using Handlers;
-    using Models;
     using Moq;
-    using MvcContrib.TestHelper;
-    using Services;
+
+    using Snittlistan.Web.Events;
+    using Snittlistan.Web.Handlers;
+    using Snittlistan.Web.Models;
+    using Snittlistan.Web.Services;
+
     using Xunit;
 
     public class SendRegistrationEmailHandlerTest
@@ -30,7 +31,7 @@
             });
 
             // Assert
-            mailSent.ShouldBe(true);
+            Assert.True(mailSent);
         }
     }
 }

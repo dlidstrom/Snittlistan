@@ -1,12 +1,14 @@
 ﻿namespace Snittlistan.Test
 {
     using System;
+    using System.Diagnostics;
     using System.Web;
     using System.Web.Mvc;
-    using Controllers;
-    using Models;
-    using MvcContrib.TestHelper;
-    using ViewModels.Match;
+
+    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Models;
+    using Snittlistan.Web.ViewModels.Match;
+
     using Xunit;
 
     public class MatchController_Details8x4 : DbTest
@@ -22,19 +24,24 @@
 
             // Act
             var view1 = controller.Details8x4(1) as ViewResult;
-            view1.ShouldNotBeNull("Must return ViewResult");
+            Assert.NotNull(view1);
+            Debug.Assert(view1 != null, "view1 != null");
             var model1 = view1.Model as Match8x4ViewModel;
-            model1.Match.Id.ShouldBe(1);
+            Debug.Assert(model1 != null, "model1 != null");
+            Assert.Equal(1, model1.Match.Id);
 
             var view2 = controller.Details8x4(2) as ViewResult;
-            view2.ShouldNotBeNull("Must return ViewResult");
+            Assert.NotNull(view2);
             var model2 = view2.Model as Match8x4ViewModel;
-            model2.Match.Id.ShouldBe(2);
+            Debug.Assert(model2 != null, "model2 != null");
+            Assert.Equal(2, model2.Match.Id);
 
             var view3 = controller.Details8x4(3) as ViewResult;
-            view3.ShouldNotBeNull("Must return ViewResult");
+            Assert.NotNull(view3);
+            Debug.Assert(view3 != null, "view3 != null");
             var model3 = view3.Model as Match8x4ViewModel;
-            model3.Match.Id.ShouldBe(3);
+            Debug.Assert(model3 != null, "model3 != null");
+            Assert.Equal(3, model3.Match.Id);
         }
 
         [Fact]
@@ -48,7 +55,7 @@
             }
             catch (HttpException ex)
             {
-                ex.GetHttpCode().ShouldBe(404);
+                Assert.Equal(404, ex.GetHttpCode());
             }
         }
     }

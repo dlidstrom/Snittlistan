@@ -4,7 +4,8 @@
     using System.Linq;
     using Castle.MicroKernel;
     using Castle.Windsor;
-    using Controllers;
+
+    using Snittlistan.Web.Controllers;
 
     public static class InstallerTestHelper
     {

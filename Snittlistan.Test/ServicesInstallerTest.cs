@@ -1,9 +1,10 @@
 ﻿namespace Snittlistan.Test
 {
     using Castle.Windsor;
-    using Infrastructure.Installers;
-    using MvcContrib.TestHelper;
-    using Services;
+
+    using Snittlistan.Web.Infrastructure.Installers;
+    using Snittlistan.Web.Services;
+
     using Xunit;
 
     public class ServicesInstallerTest
@@ -18,14 +19,15 @@
         [Fact]
         public void InstallsFormsAuthenticationService()
         {
-            container.Resolve<IAuthenticationService>().ShouldNotBeNull("Expected IAuthenticationService in container");
+            var service = container.Resolve<IAuthenticationService>();
+            Assert.NotNull(service);
         }
 
         [Fact]
         public void InstallsEmailService()
         {
             var handlers = InstallerTestHelper.GetHandlersFor(typeof(IEmailService), container);
-            handlers.Length.ShouldBe(1);
+            Assert.Equal(1, handlers.Length);
         }
     }
 }

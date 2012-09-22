@@ -2,13 +2,15 @@
 {
     using System;
     using System.Web.Mvc;
-    using Controllers;
-    using Events;
-    using Helpers;
+
     using Moq;
-    using MvcContrib.TestHelper;
-    using Services;
-    using ViewModels.Account;
+
+    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Events;
+    using Snittlistan.Web.Helpers;
+    using Snittlistan.Web.Services;
+    using Snittlistan.Web.ViewModels.Account;
+
     using Xunit;
 
     public class AccountController_Register : DbTest
@@ -28,7 +30,7 @@
                 });
             }
 
-            ev.ShouldNotBeNull("No event raised");
+            Assert.NotNull(ev);
         }
 
         [Fact]
@@ -47,11 +49,11 @@
             Session.SaveChanges();
 
             var user = Session.FindUserByEmail("email");
-            user.ShouldNotBeNull("Should find it");
-            user.FirstName.ShouldBe("first name");
-            user.LastName.ShouldBe("last name");
-            user.Email.ShouldBe("email");
-            user.IsActive.ShouldBe(false);
+            Assert.NotNull(user);
+            Assert.Equal("first name", user.FirstName);
+            Assert.Equal("last name", user.LastName);
+            Assert.Equal("email", user.Email);
+            Assert.False(user.IsActive);
         }
 
         [Fact]
@@ -66,12 +68,12 @@
                     .Setup(s => s.SetAuthCookie(It.IsAny<string>(), It.IsAny<bool>()))
                     .Throws(new Exception("Register should not set authorization cookie"));
                 var controller = new AccountController(Session, authService);
-                var result = controller.Register(new RegisterViewModel
-                {
-                    FirstName = "f",
-                    LastName = "l",
-                    Email = "email"
-                });
+                controller.Register(new RegisterViewModel
+                    {
+                        FirstName = "f",
+                        LastName = "l",
+                        Email = "email"
+                    });
             }
         }
 
@@ -105,9 +107,9 @@
             // Assert
             result.AssertViewRendered().ForView(string.Empty);
             var view = result as ViewResult;
-            view.ShouldNotBeNull("Expected ViewResult");
-            controller.ModelState.Count.ShouldBe(1);
-            controller.ModelState.ContainsKey("Email").ShouldBe(true);
+            Assert.NotNull(view);
+            Assert.Equal(1, controller.ModelState.Count);
+            Assert.True(controller.ModelState.ContainsKey("Email"));
         }
     }
 }

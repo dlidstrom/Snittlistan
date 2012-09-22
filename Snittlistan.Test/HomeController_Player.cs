@@ -2,12 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
-    using Controllers;
-    using Infrastructure.Indexes;
-    using Models;
-    using MvcContrib.TestHelper;
-    using ViewModels;
+
+    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Infrastructure.Indexes;
+    using Snittlistan.Web.Models;
+    using Snittlistan.Web.ViewModels;
+
     using Xunit;
 
     public class HomeController_Player : DbTest
@@ -73,17 +75,18 @@
             var result = controller.Player("Tomas Gustavsson").Model as PlayerMatchesViewModel;
 
             // Assert
-            result.ShouldNotBeNull("Expected PlayerMatchesViewModel");
-            result.AverageStrikes.ShouldBe(4.5);
-            result.AverageMisses.ShouldBe(2.5);
-            result.Last20.GamesWithStats.ShouldBe(2);
-            result.Last20.Max.ShouldBe(160);
-            result.Last20.AverageStrikes.ShouldBe(4.5);
-            result.Last20.AverageMisses.ShouldBe(2.5);
-            result.Last20.AverageOnePinMisses.ShouldBe(1.5);
-            result.Last20.AverageSplits.ShouldBe(2.5);
-            result.Last20.Pins.ShouldBe(561.0 / 4);
-            result.Last20.Score.ShouldBe(0.25);
+            Assert.NotNull(result);
+            Debug.Assert(result != null, "result != null");
+            Assert.Equal(4.5, result.AverageStrikes);
+            Assert.Equal(2.5, result.AverageMisses);
+            Assert.Equal(2, result.Last20.GamesWithStats);
+            Assert.Equal(160, result.Last20.Max);
+            Assert.Equal(4.5, result.Last20.AverageStrikes);
+            Assert.Equal(2.5, result.Last20.AverageMisses);
+            Assert.Equal(1.5, result.Last20.AverageOnePinMisses);
+            Assert.Equal(2.5, result.Last20.AverageSplits);
+            Assert.Equal(561.0 / 4, result.Last20.Pins);
+            Assert.Equal(0.25, result.Last20.Score);
         }
 
         [Fact]
@@ -108,17 +111,18 @@
             var result = controller.Player("Mikael Axelsson").Model as PlayerMatchesViewModel;
 
             // Assert
-            result.ShouldNotBeNull("Expected PlayerMatchesViewModel");
-            result.AverageStrikes.ShouldBe(5.0);
-            result.AverageMisses.ShouldBe(2.0);
-            result.Last20.GamesWithStats.ShouldBe(1);
-            result.Last20.Max.ShouldBe(223);
-            result.Last20.AverageStrikes.ShouldBe(5.0);
-            result.Last20.AverageMisses.ShouldBe(2.0);
-            result.Last20.AverageOnePinMisses.ShouldBe(1.0);
-            result.Last20.AverageSplits.ShouldBe(2.0);
-            result.Last20.Pins.ShouldBe(845.0 / 4);
-            result.Last20.Score.ShouldBe(0.75);
+            Assert.NotNull(result);
+            Debug.Assert(result != null, "result != null");
+            Assert.Equal(5.0, result.AverageStrikes);
+            Assert.Equal(2.0, result.AverageMisses);
+            Assert.Equal(1, result.Last20.GamesWithStats);
+            Assert.Equal(223, result.Last20.Max);
+            Assert.Equal(5.0, result.Last20.AverageStrikes);
+            Assert.Equal(2.0, result.Last20.AverageMisses);
+            Assert.Equal(1.0, result.Last20.AverageOnePinMisses);
+            Assert.Equal(2.0, result.Last20.AverageSplits);
+            Assert.Equal(845.0 / 4, result.Last20.Pins);
+            Assert.Equal(0.75, result.Last20.Score);
         }
     }
 }

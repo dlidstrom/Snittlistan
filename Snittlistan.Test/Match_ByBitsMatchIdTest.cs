@@ -1,7 +1,7 @@
 ﻿namespace Snittlistan.Test
 {
-    using Helpers;
-    using MvcContrib.TestHelper;
+    using Snittlistan.Web.Helpers;
+
     using Xunit;
 
     public class Match_ByBitsMatchIdTest : DbTest
@@ -18,7 +18,7 @@
             bool found = Session.BitsIdExists(3003231);
 
             // Assert
-            found.ShouldBe(true);
+            Assert.True(found);
         }
     }
 }

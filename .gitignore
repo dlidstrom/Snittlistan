@@ -28,6 +28,4 @@ obj/
 _ReSharper*/
 [Tt]est[Rr]esult*
 packages
-Snittlistan/App_Data
-Snittlistan/Web.Release.config
-Snittlistan/Snittlistan.Publish.xml
+Snittlistan.Web/Web.Release.config

@@ -1,0 +1,39 @@
+﻿@model Team8x4ViewModel
+
+@{
+    int team = Convert.ToInt32(ViewData["team"]);
+}
+
+<table class="invis">
+    <tr>
+        <td class="editor-label">@Html.LabelFor(model => model.Name)</td>
+        <td class="editor-field">
+            @Html.TextBoxFor(
+                model => model.Name,
+                new
+                    {
+                        data_autocomplete = Url.Action("TeamsQuickSearch", "Search")
+                    })
+            @Html.ValidationMessageFor(model => model.Name)
+        </td>
+    </tr>
+    <tr>
+        <td class="editor-label">@Html.LabelFor(model => model.Score)</td>
+        <td class="editor-field">
+            @Html.EditorFor(model => model.Score)
+            @Html.ValidationMessageFor(model => model.Score)
+        </td>
+    </tr>
+</table>
+
+<h3>@Html.LabelFor(model => model.Pair1)</h3>
+@Html.EditorFor(model => model.Pair1, "PairEditor", new { pair = 0 })
+
+<h3>@Html.LabelFor(model => model.Pair2)</h3>
+@Html.EditorFor(model => model.Pair2, "PairEditor", new { pair = 1 })
+
+<h3>@Html.LabelFor(model => model.Pair3)</h3>
+@Html.EditorFor(model => model.Pair3, "PairEditor", new { pair = 2 })
+
+<h3>@Html.LabelFor(model => model.Pair4)</h3>
+@Html.EditorFor(model => model.Pair4, "PairEditor", new { pair = 3 })

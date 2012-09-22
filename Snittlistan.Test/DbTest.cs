@@ -5,13 +5,15 @@
     using System.Web.Mvc;
     using System.Web.Routing;
     using Castle.Windsor;
-    using Infrastructure;
-    using Infrastructure.AutoMapper;
-    using Infrastructure.Installers;
-    using Models;
+
     using Moq;
     using Raven.Client;
     using Raven.Client.Embedded;
+
+    using Snittlistan.Web.App_Start;
+    using Snittlistan.Web.Infrastructure.AutoMapper;
+    using Snittlistan.Web.Infrastructure.Installers;
+    using Snittlistan.Web.Models;
 
     public abstract class DbTest : IDisposable
     {
@@ -42,7 +44,7 @@
         {
             var context = Mock.Of<HttpContextBase>();
             var routes = new RouteCollection();
-            new RouteConfigurator(routes).Configure();
+            new RouteConfig(routes).Configure();
             return new UrlHelper(new RequestContext(Mock.Get(context).Object, new RouteData()), routes);
         }
 

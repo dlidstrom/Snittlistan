@@ -2,10 +2,11 @@
 {
     using System;
     using System.Web;
-    using Controllers;
-    using Models;
-    using MvcContrib.TestHelper;
-    using ViewModels.Match;
+
+    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Models;
+    using Snittlistan.Web.ViewModels.Match;
+
     using Xunit;
 
     public class MatchController_EditDetails8x4 : DbTest
@@ -15,7 +16,7 @@
         {
             // Arrange
             var then = DateTime.Now.AddDays(-1);
-            Match8x4 originalMatch = new Match8x4("Place", then, 1, new Team8x4("Home", 13), new Team8x4("Away", 6));
+            var originalMatch = new Match8x4("Place", then, 1, new Team8x4("Home", 13), new Team8x4("Away", 6));
             Session.Store(originalMatch);
             Session.SaveChanges();
 
@@ -33,9 +34,9 @@
             // Assert
             result.AssertActionRedirect().ToAction("Details8x4").WithParameter("id", originalMatch.Id);
             var match = Session.Load<Match8x4>(originalMatch.Id);
-            match.Location.ShouldBe("NewPlace");
-            match.Date.ShouldBe(now);
-            match.BitsMatchId.ShouldBe(2);
+            Assert.Equal("NewPlace", match.Location);
+            Assert.Equal(now, match.Date);
+            Assert.Equal(2, match.BitsMatchId);
         }
 
         [Fact]
@@ -49,7 +50,7 @@
             }
             catch (HttpException ex)
             {
-                ex.GetHttpCode().ShouldBe(404);
+                Assert.Equal(404, ex.GetHttpCode());
             }
         }
 
@@ -64,7 +65,7 @@
             }
             catch (HttpException ex)
             {
-                ex.GetHttpCode().ShouldBe(404);
+                Assert.Equal(404, ex.GetHttpCode());
             }
         }
 

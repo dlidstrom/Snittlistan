@@ -1,0 +1,56 @@
+﻿@model Snittlistan.Web.ViewModels.Account.LogOnViewModel
+
+@{
+    ViewBag.Title = "Logga in";
+}
+
+<h2>Logga in</h2>
+<p>
+    Skriv din e-postadress och ditt lösenord. @Html.ActionLink("Registrera", "Register") dig om du inte har något konto.
+</p>
+
+@section scripts
+{
+    @Content.Script(ScriptType.JQueryValidate)
+    @Content.Script(ScriptType.JQueryValidateLocalized)
+    @Content.Script(ScriptType.JQueryValidateUnobtrusive)
+}
+
+@Html.ValidationSummary(true, "Inloggningen gick inte att genomföra. Försök gärna igen.")
+
+@using (Html.BeginForm()) {
+    <div class="logon-form">
+        <fieldset>
+            <legend>Kontoinformation</legend>
+
+            <table>
+                <tr>
+                    <td class="editor-label">@Html.LabelFor(m => m.Email):</td>
+                    <td class="editor-field">
+                        @Html.TextBoxFor(m => m.Email, new { required = "required",
+                            placeholder = "Ange e-postadress",
+                            type = "email" })
+                        @Html.ValidationMessageFor(m => m.Email)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="editor-label">@Html.LabelFor(m => m.Password):</td>
+                    <td class="editor-field">
+                        @Html.PasswordFor(m => m.Password, new { required = "required", placeholder = "Ange lösenord" })
+                        @Html.ValidationMessageFor(m => m.Password)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="editor-label">
+                        @Html.CheckBoxFor(m => m.RememberMe)
+                        @Html.LabelFor(m => m.RememberMe)
+                    </td>
+                </tr>
+            </table>
+
+            <p>
+                <input type="submit" value="Logga in" />
+            </p>
+        </fieldset>
+    </div>
+}

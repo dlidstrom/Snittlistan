@@ -4,7 +4,9 @@
     using AutoMapper;
     using Castle.Core.Internal;
     using Castle.Windsor;
-    using Infrastructure.Installers;
+
+    using Snittlistan.Web.Infrastructure.Installers;
+
     using Xunit;
 
     public class AutoMapperInstallerTest

@@ -2,7 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
-    using Models;
+
+    using Snittlistan.Web.Models;
 
     public static class DbSeed
     {

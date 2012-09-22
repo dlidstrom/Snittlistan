@@ -1,11 +1,12 @@
 ﻿namespace Snittlistan.Test
 {
     using Castle.Windsor;
-    using Infrastructure.AutoMapper;
-    using Infrastructure.Installers;
-    using Models;
-    using MvcContrib.TestHelper;
-    using ViewModels.Match;
+
+    using Snittlistan.Web.Infrastructure.AutoMapper;
+    using Snittlistan.Web.Infrastructure.Installers;
+    using Snittlistan.Web.Models;
+    using Snittlistan.Web.ViewModels.Match;
+
     using Xunit;
 
     public class NameShortenerResolverTest
@@ -26,7 +27,7 @@
             var shortenedName = game.MapTo<Team8x4DetailsViewModel.Game>().Player;
 
             // Assert
-            shortenedName.ShouldBe("D. Lidström");
+            Assert.Equal("D. Lidström", shortenedName);
         }
 
         [Fact]
@@ -39,7 +40,7 @@
             var shortenedName = game.MapTo<Team8x4DetailsViewModel.Game>().Player;
 
             // Assert
-            shortenedName.ShouldBe("K-E. Frick");
+            Assert.Equal("K-E. Frick", shortenedName);
         }
 
         [Fact]
@@ -52,7 +53,7 @@
             var shortenedName = game.MapTo<Team8x4DetailsViewModel.Game>().Player;
 
             // Assert
-            shortenedName.ShouldBe(string.Empty);
+            Assert.Empty(shortenedName);
         }
     }
 }

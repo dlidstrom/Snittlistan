@@ -1,9 +1,10 @@
 ﻿namespace Snittlistan.Test
 {
-    using Controllers;
     using Moq;
-    using MvcContrib.TestHelper;
-    using Services;
+
+    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Services;
+
     using Xunit;
 
     public class AccountController_LogOff : DbTest
@@ -20,7 +21,7 @@
             var controller = new AccountController(Session, service);
             var result = controller.LogOff();
             result.AssertActionRedirect().ToController("Home").ToAction("Index");
-            signedOut.ShouldBe(true);
+            Assert.True(signedOut);
         }
     }
 }
