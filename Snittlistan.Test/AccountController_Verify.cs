@@ -2,12 +2,14 @@
 {
     using System;
     using System.Web.Mvc;
-    using Controllers;
-    using Helpers;
-    using Models;
+
     using Moq;
-    using MvcContrib.TestHelper;
-    using Services;
+
+    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Helpers;
+    using Snittlistan.Web.Models;
+    using Snittlistan.Web.Services;
+
     using Xunit;
 
     public class AccountController_Verify : DbTest
@@ -31,8 +33,8 @@
                 .AssertActionRedirect()
                 .ToAction("VerifySuccess");
             var storedUser = Session.FindUserByEmail("e@d.com");
-            storedUser.ShouldNotBeNull("Failed to find user");
-            storedUser.IsActive.ShouldBe(true);
+            Assert.NotNull(storedUser);
+            Assert.True(storedUser.IsActive);
         }
 
         [Fact]
@@ -54,7 +56,7 @@
                 .Callback(() => loggedSomebodyOn = true);
             var controller = new AccountController(Session, service);
             var result = controller.Verify(Guid.Parse(user.ActivationKey));
-            loggedSomebodyOn.ShouldBe(false);
+            Assert.False(loggedSomebodyOn);
             return result;
         }
     }

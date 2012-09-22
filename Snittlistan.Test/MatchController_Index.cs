@@ -2,11 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
-    using Controllers;
-    using Infrastructure.Indexes;
-    using Models;
-    using MvcContrib.TestHelper;
+
+    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Infrastructure.Indexes;
+    using Snittlistan.Web.Models;
+
     using Xunit;
 
     public class MatchController_Index : DbTest
@@ -39,33 +41,34 @@
             var result = controller.Index().Model as IEnumerable<Match_ByDate.Result>;
 
             // Assert
-            result.ShouldNotBeNull("Expected model as IEnumerable<Match_ByDate.Result>");
+            Assert.NotNull(result);
+            Debug.Assert(result != null, "result != null");
             var matches = result.ToArray();
-            matches.Length.ShouldBe(3);
-            matches[0].Location.ShouldBe("P3");
-            matches[0].HomeTeamName.ShouldNotBeNull("Missing home team name");
-            matches[0].HomeTeamName.ShouldBe("Home3");
-            matches[0].HomeTeamScore.ShouldBe(6);
-            matches[0].AwayTeamName.ShouldNotBeNull("Missing away team name");
-            matches[0].AwayTeamName.ShouldBe("Away3");
-            matches[0].AwayTeamScore.ShouldBe(14);
-            matches[0].Type.ShouldBe("4x4");
-            matches[1].Location.ShouldBe("P2");
-            matches[1].HomeTeamName.ShouldNotBeNull("Missing home team name");
-            matches[1].HomeTeamName.ShouldBe("Home2");
-            matches[1].HomeTeamScore.ShouldBe(3);
-            matches[1].AwayTeamName.ShouldNotBeNull("Missing away team name");
-            matches[1].AwayTeamName.ShouldBe("Away2");
-            matches[1].AwayTeamScore.ShouldBe(4);
-            matches[1].Type.ShouldBe("8x4");
-            matches[2].Location.ShouldBe("P1");
-            matches[2].HomeTeamName.ShouldNotBeNull("Missing home team name");
-            matches[2].HomeTeamName.ShouldBe("Home");
-            matches[2].HomeTeamScore.ShouldBe(1);
-            matches[2].AwayTeamName.ShouldNotBeNull("Missing away team name");
-            matches[2].AwayTeamName.ShouldBe("Away");
-            matches[2].AwayTeamScore.ShouldBe(2);
-            matches[2].Type.ShouldBe("8x4");
+            Assert.Equal(3, matches.Length);
+            Assert.Equal("P3", matches[0].Location);
+            Assert.NotNull(matches[0].HomeTeamName);
+            Assert.Equal("Home3", matches[0].HomeTeamName);
+            Assert.Equal(6, matches[0].HomeTeamScore);
+            Assert.NotNull(matches[0].AwayTeamName);
+            Assert.Equal("Away3", matches[0].AwayTeamName);
+            Assert.Equal(14, matches[0].AwayTeamScore);
+            Assert.Equal("4x4", matches[0].Type);
+            Assert.Equal("P2", matches[1].Location);
+            Assert.NotNull(matches[1].HomeTeamName);
+            Assert.Equal("Home2", matches[1].HomeTeamName);
+            Assert.Equal(3, matches[1].HomeTeamScore);
+            Assert.NotNull(matches[1].AwayTeamName);
+            Assert.Equal("Away2", matches[1].AwayTeamName);
+            Assert.Equal(4, matches[1].AwayTeamScore);
+            Assert.Equal("8x4", matches[1].Type);
+            Assert.Equal("P1", matches[2].Location);
+            Assert.NotNull(matches[2].HomeTeamName);
+            Assert.Equal("Home", matches[2].HomeTeamName);
+            Assert.Equal(1, matches[2].HomeTeamScore);
+            Assert.NotNull(matches[2].AwayTeamName);
+            Assert.Equal("Away", matches[2].AwayTeamName);
+            Assert.Equal(2, matches[2].AwayTeamScore);
+            Assert.Equal("8x4", matches[2].Type);
         }
     }
 }

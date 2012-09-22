@@ -3,10 +3,11 @@
     using System.Linq;
     using Castle.Core;
     using Castle.Windsor;
-    using Events;
-    using Handlers;
-    using Infrastructure.Installers;
-    using MvcContrib.TestHelper;
+
+    using Snittlistan.Web.Events;
+    using Snittlistan.Web.Handlers;
+    using Snittlistan.Web.Infrastructure.Installers;
+
     using Xunit;
 
     public class HandlersInstallerTest
@@ -22,7 +23,7 @@
         public void InstallsHandlerForNewUserCreatedEvent()
         {
             var handler = InstallerTestHelper.GetHandlersFor(typeof(IHandle<NewUserCreatedEvent>), container);
-            handler.Length.ShouldBe(1);
+            Assert.Equal(1, handler.Length);
         }
 
         [Fact]

@@ -1,12 +1,14 @@
 ﻿namespace Snittlistan.Test
 {
     using System;
-    using Controllers;
-    using Models;
+
     using Moq;
-    using MvcContrib.TestHelper;
-    using Services;
-    using ViewModels.Account;
+
+    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Models;
+    using Snittlistan.Web.Services;
+    using Snittlistan.Web.ViewModels.Account;
+
     using Xunit;
 
     public class AccountController_Logon : DbTest
@@ -37,7 +39,7 @@
             var result = controller.LogOn(new LogOnViewModel { Email = "unknown@d.com", Password = "some pwd" }, string.Empty);
 
             result.AssertViewRendered().ForView(string.Empty);
-            cookieSet.ShouldBe(false);
+            Assert.False(cookieSet);
         }
 
         [Fact]
@@ -48,11 +50,11 @@
             var controller = SetupPasswordTest(cookieSetAction);
 
             var result = controller.LogOn(new LogOnViewModel { Email = "e@d.com", Password = "some pwd" }, string.Empty);
-            controller.ModelState.ContainsKey("Email").ShouldBe(false);
-            controller.ModelState.ContainsKey("Password").ShouldBe(false);
+            Assert.False(controller.ModelState.ContainsKey("Email"));
+            Assert.False(controller.ModelState.ContainsKey("Password"));
             result.AssertActionRedirect().ToController("Home").ToAction("Index");
 
-            cookieSet.ShouldBe(true);
+            Assert.True(cookieSet);
         }
 
         [Fact]
@@ -63,15 +65,23 @@
 
             bool loggedOn = false;
             var service = Mock.Of<IAuthenticationService>();
-            Mock.Get(service)
-                .Setup(s => s.SetAuthCookie(It.IsAny<string>(), It.IsAny<bool>()))
-                .Callback(() => loggedOn = true);
-            var controller = new AccountController(Session, service);
-            controller.Url = CreateUrlHelper();
-            var result = controller.LogOn(new LogOnViewModel { Email = "e@d.com", Password = "pwd" }, string.Empty);
-            controller.ModelState.Keys.Contains("Inactive").ShouldBe(true);
+            Mock.Get(service).Setup(s => s.SetAuthCookie(It.IsAny<string>(), It.IsAny<bool>())).Callback(
+                () => loggedOn = true);
+            var controller = new AccountController(Session, service)
+                {
+                    Url = CreateUrlHelper()
+                };
+            var result = controller.LogOn(
+                new LogOnViewModel
+                    {
+                        Email = "e@d.com",
+                        Password = "pwd"
+                    },
+                string.Empty);
+            Assert.True(controller.ModelState.ContainsKey("Inactive"));
             result.AssertViewRendered().ForView(string.Empty);
-            loggedOn.ShouldBe(false);
+
+            Assert.False(loggedOn);
         }
 
         [Fact]
@@ -83,24 +93,26 @@
 
             var result = controller.LogOn(new LogOnViewModel { Email = "e@d.com", Password = "some other pwd" }, string.Empty);
 
-            controller.ModelState.ContainsKey("Email").ShouldBe(false);
-            controller.ModelState.ContainsKey("Password").ShouldBe(true);
-            cookieSet.ShouldBe(false);
+            Assert.False(controller.ModelState.ContainsKey("Email"));
+            Assert.True(controller.ModelState.ContainsKey("Password"));
+            Assert.False(cookieSet);
             result.AssertViewRendered().ForView(string.Empty);
         }
 
         private AccountController SetupPasswordTest(Action cookieSetAction)
         {
             // create an active user
-            var user = CreateActivatedUser("F", "L", "e@d.com", "some pwd");
+            this.CreateActivatedUser("F", "L", "e@d.com", "some pwd");
 
             var service = Mock.Of<IAuthenticationService>();
-            Mock.Get(service)
-                .Setup(x => x.SetAuthCookie(It.Is<string>(s => s == "e@d.com"), It.Is<bool>(b => b == false)))
-                .Callback(cookieSetAction);
+            Mock.Get(service).Setup(
+                x => x.SetAuthCookie(It.Is<string>(s => s == "e@d.com"), It.Is<bool>(b => b == false))).Callback(
+                    cookieSetAction);
 
-            var controller = new AccountController(Session, service);
-            controller.Url = CreateUrlHelper();
+            var controller = new AccountController(Session, service)
+                {
+                    Url = CreateUrlHelper()
+                };
             return controller;
         }
     }

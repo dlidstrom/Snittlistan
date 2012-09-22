@@ -2,11 +2,12 @@
 {
     using System;
     using System.Web;
-    using Controllers;
-    using Infrastructure.AutoMapper;
-    using Models;
-    using MvcContrib.TestHelper;
-    using ViewModels.Match;
+
+    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Infrastructure.AutoMapper;
+    using Snittlistan.Web.Models;
+    using Snittlistan.Web.ViewModels.Match;
+
     using Xunit;
 
     public class MatchController_EditTeam4x4 : DbTest
@@ -46,7 +47,7 @@
             }
             catch (HttpException ex)
             {
-                ex.GetHttpCode().ShouldBe(404);
+                Assert.Equal(404, ex.GetHttpCode());
             }
         }
 
@@ -61,7 +62,7 @@
             }
             catch (HttpException ex)
             {
-                ex.GetHttpCode().ShouldBe(404);
+                Assert.Equal(404, ex.GetHttpCode());
             }
         }
 

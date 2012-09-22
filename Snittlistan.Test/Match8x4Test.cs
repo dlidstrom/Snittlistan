@@ -1,7 +1,7 @@
 ﻿namespace Snittlistan.Test
 {
-    using Models;
-    using MvcContrib.TestHelper;
+    using Snittlistan.Web.Models;
+
     using Xunit;
 
     public class Match8x4Test : DbTest
@@ -19,7 +19,7 @@
         [Fact]
         public void PinscoreForPlayer()
         {
-            match.AwayTeam.PinsForPlayer("Peter Sjöberg").ShouldBe(787);
+            Assert.Equal(787, match.AwayTeam.PinsForPlayer("Peter Sjöberg"));
         }
 
         [Fact]
@@ -31,14 +31,14 @@
         [Fact]
         public void LaneScores()
         {
-            match.HomeTeam.Score.ShouldBe(13);
+            Assert.Equal(13, match.HomeTeam.Score);
         }
 
         [Fact]
         public void Teams()
         {
-            match.HomeTeam.Name.ShouldBe("Sollentuna Bwk");
-            match.AwayTeam.Name.ShouldBe("Fredrikshof IF");
+            Assert.Equal("Sollentuna Bwk", match.HomeTeam.Name);
+            Assert.Equal("Fredrikshof IF", match.AwayTeam.Name);
         }
     }
 }

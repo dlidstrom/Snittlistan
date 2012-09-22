@@ -1,8 +1,9 @@
 ﻿namespace Snittlistan.Test
 {
     using System.Threading;
-    using MvcContrib.TestHelper;
-    using Services;
+
+    using Snittlistan.Web.Services;
+
     using Xunit;
 
     public class EmailServiceTest
@@ -11,18 +12,18 @@
         public void ShouldDeliverMail()
         {
             // this test actually sends a mail
-            string host = "mail.snittlistan.se";
-            int port = 1045;
-            string username = "elmah@snittlistan.se";
-            string password = "____";
+            const string Host = "mail.snittlistan.se";
+            const int Port = 1045;
+            const string Username = "elmah@snittlistan.se";
+            const string Password = "____";
             var ev = new AutoResetEvent(false);
-            var service = new EmailService(host, port, username, password, new string[] { "dlidstrom@gmail.com" })
+            var service = new EmailService(Host, Port, Username, Password, new[] { "dlidstrom@gmail.com" })
             {
                 ResetEvent = ev
             };
 
             service.SendMail("dlidstrom@gmail.com", "Test", "Message body");
-            ev.WaitOne(10000).ShouldBe(true);
+            Assert.True(ev.WaitOne(10000));
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿namespace Snittlistan.Test
 {
-    using Events;
-    using Models;
-    using MvcContrib.TestHelper;
+    using Snittlistan.Web.Events;
+    using Snittlistan.Web.Models;
+
     using Xunit;
 
     public class UserTest
@@ -11,7 +11,7 @@
         public void ShouldNotBeActiveWhenCreated()
         {
             var user = new User("first name", "last name", "email", "password");
-            user.IsActive.ShouldBe(false);
+            Assert.False(user.IsActive);
         }
 
         [Fact]
@@ -24,11 +24,11 @@
                 user.Initialize();
             }
 
-            createdEvent.ShouldNotBeNull("Event not raised");
-            createdEvent.User.FirstName.ShouldBe("first name");
-            createdEvent.User.LastName.ShouldBe("last name");
-            createdEvent.User.Email.ShouldBe("email");
-            createdEvent.User.IsActive.ShouldBe(false);
+            Assert.NotNull(createdEvent);
+            Assert.Equal("first name", createdEvent.User.FirstName);
+            Assert.Equal("last name", createdEvent.User.LastName);
+            Assert.Equal("email", createdEvent.User.Email);
+            Assert.False(createdEvent.User.IsActive);
         }
 
         [Fact]
@@ -36,7 +36,7 @@
         {
             var user = new User("F", "L", "e@d.com", "pwd");
             user.Activate();
-            user.IsActive.ShouldBe(true);
+            Assert.True(user.IsActive);
         }
     }
 }

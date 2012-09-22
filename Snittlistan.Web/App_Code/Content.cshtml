@@ -1,0 +1,82 @@
+﻿@using System.Web.Mvc
+@using Snittlistan.Web.HtmlHelpers
+
+@* Used to include internal javascript *@
+@helper Script(string scriptName, UrlHelper url)
+{
+    <script src="@url.Content("~/Content/js/" + scriptName)" type="text/javascript"></script>
+}
+
+@* Used to include external javascript *@
+@helper External(string scriptName, UrlHelper url)
+{
+    <script src="@url.Content("~/Content/external/" + scriptName)" type="text/javascript"></script>
+}
+
+@helper Script(ScriptType type)
+{
+    string src = string.Empty;
+    switch (type)
+    {
+        case ScriptType.JQuery:
+            src = "http://code.jquery.com/jquery.min.js";
+            break;
+        case ScriptType.JQueryValidate:
+            src = "http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js";
+            break;
+        case ScriptType.JQueryValidateLocalized:
+            src = "http://ajax.aspnetcdn.com/ajax/jQuery.Validate/1.6/localization/messages_se.js";
+            break;
+        case ScriptType.JQueryValidateUnobtrusive:
+            src = "http://ajax.aspnetcdn.com/ajax/mvc/3.0/jquery.validate.unobtrusive.min.js";
+            break;
+        case ScriptType.JQueryUI:
+            src = "http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.16/jquery-ui.min.js";
+            break;
+        case ScriptType.JQueryUII18N:
+            src = "http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.16/i18n/jquery-ui-i18n.min.js";
+            break;
+        case ScriptType.Modernizr:
+            src = "http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.0.6-development-only.js";
+            break;
+    }
+<script src="@src" type="text/javascript"></script>
+}
+
+@helper GA()
+{
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-16003953-2']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+}
+
+@helper Favicon(UrlHelper url)
+{
+    <link rel="shortcut icon" type="image/x-icon" href="@url.Content("~/favicon.ico")" />
+}
+
+@helper Css(string scriptName, UrlHelper url)
+{
+    <link href="@url.Content("~/Content/css/" + scriptName)" rel="stylesheet" type="text/css" />
+}
+
+@helper Css(CssType type)
+{
+    string src = string.Empty;
+    switch (type)
+    {
+        case CssType.Blitzer:
+            src = "http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/themes/blitzer/jquery-ui.css";
+            break;
+    }
+    
+    <link href="@src" rel="Stylesheet" type="text/css" />
+}

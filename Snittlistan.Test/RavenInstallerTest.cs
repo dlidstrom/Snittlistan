@@ -1,9 +1,11 @@
 ﻿namespace Snittlistan.Test
 {
     using Castle.Windsor;
-    using Infrastructure.Installers;
-    using MvcContrib.TestHelper;
+
     using Raven.Client;
+
+    using Snittlistan.Web.Infrastructure.Installers;
+
     using Xunit;
 
     public class RavenInstallerTest
@@ -19,7 +21,7 @@
         public void InstallsDocumentStore()
         {
             var store = container.Resolve<IDocumentStore>();
-            store.ShouldNotBeNull("Expected IDocumentStore in container");
+            Assert.NotNull(store);
             container.Release(store);
         }
     }

@@ -7,14 +7,15 @@ namespace Snittlistan.Test
     using System.Web;
     using System.Web.Routing;
     using Moq;
-    using MvcContrib.TestHelper;
+
+    using Xunit;
 
     public static class RouteTestHelper
     {
         public static void Maps(this RouteCollection routes, string httpVerb, string url, object expectations)
         {
             var routeData = RetrieveRouteData(routes, httpVerb, url);
-            routeData.ShouldNotBeNull("Should have found the route");
+            Assert.NotNull(routeData);
 
             foreach (var property in GetProperties(expectations))
             {
@@ -23,14 +24,13 @@ namespace Snittlistan.Test
                     routeData.Values[property.Name].ToString(),
                     StringComparison.OrdinalIgnoreCase);
                 var message = string.Format("Expected '{0}', not '{1}' for '{2}'.", property.Value, routeData.Values[property.Name], property.Name);
-                equal.ShouldEqual(true, message);
+                Assert.True(equal, message);
             }
         }
 
         public static void DoNotMap(this RouteCollection routes, string httpVerb, string url)
         {
-            RetrieveRouteData(routes, httpVerb, url)
-                .ShouldEqual((RouteData)null, "Should not find a route");
+            Assert.Equal(null, RetrieveRouteData(routes, httpVerb, url));
         }
 
         private static RouteData RetrieveRouteData(RouteCollection routes, string httpVerb, string url)

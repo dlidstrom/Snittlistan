@@ -3,10 +3,11 @@
     using System.Web.Mvc;
     using System.Web.Routing;
     using Castle.Windsor;
-    using Controllers;
-    using Infrastructure.Installers;
-    using Infrastructure.IoC;
-    using MvcContrib.TestHelper;
+
+    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Infrastructure.Installers;
+    using Snittlistan.Web.Infrastructure.IoC;
+
     using Xunit;
 
     public class ControllerFactoryTest
@@ -22,7 +23,7 @@
             Assert.DoesNotThrow(() => factory = container.Resolve<IControllerFactory>());
             IController controller = null;
             Assert.DoesNotThrow(() => controller = factory.CreateController(new RequestContext(), typeof(ErrorController).Name.Replace("Controller", string.Empty)));
-            controller.ShouldNotBeNull("Failed to create controller");
+            Assert.NotNull(controller);
         }
     }
 }

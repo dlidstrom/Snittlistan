@@ -2,10 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
-    using Infrastructure.Indexes;
-    using Models;
-    using MvcContrib.TestHelper;
+
+    using Snittlistan.Web.Infrastructure.Indexes;
+    using Snittlistan.Web.Models;
+
     using Xunit;
 
     public class PlayerStat_Test : DbTest
@@ -23,21 +25,22 @@
                 .SingleOrDefault(s => s.Player == "Mikael Axelsson");
 
             // Assert
-            stats.ShouldNotBeNull("Failed to read from index");
-            stats.Series.ShouldBe(4.0);
-            stats.Score.ShouldBe(3.0);
-            stats.Pins.ShouldBe(845.0);
-            stats.BestGame.ShouldBe(223);
-            stats.Strikes.ShouldBe(5.0);
-            stats.Misses.ShouldBe(2.0);
-            stats.OnePinMisses.ShouldBe(1.0);
-            stats.Splits.ShouldBe(2.0);
-            stats.AveragePins.ShouldBe(211.25);
-            stats.AverageStrikes.ShouldBe(5.0);
-            stats.AverageMisses.ShouldBe(2.0);
-            stats.AverageOnePinMisses.ShouldBe(1.0);
-            stats.AverageSplits.ShouldBe(2.0);
-            stats.CoveredAll.ShouldBe(1);
+            Assert.NotNull(stats);
+            Debug.Assert(stats != null, "stats != null");
+            Assert.Equal(4.0, stats.Series);
+            Assert.Equal(3.0, stats.Score);
+            Assert.Equal(845.0, stats.Pins);
+            Assert.Equal(223, stats.BestGame);
+            Assert.Equal(5.0, stats.Strikes);
+            Assert.Equal(2.0, stats.Misses);
+            Assert.Equal(1.0, stats.OnePinMisses);
+            Assert.Equal(2.0, stats.Splits);
+            Assert.Equal(211.25, stats.AveragePins);
+            Assert.Equal(5.0, stats.AverageStrikes);
+            Assert.Equal(2.0, stats.AverageMisses);
+            Assert.Equal(1.0, stats.AverageOnePinMisses);
+            Assert.Equal(2.0, stats.AverageSplits);
+            Assert.Equal(1, stats.CoveredAll);
         }
 
         [Fact]
@@ -53,12 +56,13 @@
                 .SingleOrDefault(s => s.Player == "Lars Norbeck");
 
             // Assert
-            stats.ShouldNotBeNull("Failed to read from index");
-            stats.Series.ShouldBe(4.0);
-            stats.Score.ShouldBe(4.0);
-            stats.Pins.ShouldBe(717.0);
-            stats.BestGame.ShouldBe(231);
-            stats.AveragePins.ShouldBe(179.25);
+            Assert.NotNull(stats);
+            Debug.Assert(stats != null, "stats != null");
+            Assert.Equal(4.0, stats.Series);
+            Assert.Equal(4.0, stats.Score);
+            Assert.Equal(717.0, stats.Pins);
+            Assert.Equal(231, stats.BestGame);
+            Assert.Equal(179.25, stats.AveragePins);
         }
 
         [Fact]
@@ -115,17 +119,18 @@
                 .SingleOrDefault(s => s.Player == "Tomas Gustavsson");
 
             // Assert
-            stats.ShouldNotBeNull("Failed to read from index");
-            stats.Series.ShouldBe(8.0);
-            stats.Score.ShouldBe(2.0);
-            stats.Pins.ShouldBe(1122.0);
-            stats.BestGame.ShouldBe(160);
-            stats.AveragePins.ShouldBe(140.25);
-            stats.AverageMisses.ShouldBe(3.0);
-            stats.AverageStrikes.ShouldBe(5.0);
-            stats.AverageOnePinMisses.ShouldBe(1.0);
-            stats.AverageSplits.ShouldBe(2.0);
-            stats.CoveredAll.ShouldBe(1);
+            Assert.NotNull(stats);
+            Debug.Assert(stats != null, "stats != null");
+            Assert.Equal(8.0, stats.Series);
+            Assert.Equal(2.0, stats.Score);
+            Assert.Equal(1122.0, stats.Pins);
+            Assert.Equal(160, stats.BestGame);
+            Assert.Equal(140.25, stats.AveragePins);
+            Assert.Equal(3.0, stats.AverageMisses);
+            Assert.Equal(5.0, stats.AverageStrikes);
+            Assert.Equal(1.0, stats.AverageOnePinMisses);
+            Assert.Equal(2.0, stats.AverageSplits);
+            Assert.Equal(1, stats.CoveredAll);
         }
     }
 }
