@@ -1,0 +1,3 @@
+﻿User-agent: *
+Disallow: /error/logjavascripterror
+Disallow: /Error/LogJavaScriptError
