@@ -1,9 +1,10 @@
-@model InitialDataViewModel
 @{
     ViewBag.Title = "Snittlistan V2";
     Bundles.Reference("Content/css/main.less");
     Bundles.Reference("Content/templates");
     Bundles.Reference("Content/external/hogan/hogan.js", "hogan");
+    Bundles.Reference("Content/js/app/app.modals.js");
+    Bundles.Reference("Content/js/app/app.views.login.js");
 }
 <!DOCTYPE html>
 <html lang="se">
@@ -50,24 +51,19 @@
                                     </p>
                                 </li>
                                 <li>
-                                    <button id="menu-logout" class="btn btn-small btn-primary">
-                                        <i class="icon-user icon-white"></i>
+                                    <a class="btn btn-link btn-primary" href="@Url.Action("LogOff2", "App")">
+                                        <i class="icon-off"></i>
                                         Logga ut
-                                    </button>
+                                    </a>
                                 </li>
                             }
                             else
                             {
                                 <li>
-                                    <p class="navbar-text pull-right">
-                                        Inte inloggad
-                                    </p>
-                                </li>
-                                <li>
-                                    <button id="menu-login" class="btn btn-small btn-primary pull-right">
-                                        <i class="icon-user icon-white"></i>
+                                    <a class="btn btn-link pull-right" href="@Url.Action("LogOn2", "App")">
+                                        <i class="icon-ok-circle"></i>
                                         Logga in
-                                    </button>
+                                    </a>
                                 </li>
                             }
                         </ul>
@@ -155,13 +151,7 @@
         @* local scripts *@
         @Bundles.RenderScripts("hogan")
         @Bundles.RenderHtmlTemplates()
-        @* Place initial data here. *@
-        <script type="text/javascript">
-            (function (app, undefined) {
-                "use strict";
-                app.initial_data = @Html.ToJson(Model);
-            }(window.App = window.App || { }));
-        </script>
         @Bundles.RenderScripts()
+        @RenderSection("scripts", false)
     </body>
 </html>

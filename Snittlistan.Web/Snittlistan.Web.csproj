@@ -221,8 +221,9 @@
   <ItemGroup>
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Models\Roster.cs" />
+    <Compile Include="ViewModels\AddMatchViewModel.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\ApiController.cs" />
     <Compile Include="Controllers\AppController.cs" />
     <Compile Include="Controllers\ElmahController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -233,7 +234,6 @@
     <Compile Include="Controllers\NotFoundController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\SessionApiController.cs" />
-    <Compile Include="Controllers\TurnsApiController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValidationController.cs" />
     <Compile Include="Controllers\WelcomeController.cs" />
@@ -264,7 +264,7 @@
     <Compile Include="Infrastructure\AutoMapper\Profiles\PlayerResolver.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\Team4x4ViewModelConverter.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\Team8x4ViewModelConverter.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Profiles\TurnProfile.cs" />
+    <Compile Include="Infrastructure\AutoMapper\Profiles\RosterProfile.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\UserProfile.cs" />
     <Compile Include="Infrastructure\CassetteBundleConfiguration.cs" />
     <Compile Include="Infrastructure\GuidBinder.cs" />
@@ -343,7 +343,6 @@
     <Compile Include="ViewModels\PlayerViewModel.cs" />
     <Compile Include="ViewModels\RosterViewModel.cs" />
     <Compile Include="ViewModels\SessionViewModel.cs" />
-    <Compile Include="ViewModels\TurnsViewModel.cs" />
     <Compile Include="ViewModels\TurnViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -436,6 +435,9 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\App\Index.cshtml" />
+    <Content Include="Views\App\Players.cshtml" />
+    <Content Include="Views\App\LogOn2.cshtml" />
+    <Content Include="Views\App\AddMatch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

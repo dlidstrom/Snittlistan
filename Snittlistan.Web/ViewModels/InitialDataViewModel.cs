@@ -1,16 +1,12 @@
 namespace Snittlistan.Web.ViewModels
 {
-    using Raven.Imports.Newtonsoft.Json;
+    using System.Collections.Generic;
 
     public class InitialDataViewModel
     {
-        [JsonProperty(PropertyName = "session")]
-        public SessionViewModel Session { get; set; }
+        public List<TurnViewModel> Turns { get; set; }
 
-        [JsonProperty(PropertyName = "turns")]
-        public TurnsViewModel[] Turns { get; set; }
-
-        [JsonProperty(PropertyName = "players")]
-        public PlayerViewModel[] Players { get; set; }
+        public int SeasonStart { get; set; }
+        public int SeasonEnd { get; set; }
     }
 }
