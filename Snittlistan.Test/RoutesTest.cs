@@ -43,6 +43,8 @@
         {
             RouteTable.Routes.Maps("GET", "~/v2", new { controller = "App", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/v2/turns", new { controller = "App", action = "Index" });
+            RouteTable.Routes.Maps("GET", "~/v2/results", new { controller = "App", action = "Results" });
+            RouteTable.Routes.Maps("GET", "~/v2/players", new { controller = "App", action = "Players" });
         }
 
         [Fact]

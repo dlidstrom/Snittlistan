@@ -88,7 +88,10 @@
 
         private void V2Route()
         {
-            this.routes.MapRoute("V2-route", "v2/{*route}", new { controller = "App", action = "Index" });
+            this.routes.MapRoute("V2-index", "v2", new { controller = "App", action = "Index" });
+            this.routes.MapRoute("V2-turns", "v2/turns", new { controller = "App", action = "Index" });
+            this.routes.MapRoute("V2-players", "v2/results", new { controller = "App", action = "Results" });
+            this.routes.MapRoute("V2-results", "v2/players", new { controller = "App", action = "Players" });
         }
 
         private void ApiRoute()

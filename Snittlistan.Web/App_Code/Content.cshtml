@@ -1,4 +1,5 @@
 ﻿@using System.Web.Mvc
+@using System.Web.Mvc.Html
 @using Snittlistan.Web.HtmlHelpers
 
 @* Used to include internal javascript *@
@@ -79,4 +80,28 @@
     }
     
     <link href="@src" rel="Stylesheet" type="text/css" />
+}
+
+@helper MenuLink(
+    System.Web.Mvc.HtmlHelper helper,
+    UrlHelper url,
+    string text,
+    string icon,
+    string action,
+    string controller)
+{
+    var routeData = helper.ViewContext.RouteData.Values;
+    var currentController = routeData["controller"];
+    var currentAction = routeData["action"];
+
+    var liClass = string.Empty;
+    if (string.Equals(action, currentAction as string, StringComparison.OrdinalIgnoreCase)
+        && string.Equals(controller, currentController as string, StringComparison.OrdinalIgnoreCase))
+    {
+        liClass = "active";
+    }
+
+    <li class="@liClass">
+        <a href="@url.Action(action)"><i class="@icon"></i>@text</a>
+    </li>
 }
