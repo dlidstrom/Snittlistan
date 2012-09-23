@@ -88,5 +88,15 @@
                 };
             return this.View(vm);
         }
+
+        public ActionResult Results()
+        {
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Players()
+        {
+            return RedirectToAction("Index");
+        }
     }
 }
