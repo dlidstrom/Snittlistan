@@ -7,7 +7,8 @@
     {
         protected override void Configure()
         {
-            global::AutoMapper.Mapper.CreateMap<Roster, RosterViewModel>();
+            global::AutoMapper.Mapper.CreateMap<Roster, RosterViewModel>()
+                .ForMember(vm => vm.Time, o => o.MapFrom(m => m.Date.TimeOfDay.ToString()));
         }
     }
 }

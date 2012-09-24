@@ -1,5 +1,6 @@
 ﻿namespace Snittlistan.Web.Helpers
 {
+    using System;
     using System.Linq;
 
     using Raven.Client;
@@ -27,6 +28,16 @@
             return sess.Query<Match_ByBitsMatchId.Result, Match_ByBitsMatchId>()
                 .AsProjection<Match_ByBitsMatchId.Result>()
                 .SingleOrDefault(m => m.BitsMatchId == id) != null;
+        }
+
+        public static int LatestSeasonOrDefault(this IDocumentSession sess, int def)
+        {
+            return sess.Query<Roster>()
+                .OrderByDescending(s => s.Season)
+                .Select(r => r.Season)
+                .ToList()
+                .DefaultIfEmpty(def)
+                .First();
         }
     }
 }
