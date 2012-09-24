@@ -3,10 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Globalization;
     using System.Linq;
     using System.Web.Mvc;
 
+    using Raven.Abstractions;
     using Raven.Client;
     using Raven.Client.Linq;
 
@@ -28,8 +28,13 @@
             this.authenticationService = authenticationService;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(int? season)
         {
+            if (season.HasValue == false)
+            {
+                season = Session.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+            }
+
             /*var turns2 = new[]
                 {
                     new TurnViewModel
@@ -158,21 +163,31 @@
                             }
                 };*/
 
-            var rosters = Session.Query<Roster>().ToList();
+            var level = new Dictionary<char, int>
+                {
+                    { 'a', 1 },
+                    { 'f', 2 },
+                    { 'b', 3 },
+                    { 'c', 4 }
+                };
+            var rosters = Session.Query<Roster>().Where(r => r.Season == season).ToList();
             var q = from roster in rosters
                     orderby roster.Turn
                     group roster by roster.Turn into g
                     select new TurnViewModel
-                    {
-                        Turn = g.Key,
-                        StartDate = g.Min(x => x.Date),
-                        EndDate = g.Max(x => x.Date),
-                        Rosters = g.Select(x => x.MapTo<RosterViewModel>()).ToList()
-                    };
+                        {
+                            Turn = g.Key,
+                            StartDate = g.Min(x => x.Date),
+                            EndDate = g.Max(x => x.Date),
+                            Rosters =
+                                g.Select(x => x.MapTo<RosterViewModel>())
+                                 .OrderBy(r => level[r.TeamLevel])
+                                 .ThenBy(r => r.Date).ToList()
+                        };
             var vm = new InitialDataViewModel
                 {
-                    SeasonStart = 2012,
-                    SeasonEnd = 2013,
+                    SeasonStart = season.Value,
+                    SeasonEnd = season.Value + 1,
                     Turns = q.ToList()
                 };
             return this.View(vm);
@@ -251,14 +266,17 @@
             return this.RedirectToAction("Index");
         }
 
-        public ActionResult AddMatch()
+        public ActionResult CreateRoster()
         {
-            var vm = new AddMatchViewModel();
+            var vm = new RosterViewModel
+                {
+                    Season = Session.LatestSeasonOrDefault(DateTime.Now.Year)
+                };
             return this.View(vm);
         }
 
         [HttpPost]
-        public ActionResult AddMatch(AddMatchViewModel vm)
+        public ActionResult CreateRoster(RosterViewModel vm)
         {
             if (!ModelState.IsValid) return this.View(vm);
 
@@ -270,7 +288,7 @@
                 int.Parse(vm.Time.Substring(3)),
                 0);
             var roster = new Roster(
-                2012,
+                vm.Season,
                 vm.Turn,
                 vm.Team,
                 vm.Location,

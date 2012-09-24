@@ -222,7 +222,7 @@
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Models\Roster.cs" />
-    <Compile Include="ViewModels\AddMatchViewModel.cs" />
+    <Compile Include="ViewModels\RosterViewModel.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AppController.cs" />
     <Compile Include="Controllers\ElmahController.cs" />
@@ -341,7 +341,6 @@
     <Compile Include="ViewModels\PlayerMatchesViewModel.cs" />
     <Compile Include="ViewModels\PlayerStatsViewModel.cs" />
     <Compile Include="ViewModels\PlayerViewModel.cs" />
-    <Compile Include="ViewModels\RosterViewModel.cs" />
     <Compile Include="ViewModels\SessionViewModel.cs" />
     <Compile Include="ViewModels\TurnViewModel.cs" />
   </ItemGroup>
@@ -437,7 +436,7 @@
     <Content Include="Views\App\Index.cshtml" />
     <Content Include="Views\App\Players.cshtml" />
     <Content Include="Views\App\LogOn2.cshtml" />
-    <Content Include="Views\App\AddMatch.cshtml" />
+    <Content Include="Views\App\CreateRoster.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
