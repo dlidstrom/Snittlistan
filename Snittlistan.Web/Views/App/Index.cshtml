@@ -23,19 +23,13 @@
         <div class="row">
             @foreach (var roster in rosters)
             {
+                var id = roster.Id;
                 <div class="span4">
-                    <section class="well well-small">
-                        <dl class="dl-horizontal">
-                            <dt>lag</dt>
-                            <dd><span class="label @string.Format("{0}{1}", "label-team-", @roster.TeamLevel)">@roster.Team</span></dd>
-                            <dt>plats</dt>
-                            <dd>@roster.Location</dd>
-                            <dt>motstånd</dt>
-                            <dd>@roster.Opponent</dd>
-                            <dt>när</dt>
-                            <dd><em>@roster.Date</em></dd>
-                        </dl>
-                    </section>
+                    @Html.DisplayFor(model => roster, "Roster")
+                    @if (Request.IsAuthenticated)
+                    {
+                        @Html.ActionLink("Ta bort", "DeleteRoster", new { id })
+                    }
                 </div>
             }
         </div>

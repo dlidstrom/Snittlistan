@@ -1,0 +1,15 @@
+﻿@model Snittlistan.Web.ViewModels.RosterViewModel
+
+<section class="well well-small">
+    <dl class="dl-horizontal">
+        <dt>lag</dt>
+        <dd><span class="label @string.Format("{0}{1}", "label-team-", Model.TeamLevel)">@Model.Team</span></dd>
+        <dt>plats</dt>
+        <dd>@Model.Location</dd>
+        <dt>motstånd</dt>
+        <dd>@Model.Opponent</dd>
+        <dt>när</dt>
+        <dd><em>@Model.Date</em></dd>
+    </dl>
+</section>
+

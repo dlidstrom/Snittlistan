@@ -2,9 +2,13 @@ namespace Snittlistan.Web.ViewModels
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
     public class RosterViewModel
     {
+        [HiddenInput]
+        public int Id { get; set; }
+
         [Required]
         public int Season { get; set; }
 
