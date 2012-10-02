@@ -11,7 +11,7 @@
         public User_ByEmail()
         {
             this.Map = users => from user in users
-                           select new { user.Email, user.ActivationKey };
+                                select new { user.Email, user.ActivationKey };
         }
     }
 }

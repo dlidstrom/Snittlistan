@@ -16,7 +16,7 @@
         public void CanEditTeam()
         {
             // Arrange
-            Match4x4 originalMatch = new Match4x4("Place", DateTime.Now, new Team4x4("Home", 13), new Team4x4("Away", 6));
+            var originalMatch = new Match4x4("Place", DateTime.Now, new Team4x4("Home", 13), new Team4x4("Away", 6));
             Session.Store(originalMatch);
             Session.SaveChanges();
 

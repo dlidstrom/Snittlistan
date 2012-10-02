@@ -102,7 +102,7 @@
             this.Session.SaveChanges();
 
             // expect base controller to redirect to /welcome
-            return this.RedirectToAction<HomeController>(c => c.Index());
+            return this.RedirectToAction("Index", "Home");
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)

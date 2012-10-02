@@ -4,9 +4,11 @@
     using System.Web;
     using System.Web.Mvc;
 
+    using Raven.Abstractions;
     using Raven.Client;
     using Raven.Client.Linq;
 
+    using Snittlistan.Web.Helpers;
     using Snittlistan.Web.Infrastructure.Indexes;
     using Snittlistan.Web.ViewModels;
 
@@ -26,7 +28,7 @@
         /// <summary>
         /// GET: /Home/Index.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Index view.</returns>
         public ActionResult Index()
         {
             var stats = this.Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
