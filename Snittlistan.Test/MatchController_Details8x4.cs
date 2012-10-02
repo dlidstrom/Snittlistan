@@ -32,6 +32,7 @@
 
             var view2 = controller.Details8x4(2) as ViewResult;
             Assert.NotNull(view2);
+            Debug.Assert(view2 != null, "view2 != null");
             var model2 = view2.Model as Match8x4ViewModel;
             Debug.Assert(model2 != null, "model2 != null");
             Assert.Equal(2, model2.Match.Id);

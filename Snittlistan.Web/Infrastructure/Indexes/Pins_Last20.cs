@@ -12,57 +12,57 @@
         public Pins_Last20()
         {
             this.AddMap<Match4x4>(matches => from match in matches
-                                        from team in match.Teams
-                                        from serie in team.Series
-                                        from game in serie.Games
-                                        select new
-                                        {
-                                            game.Player,
-                                            match.Date.Date,
-                                            game.Pins,
-                                            game.Score,
-                                            Max = game.Pins,
-                                            GamesWithStats = game.Strikes != null ? 1 : 0,
-                                            TotalStrikes = game.Strikes,
-                                            TotalMisses = game.Misses,
-                                            TotalOnePinMisses = game.OnePinMisses,
-                                            TotalSplits = game.Splits
-                                        });
+                                             from team in match.Teams
+                                             from serie in team.Series
+                                             from game in serie.Games
+                                             select new
+                                             {
+                                                 game.Player,
+                                                 match.Date.Date,
+                                                 game.Pins,
+                                                 game.Score,
+                                                 Max = game.Pins,
+                                                 GamesWithStats = game.Strikes != null ? 1 : 0,
+                                                 TotalStrikes = game.Strikes,
+                                                 TotalMisses = game.Misses,
+                                                 TotalOnePinMisses = game.OnePinMisses,
+                                                 TotalSplits = game.Splits
+                                             });
 
             this.AddMap<Match8x4>(matches => from match in matches
-                                        from team in match.Teams
-                                        from serie in team.Series
-                                        from table in serie.Tables
-                                        from game in table.Games
-                                        select new
-                                        {
-                                            game.Player,
-                                            match.Date.Date,
-                                            game.Pins,
-                                            table.Score,
-                                            Max = game.Pins,
-                                            GamesWithStats = game.Strikes != null ? 1 : 0,
-                                            TotalStrikes = game.Strikes,
-                                            TotalMisses = game.Misses,
-                                            TotalOnePinMisses = game.OnePinMisses,
-                                            TotalSplits = game.Splits
-                                        });
+                                             from team in match.Teams
+                                             from serie in team.Series
+                                             from table in serie.Tables
+                                             from game in table.Games
+                                             select new
+                                             {
+                                                 game.Player,
+                                                 match.Date.Date,
+                                                 game.Pins,
+                                                 table.Score,
+                                                 Max = game.Pins,
+                                                 GamesWithStats = game.Strikes != null ? 1 : 0,
+                                                 TotalStrikes = game.Strikes,
+                                                 TotalMisses = game.Misses,
+                                                 TotalOnePinMisses = game.OnePinMisses,
+                                                 TotalSplits = game.Splits
+                                             });
 
             this.Reduce = results => from result in results
-                                group result by result.Player into g
-                                select new Result
-                                {
-                                    Player = g.Key,
-                                    Date = g.OrderByDescending(x => x.Date).Take(20).First().Date,
-                                    Pins = g.OrderByDescending(x => x.Date).Take(20).Average(x => x.Pins),
-                                    Score = g.OrderByDescending(x => x.Date).Take(20).Average(x => x.Score),
-                                    Max = g.OrderByDescending(x => x.Date).Take(20).Max(x => x.Max),
-                                    GamesWithStats = g.OrderByDescending(x => x.Date).Take(20).Sum(x => x.GamesWithStats),
-                                    TotalStrikes = g.OrderByDescending(x => x.Date).Take(20).Sum(x => x.TotalStrikes),
-                                    TotalMisses = g.OrderByDescending(x => x.Date).Take(20).Sum(x => x.TotalMisses),
-                                    TotalOnePinMisses = g.OrderByDescending(x => x.Date).Take(20).Sum(x => x.TotalOnePinMisses),
-                                    TotalSplits = g.OrderByDescending(x => x.Date).Take(20).Sum(x => x.TotalSplits)
-                                };
+                                     group result by result.Player into g
+                                     select new Result
+                                     {
+                                         Player = g.Key,
+                                         Date = g.OrderByDescending(x => x.Date).Take(20).First().Date,
+                                         Pins = g.OrderByDescending(x => x.Date).Take(20).Average(x => x.Pins),
+                                         Score = g.OrderByDescending(x => x.Date).Take(20).Average(x => x.Score),
+                                         Max = g.OrderByDescending(x => x.Date).Take(20).Max(x => x.Max),
+                                         GamesWithStats = g.OrderByDescending(x => x.Date).Take(20).Sum(x => x.GamesWithStats),
+                                         TotalStrikes = g.OrderByDescending(x => x.Date).Take(20).Sum(x => x.TotalStrikes),
+                                         TotalMisses = g.OrderByDescending(x => x.Date).Take(20).Sum(x => x.TotalMisses),
+                                         TotalOnePinMisses = g.OrderByDescending(x => x.Date).Take(20).Sum(x => x.TotalOnePinMisses),
+                                         TotalSplits = g.OrderByDescending(x => x.Date).Take(20).Sum(x => x.TotalSplits)
+                                     };
         }
 
         public class Result

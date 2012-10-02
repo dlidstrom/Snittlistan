@@ -14,30 +14,30 @@
         public Match_ByDate()
         {
             this.AddMap<Match4x4>(matches => from match in matches
-                                        select new
-                                        {
-                                            match.Id,
-                                            Type = "4x4",
-                                            match.Date,
-                                            match.Location,
-                                            HomeTeamName = match.Teams.ElementAt(0).Name,
-                                            HomeTeamScore = match.Teams.ElementAt(0).Score,
-                                            AwayTeamName = match.Teams.ElementAt(1).Name,
-                                            AwayTeamScore = match.Teams.ElementAt(1).Score
-                                        });
+                                             select new
+                                             {
+                                                 match.Id,
+                                                 Type = "4x4",
+                                                 match.Date,
+                                                 match.Location,
+                                                 HomeTeamName = match.Teams.ElementAt(0).Name,
+                                                 HomeTeamScore = match.Teams.ElementAt(0).Score,
+                                                 AwayTeamName = match.Teams.ElementAt(1).Name,
+                                                 AwayTeamScore = match.Teams.ElementAt(1).Score
+                                             });
 
             this.AddMap<Match8x4>(matches => from match in matches
-                                        select new
-                                        {
-                                            match.Id,
-                                            Type = "8x4",
-                                            match.Date,
-                                            match.Location,
-                                            HomeTeamName = match.Teams.ElementAt(0).Name,
-                                            HomeTeamScore = match.Teams.ElementAt(0).Score,
-                                            AwayTeamName = match.Teams.ElementAt(1).Name,
-                                            AwayTeamScore = match.Teams.ElementAt(1).Score
-                                        });
+                                             select new
+                                             {
+                                                 match.Id,
+                                                 Type = "8x4",
+                                                 match.Date,
+                                                 match.Location,
+                                                 HomeTeamName = match.Teams.ElementAt(0).Name,
+                                                 HomeTeamScore = match.Teams.ElementAt(0).Score,
+                                                 AwayTeamName = match.Teams.ElementAt(1).Name,
+                                                 AwayTeamScore = match.Teams.ElementAt(1).Score
+                                             });
 
             this.Store(x => x.Type, FieldStorage.Yes);
             this.Store(x => x.HomeTeamName, FieldStorage.Yes);

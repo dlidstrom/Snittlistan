@@ -172,10 +172,10 @@
             };
 
             var match = new Match4x4(
-                    location: "Bowl-O-Rama",
-                    date: new DateTime(2012, 01, 28),
-                    homeTeam: new Team4x4("Fredrikshof C", 6, series),
-                    awayTeam: new Team4x4("Librex", 14));
+                location: "Bowl-O-Rama",
+                date: new DateTime(2012, 01, 28),
+                homeTeam: new Team4x4("Fredrikshof C", 6, series),
+                awayTeam: new Team4x4("Librex", 14));
             return match;
         }
     }
