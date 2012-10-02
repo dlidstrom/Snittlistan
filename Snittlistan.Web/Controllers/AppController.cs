@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
+    using System.Web;
     using System.Web.Mvc;
 
     using Raven.Abstractions;
@@ -136,6 +137,7 @@
             return this.RedirectToAction("Index");
         }
 
+        [Authorize]
         public ActionResult CreateRoster()
         {
             var vm = new RosterViewModel
@@ -146,6 +148,7 @@
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult CreateRoster(RosterViewModel vm)
         {
             if (!ModelState.IsValid) return this.View(vm);
@@ -166,6 +169,27 @@
                 dt);
             Session.Store(roster);
             return this.RedirectToAction("Index");
+        }
+
+        [Authorize]
+        public ActionResult DeleteRoster(int id)
+        {
+            var roster = Session.Load<Roster>(id);
+            if (roster == null)
+                throw new HttpException(404, "Roster not found");
+            return this.View(roster.MapTo<RosterViewModel>());
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ActionName("DeleteRoster")]
+        public ActionResult DeleteRosterConfirmed(int id)
+        {
+            var roster = Session.Load<Roster>(id);
+            if (roster == null)
+                throw new HttpException(404, "Roster not found");
+            Session.Delete(roster);
+            return RedirectToAction("Index");
         }
     }
 }

@@ -437,6 +437,8 @@
     <Content Include="Views\App\Players.cshtml" />
     <Content Include="Views\App\LogOn2.cshtml" />
     <Content Include="Views\App\CreateRoster.cshtml" />
+    <Content Include="Views\App\DeleteRoster.cshtml" />
+    <Content Include="Views\App\DisplayTemplates\Roster.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
