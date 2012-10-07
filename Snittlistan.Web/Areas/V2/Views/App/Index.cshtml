@@ -1,0 +1,36 @@
+﻿@model InitialDataViewModel
+<div class="row">
+    <div class="span4">
+        <h2>Säsongen @Model.SeasonStart&minus;@Model.SeasonEnd</h2>
+    </div>
+    <div class="span4">
+        @if (Request.IsAuthenticated)
+        {
+            @Html.ActionLink("Lägg till match", "CreateRoster", "App", null, new { @class = "btn btn-link" })
+        }
+    </div>
+</div>
+@foreach (var turn in Model.Turns)
+{
+    <h2>Omgång @turn.Turn <em>(@turn.StartDate.ToShortDateString()&minus;@turn.EndDate.ToShortDateString())</em></h2>
+    int start = 0;
+    var rosters = turn.Rosters.Skip(start).Take(3).ToList();
+    while (rosters.Count > 0)
+    {
+        <div class="row">
+            @foreach (var roster in rosters)
+            {
+                var id = roster.Id;
+                <div class="span4">
+                    @Html.DisplayFor(model => roster, "Roster")
+                    @if (Request.IsAuthenticated)
+                    {
+                        @Html.ActionLink("Ta bort", "DeleteRoster", new { id })
+                    }
+                </div>
+            }
+        </div>
+        start += 3;
+        rosters = turn.Rosters.Skip(start).Take(3).ToList();
+    }
+}

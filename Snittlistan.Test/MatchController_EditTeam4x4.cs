@@ -3,10 +3,12 @@
     using System;
     using System.Web;
 
+    using Snittlistan.Web.Areas.V1.Controllers;
+    using Snittlistan.Web.Areas.V1.Models;
+    using Snittlistan.Web.Areas.V1.ViewModels.Match;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Infrastructure.AutoMapper;
     using Snittlistan.Web.Models;
-    using Snittlistan.Web.ViewModels.Match;
 
     using Xunit;
 

@@ -5,6 +5,8 @@
     using System.Diagnostics;
     using System.Linq;
 
+    using Snittlistan.Web.Areas.V1.Controllers;
+    using Snittlistan.Web.Areas.V1.Models;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Infrastructure.Indexes;
     using Snittlistan.Web.Models;

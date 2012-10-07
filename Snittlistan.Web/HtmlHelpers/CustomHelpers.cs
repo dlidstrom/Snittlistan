@@ -2,7 +2,7 @@
 {
     using System.Web.Mvc;
 
-    using Snittlistan.Web.ViewModels.Match;
+    using Snittlistan.Web.Areas.V1.ViewModels.Match;
 
     public static class CustomHtmlHelpers
     {

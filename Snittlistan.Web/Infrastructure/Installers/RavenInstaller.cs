@@ -13,6 +13,7 @@
     using Raven.Client.Document;
     using Raven.Client.Embedded;
 
+    using Snittlistan.Web.Areas.V1.Models;
     using Snittlistan.Web.Infrastructure.Indexes;
     using Snittlistan.Web.Models;
 

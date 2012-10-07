@@ -1,5 +1,6 @@
 ﻿namespace Snittlistan.Test
 {
+    using Snittlistan.Web.Areas.V1.Models;
     using Snittlistan.Web.Models;
 
     using Xunit;

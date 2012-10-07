@@ -4,11 +4,12 @@
     using System.Web.Mvc;
     using System.Web.Routing;
 
+    using Snittlistan.Web.Areas.V1.Controllers;
+    using Snittlistan.Web.Areas.V1.ViewModels.Account;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Events;
     using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Services;
-    using Snittlistan.Web.ViewModels.Account;
 
     public class SendRegistrationEmailHandler : IHandle<NewUserCreatedEvent>
     {
@@ -35,7 +36,9 @@
             routeData.Values.Add("controller", "MailTemplates");
             var controllerContext = new ControllerContext(new MailHttpContext(), routeData, new MailController());
 // ReSharper disable Mvc.ViewNotResolved
+// ReSharper disable Mvc.MasterpageNotResolved
             var viewEngineResult = ViewEngines.Engines.FindView(controllerContext, "Registration", "_Layout");
+// ReSharper restore Mvc.MasterpageNotResolved
 // ReSharper restore Mvc.ViewNotResolved
             var stringWriter = new StringWriter();
             viewEngineResult.View.Render(

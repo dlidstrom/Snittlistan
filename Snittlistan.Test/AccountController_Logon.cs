@@ -4,10 +4,11 @@
 
     using Moq;
 
+    using Snittlistan.Web.Areas.V1.Controllers;
+    using Snittlistan.Web.Areas.V1.ViewModels.Account;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Models;
     using Snittlistan.Web.Services;
-    using Snittlistan.Web.ViewModels.Account;
 
     using Xunit;
 

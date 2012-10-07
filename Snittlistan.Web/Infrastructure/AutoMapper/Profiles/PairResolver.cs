@@ -2,8 +2,9 @@
 {
     using System.Linq;
 
+    using Snittlistan.Web.Areas.V1.Models;
+    using Snittlistan.Web.Areas.V1.ViewModels.Match;
     using Snittlistan.Web.Models;
-    using Snittlistan.Web.ViewModels.Match;
 
     public class PairResolver : global::AutoMapper.ValueResolver<Team8x4, Team8x4ViewModel.Pair>
     {

@@ -5,6 +5,7 @@
 
     using Raven.Client.Indexes;
 
+    using Snittlistan.Web.Areas.V1.Models;
     using Snittlistan.Web.Models;
 
     public class Pins_Last20 : AbstractMultiMapIndexCreationTask<Pins_Last20.Result>

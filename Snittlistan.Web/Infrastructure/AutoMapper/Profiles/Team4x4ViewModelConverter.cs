@@ -2,8 +2,9 @@
 {
     using System.Collections.Generic;
 
+    using Snittlistan.Web.Areas.V1.Models;
+    using Snittlistan.Web.Areas.V1.ViewModels.Match;
     using Snittlistan.Web.Models;
-    using Snittlistan.Web.ViewModels.Match;
 
     public class Team4x4ViewModelConverter : global::AutoMapper.ITypeConverter<Team4x4ViewModel, Team4x4>
     {

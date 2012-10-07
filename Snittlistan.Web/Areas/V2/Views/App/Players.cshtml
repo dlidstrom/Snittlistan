@@ -1,0 +1,15 @@
+﻿@model PlayerViewModel[]
+
+@{
+    ViewBag.Title = "Spelare";
+}
+
+<h2>@ViewBag.Title</h2>
+<table class="table table-condensed">
+    @foreach( var player in Model)
+    {
+        <tr>
+            <td>@player.Name</td>
+        </tr>
+    }
+</table>

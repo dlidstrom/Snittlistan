@@ -88,7 +88,8 @@
     string text,
     string icon,
     string action,
-    string controller)
+    string controller,
+    string actionLink)
 {
     var routeData = helper.ViewContext.RouteData.Values;
     var currentController = routeData["controller"];
@@ -102,6 +103,6 @@
     }
 
     <li class="@liClass">
-        <a href="@url.Action(action)"><i class="@icon"></i>@text</a>
+        <a href="@actionLink"><i class="@icon"></i>@text</a>
     </li>
 }
