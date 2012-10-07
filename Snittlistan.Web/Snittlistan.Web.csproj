@@ -445,6 +445,7 @@
     <Content Include="Areas\V2\Views\App\CreateRoster.cshtml" />
     <Content Include="Areas\V2\Views\App\DeleteRoster.cshtml" />
     <Content Include="Areas\V2\Views\App\DisplayTemplates\Roster.cshtml" />
+    <None Include="Properties\PublishProfiles\Snittlistan-Netcetera.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -534,7 +535,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>53150</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:61026/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
