@@ -30,7 +30,7 @@
             if (this.Session.Load<User>("Admin") == null)
             {
                 // first launch
-                this.Response.Redirect("/welcome");
+                this.Response.Redirect("/v1/welcome");
                 this.Response.End();
             }
         }
