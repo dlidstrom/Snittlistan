@@ -6,6 +6,7 @@
 
     using Castle.MicroKernel;
 
+    using Snittlistan.Web.Areas.V1.Controllers;
     using Snittlistan.Web.Controllers;
 
     public class WindsorControllerFactory : DefaultControllerFactory

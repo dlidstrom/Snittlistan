@@ -1,0 +1,156 @@
+@{
+    ViewBag.Title = "Snittlistan V2";
+    Bundles.Reference("Content/css/main.less");
+    Bundles.Reference("Content/templates");
+    Bundles.Reference("Content/external/hogan/hogan.js", "hogan");
+}
+<!DOCTYPE html>
+<html lang="se">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewBag.Title</title>
+        @if (Html.IsDebug())
+        {
+            <link href="@Url.Content("~/Content/external/bootstrap/css/bootstrap.css")" rel="stylesheet" />
+            <link href="@Url.Content("~/Content/external/bootstrap/css/bootstrap-responsive.css")" rel="stylesheet" />
+        }
+        else
+        {
+            <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.0/css/bootstrap-combined.min.css" rel="stylesheet" type="text/css" />
+        }
+        @Bundles.RenderStylesheets()
+        <!--[if lt IE 9]><script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6/html5shiv.min.js"></script><![endif]-->
+    </head>
+    <body>
+        @* header will be placed here, as first element under body *@
+        @* modal dialogs are placed here *@
+        <div id="modal-root"></div>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <span class="brand">Snittlistan V2</span>
+                    <div class="nav-collapse">
+                        <ul class="nav">
+                            @Content.MenuLink(Html, Url, "Omgångar", "icon-calendar", "Index", "App", Url.Action("Index", "App"))
+                            @*@Content.MenuLink(Html, Url, "Resultat", "icon-list", "Results", "App")*@
+                            @*@Content.MenuLink(Html, Url, "Spelare", "icon-user", "Players", "App")*@
+                            @Content.MenuLink(Html, Url, "2011-2012", "icon-calendar", "Index", "Home", Url.Action("Index", "Home", new { area = "V1" } ))
+                        </ul>
+                        <ul class="nav pull-right">
+                            @if (Request.IsAuthenticated)
+                            {
+                                <li>
+                                    <p class="navbar-text">
+                                        Inloggad som @User.Identity.Name
+                                    </p>
+                                </li>
+                                <li>
+                                    <a class="btn btn-link btn-primary" href="@Url.Action("LogOff2", "App")">
+                                        <i class="icon-off"></i>
+                                        Logga ut
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a class="btn btn-link pull-right" href="@Url.Action("LogOn2", "App")">
+                                        <i class="icon-ok-circle"></i>
+                                        Logga in
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="main" class="container">
+            @RenderBody()
+            @*
+            <section class="page-header">
+                <h1>Kommande matchomgångar</h1>
+            </section>
+            <div class="row-fluid">
+                <div class="span6">
+                    <div class="alert alert-info">
+                        <button class="close" data-dismiss="alert">
+                            <i class="icon-pencil"></i>
+                        </button>
+                        Om du inte kan medverka, vänligen meddela detta så tidigt som möjligt.
+                        <i class="icon-question-sign pull-right" title="Meddelande" data-content="Här tänkte jag att pennan är klickbar, och att man då kan redigera texten. Troligen måste man ha en viss roll för att ha möjlighet att ändra texten."></i>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="alert alert-error">
+                        <button class="close" data-dismiss="alert">&times;</button>
+                        <button class="btn btn-mini btn-primary">Logga in</button> för att kvittera spel eller meddela din frånvaro.
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                @Html.Partial("_Turn3")
+            </div>
+            *@
+            @*
+            <section class="page-header">
+                <h1>
+                    Avklarade
+                    <i class="icon-question-sign" title="Avklarade omgångar" data-placement="right" data-content="Den här delen kommer vara en egen sida."></i>
+                </h1>
+            </section>
+            <div class="row-fluid">
+                <div class="span3">
+                    <table class="table table-medals">
+                        <tr><th colspan="2">Medaljer</th></tr>
+                        <tr><td><span class="label label-personal-best">PB</span></td><td>Personbästa</td></tr>
+                        <tr><td><span class="label label-season-best">SB</span></td><td>Säsongsbästa</td></tr>
+                        <tr><td><span class="label label-miss-free">missfri</span></td><td>En serie med enbart täckta rutor</td></tr>
+                        <tr><td><span class="label label-300">300</span></td><td>En 300-serie</td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="row-fluid">
+                @Html.Partial("_CompletedTurns")
+            </div>
+            *@
+            @*
+            <section class="page-header">
+                <h1>
+                    Christer Liedholm
+                    <i class="icon-question-sign" title="Att göra" data-placement="right" data-content="Lägg till vy för spelare. En spelares medaljer ska visas. Lägg till förklaring på medaljerna (eller titel åtminstone). Lägg till vy för att göra laguttagningen."></i>
+                </h1>
+            </section>
+            <div class="row-fluid">
+                @Html.Partial("_Player")
+            </div>
+            *@
+        </div>
+        @* Use content delivery networks *@
+        @if(Html.IsDebug())
+        {
+            @Content.External("jquery/jquery.js", Url)
+            @Content.External("bootstrap/js/bootstrap.js", Url)
+            @Content.External("underscore/underscore-1.3.3/underscore.js", Url)
+            @Content.External("backbone/backbone-0.9.2/backbone.js", Url)
+        }
+        else
+        {
+            @Content.Script(ScriptType.JQuery)
+            <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.0/js/bootstrap.min.js" type="text/javascript"></script>
+            <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js" type="text/javascript"></script>
+            <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js" type="text/javascript"></script>
+        }
+
+        @* local scripts *@
+        @Bundles.RenderScripts("hogan")
+        @Bundles.RenderHtmlTemplates()
+        @Bundles.RenderScripts()
+        @RenderSection("scripts", false)
+    </body>
+</html>

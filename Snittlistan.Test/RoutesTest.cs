@@ -1,9 +1,12 @@
 ﻿namespace Snittlistan.Test
 {
     using System;
+    using System.Web.Mvc;
     using System.Web.Routing;
 
     using Snittlistan.Web.App_Start;
+    using Snittlistan.Web.Areas.V1;
+    using Snittlistan.Web.Areas.V2;
 
     using Xunit;
 
@@ -12,6 +15,8 @@
         public RoutesTest()
         {
             new RouteConfig(RouteTable.Routes).Configure();
+            RegisterArea<V1AreaRegistration>(RouteTable.Routes, null);
+            RegisterArea<V2AreaRegistration>(RouteTable.Routes, null);
         }
 
         public void Dispose()
@@ -22,7 +27,17 @@
         [Fact]
         public void DefaultRoute()
         {
-            RouteTable.Routes.Maps("GET", "~/", new { controller = "Home", action = "Index" });
+            RouteTable.Routes.Maps("GET", "~/", new { controller = "App", action = "Index" });
+        }
+
+        [Fact]
+        public void LegacyRoutes()
+        {
+            RouteTable.Routes.Maps("GET", "~/v1", new { controller = "Home", action = "Index" });
+            RouteTable.Routes.Maps("GET", "~/v1/Match", new { controller = "Match", action = "Index" });
+            RouteTable.Routes.Maps("GET", "~/v1/Match/Register8x4", new { controller = "Match", action = "Register8x4" });
+            RouteTable.Routes.Maps("GET", "~/v1/Match/Register4x4", new { controller = "Match", action = "Register4x4" });
+            RouteTable.Routes.Maps("GET", "~/v1/About", new { controller = "Home", action = "About" });
         }
 
         [Fact]
@@ -41,50 +56,49 @@
         [Fact]
         public void V2Route()
         {
-            RouteTable.Routes.Maps("GET", "~/v2", new { controller = "App", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/v2/turns", new { controller = "App", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/v2/results", new { controller = "App", action = "Results" });
-            RouteTable.Routes.Maps("GET", "~/v2/players", new { controller = "App", action = "Players" });
+            RouteTable.Routes.Maps("GET", "~/", new { controller = "App", action = "Index" });
+            RouteTable.Routes.Maps("GET", "~/results", new { controller = "App", action = "Results" });
+            RouteTable.Routes.Maps("GET", "~/players", new { controller = "App", action = "Players" });
         }
 
         [Fact]
         public void LowerCaseRoutes()
         {
-            RouteTable.Routes.Maps("GET", "~/account/register", new { controller = "Account", action = "Register" });
+            RouteTable.Routes.Maps("GET", "~/v1/account/register", new { controller = "Account", action = "Register" });
         }
 
         [Fact]
         public void Shortcuts()
         {
-            RouteTable.Routes.Maps("GET", "~/register", new { controller = "Account", action = "Register" });
-            RouteTable.Routes.Maps("GET", "~/logon", new { controller = "Account", action = "LogOn" });
-            RouteTable.Routes.Maps("GET", "~/about", new { controller = "Home", action = "About" });
+            RouteTable.Routes.Maps("GET", "~/v1/register", new { controller = "Account", action = "Register" });
+            RouteTable.Routes.Maps("GET", "~/v1/logon", new { controller = "Account", action = "LogOn" });
+            RouteTable.Routes.Maps("GET", "~/v1/about", new { controller = "Home", action = "About" });
         }
 
         [Fact]
         public void Verify()
         {
-            RouteTable.Routes.Maps("GET", "~/verify", new { controller = "Account", action = "Verify" });
+            RouteTable.Routes.Maps("GET", "~/v1/verify", new { controller = "Account", action = "Verify" });
         }
 
         [Fact]
         public void Welcome()
         {
-            RouteTable.Routes.Maps("GET", "~/welcome", new { controller = "Welcome", action = "Index" });
+            RouteTable.Routes.Maps("GET", "~/v1/welcome", new { controller = "Welcome", action = "Index" });
         }
 
         [Fact]
         public void Reset()
         {
-            RouteTable.Routes.Maps("GET", "~/reset", new { controller = "Welcome", action = "Reset" });
+            RouteTable.Routes.Maps("GET", "~/v1/reset", new { controller = "Welcome", action = "Reset" });
         }
 
         [Fact]
         public void ElmahRoute()
         {
-            RouteTable.Routes.Maps("GET", "~/admin/elmah", new { controller = "Elmah", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/admin/elmah/detail", new { controller = "Elmah", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/admin/elmah/stylesheet", new { controller = "Elmah", action = "Index" });
+            RouteTable.Routes.Maps("GET", "~/v1/admin/elmah", new { controller = "Elmah", action = "Index" });
+            RouteTable.Routes.Maps("GET", "~/v1/admin/elmah/detail", new { controller = "Elmah", action = "Index" });
+            RouteTable.Routes.Maps("GET", "~/v1/admin/elmah/stylesheet", new { controller = "Elmah", action = "Index" });
         }
 
         [Fact]
@@ -136,6 +150,19 @@
             RouteTable.Routes.Maps("GET", "~/stats/awstats.pl", new { controller = "Hacker", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/stats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/shop", new { controller = "Hacker", action = "Index" });
+        }
+
+        private static void RegisterArea<T>(RouteCollection routes, object state) where T : AreaRegistration
+        {
+            var registration = (AreaRegistration)Activator.CreateInstance(typeof(T));
+            var context = new AreaRegistrationContext(registration.AreaName, routes, state);
+            var typeNamespace = registration.GetType().Namespace;
+            if (typeNamespace != null)
+            {
+                context.Namespaces.Add(typeNamespace + ".*");
+            }
+
+            registration.RegisterArea(context);
         }
     }
 }

@@ -1,7 +1,8 @@
 ﻿namespace Snittlistan.Web.Infrastructure.AutoMapper.Profiles
 {
+    using Snittlistan.Web.Areas.V1.Models;
+    using Snittlistan.Web.Areas.V1.ViewModels.Match;
     using Snittlistan.Web.Models;
-    using Snittlistan.Web.ViewModels.Match;
 
     public class Match8x4Profile : global::AutoMapper.Profile
     {

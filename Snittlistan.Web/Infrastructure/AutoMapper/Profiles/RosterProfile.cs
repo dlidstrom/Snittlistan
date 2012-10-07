@@ -1,7 +1,7 @@
 ﻿namespace Snittlistan.Web.Infrastructure.AutoMapper.Profiles
 {
+    using Snittlistan.Web.Areas.V2.ViewModels;
     using Snittlistan.Web.Models;
-    using Snittlistan.Web.ViewModels;
 
     public class RosterProfile : global::AutoMapper.Profile
     {

@@ -1,0 +1,51 @@
+﻿@model List<PlayerStatsViewModel>
+@{
+    ViewBag.Title = "Snittlistan";
+    Bundles.Reference("Content/js/sortable.js");
+}
+
+@section scripts
+{
+    @Content.Script("jquery.tablesorter.min.js", Url)
+}
+
+<table data-sortable="true">
+    <thead>
+        <tr>
+            <th>&#9650; &#9660;</th>
+            <th>Namn</th>
+            <th>Serier</th>
+            <th>Banpoäng</th>
+            <th>Medel</th>
+            <th>Högsta</th>
+            <th>X</th>
+            <th>Miss</th>
+            <th>9-</th>
+            <th>Hål</th>
+            <th>Täckta</th>
+            <th>Senaste 20</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            var stat = Model[i];
+            <tr>
+                <td>@(i + 1)</td>
+                <td>@stat.Player</td>
+                <td>@stat.Series</td>
+                <td>@(string.Format("{0:F2}", stat.AverageScore))</td>
+                <td>@(string.Format("{0:F1}", stat.AveragePins))</td>
+                <td>@(stat.BestGame)</td>
+                <td>@(string.Format("{0:F2}", stat.AverageStrikes))</td>
+                <td>@(string.Format("{0:F2}", stat.AverageMisses))</td>
+                <td>@(string.Format("{0:F2}", stat.AverageOnePinMisses))</td>
+                <td>@(string.Format("{0:F2}", stat.AverageSplits))</td>
+                <td>@stat.CoveredAll</td>
+                <td>@string.Format("{0:F1}", stat.AverageLast20)</td>
+                <td>@Html.ActionLink("Visa", "Player", new { player = stat.Player }, new { data_button = "data_button" })</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -5,6 +5,7 @@
     using Castle.MicroKernel;
     using Castle.Windsor;
 
+    using Snittlistan.Web.Areas.V1.Controllers;
     using Snittlistan.Web.Controllers;
 
     public static class InstallerTestHelper

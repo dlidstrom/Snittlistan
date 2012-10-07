@@ -4,6 +4,7 @@
 
     using Raven.Client.Indexes;
 
+    using Snittlistan.Web.Areas.V1.Models;
     using Snittlistan.Web.Models;
 
     public class Teams : AbstractMultiMapIndexCreationTask<Teams.Result>

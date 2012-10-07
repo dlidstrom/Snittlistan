@@ -1,0 +1,42 @@
+﻿@model LogOnViewModel
+@{
+    ViewBag.Title = "Logga in";
+}
+<div class="row">
+    <div class="span6">
+        <div class="modal-header">
+            <h3>@ViewBag.Title</h3>
+        </div>
+        <div class="modal-body">
+            <p>Logga in genom att ange din e-postadress och ditt lösenord.</p>
+            @using (Html.BeginForm("LogOn2", "App", FormMethod.Post, new { @class = "well form-horizontal"}))
+            {
+                <div class="control-group">
+                    <label class="control-label" for="email">E-postadress:</label>
+                    <div class="controls">
+                        <input type="email" name="email" placeholder="E-postadress" autofocus="autofocus" required="required" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="password">Lösenord:</label>
+                    <div class="controls">
+                        <input type="password" name="password" placeholder="Lösenord" required="required" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <label class="checkbox">
+                            @Html.EditorFor(model => model.RememberMe)
+                        </label>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button class="btn btn-primary" type="submit">Logga in</button>
+                        <button class="btn" data-type="hide">Avbryt</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

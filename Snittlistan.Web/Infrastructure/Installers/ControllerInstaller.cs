@@ -6,8 +6,6 @@
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
 
-    using Snittlistan.Web.Controllers;
-
     public class ControllerInstaller : IWindsorInstaller
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
@@ -20,7 +18,7 @@
             return AllTypes
                 .FromThisAssembly()
                 .BasedOn<IController>()
-                .If(Component.IsInSameNamespaceAs<HomeController>())
+                .If(Component.IsInNamespace("Snittlistan.Web.Areas", true))
                 .If(t => t.Name.EndsWith("Controller"))
                 .Configure(c => c.Named(c.Implementation.Name));
         }

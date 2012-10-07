@@ -24,19 +24,14 @@
         private const bool IsDebug = false;
 #endif
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-        private static IWindsorContainer container;
 
-        public static IWindsorContainer Container
-        {
-            get { return container; }
-        }
+        public static IWindsorContainer Container { get; private set; }
 
         public static bool IsDebugConfig { get { return IsDebug; } }
 
         protected void Application_Start()
         {
             Log.Info("Application Starting");
-            AreaRegistration.RegisterAllAreas();
 
             RegisterGlobalFilters(GlobalFilters.Filters);
 
@@ -44,20 +39,20 @@
             InitializeContainer();
 
             // register routes
-            // Routes.Start();
             new RouteConfig(RouteTable.Routes).Configure();
+            AreaRegistration.RegisterAllAreas();
 
             // add model binders
             ModelBinders.Binders.Add(typeof(Guid), new GuidBinder());
 
             // configure AutoMapper
-            AutoMapperConfiguration.Configure(container);
+            AutoMapperConfiguration.Configure(Container);
         }
 
         protected void Application_End()
         {
             Log.Info("Application Ending");
-            container.Dispose();
+            Container.Dispose();
         }
 
         private static void RegisterGlobalFilters(GlobalFilterCollection filters)
@@ -70,13 +65,13 @@
 
         private static void InitializeContainer()
         {
-            if (container == null)
+            if (Container == null)
             {
-                container = new WindsorContainer()
+                Container = new WindsorContainer()
                     .Install(FromAssembly.This());
             }
 
-            DependencyResolver.SetResolver(new WindsorDependencyResolver(container));
+            DependencyResolver.SetResolver(new WindsorDependencyResolver(Container));
         }
     }
 }

@@ -4,6 +4,7 @@
     using System.Web.Routing;
     using Castle.Windsor;
 
+    using Snittlistan.Web.Areas.V1.Controllers;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Infrastructure.Installers;
     using Snittlistan.Web.Infrastructure.IoC;

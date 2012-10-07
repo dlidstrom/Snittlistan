@@ -2,10 +2,11 @@
 {
     using Castle.Windsor;
 
+    using Snittlistan.Web.Areas.V1.Models;
+    using Snittlistan.Web.Areas.V1.ViewModels.Match;
     using Snittlistan.Web.Infrastructure.AutoMapper;
     using Snittlistan.Web.Infrastructure.Installers;
     using Snittlistan.Web.Models;
-    using Snittlistan.Web.ViewModels.Match;
 
     using Xunit;
 

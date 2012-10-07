@@ -5,6 +5,7 @@
 
     using Raven.Imports.Newtonsoft.Json;
 
+    using Snittlistan.Web.Areas.V1.Models;
     using Snittlistan.Web.Models;
 
     using Xunit;

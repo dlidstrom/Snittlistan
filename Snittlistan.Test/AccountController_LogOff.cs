@@ -2,6 +2,7 @@
 {
     using Moq;
 
+    using Snittlistan.Web.Areas.V1.Controllers;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Services;
 

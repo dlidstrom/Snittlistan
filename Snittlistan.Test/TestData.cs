@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using Snittlistan.Web.Areas.V1.Models;
     using Snittlistan.Web.Models;
 
     using Xunit;
