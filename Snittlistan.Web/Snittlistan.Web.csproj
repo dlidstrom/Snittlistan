@@ -222,6 +222,7 @@
     <Compile Include="Areas\V2\Controllers\RedirectController.cs" />
     <Compile Include="Areas\V1\V1AreaRegistration.cs" />
     <Compile Include="Areas\V2\V2AreaRegistration.cs" />
+    <Compile Include="Areas\V2\ViewModels\CreateRosterViewModel.cs" />
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="Areas\V1\Controllers\AccountController.cs" />
     <Compile Include="Areas\V2\ViewModels\LogOnViewModel.cs" />

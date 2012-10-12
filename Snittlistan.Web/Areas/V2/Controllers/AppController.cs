@@ -149,7 +149,7 @@
 
         [HttpPost]
         [Authorize]
-        public ActionResult CreateRoster(RosterViewModel vm)
+        public ActionResult CreateRoster(CreateRosterViewModel vm)
         {
             if (!this.ModelState.IsValid) return this.View(vm);
 
