@@ -9,7 +9,10 @@
         <h3>@ViewBag.Title</h3>
         @using (Html.BeginForm("CreateRoster", "App", FormMethod.Post, new { @class = "well form-horizontal"}))
         {
-            @Html.ValidationSummary(false, "Det gick inte att spara. Försök gärna igen.")
+            if (Html.ViewData.ModelState.IsValid == false)
+            {
+                @Html.ValidationSummary(false, "Det gick inte att spara. Försök gärna igen.")
+            }
             <div class="control-group">
                 <label class="control-label" for="season">Säsong:</label>
                 <div class="controls">
