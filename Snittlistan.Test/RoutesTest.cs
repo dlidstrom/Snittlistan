@@ -102,6 +102,13 @@
         }
 
         [Fact]
+        public void RedirectRoutes()
+        {
+            RouteTable.Routes.Maps("GET", "~/Home/Player", new { controller = "Redirect", action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/register", new { controller = "Redirect", action = "Redirect" });
+        }
+
+        [Fact]
         public void HackerRoutes()
         {
             RouteTable.Routes.Maps("GET", "~/apps/phpalbum/main.php", new { controller = "Hacker", action = "Index" });

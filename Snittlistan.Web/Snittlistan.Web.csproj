@@ -219,6 +219,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Areas\V2\Controllers\RedirectController.cs" />
     <Compile Include="Areas\V1\V1AreaRegistration.cs" />
     <Compile Include="Areas\V2\V2AreaRegistration.cs" />
     <Compile Include="Controllers\AbstractController.cs" />
@@ -402,6 +403,7 @@
     <Content Include="Areas\V1\Views\Web.config" />
     <Content Include="Areas\V2\Views\Web.config" />
     <Content Include="Areas\V2\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\V1\Views\App\Index.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
