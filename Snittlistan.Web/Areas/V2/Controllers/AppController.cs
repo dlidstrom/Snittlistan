@@ -140,7 +140,7 @@
         [Authorize]
         public ActionResult CreateRoster()
         {
-            var vm = new RosterViewModel
+            var vm = new CreateRosterViewModel
                 {
                     Season = this.Session.LatestSeasonOrDefault(DateTime.Now.Year)
                 };

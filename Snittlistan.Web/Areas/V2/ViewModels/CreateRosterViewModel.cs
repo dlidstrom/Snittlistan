@@ -3,8 +3,19 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    using Raven.Abstractions;
+
     public class CreateRosterViewModel
     {
+        public CreateRosterViewModel()
+        {
+            Team = string.Empty;
+            Location = string.Empty;
+            Opponent = string.Empty;
+            Date = SystemTime.UtcNow.ToLocalTime().Date;
+            Time = string.Empty;
+        }
+
         [Required]
         public int Season { get; set; }
 

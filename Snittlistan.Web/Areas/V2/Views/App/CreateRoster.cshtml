@@ -1,4 +1,4 @@
-﻿@model RosterViewModel
+﻿@model CreateRosterViewModel
 
 @{
     ViewBag.Title = "Lägg till match";
@@ -7,9 +7,9 @@
 <div class="row">
     <div class="span6">
         <h3>@ViewBag.Title</h3>
-        @Html.ValidationSummary(false, "Det gick inte att spara. Försök gärna igen.")
         @using (Html.BeginForm("CreateRoster", "App", FormMethod.Post, new { @class = "well form-horizontal"}))
         {
+            @Html.ValidationSummary(false, "Det gick inte att spara. Försök gärna igen.")
             <div class="control-group">
                 <label class="control-label" for="season">Säsong:</label>
                 <div class="controls">
@@ -22,7 +22,14 @@
                     <select name="turn">
                         @for (var i = 1; i <= 22; i++)
                         {
-                            <option>@i</option>
+                            if (Model.Turn == i)
+                            {
+                                <option selected>@i</option>
+                            }
+                            else
+                            {
+                                <option>@i</option>
+                            }
                         }
                     </select>
                 </div>
@@ -30,31 +37,50 @@
             <div class="control-group">
                 <label class="control-label" for="team">Lag:</label>
                 <div class="controls">
-                    <input type="text" name="team" placeholder="Lag" autofocus="autofocus" required="required" />
+                    <input type="text"
+                           name="team"
+                           placeholder="Lag"
+                           autofocus="autofocus"
+                           value="@Model.Team"
+                           required />
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="location">Plats:</label>
                 <div class="controls">
-                    <input type="text" name="location" placeholder="Bowlinghall" required="required" />
+                    <input type="text"
+                           name="location"
+                           placeholder="Bowlinghall"
+                           value="@Model.Location"
+                           required />
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="opponent">Motståndare:</label>
                 <div class="controls">
-                    <input type="text" name="opponent" placeholder="Motståndare" required="required" />
+                    <input type="text"
+                           name="opponent"
+                           placeholder="Motståndare"
+                           value="@Model.Opponent"
+                           required />
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="date">Datum:</label>
                 <div class="controls">
-                    <input type="date" name="date" required="required" />
+                    <input type="date"
+                           name="date"
+                           value="@Model.Date.ToShortDateString()"
+                           required />
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="time">Tid:</label>
                 <div class="controls">
-                    <input type="time" name="time" required="required" />
+                    <input type="time"
+                           name="time"
+                           value="@Model.Time"
+                           required />
                 </div>
             </div>
             <div class="control-group">
