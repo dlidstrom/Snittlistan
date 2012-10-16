@@ -2,19 +2,12 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
-    using Raven.Abstractions;
-
-    public class CreateRosterViewModel
+    public class EditRosterViewModel
     {
-        public CreateRosterViewModel()
-        {
-            Team = string.Empty;
-            Location = string.Empty;
-            Opponent = string.Empty;
-            Date = SystemTime.UtcNow.ToLocalTime().Date;
-            Time = "10:00";
-        }
+        [HiddenInput]
+        public int Id { get; set; }
 
         [Required]
         public int Season { get; set; }

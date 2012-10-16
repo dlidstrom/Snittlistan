@@ -16,16 +16,16 @@ namespace Snittlistan.Web.Models
 
         public int Id { get; set; }
 
-        public int Season { get; private set; }
+        public int Season { get; set; }
 
-        public int Turn { get; private set; }
+        public int Turn { get; set; }
 
-        public string Team { get; private set; }
+        public string Team { get; set; }
 
-        public string Location { get; private set; }
+        public string Location { get; set; }
 
-        public string Opponent { get; private set; }
+        public string Opponent { get; set; }
 
-        public DateTime Date { get; private set; }
+        public DateTime Date { get; set; }
     }
 }

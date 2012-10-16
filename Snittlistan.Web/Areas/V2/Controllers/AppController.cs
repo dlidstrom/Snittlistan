@@ -172,6 +172,38 @@
         }
 
         [Authorize]
+        public ActionResult EditRoster(int id)
+        {
+            var roster = Session.Load<Roster>(id);
+            if (roster == null) throw new HttpException(404, "Roster not found");
+            return this.View(roster.MapTo<EditRosterViewModel>());
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult EditRoster(EditRosterViewModel vm)
+        {
+            if (!this.ModelState.IsValid)
+                return this.View(vm);
+
+            var roster = this.Session.Load<Roster>(vm.Id);
+            if (roster == null) throw new HttpException(404, "Roster not found");
+
+            roster.Location = vm.Location;
+            roster.Opponent = vm.Opponent;
+            roster.Season = vm.Season;
+            roster.Team = vm.Team;
+            roster.Turn = vm.Turn;
+            var time = new TimeSpan(
+                int.Parse(vm.Time.Substring(0, 2)),
+                int.Parse(vm.Time.Substring(3)),
+                0);
+            roster.Date = vm.Date.Add(time);
+
+            return RedirectToAction("Index");
+        }
+
+        [Authorize]
         public ActionResult DeleteRoster(int id)
         {
             var roster = this.Session.Load<Roster>(id);
