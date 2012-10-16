@@ -1,18 +1,24 @@
-ï»¿@model InitialDataViewModel
+@model InitialDataViewModel
 <div class="row">
-    <div class="span4">
-        <h2>SÃ¤songen @Model.SeasonStart&minus;@Model.SeasonEnd</h2>
+    <div class="span6">
+        <h2>Säsongen @Model.SeasonStart&minus;@Model.SeasonEnd</h2>
     </div>
-    <div class="span4">
+</div>
+<div class="row">
+    <div class="span6">
         @if (Request.IsAuthenticated)
         {
-            @Html.ActionLink("LÃ¤gg till match", "CreateRoster", "App", null, new { @class = "btn btn-link" })
+            <a href="@Url.Action("CreateRoster")">
+                <i class="icon-plus"></i>
+                Lägg till match
+            </a>
         }
     </div>
 </div>
 @foreach (var turn in Model.Turns)
 {
-    <h2>OmgÃ¥ng @turn.Turn <em>(@turn.StartDate.ToShortDateString()&minus;@turn.EndDate.ToShortDateString())</em></h2>
+    <h2>Omgång @turn.Turn</h2>
+    <em>(@turn.StartDate.ToString("d MMM")&minus;@turn.EndDate.ToString("d MMM"))</em>
     int start = 0;
     var rosters = turn.Rosters.Skip(start).Take(3).ToList();
     while (rosters.Count > 0)
@@ -25,7 +31,14 @@
                     @Html.DisplayFor(model => roster, "Roster")
                     @if (Request.IsAuthenticated)
                     {
-                        @Html.ActionLink("Ta bort", "DeleteRoster", new { id })
+                        <a href="#">
+                            <i class="icon-edit"></i>
+                            Redigera
+                        </a>
+                        <a href="@Url.Action("DeleteRoster", new { id })">
+                            <i class="icon-minus-sign"></i>
+                            Ta bort
+                        </a>
                     }
                 </div>
             }
