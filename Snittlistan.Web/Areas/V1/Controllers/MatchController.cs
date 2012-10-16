@@ -15,7 +15,6 @@
     using Snittlistan.Web.Helpers;
     using Snittlistan.Web.Infrastructure.AutoMapper;
     using Snittlistan.Web.Infrastructure.Indexes;
-    using Snittlistan.Web.Models;
 
     public class MatchController : AbstractController
     {
