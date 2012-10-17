@@ -223,7 +223,6 @@
     <Compile Include="Areas\V1\V1AreaRegistration.cs" />
     <Compile Include="Areas\V2\V2AreaRegistration.cs" />
     <Compile Include="Areas\V2\ViewModels\CreateRosterViewModel.cs" />
-    <Compile Include="Areas\V2\ViewModels\EditRosterViewModel.cs" />
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="Areas\V1\Controllers\AccountController.cs" />
     <Compile Include="Areas\V2\ViewModels\LogOnViewModel.cs" />
@@ -409,7 +408,7 @@
     <Content Include="Areas\V2\Views\Shared\Error.cshtml" />
     <Content Include="Areas\V2\Views\Shared\NotFound.cshtml" />
     <Content Include="Areas\V2\Views\App\EditRoster.cshtml" />
-    <Content Include="Areas\V2\Views\App\EditorTemplates\RosterEditor.cshtml" />
+    <Content Include="Areas\V2\Views\App\_RosterEditor.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />

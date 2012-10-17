@@ -13,7 +13,7 @@
             {
                 @Html.ValidationSummary(false, "Det gick inte att spara. Försök gärna igen.")
             }
-            @Html.EditorFor(model => model, "RosterEditor")
+            @Html.Partial("_RosterEditor", Model)
             <div class="control-group">
                 <div class="controls">
                     <button class="btn btn-primary" type="submit">Spara</button>
