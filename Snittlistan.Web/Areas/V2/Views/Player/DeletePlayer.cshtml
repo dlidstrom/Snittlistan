@@ -1,0 +1,14 @@
+﻿@model PlayerViewModel
+
+@{
+    ViewBag.Title = "Ta bort";
+}
+
+<h2>Ta bort</h2>
+<p>Är du säker på att du vill ta bort denna spelare?</p>
+@using (Html.BeginForm("DeletePlayer", "Player", FormMethod.Post))
+{
+    <h3>@Model.Name</h3>
+    <button class="btn btn-warning" type="submit">Ta bort</button>
+    <a class="btn-link" href="@Url.Action("Index")">Avbryt</a>
+}

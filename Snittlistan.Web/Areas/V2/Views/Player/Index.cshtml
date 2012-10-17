@@ -1,0 +1,45 @@
+﻿@model PlayerDataViewModel
+<div class="row">
+    <div class="span6">
+        <h2>Säsongen @Model.SeasonStart&minus;@Model.SeasonEnd</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="span6">
+        @if (Request.IsAuthenticated)
+        {
+            <a href="@Url.Action("CreatePlayer")">
+                <i class="icon-plus"></i>
+                Lägg till spelare
+            </a>
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="span8">
+        <table class="table table-condensed">
+            <tr>
+                <th>Namn</th>
+                @if (Request.IsAuthenticated)
+                {
+                    <th>E-postadress</th>
+                    <th></th>
+                }
+            </tr>
+            @foreach (var player in Model.Players)
+            {
+                <tr>
+                    <td>@player.Name</td>
+                    @if (Request.IsAuthenticated)
+                    {
+                        <td>@player.Email</td>
+                        <td>
+                            @Html.ActionLink("Redigera", "EditPlayer", new { player.Id })
+                            | @Html.ActionLink("Ta bort", "DeletePlayer", new { player.Id })
+                        </td>
+                    }
+                </tr>
+            }
+        </table>
+    </div>
+</div>

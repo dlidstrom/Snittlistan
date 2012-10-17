@@ -1,0 +1,25 @@
+﻿@model CreatePlayerViewModel
+
+@{
+    ViewBag.Title = "Redigera spelare";
+}
+
+<div class="row">
+    <div class="span6">
+        <h3>@ViewBag.Title</h3>
+        @using (Html.BeginForm("EditPlayer", "Player", FormMethod.Post, new { @class = "well form-horizontal"}))
+        {
+            if (Html.ViewData.ModelState.IsValid == false)
+            {
+                @Html.ValidationSummary(false, "Det gick inte att spara. Försök gärna igen.")
+            }
+            @Html.Partial("_PlayerEditor", Model)
+            <div class="control-group">
+                <div class="controls">
+                    <button class="btn btn-primary" type="submit">Spara</button>
+                    <a class="btn-link" href="@Url.Action("Index")">Avbryt</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

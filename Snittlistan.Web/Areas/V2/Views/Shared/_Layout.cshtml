@@ -38,7 +38,7 @@
                         <ul class="nav">
                             @Content.MenuLink(Html, Url, "Omgångar", "icon-calendar", "Index", "App", Url.Action("Index", "App"))
                             @*@Content.MenuLink(Html, Url, "Resultat", "icon-list", "Results", "App")*@
-                            @*@Content.MenuLink(Html, Url, "Spelare", "icon-user", "Players", "App")*@
+                            @Content.MenuLink(Html, Url, "Spelare", "icon-user", "Index", "Player", Url.Action("Index", "Player"))
                             @Content.MenuLink(Html, Url, "2011-2012", "icon-calendar", "Index", "Home", Url.Action("Index", "Home", new { area = "V1" } ))
                         </ul>
                         <ul class="nav pull-right">
