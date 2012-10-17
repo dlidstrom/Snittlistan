@@ -31,7 +31,7 @@
                     @Html.DisplayFor(model => roster, "Roster")
                     @if (Request.IsAuthenticated)
                     {
-                        <a href="#">
+                        <a href="@Url.Action("EditRoster", new { id })">
                             <i class="icon-edit"></i>
                             Redigera
                         </a>

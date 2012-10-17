@@ -176,17 +176,17 @@
         {
             var roster = Session.Load<Roster>(id);
             if (roster == null) throw new HttpException(404, "Roster not found");
-            return this.View(roster.MapTo<EditRosterViewModel>());
+            return this.View(roster.MapTo<CreateRosterViewModel>());
         }
 
         [Authorize]
         [HttpPost]
-        public ActionResult EditRoster(EditRosterViewModel vm)
+        public ActionResult EditRoster(int id, CreateRosterViewModel vm)
         {
             if (!this.ModelState.IsValid)
                 return this.View(vm);
 
-            var roster = this.Session.Load<Roster>(vm.Id);
+            var roster = this.Session.Load<Roster>(id);
             if (roster == null) throw new HttpException(404, "Roster not found");
 
             roster.Location = vm.Location;
