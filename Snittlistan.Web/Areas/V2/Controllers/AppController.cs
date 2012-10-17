@@ -25,6 +25,7 @@
         public AppController(IDocumentSession session, IAuthenticationService authenticationService)
             : base(session)
         {
+            if (session == null) throw new ArgumentNullException("session");
             if (authenticationService == null) throw new ArgumentNullException("authenticationService");
             this.authenticationService = authenticationService;
         }
@@ -67,25 +68,6 @@
         public ActionResult Results()
         {
             return this.RedirectToAction("Index");
-        }
-
-        public ActionResult Players()
-        {
-            var players = new[]
-                {
-                    new PlayerViewModel
-                        {
-                            Index = 1,
-                            Name = "Daniel Lidström"
-                        },
-                    new PlayerViewModel
-                        {
-                            Index = 2,
-                            Name = "Daniel Solvander"
-                        }
-                };
-
-            return this.View(players);
         }
 
         public ActionResult LogOn2()

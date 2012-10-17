@@ -9,6 +9,6 @@
 @using (Html.BeginForm("DeleteRoster", "App", FormMethod.Post))
 {
     @Html.DisplayFor(model => model, "Roster")
-    <input type="submit" value="Ta bort" />
+    <button class="btn btn-warning" type="submit">Ta bort</button>
     <a class="btn-link" href="@Url.Action("Index")">Avbryt</a>
 }

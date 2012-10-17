@@ -1,0 +1,27 @@
+﻿@model CreatePlayerViewModel
+
+<div class="control-group">
+    <label class="control-label" for="name">Namn:</label>
+    <div class="controls">
+        <input type="text"
+               name="name"
+               placeholder="Fullständigt namn"
+               autofocus="autofocus"
+               autocorrect = "off"
+               autocomplete = "off"
+               value="@Model.Name"
+               required />
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="email">E-postadress:</label>
+    <div class="controls">
+        <input type="email"
+               name="email"
+               placeholder=""
+               autocorrect = "off"
+               autocomplete = "off"
+               value="@Model.Email"
+               required />
+    </div>
+</div>
