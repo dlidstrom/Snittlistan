@@ -9,7 +9,7 @@
         </div>
         <div class="modal-body">
             <p>Logga in genom att ange din e-postadress och ditt lösenord.</p>
-            @using (Html.BeginForm("LogOn2", "App", FormMethod.Post, new { @class = "well form-horizontal"}))
+            @using (Html.BeginForm("LogOn", "Authentication", FormMethod.Post, new { @class = "well form-horizontal"}))
             {
                 <div class="control-group">
                     <label class="control-label" for="email">E-postadress:</label>
@@ -26,7 +26,7 @@
                 <div class="control-group">
                     <div class="controls">
                         <label class="checkbox">
-                            @Html.EditorFor(model => model.RememberMe)
+                            @Html.EditorFor(model => model.RememberMe) Kom ihåg mig
                         </label>
                     </div>
                 </div>

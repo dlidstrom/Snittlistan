@@ -4,12 +4,13 @@ namespace Snittlistan.Web.Areas.V2.Models
 
     public class Player
     {
-        public Player(string name, string email)
+        public Player(string name, string email, bool isSupporter)
         {
             if (name == null) throw new ArgumentNullException("name");
             if (email == null) throw new ArgumentNullException("email");
             Name = name;
             Email = email;
+            IsSupporter = isSupporter;
         }
 
         public int Id { get; set; }
@@ -17,6 +18,8 @@ namespace Snittlistan.Web.Areas.V2.Models
         public string Name { get; private set; }
 
         public string Email { get; private set; }
+
+        public bool IsSupporter { get; private set; }
 
         public void SetName(string name)
         {
@@ -28,6 +31,11 @@ namespace Snittlistan.Web.Areas.V2.Models
         {
             if (email == null) throw new ArgumentNullException("email");
             Email = email;
+        }
+
+        public void SetIsSupporter(bool isSupporter)
+        {
+            IsSupporter = isSupporter;
         }
     }
 }

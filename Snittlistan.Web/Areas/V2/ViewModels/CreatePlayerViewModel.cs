@@ -15,5 +15,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         [Required]
         public string Email { get; set; }
+
+        public bool IsSupporter { get; set; }
     }
 }

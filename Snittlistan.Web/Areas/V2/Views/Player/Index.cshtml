@@ -1,7 +1,7 @@
 ﻿@model PlayerDataViewModel
 <div class="row">
     <div class="span6">
-        <h2>Säsongen @Model.SeasonStart&minus;@Model.SeasonEnd</h2>
+        <h2>Spelare och supporters</h2>
     </div>
 </div>
 <div class="row">
@@ -20,6 +20,7 @@
         <table class="table table-condensed">
             <tr>
                 <th>Namn</th>
+                <th>Status</th>
                 @if (Request.IsAuthenticated)
                 {
                     <th>E-postadress</th>
@@ -30,6 +31,16 @@
             {
                 <tr>
                     <td>@player.Name</td>
+                    <td>
+                        @if (player.IsSupporter)
+                        {
+                            <text>Supporter</text>
+                        }
+                        else
+                        {
+                            <text>Aktiv</text>
+                        }
+                    </td>
                     @if (Request.IsAuthenticated)
                     {
                         <td>@player.Email</td>
