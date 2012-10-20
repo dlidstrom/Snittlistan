@@ -8,7 +8,7 @@
     <div class="span6">
         @if (Request.IsAuthenticated)
         {
-            <a href="@Url.Action("CreateRoster")">
+            <a href="@Url.Action("Create")">
                 <i class="icon-plus"></i>
                 Lägg till match
             </a>
@@ -31,11 +31,11 @@
                     @Html.DisplayFor(model => roster, "Roster")
                     @if (Request.IsAuthenticated)
                     {
-                        <a href="@Url.Action("EditRoster", new { id })">
+                        <a href="@Url.Action("Edit", new { id })">
                             <i class="icon-edit"></i>
                             Redigera
                         </a>
-                        <a href="@Url.Action("DeleteRoster", new { id })">
+                        <a href="@Url.Action("Delete", new { id })">
                             <i class="icon-minus-sign"></i>
                             Ta bort
                         </a>

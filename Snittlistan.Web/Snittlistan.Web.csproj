@@ -236,7 +236,7 @@
     <Compile Include="Models\Roster.cs" />
     <Compile Include="Areas\V2\ViewModels\RosterViewModel.cs" />
     <Compile Include="Areas\V1\Controllers\AdminController.cs" />
-    <Compile Include="Areas\V2\Controllers\AppController.cs" />
+    <Compile Include="Areas\V2\Controllers\RosterController.cs" />
     <Compile Include="Areas\V1\Controllers\ElmahController.cs" />
     <Compile Include="Areas\V1\Controllers\ErrorController.cs" />
     <Compile Include="Areas\V1\Controllers\HackerController.cs" />
@@ -413,13 +413,13 @@
     <Content Include="Areas\V1\Views\App\Index.cshtml" />
     <Content Include="Areas\V2\Views\Shared\Error.cshtml" />
     <Content Include="Areas\V2\Views\Shared\NotFound.cshtml" />
-    <Content Include="Areas\V2\Views\App\EditRoster.cshtml" />
-    <Content Include="Areas\V2\Views\App\_RosterEditor.cshtml" />
+    <Content Include="Areas\V2\Views\Roster\Edit.cshtml" />
+    <Content Include="Areas\V2\Views\Roster\_RosterEditor.cshtml" />
     <Content Include="Areas\V2\Views\Player\Index.cshtml" />
-    <Content Include="Areas\V2\Views\Player\CreatePlayer.cshtml" />
+    <Content Include="Areas\V2\Views\Player\Create.cshtml" />
     <Content Include="Areas\V2\Views\Player\_PlayerEditor.cshtml" />
-    <Content Include="Areas\V2\Views\Player\EditPlayer.cshtml" />
-    <Content Include="Areas\V2\Views\Player\DeletePlayer.cshtml" />
+    <Content Include="Areas\V2\Views\Player\Edit.cshtml" />
+    <Content Include="Areas\V2\Views\Player\Delete.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
@@ -457,12 +457,11 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Areas\V2\Views\App\Index.cshtml" />
-    <Content Include="Areas\V2\Views\App\Players.cshtml" />
+    <Content Include="Areas\V2\Views\Roster\Index.cshtml" />
     <Content Include="Areas\V2\Views\Authentication\LogOn.cshtml" />
-    <Content Include="Areas\V2\Views\App\CreateRoster.cshtml" />
-    <Content Include="Areas\V2\Views\App\DeleteRoster.cshtml" />
-    <Content Include="Areas\V2\Views\App\DisplayTemplates\Roster.cshtml" />
+    <Content Include="Areas\V2\Views\Roster\Create.cshtml" />
+    <Content Include="Areas\V2\Views\Roster\Delete.cshtml" />
+    <Content Include="Areas\V2\Views\Roster\DisplayTemplates\Roster.cshtml" />
     <None Include="Properties\PublishProfiles\Snittlistan-Netcetera.pubxml" />
   </ItemGroup>
   <ItemGroup>

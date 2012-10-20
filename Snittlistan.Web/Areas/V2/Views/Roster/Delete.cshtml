@@ -6,7 +6,7 @@
 
 <h2>Ta bort</h2>
 <p>Är du säker på att du vill ta bort denna match?</p>
-@using (Html.BeginForm("DeleteRoster", "App", FormMethod.Post))
+@using (Html.BeginForm("Delete", "Roster", FormMethod.Post))
 {
     @Html.DisplayFor(model => model, "Roster")
     <button class="btn btn-warning btn-large" type="submit">Ta bort</button>

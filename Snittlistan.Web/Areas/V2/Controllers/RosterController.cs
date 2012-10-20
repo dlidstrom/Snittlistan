@@ -17,9 +17,9 @@
     using Snittlistan.Web.Models;
     using Snittlistan.Web.Services;
 
-    public class AppController : AbstractController
+    public class RosterController : AbstractController
     {
-        public AppController(IDocumentSession session, IAuthenticationService authenticationService)
+        public RosterController(IDocumentSession session, IAuthenticationService authenticationService)
             : base(session)
         {
             if (session == null) throw new ArgumentNullException("session");
@@ -67,7 +67,7 @@
         }
 
         [Authorize]
-        public ActionResult CreateRoster()
+        public ActionResult Create()
         {
             var vm = new CreateRosterViewModel
                 {
@@ -78,14 +78,11 @@
 
         [HttpPost]
         [Authorize]
-        public ActionResult CreateRoster(CreateRosterViewModel vm)
+        public ActionResult Create(CreateRosterViewModel vm)
         {
             if (!this.ModelState.IsValid) return this.View(vm);
 
-            var dt = new DateTime(
-                vm.Date.Year,
-                vm.Date.Month,
-                vm.Date.Day,
+            var time = new TimeSpan(
                 int.Parse(vm.Time.Substring(0, 2)),
                 int.Parse(vm.Time.Substring(3)),
                 0);
@@ -95,13 +92,13 @@
                 vm.Team,
                 vm.Location,
                 vm.Opponent,
-                dt);
+                vm.Date.Add(time));
             this.Session.Store(roster);
             return this.RedirectToAction("Index");
         }
 
         [Authorize]
-        public ActionResult EditRoster(int id)
+        public ActionResult Edit(int id)
         {
             var roster = Session.Load<Roster>(id);
             if (roster == null) throw new HttpException(404, "Roster not found");
@@ -110,7 +107,7 @@
 
         [Authorize]
         [HttpPost]
-        public ActionResult EditRoster(int id, CreateRosterViewModel vm)
+        public ActionResult Edit(int id, CreateRosterViewModel vm)
         {
             if (!this.ModelState.IsValid)
                 return this.View(vm);
@@ -133,7 +130,7 @@
         }
 
         [Authorize]
-        public ActionResult DeleteRoster(int id)
+        public ActionResult Delete(int id)
         {
             var roster = this.Session.Load<Roster>(id);
             if (roster == null)
@@ -143,8 +140,8 @@
 
         [HttpPost]
         [Authorize]
-        [ActionName("DeleteRoster")]
-        public ActionResult DeleteRosterConfirmed(int id)
+        [ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
         {
             var roster = this.Session.Load<Roster>(id);
             if (roster == null)

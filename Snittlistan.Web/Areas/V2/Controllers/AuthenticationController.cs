@@ -62,13 +62,13 @@
                 return this.Redirect(returnUrl);
             }
 
-            return this.RedirectToAction("Index", "App");
+            return this.RedirectToAction("Index", "Roster");
         }
 
-        public ActionResult LogOff2()
+        public ActionResult LogOff()
         {
             this.authenticationService.SignOut();
-            return this.RedirectToAction("Index", "App");
+            return this.RedirectToAction("Index", "Roster");
         }
     }
 }
