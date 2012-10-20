@@ -8,7 +8,7 @@
     <div class="span6">
         @if (Request.IsAuthenticated)
         {
-            <a href="@Url.Action("CreatePlayer")">
+            <a href="@Url.Action("Create")">
                 <i class="icon-plus"></i>
                 Lägg till spelare
             </a>
@@ -45,8 +45,8 @@
                     {
                         <td>@player.Email</td>
                         <td>
-                            @Html.ActionLink("Redigera", "EditPlayer", new { player.Id })
-                            | @Html.ActionLink("Ta bort", "DeletePlayer", new { player.Id })
+                            @Html.ActionLink("Redigera", "Edit", new { player.Id })
+                            | @Html.ActionLink("Ta bort", "Delete", new { player.Id })
                         </td>
                     }
                 </tr>
