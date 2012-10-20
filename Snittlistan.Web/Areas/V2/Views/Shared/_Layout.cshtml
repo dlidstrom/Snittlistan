@@ -33,7 +33,10 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <span class="brand">Snittlistan V2</span>
+                    <a href="@Url.RouteUrl("V2_default", new { controller = "Roster", action = "Index" })" class="brand">
+                        <span>S</span>
+                        Snittlistan
+                    </a>
                     <div class="nav-collapse">
                         <ul class="nav">
                             @Content.MenuLink(Html, Url, "Omgångar", "icon-calendar", "Index", "App", Url.Action("Index", "Roster"))

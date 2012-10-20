@@ -27,7 +27,7 @@
         [Fact]
         public void DefaultRoute()
         {
-            RouteTable.Routes.Maps("GET", "~/", new { controller = "App", action = "Index" });
+            RouteTable.Routes.Maps("GET", "~/", new { controller = "Roster", action = "Index" });
         }
 
         [Fact]
@@ -56,7 +56,7 @@
         [Fact]
         public void V2Route()
         {
-            RouteTable.Routes.Maps("GET", "~/", new { controller = "App", action = "Index" });
+            RouteTable.Routes.Maps("GET", "~/", new { controller = "Roster", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/results", new { controller = "App", action = "Results" });
             RouteTable.Routes.Maps("GET", "~/players", new { controller = "App", action = "Players" });
         }
