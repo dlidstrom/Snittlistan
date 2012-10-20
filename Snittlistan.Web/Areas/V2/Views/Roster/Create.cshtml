@@ -7,7 +7,7 @@
 <div class="row">
     <div class="span6">
         <h3>@ViewBag.Title</h3>
-        @using (Html.BeginForm("CreateRoster", "App", FormMethod.Post, new { @class = "well form-horizontal"}))
+        @using (Html.BeginForm("Create", "Roster", FormMethod.Post, new { @class = "well form-horizontal"}))
         {
             if (Html.ViewData.ModelState.IsValid == false)
             {

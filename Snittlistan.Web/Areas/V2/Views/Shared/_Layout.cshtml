@@ -36,7 +36,7 @@
                     <span class="brand">Snittlistan V2</span>
                     <div class="nav-collapse">
                         <ul class="nav">
-                            @Content.MenuLink(Html, Url, "Omgångar", "icon-calendar", "Index", "App", Url.Action("Index", "App"))
+                            @Content.MenuLink(Html, Url, "Omgångar", "icon-calendar", "Index", "App", Url.Action("Index", "Roster"))
                             @*@Content.MenuLink(Html, Url, "Resultat", "icon-list", "Results", "App")*@
                             @Content.MenuLink(Html, Url, "Spelare", "icon-user", "Index", "Player", Url.Action("Index", "Player"))
                             @Content.MenuLink(Html, Url, "2011-2012", "icon-calendar", "Index", "Home", Url.Action("Index", "Home", new { area = "V1" } ))
@@ -50,7 +50,7 @@
                                     </p>
                                 </li>
                                 <li>
-                                    <a class="btn btn-link btn-primary" href="@Url.Action("LogOff2", "App")">
+                                    <a class="btn btn-link btn-primary" href="@Url.Action("LogOff", "Authentication")">
                                         <i class="icon-off"></i>
                                         Logga ut
                                     </a>
@@ -59,7 +59,7 @@
                             else
                             {
                                 <li>
-                                    <a class="btn btn-link pull-right" href="@Url.Action("LogOn2", "App")">
+                                    <a class="btn btn-link pull-right" href="@Url.Action("LogOn", "Authentication")">
                                         <i class="icon-ok-circle"></i>
                                         Logga in
                                     </a>

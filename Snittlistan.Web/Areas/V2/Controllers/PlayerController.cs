@@ -40,14 +40,14 @@
         }
 
         [Authorize]
-        public ActionResult CreatePlayer()
+        public ActionResult Create()
         {
             return this.View(new CreatePlayerViewModel());
         }
 
         [HttpPost]
         [Authorize]
-        public ActionResult CreatePlayer(CreatePlayerViewModel vm)
+        public ActionResult Create(CreatePlayerViewModel vm)
         {
             if (!this.ModelState.IsValid) return this.View(vm);
 
@@ -57,7 +57,7 @@
         }
 
         [Authorize]
-        public ActionResult EditPlayer(int id)
+        public ActionResult Edit(int id)
         {
             var player = Session.Load<Player>(id);
             if (player == null) throw new HttpException(404, "Player not found");
@@ -66,7 +66,7 @@
 
         [Authorize]
         [HttpPost]
-        public ActionResult EditPlayer(int id, CreatePlayerViewModel vm)
+        public ActionResult Edit(int id, CreatePlayerViewModel vm)
         {
             if (!this.ModelState.IsValid)
                 return this.View(vm);
@@ -82,7 +82,7 @@
         }
 
         [Authorize]
-        public ActionResult DeletePlayer(int id)
+        public ActionResult Delete(int id)
         {
             var player = this.Session.Load<Player>(id);
             if (player == null)
@@ -92,8 +92,8 @@
 
         [HttpPost]
         [Authorize]
-        [ActionName("DeletePlayer")]
-        public ActionResult DeletePlayerConfirmed(int id)
+        [ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
         {
             var player = this.Session.Load<Player>(id);
             if (player == null)
