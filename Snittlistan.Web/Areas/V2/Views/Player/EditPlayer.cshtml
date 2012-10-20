@@ -16,8 +16,8 @@
             @Html.Partial("_PlayerEditor", Model)
             <div class="control-group">
                 <div class="controls">
-                    <button class="btn btn-primary" type="submit">Spara</button>
-                    <a class="btn-link" href="@Url.Action("Index")">Avbryt</a>
+                    <button class="btn btn-primary btn-large" type="submit">Spara</button>
+                    @Html.ActionLink("Avbryt", "Index", null, new { @class = "btn btn-large" })
                 </div>
             </div>
         }

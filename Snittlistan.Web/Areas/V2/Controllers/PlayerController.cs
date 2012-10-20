@@ -26,7 +26,10 @@
         {
             if (season.HasValue == false)
                 season = this.Session.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
-            var players = Session.Query<Player>().ToList();
+            var players = Session.Query<Player>()
+                .OrderBy(p => p.IsSupporter)
+                .ThenBy(p => p.Name)
+                .ToList();
             var vm = new PlayerDataViewModel
             {
                 Players = players.MapTo<PlayerViewModel>(),
@@ -48,7 +51,7 @@
         {
             if (!this.ModelState.IsValid) return this.View(vm);
 
-            var player = new Player(vm.Name, vm.Email);
+            var player = new Player(vm.Name, vm.Email, vm.IsSupporter);
             this.Session.Store(player);
             return this.RedirectToAction("Index");
         }
@@ -73,6 +76,7 @@
 
             player.SetName(vm.Name);
             player.SetEmail(vm.Email);
+            player.SetIsSupporter(vm.IsSupporter);
 
             return RedirectToAction("Index");
         }
