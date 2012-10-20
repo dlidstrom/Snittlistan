@@ -6,7 +6,6 @@
     using Snittlistan.Web.Areas.V1.ViewModels.Match;
     using Snittlistan.Web.Infrastructure.AutoMapper;
     using Snittlistan.Web.Infrastructure.Installers;
-    using Snittlistan.Web.Models;
 
     using Xunit;
 
