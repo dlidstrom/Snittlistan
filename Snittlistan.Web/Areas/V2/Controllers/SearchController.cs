@@ -20,10 +20,11 @@
         {
             var options = this.Session.Query<RosterSearchTerms.Result, RosterSearchTerms>()
                 .Where(t => t.Team.StartsWith(q))
-                .OrderBy(t => t.Team)
+                .Distinct()
                 .AsProjection<RosterSearchTerms.Result>()
-                .ToList()
-                .Select(t => t.Team);
+                .OrderBy(t => t.Team)
+                .Select(t => t.Team)
+                .ToList();
 
             return this.Json(new { options }, JsonRequestBehavior.AllowGet);
         }
@@ -32,10 +33,11 @@
         {
             var options = this.Session.Query<RosterSearchTerms.Result, RosterSearchTerms>()
                 .Where(t => t.Opponent.StartsWith(q))
-                .OrderBy(t => t.Opponent)
+                .Distinct()
                 .AsProjection<RosterSearchTerms.Result>()
-                .ToList()
-                .Select(t => t.Opponent);
+                .OrderBy(t => t.Opponent)
+                .Select(t => t.Opponent)
+                .ToList();
 
             return this.Json(new { options }, JsonRequestBehavior.AllowGet);
         }
@@ -44,10 +46,11 @@
         {
             var options = this.Session.Query<RosterSearchTerms.Result, RosterSearchTerms>()
                 .Where(t => t.Location.StartsWith(q))
-                .OrderBy(t => t.Location)
+                .Distinct()
                 .AsProjection<RosterSearchTerms.Result>()
-                .ToList()
-                .Select(t => t.Location);
+                .OrderBy(t => t.Location)
+                .Select(t => t.Location)
+                .ToList();
 
             return this.Json(new { options }, JsonRequestBehavior.AllowGet);
         }
