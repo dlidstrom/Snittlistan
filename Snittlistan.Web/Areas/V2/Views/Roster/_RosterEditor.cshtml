@@ -39,7 +39,9 @@
                autocorrect = "off"
                autocomplete = "off"
                value="@Model.Team"
-               required />
+               required
+               data-enabletypeahead="yes"
+               data-url="/search/teams" />
     </div>
 </div>
 <div class="control-group">
@@ -51,7 +53,9 @@
                autocorrect = "off"
                autocomplete = "off"
                value="@Model.Location"
-               required />
+               required
+               data-enabletypeahead="yes"
+               data-url="/search/locations" />
     </div>
 </div>
 <div class="control-group">
@@ -63,7 +67,9 @@
                autocorrect = "off"
                autocomplete = "off"
                value="@Model.Opponent"
-               required />
+               required
+               data-enabletypeahead="yes"
+               data-url="/search/opponents" />
     </div>
 </div>
 <div class="control-group">
