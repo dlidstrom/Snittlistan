@@ -8,8 +8,6 @@
     using Snittlistan.Web.Areas.V1.Controllers;
     using Snittlistan.Web.Areas.V1.Models;
     using Snittlistan.Web.Areas.V1.ViewModels.Match;
-    using Snittlistan.Web.Controllers;
-    using Snittlistan.Web.Models;
 
     using Xunit;
 

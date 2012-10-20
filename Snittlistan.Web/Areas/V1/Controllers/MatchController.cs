@@ -52,7 +52,7 @@
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
-            string matchId = this.Session.Advanced.GetDocumentId(match);
+            var matchId = this.Session.Advanced.GetDocumentId(match);
             var results = this.Session.Query<Player_ByMatch.Result, Player_ByMatch>()
                 .Where(x => x.MatchId == matchId)
                 .OrderByDescending(x => x.Pins);
