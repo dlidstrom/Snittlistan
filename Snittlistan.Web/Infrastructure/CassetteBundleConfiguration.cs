@@ -25,6 +25,7 @@ namespace Snittlistan.Web.Infrastructure
             bundles.AddPerIndividualFile<ScriptBundle>(
                 "Content/js",
                 new FileSearch { SearchOption = SearchOption.TopDirectoryOnly });
+            bundles.AddPerIndividualFile<ScriptBundle>("Content/js/helpers");
             bundles.AddPerSubDirectory<ScriptBundle>("Content/js/app");
             bundles.AddPerIndividualFile<ScriptBundle>("Content/external/hogan");
             bundles.Add<HtmlTemplateBundle>("Content/templates");
