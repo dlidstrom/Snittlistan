@@ -10,7 +10,7 @@
     <div class="row">
         @foreach (var roster in rosters)
         {
-            <div class="span4 well well-small">
+            <div class="span4">
                 @Html.DisplayFor(model => roster, "Roster", new { hideControls = true })
                 @Html.DisplayFor(model => roster, "Players")
             </div>
