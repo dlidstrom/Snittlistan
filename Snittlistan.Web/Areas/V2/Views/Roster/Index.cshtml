@@ -4,17 +4,17 @@
         <h2>Säsongen @Model.SeasonStart&minus;@Model.SeasonEnd</h2>
     </div>
 </div>
-<div class="row">
-    <div class="span6 admin">
-        @if (Request.IsAuthenticated)
-        {
+@if (Request.IsAuthenticated)
+{
+    <div class="row">
+        <div class="span6 admin">
             <a href="@Url.Action("Create")">
                 <i class="sprite-glyphicons_030_pencil"></i>
                 Lägg till match
             </a>
-        }
+        </div>
     </div>
-</div>
+}
 @foreach (var turn in Model.Turns)
 {
     <div class="row">
@@ -41,7 +41,10 @@
         </div>
         <div class="row">
             <div class="span4">
-                @Html.ActionLink("Visa uttagningar", "View", new { season = Model.SeasonStart, turn = turn.Turn })
+                <a href="@Url.Action("View", new { season = Model.SeasonStart, turn = turn.Turn })">
+                    <i class="sprite-glyphicons_029_notes_2"></i>
+                    Visa uttagningar
+                </a>
             </div>
         </div>
         start += 3;
