@@ -62,6 +62,14 @@
         }
 
         [Fact]
+        public void SearchRoute()
+        {
+            RouteTable.Routes.Maps("GET", "~/search/teams", new { controller = "SearchTerms", action = "Teams" });
+            RouteTable.Routes.Maps("GET", "~/search/opponents", new { controller = "SearchTerms", action = "Opponents" });
+            RouteTable.Routes.Maps("GET", "~/search/locations", new { controller = "SearchTerms", action = "Locations" });
+        }
+
+        [Fact]
         public void LowerCaseRoutes()
         {
             RouteTable.Routes.Maps("GET", "~/v1/account/register", new { controller = "Account", action = "Register" });

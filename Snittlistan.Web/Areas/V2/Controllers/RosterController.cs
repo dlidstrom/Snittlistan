@@ -10,11 +10,12 @@
     using Raven.Client;
     using Raven.Client.Linq;
 
+    using Snittlistan.Web.Areas.V2.Models;
     using Snittlistan.Web.Areas.V2.ViewModels;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Helpers;
     using Snittlistan.Web.Infrastructure.AutoMapper;
-    using Snittlistan.Web.Models;
+    using Snittlistan.Web.Infrastructure.Indexes;
     using Snittlistan.Web.Services;
 
     public class RosterController : AbstractController
@@ -148,6 +149,76 @@
                 throw new HttpException(404, "Roster not found");
             this.Session.Delete(roster);
             return this.RedirectToAction("Index");
+        }
+
+        public ActionResult View(int season, int turn)
+        {
+            var rosters = this.Session.Query<Roster, RosterSearchTerms>()
+                .Include<Roster>(roster => roster.Players)
+                .Where(roster => roster.Turn == turn)
+                .Where(roster => roster.Season == season);
+
+            var rosterViewModels = new List<RosterViewModel>();
+            foreach (var roster in rosters)
+            {
+                var vm = roster.MapTo<RosterViewModel>();
+                foreach (var playerId in roster.Players)
+                {
+                    var player = Session.Load<Player>(playerId);
+                    vm.Players.Add(player.Name);
+                }
+
+                rosterViewModels.Add(vm);
+            }
+
+            var viewTurnViewModel = new ViewTurnViewModel
+            {
+                Id = turn,
+                Season = season,
+                Rosters = rosterViewModels.ToArray()
+            };
+            return this.View(viewTurnViewModel);
+        }
+
+        [Authorize]
+        public ActionResult EditPlayers(int id)
+        {
+            var roster = this.Session.Load<Roster>(id);
+            if (roster == null)
+                throw new HttpException(404, "Roster not found");
+
+            var availablePlayers = this.Session.Query<Player, PlayerSearch>()
+                .Where(p => p.IsSupporter == false);
+
+            var vm = new EditRosterPlayersViewModel
+            {
+                Id = id,
+                Roster = roster.MapTo<RosterViewModel>(),
+                AvailablePlayers = availablePlayers.MapTo<PlayerViewModel>().ToArray()
+            };
+            return this.View(vm);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult EditPlayers(int id, RosterPlayersViewModel vm)
+        {
+            var roster = Session.Load<Roster>(id);
+            if (roster == null) throw new HttpException(404, "Roster not found");
+            roster.Players = new List<string>
+                {
+                    vm.Table1Player1,
+                    vm.Table1Player2,
+                    vm.Table2Player1,
+                    vm.Table2Player2,
+                    vm.Table3Player1,
+                    vm.Table3Player2,
+                    vm.Table4Player1,
+                    vm.Table4Player2
+                };
+            if (vm.Reserve != null && this.Session.Load<Player>(vm.Reserve) != null)
+                roster.Players.Add(vm.Reserve);
+            return RedirectToAction("View", new { season = roster.Season, turn = roster.Turn });
         }
     }
 }

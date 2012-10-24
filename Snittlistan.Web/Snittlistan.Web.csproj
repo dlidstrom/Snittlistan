@@ -221,8 +221,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Areas\V2\Controllers\SearchController.cs" />
+    <Compile Include="Areas\V2\ViewModels\RosterPlayersViewModel.cs" />
+    <Compile Include="Areas\V2\ViewModels\EditRosterPlayersViewModel.cs" />
+    <Compile Include="Areas\V2\Controllers\SearchTermsController.cs" />
     <Compile Include="Areas\V2\Controllers\AuthenticationController.cs" />
+    <Compile Include="Areas\V2\ViewModels\ViewTurnViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\CreatePlayerViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\PlayerDataViewModel.cs" />
     <Compile Include="Areas\V2\Models\Player.cs" />
@@ -232,13 +235,15 @@
     <Compile Include="Areas\V2\V2AreaRegistration.cs" />
     <Compile Include="Areas\V2\ViewModels\CreateRosterViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\PlayerViewModel.cs" />
+    <Content Include="Content\css\glyphicons.css" />
     <Content Include="Content\js\helpers\typeahead.js" />
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="Areas\V1\Controllers\AccountController.cs" />
     <Compile Include="Areas\V2\ViewModels\LogOnViewModel.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\PlayerProfile.cs" />
+    <Compile Include="Infrastructure\Indexes\PlayerSearch.cs" />
     <Compile Include="Infrastructure\Indexes\RosterSearchTerms.cs" />
-    <Compile Include="Models\Roster.cs" />
+    <Compile Include="Areas\V2\Models\Roster.cs" />
     <Compile Include="Areas\V2\ViewModels\RosterViewModel.cs" />
     <Compile Include="Areas\V1\Controllers\AdminController.cs" />
     <Compile Include="Areas\V2\Controllers\RosterController.cs" />
@@ -324,7 +329,6 @@
     <Compile Include="Areas\V1\Models\HomeTeamFactory.cs" />
     <Compile Include="Areas\V1\Models\Match4x4.cs" />
     <Compile Include="Areas\V1\Models\Match8x4.cs" />
-    <Compile Include="Models\Player.cs" />
     <Compile Include="Areas\V1\Models\Serie4x4.cs" />
     <Compile Include="Areas\V1\Models\Serie8x4.cs" />
     <Compile Include="Areas\V1\Models\Table8x4.cs" />
@@ -425,6 +429,9 @@
     <Content Include="Areas\V2\Views\Player\_PlayerEditor.cshtml" />
     <Content Include="Areas\V2\Views\Player\Edit.cshtml" />
     <Content Include="Areas\V2\Views\Player\Delete.cshtml" />
+    <Content Include="Areas\V2\Views\Roster\View.cshtml" />
+    <Content Include="Areas\V2\Views\Roster\DisplayTemplates\Players.cshtml" />
+    <Content Include="Areas\V2\Views\Roster\EditPlayers.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />

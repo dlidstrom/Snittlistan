@@ -13,7 +13,7 @@ namespace Snittlistan.Web.Areas.V2.Models
             IsSupporter = isSupporter;
         }
 
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string Name { get; private set; }
 

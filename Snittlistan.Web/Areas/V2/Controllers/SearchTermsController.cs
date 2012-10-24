@@ -9,9 +9,9 @@
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Infrastructure.Indexes;
 
-    public class SearchController : AbstractController
+    public class SearchTermsController : AbstractController
     {
-        public SearchController(IDocumentSession session)
+        public SearchTermsController(IDocumentSession session)
             : base(session)
         {
         }

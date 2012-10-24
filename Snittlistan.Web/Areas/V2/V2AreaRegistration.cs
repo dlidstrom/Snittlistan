@@ -59,6 +59,11 @@
                 url: "register",
                 defaults: new { controller = "Redirect", action = "Redirect" });
 
+            context.MapRoute(
+                name: "SearchTerms-Route",
+                url: "Search/{action}",
+                defaults: new { controller = "SearchTerms" });
+
             // default route
             context.MapRoute(
                 "V2_default",

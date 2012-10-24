@@ -8,7 +8,11 @@
 <p>Är du säker på att du vill ta bort denna match?</p>
 @using (Html.BeginForm("Delete", "Roster", FormMethod.Post))
 {
-    @Html.DisplayFor(model => model, "Roster")
-    <button class="btn btn-warning btn-large" type="submit">Ta bort</button>
-    <a class="btn-link btn-large" href="@Url.Action("Index")">Avbryt</a>
+    <div class="row">
+        <div class="span4 well well-small">
+            @Html.DisplayFor(model => model, "Roster", new { hideControls = true })
+        </div>
+    </div>
+    <button class="btn btn-danger btn-large" type="submit">Ta bort</button>
+    <a class="btn btn-large" href="@Url.Action("Index")">Avbryt</a>
 }

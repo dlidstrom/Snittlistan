@@ -1,9 +1,15 @@
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using System;
+    using System.Collections.Generic;
 
     public class RosterViewModel
     {
+        public RosterViewModel()
+        {
+            Players = new List<string>();
+        }
+
         public int Id { get; set; }
 
         public int Season { get; set; }
@@ -28,5 +34,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                 return char.ToLower(this.Team[this.Team.Length - 1]);
             }
         }
+
+        public List<string> Players { get; set; }
     }
 }
