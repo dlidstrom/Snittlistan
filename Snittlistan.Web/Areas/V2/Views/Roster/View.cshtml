@@ -1,0 +1,12 @@
+﻿@model ViewTurnViewModel
+
+<h3>Omgång @Model.Id säsongen @Model.Season&minus;@(Model.Season + 1)</h3>
+@foreach (var roster in Model.Rosters)
+{
+    <div class="row">
+        <div class="span4 well well-small">
+            @Html.DisplayFor(model => roster, "Roster", new { hideControls = true })
+            @Html.DisplayFor(model => roster, "Players")
+        </div>
+    </div>
+}

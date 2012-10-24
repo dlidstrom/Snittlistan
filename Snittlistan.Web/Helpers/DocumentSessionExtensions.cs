@@ -6,6 +6,7 @@
     using Raven.Client;
     using Raven.Client.Linq;
 
+    using Snittlistan.Web.Areas.V2.Models;
     using Snittlistan.Web.Infrastructure.Indexes;
     using Snittlistan.Web.Models;
 
@@ -39,5 +40,6 @@
                 .DefaultIfEmpty(def)
                 .First();
         }
+
     }
 }

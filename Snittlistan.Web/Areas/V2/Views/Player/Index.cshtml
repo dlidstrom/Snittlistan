@@ -9,7 +9,7 @@
         @if (Request.IsAuthenticated)
         {
             <a href="@Url.Action("Create")">
-                <i class="icon-plus"></i>
+                <i class="sprite-glyphicons_006_user_add"></i>
                 Lägg till spelare
             </a>
         }
@@ -24,6 +24,7 @@
                 @if (Request.IsAuthenticated)
                 {
                     <th>E-postadress</th>
+                    <th></th>
                     <th></th>
                 }
             </tr>
@@ -45,8 +46,14 @@
                     {
                         <td>@player.Email</td>
                         <td>
-                            @Html.ActionLink("Redigera", "Edit", new { player.Id })
-                            | @Html.ActionLink("Ta bort", "Delete", new { player.Id })
+                            <a href="@Url.Action("Edit", new { player.Id })">
+                                <i class="sprite-glyphicons_151_edit"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Delete", new { player.Id })">
+                                  <i class="sprite-glyphicons_016_bin"></i>
+                              </a>
                         </td>
                     }
                 </tr>

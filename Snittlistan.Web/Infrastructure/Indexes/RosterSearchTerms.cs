@@ -2,10 +2,9 @@
 {
     using System.Linq;
 
-    using Raven.Abstractions.Indexing;
     using Raven.Client.Indexes;
 
-    using Snittlistan.Web.Models;
+    using Snittlistan.Web.Areas.V2.Models;
 
     public class RosterSearchTerms : AbstractIndexCreationTask<Roster, RosterSearchTerms.Result>
     {
@@ -17,8 +16,9 @@
                                       roster.Team,
                                       roster.Opponent,
                                       roster.Location,
+                                      roster.Turn,
+                                      roster.Season
                                   };
-            this.Store(x => x.Team, FieldStorage.Yes);
         }
 
         public class Result
@@ -28,6 +28,10 @@
             public string Opponent { get; set; }
 
             public string Location { get; set; }
+
+            public int Turn { get; set; }
+
+            public int Season { get; set; }
         }
     }
 }

@@ -5,11 +5,11 @@
     </div>
 </div>
 <div class="row">
-    <div class="span6">
+    <div class="span6 admin">
         @if (Request.IsAuthenticated)
         {
             <a href="@Url.Action("Create")">
-                <i class="icon-plus"></i>
+                <i class="sprite-glyphicons_030_pencil"></i>
                 Lägg till match
             </a>
         }
@@ -17,31 +17,32 @@
 </div>
 @foreach (var turn in Model.Turns)
 {
-    <h2>Omgång @turn.Turn</h2>
-    <em>(@turn.StartDate.ToString("d MMM")&minus;@turn.EndDate.ToString("d MMM"))</em>
-    int start = 0;
+    <div class="row">
+        <div class="span4">
+            <h3>Omgång @turn.Turn</h3>
+        </div>
+    </div>
+    <em>
+        (<time datetime="@turn.StartDate.ToString("s")">@turn.StartDate.ToString("d MMM")</time>
+        &minus;
+        <time datetime="@turn.EndDate.ToString("s")">@turn.EndDate.ToString("d MMM")</time>)
+    </em>
+    var start = 0;
     var rosters = turn.Rosters.Skip(start).Take(3).ToList();
     while (rosters.Count > 0)
     {
         <div class="row">
             @foreach (var roster in rosters)
             {
-                var id = roster.Id;
-                <div class="span4">
+                <div class="span4 well well-small">
                     @Html.DisplayFor(model => roster, "Roster")
-                    @if (Request.IsAuthenticated)
-                    {
-                        <a href="@Url.Action("Edit", new { id })">
-                            <i class="icon-edit"></i>
-                            Redigera
-                        </a>
-                        <a href="@Url.Action("Delete", new { id })">
-                            <i class="icon-minus-sign"></i>
-                            Ta bort
-                        </a>
-                    }
                 </div>
             }
+        </div>
+        <div class="row">
+            <div class="span4">
+                @Html.ActionLink("Visa uttagningar", "View", new { season = Model.SeasonStart, turn = turn.Turn })
+            </div>
         </div>
         start += 3;
         rosters = turn.Rosters.Skip(start).Take(3).ToList();
