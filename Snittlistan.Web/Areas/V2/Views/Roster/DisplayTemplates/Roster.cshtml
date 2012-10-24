@@ -3,31 +3,27 @@
     var hideControls = Convert.ToBoolean(ViewData["hideControls"]);
 }
 
-@if (Request.IsAuthenticated && hideControls == false)
-{
-    <a href="@Url.Action("Edit", new { Model.Id })" class="pull-right">
-        <i class="sprite-glyphicons_151_edit"></i>
-    </a>
-}
-<dl class="dl-horizontal">
-    <dt>lag</dt>
-    <dd><span class="label @string.Format("{0}{1}", "label-team-", Model.TeamLevel)">@Model.Team</span></dd>
-    <dt>plats</dt>
-    <dd>@Model.Location</dd>
-    <dt>motstånd</dt>
-    <dd>@Model.Opponent</dd>
-    <dt>när</dt>
-    <dd>
-        <em>
-            <time datetime="@Model.Date.ToString("s")">
-                @Model.Date.ToString("dddd, 'den' d MMMM, HH:mm")
-            </time>
-        </em>
-    </dd>
-</dl>
-@if (Request.IsAuthenticated && hideControls == false)
-{
-    <a href="@Url.Action("Delete", new { Model.Id })" class="pull-right">
-        <i class="sprite-glyphicons_016_bin"></i>
-    </a>
-}
+<div class="well">
+    @if (Request.IsAuthenticated && hideControls == false)
+    {
+        <a href="@Url.Action("Edit", new { Model.Id })" class="pull-right">
+            <i class="sprite-glyphicons_151_edit"></i>
+        </a>
+    }
+    <dl class="dl-horizontal">
+        <dt>lag</dt>
+        <dd><span class="label @string.Format("{0}{1}", "label-team-", Model.TeamLevel)">@Model.Team</span></dd>
+        <dt>plats</dt>
+        <dd>@Model.Location</dd>
+        <dt>motstånd</dt>
+        <dd>@Model.Opponent</dd>
+        <dt>när</dt>
+        <dd>
+            <em>
+                <time datetime="@Model.Date.ToString("s")">
+                    @Model.Date.ToString("dddd, 'den' d MMMM, HH:mm")
+                </time>
+            </em>
+        </dd>
+    </dl>
+</div>

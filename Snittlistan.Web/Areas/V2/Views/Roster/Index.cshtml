@@ -34,20 +34,20 @@
         <div class="row">
             @foreach (var roster in rosters)
             {
-                <div class="span4 well well-small">
+                <div class="span4">
                     @Html.DisplayFor(model => roster, "Roster")
                 </div>
             }
         </div>
-        <div class="row">
-            <div class="span4">
-                <a href="@Url.Action("View", new { season = Model.SeasonStart, turn = turn.Turn })">
-                    <i class="sprite-glyphicons_029_notes_2"></i>
-                    Visa uttagningar
-                </a>
-            </div>
-        </div>
         start += 3;
         rosters = turn.Rosters.Skip(start).Take(3).ToList();
     }
+    <div class="row">
+        <div class="span4">
+            <a href="@Url.Action("View", new { season = Model.SeasonStart, turn = turn.Turn })">
+                <i class="sprite-glyphicons_029_notes_2"></i>
+                Visa uttagningar
+            </a>
+        </div>
+    </div>
 }

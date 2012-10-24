@@ -1,52 +1,54 @@
 ﻿@model RosterViewModel
 
-@if (Request.IsAuthenticated)
-{
-    <a href="@Url.Action("EditPlayers", new { Model.Id })" class="pull-right">
-        <i class="sprite-glyphicons_151_edit"></i>
-    </a>
-}
-<table class="table table-condensed">
-    <tr>
-        <th>Bord</th>
-        <th>Namn</th>
-    </tr>
-    @for (var i = 0; i < 4; i++)
+<div class="well well-small">
+    @if (Request.IsAuthenticated)
     {
-        <tr>
-            <td rowspan="2">@(i+1)</td>
-            <td>
-                @{
-                    var first = this.Model.Players.ElementAtOrDefault(2 * i);
-                }
-                @if (first != null)
-                {
-                    @first.Item2
-                }
-            </td>
-        </tr>
-        <tr>
-            <td>
-                @{
-                    var second = this.Model.Players.ElementAtOrDefault(2 * i + 1);
-                }
-                @if (second != null)
-                {
-                    @second.Item2
-                }
-            </td>
-        </tr>
+        <a href="@Url.Action("EditPlayers", new { Model.Id })" class="pull-right">
+            <i class="sprite-glyphicons_151_edit"></i>
+        </a>
     }
-    <tr>
-        <td rowspan="2">R</td>
-        <td>
-            @{
-                var reserve = Model.Players.ElementAtOrDefault(8);
-            }
-            @if (reserve != null)
-            {
-                @reserve.Item2
-            }
-        </td>
-    </tr>
-</table>
+    <table class="table table-condensed">
+        <tr>
+            <th>Bord</th>
+            <th>Namn</th>
+        </tr>
+        @for (var i = 0; i < 4; i++)
+        {
+            <tr>
+                <td rowspan="2">@(i+1)</td>
+                <td>
+                    @{
+                        var first = this.Model.Players.ElementAtOrDefault(2 * i);
+                    }
+                    @if (first != null)
+                    {
+                        @first.Item2
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @{
+                        var second = this.Model.Players.ElementAtOrDefault(2 * i + 1);
+                    }
+                    @if (second != null)
+                    {
+                        @second.Item2
+                    }
+                </td>
+            </tr>
+        }
+        <tr>
+            <td rowspan="2">R</td>
+            <td>
+                @{
+                    var reserve = Model.Players.ElementAtOrDefault(8);
+                }
+                @if (reserve != null)
+                {
+                    @reserve.Item2
+                }
+            </td>
+        </tr>
+    </table>
+</div>
