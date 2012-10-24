@@ -221,6 +221,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Areas\V2\ViewModels\RosterExtensionMethods.cs" />
     <Compile Include="Areas\V2\ViewModels\RosterPlayersViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\EditRosterPlayersViewModel.cs" />
     <Compile Include="Areas\V2\Controllers\SearchTermsController.cs" />

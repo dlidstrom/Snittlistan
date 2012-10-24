@@ -7,7 +7,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
     {
         public RosterViewModel()
         {
-            Players = new List<string>();
+            Players = new List<Tuple<string, string>>();
         }
 
         public int Id { get; set; }
@@ -35,6 +35,6 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             }
         }
 
-        public List<string> Players { get; set; }
+        public List<Tuple<string, string>> Players { get; set; }
     }
 }

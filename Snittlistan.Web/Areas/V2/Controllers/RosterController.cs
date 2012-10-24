@@ -32,13 +32,6 @@
             if (season.HasValue == false)
                 season = this.Session.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
 
-            var level = new Dictionary<char, int>
-                {
-                    { 'a', 1 },
-                    { 'f', 2 },
-                    { 'b', 3 },
-                    { 'c', 4 }
-                };
             var rosters = this.Session.Query<Roster>().Where(r => r.Season == season).ToList();
             var q = from roster in rosters
                     orderby roster.Turn
@@ -50,8 +43,8 @@
                             EndDate = g.Max(x => x.Date),
                             Rosters =
                                 g.Select(x => x.MapTo<RosterViewModel>())
-                                 .OrderBy(r => level[r.TeamLevel])
-                                 .ThenBy(r => r.Date).ToList()
+                                .SortRosters()
+                                .ToList()
                         };
             var vm = new InitialDataViewModel
                 {
@@ -156,26 +149,17 @@
             var rosters = this.Session.Query<Roster, RosterSearchTerms>()
                 .Include<Roster>(roster => roster.Players)
                 .Where(roster => roster.Turn == turn)
-                .Where(roster => roster.Season == season);
-
-            var rosterViewModels = new List<RosterViewModel>();
-            foreach (var roster in rosters)
-            {
-                var vm = roster.MapTo<RosterViewModel>();
-                foreach (var playerId in roster.Players)
-                {
-                    var player = Session.Load<Player>(playerId);
-                    vm.Players.Add(player.Name);
-                }
-
-                rosterViewModels.Add(vm);
-            }
+                .Where(roster => roster.Season == season)
+                .ToArray();
+            var list = rosters.Select(this.LoadRoster)
+                .SortRosters()
+                .ToArray();
 
             var viewTurnViewModel = new ViewTurnViewModel
             {
                 Id = turn,
                 Season = season,
-                Rosters = rosterViewModels.ToArray()
+                Rosters = list
             };
             return this.View(viewTurnViewModel);
         }
@@ -183,7 +167,9 @@
         [Authorize]
         public ActionResult EditPlayers(int id)
         {
-            var roster = this.Session.Load<Roster>(id);
+            var roster = this.Session
+                .Include<Roster>(r => r.Players)
+                .Load<Roster>(id);
             if (roster == null)
                 throw new HttpException(404, "Roster not found");
 
@@ -193,7 +179,7 @@
             var vm = new EditRosterPlayersViewModel
             {
                 Id = id,
-                Roster = roster.MapTo<RosterViewModel>(),
+                Roster = this.LoadRoster(roster),
                 AvailablePlayers = availablePlayers.MapTo<PlayerViewModel>().ToArray()
             };
             return this.View(vm);
@@ -219,6 +205,18 @@
             if (vm.Reserve != null && this.Session.Load<Player>(vm.Reserve) != null)
                 roster.Players.Add(vm.Reserve);
             return RedirectToAction("View", new { season = roster.Season, turn = roster.Turn });
+        }
+
+        private RosterViewModel LoadRoster(Roster roster)
+        {
+            var vm = roster.MapTo<RosterViewModel>();
+            foreach (var playerId in roster.Players)
+            {
+                var player = this.Session.Load<Player>(playerId);
+                vm.Players.Add(Tuple.Create(player.Id, player.Name));
+            }
+
+            return vm;
         }
     }
 }

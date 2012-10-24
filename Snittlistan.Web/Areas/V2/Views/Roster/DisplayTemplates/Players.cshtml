@@ -15,14 +15,38 @@
     {
         <tr>
             <td rowspan="2">@(i+1)</td>
-            <td>@Model.Players.ElementAtOrDefault(2 * i)</td>
+            <td>
+                @{
+                    var first = this.Model.Players.ElementAtOrDefault(2 * i);
+                }
+                @if (first != null)
+                {
+                    @first.Item2
+                }
+            </td>
         </tr>
         <tr>
-            <td>@Model.Players.ElementAtOrDefault(2 * i + 1)</td>
+            <td>
+                @{
+                    var second = this.Model.Players.ElementAtOrDefault(2 * i + 1);
+                }
+                @if (second != null)
+                {
+                    @second.Item2
+                }
+            </td>
         </tr>
     }
     <tr>
         <td rowspan="2">R</td>
-        <td>@Model.Players.ElementAtOrDefault(8)</td>
+        <td>
+            @{
+                var reserve = Model.Players.ElementAtOrDefault(8);
+            }
+            @if (reserve != null)
+            {
+                @reserve.Item2
+            }
+        </td>
     </tr>
 </table>
