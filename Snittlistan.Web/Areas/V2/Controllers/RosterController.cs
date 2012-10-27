@@ -189,6 +189,7 @@
         [Authorize]
         public ActionResult EditPlayers(int id, RosterPlayersViewModel vm)
         {
+            if (ModelState.IsValid == false) return EditPlayers(id);
             var roster = Session.Load<Roster>(id);
             if (roster == null) throw new HttpException(404, "Roster not found");
             roster.Players = new List<string>
@@ -210,7 +211,7 @@
         private RosterViewModel LoadRoster(Roster roster)
         {
             var vm = roster.MapTo<RosterViewModel>();
-            foreach (var playerId in roster.Players)
+            foreach (var playerId in roster.Players.Where(p => p != null))
             {
                 var player = this.Session.Load<Player>(playerId);
                 vm.Players.Add(Tuple.Create(player.Id, player.Name));
