@@ -17,7 +17,7 @@
 </div>
 <div class="row">
     <div class="span8">
-        <table class="table table-condensed">
+        <table class="table table-condensed table-striped">
             <tr>
                 <th>Namn</th>
                 <th>Status</th>
@@ -46,12 +46,12 @@
                     {
                         <td>@player.Email</td>
                         <td>
-                            <a href="@Url.Action("Edit", new { player.Id })">
+                            <a href="@Url.Action("Edit", new { id = player.Id.Substring(player.Id.LastIndexOf('-') + 1) })">
                                 <i class="sprite-glyphicons_151_edit"></i>
                             </a>
                         </td>
                         <td>
-                            <a href="@Url.Action("Delete", new { player.Id })">
+                            <a href="@Url.Action("Delete", new { id = player.Id.Substring(player.Id.LastIndexOf('-') + 1) })">
                                   <i class="sprite-glyphicons_016_bin"></i>
                               </a>
                         </td>
