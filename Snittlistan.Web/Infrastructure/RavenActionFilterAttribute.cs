@@ -16,11 +16,10 @@
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
             // save changes unless there was an exception
-            if (!filterContext.IsChildAction && filterContext.Exception == null)
-            {
-                var session = MvcApplication.Container.Resolve<IDocumentSession>();
-                session.SaveChanges();
-            }
+            if (filterContext.IsChildAction || filterContext.Exception != null) return;
+
+            var session = MvcApplication.Container.Resolve<IDocumentSession>();
+            session.SaveChanges();
         }
     }
 }
