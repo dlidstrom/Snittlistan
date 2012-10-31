@@ -2,79 +2,38 @@
 
 <h3>Omgång @Model.Roster.Turn säsongen @Model.Roster.Season&minus;@(Model.Roster.Season + 1)</h3>
 <div class="row">
-    <div class="span4">
+    <div class="span6">
         @Html.DisplayFor(model => model.Roster, "Roster", new { hideControls = true })
     </div>
 </div>
 <div class="row">
-    <div class="span4">
-        <div class="well">
-            @using (Html.BeginForm(
-                "EditPlayers",
-                "Roster",
-                new { id = Model.Id },
-                FormMethod.Post,
-                new { @class = "form-horizontal"}))
+    <div class="span6">
+        @using (Html.BeginForm(
+            "EditPlayers",
+            "Roster",
+            new { id = Model.Id },
+            FormMethod.Post,
+            new { @class = "form-horizontal"}))
+        {
+            if (Html.ViewData.ModelState.IsValid == false)
             {
-                if (Html.ViewData.ModelState.IsValid == false)
+                @Html.ValidationSummary(false, "Det gick inte att spara. Försök gärna igen.")
+            }
+            <table class="table table-condensed">
+                <tr>
+                    <th>Bord</th>
+                    <th>Namn</th>
+                </tr>
+                @for (int i = 0; i < 4; i++ )
                 {
-                    @Html.ValidationSummary(false, "Det gick inte att spara. Försök gärna igen.")
-                }
-                <table class="table table-condensed">
                     <tr>
-                        <th>Bord</th>
-                        <th>Namn</th>
-                    </tr>
-                    @for (int i = 0; i < 4; i++ )
-                    {
-                        <tr>
-                            <td rowspan="2">@(i+1)</td>
-                            <td>
-                                <select name="@string.Format("Table{0}Player1", i + 1)" required>
-                                    <option value="">Välj spelare</option>
-                                    @foreach (var player in Model.AvailablePlayers)
-                                    {
-                                        var elementAtOrDefault = this.Model.Roster.Players.ElementAtOrDefault(2 * i);
-                                        if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
-                                        {
-                                            <option value="@player.Id" selected="selected">@player.Name</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="@player.Id">@player.Name</option>
-                                        }
-                                    }
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <select name="@string.Format("Table{0}Player2", i + 1)" required>
-                                    <option value="">Välj spelare</option>
-                                    @foreach (var player in Model.AvailablePlayers)
-                                    {
-                                        var elementAtOrDefault = this.Model.Roster.Players.ElementAtOrDefault(2 * i + 1);
-                                        if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
-                                        {
-                                            <option value="@player.Id" selected="selected">@player.Name</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="@player.Id">@player.Name</option>
-                                        }
-                                    }
-                                </select>
-                            </td>
-                        </tr>
-                    }
-                    <tr>
-                        <td rowspan="2">R</td>
+                        <td rowspan="2">@(i+1)</td>
                         <td>
-                            <select name="reserve">
-                                <option value="">Välj reserv</option>
+                            <select name="@string.Format("Table{0}Player1", i + 1)" required>
+                                <option value="">Välj spelare</option>
                                 @foreach (var player in Model.AvailablePlayers)
                                 {
-                                    var elementAtOrDefault = this.Model.Roster.Players.ElementAtOrDefault(8);
+                                    var elementAtOrDefault = this.Model.Roster.Players.ElementAtOrDefault(2 * i);
                                     if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
                                     {
                                         <option value="@player.Id" selected="selected">@player.Name</option>
@@ -87,14 +46,52 @@
                             </select>
                         </td>
                     </tr>
-                </table>
-                <div class="control-group">
-                    <div class="controls">
-                        <button class="btn btn-primary btn-large" type="submit">Spara</button>
-                        @Html.ActionLink("Avbryt", "View", new { season = Model.Roster.Season, turn = Model.Roster.Turn }, new { @class = "btn btn-large" })
-                    </div>
-                </div>
-            }
-        </div>
+                    <tr>
+                        <td>
+                            <select name="@string.Format("Table{0}Player2", i + 1)" required>
+                                <option value="">Välj spelare</option>
+                                @foreach (var player in Model.AvailablePlayers)
+                                {
+                                    var elementAtOrDefault = this.Model.Roster.Players.ElementAtOrDefault(2 * i + 1);
+                                    if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
+                                    {
+                                        <option value="@player.Id" selected="selected">@player.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@player.Id">@player.Name</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td rowspan="2">R</td>
+                    <td>
+                        <select name="reserve">
+                            <option value="">Välj reserv</option>
+                            @foreach (var player in Model.AvailablePlayers)
+                            {
+                                var elementAtOrDefault = this.Model.Roster.Players.ElementAtOrDefault(8);
+                                if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
+                                {
+                                    <option value="@player.Id" selected="selected">@player.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@player.Id">@player.Name</option>
+                                }
+                            }
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <div class="form-actions">
+                <button class="btn btn-primary btn-large" type="submit">Spara</button>
+                @Html.ActionLink("Avbryt", "View", new { season = Model.Roster.Season, turn = Model.Roster.Turn }, new { @class = "btn btn-large" })
+            </div>
+        }
     </div>
 </div>
+

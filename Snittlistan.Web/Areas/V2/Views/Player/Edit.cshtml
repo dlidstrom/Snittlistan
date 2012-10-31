@@ -5,20 +5,18 @@
 }
 
 <div class="row">
-    <div class="span6">
+    <div class="span8">
         <h3>@ViewBag.Title</h3>
-        @using (Html.BeginForm("Edit", "Player", FormMethod.Post, new { @class = "well form-horizontal"}))
+        @using (Html.BeginForm("Edit", "Player", FormMethod.Post, new { @class = "form-horizontal"}))
         {
             if (Html.ViewData.ModelState.IsValid == false)
             {
                 @Html.ValidationSummary(false, "Det gick inte att spara. Försök gärna igen.")
             }
             @Html.Partial("_PlayerEditor", Model)
-            <div class="control-group">
-                <div class="controls">
-                    <button class="btn btn-primary btn-large" type="submit">Spara</button>
-                    @Html.ActionLink("Avbryt", "Index", null, new { @class = "btn btn-large" })
-                </div>
+            <div class="form-actions">
+                <button class="btn btn-primary btn-large" type="submit">Spara</button>
+                @Html.ActionLink("Avbryt", "Index", null, new { @class = "btn btn-large" })
             </div>
         }
     </div>
