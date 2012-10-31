@@ -114,6 +114,7 @@
         {
             RouteTable.Routes.Maps("GET", "~/Home/Player", new { controller = "Redirect", action = "Redirect" });
             RouteTable.Routes.Maps("GET", "~/register", new { controller = "Redirect", action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/Account/Register", new { controller = "Redirect", action = "Redirect" });
         }
 
         [Fact]
