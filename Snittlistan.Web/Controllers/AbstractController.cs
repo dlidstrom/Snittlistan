@@ -27,12 +27,11 @@
             base.OnActionExecuting(filterContext);
 
             // make sure there's an admin user
-            if (this.Session.Load<User>("Admin") == null)
-            {
-                // first launch
-                this.Response.Redirect("/v1/welcome");
-                this.Response.End();
-            }
+            if (this.Session.Load<User>("Admin") != null) return;
+
+            // first launch
+            this.Response.Redirect("/v1/welcome");
+            this.Response.End();
         }
     }
 }
