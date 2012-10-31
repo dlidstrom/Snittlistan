@@ -58,6 +58,10 @@
                 name: "RegisterRedirect",
                 url: "register",
                 defaults: new { controller = "Redirect", action = "Redirect" });
+            context.MapRoute(
+                name: "Redirects5",
+                url: "Account/Register",
+                defaults: new { controller = "Redirect", action = "Redirect" });
 
             context.MapRoute(
                 name: "SearchTerms-Route",
