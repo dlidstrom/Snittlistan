@@ -1,4 +1,4 @@
-﻿@model List<PlayerStatsViewModel>
+﻿@model List<Snittlistan.Web.Infrastructure.Indexes.Matches_PlayerStats.Result>
 @{
     ViewBag.Title = "Snittlistan";
     Bundles.Reference("Content/js/sortable.js");
@@ -43,7 +43,7 @@
                 <td>@(string.Format("{0:F2}", stat.AverageOnePinMisses))</td>
                 <td>@(string.Format("{0:F2}", stat.AverageSplits))</td>
                 <td>@stat.CoveredAll</td>
-                <td>@string.Format("{0:F1}", stat.AverageLast20)</td>
+                <td>@string.Format("{0:F1}", stat.Last20GamesAvg)</td>
                 <td>@Html.ActionLink("Visa", "Player", new { player = stat.Player }, new { data_button = "data_button" })</td>
             </tr>
         }

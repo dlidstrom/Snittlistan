@@ -42,6 +42,10 @@
                         <ul class="nav">
                             @Content.MenuLink(Html, Url, "Omgångar", "sprite-glyphicons_045_calendar", "Roster", Url.Action("Index", "Roster"))
                             @Content.MenuLink(Html, Url, "Medlemmar", "sprite-glyphicons_043_group", "Player", Url.Action("Index", "Player"))
+                            @if (Request.IsAdmin(User))
+                            {
+                                @Content.MenuLink(Html, Url, "Användare", "sprite-glyphicons_024_parents", "User", Url.Action("Index", "User"))
+                            }
                             @Content.MenuLink(Html, Url, "2011-2012", "sprite-glyphicons_090_table", "Home", Url.Action("Index", "Home", new { area = "V1" } ))
                         </ul>
                         <ul class="nav pull-right">

@@ -32,14 +32,10 @@
         {
             var stats = this.Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
                 .ToList()
-                .OrderByDescending(s => s.AveragePins);
+                .OrderByDescending(s => s.AveragePins)
+                .ToList();
 
-            var last20 = this.Session.Query<Pins_Last20.Result, Pins_Last20>()
-                .ToDictionary(s => s.Player, s => s.Pins);
-
-            var vm = stats.Select(s => new PlayerStatsViewModel(s, last20)).ToList();
-
-            return this.View(vm);
+            return this.View(stats);
         }
 
         /// <summary>
@@ -60,15 +56,11 @@
             var results = this.Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
                 .SingleOrDefault(r => r.Player == player);
 
-            var last20 = this.Session.Query<Pins_Last20.Result, Pins_Last20>()
-                .SingleOrDefault(r => r.Player == player);
-
             return this.View(new PlayerMatchesViewModel
             {
                 Player = player,
                 Stats = q.ToList(),
-                Results = results ?? new Matches_PlayerStats.Result(),
-                Last20 = last20 ?? new Pins_Last20.Result()
+                Results = results ?? new Matches_PlayerStats.Result()
             });
         }
 

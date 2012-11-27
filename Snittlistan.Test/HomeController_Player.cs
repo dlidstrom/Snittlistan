@@ -8,9 +8,7 @@
     using Snittlistan.Web.Areas.V1.Controllers;
     using Snittlistan.Web.Areas.V1.Models;
     using Snittlistan.Web.Areas.V1.ViewModels;
-    using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Infrastructure.Indexes;
-    using Snittlistan.Web.Models;
 
     using Xunit;
 
@@ -68,9 +66,6 @@
             Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
                 .Customize(c => c.WaitForNonStaleResultsAsOfNow())
                 .ToList();
-            Session.Query<Pins_Last20.Result, Pins_Last20>()
-                .Customize(c => c.WaitForNonStaleResultsAsOfNow())
-                .ToList();
             var controller = new HomeController(Session);
 
             // Act
@@ -79,16 +74,16 @@
             // Assert
             Assert.NotNull(result);
             Debug.Assert(result != null, "result != null");
-            Assert.Equal(4.5, result.AverageStrikes);
-            Assert.Equal(2.5, result.AverageMisses);
-            Assert.Equal(2, result.Last20.GamesWithStats);
-            Assert.Equal(160, result.Last20.Max);
-            Assert.Equal(4.5, result.Last20.AverageStrikes);
-            Assert.Equal(2.5, result.Last20.AverageMisses);
-            Assert.Equal(1.5, result.Last20.AverageOnePinMisses);
-            Assert.Equal(2.5, result.Last20.AverageSplits);
-            Assert.Equal(561.0 / 4, result.Last20.Pins);
-            Assert.Equal(0.25, result.Last20.Score);
+            Assert.Equal(4.5, result.Results.AverageStrikes);
+            Assert.Equal(2.5, result.Results.AverageMisses);
+            Assert.Equal(2, result.Results.GamesWithStats);
+            Assert.Equal(160, result.Results.BestGame);
+            Assert.Equal(4.5, result.Results.AverageStrikes);
+            Assert.Equal(2.5, result.Results.AverageMisses);
+            Assert.Equal(1.5, result.Results.AverageOnePinMisses);
+            Assert.Equal(2.5, result.Results.AverageSplits);
+            Assert.Equal(561.0 / 4, result.Results.AveragePins);
+            Assert.Equal(0.25, result.Results.AverageScore);
         }
 
         [Fact]
@@ -104,9 +99,6 @@
             Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
                 .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .ToList();
-            Session.Query<Pins_Last20.Result, Pins_Last20>()
-                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
-                .ToList();
             var controller = new HomeController(Session);
 
             // Act
@@ -115,16 +107,16 @@
             // Assert
             Assert.NotNull(result);
             Debug.Assert(result != null, "result != null");
-            Assert.Equal(5.0, result.AverageStrikes);
-            Assert.Equal(2.0, result.AverageMisses);
-            Assert.Equal(1, result.Last20.GamesWithStats);
-            Assert.Equal(223, result.Last20.Max);
-            Assert.Equal(5.0, result.Last20.AverageStrikes);
-            Assert.Equal(2.0, result.Last20.AverageMisses);
-            Assert.Equal(1.0, result.Last20.AverageOnePinMisses);
-            Assert.Equal(2.0, result.Last20.AverageSplits);
-            Assert.Equal(845.0 / 4, result.Last20.Pins);
-            Assert.Equal(0.75, result.Last20.Score);
+            Assert.Equal(5.0, result.Results.AverageStrikes);
+            Assert.Equal(2.0, result.Results.AverageMisses);
+            Assert.Equal(1, result.Results.GamesWithStats);
+            Assert.Equal(223, result.Results.BestGame);
+            Assert.Equal(5.0, result.Results.AverageStrikes);
+            Assert.Equal(2.0, result.Results.AverageMisses);
+            Assert.Equal(1.0, result.Results.AverageOnePinMisses);
+            Assert.Equal(2.0, result.Results.AverageSplits);
+            Assert.Equal(845.0 / 4, result.Results.AveragePins);
+            Assert.Equal(0.75, result.Results.AverageScore);
         }
     }
 }

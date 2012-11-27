@@ -6,7 +6,7 @@
     {
         public ActionResult Redirect()
         {
-            return this.RedirectToActionPermanent("Index", "App");
+            return this.RedirectToActionPermanent("Index", "Roster");
         }
     }
 }
