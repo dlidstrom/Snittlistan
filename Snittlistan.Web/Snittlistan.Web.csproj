@@ -242,6 +242,7 @@
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="Areas\V1\Controllers\AccountController.cs" />
     <Compile Include="Areas\V2\ViewModels\LogOnViewModel.cs" />
+    <Compile Include="HtmlHelpers\RequestExtensions.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\PlayerProfile.cs" />
     <Compile Include="Infrastructure\Indexes\PlayerSearch.cs" />
     <Compile Include="Infrastructure\Indexes\RosterSearchTerms.cs" />
@@ -362,7 +363,6 @@
     <Compile Include="Areas\V1\ViewModels\Match\Team8x4DetailsViewModel.cs" />
     <Compile Include="Areas\V1\ViewModels\Match\Team8x4ViewModel.cs" />
     <Compile Include="Areas\V1\ViewModels\PlayerMatchesViewModel.cs" />
-    <Compile Include="Areas\V1\ViewModels\PlayerStatsViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\SessionViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\TurnViewModel.cs" />
   </ItemGroup>

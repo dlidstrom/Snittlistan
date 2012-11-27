@@ -1,12 +1,12 @@
 ﻿namespace Snittlistan.Web.Infrastructure.Indexes
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Raven.Client.Indexes;
 
     using Snittlistan.Web.Areas.V1.Models;
-    using Snittlistan.Web.Models;
 
     public class Matches_PlayerStats : AbstractMultiMapIndexCreationTask<Matches_PlayerStats.Result>
     {
@@ -21,14 +21,17 @@
                                              {
                                                  game.Player,
                                                  game.Pins,
+                                                 MinDate = match.Date,
+                                                 Last20Games = Enumerable.Repeat(new { match.Date, game.Pins, game.Player }, 1),
+                                                 Last20GamesAvg = game.Pins,
                                                  Series = 1,
                                                  table.Score,
                                                  BestGame = game.Pins,
                                                  GamesWithStats = game.Strikes != null ? 1 : 0,
-                                                 game.Strikes,
-                                                 game.Misses,
-                                                 game.OnePinMisses,
-                                                 game.Splits,
+                                                 Strikes = game.Strikes ?? 0,
+                                                 Misses = game.Misses ?? 0,
+                                                 OnePinMisses = game.OnePinMisses ?? 0,
+                                                 Splits = game.Splits ?? 0,
                                                  CoveredAll = game.CoveredAll ? 1 : 0
                                              });
 
@@ -40,14 +43,17 @@
                                              {
                                                  game.Player,
                                                  game.Pins,
+                                                 MinDate = match.Date,
+                                                 Last20Games = Enumerable.Repeat(new { match.Date, game.Pins, game.Player }, 1),
+                                                 Last20GamesAvg = game.Pins,
                                                  Series = 1,
                                                  game.Score,
                                                  BestGame = game.Pins,
                                                  GamesWithStats = game.Strikes != null ? 1 : 0,
-                                                 game.Strikes,
-                                                 game.Misses,
-                                                 game.OnePinMisses,
-                                                 game.Splits,
+                                                 Strikes = game.Strikes ?? 0,
+                                                 Misses = game.Misses ?? 0,
+                                                 OnePinMisses = game.OnePinMisses ?? 0,
+                                                 Splits = game.Splits ?? 0,
                                                  CoveredAll = game.CoveredAll ? 1 : 0
                                              });
 
@@ -57,6 +63,9 @@
                                      {
                                          Player = stat.Key,
                                          Pins = stat.Sum(s => s.Pins),
+                                         MinDate = new DateTime(stat.Min(x => x.MinDate.Ticks)),
+                                         Last20Games = stat.SelectMany(x => x.Last20Games).OrderByDescending(x => x.Date).Take(20),
+                                         Last20GamesAvg = stat.SelectMany(x => x.Last20Games).OrderByDescending(x => x.Date).Take(20).Average(x => x.Pins),
                                          Series = stat.Sum(s => s.Series),
                                          Score = stat.Sum(s => s.Score),
                                          BestGame = stat.Max(s => s.BestGame),
@@ -69,10 +78,20 @@
                                      };
         }
 
+        public class Game
+        {
+            public DateTime Date { get; set; }
+
+            public int Pins { get; set; }
+        }
+
         public class Result
         {
             public string Player { get; set; }
             public double Pins { get; set; }
+            public DateTime MinDate { get; set; }
+            public IEnumerable<Game> Last20Games { get; set; }
+            public double Last20GamesAvg { get; set; }
             public double Series { get; set; }
             public double Score { get; set; }
             public int BestGame { get; set; }

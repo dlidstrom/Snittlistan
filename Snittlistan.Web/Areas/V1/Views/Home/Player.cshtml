@@ -45,8 +45,8 @@
         <tr>
             <td colspan="4">Per serie:</td>
             <td>@string.Format("{0:F1}", Model.Stats.Sum(g => g.Pins) / Model.Stats.Sum(g => g.Series))</td>
-            <td>@string.Format("{0:F2}", Model.AverageStrikes)</td>
-            <td>@string.Format("{0:F2}", Model.AverageMisses)</td>
+            <td>@string.Format("{0:F2}", Model.Results.AverageStrikes)</td>
+            <td>@string.Format("{0:F2}", Model.Results.AverageMisses)</td>
             <td>@Model.Stats.Sum(g => g.Series)</td>
             <td></td>
         </tr>
@@ -70,7 +70,7 @@
         <tr>
             <td>@(string.Format("{0:F2}", Model.Results.AverageScore))</td>
             <td>@(string.Format("{0:F1}", Model.Results.AveragePins))</td>
-            <td>@Model.Last20.Max</td>
+            <td>@Model.Results.BestGame</td>
             <td>@(string.Format("{0:F2}", Model.Results.AverageStrikes))</td>
             <td>@(string.Format("{0:F2}", Model.Results.AverageMisses))</td>
             <td>@(string.Format("{0:F2}", Model.Results.AverageOnePinMisses))</td>
@@ -84,24 +84,12 @@
 <table>
     <thead>
         <tr>
-            <th>Banpoäng</th>
             <th>Poäng</th>
-            <th>Högsta</th>
-            <th>X</th>
-            <th>Miss</th>
-            <th>9-</th>
-            <th>Hål</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>@(string.Format("{0:F2}", Model.Last20.Score))</td>
-            <td>@(string.Format("{0:F1}", Model.Last20.Pins))</td>
-            <td>@Model.Last20.Max</td>
-            <td>@(string.Format("{0:F2}", Model.Last20.AverageStrikes))</td>
-            <td>@(string.Format("{0:F2}", Model.Last20.AverageMisses))</td>
-            <td>@(string.Format("{0:F2}", Model.Last20.AverageOnePinMisses))</td>
-            <td>@(string.Format("{0:F2}", Model.Last20.AverageSplits))</td>
+            <td>@(string.Format("{0:F1}", Model.Results.Last20GamesAvg))</td>
         </tr>
     </tbody>
 </table>
