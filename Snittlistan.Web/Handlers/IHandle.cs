@@ -1,6 +1,6 @@
 ﻿namespace Snittlistan.Web.Handlers
 {
-    public interface IHandle<TEvent>
+    public interface IHandle<in TEvent>
     {
         void Handle(TEvent @event);
     }

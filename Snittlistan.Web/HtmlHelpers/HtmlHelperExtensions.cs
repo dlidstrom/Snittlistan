@@ -9,9 +9,9 @@
 
     public static class HtmlHelperExtensions
     {
-        public static bool IsDebug(this HtmlHelper helper)
+        public static ApplicationMode ApplicationMode(this HtmlHelper helper)
         {
-            return MvcApplication.IsDebugConfig;
+            return MvcApplication.Mode;
         }
 
         public static HtmlString ToJson<T>(this HtmlHelper helper, T obj)

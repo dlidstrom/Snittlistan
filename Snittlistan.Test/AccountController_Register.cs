@@ -3,11 +3,12 @@
     using System;
     using System.Web.Mvc;
 
+    using Castle.Windsor;
+
     using Moq;
 
     using Snittlistan.Web.Areas.V1.Controllers;
     using Snittlistan.Web.Areas.V1.ViewModels.Account;
-    using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Events;
     using Snittlistan.Web.Helpers;
     using Snittlistan.Web.Services;
@@ -16,6 +17,18 @@
 
     public class AccountController_Register : DbTest
     {
+        private readonly IWindsorContainer oldContainer;
+
+        public AccountController_Register()
+        {
+            this.oldContainer = DomainEvent.SetContainer(new WindsorContainer());
+        }
+
+        protected override void OnDispose()
+        {
+            DomainEvent.SetContainer(oldContainer);
+        }
+
         [Fact]
         public void ShouldInitializeNewUser()
         {

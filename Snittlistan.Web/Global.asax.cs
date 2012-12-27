@@ -18,21 +18,27 @@
 
     public class MvcApplication : HttpApplication
     {
-#if DEBUG
-        private const bool IsDebug = true;
-#else
-        private const bool IsDebug = false;
-#endif
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
+        private static ApplicationMode applicationMode =
+#if DEBUG
+            ApplicationMode.Debug;
+#else
+            ApplicationMode.Release;
+#endif
 
         public static IWindsorContainer Container { get; private set; }
 
-        public static bool IsDebugConfig { get { return IsDebug; } }
+        public static ApplicationMode Mode { get { return applicationMode; } }
 
-        protected void Application_Start()
+        public static void Bootstrap(ApplicationMode mode)
         {
-            Log.Info("Application Starting");
+            applicationMode = mode;
+            Bootstrap();
+        }
 
+        public static void Bootstrap()
+        {
             RegisterGlobalFilters(GlobalFilters.Filters);
 
             // initialize container and controller factory
@@ -40,7 +46,8 @@
 
             // register routes
             new RouteConfig(RouteTable.Routes).Configure();
-            AreaRegistration.RegisterAllAreas();
+            if (Mode != ApplicationMode.Test)
+                AreaRegistration.RegisterAllAreas();
 
             // add model binders
             ModelBinders.Binders.Add(typeof(Guid), new GuidBinder());
@@ -49,10 +56,24 @@
             AutoMapperConfiguration.Configure(Container);
         }
 
+        public static void Shutdown()
+        {
+            ModelBinders.Binders.Clear();
+            RouteTable.Routes.Clear();
+            Container.Dispose();
+        }
+
+        protected void Application_Start()
+        {
+            Log.Info("Application Starting");
+
+            Bootstrap();
+        }
+
         protected void Application_End()
         {
             Log.Info("Application Ending");
-            Container.Dispose();
+            Shutdown();
         }
 
         private static void RegisterGlobalFilters(GlobalFilterCollection filters)

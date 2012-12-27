@@ -18,7 +18,6 @@
             return AllTypes
                 .FromThisAssembly()
                 .BasedOn<IController>()
-                .If(Component.IsInNamespace("Snittlistan.Web.Areas", true))
                 .If(t => t.Name.EndsWith("Controller"))
                 .Configure(c => c.Named(c.Implementation.Name));
         }

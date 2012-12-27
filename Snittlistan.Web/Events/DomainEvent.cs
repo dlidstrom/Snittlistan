@@ -20,16 +20,23 @@
         }
 
         /// <summary>
-        /// Gets or sets a function that supplies the container.
-        /// Can be used to set a container for tests.
-        /// </summary>
-        public static Func<IWindsorContainer> ReturnContainer { get; set; }
-
-        /// <summary>
         /// Gets or sets an action used to raise events.
         /// Used for testing purposes.
         /// </summary>
-        public static Action<IDomainEvent> RaiseAction { get; set; }
+        private static Action<IDomainEvent> RaiseAction { get; set; }
+
+        /// <summary>
+        /// Gets or sets a function that supplies the container.
+        /// Can be used to set a container for tests.
+        /// </summary>
+        private static Func<IWindsorContainer> ReturnContainer { get; set; }
+
+        public static IWindsorContainer SetContainer(IWindsorContainer container)
+        {
+            var oldContainer = ReturnContainer.Invoke();
+            ReturnContainer = () => container;
+            return oldContainer;
+        }
 
         /// <summary>
         /// Raises a domain event. Default action is to resolve all handlers
@@ -45,7 +52,8 @@
                 return;
             }
 
-            var container = ReturnContainer();
+            var container = ReturnContainer.Invoke();
+            if (container == null) throw new InvalidOperationException("container is null");
             var handlers = container.ResolveAll<IHandle<TEvent>>();
 
             foreach (var handle in handlers)

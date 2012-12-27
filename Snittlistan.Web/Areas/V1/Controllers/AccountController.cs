@@ -191,7 +191,7 @@
             if (user.IsActive)
                 return this.RedirectToAction("LogOn");
 
-            user.Activate();
+            user.Activate(false);
 
             return this.RedirectToAction("VerifySuccess");
         }

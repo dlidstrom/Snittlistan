@@ -1,4 +1,4 @@
-﻿namespace Snittlistan.Web.Areas.V1.Controllers
+﻿namespace Snittlistan.Web.Controllers
 {
     using System.Web.Mvc;
 

@@ -1,16 +1,16 @@
-﻿@model CreatePlayerViewModel
+﻿@model CreateUserViewModel
 
 @{
-    ViewBag.Title = "Lägg till spelare";
+    ViewBag.Title = "Skapa användare";
 }
 
 <div class="row">
     <div class="span8">
         <h3>@ViewBag.Title</h3>
-        @using (Html.BeginForm("Create", "Player", FormMethod.Post, new { @class = "form-horizontal"}))
+        @using (Html.BeginForm("Create", "User", FormMethod.Post, new { @class = "form-horizontal" }))
         {
             @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
-            @Html.Partial("_PlayerEditor", Model)
+            @Html.Partial("_UserEditor", Model)
             <div class="form-actions">
                 <button class="btn btn-primary btn-large" type="submit">Spara</button>
                 @Html.ActionLink("Avbryt", "Index", null, new { @class = "btn btn-large" })

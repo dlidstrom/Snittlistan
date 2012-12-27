@@ -8,6 +8,7 @@
         <p>Logga in genom att ange din e-postadress och ditt lösenord.</p>
         @using (Html.BeginForm("LogOn", "Authentication", FormMethod.Post, new { @class = "form-horizontal"}))
         {
+            @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary", new { message = "Det gick inte att logga in."})
             <div class="control-group">
                 <label class="control-label" for="email">E-postadress:</label>
                 <div class="controls">

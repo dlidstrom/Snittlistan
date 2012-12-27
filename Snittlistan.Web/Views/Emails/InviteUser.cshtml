@@ -1,0 +1,23 @@
+﻿To: @ViewBag.To
+From: @ViewBag.From
+Subject: @ViewBag.Subject
+Content-Type: text/html; charset=utf-8
+
+<p>
+    Du får det här brevet för att du har blivit inbjuden till Snittlistan.se. Det innebär att du kan
+    ta ut lag och registrera matchresultat.
+</p>
+<p>
+    Klicka här för att aktivera ditt konto:
+    <a href="@Url.Action(
+        "Activate",
+        "Authentication",
+        new
+        {
+            id = ViewBag.Id,
+            activationKey = Model.ActivationKey
+        },
+        Request.Url.Scheme)">
+        Aktivera mitt konto
+    </a>
+</p>

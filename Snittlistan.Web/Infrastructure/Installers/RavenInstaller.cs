@@ -15,7 +15,6 @@
 
     using Snittlistan.Web.Areas.V1.Models;
     using Snittlistan.Web.Infrastructure.Indexes;
-    using Snittlistan.Web.Models;
 
     public class RavenInstaller : IWindsorInstaller
     {
@@ -28,7 +27,18 @@
         /// </summary>
         public RavenInstaller()
         {
-            this.mode = MvcApplication.IsDebugConfig ? DocumentStoreMode.Server : DocumentStoreMode.Embeddable;
+            switch (MvcApplication.Mode)
+            {
+                case ApplicationMode.Debug:
+                    this.mode = DocumentStoreMode.Server;
+                    break;
+                case ApplicationMode.Release:
+                    this.mode = DocumentStoreMode.Embeddable;
+                    break;
+                case ApplicationMode.Test:
+                    this.mode = DocumentStoreMode.InMemory;
+                    break;
+            }
         }
 
         /// <summary>

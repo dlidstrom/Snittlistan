@@ -49,7 +49,9 @@
         /// <param name="hashedPassword"></param>
         /// <param name="passwordSalt"></param>
         [JsonConstructor]
+// ReSharper disable UnusedMember.Local Used by Raven when loading.
         private User(string firstName, string lastName, string email, string hashedPassword, Guid passwordSalt)
+// ReSharper restore UnusedMember.Local
         {
             this.FirstName = firstName;
             this.LastName = lastName;
@@ -72,6 +74,8 @@
         /// Gets a value indicating whether the user is activated.
         /// </summary>
         public bool IsActive { get; private set; }
+
+        public bool RequiresPasswordChange { get; private set; }
 
         /// <summary>
         /// Gets the activation key.
@@ -118,6 +122,7 @@
         public void SetPassword(string password)
         {
             this.HashedPassword = this.ComputeHashedPassword(password);
+            RequiresPasswordChange = false;
         }
 
         /// <summary>
@@ -127,7 +132,8 @@
         /// <returns>True if valid; false otherwise.</returns>
         public bool ValidatePassword(string somePassword)
         {
-            return this.HashedPassword == this.ComputeHashedPassword(somePassword);
+            return RequiresPasswordChange == false
+                && this.HashedPassword == this.ComputeHashedPassword(somePassword);
         }
 
         /// <summary>
@@ -142,9 +148,21 @@
         /// <summary>
         /// Activates a user. This allows them to log on.
         /// </summary>
-        public void Activate()
+        public void Activate(bool invite)
         {
             this.IsActive = true;
+            if (invite == false) return;
+            this.ActivationKey = Guid.NewGuid().ToString();
+            this.RequiresPasswordChange = true;
+            DomainEvent.Raise(new UserInvitedEvent(this));
+        }
+
+        /// <summary>
+        /// Deactivates a user. This prevents them from logging on.
+        /// </summary>
+        public void Deactivate()
+        {
+            this.IsActive = false;
         }
 
         /// <summary>

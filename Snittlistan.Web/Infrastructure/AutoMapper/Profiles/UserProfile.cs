@@ -1,6 +1,6 @@
 ﻿namespace Snittlistan.Web.Infrastructure.AutoMapper.Profiles
 {
-    using Snittlistan.Web.Areas.V1.ViewModels.Admin;
+    using Snittlistan.Web.Areas.V2.ViewModels;
     using Snittlistan.Web.Models;
 
     public class UserProfile : global::AutoMapper.Profile

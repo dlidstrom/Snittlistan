@@ -71,7 +71,7 @@
                 {
                     Id = "Admin"
                 };
-            user.Activate();
+            user.Activate(false);
             this.Session.Store(user);
 
             return this.RedirectToAction(c => c.Success());

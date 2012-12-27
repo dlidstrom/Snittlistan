@@ -2,11 +2,13 @@
 {
     using System;
 
+    using Castle.Windsor;
+
     using Moq;
 
     using Snittlistan.Web.Areas.V1.Controllers;
     using Snittlistan.Web.Areas.V1.ViewModels.Account;
-    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Events;
     using Snittlistan.Web.Models;
     using Snittlistan.Web.Services;
 
@@ -14,6 +16,18 @@
 
     public class AccountController_Logon : DbTest
     {
+        private readonly IWindsorContainer oldContainer;
+
+        public AccountController_Logon()
+        {
+            this.oldContainer = DomainEvent.SetContainer(new WindsorContainer());
+        }
+
+        protected override void OnDispose()
+        {
+            DomainEvent.SetContainer(oldContainer);
+        }
+
         [Fact]
         public void LogonReturnsView()
         {
@@ -88,7 +102,7 @@
         [Fact]
         public void WrongPasswordRedisplaysForm()
         {
-            bool cookieSet = false;
+            var cookieSet = false;
             Action cookieSetAction = () => cookieSet = true;
             var controller = SetupPasswordTest(cookieSetAction);
 

@@ -1,4 +1,4 @@
-﻿namespace Snittlistan.Web.Areas.V1.ViewModels.Admin
+﻿namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using System.ComponentModel.DataAnnotations;
 

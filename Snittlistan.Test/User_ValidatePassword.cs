@@ -14,7 +14,7 @@
             var original = new User("F", "L", "e@d.com", "some pwd");
             using (DomainEvent.Disable())
             {
-                original.Activate();
+                original.Activate(false);
                 Session.Store(original);
                 Session.SaveChanges();
             }

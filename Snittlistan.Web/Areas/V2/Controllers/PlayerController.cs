@@ -5,13 +5,11 @@
     using System.Web;
     using System.Web.Mvc;
 
-    using Raven.Abstractions;
     using Raven.Client;
 
     using Snittlistan.Web.Areas.V2.Models;
     using Snittlistan.Web.Areas.V2.ViewModels;
     using Snittlistan.Web.Controllers;
-    using Snittlistan.Web.Helpers;
     using Snittlistan.Web.Infrastructure.AutoMapper;
 
     public class PlayerController : AbstractController
@@ -22,20 +20,13 @@
             if (session == null) throw new ArgumentNullException("session");
         }
 
-        public ActionResult Index(int? season)
+        public ActionResult Index()
         {
-            if (season.HasValue == false)
-                season = this.Session.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
             var players = Session.Query<Player>()
                 .OrderBy(p => p.IsSupporter)
                 .ThenBy(p => p.Name)
                 .ToList();
-            var vm = new PlayerDataViewModel
-            {
-                Players = players.MapTo<PlayerViewModel>(),
-                SeasonStart = season.Value,
-                SeasonEnd = season.Value + 1
-            };
+            var vm = players.MapTo<PlayerViewModel>();
             return View(vm);
         }
 
