@@ -2,11 +2,12 @@
 {
     using System;
 
+    using Castle.Windsor;
+
     using Moq;
 
     using Snittlistan.Web.Areas.V1.Controllers;
     using Snittlistan.Web.Areas.V1.ViewModels.Account;
-    using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Events;
     using Snittlistan.Web.Helpers;
     using Snittlistan.Web.Services;
@@ -15,6 +16,13 @@
 
     public class AccountController_Scenario : DbTest
     {
+        private readonly IWindsorContainer oldContainer;
+
+        public AccountController_Scenario()
+        {
+            this.oldContainer = DomainEvent.SetContainer(new WindsorContainer());
+        }
+
         [Fact]
         public void CanLogOnAfterRegisteringAndVerifyingAccount()
         {
@@ -43,7 +51,7 @@
             controller2.Verify(Guid.Parse(key));
 
             // logon
-            bool loggedOn = false;
+            var loggedOn = false;
             var service = Mock.Of<IAuthenticationService>();
             Mock.Get(service)
                 .Setup(s => s.SetAuthCookie(It.Is<string>(e => e == "e@d.com"), It.IsAny<bool>()))
@@ -62,6 +70,11 @@
                 string.Empty);
 
             Assert.True(loggedOn);
+        }
+
+        protected override void OnDispose()
+        {
+            DomainEvent.SetContainer(oldContainer);
         }
     }
 }

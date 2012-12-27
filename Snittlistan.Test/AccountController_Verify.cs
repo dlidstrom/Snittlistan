@@ -3,10 +3,12 @@
     using System;
     using System.Web.Mvc;
 
+    using Castle.Windsor;
+
     using Moq;
 
     using Snittlistan.Web.Areas.V1.Controllers;
-    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Events;
     using Snittlistan.Web.Helpers;
     using Snittlistan.Web.Models;
     using Snittlistan.Web.Services;
@@ -15,6 +17,13 @@
 
     public class AccountController_Verify : DbTest
     {
+        private readonly IWindsorContainer oldContainer;
+
+        public AccountController_Verify()
+        {
+            this.oldContainer = DomainEvent.SetContainer(new WindsorContainer());
+        }
+
         [Fact]
         public void UnknownIdFails()
         {
@@ -46,6 +55,11 @@
             VerifyActivationKeyForUser(user)
                 .AssertActionRedirect()
                 .ToAction("LogOn");
+        }
+
+        protected override void OnDispose()
+        {
+            DomainEvent.SetContainer(oldContainer);
         }
 
         private ActionResult VerifyActivationKeyForUser(User user)

@@ -124,6 +124,9 @@
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
     </Reference>
+    <Reference Include="Postal">
+      <HintPath>..\packages\postal.0.8.0\lib\net45\Postal.dll</HintPath>
+    </Reference>
     <Reference Include="PowerCollections, Version=1.0.4646.26455, Culture=neutral, PublicKeyToken=2573bf8a1bdddcd5, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\RavenDB.Database.1.2.2088-Unstable\lib\net40\PowerCollections.dll</HintPath>
@@ -152,6 +155,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\RavenDB.Database.1.2.2088-Unstable\lib\net40\Raven.Smuggler.exe</HintPath>
     </Reference>
+    <Reference Include="RazorEngine">
+      <HintPath>..\packages\RazorEngine.3.0.8\lib\net40\RazorEngine.dll</HintPath>
+    </Reference>
     <Reference Include="Spatial4n.Core.NTS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9f9456e1ca16d45e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\RavenDB.Database.1.2.2088-Unstable\lib\net40\Spatial4n.Core.NTS.dll</HintPath>
@@ -166,6 +172,10 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\RazorEngine.3.0.8\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -203,10 +213,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20710.0\lib\net40\System.Web.Razor.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
@@ -221,6 +227,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationMode.cs" />
+    <Compile Include="Areas\V2\ViewModels\SetPasswordViewModel.cs" />
+    <Compile Include="Infrastructure\JetBrains\Annotations.cs" />
+    <Compile Include="Models\Emails.cs" />
+    <Compile Include="ViewModels\UserInvitedViewModel.cs" />
+    <Compile Include="Areas\V2\AutoMapper\UserProfile.cs" />
+    <Compile Include="Areas\V2\Controllers\UserController.cs" />
+    <Compile Include="Areas\V2\ViewModels\CreateUserViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\RosterExtensionMethods.cs" />
     <Compile Include="Areas\V2\ViewModels\RosterPlayersViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\EditRosterPlayersViewModel.cs" />
@@ -242,8 +256,11 @@
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="Areas\V1\Controllers\AccountController.cs" />
     <Compile Include="Areas\V2\ViewModels\LogOnViewModel.cs" />
+    <Compile Include="Events\UserInvitedEvent.cs" />
+    <Compile Include="Handlers\UserInvited.cs" />
+    <Compile Include="Helpers\ViewHelper.cs" />
     <Compile Include="HtmlHelpers\RequestExtensions.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Profiles\PlayerProfile.cs" />
+    <Compile Include="Areas\V2\AutoMapper\PlayerProfile.cs" />
     <Compile Include="Infrastructure\Indexes\PlayerSearch.cs" />
     <Compile Include="Infrastructure\Indexes\RosterSearchTerms.cs" />
     <Compile Include="Areas\V2\Models\Roster.cs" />
@@ -252,14 +269,13 @@
     <Compile Include="Areas\V2\Controllers\RosterController.cs" />
     <Compile Include="Areas\V1\Controllers\ElmahController.cs" />
     <Compile Include="Areas\V1\Controllers\ErrorController.cs" />
-    <Compile Include="Areas\V1\Controllers\HackerController.cs" />
+    <Compile Include="Controllers\HackerController.cs" />
     <Compile Include="Areas\V1\Controllers\HomeController.cs" />
     <Compile Include="Areas\V1\Controllers\MailController.cs" />
     <Compile Include="Areas\V1\Controllers\MatchController.cs" />
     <Compile Include="Areas\V1\Controllers\NotFoundController.cs" />
     <Compile Include="Areas\V1\Controllers\SearchController.cs" />
     <Compile Include="Areas\V2\Controllers\SessionApiController.cs" />
-    <Compile Include="Areas\V1\Controllers\UserController.cs" />
     <Compile Include="Areas\V1\Controllers\ValidationController.cs" />
     <Compile Include="Areas\V1\Controllers\WelcomeController.cs" />
     <Compile Include="Events\DomainEvent.cs" />
@@ -349,8 +365,8 @@
     <Compile Include="Areas\V1\ViewModels\Account\LogOnViewModel.cs" />
     <Compile Include="Areas\V1\ViewModels\Account\RegisterViewModel.cs" />
     <Compile Include="Areas\V1\ViewModels\Account\RegistrationMailViewModel.cs" />
-    <Compile Include="Areas\V1\ViewModels\Admin\EditUserViewModel.cs" />
-    <Compile Include="Areas\V1\ViewModels\Admin\UserViewModel.cs" />
+    <Compile Include="Areas\V2\ViewModels\EditUserViewModel.cs" />
+    <Compile Include="Areas\V2\ViewModels\UserViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\InitialDataViewModel.cs" />
     <Compile Include="Areas\V1\ViewModels\Match\EditTeam4x4ViewModel.cs" />
     <Compile Include="Areas\V1\ViewModels\Match\EditTeam8x4ViewModel.cs" />
@@ -434,6 +450,10 @@
     <Content Include="Areas\V2\Views\Roster\View.cshtml" />
     <Content Include="Areas\V2\Views\Roster\DisplayTemplates\Players.cshtml" />
     <Content Include="Areas\V2\Views\Roster\EditPlayers.cshtml" />
+    <Content Include="Areas\V2\Views\User\_UserEditor.cshtml" />
+    <Content Include="Areas\V2\Views\Shared\DisplayTemplates\ValidationSummary.cshtml" />
+    <Content Include="Areas\V2\Views\User\Activate.cshtml" />
+    <Content Include="Areas\V2\Views\Authentication\Activate.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
@@ -463,7 +483,10 @@
     <Content Include="Content\templates\turn-template.html" />
     <Content Include="Content\templates\turns-template.html" />
     <Content Include="Global.asax" />
-    <Content Include="Web.config" />
+    <Content Include="robots.txt" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -477,9 +500,12 @@
     <Content Include="Areas\V2\Views\Roster\Delete.cshtml" />
     <Content Include="Areas\V2\Views\Roster\DisplayTemplates\Roster.cshtml" />
     <None Include="Properties\PublishProfiles\Snittlistan-Netcetera.pubxml" />
+    <Content Include="Views\Emails\InviteUser.cshtml" />
+    <Content Include="Views\Emails\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\V1\ViewModels\Admin\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -492,7 +518,7 @@
     <Content Include="Areas\V1\Views\Account\RegisterSuccess.cshtml" />
     <Content Include="Areas\V1\Views\Account\VerifySuccess.cshtml" />
     <Content Include="Areas\V2\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\V1\Views\Hacker\Index.cshtml" />
+    <Content Include="Views\Hacker\Index.cshtml" />
     <Content Include="Areas\V1\Views\Home\About.cshtml" />
     <Content Include="Areas\V1\Views\Home\Index.cshtml" />
     <Content Include="Areas\V1\Views\Home\Player.cshtml" />
@@ -532,11 +558,9 @@
     <Content Include="Areas\V1\Views\Shared\NotFound.cshtml" />
     <Content Include="Areas\V1\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\V1\Views\Shared\_LogOnPartial.cshtml" />
-    <Content Include="Areas\V1\Views\User\Create.cshtml" />
-    <Content Include="Areas\V1\Views\User\Delete.cshtml" />
-    <Content Include="Areas\V1\Views\User\Details.cshtml" />
-    <Content Include="Areas\V1\Views\User\Edit.cshtml" />
-    <Content Include="Areas\V1\Views\User\Index.cshtml" />
+    <Content Include="Areas\V2\Views\User\Create.cshtml" />
+    <Content Include="Areas\V2\Views\User\Delete.cshtml" />
+    <Content Include="Areas\V2\Views\User\Index.cshtml" />
     <Content Include="Areas\V1\Views\Welcome\Index.cshtml" />
     <Content Include="Areas\V1\Views\Welcome\Reset.cshtml" />
     <Content Include="Areas\V1\Views\Welcome\Success.cshtml" />

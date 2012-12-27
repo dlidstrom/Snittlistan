@@ -1,12 +1,28 @@
 ﻿namespace Snittlistan.Test
 {
+    using System;
+
+    using Castle.Windsor;
+
     using Snittlistan.Web.Events;
     using Snittlistan.Web.Models;
 
     using Xunit;
 
-    public class UserTest
+    public class UserTest : IDisposable
     {
+        private readonly IWindsorContainer oldContainer;
+
+        public UserTest()
+        {
+            this.oldContainer = DomainEvent.SetContainer(new WindsorContainer());
+        }
+
+        public void Dispose()
+        {
+            DomainEvent.SetContainer(oldContainer);
+        }
+
         [Fact]
         public void ShouldNotBeActiveWhenCreated()
         {
@@ -35,7 +51,7 @@
         public void CanActivate()
         {
             var user = new User("F", "L", "e@d.com", "pwd");
-            user.Activate();
+            user.Activate(false);
             Assert.True(user.IsActive);
         }
     }

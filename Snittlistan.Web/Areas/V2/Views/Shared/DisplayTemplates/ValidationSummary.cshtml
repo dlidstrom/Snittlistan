@@ -1,0 +1,12 @@
+﻿@model ModelStateDictionary
+
+@{
+    var message = ViewData["message"] as string ?? "Det gick inte att spara. Försök gärna igen.";
+}
+
+@if (Html.ViewData.ModelState.IsValid == false)
+{
+    <div class="alert alert-danger">
+        @Html.ValidationSummary(false, message)
+    </div>
+}

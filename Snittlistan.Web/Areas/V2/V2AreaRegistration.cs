@@ -33,12 +33,6 @@
             //    defaults: new { controller = "NotFound", action = "NotFound" });
 
             context.MapRoute(
-                name: "Hacker-Routes",
-                url: "{*php}",
-                defaults: new { controller = "Hacker", action = "Index" },
-                constraints: new { php = @".*\.php.*|catalog|^s?cgi(\-bin)?.*|^scripts.*|^(aw)?stats.*|^shop.*" });
-
-            context.MapRoute(
                 name: "Redirects1",
                 url: "Home/Player/{*rest}",
                 defaults: new { controller = "Redirect", action = "Redirect" });

@@ -14,7 +14,7 @@
             // this test actually sends a mail
             const string Host = "mail.snittlistan.se";
             const int Port = 1045;
-            const string Username = "elmah@snittlistan.se";
+            const string Username = "admin@snittlistan.se";
             const string Password = "____";
             var ev = new AutoResetEvent(false);
             var service = new EmailService(Host, Port, Username, Password, new[] { "dlidstrom@gmail.com" })

@@ -1,4 +1,4 @@
-﻿@model PlayerDataViewModel
+﻿@model List<PlayerViewModel>
 <div class="row">
     <div class="span6">
         <h2>Spelare och supporters</h2>
@@ -28,7 +28,7 @@
                     <th></th>
                 }
             </tr>
-            @foreach (var player in Model.Players)
+            @foreach (var player in Model)
             {
                 <tr>
                     <td>@player.Name</td>

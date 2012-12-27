@@ -1,3 +1,4 @@
+@using Snittlistan.Web
 @{
     ViewBag.Title = "Snittlistan V2";
     Bundles.Reference("Content/css/main.less");
@@ -10,7 +11,7 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>@ViewBag.Title</title>
-        @if (Html.IsDebug())
+        @if (Html.ApplicationMode() == ApplicationMode.Debug)
         {
             <link href="@Url.Content("~/Content/external/bootstrap/css/bootstrap.css")" rel="stylesheet" />
             <link href="@Url.Content("~/Content/external/bootstrap/css/bootstrap-responsive.css")" rel="stylesheet" />
@@ -57,7 +58,7 @@
                                     </p>
                                 </li>
                                 <li>
-                                    <a class="btn btn-link btn-primary" href="@Url.Action("LogOff", "Authentication")">
+                                    <a href="@Url.Action("LogOff", "Authentication")">
                                         <i class="sprite-glyphicons_203_lock"></i>
                                         Logga ut
                                     </a>
@@ -66,7 +67,7 @@
                             else
                             {
                                 <li>
-                                    <a class="btn btn-link pull-right" href="@Url.Action("LogOn", "Authentication")">
+                                    <a class="btn btn-link" href="@Url.Action("LogOn", "Authentication")">
                                         <i class="sprite-glyphicons_204_unlock"></i>
                                         Logga in
                                     </a>
@@ -139,7 +140,7 @@
             *@
         </div>
         @* Use content delivery networks *@
-        @if(Html.IsDebug())
+        @if (Html.ApplicationMode() == ApplicationMode.Debug)
         {
             @Content.External("jquery/jquery.js", Url)
             @Content.External("bootstrap/js/bootstrap.js", Url)

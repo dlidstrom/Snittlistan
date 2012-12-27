@@ -2,6 +2,7 @@
 {
     using System;
     using System.Diagnostics;
+    using System.Web;
     using System.Web.Mvc;
 
     using Raven.Client;
@@ -9,6 +10,8 @@
     using Snittlistan.Web.Areas.V2.ViewModels;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Helpers;
+    using Snittlistan.Web.Infrastructure.AutoMapper;
+    using Snittlistan.Web.Models;
     using Snittlistan.Web.Services;
 
     public class AuthenticationController : AbstractController
@@ -68,6 +71,28 @@
         public ActionResult LogOff()
         {
             this.authenticationService.SignOut();
+            return this.RedirectToAction("Index", "Roster");
+        }
+
+        public ActionResult Activate(string id, string activationKey)
+        {
+            var user = Session.Load<User>(id);
+            if (user == null) throw new HttpException(404, "User not found");
+            if (user.ActivationKey != activationKey) throw new InvalidOperationException("Unknown activation key");
+            if (user.RequiresPasswordChange)
+                return this.View(new SetPasswordViewModel { ActivationKey = activationKey });
+            return this.RedirectToAction("Index", "Roster");
+        }
+
+        [HttpPost]
+        public ActionResult Activate(string id, SetPasswordViewModel vm)
+        {
+            if (ModelState.IsValid == false) return this.View(vm);
+            var user = Session.Load<User>(id);
+            if (user == null) throw new HttpException(404, "User not found");
+            if (user.ActivationKey != vm.ActivationKey) throw new InvalidOperationException("Unknown activation key");
+            if (user.RequiresPasswordChange == false) throw new InvalidOperationException("Password change not allowed");
+            user.SetPassword(vm.Password);
             return this.RedirectToAction("Index", "Roster");
         }
     }

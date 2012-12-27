@@ -34,8 +34,13 @@
 
         protected IDocumentSession Session { get; private set; }
 
+        protected virtual void OnDispose()
+        {
+        }
+
         public void Dispose()
         {
+            this.OnDispose();
             Session.Dispose();
             Store.Dispose();
         }
@@ -55,7 +60,7 @@
                 lastName: lastName,
                 email: email,
                 password: password);
-            user.Activate();
+            user.Activate(false);
             Session.Store(user);
             Session.SaveChanges();
             return user;

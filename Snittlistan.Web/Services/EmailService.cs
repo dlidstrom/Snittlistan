@@ -18,12 +18,12 @@
     /// </summary>
     public class EmailService : IEmailService
     {
-        private string host;
-        private int port;
-        private string username;
-        private string password;
-        private MailAddress from;
-        private List<MailAddress> moderatorEmails;
+        private readonly string host;
+        private readonly int port;
+        private readonly string username;
+        private readonly string password;
+        private readonly MailAddress from;
+        private readonly List<MailAddress> moderatorEmails;
 
         /// <summary>
         /// Initializes a new instance of the EmailService class.
