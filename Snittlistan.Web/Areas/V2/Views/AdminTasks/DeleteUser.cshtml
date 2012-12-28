@@ -6,9 +6,9 @@
 
 <h2>Ta bort</h2>
 <p>Är du säker på att du vill ta bort denna användare?</p>
-@using (Html.BeginForm("Delete", "User", FormMethod.Post))
+@using (Html.BeginForm("DeleteUser", "AdminTasks", FormMethod.Post))
 {
     <h3>@Model.Name</h3>
     <button class="btn btn-danger btn-large" type="submit">Ta bort</button>
-    @Html.ActionLink("Avbryt", "Index", null, new { @class = "btn btn-large" })
+    @Html.ActionLink("Avbryt", "Users", null, new { @class = "btn btn-large" })
 }

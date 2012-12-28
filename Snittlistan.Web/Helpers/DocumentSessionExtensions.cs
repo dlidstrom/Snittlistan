@@ -33,7 +33,7 @@
 
         public static int LatestSeasonOrDefault(this IDocumentSession sess, int def)
         {
-            return sess.Query<Roster>()
+            return sess.Query<Roster, RosterSearchTerms>()
                 .OrderByDescending(s => s.Season)
                 .Select(r => r.Season)
                 .ToList()

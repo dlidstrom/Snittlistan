@@ -48,9 +48,16 @@
         /// <param name="email"></param>
         /// <param name="hashedPassword"></param>
         /// <param name="passwordSalt"></param>
+        /// <param name="requiresPasswordChange">Indicates whether this user requires password change.</param>
         [JsonConstructor]
 // ReSharper disable UnusedMember.Local Used by Raven when loading.
-        private User(string firstName, string lastName, string email, string hashedPassword, Guid passwordSalt)
+        private User(
+            string firstName,
+            string lastName,
+            string email,
+            string hashedPassword,
+            Guid passwordSalt,
+            bool requiresPasswordChange)
 // ReSharper restore UnusedMember.Local
         {
             this.FirstName = firstName;
@@ -58,6 +65,7 @@
             this.Email = email;
             this.HashedPassword = hashedPassword;
             this.passwordSalt = passwordSalt;
+            this.RequiresPasswordChange = requiresPasswordChange;
         }
 
         /// <summary>
@@ -74,8 +82,6 @@
         /// Gets a value indicating whether the user is activated.
         /// </summary>
         public bool IsActive { get; private set; }
-
-        public bool RequiresPasswordChange { get; private set; }
 
         /// <summary>
         /// Gets the activation key.
@@ -103,6 +109,11 @@
         private string HashedPassword { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether password change is required.
+        /// </summary>
+        private bool RequiresPasswordChange { get; set; }
+
+        /// <summary>
         /// Gets the password salt, per user.
         /// </summary>
         private Guid PasswordSalt
@@ -119,8 +130,11 @@
         /// Sets the password.
         /// </summary>
         /// <param name="password">New password.</param>
-        public void SetPassword(string password)
+        /// <param name="suppliedActivationKey">Supplied activation key.</param>
+        public void SetPassword(string password, string suppliedActivationKey)
         {
+            if (RequiresPasswordChange == false) throw new InvalidOperationException("Password change not allowed");
+            if (ActivationKey != suppliedActivationKey) throw new InvalidOperationException("Unknown activation key");
             this.HashedPassword = this.ComputeHashedPassword(password);
             RequiresPasswordChange = false;
         }

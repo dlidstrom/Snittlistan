@@ -1,0 +1,18 @@
+﻿@model RavenAdminViewModel
+
+@{
+    ViewBag.Title = "Administrera RavenDB";
+}
+
+<div class="row">
+    <div class="span8">
+        <h3>@ViewBag.Title</h3>
+        @using (Html.BeginForm("ResetIndexes", "AdminTasks", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            <div class="alert alert-danger">Är du säker på att du vill nollställa alla index?</div>
+            <div class="form-actions">
+                <button class="btn btn-primary btn-large" type="submit">Ja, utför</button>
+            </div>
+        }
+    </div>
+</div>
