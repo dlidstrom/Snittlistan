@@ -15,10 +15,7 @@
             FormMethod.Post,
             new { @class = "form-horizontal"}))
         {
-            if (Html.ViewData.ModelState.IsValid == false)
-            {
-                @Html.ValidationSummary(false, "Det gick inte att spara. Försök gärna igen.")
-            }
+            @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
             <table class="table table-condensed">
                 <tr>
                     <th>Bord</th>

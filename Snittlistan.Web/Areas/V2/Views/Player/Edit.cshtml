@@ -9,10 +9,7 @@
         <h3>@ViewBag.Title</h3>
         @using (Html.BeginForm("Edit", "Player", FormMethod.Post, new { @class = "form-horizontal"}))
         {
-            if (Html.ViewData.ModelState.IsValid == false)
-            {
-                @Html.ValidationSummary(false, "Det gick inte att spara. Försök gärna igen.")
-            }
+            @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
             @Html.Partial("_PlayerEditor", Model)
             <div class="form-actions">
                 <button class="btn btn-primary btn-large" type="submit">Spara</button>
