@@ -32,7 +32,9 @@
             if (season.HasValue == false)
                 season = this.Session.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
 
-            var rosters = this.Session.Query<Roster>().Where(r => r.Season == season).ToList();
+            var rosters = this.Session.Query<Roster, RosterSearchTerms>()
+                .Where(r => r.Season == season && r.Date >= SystemTime.UtcNow.Date)
+                .ToList();
             var q = from roster in rosters
                     orderby roster.Turn
                     group roster by roster.Turn into g
@@ -211,9 +213,8 @@
         private RosterViewModel LoadRoster(Roster roster)
         {
             var vm = roster.MapTo<RosterViewModel>();
-            foreach (var playerId in roster.Players.Where(p => p != null))
+            foreach (var player in roster.Players.Where(p => p != null).Select(playerId => this.Session.Load<Player>(playerId)))
             {
-                var player = this.Session.Load<Player>(playerId);
                 vm.Players.Add(Tuple.Create(player.Id, player.Name));
             }
 

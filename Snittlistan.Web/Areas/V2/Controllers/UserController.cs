@@ -1,110 +1,54 @@
 ﻿namespace Snittlistan.Web.Areas.V2.Controllers
 {
-    using System.Linq;
+    using System;
     using System.Web;
     using System.Web.Mvc;
 
-    using MvcContrib;
+    using JetBrains.Annotations;
 
     using Raven.Client;
 
-    using Snittlistan.Web.Areas.V1.Controllers;
     using Snittlistan.Web.Areas.V2.ViewModels;
-    using Snittlistan.Web.Helpers;
-    using Snittlistan.Web.Infrastructure.AutoMapper;
+    using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Models;
+    using Snittlistan.Web.Services;
 
     /// <summary>
     /// User administration.
     /// </summary>
     public class UserController : AdminController
     {
+        private readonly IAuthenticationService authenticationService;
+
         /// <summary>
         /// Initializes a new instance of the UserController class.
         /// </summary>
         /// <param name="session">Document session.</param>
-        public UserController(IDocumentSession session)
+        /// <param name="authenticationService">Authentication service.</param>
+        public UserController(IDocumentSession session, [NotNull] IAuthenticationService authenticationService)
             : base(session)
         {
+            if (authenticationService == null) throw new ArgumentNullException("authenticationService");
+            this.authenticationService = authenticationService;
         }
 
-        /// <summary>
-        /// GET: /User/Index.
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Index()
+        public ActionResult SetPassword(string id, string activationKey)
         {
-            var users = this.Session.Query<User>()
-                .MapTo<UserViewModel>()
-                .OrderByDescending(x => x.IsActive)
-                .ThenBy(x => x.Email)
-                .ToList();
-
-            return this.View(users);
-        }
-
-        public ActionResult Delete(string id)
-        {
-            var user = this.Session.Load<User>(id);
+            var user = Session.Load<User>(id);
             if (user == null) throw new HttpException(404, "User not found");
-
-            return this.View(user.MapTo<UserViewModel>());
+            if (user.ActivationKey != activationKey) throw new InvalidOperationException("Unknown activation key");
+            return this.View(new SetPasswordViewModel { ActivationKey = activationKey });
         }
 
         [HttpPost]
-        [ActionName("Delete")]
-        public ActionResult DeleteConfirmed(string id)
+        public ActionResult SetPassword(string id, SetPasswordViewModel vm)
         {
-            var user = this.Session.Load<User>(id);
+            var user = Session.Load<User>(id);
             if (user == null) throw new HttpException(404, "User not found");
-            Session.Delete(user);
-            return this.RedirectToAction("Index");
-        }
-
-        public ActionResult Create()
-        {
-            return this.View(new CreateUserViewModel());
-        }
-
-        [HttpPost]
-        public ActionResult Create(CreateUserViewModel vm)
-        {
-            // an existing user cannot be registered again
-            if (this.Session.FindUserByEmail(vm.Email) != null)
-            {
-                this.ModelState.AddModelError("Email", "Användaren finns redan");
-            }
-
-            // redisplay form if any errors at this point
-            if (!this.ModelState.IsValid) return this.View(vm);
-
-            var newUser = new User(string.Empty, string.Empty, vm.Email, string.Empty);
-            this.Session.Store(newUser);
-
-            return this.RedirectToAction(c => c.Index());
-        }
-
-        public ActionResult Activate(string id)
-        {
-            var user = this.Session.Load<User>(id);
-            if (user == null) throw new HttpException(404, "User not found");
-
-            return this.View(user.MapTo<UserViewModel>());
-        }
-
-        [HttpPost]
-        [ActionName("Activate")]
-        public ActionResult ActivateConfirmed(string id, bool? invite)
-        {
-            var user = this.Session.Load<User>(id);
-            if (user == null) throw new HttpException(404, "User not found");
-            if (user.IsActive) user.Deactivate();
-            else
-            {
-                user.Activate(invite.HasValue && invite.Value);
-            }
-
-            return this.RedirectToAction("Index");
+            if (ModelState.IsValid == false) return this.View(vm);
+            user.SetPassword(vm.Password, vm.ActivationKey);
+            authenticationService.SetAuthCookie(user.Email, true);
+            return this.RedirectToAction("Index", "Roster");
         }
     }
 }

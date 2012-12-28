@@ -17,7 +17,8 @@
                                       roster.Opponent,
                                       roster.Location,
                                       roster.Turn,
-                                      roster.Season
+                                      roster.Season,
+                                      roster.Date
                                   };
         }
 

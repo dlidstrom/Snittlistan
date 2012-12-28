@@ -29,6 +29,19 @@
                 });
         }
 
+        public static void UserRegistered(string recipient, string subject, string id, string activationKey)
+        {
+            Send(
+                "UserRegistered",
+                recipient,
+                subject,
+                o =>
+                    {
+                        o.Id = id;
+                        o.ActivationKey = activationKey;
+                    });
+        }
+
         private static void Send(
             [AspMvcView] string view,
             string recipient,

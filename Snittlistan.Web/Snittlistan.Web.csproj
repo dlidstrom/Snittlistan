@@ -49,10 +49,6 @@
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.2.1.267\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="BouncyCastle.Crypto, Version=1.7.4137.9688, Culture=neutral, PublicKeyToken=a4292a325f69b123, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Database.1.2.2088-Unstable\lib\net40\BouncyCastle.Crypto.dll</HintPath>
-    </Reference>
     <Reference Include="Cassette">
       <HintPath>..\packages\Cassette.2.0.0\lib\net40-client\Cassette.dll</HintPath>
     </Reference>
@@ -80,35 +76,12 @@
     <Reference Include="Elmah">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
-    <Reference Include="Elmah.Mvc">
-      <HintPath>..\packages\Elmah.MVC.2.0.1\lib\net40\Elmah.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="Esent.Interop, Version=1.7.0.0, Culture=neutral, PublicKeyToken=8dd49bbdae3f61af, processorArchitecture=MSIL">
+    <Reference Include="Elmah.Mvc, Version=2.0.0.37642, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Database.1.2.2088-Unstable\lib\net40\Esent.Interop.dll</HintPath>
-    </Reference>
-    <Reference Include="FSharp.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Database.1.2.2088-Unstable\lib\net40\FSharp.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="GeoAPI, Version=1.7.4646.26455, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Database.1.2.2088-Unstable\lib\net40\GeoAPI.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.NRefactory, Version=3.0.0.3800, Culture=neutral, PublicKeyToken=efe927acf176eea2, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Database.1.2.2088-Unstable\lib\net40\ICSharpCode.NRefactory.dll</HintPath>
+      <HintPath>..\packages\Elmah.MVC.2.0.2\lib\net40\Elmah.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Jurassic">
       <HintPath>..\packages\Jurassic.2.1.1\lib\Jurassic.dll</HintPath>
-    </Reference>
-    <Reference Include="Lucene.Net, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Database.1.2.2088-Unstable\lib\net40\Lucene.Net.dll</HintPath>
-    </Reference>
-    <Reference Include="Lucene.Net.Contrib.Spatial.NTS, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Database.1.2.2088-Unstable\lib\net40\Lucene.Net.Contrib.Spatial.NTS.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Mvc">
@@ -117,50 +90,32 @@
     <Reference Include="MvcContrib">
       <HintPath>..\packages\MvcContrib.Mvc3-ci.3.0.100.0\lib\MvcContrib.dll</HintPath>
     </Reference>
-    <Reference Include="NetTopologySuite, Version=1.13.4646.26681, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
+    <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Database.1.2.2088-Unstable\lib\net40\NetTopologySuite.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog">
       <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Postal">
       <HintPath>..\packages\postal.0.8.0\lib\net45\Postal.dll</HintPath>
     </Reference>
-    <Reference Include="PowerCollections, Version=1.0.4646.26455, Culture=neutral, PublicKeyToken=2573bf8a1bdddcd5, processorArchitecture=MSIL">
+    <Reference Include="Raven.Abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Database.1.2.2088-Unstable\lib\net40\PowerCollections.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Client.2.0.2186-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Abstractions, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+    <Reference Include="Raven.Client.Embedded, Version=2.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Client.1.2.2088-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Embedded.2.0.2186-Unstable\lib\net40\Raven.Client.Embedded.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Backup, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Raven.Client.Lightweight, Version=2.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Database.1.2.2088-Unstable\lib\net40\Raven.Backup.exe</HintPath>
+      <HintPath>..\packages\RavenDB.Client.2.0.2186-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Embedded, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+    <Reference Include="Raven.Database, Version=2.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Embedded.1.2.2088-Unstable\lib\net40\Raven.Client.Embedded.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.2.0.2186-Unstable\lib\net40\Raven.Database.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Lightweight, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+    <Reference Include="RazorEngine, Version=3.0.8.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Client.1.2.2088-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
-    </Reference>
-    <Reference Include="Raven.Database, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Database.1.2.2088-Unstable\lib\net40\Raven.Database.dll</HintPath>
-    </Reference>
-    <Reference Include="Raven.Smuggler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Database.1.2.2088-Unstable\lib\net40\Raven.Smuggler.exe</HintPath>
-    </Reference>
-    <Reference Include="RazorEngine">
-      <HintPath>..\packages\RazorEngine.3.0.8\lib\net40\RazorEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="Spatial4n.Core.NTS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9f9456e1ca16d45e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Database.1.2.2088-Unstable\lib\net40\Spatial4n.Core.NTS.dll</HintPath>
+      <HintPath>..\lib\RazorEngine.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -172,10 +127,6 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\RazorEngine.3.0.8\lib\net40\System.Web.Razor.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -213,6 +164,10 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20710.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
@@ -228,6 +183,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="Areas\V2\Controllers\AdminTasksController.cs" />
+    <Compile Include="Areas\V2\ViewModels\RavenAdminViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\SetPasswordViewModel.cs" />
     <Compile Include="Infrastructure\JetBrains\Annotations.cs" />
     <Compile Include="Models\Emails.cs" />
@@ -258,14 +215,13 @@
     <Compile Include="Areas\V2\ViewModels\LogOnViewModel.cs" />
     <Compile Include="Events\UserInvitedEvent.cs" />
     <Compile Include="Handlers\UserInvited.cs" />
-    <Compile Include="Helpers\ViewHelper.cs" />
     <Compile Include="HtmlHelpers\RequestExtensions.cs" />
     <Compile Include="Areas\V2\AutoMapper\PlayerProfile.cs" />
     <Compile Include="Infrastructure\Indexes\PlayerSearch.cs" />
     <Compile Include="Infrastructure\Indexes\RosterSearchTerms.cs" />
     <Compile Include="Areas\V2\Models\Roster.cs" />
     <Compile Include="Areas\V2\ViewModels\RosterViewModel.cs" />
-    <Compile Include="Areas\V1\Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Areas\V2\Controllers\RosterController.cs" />
     <Compile Include="Areas\V1\Controllers\ElmahController.cs" />
     <Compile Include="Areas\V1\Controllers\ErrorController.cs" />
@@ -286,7 +242,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Handlers\IHandle.cs" />
-    <Compile Include="Handlers\SendRegistrationEmailHandler.cs" />
+    <Compile Include="Handlers\UserRegistered.cs" />
     <Compile Include="Helpers\DocumentSessionExtensions.cs" />
     <Compile Include="Helpers\InputError.cs" />
     <Compile Include="HtmlHelpers\CssType.cs" />
@@ -386,10 +342,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Content Include="..\packages\RavenDB.Embedded.1.2.2088-Unstable\tools\Raven.Studio.xap">
-      <Link>Raven.Studio.xap</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\css\images\feedback.png" />
     <Content Include="Content\css\images\fuckoff.jpg" />
     <Content Include="Content\css\Site.css" />
@@ -450,10 +402,12 @@
     <Content Include="Areas\V2\Views\Roster\View.cshtml" />
     <Content Include="Areas\V2\Views\Roster\DisplayTemplates\Players.cshtml" />
     <Content Include="Areas\V2\Views\Roster\EditPlayers.cshtml" />
-    <Content Include="Areas\V2\Views\User\_UserEditor.cshtml" />
+    <Content Include="Areas\V2\Views\AdminTasks\_UserEditor.cshtml" />
     <Content Include="Areas\V2\Views\Shared\DisplayTemplates\ValidationSummary.cshtml" />
-    <Content Include="Areas\V2\Views\User\Activate.cshtml" />
-    <Content Include="Areas\V2\Views\Authentication\Activate.cshtml" />
+    <Content Include="Areas\V2\Views\AdminTasks\ActivateUser.cshtml" />
+    <Content Include="Areas\V2\Views\User\SetPassword.cshtml" />
+    <Content Include="Areas\V2\Views\AdminTasks\ResetIndexes.cshtml" />
+    <Content Include="Areas\V2\Views\AdminTasks\Raven.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
@@ -528,8 +482,7 @@
     <Content Include="Areas\V1\Views\Home\_Turn1.cshtml" />
     <Content Include="Areas\V1\Views\Home\_Turn2.cshtml" />
     <Content Include="Areas\V1\Views\Home\_Turn3.cshtml" />
-    <Content Include="Areas\V1\Views\MailTemplates\Registration.cshtml" />
-    <Content Include="Areas\V1\Views\MailTemplates\_Layout.cshtml" />
+    <Content Include="Views\Emails\UserRegistered.cshtml" />
     <Content Include="Areas\V1\Views\Match\Delete4x4.cshtml" />
     <Content Include="Areas\V1\Views\Match\Delete8x4.cshtml" />
     <Content Include="Areas\V1\Views\Match\Details4x4.cshtml" />
@@ -558,9 +511,9 @@
     <Content Include="Areas\V1\Views\Shared\NotFound.cshtml" />
     <Content Include="Areas\V1\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\V1\Views\Shared\_LogOnPartial.cshtml" />
-    <Content Include="Areas\V2\Views\User\Create.cshtml" />
-    <Content Include="Areas\V2\Views\User\Delete.cshtml" />
-    <Content Include="Areas\V2\Views\User\Index.cshtml" />
+    <Content Include="Areas\V2\Views\AdminTasks\CreateUser.cshtml" />
+    <Content Include="Areas\V2\Views\AdminTasks\DeleteUser.cshtml" />
+    <Content Include="Areas\V2\Views\AdminTasks\Users.cshtml" />
     <Content Include="Areas\V1\Views\Welcome\Index.cshtml" />
     <Content Include="Areas\V1\Views\Welcome\Reset.cshtml" />
     <Content Include="Areas\V1\Views\Welcome\Success.cshtml" />

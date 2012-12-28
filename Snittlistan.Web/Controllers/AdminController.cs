@@ -1,11 +1,10 @@
-﻿namespace Snittlistan.Web.Areas.V1.Controllers
+﻿namespace Snittlistan.Web.Controllers
 {
     using System.Security.Authentication;
     using System.Web.Mvc;
 
     using Raven.Client;
 
-    using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Models;
 
     [Authorize]
@@ -17,7 +16,7 @@
 
         protected override void OnAuthorization(AuthorizationContext filterContext)
         {
-            if (Session.Load<User>("Admin").Email != filterContext.HttpContext.User.Identity.Name)
+            if (this.Session.Load<User>("Admin").Email != filterContext.HttpContext.User.Identity.Name)
                 throw new AuthenticationException("Only Admin allowed");
         }
     }

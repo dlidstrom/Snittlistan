@@ -154,7 +154,7 @@
                 return this.View(model);
 
             Debug.Assert(user != null, "user != null");
-            user.SetPassword(model.NewPassword);
+            user.SetPassword(model.NewPassword, string.Empty);
             return this.RedirectToAction("ChangePasswordSuccess");
         }
 

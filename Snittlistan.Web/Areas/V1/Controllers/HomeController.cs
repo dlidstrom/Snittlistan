@@ -48,10 +48,11 @@
             if (string.IsNullOrWhiteSpace(player))
                 throw new HttpException(404, "Player not found");
 
-            var q = this.Session.Query<Player_ByMatch.Result, Player_ByMatch>()
+            var stats = this.Session.Query<Player_ByMatch.Result, Player_ByMatch>()
                 .Where(r => r.Player == player)
                 .OrderByDescending(r => r.Date)
-                .ThenByDescending(r => r.BitsMatchId);
+                .ThenByDescending(r => r.BitsMatchId)
+                .ToList();
 
             var results = this.Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
                 .SingleOrDefault(r => r.Player == player);
@@ -59,7 +60,7 @@
             return this.View(new PlayerMatchesViewModel
             {
                 Player = player,
-                Stats = q.ToList(),
+                Stats = stats,
                 Results = results ?? new Matches_PlayerStats.Result()
             });
         }

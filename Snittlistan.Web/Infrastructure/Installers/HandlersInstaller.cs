@@ -14,7 +14,7 @@
                 AllTypes.FromThisAssembly()
                 .BasedOn(typeof(IHandle<>))
                 .WithServiceFromInterface(typeof(IHandle<>))
-                .If(Component.IsInSameNamespaceAs<SendRegistrationEmailHandler>())
+                .If(Component.IsInNamespace("Snittlistan.Web.Handlers"))
                 .Configure(c => c.LifestyleTransient()));
         }
     }

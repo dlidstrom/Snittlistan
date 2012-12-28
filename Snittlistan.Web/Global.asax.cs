@@ -56,17 +56,9 @@
             AutoMapperConfiguration.Configure(Container);
         }
 
-        public static void Shutdown()
-        {
-            ModelBinders.Binders.Clear();
-            RouteTable.Routes.Clear();
-            Container.Dispose();
-        }
-
         protected void Application_Start()
         {
             Log.Info("Application Starting");
-
             Bootstrap();
         }
 
@@ -74,6 +66,14 @@
         {
             Log.Info("Application Ending");
             Shutdown();
+        }
+
+        private static void Shutdown()
+        {
+            ModelBinders.Binders.Clear();
+            RouteTable.Routes.Clear();
+            if (Container != null)
+                Container.Dispose();
         }
 
         private static void RegisterGlobalFilters(GlobalFilterCollection filters)

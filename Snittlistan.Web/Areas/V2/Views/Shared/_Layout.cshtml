@@ -43,15 +43,35 @@
                         <ul class="nav">
                             @Content.MenuLink(Html, Url, "Omgångar", "sprite-glyphicons_045_calendar", "Roster", Url.Action("Index", "Roster"))
                             @Content.MenuLink(Html, Url, "Medlemmar", "sprite-glyphicons_043_group", "Player", Url.Action("Index", "Player"))
-                            @if (Request.IsAdmin(User))
-                            {
-                                @Content.MenuLink(Html, Url, "Användare", "sprite-glyphicons_024_parents", "User", Url.Action("Index", "User"))
-                            }
                             @Content.MenuLink(Html, Url, "2011-2012", "sprite-glyphicons_090_table", "Home", Url.Action("Index", "Home", new { area = "V1" } ))
                         </ul>
                         <ul class="nav pull-right">
                             @if (Request.IsAuthenticated)
                             {
+                                if (Request.IsAdmin(User))
+                                {
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                            <i class="sprite-glyphicons_023_cogwheels"></i>
+                                            Admin
+                                            <b class="caret"></b>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a href="@Url.Action("Users", "AdminTasks")">
+                                                    <i class="sprite-glyphicons_024_parents"></i>
+                                                    Användare
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="@Url.Action("Raven", "AdminTasks")">
+                                                    <i class="sprite-glyphicons_140_database_lock"></i>
+                                                    RavenDB
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                }
                                 <li>
                                     <p class="navbar-text">
                                         Inloggad som @User.Identity.Name
@@ -67,7 +87,7 @@
                             else
                             {
                                 <li>
-                                    <a class="btn btn-link" href="@Url.Action("LogOn", "Authentication")">
+                                    <a href="@Url.Action("LogOn", "Authentication")">
                                         <i class="sprite-glyphicons_204_unlock"></i>
                                         Logga in
                                     </a>

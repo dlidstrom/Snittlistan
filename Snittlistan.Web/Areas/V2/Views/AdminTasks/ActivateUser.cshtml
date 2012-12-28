@@ -8,7 +8,7 @@
 <div class="row">
     <div class="span8">
         <h3>@ViewBag.Title</h3>
-        @using (Html.BeginForm("Activate", "User", FormMethod.Post, new { @class = "form-horizontal" }))
+        @using (Html.BeginForm("ActivateUser", "AdminTasks", FormMethod.Post, new { @class = "form-horizontal" }))
         {
             <p>Är du säker på att du vill @action denna användare?</p>
             <h4>Namn: @Model.Name, e-postadress: @Model.Email</h4>
@@ -25,7 +25,7 @@
             }
             <div class="form-actions">
                 <button class="btn btn-primary btn-large" type="submit">Spara</button>
-                @Html.ActionLink("Avbryt", "Index", null, new { @class = "btn btn-large" })
+                @Html.ActionLink("Avbryt", "Users", null, new { @class = "btn btn-large" })
             </div>
         }
     </div>
