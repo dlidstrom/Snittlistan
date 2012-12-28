@@ -1,9 +1,9 @@
 ﻿@model RosterViewModel
 
-<div class="well well-small">
+<div class="well well-small editable">
     @if (Request.IsAuthenticated)
     {
-        <a href="@Url.Action("EditPlayers", new { Model.Id })" class="pull-right">
+        <a href="@Url.Action("EditPlayers", new { Model.Id })" class="edit">
             <i class="sprite-glyphicons_151_edit"></i>
         </a>
     }
