@@ -7,6 +7,17 @@
             <i class="sprite-glyphicons_151_edit"></i>
         </a>
     }
+    @if (Model.Preliminary && User.Identity.IsAuthenticated)
+    {
+        <div class="alert alert-info">
+            <strong>Preliminär</strong> Gömd för vanliga användare
+        </div>
+    }
+    @if (Model.Preliminary && User.Identity.IsAuthenticated == false)
+    {
+        @* Hide preliminaries for regular users *@
+        Model.Players.Clear();
+    }
     <table class="table table-condensed">
         <tr>
             <th>Bord</th>
@@ -15,7 +26,7 @@
         @for (var i = 0; i < 4; i++)
         {
             <tr>
-                <td rowspan="2">@(i+1)</td>
+                <td rowspan="2">@(i + 1)</td>
                 <td>
                     @{
                         var first = this.Model.Players.ElementAtOrDefault(2 * i);

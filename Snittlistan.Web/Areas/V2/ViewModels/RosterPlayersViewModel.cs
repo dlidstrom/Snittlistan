@@ -2,6 +2,9 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using System.ComponentModel.DataAnnotations;
 
+    using JetBrains.Annotations;
+
+    [UsedImplicitly]
     public class RosterPlayersViewModel
     {
         [Required(ErrorMessage = "Ange namn på spelare 1")]
@@ -29,5 +32,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         public string Table4Player2 { get; set; }
 
         public string Reserve { get; set; }
+
+        public bool Preliminary { get; set; }
     }
 }
