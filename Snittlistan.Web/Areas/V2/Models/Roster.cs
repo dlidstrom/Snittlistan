@@ -30,6 +30,8 @@ namespace Snittlistan.Web.Areas.V2.Models
 
         public DateTime Date { get; set; }
 
+        public bool Preliminary { get; set; }
+
         public List<string> Players { get; set; }
     }
 }

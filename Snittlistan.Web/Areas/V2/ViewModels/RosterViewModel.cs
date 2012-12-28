@@ -3,6 +3,9 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
     using System;
     using System.Collections.Generic;
 
+    using JetBrains.Annotations;
+
+    [UsedImplicitly]
     public class RosterViewModel
     {
         public RosterViewModel()
@@ -25,6 +28,8 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         public DateTime Date { get; set; }
 
         public string Time { get; set; }
+
+        public bool Preliminary { get; set; }
 
         public char TeamLevel
         {

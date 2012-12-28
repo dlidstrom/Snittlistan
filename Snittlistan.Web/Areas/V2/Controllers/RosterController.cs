@@ -182,6 +182,7 @@
             {
                 Id = id,
                 Roster = this.LoadRoster(roster),
+                Preliminary = roster.Preliminary,
                 AvailablePlayers = availablePlayers.MapTo<PlayerViewModel>().ToArray()
             };
             return this.View(vm);
@@ -205,6 +206,7 @@
                     vm.Table4Player1,
                     vm.Table4Player2
                 };
+            roster.Preliminary = vm.Preliminary;
             if (vm.Reserve != null && this.Session.Load<Player>(vm.Reserve) != null)
                 roster.Players.Add(vm.Reserve);
             return RedirectToAction("View", new { season = roster.Season, turn = roster.Turn });
