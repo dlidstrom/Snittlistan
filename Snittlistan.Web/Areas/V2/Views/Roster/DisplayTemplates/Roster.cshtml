@@ -3,11 +3,14 @@
     var hideControls = Convert.ToBoolean(ViewData["hideControls"]);
 }
 
-<div class="well">
+<div class="well well-small editable">
     @if (Request.IsAuthenticated && hideControls == false)
     {
-        <a href="@Url.Action("Edit", new { Model.Id })" class="pull-right">
+        <a href="@Url.Action("Edit", new { Model.Id })" class="edit">
             <i class="sprite-glyphicons_151_edit"></i>
+        </a>
+        <a href="@Url.Action("Delete", new { Model.Id })" class="delete">
+            <i class="sprite-glyphicons_016_bin"></i>
         </a>
     }
     <dl class="dl-horizontal">
