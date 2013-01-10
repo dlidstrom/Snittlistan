@@ -1,6 +1,6 @@
 @using Snittlistan.Web
 @{
-    ViewBag.Title = "Snittlistan V2";
+    ViewBag.Title = "Snittlistan";
     Bundles.Reference("Content/css/main.less");
     Bundles.Reference("Content/css/glyphicons.css");
     Bundles.Reference("Content/templates");
@@ -48,12 +48,16 @@
                         <ul class="nav pull-right">
                             @if (Request.IsAuthenticated)
                             {
+                                <li>
+                                    <p class="navbar-text">
+                                        @User.Identity.Name
+                                    </p>
+                                </li>
                                 if (Request.IsAdmin(User))
                                 {
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                             <i class="sprite-glyphicons_023_cogwheels"></i>
-                                            Admin
                                             <b class="caret"></b>
                                         </a>
                                         <ul class="dropdown-menu">
@@ -69,20 +73,25 @@
                                                     RavenDB
                                                 </a>
                                             </li>
+                                            <li class="divider"></li>
+                                            <li>
+                                                <a href="@Url.Action("LogOff", "Authentication")">
+                                                    <i class="sprite-glyphicons_203_lock"></i>
+                                                    Logga ut
+                                                </a>
+                                            </li>
                                         </ul>
                                     </li>
                                 }
-                                <li>
-                                    <p class="navbar-text">
-                                        Inloggad som @User.Identity.Name
-                                    </p>
-                                </li>
-                                <li>
-                                    <a href="@Url.Action("LogOff", "Authentication")">
-                                        <i class="sprite-glyphicons_203_lock"></i>
-                                        Logga ut
-                                    </a>
-                                </li>
+                                else
+                                {
+                                    <li>
+                                        <a href="@Url.Action("LogOff", "Authentication")">
+                                            <i class="sprite-glyphicons_203_lock"></i>
+                                            Logga ut
+                                        </a>
+                                    </li>
+                                }
                             }
                             else
                             {

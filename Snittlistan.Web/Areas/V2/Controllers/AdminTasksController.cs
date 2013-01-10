@@ -125,6 +125,7 @@
                 indexNames = store.DatabaseCommands.GetIndexNames(0, 20);
             }
 
+            // create indexes
             IndexCreator.CreateIndexes(store);
 
             return this.RedirectToAction("Raven");
