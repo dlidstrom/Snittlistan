@@ -1,0 +1,49 @@
+﻿@model SendMailViewModel
+
+@{
+    ViewBag.Title = "Skicka ett mail";
+}
+
+<div class="row">
+    <div class="span8">
+        <h3>@ViewBag.Title</h3>
+        @using (Html.BeginForm("SendMail", "AdminTasks", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
+            <div class="control-group">
+                <label class="control-label" for="recipient">Mottagare:</label>
+                <div class="controls">
+                    <input type="email"
+                           name="recipient"
+                           placeholder=""
+                           autocorrect="off"
+                           autocomplete="off"
+                           value="@Model.Recipient"
+                           autofocus="autofocus"
+                           required />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="subject">Ämnesrad:</label>
+                <div class="controls">
+                    <input type="text"
+                           name="subject"
+                           maxlength="128"
+                           placeholder=""
+                           value="@Model.Subject"
+                           required />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="content">Innehåll:</label>
+                <div class="controls">
+                    <textarea name="content" maxlength="1024" placeholder="" rows="4" required>@Model.Content</textarea>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary btn-large" type="submit">Skicka</button>
+                @Html.ActionLink("Avbryt", "Index", null, new { @class = "btn btn-large" })
+            </div>
+        }
+    </div>
+</div>

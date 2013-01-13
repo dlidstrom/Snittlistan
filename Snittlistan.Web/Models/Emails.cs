@@ -38,6 +38,15 @@
                     });
         }
 
+        public static void SendMail(string email, string subject, string content)
+        {
+            Send(
+                "Mail",
+                email,
+                subject,
+                o => o.Content = content);
+        }
+
         private static void Send(
             [AspMvcView] string view,
             string recipient,
