@@ -9,7 +9,14 @@
 <!DOCTYPE html>
 <html lang="se">
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="google-site-verification" content="g8KwkjfVGgtu5zxYGhIEfJS4JGVkCMS1YMdp5WNOOpU" />
+        <link rel="apple-touch-icon" href="@Url.Content("~/Content/css/images/touch-icon-iphone-precomposed.png")" />
+        <link rel="apple-touch-icon" sizes="72x72" href="@Url.Content("~/Content/css/images/touch-icon-ipad-precomposed.png")" />
+        <link rel="apple-touch-icon" sizes="114x114" href="@Url.Content("~/Content/css/images/touch-icon-iphone-retina-precomposed.png")" />
+        <link rel="apple-touch-icon" sizes="144x144" href="@Url.Content("~/Content/css/images/touch-icon-ipad-retina-precomposed.png")" />
         <title>@ViewBag.Title</title>
         @if (Html.ApplicationMode() == ApplicationMode.Debug)
         {
