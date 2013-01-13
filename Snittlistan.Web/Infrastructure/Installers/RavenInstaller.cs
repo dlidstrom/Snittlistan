@@ -9,6 +9,8 @@
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
 
+    using JetBrains.Annotations;
+
     using Raven.Client;
     using Raven.Client.Document;
     using Raven.Client.Embedded;
@@ -25,6 +27,7 @@
         /// Raven mode is determined depending on debug or release:
         /// run with server when debugging, and embedded in production.
         /// </summary>
+        [UsedImplicitly]
         public RavenInstaller()
         {
             switch (MvcApplication.Mode)
@@ -50,7 +53,7 @@
             this.mode = mode;
         }
 
-        public static IDocumentStore InitializeStore(IDocumentStore store)
+        public static IDocumentStore InitializeStore(IDocumentStore store, DocumentStoreMode mode)
         {
             store.Initialize();
             store.Conventions.IdentityPartsSeparator = "-";
@@ -59,14 +62,15 @@
             store.Conventions.FindIdentityProperty = FindIdentityProperty;
 
             // create indexes
-            IndexCreator.CreateIndexes(store);
+            if (mode == DocumentStoreMode.InMemory)
+                IndexCreator.CreateIndexes(store);
             return store;
         }
 
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(
-                Component.For<IDocumentStore>().Instance(InitializeStore(this.CreateDocumentStore())).LifestyleSingleton(),
+                Component.For<IDocumentStore>().Instance(InitializeStore(this.CreateDocumentStore(), this.mode)).LifestyleSingleton(),
                 Component.For<IDocumentSession>().UsingFactoryMethod(GetDocumentSession).LifestylePerWebRequest());
         }
 
