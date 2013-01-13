@@ -476,12 +476,6 @@
     <Content Include="Areas\V1\Views\Home\About.cshtml" />
     <Content Include="Areas\V1\Views\Home\Index.cshtml" />
     <Content Include="Areas\V1\Views\Home\Player.cshtml" />
-    <Content Include="Areas\V1\Views\Home\_CompletedTurns.cshtml" />
-    <Content Include="Areas\V1\Views\Home\_Navbar.cshtml" />
-    <Content Include="Areas\V1\Views\Home\_Player.cshtml" />
-    <Content Include="Areas\V1\Views\Home\_Turn1.cshtml" />
-    <Content Include="Areas\V1\Views\Home\_Turn2.cshtml" />
-    <Content Include="Areas\V1\Views\Home\_Turn3.cshtml" />
     <Content Include="Views\Emails\UserRegistered.cshtml" />
     <Content Include="Areas\V1\Views\Match\Delete4x4.cshtml" />
     <Content Include="Areas\V1\Views\Match\Delete8x4.cshtml" />
