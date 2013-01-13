@@ -18,7 +18,7 @@
 @foreach (var turn in Model.Turns)
 {
     <div class="row">
-        <div class="span2">
+        <div class="span4">
             <h3>Omgång @turn.Turn</h3>
             <a href="@Url.Action("View", new { season = Model.SeasonStart, turn = turn.Turn })">
                 <i class="sprite-glyphicons_029_notes_2"></i>
