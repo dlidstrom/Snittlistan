@@ -1,0 +1,34 @@
+﻿@{
+    Layout = "~/Areas/V2/Views/Shared/_Layout.cshtml";
+}
+
+@helper MenuLink(
+    string text,
+    string icon,
+    string action)
+{
+    var routeData = Html.ViewContext.RouteData.Values;
+    var currentAction = routeData["action"];
+
+    var liClass = string.Empty;
+    if (string.Equals(action, currentAction as string, StringComparison.OrdinalIgnoreCase))
+    {
+        liClass = "active";
+    }
+
+    <li class="@liClass">
+        <a href="@Url.Action(action)"><i class="@icon"></i>@text</a>
+    </li>
+}
+
+<div class="row">
+    <div class="span12">
+        <ul class="nav nav-pills">
+            @this.MenuLink("Användare", "sprite-glyphicons_024_parents", "Users")
+            @this.MenuLink("RavenDB", "sprite-glyphicons_140_database_lock", "Raven")
+            @this.MenuLink("E-post", "sprite-glyphicons_399_e-mail", "SendMail")
+        </ul>
+    </div>
+</div>
+
+@this.RenderBody()

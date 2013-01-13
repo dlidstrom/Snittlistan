@@ -185,6 +185,7 @@
     <Compile Include="ApplicationMode.cs" />
     <Compile Include="Areas\V2\Controllers\AdminTasksController.cs" />
     <Compile Include="Areas\V2\ViewModels\RavenAdminViewModel.cs" />
+    <Compile Include="Areas\V2\ViewModels\SendMailViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\SetPasswordViewModel.cs" />
     <Compile Include="Infrastructure\JetBrains\Annotations.cs" />
     <Compile Include="Models\Emails.cs" />

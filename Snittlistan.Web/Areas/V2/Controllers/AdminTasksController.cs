@@ -23,6 +23,11 @@
             this.store = store;
         }
 
+        public ActionResult Index()
+        {
+            return this.View();
+        }
+
         /// <summary>
         /// GET: /User/Index.
         /// </summary>
@@ -129,6 +134,21 @@
             IndexCreator.CreateIndexes(store);
 
             return this.RedirectToAction("Raven");
+        }
+
+        public ActionResult SendMail()
+        {
+            return this.View(new SendMailViewModel());
+        }
+
+        [HttpPost]
+        public ActionResult SendMail(SendMailViewModel vm)
+        {
+            if (!ModelState.IsValid) return this.View(vm);
+
+            Emails.SendMail(vm.Recipient, vm.Subject, vm.Content);
+
+            return this.RedirectToAction("Index");
         }
     }
 }
