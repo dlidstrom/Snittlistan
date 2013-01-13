@@ -44,7 +44,9 @@
                     </td>
                     @if (Request.IsAuthenticated)
                     {
-                        <td>@player.Email</td>
+                        <td>
+                            <a href="mailto:@player.Email">@player.Email</a>
+                        </td>
                         <td>
                             <a href="@Url.Action("Edit", new { id = player.Id.Substring(player.Id.LastIndexOf('-') + 1) })">
                                 <i class="sprite-glyphicons_151_edit"></i>
