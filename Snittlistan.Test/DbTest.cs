@@ -28,7 +28,7 @@
             Store = new EmbeddableDocumentStore { RunInMemory = true };
 
             // initialize
-            RavenInstaller.InitializeStore(Store);
+            RavenInstaller.InitializeStore(Store, DocumentStoreMode.InMemory);
             Session = Store.OpenSession();
         }
 
