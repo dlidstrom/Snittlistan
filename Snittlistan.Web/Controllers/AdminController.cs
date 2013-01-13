@@ -17,7 +17,7 @@
         protected override void OnAuthorization(AuthorizationContext filterContext)
         {
             if (this.Session.Load<User>("Admin").Email != filterContext.HttpContext.User.Identity.Name)
-                throw new AuthenticationException("Only Admin allowed");
+                filterContext.Result = new HttpUnauthorizedResult("Only Admin allowed");
         }
     }
 }
