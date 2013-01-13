@@ -33,16 +33,17 @@
                 season = this.Session.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
 
             var rosters = this.Session.Query<Roster, RosterSearchTerms>()
-                .Where(r => r.Season == season && r.Date >= SystemTime.UtcNow.Date)
                 .ToList();
             var q = from roster in rosters
                     orderby roster.Turn
                     group roster by roster.Turn into g
+                    let lastDate = g.Max(x => x.Date)
+                    where lastDate >= SystemTime.UtcNow.Date
                     select new TurnViewModel
                         {
                             Turn = g.Key,
                             StartDate = g.Min(x => x.Date),
-                            EndDate = g.Max(x => x.Date),
+                            EndDate = lastDate,
                             Rosters =
                                 g.Select(x => x.MapTo<RosterViewModel>())
                                 .SortRosters()
