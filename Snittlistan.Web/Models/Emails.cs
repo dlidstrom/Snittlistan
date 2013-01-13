@@ -2,13 +2,9 @@
 {
     using System;
     using System.Configuration;
-    using System.Diagnostics;
     using System.Linq;
-    using System.Net.Configuration;
     using System.Net.Mail;
     using System.Text;
-    using System.Web;
-    using System.Web.Configuration;
 
     using JetBrains.Annotations;
 
@@ -54,10 +50,6 @@
             email.Subject = string.Format("=?utf-8?B?{0}?=", Convert.ToBase64String(Encoding.UTF8.GetBytes(subject)));
             // add moderators
             var moderators = new MailAddressCollection();
-            // fetch settings from web.config
-            var config = WebConfigurationManager.OpenWebConfiguration(HttpContext.Current.Request.ApplicationPath);
-            var settings = (MailSettingsSectionGroup)config.GetSectionGroup("system.net/mailSettings");
-            Debug.Assert(settings != null, "settings != null");
             var moderatorEmails = ConfigurationManager.AppSettings["OwnerEmail"].Split(';')
                 .Select(e => new MailAddress(e.Trim()))
                 .ToList();
