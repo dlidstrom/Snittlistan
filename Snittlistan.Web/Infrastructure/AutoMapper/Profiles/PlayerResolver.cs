@@ -4,7 +4,6 @@
 
     using Snittlistan.Web.Areas.V1.Models;
     using Snittlistan.Web.Areas.V1.ViewModels.Match;
-    using Snittlistan.Web.Models;
 
     public class PlayerResolver : global::AutoMapper.ValueResolver<Team4x4, Team4x4ViewModel.Player>
     {

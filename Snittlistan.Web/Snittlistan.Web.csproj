@@ -183,7 +183,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="Areas\V2\AutoMapper\AbsenceProfile.cs" />
+    <Compile Include="Areas\V2\Indexes\AbsenceIndex.cs" />
+    <Compile Include="Areas\V2\ViewModels\AbsenceViewModel.cs" />
+    <Compile Include="Areas\V2\Models\Absence.cs" />
+    <Compile Include="Areas\V2\Controllers\AbsenceController.cs" />
     <Compile Include="Areas\V2\Controllers\AdminTasksController.cs" />
+    <Compile Include="Areas\V2\ViewModels\CreateAbsenceViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\RavenAdminViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\SendMailViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\SetPasswordViewModel.cs" />
@@ -210,6 +216,10 @@
     <Compile Include="Areas\V2\ViewModels\PlayerViewModel.cs" />
     <Content Include="Content\css\glyphicons.css" />
     <Content Include="Content\css\images\glyphicons-free.png" />
+    <Content Include="Content\css\images\touch-icon-ipad-precomposed.png" />
+    <Content Include="Content\css\images\touch-icon-ipad-retina-precomposed.png" />
+    <Content Include="Content\css\images\touch-icon-iphone-precomposed.png" />
+    <Content Include="Content\css\images\touch-icon-iphone-retina-precomposed.png" />
     <Content Include="Content\js\helpers\typeahead.js" />
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="Areas\V1\Controllers\AccountController.cs" />
@@ -218,8 +228,8 @@
     <Compile Include="Handlers\UserInvited.cs" />
     <Compile Include="HtmlHelpers\RequestExtensions.cs" />
     <Compile Include="Areas\V2\AutoMapper\PlayerProfile.cs" />
-    <Compile Include="Infrastructure\Indexes\PlayerSearch.cs" />
-    <Compile Include="Infrastructure\Indexes\RosterSearchTerms.cs" />
+    <Compile Include="Areas\V2\Indexes\PlayerSearch.cs" />
+    <Compile Include="Areas\V2\Indexes\RosterSearchTerms.cs" />
     <Compile Include="Areas\V2\Models\Roster.cs" />
     <Compile Include="Areas\V2\ViewModels\RosterViewModel.cs" />
     <Compile Include="Controllers\AdminController.cs" />
@@ -409,6 +419,11 @@
     <Content Include="Areas\V2\Views\User\SetPassword.cshtml" />
     <Content Include="Areas\V2\Views\AdminTasks\ResetIndexes.cshtml" />
     <Content Include="Areas\V2\Views\AdminTasks\Raven.cshtml" />
+    <Content Include="Areas\V2\Views\Absence\Index.cshtml" />
+    <Content Include="Areas\V2\Views\Absence\Create.cshtml" />
+    <Content Include="Areas\V2\Views\Absence\_AbsenceEditor.cshtml" />
+    <Content Include="Areas\V2\Views\Absence\Edit.cshtml" />
+    <Content Include="Areas\V2\Views\Absence\Delete.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />

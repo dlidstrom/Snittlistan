@@ -1,0 +1,26 @@
+﻿@model CreateAbsenceViewModel
+
+<div class="control-group">
+    <label class="control-label" for="player">Spelare:</label>
+    <div class="controls">
+        @Html.DropDownList("Player")
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="from">Från:</label>
+    <div class="controls">
+        <input type="date"
+               name="from"
+               value="@Model.From.ToShortDateString()"
+               required />
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="to">Till:</label>
+    <div class="controls">
+        <input type="date"
+               name="to"
+               value="@Model.To.ToShortDateString()"
+               required />
+    </div>
+</div>
