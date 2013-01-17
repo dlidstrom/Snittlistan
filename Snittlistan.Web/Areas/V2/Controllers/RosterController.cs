@@ -10,12 +10,12 @@
     using Raven.Client;
     using Raven.Client.Linq;
 
+    using Snittlistan.Web.Areas.V2.Indexes;
     using Snittlistan.Web.Areas.V2.Models;
     using Snittlistan.Web.Areas.V2.ViewModels;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Helpers;
     using Snittlistan.Web.Infrastructure.AutoMapper;
-    using Snittlistan.Web.Infrastructure.Indexes;
     using Snittlistan.Web.Services;
 
     public class RosterController : AbstractController

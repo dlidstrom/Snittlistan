@@ -1,4 +1,4 @@
-namespace Snittlistan.Web.Infrastructure.Indexes
+namespace Snittlistan.Web.Areas.V2.Indexes
 {
     using System.Linq;
 
