@@ -27,14 +27,18 @@
 
             var results = Session.Query<MatchResultIndex.Result, MatchResultIndex>()
                 .Where(r => r.Season == season)
+                .OrderByDescending(r => r.Turn)
                 .AsProjection<MatchResultIndex.Result>()
                 .ToList()
                 .GroupBy(x => x.Turn)
-                .Select(x => new ResultViewModel
-                                 {
-                                     Turn = x.Key,
-                                     Results = x.Select(y => new TurnResultViewModel(y)).ToList()
-                                 })
+                .Select(
+                    x => new ResultViewModel
+                             {
+                                 Turn = x.Key,
+                                 Results = x.OrderBy(z => z.Date)
+                                     .Select(y => new TurnResultViewModel(y))
+                                     .ToList()
+                             })
                 .ToList();
 
             var vm = new MatchResultViewModel

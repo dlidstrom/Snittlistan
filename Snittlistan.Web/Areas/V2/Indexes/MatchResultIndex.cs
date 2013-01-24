@@ -11,15 +11,16 @@ namespace Snittlistan.Web.Areas.V2.Indexes
         public MatchResultIndex()
         {
             this.Map = results => from result in results
+                                  let roster = this.LoadDocument<Roster>(result.RosterId)
                                   select new
                                   {
                                       result.RosterId,
-                                      this.LoadDocument<Roster>(result.RosterId).Turn,
-                                      this.LoadDocument<Roster>(result.RosterId).Season,
-                                      this.LoadDocument<Roster>(result.RosterId).Date,
-                                      this.LoadDocument<Roster>(result.RosterId).Team,
-                                      this.LoadDocument<Roster>(result.RosterId).Opponent,
-                                      this.LoadDocument<Roster>(result.RosterId).Location,
+                                      roster.Turn,
+                                      roster.Season,
+                                      roster.Date,
+                                      roster.Team,
+                                      roster.Opponent,
+                                      roster.Location,
                                       result.TeamScore,
                                       result.OpponentScore,
                                       result.BitsMatchId
