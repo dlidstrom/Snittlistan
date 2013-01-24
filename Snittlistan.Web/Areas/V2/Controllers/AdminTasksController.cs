@@ -111,6 +111,20 @@
             return this.View();
         }
 
+        public ActionResult CreateIndexes()
+        {
+            return this.View();
+        }
+
+        [HttpPost, ActionName("CreateIndexes")]
+        public ActionResult CreateIndexesConfirmed()
+        {
+            // create indexes
+            IndexCreator.CreateIndexes(store);
+
+            return this.RedirectToAction("Raven");
+        }
+
         public ActionResult ResetIndexes()
         {
             return this.View();

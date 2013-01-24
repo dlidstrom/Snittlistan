@@ -62,6 +62,12 @@
                 url: "Search/{action}",
                 defaults: new { controller = "SearchTerms" });
 
+            // register match result
+            context.MapRoute(
+                "RegisterMatchResult",
+                "MatchResult/Register/{season}",
+                new { controller = "MatchResult", action = "Register" });
+
             // default route
             context.MapRoute(
                 "V2_default",

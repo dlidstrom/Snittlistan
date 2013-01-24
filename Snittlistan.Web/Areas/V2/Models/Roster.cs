@@ -33,5 +33,7 @@ namespace Snittlistan.Web.Areas.V2.Models
         public bool Preliminary { get; set; }
 
         public List<string> Players { get; set; }
+
+        public string MatchResultId { get; set; }
     }
 }

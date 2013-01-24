@@ -102,3 +102,10 @@
         <a href="@actionLink"><i class="@icon"></i>@text</a>
     </li>
 }
+@helper TeamLabel(
+    char teamLevel,
+    string team
+)
+{
+    <span class="label @string.Format("{0}{1}", "label-team-", teamLevel)">@team</span>
+}

@@ -1,5 +1,6 @@
 ﻿namespace Snittlistan.Web.Areas.V2.Indexes
 {
+    using System;
     using System.Linq;
 
     using Raven.Client.Indexes;
@@ -13,26 +14,27 @@
             this.Map = rosters => from roster in rosters
                                   select new
                                   {
+                                      roster.Id,
                                       roster.Team,
                                       roster.Opponent,
                                       roster.Location,
                                       roster.Turn,
                                       roster.Season,
-                                      roster.Date
+                                      roster.Date,
+                                      roster.MatchResultId
                                   };
         }
 
         public class Result
         {
+            public string Id { get; set; }
             public string Team { get; set; }
-
             public string Opponent { get; set; }
-
             public string Location { get; set; }
-
             public int Turn { get; set; }
-
             public int Season { get; set; }
+            public DateTime Date { get; set; }
+            public string MatchResultId { get; set; }
         }
     }
 }

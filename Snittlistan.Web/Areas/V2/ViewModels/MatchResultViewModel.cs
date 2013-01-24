@@ -1,10 +1,12 @@
-namespace Snittlistan.Web.Areas.V2.ViewModels
+﻿namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using System.Collections.Generic;
+    using System.Linq;
+    using Snittlistan.Web.Areas.V2.Indexes;
 
-    public class InitialDataViewModel
+    public class MatchResultViewModel
     {
-        public List<TurnViewModel> Turns { get; set; }
+        public List<ResultViewModel> Results { get; set; }
 
         public int SeasonStart { get; set; }
 
