@@ -1,0 +1,54 @@
+﻿@model MatchResultViewModel
+
+<div class="row">
+    <div class="span6">
+        <h2>Resultat från säsongen @Model.SeasonStart&minus;@Model.SeasonEnd</h2>
+    </div>
+    <div class="span6">
+        @if (Request.IsAuthenticated)
+        {
+            <a href="@Url.Action("Register")">
+                <i class="sprite-glyphicons_006_user_add"></i>
+                Registrera matchresultat
+            </a>
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="span12">
+        <table class="table table-condensed table-striped">
+            <tr>
+                <th>Omgång</th>
+                <th>Datum</th>
+                <th>Plats</th>
+                <th>Lag</th>
+                <th>Motståndare</th>
+                <th>Resultat</th>
+                <th></th>
+                <th></th>
+            </tr>
+            @foreach (var turn in Model.Results)
+            {
+                var first = true;
+                foreach (var result in turn.Results)
+                {
+                    <tr>
+                        @if (first)
+                        {
+                            <td rowspan="@turn.Results.Count">@turn.Turn</td>
+                            first = false;
+                        }
+                        <td>@result.Date</td>
+                        <td>@result.Location</td>
+                        <td>@Content.TeamLabel(result.TeamLevel, result.Team)</td>
+                        <td>@result.Opponent</td>
+                        <td>@result.TeamScore&minus;@result.OpponentScore</td>
+                        <td>
+                            <a href="@string.Format("http://bits.swebowl.se/MatchFact.aspx?MatchId={0}", @result.BitsMatchId)">Matchfakta</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+</div>

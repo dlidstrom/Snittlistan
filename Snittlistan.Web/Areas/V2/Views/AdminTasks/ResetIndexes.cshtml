@@ -9,7 +9,9 @@
         <h3>@ViewBag.Title</h3>
         @using (Html.BeginForm("ResetIndexes", "AdminTasks", FormMethod.Post, new { @class = "form-horizontal" }))
         {
-            <div class="alert alert-danger">Är du säker på att du vill nollställa alla index?</div>
+            <div class="alert alert-danger">Är du säker på att du vill nollställa alla index? Det innebär
+                omräkning av <em>alla</em> index. Använd vid behov t.ex. efter uppgradering av RavenDB.
+            </div>
             <div class="form-actions">
                 <button class="btn btn-primary btn-large" type="submit">Ja, utför</button>
             </div>

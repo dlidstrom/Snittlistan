@@ -1,0 +1,38 @@
+﻿@model List<SelectListItem>
+
+<div class="control-group">
+    <label class="control-label" for="rosterid">Match:</label>
+    <div class="controls">
+        @Html.DropDownList("rosterid", Model, "Välj match", new { @class = "span4" })
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="teamScore">Lagpoäng:</label>
+    <div class="controls">
+        <input id="teamScore"
+               name="teamScore"
+               type="text"
+               pattern="\d*"
+               required="required" />
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="opponentScore">Motståndarpoäng:</label>
+    <div class="controls">
+        <input id="opponentScore"
+               name="opponentScore"
+               type="text"
+               pattern="\d*"
+               required="required" />
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="bitsMatchId">BITS Match Id:</label>
+    <div class="controls">
+        <input id="bitsMatchId"
+               name="bitsMatchId"
+               type="text"
+               pattern="\d*"
+               required="required" />
+    </div>
+</div>

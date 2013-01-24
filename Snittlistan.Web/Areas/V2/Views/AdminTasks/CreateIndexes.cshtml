@@ -1,0 +1,21 @@
+﻿@model RavenAdminViewModel
+
+@{
+    ViewBag.Title = "Administrera RavenDB";
+}
+
+<div class="row">
+    <div class="span8">
+        <h3>@ViewBag.Title</h3>
+        @using (Html.BeginForm("CreateIndexes", "AdminTasks", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            <div class="alert alert-danger">Är du säker på att du vill skapa om alla index? Det innebär
+                ingenting för oförändrade index men omräkning av ändrade index. Använd denna funktion när
+                det har tillkommit ett index.
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary btn-large" type="submit">Ja, utför</button>
+            </div>
+        }
+    </div>
+</div>

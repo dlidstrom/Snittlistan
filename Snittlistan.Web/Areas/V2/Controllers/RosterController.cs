@@ -52,7 +52,6 @@
             var vm = new InitialDataViewModel
                 {
                     SeasonStart = season.Value,
-                    SeasonEnd = season.Value + 1,
                     Turns = q.ToList()
                 };
             return this.View(vm);

@@ -184,6 +184,13 @@
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
     <Compile Include="Areas\V2\AutoMapper\AbsenceProfile.cs" />
+    <Compile Include="Areas\V2\AutoMapper\ResultProfile.cs" />
+    <Compile Include="Areas\V2\ViewModels\ResultViewModel.cs" />
+    <Compile Include="Areas\V2\ViewModels\RegisterMatchResult.cs" />
+    <Compile Include="Areas\V2\ViewModels\MatchResultViewModel.cs" />
+    <Compile Include="Areas\V2\Indexes\MatchResultIndex.cs" />
+    <Compile Include="Areas\V2\Models\MatchResult.cs" />
+    <Compile Include="Areas\V2\Controllers\MatchResultController.cs" />
     <Compile Include="Areas\V2\Indexes\AbsenceIndex.cs" />
     <Compile Include="Areas\V2\ViewModels\AbsenceViewModel.cs" />
     <Compile Include="Areas\V2\Models\Absence.cs" />
@@ -193,6 +200,7 @@
     <Compile Include="Areas\V2\ViewModels\RavenAdminViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\SendMailViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\SetPasswordViewModel.cs" />
+    <Compile Include="Areas\V2\ViewModels\TurnResultViewModel.cs" />
     <Compile Include="Infrastructure\JetBrains\Annotations.cs" />
     <Compile Include="Models\Emails.cs" />
     <Compile Include="ViewModels\UserInvitedViewModel.cs" />
@@ -424,6 +432,14 @@
     <Content Include="Areas\V2\Views\Absence\_AbsenceEditor.cshtml" />
     <Content Include="Areas\V2\Views\Absence\Edit.cshtml" />
     <Content Include="Areas\V2\Views\Absence\Delete.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\Index.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\Register.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\_MatchResultEditor.cshtml" />
+    <Content Include="Areas\V2\Views\AdminTasks\Index.cshtml" />
+    <Content Include="Areas\V2\Views\AdminTasks\SendMail.cshtml" />
+    <Content Include="Areas\V2\Views\AdminTasks\_Layout.cshtml" />
+    <Content Include="Areas\V2\Views\AdminTasks\_ViewStart.cshtml" />
+    <Content Include="Areas\V2\Views\AdminTasks\CreateIndexes.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
