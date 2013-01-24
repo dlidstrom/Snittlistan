@@ -115,6 +115,7 @@
         {
             this.ViewBag.Player = this.Session.Query<Player, PlayerSearch>()
                 .Where(x => x.IsSupporter == false)
+                .OrderBy(x => x.Name)
                 .ToList()
                 .Select(
                     x => new SelectListItem

@@ -176,6 +176,7 @@
                 throw new HttpException(404, "Roster not found");
 
             var availablePlayers = this.Session.Query<Player, PlayerSearch>()
+                .OrderBy(x => x.Name)
                 .Where(p => p.IsSupporter == false);
 
             var vm = new EditRosterPlayersViewModel
