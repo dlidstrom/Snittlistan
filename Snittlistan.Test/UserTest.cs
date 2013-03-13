@@ -1,10 +1,10 @@
-﻿namespace Snittlistan.Test
+﻿using Snittlistan.Web.DomainEvents;
+
+namespace Snittlistan.Test
 {
     using System;
 
     using Castle.Windsor;
-
-    using Snittlistan.Web.Events;
     using Snittlistan.Web.Models;
 
     using Xunit;

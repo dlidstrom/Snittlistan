@@ -1,23 +1,16 @@
-﻿namespace Snittlistan.Web.Areas.V1.Controllers
+﻿using System.Linq;
+using System.Web.Mvc;
+using Raven.Client.Linq;
+using Snittlistan.Web.Controllers;
+using Snittlistan.Web.Infrastructure.Indexes;
+
+namespace Snittlistan.Web.Areas.V1.Controllers
 {
-    using System.Linq;
-    using System.Web.Mvc;
-
-    using Raven.Client;
-
-    using Snittlistan.Web.Controllers;
-    using Snittlistan.Web.Infrastructure.Indexes;
-
     public class SearchController : AbstractController
     {
-        public SearchController(IDocumentSession session)
-            : base(session)
-        {
-        }
-
         public JsonResult PlayersQuickSearch(string term)
         {
-            var results = this.Session.Query<Players.Result, Players>()
+            var results = this.DocumentSession.Query<PlayersIndex.Result, PlayersIndex>()
                 .Where(p => p.Player.StartsWith(term))
                 .OrderBy(p => p.Player)
                 .ToList()
@@ -28,7 +21,7 @@
 
         public JsonResult TeamsQuickSearch(string term)
         {
-            var results = this.Session.Query<Teams.Result, Teams>()
+            var results = this.DocumentSession.Query<Teams.Result, Teams>()
                 .Where(t => t.Team.StartsWith(term))
                 .OrderBy(t => t.Team)
                 .ToList()
@@ -39,7 +32,7 @@
 
         public JsonResult LocationsQuickSearch(string term)
         {
-            var results = this.Session.Query<Locations.Result, Locations>()
+            var results = this.DocumentSession.Query<Locations.Result, Locations>()
                 .Where(t => t.Location.StartsWith(term))
                 .OrderBy(t => t.Location)
                 .ToList()

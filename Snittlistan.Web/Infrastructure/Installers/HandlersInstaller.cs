@@ -1,11 +1,10 @@
-﻿namespace Snittlistan.Web.Infrastructure.Installers
+﻿using Castle.MicroKernel.Registration;
+using Castle.MicroKernel.SubSystems.Configuration;
+using Castle.Windsor;
+using Snittlistan.Web.Handlers;
+
+namespace Snittlistan.Web.Infrastructure.Installers
 {
-    using Castle.MicroKernel.Registration;
-    using Castle.MicroKernel.SubSystems.Configuration;
-    using Castle.Windsor;
-
-    using Snittlistan.Web.Handlers;
-
     public class HandlersInstaller : IWindsorInstaller
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)

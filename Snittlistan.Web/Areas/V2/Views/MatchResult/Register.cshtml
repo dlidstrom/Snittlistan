@@ -1,20 +1,20 @@
-﻿@model List<SelectListItem>
+﻿@model RegisterResult
 
 @{
-    ViewBag.Title = "Registrera matchresultat";
+    ViewBag.Title = ViewBag.Title ?? "Registrera matchresultat";
 }
 
 <div class="row">
     <div class="span8">
         <h3>@ViewBag.Title</h3>
-        @using (Html.BeginForm("Register", "MatchResult", FormMethod.Post, new { @class = "form-horizontal"}))
-        {
+        <form class="form-horizontal" method="POST">
             @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
-            @Html.Partial("_MatchResultEditor", Model)
+            @Html.HiddenFor(model => model.AggregateId)
+            @Html.Partial("_ResultEditor", Model)
             <div class="form-actions">
                 <button class="btn btn-primary btn-large" type="submit">Spara</button>
                 @Html.ActionLink("Avbryt", "Index", null, new { @class = "btn btn-large" })
             </div>
-        }
+        </form>
     </div>
 </div>

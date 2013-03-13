@@ -1,38 +1,33 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Raven.Abstractions;
+using Raven.Client;
+using Snittlistan.Web.Areas.V2.Domain;
+using Snittlistan.Web.Areas.V2.Indexes;
+using Snittlistan.Web.Areas.V2.ViewModels;
+using Snittlistan.Web.Controllers;
+using Snittlistan.Web.Helpers;
+using Snittlistan.Web.Infrastructure.AutoMapper;
+using Snittlistan.Web.Services;
+
+namespace Snittlistan.Web.Areas.V2.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
-    using System.Web.Mvc;
-
-    using Raven.Abstractions;
-    using Raven.Client;
-    using Raven.Client.Linq;
-
-    using Snittlistan.Web.Areas.V2.Indexes;
-    using Snittlistan.Web.Areas.V2.Models;
-    using Snittlistan.Web.Areas.V2.ViewModels;
-    using Snittlistan.Web.Controllers;
-    using Snittlistan.Web.Helpers;
-    using Snittlistan.Web.Infrastructure.AutoMapper;
-    using Snittlistan.Web.Services;
-
     public class RosterController : AbstractController
     {
-        public RosterController(IDocumentSession session, IAuthenticationService authenticationService)
-            : base(session)
+        public RosterController(IAuthenticationService authenticationService)
         {
-            if (session == null) throw new ArgumentNullException("session");
             if (authenticationService == null) throw new ArgumentNullException("authenticationService");
         }
 
         public ActionResult Index(int? season)
         {
             if (season.HasValue == false)
-                season = this.Session.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+                season = this.DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
 
-            var rosters = this.Session.Query<Roster, RosterSearchTerms>()
+            var rosters = this.DocumentSession.Query<Roster, RosterSearchTerms>()
                 .ToList();
             var q = from roster in rosters
                     orderby roster.Turn
@@ -67,7 +62,7 @@
         {
             var vm = new CreateRosterViewModel
                 {
-                    Season = this.Session.LatestSeasonOrDefault(DateTime.Now.Year)
+                    Season = this.DocumentSession.LatestSeasonOrDefault(DateTime.Now.Year)
                 };
             return this.View(vm);
         }
@@ -89,14 +84,14 @@
                 vm.Location,
                 vm.Opponent,
                 vm.Date.Add(time));
-            this.Session.Store(roster);
+            this.DocumentSession.Store(roster);
             return this.RedirectToAction("Index");
         }
 
         [Authorize]
         public ActionResult Edit(int id)
         {
-            var roster = Session.Load<Roster>(id);
+            var roster = DocumentSession.Load<Roster>(id);
             if (roster == null) throw new HttpException(404, "Roster not found");
             return this.View(roster.MapTo<CreateRosterViewModel>());
         }
@@ -108,7 +103,7 @@
             if (!this.ModelState.IsValid)
                 return this.View(vm);
 
-            var roster = this.Session.Load<Roster>(id);
+            var roster = this.DocumentSession.Load<Roster>(id);
             if (roster == null) throw new HttpException(404, "Roster not found");
 
             roster.Location = vm.Location;
@@ -128,7 +123,7 @@
         [Authorize]
         public ActionResult Delete(int id)
         {
-            var roster = this.Session.Load<Roster>(id);
+            var roster = this.DocumentSession.Load<Roster>(id);
             if (roster == null)
                 throw new HttpException(404, "Roster not found");
             return this.View(roster.MapTo<RosterViewModel>());
@@ -139,16 +134,16 @@
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            var roster = this.Session.Load<Roster>(id);
+            var roster = this.DocumentSession.Load<Roster>(id);
             if (roster == null)
                 throw new HttpException(404, "Roster not found");
-            this.Session.Delete(roster);
+            this.DocumentSession.Delete(roster);
             return this.RedirectToAction("Index");
         }
 
         public ActionResult View(int season, int turn)
         {
-            var rosters = this.Session.Query<Roster, RosterSearchTerms>()
+            var rosters = this.DocumentSession.Query<Roster, RosterSearchTerms>()
                 .Include<Roster>(roster => roster.Players)
                 .Where(roster => roster.Turn == turn)
                 .Where(roster => roster.Season == season)
@@ -167,15 +162,15 @@
         }
 
         [Authorize]
-        public ActionResult EditPlayers(int id)
+        public ActionResult EditPlayers(string id)
         {
-            var roster = this.Session
+            var roster = this.DocumentSession
                 .Include<Roster>(r => r.Players)
                 .Load<Roster>(id);
             if (roster == null)
                 throw new HttpException(404, "Roster not found");
 
-            var availablePlayers = this.Session.Query<Player, PlayerSearch>()
+            var availablePlayers = this.DocumentSession.Query<Player, PlayerSearch>()
                 .OrderBy(x => x.Name)
                 .Where(p => p.IsSupporter == false);
 
@@ -191,10 +186,10 @@
 
         [HttpPost]
         [Authorize]
-        public ActionResult EditPlayers(int id, RosterPlayersViewModel vm)
+        public ActionResult EditPlayers(string id, RosterPlayersViewModel vm)
         {
             if (ModelState.IsValid == false) return EditPlayers(id);
-            var roster = Session.Load<Roster>(id);
+            var roster = DocumentSession.Load<Roster>(id);
             if (roster == null) throw new HttpException(404, "Roster not found");
             roster.Players = new List<string>
                 {
@@ -208,7 +203,7 @@
                     vm.Table4Player2
                 };
             roster.Preliminary = vm.Preliminary;
-            if (vm.Reserve != null && this.Session.Load<Player>(vm.Reserve) != null)
+            if (vm.Reserve != null && this.DocumentSession.Load<Player>(vm.Reserve) != null)
                 roster.Players.Add(vm.Reserve);
             return RedirectToAction("View", new { season = roster.Season, turn = roster.Turn });
         }
@@ -216,7 +211,7 @@
         private RosterViewModel LoadRoster(Roster roster)
         {
             var vm = roster.MapTo<RosterViewModel>();
-            foreach (var player in roster.Players.Where(p => p != null).Select(playerId => this.Session.Load<Player>(playerId)))
+            foreach (var player in roster.Players.Where(p => p != null).Select(playerId => this.DocumentSession.Load<Player>(playerId)))
             {
                 vm.Players.Add(Tuple.Create(player.Id, player.Name));
             }

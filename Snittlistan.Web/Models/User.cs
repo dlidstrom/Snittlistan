@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Models
+﻿using Snittlistan.Web.DomainEvents;
+
+namespace Snittlistan.Web.Models
 {
     using System;
     using System.Linq;
@@ -6,8 +8,6 @@
     using System.Text;
 
     using Raven.Imports.Newtonsoft.Json;
-
-    using Snittlistan.Web.Events;
 
     /// <summary>
     /// Represents a registered user.

@@ -1,0 +1,19 @@
+﻿@model RegisterSerie
+
+@{
+    ViewBag.Title = ViewBag.Title ?? "Registrera matchresultat";
+}
+
+<div class="row">
+    <div class="span8">
+        <h3>@ViewBag.Title</h3>
+        <form class="form-horizontal" method="POST">
+            @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
+            @Html.Partial("_SerieEditor", Model)
+            <div class="form-actions">
+                <button class="btn btn-primary btn-large" type="submit">Spara</button>
+                @Html.ActionLink("Avbryt", "Index", null, new { @class = "btn btn-large" })
+            </div>
+        </form>
+    </div>
+</div>

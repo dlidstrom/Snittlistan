@@ -1,12 +1,14 @@
-﻿namespace Snittlistan.Web.Areas.V2.ViewModels
-{
-    using System.Collections.Generic;
-    using System.Linq;
-    using Snittlistan.Web.Areas.V2.Indexes;
+﻿using System.Collections.Generic;
+using Snittlistan.Web.Areas.V2.ReadModels;
 
+namespace Snittlistan.Web.Areas.V2.ViewModels
+{
     public class MatchResultViewModel
     {
-        public List<ResultViewModel> Results { get; set; }
+        public MatchResultViewModel()
+        {
+            Turns = new Dictionary<int, List<ResultHeaderReadModel>>();
+        }
 
         public int SeasonStart { get; set; }
 
@@ -17,5 +19,7 @@
                 return SeasonStart + 1;
             }
         }
+
+        public Dictionary<int, List<ResultHeaderReadModel>> Turns { get; set; }
     }
 }

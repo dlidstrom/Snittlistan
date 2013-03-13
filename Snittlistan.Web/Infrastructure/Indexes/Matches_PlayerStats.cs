@@ -1,13 +1,11 @@
-﻿namespace Snittlistan.Web.Infrastructure.Indexes
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Raven.Client.Indexes;
+using Snittlistan.Web.Areas.V1.Models;
+
+namespace Snittlistan.Web.Infrastructure.Indexes
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Raven.Client.Indexes;
-
-    using Snittlistan.Web.Areas.V1.Models;
-
     public class Matches_PlayerStats : AbstractMultiMapIndexCreationTask<Matches_PlayerStats.Result>
     {
         public Matches_PlayerStats()

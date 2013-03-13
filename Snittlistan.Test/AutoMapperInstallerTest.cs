@@ -1,14 +1,12 @@
-﻿namespace Snittlistan.Test
+﻿using System.Linq;
+using AutoMapper;
+using Castle.Core.Internal;
+using Castle.Windsor;
+using Snittlistan.Web.Infrastructure.Installers;
+using Xunit;
+
+namespace Snittlistan.Test
 {
-    using System.Linq;
-    using AutoMapper;
-    using Castle.Core.Internal;
-    using Castle.Windsor;
-
-    using Snittlistan.Web.Infrastructure.Installers;
-
-    using Xunit;
-
     public class AutoMapperInstallerTest
     {
         private readonly IWindsorContainer container;

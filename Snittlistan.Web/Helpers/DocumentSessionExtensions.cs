@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Helpers
+﻿using Snittlistan.Web.Areas.V2.Domain;
+
+namespace Snittlistan.Web.Helpers
 {
     using System;
     using System.Linq;
@@ -7,7 +9,6 @@
     using Raven.Client.Linq;
 
     using Snittlistan.Web.Areas.V2.Indexes;
-    using Snittlistan.Web.Areas.V2.Models;
     using Snittlistan.Web.Infrastructure.Indexes;
     using Snittlistan.Web.Models;
 

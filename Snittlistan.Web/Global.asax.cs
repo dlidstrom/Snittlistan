@@ -1,21 +1,22 @@
-﻿namespace Snittlistan.Web
+﻿using System;
+using System.Reflection;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
+using Castle.MicroKernel.Registration;
+using Castle.Windsor;
+using Castle.Windsor.Installer;
+using EventStoreLite.IoC.Castle;
+using NLog;
+using Raven.Client;
+using Snittlistan.Web.App_Start;
+using Snittlistan.Web.Infrastructure;
+using Snittlistan.Web.Infrastructure.Attributes;
+using Snittlistan.Web.Infrastructure.AutoMapper;
+using Snittlistan.Web.Infrastructure.IoC;
+
+namespace Snittlistan.Web
 {
-    using System;
-    using System.Web;
-    using System.Web.Mvc;
-    using System.Web.Routing;
-
-    using Castle.Windsor;
-    using Castle.Windsor.Installer;
-
-    using NLog;
-
-    using Snittlistan.Web.App_Start;
-    using Snittlistan.Web.Infrastructure;
-    using Snittlistan.Web.Infrastructure.Attributes;
-    using Snittlistan.Web.Infrastructure.AutoMapper;
-    using Snittlistan.Web.Infrastructure.IoC;
-
     public class MvcApplication : HttpApplication
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
@@ -28,6 +29,8 @@
 #endif
 
         public static IWindsorContainer Container { get; private set; }
+
+        public static IWindsorContainer ChildContainer { get; private set; }
 
         public static ApplicationMode Mode { get { return applicationMode; } }
 
@@ -72,6 +75,12 @@
         {
             ModelBinders.Binders.Clear();
             RouteTable.Routes.Clear();
+            if (ChildContainer != null)
+            {
+                Container.RemoveChildContainer(ChildContainer);
+                ChildContainer.Dispose();
+            }
+
             if (Container != null)
                 Container.Dispose();
         }
@@ -81,15 +90,27 @@
             filters.Add(new ElmahHandleErrorAttribute());
             filters.Add(new HandleErrorAttribute());
             filters.Add(new UserTrackerLogAttribute());
-            filters.Add(new RavenActionFilterAttribute());
         }
 
         private static void InitializeContainer()
         {
             if (Container == null)
             {
-                Container = new WindsorContainer()
-                    .Install(FromAssembly.This());
+                Container = new WindsorContainer().Install(
+                    FromAssembly.This(), EventStoreInstaller.FromAssembly(Assembly.GetExecutingAssembly()));
+            }
+
+            if (ChildContainer == null)
+            {
+                ChildContainer = new WindsorContainer().Register(
+                    Component.For<IDocumentSession>().UsingFactoryMethod(kernel =>
+                        {
+                            var documentSession = kernel.Resolve<IDocumentStore>()
+                                .OpenSession();
+                            documentSession.Advanced.UseOptimisticConcurrency = true;
+                            return documentSession;
+                        }).LifestyleTransient());
+                Container.AddChildContainer(ChildContainer);
             }
 
             DependencyResolver.SetResolver(new WindsorDependencyResolver(Container));

@@ -1,0 +1,22 @@
+﻿@model Snittlistan.Web.Areas.V2.ReadModels.ResultHeaderReadModel
+
+<div class="well well-small editable">
+    <dl class="dl-horizontal">
+        <dt>lag</dt>
+        <dd>@Content.TeamLabel(Model.TeamLevel, Model.Team)</dd>
+        <dt>plats</dt>
+        <dd>@Model.Location</dd>
+        <dt>motstånd</dt>
+        <dd>@Model.Opponent</dd>
+        <dt>när</dt>
+        <dd>
+            <em>
+                <time datetime="@Model.Date.ToString("s")">
+                    @Model.Date.ToString("dddd, 'den' d MMMM, HH:mm")
+                </time>
+            </em>
+        </dd>
+        <dt>Resultat</dt>
+        <dd>@Model.TeamScore - @Model.OpponentScore</dd>
+    </dl>
+</div>

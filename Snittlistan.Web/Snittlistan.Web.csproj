@@ -80,6 +80,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Elmah.MVC.2.0.2\lib\net40\Elmah.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="EventStoreLite, Version=0.6.4820.37912, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EventStoreLite.0.6.1\lib\net40\EventStoreLite.dll</HintPath>
+    </Reference>
     <Reference Include="Jurassic">
       <HintPath>..\packages\Jurassic.2.1.1\lib\Jurassic.dll</HintPath>
     </Reference>
@@ -99,19 +103,19 @@
     </Reference>
     <Reference Include="Raven.Abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Client.2.0.2230\lib\net40\Raven.Abstractions.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Client.2.0.2261\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Embedded, Version=2.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Embedded.2.0.2230\lib\net40\Raven.Client.Embedded.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Embedded.2.0.2261\lib\net40\Raven.Client.Embedded.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Lightweight, Version=2.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Client.2.0.2230\lib\net40\Raven.Client.Lightweight.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Client.2.0.2261\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Database, Version=2.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Database.2.0.2230\lib\net40\Raven.Database.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.2.0.2261\lib\net40\Raven.Database.dll</HintPath>
     </Reference>
     <Reference Include="RazorEngine, Version=3.0.8.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -185,15 +189,27 @@
     <Compile Include="ApplicationMode.cs" />
     <Compile Include="Areas\V2\AutoMapper\AbsenceProfile.cs" />
     <Compile Include="Areas\V2\AutoMapper\ResultProfile.cs" />
-    <Compile Include="Areas\V2\ViewModels\ResultViewModel.cs" />
-    <Compile Include="Areas\V2\ViewModels\RegisterMatchResult.cs" />
-    <Compile Include="Areas\V2\ViewModels\MatchResultViewModel.cs" />
+    <Compile Include="Areas\V2\Domain\Match\Events\MatchResultDeleted.cs" />
+    <Compile Include="Areas\V2\Handlers\MatchResultHandler.cs" />
     <Compile Include="Areas\V2\Indexes\MatchResultIndex.cs" />
-    <Compile Include="Areas\V2\Models\MatchResult.cs" />
+    <Compile Include="Areas\V2\Domain\Match\Events\RosterChanged.cs" />
+    <Compile Include="Areas\V2\Domain\Match\MatchResult.cs" />
+    <Compile Include="Areas\V2\Domain\Match\Events\MatchResultRegistered.cs" />
+    <Compile Include="Areas\V2\Domain\Match\Events\MatchResultUpdated.cs" />
+    <Compile Include="Areas\V2\ReadModels\GamesReadModel.cs" />
+    <Compile Include="Areas\V2\ReadModels\ResultHeaderReadModel.cs" />
+    <Compile Include="Areas\V2\ViewModels\EditMatchResult.cs" />
+    <Compile Include="Areas\V2\Domain\MatchGame.cs" />
+    <Compile Include="Areas\V2\Domain\MatchSerie.cs" />
+    <Compile Include="Areas\V2\Domain\MatchTable.cs" />
+    <Compile Include="Areas\V2\ViewModels\RegisterSerie.cs" />
+    <Compile Include="Areas\V2\ViewModels\ResultViewModel.cs" />
+    <Compile Include="Areas\V2\ViewModels\RegisterResult.cs" />
+    <Compile Include="Areas\V2\ViewModels\MatchResultViewModel.cs" />
     <Compile Include="Areas\V2\Controllers\MatchResultController.cs" />
     <Compile Include="Areas\V2\Indexes\AbsenceIndex.cs" />
     <Compile Include="Areas\V2\ViewModels\AbsenceViewModel.cs" />
-    <Compile Include="Areas\V2\Models\Absence.cs" />
+    <Compile Include="Areas\V2\Domain\Absence.cs" />
     <Compile Include="Areas\V2\Controllers\AbsenceController.cs" />
     <Compile Include="Areas\V2\Controllers\AdminTasksController.cs" />
     <Compile Include="Areas\V2\ViewModels\CreateAbsenceViewModel.cs" />
@@ -201,6 +217,8 @@
     <Compile Include="Areas\V2\ViewModels\SendMailViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\SetPasswordViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\TurnResultViewModel.cs" />
+    <Compile Include="Infrastructure\Installers\EventMigratorInstaller.cs" />
+    <Compile Include="Infrastructure\Installers\EventStoreSessionInstaller.cs" />
     <Compile Include="Infrastructure\JetBrains\Annotations.cs" />
     <Compile Include="Models\Emails.cs" />
     <Compile Include="ViewModels\UserInvitedViewModel.cs" />
@@ -215,7 +233,7 @@
     <Compile Include="Areas\V2\ViewModels\ViewTurnViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\CreatePlayerViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\PlayerDataViewModel.cs" />
-    <Compile Include="Areas\V2\Models\Player.cs" />
+    <Compile Include="Areas\V2\Domain\Player.cs" />
     <Compile Include="Areas\V2\Controllers\PlayerController.cs" />
     <Compile Include="Areas\V2\Controllers\RedirectController.cs" />
     <Compile Include="Areas\V1\V1AreaRegistration.cs" />
@@ -232,13 +250,13 @@
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="Areas\V1\Controllers\AccountController.cs" />
     <Compile Include="Areas\V2\ViewModels\LogOnViewModel.cs" />
-    <Compile Include="Events\UserInvitedEvent.cs" />
+    <Compile Include="DomainEvents\UserInvitedEvent.cs" />
     <Compile Include="Handlers\UserInvited.cs" />
     <Compile Include="HtmlHelpers\RequestExtensions.cs" />
     <Compile Include="Areas\V2\AutoMapper\PlayerProfile.cs" />
     <Compile Include="Areas\V2\Indexes\PlayerSearch.cs" />
     <Compile Include="Areas\V2\Indexes\RosterSearchTerms.cs" />
-    <Compile Include="Areas\V2\Models\Roster.cs" />
+    <Compile Include="Areas\V2\Domain\Roster.cs" />
     <Compile Include="Areas\V2\ViewModels\RosterViewModel.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Areas\V2\Controllers\RosterController.cs" />
@@ -253,10 +271,10 @@
     <Compile Include="Areas\V2\Controllers\SessionApiController.cs" />
     <Compile Include="Areas\V1\Controllers\ValidationController.cs" />
     <Compile Include="Areas\V1\Controllers\WelcomeController.cs" />
-    <Compile Include="Events\DomainEvent.cs" />
-    <Compile Include="Events\DomainEventReset.cs" />
-    <Compile Include="Events\IDomainEvent.cs" />
-    <Compile Include="Events\NewUserCreatedEvent.cs" />
+    <Compile Include="DomainEvents\DomainEvent.cs" />
+    <Compile Include="DomainEvents\DomainEventReset.cs" />
+    <Compile Include="DomainEvents\IDomainEvent.cs" />
+    <Compile Include="DomainEvents\NewUserCreatedEvent.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -290,13 +308,11 @@
     <Compile Include="Infrastructure\Indexes\Matches_PlayerStats.cs" />
     <Compile Include="Infrastructure\Indexes\Match_ByBitsMatchId.cs" />
     <Compile Include="Infrastructure\Indexes\Match_ByDate.cs" />
-    <Compile Include="Infrastructure\Indexes\Pins_Last20.cs" />
-    <Compile Include="Infrastructure\Indexes\Players.cs" />
+    <Compile Include="Infrastructure\Indexes\PlayersIndex.cs" />
     <Compile Include="Infrastructure\Indexes\Player_ByMatch.cs" />
     <Compile Include="Infrastructure\Indexes\Teams.cs" />
     <Compile Include="Infrastructure\Indexes\User_ByEmail.cs" />
     <Compile Include="Infrastructure\InjectingActionInvoker.cs" />
-    <Compile Include="Infrastructure\Installers\ActionInvokerInstaller.cs" />
     <Compile Include="Infrastructure\Installers\AutoMapperInstaller.cs" />
     <Compile Include="Infrastructure\Installers\ControllerInstaller.cs" />
     <Compile Include="Infrastructure\Installers\DocumentStoreMode.cs" />
@@ -310,7 +326,6 @@
     <Compile Include="Infrastructure\LowercaseRoute.cs" />
     <Compile Include="Infrastructure\MailHttpContext.cs" />
     <Compile Include="Infrastructure\MailHttpResponse.cs" />
-    <Compile Include="Infrastructure\RavenActionFilterAttribute.cs" />
     <Compile Include="Infrastructure\Results\ElmahResult.cs" />
     <Compile Include="Infrastructure\Results\NotFoundViewResult.cs" />
     <Compile Include="Infrastructure\RouteCollectionExtension.cs" />
@@ -434,12 +449,22 @@
     <Content Include="Areas\V2\Views\Absence\Delete.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\Index.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\Register.cshtml" />
-    <Content Include="Areas\V2\Views\MatchResult\_MatchResultEditor.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\_ResultEditor.cshtml" />
     <Content Include="Areas\V2\Views\AdminTasks\Index.cshtml" />
     <Content Include="Areas\V2\Views\AdminTasks\SendMail.cshtml" />
     <Content Include="Areas\V2\Views\AdminTasks\_Layout.cshtml" />
     <Content Include="Areas\V2\Views\AdminTasks\_ViewStart.cshtml" />
     <Content Include="Areas\V2\Views\AdminTasks\CreateIndexes.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\EditTeam.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\Delete.cshtml" />
+    <Content Include="Areas\V2\Views\AdminTasks\ReplayEvents.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\Details.cshtml" />
+    <Content Include="Areas\V2\Views\AdminTasks\MigrateEvents.cshtml" />
+    <Content Include="Areas\V2\Views\AdminTasks\EventStoreActions.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\RegisterSerie.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\_SerieEditor.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\DisplayTemplates\Header.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\DisplayTemplates\Result.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
@@ -492,6 +517,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\V1\ViewModels\Admin\" />
+    <Folder Include="Areas\V2\Migration\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

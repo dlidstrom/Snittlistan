@@ -1,25 +1,17 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers
+﻿using System.Linq;
+using System.Web.Mvc;
+using Raven.Client;
+using Raven.Client.Linq;
+using Snittlistan.Web.Areas.V2.Indexes;
+using Snittlistan.Web.Controllers;
+
+namespace Snittlistan.Web.Areas.V2.Controllers
 {
-    using System.Linq;
-    using System.Web.Mvc;
-
-    using Raven.Client;
-    using Raven.Client.Linq;
-
-    using Snittlistan.Web.Areas.V2.Indexes;
-    using Snittlistan.Web.Controllers;
-    using Snittlistan.Web.Infrastructure.Indexes;
-
     public class SearchTermsController : AbstractController
     {
-        public SearchTermsController(IDocumentSession session)
-            : base(session)
-        {
-        }
-
         public JsonResult Teams(string q)
         {
-            var options = this.Session.Query<RosterSearchTerms.Result, RosterSearchTerms>()
+            var options = this.DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
                 .Where(t => t.Team.StartsWith(q))
                 .Distinct()
                 .AsProjection<RosterSearchTerms.Result>()
@@ -32,7 +24,7 @@
 
         public JsonResult Opponents(string q)
         {
-            var options = this.Session.Query<RosterSearchTerms.Result, RosterSearchTerms>()
+            var options = this.DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
                 .Where(t => t.Opponent.StartsWith(q))
                 .Distinct()
                 .AsProjection<RosterSearchTerms.Result>()
@@ -45,7 +37,7 @@
 
         public JsonResult Locations(string q)
         {
-            var options = this.Session.Query<RosterSearchTerms.Result, RosterSearchTerms>()
+            var options = this.DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
                 .Where(t => t.Location.StartsWith(q))
                 .Distinct()
                 .AsProjection<RosterSearchTerms.Result>()

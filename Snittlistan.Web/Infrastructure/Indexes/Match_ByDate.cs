@@ -1,14 +1,12 @@
-﻿namespace Snittlistan.Web.Infrastructure.Indexes
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using Raven.Abstractions.Indexing;
+using Raven.Client.Indexes;
+using Snittlistan.Web.Areas.V1.Models;
+
+namespace Snittlistan.Web.Infrastructure.Indexes
 {
-    using System;
-    using System.ComponentModel.DataAnnotations;
-    using System.Linq;
-
-    using Raven.Abstractions.Indexing;
-    using Raven.Client.Indexes;
-
-    using Snittlistan.Web.Areas.V1.Models;
-
     public class Match_ByDate : AbstractMultiMapIndexCreationTask<Match_ByDate.Result>
     {
         public Match_ByDate()

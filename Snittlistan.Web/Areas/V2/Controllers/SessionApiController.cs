@@ -1,20 +1,16 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers
+﻿using System.Net;
+using System.Web.Mvc;
+using Snittlistan.Web.Controllers;
+using Snittlistan.Web.Helpers;
+using Snittlistan.Web.Services;
+
+namespace Snittlistan.Web.Areas.V2.Controllers
 {
-    using System.Net;
-    using System.Web.Mvc;
-
-    using Raven.Client;
-
-    using Snittlistan.Web.Controllers;
-    using Snittlistan.Web.Helpers;
-    using Snittlistan.Web.Services;
-
     public class SessionApiController : AbstractController
     {
         private readonly IAuthenticationService authenticationService;
 
-        public SessionApiController(IDocumentSession session, IAuthenticationService authenticationService)
-            : base(session)
+        public SessionApiController(IAuthenticationService authenticationService)
         {
             this.authenticationService = authenticationService;
         }
@@ -24,7 +20,7 @@
         public ActionResult CreateSession(string email, string password, string remember)
         {
             InputError error = null;
-            var user = this.Session.FindUserByEmail(email);
+            var user = this.DocumentSession.FindUserByEmail(email);
             if (user == null)
                 error = new InputError("email", "Användaren existerar inte");
             else if (!user.ValidatePassword(password))

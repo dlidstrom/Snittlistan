@@ -1,10 +1,10 @@
-﻿namespace Snittlistan.Test
+﻿using Snittlistan.Web.DomainEvents;
+
+namespace Snittlistan.Test
 {
     using System.Linq;
     using Castle.Core;
     using Castle.Windsor;
-
-    using Snittlistan.Web.Events;
     using Snittlistan.Web.Handlers;
     using Snittlistan.Web.Infrastructure.Installers;
 

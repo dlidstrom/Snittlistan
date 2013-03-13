@@ -1,6 +1,7 @@
-﻿namespace Snittlistan.Test
+﻿using Snittlistan.Web.DomainEvents;
+
+namespace Snittlistan.Test
 {
-    using Snittlistan.Web.Events;
     using Snittlistan.Web.Helpers;
     using Snittlistan.Web.Models;
 

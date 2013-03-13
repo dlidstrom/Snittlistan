@@ -1,0 +1,18 @@
+﻿@model RavenAdminViewModel
+
+@{
+    ViewBag.Title = "Migrera events";
+}
+
+<div class="row">
+    <div class="span8">
+        <h3>@ViewBag.Title</h3>
+        @using (Html.BeginForm("MigrateEvents", "AdminTasks", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            <div class="alert alert-danger">Är du säker på att du vill migrera alla events?</div>
+            <div class="form-actions">
+                <button class="btn btn-primary btn-large" type="submit">Ja, utför</button>
+            </div>
+        }
+    </div>
+</div>

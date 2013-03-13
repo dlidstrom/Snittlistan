@@ -1,11 +1,8 @@
-﻿namespace Snittlistan.Web.Handlers
+﻿using Snittlistan.Web.DomainEvents;
+using Snittlistan.Web.Models;
+
+namespace Snittlistan.Web.Handlers
 {
-    using JetBrains.Annotations;
-
-    using Snittlistan.Web.Events;
-    using Snittlistan.Web.Models;
-
-    [UsedImplicitly]
     public class UserInvited : IHandle<UserInvitedEvent>
     {
         public void Handle(UserInvitedEvent @event)

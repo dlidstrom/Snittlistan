@@ -1,11 +1,9 @@
-﻿namespace Snittlistan.Test
+﻿using System;
+using System.Collections.Generic;
+using Snittlistan.Web.Areas.V1.Models;
+
+namespace Snittlistan.Test
 {
-    using System;
-    using System.Collections.Generic;
-
-    using Snittlistan.Web.Areas.V1.Models;
-    using Snittlistan.Web.Models;
-
     public static class DbSeed
     {
         public static Match8x4 Create8x4Match()

@@ -13,7 +13,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             Players = new List<Tuple<string, string>>();
         }
 
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public int Season { get; set; }
 

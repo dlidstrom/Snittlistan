@@ -1,23 +1,18 @@
-﻿namespace Snittlistan.Web.Infrastructure.Installers
+﻿using System;
+using System.IO;
+using System.Reflection;
+using Castle.MicroKernel;
+using Castle.MicroKernel.Registration;
+using Castle.MicroKernel.SubSystems.Configuration;
+using Castle.Windsor;
+using Raven.Client;
+using Raven.Client.Document;
+using Raven.Client.Embedded;
+using Snittlistan.Web.Areas.V1.Models;
+using Snittlistan.Web.Infrastructure.Indexes;
+
+namespace Snittlistan.Web.Infrastructure.Installers
 {
-    using System;
-    using System.IO;
-    using System.Reflection;
-
-    using Castle.MicroKernel;
-    using Castle.MicroKernel.Registration;
-    using Castle.MicroKernel.SubSystems.Configuration;
-    using Castle.Windsor;
-
-    using JetBrains.Annotations;
-
-    using Raven.Client;
-    using Raven.Client.Document;
-    using Raven.Client.Embedded;
-
-    using Snittlistan.Web.Areas.V1.Models;
-    using Snittlistan.Web.Infrastructure.Indexes;
-
     public class RavenInstaller : IWindsorInstaller
     {
         private readonly DocumentStoreMode mode;
@@ -27,7 +22,6 @@
         /// Raven mode is determined depending on debug or release:
         /// run with server when debugging, and embedded in production.
         /// </summary>
-        [UsedImplicitly]
         public RavenInstaller()
         {
             switch (MvcApplication.Mode)
@@ -62,8 +56,7 @@
             store.Conventions.FindIdentityProperty = FindIdentityProperty;
 
             // create indexes
-            if (mode == DocumentStoreMode.InMemory)
-                IndexCreator.CreateIndexes(store);
+            IndexCreator.CreateIndexes(store);
             return store;
         }
 
@@ -83,7 +76,9 @@
         private static IDocumentSession GetDocumentSession(IKernel kernel)
         {
             var store = kernel.Resolve<IDocumentStore>();
-            return store.OpenSession();
+            var documentSession = store.OpenSession();
+            documentSession.Advanced.UseOptimisticConcurrency = true;
+            return documentSession;
         }
 
         private IDocumentStore CreateDocumentStore()
@@ -98,10 +93,14 @@
                     store = new DocumentStore { ConnectionStringName = "RavenDB" };
                     break;
                 default:
-                    store = new EmbeddableDocumentStore
+                    {
+                        var path = AppDomain.CurrentDomain.GetData("DataDirectory").ToString();
+                        var dataDirectory = Path.Combine(path, "Database");
+                        store = new EmbeddableDocumentStore
                                 {
-                                    DataDirectory = Path.Combine(AppDomain.CurrentDomain.GetData("DataDirectory").ToString(), "Database")
+                                    DataDirectory = dataDirectory
                                 };
+                    }
                     break;
             }
 

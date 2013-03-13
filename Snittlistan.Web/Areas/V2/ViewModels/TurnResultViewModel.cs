@@ -1,20 +1,14 @@
-﻿namespace Snittlistan.Web.Areas.V2.ViewModels
-{
-    using System;
-    using Snittlistan.Web.Areas.V2.Indexes;
+﻿using System;
 
+namespace Snittlistan.Web.Areas.V2.ViewModels
+{
     public class TurnResultViewModel
     {
-        public TurnResultViewModel(MatchResultIndex.Result result)
+        public TurnResultViewModel()
         {
-            Date = result.Date.DateTime.ToShortDateString();
-            Location = result.Location;
-            Team = result.Team;
-            Opponent = result.Opponent;
-            TeamScore = result.TeamScore;
-            OpponentScore = result.OpponentScore;
-            BitsMatchId = result.BitsMatchId;
         }
+
+        public int Id { get; set; }
 
         public string Date { get; private set; }
 
