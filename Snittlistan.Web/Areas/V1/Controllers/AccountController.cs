@@ -25,8 +25,7 @@
         /// </summary>
         /// <param name="session">Document session.</param>
         /// <param name="authenticationService">Authentication service.</param>
-        public AccountController(IDocumentSession session, IAuthenticationService authenticationService)
-            : base(session)
+        public AccountController(IAuthenticationService authenticationService)
         {
             this.authenticationService = authenticationService;
         }
@@ -50,7 +49,7 @@
         public ActionResult LogOn(LogOnViewModel vm, string returnUrl)
         {
             // find the user in question
-            var user = this.Session.FindUserByEmail(vm.Email);
+            var user = this.DocumentSession.FindUserByEmail(vm.Email);
 
             if (user == null)
             {
@@ -112,7 +111,7 @@
         public ActionResult Register(RegisterViewModel model)
         {
             // an existing user cannot be registered again
-            if (this.Session.FindUserByEmail(model.Email) != null)
+            if (this.DocumentSession.FindUserByEmail(model.Email) != null)
                 this.ModelState.AddModelError("Email", "Adressen finns redan.");
 
             // redisplay form if any errors at this point
@@ -121,7 +120,7 @@
 
             var newUser = new User(model.FirstName, model.LastName, model.Email, model.Password);
             newUser.Initialize();
-            this.Session.Store(newUser);
+            this.DocumentSession.Store(newUser);
 
             return this.RedirectToAction("RegisterSuccess");
         }
@@ -144,7 +143,7 @@
         [HttpPost, Authorize]
         public ActionResult ChangePassword(ChangePasswordViewModel model)
         {
-            var user = this.Session.FindUserByEmail(model.Email);
+            var user = this.DocumentSession.FindUserByEmail(model.Email);
 
             if (user == null)
                 this.ModelState.AddModelError("Email", "Användaren existerar inte.");
@@ -183,7 +182,7 @@
         /// <returns>LogOn or Register view.</returns>
         public ActionResult Verify(Guid activationKey)
         {
-            var user = this.Session.FindUserByActivationKey(activationKey.ToString());
+            var user = this.DocumentSession.FindUserByActivationKey(activationKey.ToString());
 
             if (user == null)
                 return this.RedirectToAction("Register");

@@ -1,39 +1,26 @@
-﻿namespace Snittlistan.Web.Areas.V1.Controllers
+﻿using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Raven.Client;
+using Raven.Client.Linq;
+using Snittlistan.Web.Areas.V1.Models;
+using Snittlistan.Web.Areas.V1.ViewModels.Match;
+using Snittlistan.Web.Controllers;
+using Snittlistan.Web.Helpers;
+using Snittlistan.Web.Infrastructure.AutoMapper;
+using Snittlistan.Web.Infrastructure.Indexes;
+
+namespace Snittlistan.Web.Areas.V1.Controllers
 {
-    using System.Linq;
-    using System.Web;
-    using System.Web.Mvc;
-
-    using MvcContrib;
-
-    using Raven.Client;
-    using Raven.Client.Linq;
-
-    using Snittlistan.Web.Areas.V1.Models;
-    using Snittlistan.Web.Areas.V1.ViewModels.Match;
-    using Snittlistan.Web.Controllers;
-    using Snittlistan.Web.Helpers;
-    using Snittlistan.Web.Infrastructure.AutoMapper;
-    using Snittlistan.Web.Infrastructure.Indexes;
-
     public class MatchController : AbstractController
     {
-        /// <summary>
-        /// Initializes a new instance of the MatchController class.
-        /// </summary>
-        /// <param name="session">Session instance.</param>
-        public MatchController(IDocumentSession session)
-            : base(session)
-        {
-        }
-
         /// <summary>
         /// GET: /Match/.
         /// </summary>
         /// <returns></returns>
         public ViewResult Index()
         {
-            var matches = this.Session.Query<Match_ByDate.Result, Match_ByDate>()
+            var matches = this.DocumentSession.Query<Match_ByDate.Result, Match_ByDate>()
                 .OrderByDescending(m => m.Date)
                 .AsProjection<Match_ByDate.Result>()
                 .ToList();
@@ -48,12 +35,12 @@
         /// <returns></returns>
         public ActionResult Details8x4(int id)
         {
-            var match = this.Session.Load<Match8x4>(id);
+            var match = this.DocumentSession.Load<Match8x4>(id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
-            var matchId = this.Session.Advanced.GetDocumentId(match);
-            var results = this.Session.Query<Player_ByMatch.Result, Player_ByMatch>()
+            var matchId = this.DocumentSession.Advanced.GetDocumentId(match);
+            var results = this.DocumentSession.Query<Player_ByMatch.Result, Player_ByMatch>()
                 .Where(x => x.MatchId == matchId)
                 .OrderByDescending(x => x.Pins);
 
@@ -87,7 +74,7 @@
         [HttpPost, Authorize]
         public ActionResult Register8x4(Register8x4MatchViewModel model)
         {
-            if (this.Session.BitsIdExists(model.BitsMatchId))
+            if (this.DocumentSession.BitsIdExists(model.BitsMatchId))
                 this.ModelState.AddModelError("BitsMatchId", "Matchen redan registrerad");
 
             if (!this.ModelState.IsValid)
@@ -99,7 +86,7 @@
                 model.BitsMatchId,
                 model.HomeTeam.MapTo<HomeTeamFactory>().CreateTeam(),
                 model.AwayTeam.MapTo<AwayTeamFactory>().CreateTeam());
-            this.Session.Store(match);
+            this.DocumentSession.Store(match);
 
             return this.RedirectToAction("Details8x4", new { id = match.Id });
         }
@@ -112,7 +99,7 @@
         [Authorize]
         public ActionResult EditDetails8x4(int id)
         {
-            var match = this.Session.Load<Match8x4>(id);
+            var match = this.DocumentSession.Load<Match8x4>(id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
@@ -130,7 +117,7 @@
             if (!this.ModelState.IsValid)
                 return this.View(model);
 
-            var match = this.Session.Load<Match8x4>(model.Id);
+            var match = this.DocumentSession.Load<Match8x4>(model.Id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
@@ -150,7 +137,7 @@
         [Authorize]
         public ActionResult EditTeam8x4(int id, bool isHomeTeam)
         {
-            var match = this.Session.Load<Match8x4>(id);
+            var match = this.DocumentSession.Load<Match8x4>(id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
@@ -175,7 +162,7 @@
         [HttpPost, Authorize]
         public ActionResult EditTeam8x4(EditTeam8x4ViewModel vm)
         {
-            var match = this.Session.Load<Match8x4>(vm.Id);
+            var match = this.DocumentSession.Load<Match8x4>(vm.Id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
@@ -190,7 +177,7 @@
         [Authorize]
         public ActionResult Delete8x4(int id)
         {
-            var match = this.Session.Load<Match8x4>(id);
+            var match = this.DocumentSession.Load<Match8x4>(id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
@@ -200,13 +187,13 @@
         [Authorize, HttpPost]
         public ActionResult Delete8x4(Match8x4ViewModel.MatchDetails vm)
         {
-            var match = this.Session.Load<Match8x4>(vm.Id);
+            var match = this.DocumentSession.Load<Match8x4>(vm.Id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
-            this.Session.Delete(match);
+            this.DocumentSession.Delete(match);
 
-            return this.RedirectToAction(c => c.Index());
+            return this.RedirectToAction("Index");
         }
 
         /// <summary>
@@ -230,7 +217,7 @@
                 model.Date,
                 model.HomeTeam.MapTo<Team4x4>(),
                 model.AwayTeam.MapTo<Team4x4>());
-            this.Session.Store(match);
+            this.DocumentSession.Store(match);
 
             return this.RedirectToAction("Details4x4", new { id = match.Id });
         }
@@ -243,7 +230,7 @@
         [Authorize]
         public ActionResult EditDetails4x4(int id)
         {
-            var match = this.Session.Load<Match4x4>(id);
+            var match = this.DocumentSession.Load<Match4x4>(id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
@@ -261,7 +248,7 @@
             if (!this.ModelState.IsValid)
                 return this.View(model);
 
-            var match = this.Session.Load<Match4x4>(model.Id);
+            var match = this.DocumentSession.Load<Match4x4>(model.Id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
@@ -280,7 +267,7 @@
         [Authorize]
         public ActionResult EditTeam4x4(int id, bool isHomeTeam)
         {
-            var match = this.Session.Load<Match4x4>(id);
+            var match = this.DocumentSession.Load<Match4x4>(id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
@@ -305,7 +292,7 @@
         [HttpPost, Authorize]
         public ActionResult EditTeam4x4(EditTeam4x4ViewModel vm)
         {
-            var match = this.Session.Load<Match4x4>(vm.Id);
+            var match = this.DocumentSession.Load<Match4x4>(vm.Id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
@@ -320,7 +307,7 @@
         [Authorize]
         public ActionResult Delete4x4(int id)
         {
-            var match = this.Session.Load<Match4x4>(id);
+            var match = this.DocumentSession.Load<Match4x4>(id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
@@ -330,13 +317,13 @@
         [Authorize, HttpPost]
         public ActionResult Delete4x4(Match4x4ViewModel.MatchDetails vm)
         {
-            var match = this.Session.Load<Match4x4>(vm.Id);
+            var match = this.DocumentSession.Load<Match4x4>(vm.Id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
-            this.Session.Delete(match);
+            this.DocumentSession.Delete(match);
 
-            return this.RedirectToAction(c => c.Index());
+            return this.RedirectToAction("Index");
         }
 
         /// <summary>
@@ -346,12 +333,12 @@
         /// <returns></returns>
         public ActionResult Details4x4(int id)
         {
-            var match = this.Session.Load<Match4x4>(id);
+            var match = this.DocumentSession.Load<Match4x4>(id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
-            string matchId = this.Session.Advanced.GetDocumentId(match);
-            var results = this.Session.Query<Player_ByMatch.Result, Player_ByMatch>()
+            string matchId = this.DocumentSession.Advanced.GetDocumentId(match);
+            var results = this.DocumentSession.Query<Player_ByMatch.Result, Player_ByMatch>()
                 .Where(x => x.MatchId == matchId)
                 .OrderByDescending(x => x.Pins);
 

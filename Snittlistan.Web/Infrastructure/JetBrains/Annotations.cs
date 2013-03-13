@@ -228,8 +228,8 @@ namespace JetBrains.Annotations
     /// } 
     /// </code>
     /// </example>
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Delegate | AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
-    public sealed class NotNullAttribute : Attribute { }
+    ///[AttributeUsage(AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Delegate | AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
+    ///public sealed class NotNullAttribute : Attribute { }
 
     /// <summary>
     /// Describes dependency between method input and output.
@@ -276,12 +276,12 @@ namespace JetBrains.Annotations
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public sealed class ContractAnnotationAttribute : Attribute
     {
-        public ContractAnnotationAttribute([NotNull] string fdt)
+        public ContractAnnotationAttribute(string fdt)
             : this(fdt, false)
         {
         }
 
-        public ContractAnnotationAttribute([NotNull] string fdt, bool forceFullStates)
+        public ContractAnnotationAttribute(string fdt, bool forceFullStates)
         {
             FDT = fdt;
             ForceFullStates = forceFullStates;

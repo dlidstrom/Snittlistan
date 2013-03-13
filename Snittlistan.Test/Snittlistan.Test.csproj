@@ -44,6 +44,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Castle.Windsor.3.1.0\lib\net40\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="EventStoreLite, Version=0.6.4820.37912, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EventStoreLite.0.6.1\lib\net40\EventStoreLite.dll</HintPath>
+    </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
     </Reference>
@@ -53,19 +57,19 @@
     </Reference>
     <Reference Include="Raven.Abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Client.2.0.2230\lib\net40\Raven.Abstractions.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Client.2.0.2261\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Embedded, Version=2.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Embedded.2.0.2230\lib\net40\Raven.Client.Embedded.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Embedded.2.0.2261\lib\net40\Raven.Client.Embedded.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Lightweight, Version=2.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Client.2.0.2230\lib\net40\Raven.Client.Lightweight.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Client.2.0.2261\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Database, Version=2.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Database.2.0.2230\lib\net40\Raven.Database.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.2.0.2261\lib\net40\Raven.Database.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -82,12 +86,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountController_ChangePassword.cs" />
-    <Compile Include="AccountController_LogOff.cs" />
-    <Compile Include="AccountController_Logon.cs" />
-    <Compile Include="AccountController_Register.cs" />
-    <Compile Include="AccountController_Scenario.cs" />
-    <Compile Include="AccountController_Verify.cs" />
+    <Compile Include="Controllers\AccountController_ChangePassword.cs" />
+    <Compile Include="Controllers\AccountController_LogOff.cs" />
+    <Compile Include="Controllers\AccountController_Logon.cs" />
+    <Compile Include="Controllers\AccountController_Register.cs" />
+    <Compile Include="Controllers\AccountController_Scenario.cs" />
+    <Compile Include="Controllers\AccountController_Verify.cs" />
     <Compile Include="ActionResultHelper.cs" />
     <Compile Include="AutoMapperConfigurationTest.cs" />
     <Compile Include="AutoMapperInstallerTest.cs" />
@@ -95,21 +99,22 @@
     <Compile Include="ControllersInstallerTest.cs" />
     <Compile Include="DbSeed.cs" />
     <Compile Include="DbTest.cs" />
+    <Compile Include="Domain\MatchResultTest.cs" />
     <Compile Include="EmailServiceTest.cs" />
     <Compile Include="HandlersInstallerTest.cs" />
-    <Compile Include="HomeController_Player.cs" />
+    <Compile Include="Controllers\HomeController_Player.cs" />
     <Compile Include="InstallerTestHelper.cs" />
     <Compile Include="Match4x4Test.cs" />
     <Compile Include="Match8x4Test.cs" />
-    <Compile Include="MatchController_Details4x4.cs" />
-    <Compile Include="MatchController_Details8x4.cs" />
-    <Compile Include="MatchController_EditDetails4x4.cs" />
-    <Compile Include="MatchController_EditDetails8x4.cs" />
-    <Compile Include="MatchController_EditTeam4x4.cs" />
-    <Compile Include="MatchController_EditTeam8x4.cs" />
-    <Compile Include="MatchController_Index.cs" />
-    <Compile Include="MatchController_Register4x4.cs" />
-    <Compile Include="MatchController_Register8x4.cs" />
+    <Compile Include="Controllers\MatchController_Details4x4.cs" />
+    <Compile Include="Controllers\MatchController_Details8x4.cs" />
+    <Compile Include="Controllers\MatchController_EditDetails4x4.cs" />
+    <Compile Include="Controllers\MatchController_EditDetails8x4.cs" />
+    <Compile Include="Controllers\MatchController_EditTeam4x4.cs" />
+    <Compile Include="Controllers\MatchController_EditTeam8x4.cs" />
+    <Compile Include="Controllers\MatchController_Index.cs" />
+    <Compile Include="Controllers\MatchController_Register4x4.cs" />
+    <Compile Include="Controllers\MatchController_Register8x4.cs" />
     <Compile Include="Match_ByBitsMatchIdTest.cs" />
     <Compile Include="NameShortenerResolverTest.cs" />
     <Compile Include="PlayerStat_Test.cs" />
@@ -132,6 +137,7 @@
       <Name>Snittlistan.Web</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

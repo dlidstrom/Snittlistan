@@ -1,12 +1,11 @@
-﻿namespace Snittlistan.Web.Areas.V2.Indexes
+﻿using System;
+using System.Linq;
+using Raven.Abstractions.Indexing;
+using Raven.Client.Indexes;
+using Snittlistan.Web.Areas.V2.Domain;
+
+namespace Snittlistan.Web.Areas.V2.Indexes
 {
-    using System;
-    using System.Linq;
-
-    using Raven.Client.Indexes;
-
-    using Snittlistan.Web.Areas.V2.Models;
-
     public class RosterSearchTerms : AbstractIndexCreationTask<Roster, RosterSearchTerms.Result>
     {
         public RosterSearchTerms()
@@ -23,6 +22,8 @@
                                       roster.Date,
                                       roster.MatchResultId
                                   };
+
+            Store(x => x.Id, FieldStorage.Yes);
         }
 
         public class Result

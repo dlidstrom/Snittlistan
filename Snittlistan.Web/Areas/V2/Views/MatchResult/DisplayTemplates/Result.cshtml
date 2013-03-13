@@ -1,0 +1,53 @@
+﻿@model Snittlistan.Web.Areas.V2.ReadModels.ResultReadModel
+
+@{
+    ViewBag.Title = "Result";
+}
+
+<h2>Games</h2>
+@for (var i = 0; i < Model.Series.Count; i++)
+{
+    <h4>Serie @i</h4>
+    var serie = Model.Series[i];
+    for (var j = 0; j < serie.Tables.Count; j++)
+    {
+        <h5>Bord @j</h5>
+        var table = serie.Tables[j];
+        <table>
+            <tr>
+                <th>Namn</th>
+                <th>Poäng</th>
+                <th>X</th>
+                <th>Spärr</th>
+            </tr>
+            <tr>
+                <td>
+                    @table.Game1.Player
+                </td>
+                <td>
+                    @table.Game1.Pins
+                </td>
+                <td>
+                    @table.Game1.Strikes
+                </td>
+                <td>
+                    @table.Game1.Spares
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @table.Game2.Player
+                </td>
+                <td>
+                    @table.Game2.Pins
+                </td>
+                <td>
+                    @table.Game2.Strikes
+                </td>
+                <td>
+                    @table.Game2.Spares
+                </td>
+            </tr>
+        </table>
+    }
+}

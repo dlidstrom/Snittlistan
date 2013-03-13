@@ -1,20 +1,18 @@
-﻿namespace Snittlistan.Test
+﻿using System;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
+using Castle.Windsor;
+using Moq;
+using Raven.Client;
+using Raven.Client.Embedded;
+using Snittlistan.Web.App_Start;
+using Snittlistan.Web.Infrastructure.AutoMapper;
+using Snittlistan.Web.Infrastructure.Installers;
+using Snittlistan.Web.Models;
+
+namespace Snittlistan.Test
 {
-    using System;
-    using System.Web;
-    using System.Web.Mvc;
-    using System.Web.Routing;
-    using Castle.Windsor;
-
-    using Moq;
-    using Raven.Client;
-    using Raven.Client.Embedded;
-
-    using Snittlistan.Web.App_Start;
-    using Snittlistan.Web.Infrastructure.AutoMapper;
-    using Snittlistan.Web.Infrastructure.Installers;
-    using Snittlistan.Web.Models;
-
     public abstract class DbTest : IDisposable
     {
         protected readonly IDocumentStore Store;

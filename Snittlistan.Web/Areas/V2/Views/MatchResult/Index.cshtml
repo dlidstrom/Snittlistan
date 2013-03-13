@@ -4,11 +4,13 @@
     <div class="span6">
         <h2>Resultat från säsongen @Model.SeasonStart&minus;@Model.SeasonEnd</h2>
     </div>
-    <div class="span6">
+</div>
+<div class="row">
+    <div class="span6 admin">
         @if (Request.IsAuthenticated)
         {
             <a href="@Url.Action("Register")">
-                <i class="sprite-glyphicons_006_user_add"></i>
+                <i class="sprite-glyphicons_030_pencil"></i>
                 Registrera matchresultat
             </a>
         }
@@ -25,26 +27,45 @@
                 <th>Motståndare</th>
                 <th>Resultat</th>
                 <th></th>
+@*                @if (Request.IsAuthenticated)
+                {
+                    <th></th>
+                }*@
             </tr>
-            @foreach (var turn in Model.Results)
+            @foreach (var turn in Model.Turns.Keys.OrderBy(x => x))
             {
                 var first = true;
-                foreach (var result in turn.Results)
+                var matchResults = Model.Turns[turn];
+                foreach (var result in matchResults)
                 {
                     <tr>
                         @if (first)
                         {
-                            <td rowspan="@turn.Results.Count">@turn.Turn</td>
+                            <td rowspan="@matchResults.Count">
+                                @turn
+                            </td>
                             first = false;
                         }
-                        <td>@result.Date</td>
+                        <td>@result.Date.Date.ToShortDateString()</td>
                         <td>@result.Location</td>
                         <td>@Content.TeamLabel(result.TeamLevel, result.Team)</td>
                         <td>@result.Opponent</td>
                         <td>@result.TeamScore&minus;@result.OpponentScore</td>
-                        <td>
-                            <a href="@string.Format("http://bits.swebowl.se/MatchFact.aspx?MatchId={0}", @result.BitsMatchId)">Matchfakta</a>
-                        </td>
+@*                        <td>
+                            <a href="@string.Format("http://bits.swebowl.se/MatchFact.aspx?MatchId={0}", result.BitsMatchId)">Matchfakta</a>
+                        </td>*@
+                        <td>@Html.ActionLink("Visa", "Details", new { id = result.BitsMatchId })</td>
+@*                        @if (Request.IsAuthenticated)
+                        {
+                            <td>
+                                <a href="@Url.Action("Edit", new { id = result.AggregateId })">
+                                    <i class="sprite-glyphicons_151_edit"></i>
+                                </a>
+                                <a href="@Url.Action("Delete", new { id = result.AggregateId })">
+                                    <i class="sprite-glyphicons_016_bin"></i>
+                                </a>
+                            </td>
+                        }*@
                     </tr>
                 }
             }

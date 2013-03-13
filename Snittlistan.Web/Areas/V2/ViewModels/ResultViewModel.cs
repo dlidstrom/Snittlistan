@@ -1,11 +1,20 @@
-﻿namespace Snittlistan.Web.Areas.V2.ViewModels
-{
-    using System.Collections.Generic;
+﻿using System;
+using Snittlistan.Web.Areas.V2.ReadModels;
 
+namespace Snittlistan.Web.Areas.V2.ViewModels
+{
     public class ResultViewModel
     {
-        public int Turn { get; set; }
+        public ResultViewModel(ResultHeaderReadModel headerReadModel, ResultReadModel resultReadModel)
+        {
+            if (headerReadModel == null) throw new ArgumentNullException("headerReadModel");
+            if (resultReadModel == null) throw new ArgumentNullException("resultReadModel");
+            HeaderReadModel = headerReadModel;
+            ResultReadModel = resultReadModel;
+        }
 
-        public List<TurnResultViewModel> Results { get; set; }
+        public ResultHeaderReadModel HeaderReadModel { get; private set; }
+
+        public ResultReadModel ResultReadModel { get; private set; }
     }
 }

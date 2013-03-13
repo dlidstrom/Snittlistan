@@ -1,22 +1,18 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers
+﻿using System;
+using System.Diagnostics;
+using System.Web.Mvc;
+using Snittlistan.Web.Areas.V2.ViewModels;
+using Snittlistan.Web.Controllers;
+using Snittlistan.Web.Helpers;
+using Snittlistan.Web.Services;
+
+namespace Snittlistan.Web.Areas.V2.Controllers
 {
-    using System;
-    using System.Diagnostics;
-    using System.Web.Mvc;
-
-    using Raven.Client;
-
-    using Snittlistan.Web.Areas.V2.ViewModels;
-    using Snittlistan.Web.Controllers;
-    using Snittlistan.Web.Helpers;
-    using Snittlistan.Web.Services;
-
     public class AuthenticationController : AbstractController
     {
         private readonly IAuthenticationService authenticationService;
 
-        public AuthenticationController(IDocumentSession session, IAuthenticationService authenticationService)
-            : base(session)
+        public AuthenticationController(IAuthenticationService authenticationService)
         {
             if (authenticationService == null) throw new ArgumentNullException("authenticationService");
             this.authenticationService = authenticationService;
@@ -31,7 +27,7 @@
         public ActionResult LogOn(LogOnViewModel vm, string returnUrl)
         {
             // find the user in question
-            var user = this.Session.FindUserByEmail(vm.Email);
+            var user = this.DocumentSession.FindUserByEmail(vm.Email);
 
             if (user == null)
             {

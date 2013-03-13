@@ -1,28 +1,19 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers
+﻿using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Raven.Client.Linq;
+using Snittlistan.Web.Areas.V2.Domain;
+using Snittlistan.Web.Areas.V2.ViewModels;
+using Snittlistan.Web.Controllers;
+using Snittlistan.Web.Infrastructure.AutoMapper;
+
+namespace Snittlistan.Web.Areas.V2.Controllers
 {
-    using System;
-    using System.Linq;
-    using System.Web;
-    using System.Web.Mvc;
-
-    using Raven.Client;
-
-    using Snittlistan.Web.Areas.V2.Models;
-    using Snittlistan.Web.Areas.V2.ViewModels;
-    using Snittlistan.Web.Controllers;
-    using Snittlistan.Web.Infrastructure.AutoMapper;
-
     public class PlayerController : AbstractController
     {
-        public PlayerController(IDocumentSession session)
-            : base(session)
-        {
-            if (session == null) throw new ArgumentNullException("session");
-        }
-
         public ActionResult Index()
         {
-            var players = Session.Query<Player>()
+            var players = DocumentSession.Query<Player>()
                 .OrderBy(p => p.IsSupporter)
                 .ThenBy(p => p.Name)
                 .ToList();
@@ -43,14 +34,14 @@
             if (!this.ModelState.IsValid) return this.View(vm);
 
             var player = new Player(vm.Name, vm.Email, vm.IsSupporter);
-            this.Session.Store(player);
+            this.DocumentSession.Store(player);
             return this.RedirectToAction("Index");
         }
 
         [Authorize]
         public ActionResult Edit(int id)
         {
-            var player = Session.Load<Player>(id);
+            var player = DocumentSession.Load<Player>(id);
             if (player == null) throw new HttpException(404, "Player not found");
             return this.View(player.MapTo<CreatePlayerViewModel>());
         }
@@ -62,7 +53,7 @@
             if (!this.ModelState.IsValid)
                 return this.View(vm);
 
-            var player = this.Session.Load<Player>(id);
+            var player = this.DocumentSession.Load<Player>(id);
             if (player == null) throw new HttpException(404, "Player not found");
 
             player.SetName(vm.Name);
@@ -75,7 +66,7 @@
         [Authorize]
         public ActionResult Delete(int id)
         {
-            var player = this.Session.Load<Player>(id);
+            var player = this.DocumentSession.Load<Player>(id);
             if (player == null)
                 throw new HttpException(404, "Player not found");
             return this.View(player.MapTo<PlayerViewModel>());
@@ -86,10 +77,10 @@
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            var player = this.Session.Load<Player>(id);
+            var player = this.DocumentSession.Load<Player>(id);
             if (player == null)
                 throw new HttpException(404, "Player not found");
-            this.Session.Delete(player);
+            this.DocumentSession.Delete(player);
             return this.RedirectToAction("Index");
         }
     }

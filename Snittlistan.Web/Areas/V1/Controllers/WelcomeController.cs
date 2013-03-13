@@ -1,28 +1,18 @@
-﻿namespace Snittlistan.Web.Areas.V1.Controllers
+﻿using System;
+using System.Configuration;
+using System.Threading;
+using System.Web.Mvc;
+using NLog;
+using Snittlistan.Web.Areas.V1.ViewModels.Account;
+using Snittlistan.Web.Controllers;
+using Snittlistan.Web.Models;
+
+namespace Snittlistan.Web.Areas.V1.Controllers
 {
-    using System;
-    using System.Configuration;
-    using System.Threading;
-    using System.Web.Mvc;
-
-    using MvcContrib;
-
-    using NLog;
-
-    using Raven.Client;
-
-    using Snittlistan.Web.Areas.V1.ViewModels.Account;
-    using Snittlistan.Web.Controllers;
-    using Snittlistan.Web.Models;
-
     public class WelcomeController : AbstractController
     {
         private const string MaintenanceAuthenticationTokenConstant = "Maintenance Authentication Token";
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-
-        public WelcomeController(IDocumentSession session)
-            : base(session)
-        { }
 
         /// <summary>
         /// Gets the maintenance authentication token.
@@ -72,9 +62,9 @@
                     Id = "Admin"
                 };
             user.Activate(false);
-            this.Session.Store(user);
+            this.DocumentSession.Store(user);
 
-            return this.RedirectToAction(c => c.Success());
+            return this.RedirectToAction("Success");
         }
 
         public ActionResult Success()
@@ -98,9 +88,9 @@
                 return this.View("Reset", null, token);
             }
 
-            var user = this.Session.Load<User>("Admin");
-            this.Session.Delete(user);
-            this.Session.SaveChanges();
+            var user = this.DocumentSession.Load<User>("Admin");
+            this.DocumentSession.Delete(user);
+            this.DocumentSession.SaveChanges();
 
             // expect base controller to redirect to /welcome
             return this.RedirectToAction("Index", "Home");
@@ -113,7 +103,7 @@
 
         private void AssertAdminUserExists()
         {
-            if (this.Session.Load<User>("Admin") != null)
+            if (this.DocumentSession.Load<User>("Admin") != null)
             {
                 this.Response.Redirect("/");
                 this.Response.End();
