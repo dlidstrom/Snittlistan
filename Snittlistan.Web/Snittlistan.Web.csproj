@@ -190,6 +190,7 @@
     <Compile Include="Areas\V2\AutoMapper\AbsenceProfile.cs" />
     <Compile Include="Areas\V2\AutoMapper\ResultProfile.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\MatchResultDeleted.cs" />
+    <Compile Include="Areas\V2\Domain\Match\Events\SerieRegistered.cs" />
     <Compile Include="Areas\V2\Handlers\MatchResultHandler.cs" />
     <Compile Include="Areas\V2\Indexes\MatchResultIndex.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\RosterChanged.cs" />

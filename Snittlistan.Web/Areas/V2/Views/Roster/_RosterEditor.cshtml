@@ -15,7 +15,7 @@
     <label class="control-label" for="turn">Omgång:</label>
     <div class="controls">
         <select name="turn">
-            @for (var i = 1; i <= 22; i++)
+            @for (var i = 1; i <= 23; i++)
             {
                 if (Model.Turn == i)
                 {
@@ -36,8 +36,8 @@
                name="team"
                placeholder="Lag"
                autofocus="autofocus"
-               autocorrect = "off"
-               autocomplete = "off"
+               autocorrect="off"
+               autocomplete="off"
                value="@Model.Team"
                required
                data-enabletypeahead="yes"
@@ -50,8 +50,8 @@
         <input type="text"
                name="location"
                placeholder="Bowlinghall"
-               autocorrect = "off"
-               autocomplete = "off"
+               autocorrect="off"
+               autocomplete="off"
                value="@Model.Location"
                required
                data-enabletypeahead="yes"
@@ -64,8 +64,8 @@
         <input type="text"
                name="opponent"
                placeholder="Motståndare"
-               autocorrect = "off"
-               autocomplete = "off"
+               autocorrect="off"
+               autocomplete="off"
                value="@Model.Opponent"
                required
                data-enabletypeahead="yes"
