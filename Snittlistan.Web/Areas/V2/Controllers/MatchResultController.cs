@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Raven.Abstractions;
@@ -58,16 +58,64 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 vm.BitsMatchId);
             EventStoreSession.Store(matchResult);
 
-            return this.RedirectToAction("RegisterSerie", new { vm.AggregateId, vm.RosterId, vm.BitsMatchId });
+            return this.RedirectToAction(
+                "RegisterSerie",
+                new
+                {
+                    aggregateId = matchResult.Id,
+                    vm.RosterId,
+                    vm.BitsMatchId
+                });
         }
 
         public ActionResult RegisterSerie(string aggregateId, string rosterId, int bitsMatchId)
         {
-            var roster = this.DocumentSession.Load<Roster>(rosterId);
+            var roster = this.DocumentSession
+                .Include<Roster>(r => r.Players)
+                .Load<Roster>(rosterId);
             if (roster == null) throw new HttpException(404, "Roster not found");
             var registerSerie = new RegisterSerie(
-                aggregateId, rosterId, bitsMatchId, roster.Players, new ResultReadModel.Serie());
+                new ResultReadModel.Serie(),
+                roster.Players.Select(
+                    x => new SelectListItem
+                         {
+                             Text = this.DocumentSession.Load<Player>(x)
+                                 .Name,
+                             Value = x
+                         })
+                    .ToList());
             return this.View(registerSerie);
+        }
+
+        [HttpPost]
+        public ActionResult RegisterSerie(
+            string aggregateId, int bitsMatchId, ResultReadModel.Serie serie)
+        {
+            var matchResult = EventStoreSession.Load<MatchResult>(aggregateId);
+            if (matchResult == null) throw new HttpException(404, "Match result not found");
+            var tables = new List<MatchTable>();
+            for (var i = 0; i < 4; i++)
+            {
+                var game1 = new MatchGame(
+                    serie.Tables[i].Game1.Player,
+                    serie.Tables[i].Game1.Pins,
+                    serie.Tables[i].Game1.Strikes,
+                    serie.Tables[i].Game1.Spares);
+                var game2 = new MatchGame(
+                    serie.Tables[i].Game2.Player,
+                    serie.Tables[i].Game2.Pins,
+                    serie.Tables[i].Game2.Strikes,
+                    serie.Tables[i].Game2.Spares);
+                tables.Add(new MatchTable(game1, game2, serie.Tables[i].Score));
+            }
+
+            matchResult.RegisterSerie(new MatchSerie(tables));
+            return RedirectToAction(
+                "Details",
+                new
+                {
+                    id = bitsMatchId
+                });
         }
 
         public ActionResult EditResult(int id)
@@ -88,10 +136,10 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             if (registerMatchResult == null) throw new ArgumentNullException("registerMatchResult");
             if (!ModelState.IsValid) return EditResult(id);
 
-            var aggregate = EventStoreSession.Load<MatchResult>(registerMatchResult.AggregateId);
-            if (aggregate == null) throw new HttpException(404, "Match result not found");
+            var matchResult = EventStoreSession.Load<MatchResult>(registerMatchResult.AggregateId);
+            if (matchResult == null) throw new HttpException(404, "Match result not found");
 
-            aggregate.Update(
+            matchResult.Update(
                 DocumentSession.Load<Roster>(registerMatchResult.RosterId),
                 registerMatchResult.TeamScore,
                 registerMatchResult.OpponentScore,
@@ -124,10 +172,10 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var headerReadModel = DocumentSession.Load<ResultHeaderReadModel>(headerId);
             if (headerReadModel == null) throw new HttpException(404, "Match result not found");
 
-            var gamesReadModel = DocumentSession.Load<ResultReadModel>(ResultReadModel.IdFromBitsMatchId(id))
+            var resultReadModel = DocumentSession.Load<ResultReadModel>(ResultReadModel.IdFromBitsMatchId(id))
                 ?? new ResultReadModel();
 
-            return this.View(new ResultViewModel(headerReadModel, gamesReadModel));
+            return this.View(new ResultViewModel(headerReadModel, resultReadModel));
         }
 
         private void CreateRosterSelectList(int season, string rosterId = "")

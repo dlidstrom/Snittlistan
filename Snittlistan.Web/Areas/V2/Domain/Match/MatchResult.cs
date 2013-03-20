@@ -38,6 +38,12 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             this.ApplyChange(new MatchResultDeleted(RosterId, BitsMatchId));
         }
 
+        public void RegisterSerie(MatchSerie matchSerie)
+        {
+            if (matchSerie == null) throw new ArgumentNullException("matchSerie");
+            this.ApplyChange(new SerieRegistered(matchSerie));
+        }
+
         private string RosterId { get; set; }
 
         private int BitsMatchId { get; set; }

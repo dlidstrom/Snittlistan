@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web.Mvc;
 using Snittlistan.Web.Areas.V2.ReadModels;
 
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     public class RegisterSerie
     {
-        public RegisterSerie(
-            string aggregateId, string rosterId, int bitsMatchId, List<string> players, ResultReadModel.Serie serie)
+        public RegisterSerie(ResultReadModel.Serie serie, List<SelectListItem> players)
         {
-            if (players == null) throw new ArgumentNullException("players");
             if (serie == null) throw new ArgumentNullException("serie");
-            Players = players;
+            if (players == null) throw new ArgumentNullException("players");
             Serie = serie;
+            Players = players;
         }
 
-        public List<string> Players { get; set; }
-
         public ResultReadModel.Serie Serie { get; set; }
+
+        public List<SelectListItem> Players { get; set; }
     }
 }
