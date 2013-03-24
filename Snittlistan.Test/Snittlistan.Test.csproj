@@ -99,7 +99,10 @@
     <Compile Include="ControllersInstallerTest.cs" />
     <Compile Include="DbSeed.cs" />
     <Compile Include="DbTest.cs" />
+    <Compile Include="Domain\MatchGameTest.cs" />
     <Compile Include="Domain\MatchResultTest.cs" />
+    <Compile Include="Domain\MatchSerieTest.cs" />
+    <Compile Include="Domain\MatchTableTest.cs" />
     <Compile Include="EmailServiceTest.cs" />
     <Compile Include="HandlersInstallerTest.cs" />
     <Compile Include="Controllers\HomeController_Player.cs" />

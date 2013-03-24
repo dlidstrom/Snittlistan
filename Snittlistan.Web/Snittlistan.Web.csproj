@@ -189,6 +189,7 @@
     <Compile Include="ApplicationMode.cs" />
     <Compile Include="Areas\V2\AutoMapper\AbsenceProfile.cs" />
     <Compile Include="Areas\V2\AutoMapper\ResultProfile.cs" />
+    <Compile Include="Areas\V2\Domain\MatchException.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\MatchResultDeleted.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\SerieRegistered.cs" />
     <Compile Include="Areas\V2\Handlers\MatchResultHandler.cs" />
