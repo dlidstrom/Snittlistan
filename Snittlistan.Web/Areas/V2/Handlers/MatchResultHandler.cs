@@ -28,8 +28,6 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             var roster = DocumentSession.Load<Roster>(e.NewRosterId);
             if (roster == null) throw new HttpException(404, "Roster not found");
 
-            roster.MatchResultId = aggregateId;
-
             var id = ResultHeaderReadModel.IdFromBitsMatchId(e.OldBitsMatchId);
             if (e.OldBitsMatchId != e.NewBitsMatchId)
             {

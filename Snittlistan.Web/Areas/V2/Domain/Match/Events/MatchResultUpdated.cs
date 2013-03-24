@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using EventStoreLite;
 
 namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
@@ -6,6 +7,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
     {
         public MatchResultUpdated(
             string rosterId,
+            List<string> rosterPlayers,
             int teamScore,
             int opponentScore,
             int bitsMatchId,
@@ -22,6 +24,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
             this.OldTeamScore = oldTeamScore;
             this.OldOpponentScore = oldOpponentScore;
             this.OldBitsMatchId = oldBitsMatchId;
+            this.RosterPlayers = rosterPlayers;
         }
 
         public string NewRosterId { get; private set; }
@@ -39,5 +42,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
         public int OldOpponentScore { get; private set; }
 
         public int OldBitsMatchId { get; private set; }
+
+        public List<string> RosterPlayers { get; private set; }
     }
 }
