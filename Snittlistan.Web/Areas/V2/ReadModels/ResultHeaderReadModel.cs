@@ -5,7 +5,7 @@ using Snittlistan.Web.Areas.V2.Domain;
 
 namespace Snittlistan.Web.Areas.V2.ReadModels
 {
-    // TODO Store only roster id. Use index to read roster values
+    // TODO Store only roster id. Use index to read and display roster values
     public class ResultHeaderReadModel : IReadModel
     {
         public static string IdFromBitsMatchId(int bitsMatchId)

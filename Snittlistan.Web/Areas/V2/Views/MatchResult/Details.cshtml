@@ -1,43 +1,21 @@
 ﻿@model ResultViewModel
 
-@{
-    var hideControls = false;
-}
-
 <div class="row">
     <div class="span4">
-    @if (Request.IsAuthenticated && hideControls == false)
-    {
-        <div class="dropdown edit">
-            <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">
-                <i class="sprite-glyphicons_019_cogwheel"></i>
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-                <li>
-                    <a href="@Url.Action("EditResult", new { id = Model.HeaderReadModel.BitsMatchId })">
-                        <i class="sprite-glyphicons_151_edit"></i>
-                        Redigera
-                    </a>
-                </li>
-                <li>
-                    <a href="@Url.Action("Delete", new { id = Model.HeaderReadModel.AggregateId })">
-                        <i class="sprite-glyphicons_016_bin"></i>
-                        Ta bort
-                    </a>
-                </li>
-            </ul>
-        </div>
-    }
-
         @Html.DisplayFor(model => Model.HeaderReadModel, "Header")
         @if (Model.ResultReadModel.Series.Count != 4)
         {
-            @Html.ActionLink("Registrera serier", "RegisterSerie")
+            @Html.ActionLink(
+                "Registrera serier",
+                "RegisterSerie",
+                new
+                {
+                    Model.HeaderReadModel.AggregateId,
+                    Model.HeaderReadModel.RosterId,
+                    Model.HeaderReadModel.BitsMatchId
+                })
         }
-        else
-        {
-            @Html.DisplayFor(model => Model.ResultReadModel, "Games")
-        }
+
+        @Html.DisplayFor(model => Model.ResultReadModel, "Result")
     </div>
 </div>

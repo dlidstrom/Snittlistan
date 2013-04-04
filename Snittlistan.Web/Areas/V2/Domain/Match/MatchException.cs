@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Snittlistan.Web.Areas.V2.Domain
+namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
     public class MatchException : Exception
     {

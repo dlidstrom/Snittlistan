@@ -20,10 +20,13 @@ namespace Snittlistan.Web.Areas.V2.Indexes
                                       roster.Turn,
                                       roster.Season,
                                       roster.Date,
-                                      roster.MatchResultId
+                                      roster.MatchResultId,
+                                      roster.Preliminary,
+                                      PlayerCount = roster.Players.Count
                                   };
 
             Store(x => x.Id, FieldStorage.Yes);
+            Store(x => x.PlayerCount, FieldStorage.Yes);
         }
 
         public class Result
@@ -36,6 +39,8 @@ namespace Snittlistan.Web.Areas.V2.Indexes
             public int Season { get; set; }
             public DateTime Date { get; set; }
             public string MatchResultId { get; set; }
+            public bool Preliminary { get; set; }
+            public int PlayerCount { get; set; }
         }
     }
 }

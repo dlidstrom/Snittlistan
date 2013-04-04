@@ -1,6 +1,33 @@
 ﻿@model Snittlistan.Web.Areas.V2.ReadModels.ResultHeaderReadModel
 
+@{
+    var hideControls = false;
+}
+
 <div class="well well-small editable">
+    @if (Request.IsAuthenticated && hideControls == false)
+    {
+        <div class="dropdown edit">
+            <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">
+                <i class="sprite-glyphicons_019_cogwheel"></i>
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="@Url.Action("EditResult", new { id = Model.BitsMatchId })">
+                        <i class="sprite-glyphicons_151_edit"></i>
+                        Redigera
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Delete", new { id = Model.AggregateId })">
+                        <i class="sprite-glyphicons_016_bin"></i>
+                        Ta bort
+                    </a>
+                </li>
+            </ul>
+        </div>
+    }
     <dl class="dl-horizontal">
         <dt>lag</dt>
         <dd>@Content.TeamLabel(Model.TeamLevel, Model.Team)</dd>

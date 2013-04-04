@@ -5,7 +5,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     public class ResultViewModel
     {
-        public ResultViewModel(ResultHeaderReadModel headerReadModel, ResultReadModel resultReadModel)
+        public ResultViewModel(ResultHeaderReadModel headerReadModel, ResultSeriesReadModel resultReadModel)
         {
             if (headerReadModel == null) throw new ArgumentNullException("headerReadModel");
             if (resultReadModel == null) throw new ArgumentNullException("resultReadModel");
@@ -15,6 +15,6 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public ResultHeaderReadModel HeaderReadModel { get; private set; }
 
-        public ResultReadModel ResultReadModel { get; private set; }
+        public ResultSeriesReadModel ResultReadModel { get; private set; }
     }
 }
