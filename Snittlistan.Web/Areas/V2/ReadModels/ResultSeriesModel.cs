@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
+using EventStoreLite;
 
 namespace Snittlistan.Web.Areas.V2.ReadModels
 {
-    public class ResultReadModel
+    public class ResultSeriesReadModel : IReadModel
     {
-        public ResultReadModel()
+        public string Id { get; set; }
+
+        public ResultSeriesReadModel()
         {
-            Series = new List<Serie> { new Serie(), new Serie(), new Serie(), new Serie() };
+            Series = new List<Serie>();
         }
 
         public List<Serie> Series { get; set; }

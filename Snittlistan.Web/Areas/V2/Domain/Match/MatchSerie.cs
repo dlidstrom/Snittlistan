@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using Raven.Imports.Newtonsoft.Json;
 
-namespace Snittlistan.Web.Areas.V2.Domain
+namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
     public class MatchSerie
     {
+        private MatchSerie()
+        {
+        }
+
         public MatchSerie(IReadOnlyList<MatchTable> tables)
         {
             if (tables == null) throw new ArgumentNullException("tables");
@@ -22,10 +27,10 @@ namespace Snittlistan.Web.Areas.V2.Domain
             if (players.Count != 8)
                 throw new MatchException("Serie must have 8 different players");
 
-            Table1 = tables[0];
-            Table2 = tables[1];
-            Table3 = tables[2];
-            Table4 = tables[3];
+            this.Table1 = tables[0];
+            this.Table2 = tables[1];
+            this.Table3 = tables[2];
+            this.Table4 = tables[3];
         }
 
         public MatchTable Table1 { get; private set; }

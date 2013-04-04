@@ -42,11 +42,11 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         public void RegisterSerie(MatchSerie matchSerie)
         {
             if (matchSerie == null) throw new ArgumentNullException("matchSerie");
-            if (rosterPlayers.Count != 8)
-                throw new MatchException("Roster must have 8 players when registering results");
+            if (rosterPlayers.Count != 8 && rosterPlayers.Count != 9)
+                throw new MatchException("Roster must have 8 or 9 players when registering results");
             this.VerifyPlayers(matchSerie);
 
-            this.ApplyChange(new SerieRegistered(matchSerie));
+            this.ApplyChange(new SerieRegistered(matchSerie, BitsMatchId));
         }
 
         private string RosterId { get; set; }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Snittlistan.Web.Areas.V2.Domain;
+using Snittlistan.Web.Areas.V2.Domain.Match;
 using Xunit;
 
 namespace Snittlistan.Test.Domain

@@ -7,10 +7,13 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
     {
         public MatchSerie MatchSerie { get; set; }
 
-        public SerieRegistered(MatchSerie matchSerie)
+        public int BitsMatchId { get; private set; }
+
+        public SerieRegistered(MatchSerie matchSerie, int bitsMatchId)
         {
             if (matchSerie == null) throw new ArgumentNullException("matchSerie");
-            this.MatchSerie = matchSerie;
+            MatchSerie = matchSerie;
+            BitsMatchId = bitsMatchId;
         }
     }
 }

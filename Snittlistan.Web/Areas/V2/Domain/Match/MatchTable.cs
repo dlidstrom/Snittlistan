@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Snittlistan.Web.Areas.V2.Domain
+namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
     [DebuggerDisplay("{Game1.Player} {Game2.Player} {Score}")]
     public class MatchTable
