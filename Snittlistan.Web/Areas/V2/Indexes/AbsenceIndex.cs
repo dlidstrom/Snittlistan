@@ -19,6 +19,7 @@ namespace Snittlistan.Web.Areas.V2.Indexes
                                        PlayerName = this.LoadDocument<Player>(absence.Player).Name
                                    };
 
+            this.Store(x => x.Id, FieldStorage.Yes);
             this.Store(x => x.PlayerName, FieldStorage.Yes);
         }
 
