@@ -1,53 +1,65 @@
-﻿@model Snittlistan.Web.Areas.V2.ReadModels.ResultSeriesReadModel
+﻿@using System.Globalization
+@model Snittlistan.Web.Areas.V2.ReadModels.ResultSeriesReadModel
 
 @{
     ViewBag.Title = "Result";
 }
 
-<h2>Games</h2>
-@for (var i = 0; i < Model.Series.Count; i++)
-{
-    <h4>Serie @i</h4>
-    var serie = Model.Series[i];
-    for (var j = 0; j < serie.Tables.Count; j++)
-    {
-        <h5>Bord @j</h5>
-        var table = serie.Tables[j];
-        <table>
-            <tr>
-                <th>Namn</th>
-                <th>Poäng</th>
-                <th>X</th>
-                <th>Spärr</th>
-            </tr>
-            <tr>
-                <td>
-                    @table.Game1.Player
-                </td>
-                <td>
-                    @table.Game1.Pins
-                </td>
-                <td>
-                    @table.Game1.Strikes
-                </td>
-                <td>
-                    @table.Game1.Spares
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @table.Game2.Player
-                </td>
-                <td>
-                    @table.Game2.Pins
-                </td>
-                <td>
-                    @table.Game2.Strikes
-                </td>
-                <td>
-                    @table.Game2.Spares
-                </td>
-            </tr>
-        </table>
+<h3>Resultat</h3>
+<table class="table table-condensed table-bordered table-striped">
+    <tr>
+        <td>#</td>
+        <td>Namn</td>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>Tot</td>
+        <td>Banp</td>
+        <td>X</td>
+        <td>/</td>
+    </tr>
+    @{
+        var row = 1;
     }
-}
+    @foreach (var player in Model.SortedPlayers())
+    {
+        <tr>
+            <td>@(row++)</td>
+            <td>@player.Key</td>
+            @for (int serie = 0; serie < 4; serie++)
+            {
+                <td>
+                    @{
+                        var game = player.Value[serie];
+                    }
+                    @(game != null ? game.Pins.ToString(CultureInfo.InvariantCulture) : "")
+                </td>
+            }
+            @{
+                var series = player.Value.Where(x => x != null).ToList();
+            }
+            <td>
+                @series.Sum(x => x.Pins)
+            </td>
+            <td>
+                @series.Sum(x => x.Score)
+            </td>
+            <td>
+                @series.Sum(x => x.Strikes)
+            </td>
+            <td>
+                @series.Sum(x => x.Spares)
+            </td>
+        </tr>
+    }
+    <tr>
+        <td colspan="2"></td>
+        <td>@Model.SerieSum(0)</td>
+        <td>@Model.SerieSum(1)</td>
+        <td>@Model.SerieSum(2)</td>
+        <td>@Model.SerieSum(3)</td>
+        <td>@Model.Total()</td>
+        <td colspan="3"></td>
+    </tr>
+</table>

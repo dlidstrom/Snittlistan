@@ -59,6 +59,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
         {
             var table = new ResultSeriesReadModel.Table
                          {
+                             Score = matchTable.Score,
                              Game1 = new ResultSeriesReadModel.Game
                                      {
                                          Player =
