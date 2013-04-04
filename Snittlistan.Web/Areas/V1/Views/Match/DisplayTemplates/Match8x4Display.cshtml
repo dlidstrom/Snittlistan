@@ -8,6 +8,6 @@
         <td>Plats</td><td>@Html.DisplayFor(model => model.Location)</td>
     </tr>
     <tr>
-        <td>BITS</td><td>@Html.GenerateBitsLink(Model)</td>
+        <td>BITS</td><td><a href="@Html.GenerateBitsUrl(Model.BitsMatchId)">Matchfakta</a></td>
     </tr>
 </table>

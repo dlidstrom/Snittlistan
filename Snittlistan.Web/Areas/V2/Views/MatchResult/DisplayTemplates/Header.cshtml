@@ -45,5 +45,12 @@
         </dd>
         <dt>Resultat</dt>
         <dd>@Model.TeamScore - @Model.OpponentScore</dd>
+        <dt>BITS</dt>
+        <dd>
+            <a href="@Html.GenerateBitsUrl(Model.BitsMatchId)" target="_blank">
+                Matchfakta
+                <i class="icon-share-alt"></i>
+            </a>
+        </dd>
     </dl>
 </div>
