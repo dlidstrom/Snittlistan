@@ -1,5 +1,4 @@
 ﻿using System;
-using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 using Xunit;
 
@@ -42,7 +41,7 @@ namespace Snittlistan.Test.Domain
         {
             Assert.Throws<ArgumentException>(() => new MatchGame("player-1", 0, 0, -1));
             Assert.Throws<ArgumentException>(() => new MatchGame("player-1", 0, 0, 11));
-            Assert.Throws<ArgumentException>(() => new MatchGame("player-1", 0, 10, 2));
+            Assert.Throws<ArgumentException>(() => new MatchGame("player-1", 0, 10, 3));
         }
 
         [Fact]
@@ -50,8 +49,10 @@ namespace Snittlistan.Test.Domain
         {
             Assert.DoesNotThrow(() => new MatchGame("player-1", 0, 0, 0));
             Assert.DoesNotThrow(() => new MatchGame("player-1", 0, 0, 10));
+            Assert.DoesNotThrow(() => new MatchGame("player-1", 0, 7, 5));
             Assert.DoesNotThrow(() => new MatchGame("player-1", 0, 10, 0));
             Assert.DoesNotThrow(() => new MatchGame("player-1", 0, 10, 1));
+            Assert.DoesNotThrow(() => new MatchGame("player-1", 0, 10, 2));
         }
     }
 }
