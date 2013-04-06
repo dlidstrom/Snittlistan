@@ -8,7 +8,7 @@
 <p>Är du säker på att du vill ta bort denna registrerade frånvaro?</p>
 @using (Html.BeginForm("Delete", "Absence", FormMethod.Post))
 {
-    <h3>@Model.Name (@Model.From - @Model.To</h3>
+    <h3>@Model.Player (@Model.From - @Model.To</h3>
     <button class="btn btn-danger btn-large" type="submit">Ta bort</button>
     @Html.ActionLink("Avbryt", "Index", null, new { @class = "btn btn-large" })
 }

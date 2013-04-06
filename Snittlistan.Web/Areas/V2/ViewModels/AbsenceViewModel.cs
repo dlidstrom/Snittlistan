@@ -2,7 +2,7 @@
 {
     public class AbsenceViewModel
     {
-        public string Name { get; set; }
+        public string Player { get; set; }
 
         public string From { get; set; }
 
