@@ -14,7 +14,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                 throw new ArgumentException("Pins out of range", "pins");
             if (strikes < 0 || strikes > 12)
                 throw new ArgumentException("Strikes out of range", "strikes");
-            if (spares < 0 || spares > 10 || spares > Math.Max(0, 11 - strikes))
+            if (spares < 0 || spares > 10 || spares > Math.Max(0, 12 - strikes))
                 throw new ArgumentException("Spares out of range", "spares");
             this.Pins = pins;
             this.Strikes = strikes;
