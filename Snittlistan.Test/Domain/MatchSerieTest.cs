@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 using Xunit;
 
