@@ -8,6 +8,11 @@ namespace Snittlistan.Web.Controllers
     public abstract class AbstractController : Controller
     {
         /// <summary>
+        /// Gets the document store.
+        /// </summary>
+        public IDocumentStore DocumentStore { get; set; }
+
+        /// <summary>
         /// Gets the document session.
         /// </summary>
         public IDocumentSession DocumentSession { get; set; }

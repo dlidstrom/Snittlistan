@@ -132,19 +132,19 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         [HttpPost, ActionName("ResetIndexes")]
         public ActionResult ResetIndexesConfirmed()
         {
-            var indexNames = store.DatabaseCommands.GetIndexNames(0, 20);
-            while (indexNames.Length > 0)
+            while (true)
             {
+                var indexNames = store.DatabaseCommands.GetIndexNames(0, 20);
+                if (indexNames.Length == 0) break;
                 foreach (var indexName in indexNames)
                 {
                     store.DatabaseCommands.DeleteIndex(indexName);
                 }
-
-                indexNames = store.DatabaseCommands.GetIndexNames(0, 20);
             }
 
             // create indexes
             IndexCreator.CreateIndexes(store);
+            EventStore.Initialize(DocumentStore);
 
             return this.RedirectToAction("Raven");
         }
