@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using EventStoreLite;
 using Raven.Client;
 using Snittlistan.Web.Areas.V2.Domain;
@@ -19,6 +20,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             var roster = DocumentSession.Load<Roster>(e.RosterId);
             if (roster == null) throw new HttpException(404, "Roster not found");
 
+            roster.MatchResultId = aggregateId;
             var readModel = new ResultHeaderReadModel(roster, aggregateId, e.TeamScore, e.OpponentScore, e.BitsMatchId);
             DocumentSession.Store(readModel);
         }
@@ -47,8 +49,21 @@ namespace Snittlistan.Web.Areas.V2.Handlers
         public void Handle(RosterChanged e, string aggregateId)
         {
             var roster = DocumentSession.Load<Roster>(e.OldId);
-            if (roster == null) throw new HttpException(404, "Roster not found");
+            if (roster == null)
+            {
+                var message = string.Format("Roster {0} not found", e.OldId);
+                throw new ApplicationException(message);
+            }
+
             roster.MatchResultId = null;
+            var newRoster = DocumentSession.Load<Roster>(e.NewId);
+            if (newRoster == null)
+            {
+                var message = string.Format("Roster {0} not found", e.NewId);
+                throw new ApplicationException(message);
+            }
+
+            newRoster.MatchResultId = aggregateId;
         }
 
         public void Handle(MatchResultDeleted e, string aggregateId)
