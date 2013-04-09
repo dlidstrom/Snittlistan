@@ -141,20 +141,32 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return this.RedirectToAction("Index");
         }
 
-        public ActionResult View(int season, int turn)
+        public ActionResult View(int season, int? turn)
         {
-            var rosters = this.DocumentSession.Query<Roster, RosterSearchTerms>()
+            if (turn.HasValue == false)
+            {
+                // find out next turn
+                var rosters = this.DocumentSession.Query<Roster, RosterSearchTerms>()
+                    .Where(x => x.Season == season)
+                    .Where(x => x.Date > SystemTime.UtcNow.Date)
+                    .OrderBy(x => x.Date)
+                    .Take(1)
+                    .ToList();
+                turn = rosters.Select(x => x.Turn).FirstOrDefault();
+            }
+
+            var rostersForTurn = this.DocumentSession.Query<Roster, RosterSearchTerms>()
                 .Include<Roster>(roster => roster.Players)
                 .Where(roster => roster.Turn == turn)
                 .Where(roster => roster.Season == season)
                 .ToArray();
-            var list = rosters.Select(this.LoadRoster)
+            var list = rostersForTurn.Select(this.LoadRoster)
                 .SortRosters()
                 .ToArray();
 
             var viewTurnViewModel = new ViewTurnViewModel
             {
-                Id = turn,
+                Id = turn.Value,
                 Season = season,
                 Rosters = list
             };
