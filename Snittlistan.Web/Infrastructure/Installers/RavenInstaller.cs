@@ -87,7 +87,16 @@ namespace Snittlistan.Web.Infrastructure.Installers
             switch (this.mode)
             {
                 case DocumentStoreMode.InMemory:
-                    store = new EmbeddableDocumentStore { RunInMemory = true };
+                    {
+                        var documentStore = new EmbeddableDocumentStore
+                        {
+                            RunInMemory = true
+                        };
+
+                        Configure(documentStore);
+                        store = documentStore;
+                    }
+
                     break;
                 case DocumentStoreMode.Server:
                     store = new DocumentStore { ConnectionStringName = "RavenDB" };
@@ -96,15 +105,27 @@ namespace Snittlistan.Web.Infrastructure.Installers
                     {
                         var path = AppDomain.CurrentDomain.GetData("DataDirectory").ToString();
                         var dataDirectory = Path.Combine(path, "Database");
-                        store = new EmbeddableDocumentStore
-                                {
-                                    DataDirectory = dataDirectory
-                                };
+                        var documentStore = new EmbeddableDocumentStore
+                        {
+                            DataDirectory = dataDirectory
+                        };
+
+                        Configure(documentStore);
+                        store = documentStore;
                     }
                     break;
             }
 
             return store;
+        }
+
+        private static void Configure(EmbeddableDocumentStore documentStore)
+        {
+            // limit memory usage when running embedded mode
+            documentStore.Configuration.MemoryCacheLimitMegabytes = 256;
+            //documentStore.Configuration.MemoryCacheLimitPercentage = 10;
+            //documentStore.Configuration.Settings["Raven/Esent/CacheSizeMax"] = "256";
+            //documentStore.Configuration.Settings["Raven/Esent/MaxVerPages"] = "512";
         }
     }
 }
