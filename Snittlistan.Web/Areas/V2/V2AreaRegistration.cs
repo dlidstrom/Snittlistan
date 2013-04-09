@@ -68,6 +68,12 @@
                 "MatchResult/Register/{season}",
                 new { controller = "MatchResult", action = "Register" });
 
+            // view roster
+            context.MapRoute(
+                "ViewRoster",
+                "Roster/{season}/{turn}",
+                new { controller = "Roster", action = "View", turn = UrlParameter.Optional });
+
             // default route
             context.MapRoute(
                 "V2_default",
