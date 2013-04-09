@@ -24,7 +24,7 @@
                 @for (var i = 0; i < 4; i++ )
                 {
                     <tr>
-                        <td rowspan="2">@(i+1)</td>
+                        <td class="table-id" rowspan="2">@(i+1)</td>
                         <td>
                             <select name="@string.Format("Table{0}Player1", i + 1)" required>
                                 <option value="">Välj spelare</option>
@@ -64,7 +64,7 @@
                     </tr>
                 }
                 <tr>
-                    <td rowspan="2">R</td>
+                    <td class="table-id" rowspan="2">R</td>
                     <td>
                         <select name="reserve">
                             <option value="">Välj reserv</option>

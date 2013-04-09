@@ -45,7 +45,7 @@ td.table-id
 {
     vertical-align: middle;
     font-weight: bold;
-    font-size: 25px;
+    font-size: 22px;
 }
 
 /* team of the week */
@@ -130,7 +130,7 @@ button.btn
     .accomplishment-label(@game-300-color);
 }
 
-h2 em
+h2 em, h3 em, h4 em
 {
     color: gray;
     font-style: normal;
@@ -152,11 +152,17 @@ dt
 .editable
 {
     position: relative;
-    .edit
+    .edit-left
     {
         position: absolute;
         top: 2px;
         left: 2px;
+    }
+    .edit-right
+    {
+        position: absolute;
+        top: 2px;
+        right: -2px;
     }
     .dropdown .caret
     {
@@ -168,6 +174,10 @@ dt
 textarea
 {
     resize: none;
+}
+
+.result-header-table {
+    table-layout: fixed;
 }
 
 /* media queries */
