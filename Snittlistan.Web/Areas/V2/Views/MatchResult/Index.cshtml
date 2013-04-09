@@ -1,8 +1,8 @@
 ﻿@model MatchResultViewModel
 
 <div class="row">
-    <div class="span6">
-        <h2>Resultat från säsongen @Model.SeasonStart&minus;@Model.SeasonEnd</h2>
+    <div class="span8">
+        <h2>Resultat @Model.SeasonStart&minus;@Model.SeasonEnd</h2>
     </div>
 </div>
 <div class="row">
@@ -16,59 +16,48 @@
         }
     </div>
 </div>
-<div class="row">
-    <div class="span12">
-        <table class="table table-condensed table-striped">
-            <tr>
-                <th>Omgång</th>
-                <th>Datum</th>
-                <th>Plats</th>
-                <th>Lag</th>
-                <th>Motståndare</th>
-                <th>Resultat</th>
-                <th></th>
-@*                @if (Request.IsAuthenticated)
-                {
+@foreach (var turn in Model.Turns.Keys.OrderBy(x => x))
+{
+    <div class="row">
+        <div class="span12">
+            @{
+                var minDate = Model.Turns[turn].Select(x => x.Date)
+                    .Min();
+                var maxDate = Model.Turns[turn].Select(x => x.Date)
+                    .Max();
+            }
+            <h4>
+                Omgång @turn
+                <em>
+                    (<time datetime="@minDate.ToString("s")">@minDate.ToString("d MMM")</time>
+                    &minus;
+                    <time datetime="@maxDate.ToString("s")">@maxDate.ToString("d MMM")</time>)
+                </em>
+            </h4>
+            <table class="table table-condensed table-striped result-header-table">
+                <tr>
+                    <th>Plats</th>
+                    <th>Lag</th>
+                    <th>Motståndare</th>
+                    <th>Resultat</th>
                     <th></th>
-                }*@
-            </tr>
-            @foreach (var turn in Model.Turns.Keys.OrderBy(x => x))
-            {
-                var first = true;
-                var matchResults = Model.Turns[turn];
-                foreach (var result in matchResults)
+                </tr>
+                @{
+                    var matchResults = Model.Turns[turn];
+                }
+                @foreach (var result in matchResults)
                 {
                     <tr>
-                        @if (first)
-                        {
-                            <td rowspan="@matchResults.Count">
-                                @turn
-                            </td>
-                            first = false;
-                        }
-                        <td>@result.Date.Date.ToShortDateString()</td>
                         <td>@result.Location</td>
                         <td>@Content.TeamLabel(result.TeamLevel, result.Team)</td>
                         <td>@result.Opponent</td>
                         <td>@result.TeamScore&minus;@result.OpponentScore</td>
-@*                        <td>
-                            <a href="@string.Format("http://bits.swebowl.se/MatchFact.aspx?MatchId={0}", result.BitsMatchId)">Matchfakta</a>
-                        </td>*@
-                        <td>@Html.ActionLink("Visa", "Details", new { id = result.BitsMatchId })</td>
-@*                        @if (Request.IsAuthenticated)
-                        {
-                            <td>
-                                <a href="@Url.Action("Edit", new { id = result.AggregateId })">
-                                    <i class="sprite-glyphicons_151_edit"></i>
-                                </a>
-                                <a href="@Url.Action("Delete", new { id = result.AggregateId })">
-                                    <i class="sprite-glyphicons_016_bin"></i>
-                                </a>
-                            </td>
-                        }*@
+                        <td>@Html.ActionLink("Visa", "Details", new {
+                                                                        id = result.BitsMatchId
+                                                                    })</td>
                     </tr>
                 }
-            }
-        </table>
+            </table>
+        </div>
     </div>
-</div>
+}
