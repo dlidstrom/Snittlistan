@@ -1,8 +1,8 @@
-﻿namespace Snittlistan.Web.Areas.V2
-{
-    using System.Web.Http;
-    using System.Web.Mvc;
+﻿using System.Web.Http;
+using System.Web.Mvc;
 
+namespace Snittlistan.Web.Areas.V2
+{
     public class V2AreaRegistration : AreaRegistration
     {
         public override string AreaName
@@ -24,13 +24,6 @@
                 "{action}/{id}",
                 new { controller = "App", id = RouteParameter.Optional },
                 new { action = "^players$|^results$" });
-
-            // To allow IIS to execute "/notfound" when requesting something which is disallowed,
-            // such as /bin or /add_data.
-            //context.MapRoute(
-            //    name: "NotFound",
-            //    url: "notfound",
-            //    defaults: new { controller = "NotFound", action = "NotFound" });
 
             context.MapRoute(
                 name: "Redirects1",
@@ -68,22 +61,37 @@
                 "MatchResult/Register/{season}",
                 new { controller = "MatchResult", action = "Register" });
 
-            // view roster
-            context.MapRoute(
-                "ViewRoster",
-                "Roster/{season}/{turn}",
-                new { controller = "Roster", action = "View", turn = UrlParameter.Optional });
+            RosterRoutes(context);
 
             // default route
             context.MapRoute(
                 "V2_default",
                 "{controller}/{action}/{id}",
                 new { controller = "Roster", action = "Index", id = RouteParameter.Optional });
+        }
 
-            //context.MapRoute(
-            //    name: "NotFound-Catch-All",
-            //    url: "{*any}",
-            //    defaults: new { controller = "NotFound", action = "NotFound" });
+        private static void RosterRoutes(AreaRegistrationContext context)
+        {
+            // edit players
+            context.MapRoute(
+                "EditPlayers",
+                "Roster/Players/{id}",
+                new
+                {
+                    controller = "Roster",
+                    action = "EditPlayers"
+                });
+
+            // view roster
+            context.MapRoute(
+                "ViewRoster",
+                "Roster/{season}/{turn}",
+                new
+                {
+                    controller = "Roster",
+                    action = "View",
+                    turn = UrlParameter.Optional
+                });
         }
     }
 }
