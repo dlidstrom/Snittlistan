@@ -37,6 +37,7 @@ namespace Snittlistan.Web.Infrastructure.Indexes
                                                  AwayTeamScore = match.Teams.ElementAt(1).Score
                                              });
 
+            this.Store(x => x.Id, FieldStorage.Yes);
             this.Store(x => x.Type, FieldStorage.Yes);
             this.Store(x => x.HomeTeamName, FieldStorage.Yes);
             this.Store(x => x.HomeTeamScore, FieldStorage.Yes);
@@ -46,7 +47,20 @@ namespace Snittlistan.Web.Infrastructure.Indexes
 
         public class Result
         {
-            public int Id { get; set; }
+            private string id;
+
+            public string Id
+            {
+                get
+                {
+                    return this.id;
+                }
+
+                set
+                {
+                    this.id = value.Substring(value.LastIndexOf('-') + 1);
+                }
+            }
 
             public string Type { get; set; }
 
