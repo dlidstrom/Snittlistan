@@ -16,7 +16,7 @@
         }
     </div>
 </div>
-@foreach (var turn in Model.Turns.Keys.OrderBy(x => x))
+@foreach (var turn in Model.Turns.Keys.OrderByDescending(x => x))
 {
     <div class="row">
         <div class="span12">

@@ -1,9 +1,4 @@
 @model InitialDataViewModel
-<div class="row">
-    <div class="span6">
-        <h2>Säsongen @Model.SeasonStart&minus;@Model.SeasonEnd</h2>
-    </div>
-</div>
 @if (Request.IsAuthenticated)
 {
     <div class="row">
@@ -32,9 +27,13 @@
         <time datetime="@turn.EndDate.ToString("s")">@turn.EndDate.ToString("d MMM")</time>)
     </em>
     var start = 0;
-    var rosters = turn.Rosters.Skip(start).Take(3).ToList();
-    while (rosters.Count > 0)
+    while (true)
     {
+        var rosters = turn.Rosters.Skip(start).Take(3).ToList();
+        if (rosters.Count == 0)
+        {
+            break;
+        }
         <div class="row">
             @foreach (var roster in rosters)
             {
@@ -44,6 +43,5 @@
             }
         </div>
         start += 3;
-        rosters = turn.Rosters.Skip(start).Take(3).ToList();
     }
 }
