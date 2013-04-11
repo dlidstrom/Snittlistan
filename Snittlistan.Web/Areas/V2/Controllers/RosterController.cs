@@ -89,7 +89,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         }
 
         [Authorize]
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string id)
         {
             var roster = DocumentSession.Load<Roster>(id);
             if (roster == null) throw new HttpException(404, "Roster not found");
@@ -98,7 +98,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult Edit(int id, CreateRosterViewModel vm)
+        public ActionResult Edit(string id, CreateRosterViewModel vm)
         {
             if (!this.ModelState.IsValid)
                 return this.View(vm);
