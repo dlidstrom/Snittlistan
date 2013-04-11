@@ -72,6 +72,16 @@ namespace Snittlistan.Web.Areas.V2
 
         private static void RosterRoutes(AreaRegistrationContext context)
         {
+            // create roster
+            context.MapRoute(
+                "CreateRoster",
+                "Roster/Create",
+                new
+                {
+                    controller = "Roster",
+                    action = "Create"
+                });
+
             // edit players
             context.MapRoute(
                 "EditPlayers",
