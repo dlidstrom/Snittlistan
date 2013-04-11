@@ -1,15 +1,13 @@
-﻿namespace Snittlistan.Test
+﻿using System;
+using System.Web.Mvc;
+using System.Web.Routing;
+using Snittlistan.Web.App_Start;
+using Snittlistan.Web.Areas.V1;
+using Snittlistan.Web.Areas.V2;
+using Xunit;
+
+namespace Snittlistan.Test
 {
-    using System;
-    using System.Web.Mvc;
-    using System.Web.Routing;
-
-    using Snittlistan.Web.App_Start;
-    using Snittlistan.Web.Areas.V1;
-    using Snittlistan.Web.Areas.V2;
-
-    using Xunit;
-
     public class RoutesTest : IDisposable
     {
         public RoutesTest()
@@ -59,6 +57,13 @@
             RouteTable.Routes.Maps("GET", "~/", new { controller = "Roster", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/results", new { controller = "App", action = "Results" });
             RouteTable.Routes.Maps("GET", "~/players", new { controller = "App", action = "Players" });
+            RouteTable.Routes.Maps("GET", "~/Roster", new { controller = "Roster", action = "Index" });
+            RouteTable.Routes.Maps("GET", "~/Roster/Create", new { controller = "Roster", action = "Create" });
+            RouteTable.Routes.Maps("GET", "~/Roster/Edit/roster-1", new { controller = "Roster", action = "Edit", id = "roster-1" });
+            RouteTable.Routes.Maps("GET", "~/Roster/Delete/roster-1", new { controller = "Roster", action = "Delete", id = "roster-1" });
+            RouteTable.Routes.Maps("GET", "~/Roster/2012", new { controller = "Roster", action = "View", season = 2012, turn = (int?)null });
+            RouteTable.Routes.Maps("GET", "~/Roster/2012/12", new { controller = "Roster", action = "View", season = 2012, turn = (int?)12 });
+            RouteTable.Routes.Maps("GET", "~/Roster/Players/roster-1", new { controller = "Roster", action = "EditPlayers", id = "roster-1" });
         }
 
         [Fact]
