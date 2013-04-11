@@ -82,6 +82,16 @@ namespace Snittlistan.Web.Areas.V2
                     action = "Create"
                 });
 
+            // edit roster
+            context.MapRoute(
+                "EditRoster",
+                "Roster/Edit/{id}",
+                new
+                {
+                    controller = "Roster",
+                    action = "Edit"
+                });
+
             // edit players
             context.MapRoute(
                 "EditPlayers",
