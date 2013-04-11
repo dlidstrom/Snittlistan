@@ -92,14 +92,14 @@ namespace Snittlistan.Web.Areas.V2
                     action = "Edit"
                 });
 
-            // edit players
+            // delete roster
             context.MapRoute(
-                "EditPlayers",
-                "Roster/Players/{id}",
+                "DeleteRoster",
+                "Roster/Delete/{id}",
                 new
                 {
                     controller = "Roster",
-                    action = "EditPlayers"
+                    action = "Delete"
                 });
 
             // view roster
@@ -111,6 +111,16 @@ namespace Snittlistan.Web.Areas.V2
                     controller = "Roster",
                     action = "View",
                     turn = UrlParameter.Optional
+                });
+
+            // edit players
+            context.MapRoute(
+                "EditPlayers",
+                "Roster/Players/{id}",
+                new
+                {
+                    controller = "Roster",
+                    action = "EditPlayers"
                 });
         }
     }

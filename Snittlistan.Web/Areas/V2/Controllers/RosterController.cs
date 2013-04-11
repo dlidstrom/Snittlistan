@@ -121,7 +121,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         }
 
         [Authorize]
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string id)
         {
             var roster = this.DocumentSession.Load<Roster>(id);
             if (roster == null)
@@ -132,7 +132,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         [HttpPost]
         [Authorize]
         [ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(string id)
         {
             var roster = this.DocumentSession.Load<Roster>(id);
             if (roster == null)
