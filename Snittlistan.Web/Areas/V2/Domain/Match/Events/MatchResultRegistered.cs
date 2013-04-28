@@ -28,11 +28,11 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
             if (rosterPlayers == null)
                 throw new ArgumentNullException("rosterPlayers");
 
-            this.RosterId = rosterId;
-            this.RosterPlayers = rosterPlayers;
-            this.TeamScore = teamScore;
-            this.OpponentScore = opponentScore;
-            this.BitsMatchId = bitsMatchId;
+            RosterId = rosterId;
+            RosterPlayers = rosterPlayers;
+            TeamScore = teamScore;
+            OpponentScore = opponentScore;
+            BitsMatchId = bitsMatchId;
         }
     }
 }

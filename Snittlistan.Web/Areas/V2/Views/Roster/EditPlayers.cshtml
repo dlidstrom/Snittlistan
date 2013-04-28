@@ -1,13 +1,13 @@
 ﻿@model EditRosterPlayersViewModel
 
-<h3>Omgång @Model.Roster.Turn säsongen @Model.Roster.Season&minus;@(Model.Roster.Season + 1)</h3>
+<h3>Omgång @Model.Roster.Turn @Model.Roster.Season&minus;@(Model.Roster.Season + 1)</h3>
 <div class="row">
     <div class="span6">
         @Html.DisplayFor(model => model.Roster, "Roster", new { hideControls = true })
     </div>
 </div>
 <div class="row">
-    <div class="span6">
+    <div class="span8">
         @using (Html.BeginForm(
             "EditPlayers",
             "Roster",
@@ -30,7 +30,7 @@
                                 <option value="">Välj spelare</option>
                                 @foreach (var player in Model.AvailablePlayers)
                                 {
-                                    var elementAtOrDefault = this.Model.Roster.Players.ElementAtOrDefault(2 * i);
+                                    var elementAtOrDefault = Model.Roster.Players.ElementAtOrDefault(2 * i);
                                     if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
                                     {
                                         <option value="@player.Id" selected="selected">@player.Name</option>
@@ -49,7 +49,7 @@
                                 <option value="">Välj spelare</option>
                                 @foreach (var player in Model.AvailablePlayers)
                                 {
-                                    var elementAtOrDefault = this.Model.Roster.Players.ElementAtOrDefault(2 * i + 1);
+                                    var elementAtOrDefault = Model.Roster.Players.ElementAtOrDefault(2 * i + 1);
                                     if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
                                     {
                                         <option value="@player.Id" selected="selected">@player.Name</option>

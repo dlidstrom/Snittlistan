@@ -18,7 +18,7 @@
             var actionDescriptor = filterContext.ActionDescriptor;
             string controllerName = actionDescriptor.ControllerDescriptor.ControllerName;
             string actionName = actionDescriptor.ActionName;
-            string userName = filterContext.HttpContext.User.Identity.Name.ToString();
+            string userName = filterContext.HttpContext.User.Identity.Name;
             DateTime timeStamp = filterContext.HttpContext.Timestamp;
             string routeId = string.Empty;
             if (filterContext.RouteData.Values["id"] != null)

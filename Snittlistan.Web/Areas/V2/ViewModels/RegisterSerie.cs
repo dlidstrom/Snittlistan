@@ -15,8 +15,8 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             Players = players;
         }
 
-        public ResultSeriesReadModel.Serie Serie { get; set; }
+        public ResultSeriesReadModel.Serie Serie { get; private set; }
 
-        public List<SelectListItem> Players { get; set; }
+        public List<SelectListItem> Players { get; private set; }
     }
 }
