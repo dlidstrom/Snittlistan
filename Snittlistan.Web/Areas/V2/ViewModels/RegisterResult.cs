@@ -24,12 +24,13 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         [Required]
         public string RosterId { get; set; }
 
-        [Range(0, 20)]
-        public int TeamScore { get; set; }
+        [Range(0, 20), Required]
+        public int? TeamScore { get; set; }
 
-        [Range(0, 20)]
-        public int OpponentScore { get; set; }
+        [Range(0, 20), Required]
+        public int? OpponentScore { get; set; }
 
-        public int BitsMatchId { get; set; }
+        [Required]
+        public int? BitsMatchId { get; set; }
     }
 }

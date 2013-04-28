@@ -17,7 +17,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                 throw new ApplicationException("Roster already has result registered");
             VerifyScores(teamScore, opponentScore);
 
-            this.ApplyChange(
+            ApplyChange(
                 new MatchResultRegistered(roster.Id, roster.Players, teamScore, opponentScore, bitsMatchId));
         }
 
@@ -28,15 +28,15 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
             roster.MatchResultId = Id;
 
-            if (roster.Id != this.RosterId)
-                this.ApplyChange(new RosterChanged(this.RosterId, roster.Id));
+            if (roster.Id != RosterId)
+                ApplyChange(new RosterChanged(RosterId, roster.Id));
             var matchResultUpdated = new MatchResultUpdated(roster.Id, roster.Players, teamScore, opponentScore, bitsMatchId, RosterId, TeamScore, OpponentScore, BitsMatchId);
-            this.ApplyChange(matchResultUpdated);
+            ApplyChange(matchResultUpdated);
         }
 
         public void Delete()
         {
-            this.ApplyChange(new MatchResultDeleted(RosterId, BitsMatchId));
+            ApplyChange(new MatchResultDeleted(RosterId, BitsMatchId));
         }
 
         public void RegisterSerie(MatchSerie matchSerie)
@@ -44,9 +44,9 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             if (matchSerie == null) throw new ArgumentNullException("matchSerie");
             if (rosterPlayers.Count != 8 && rosterPlayers.Count != 9)
                 throw new MatchException("Roster must have 8 or 9 players when registering results");
-            this.VerifyPlayers(matchSerie);
+            VerifyPlayers(matchSerie);
 
-            this.ApplyChange(new SerieRegistered(matchSerie, BitsMatchId));
+            ApplyChange(new SerieRegistered(matchSerie, BitsMatchId));
         }
 
         private string RosterId { get; set; }
@@ -99,21 +99,21 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         [UsedImplicitly]
         private void Apply(MatchResultRegistered e)
         {
-            this.RosterId = e.RosterId;
-            this.TeamScore = e.TeamScore;
-            this.OpponentScore = e.OpponentScore;
-            this.BitsMatchId = e.BitsMatchId;
-            this.rosterPlayers = new HashSet<string>(e.RosterPlayers);
+            RosterId = e.RosterId;
+            TeamScore = e.TeamScore;
+            OpponentScore = e.OpponentScore;
+            BitsMatchId = e.BitsMatchId;
+            rosterPlayers = new HashSet<string>(e.RosterPlayers);
         }
 
         [UsedImplicitly]
         private void Apply(MatchResultUpdated e)
         {
-            this.RosterId = e.NewRosterId;
-            this.TeamScore = e.NewTeamScore;
-            this.OpponentScore = e.NewOpponentScore;
-            this.BitsMatchId = e.NewBitsMatchId;
-            this.rosterPlayers = new HashSet<string>(e.RosterPlayers);
+            RosterId = e.NewRosterId;
+            TeamScore = e.NewTeamScore;
+            OpponentScore = e.NewOpponentScore;
+            BitsMatchId = e.NewBitsMatchId;
+            rosterPlayers = new HashSet<string>(e.RosterPlayers);
         }
     }
 }

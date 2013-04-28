@@ -43,7 +43,7 @@
 <script src="@src" type="text/javascript"></script>
 }
 
-@helper GA()
+@helper GoogleAnalytics()
 {
     <script type="text/javascript">
         var _gaq = _gaq || [];
@@ -81,9 +81,9 @@
     <link href="@src" rel="Stylesheet" type="text/css" />
 }
 
-@helper MenuLink(
+@* need to specify explicitly *@
+@helper ControllerMenuLink(
     System.Web.Mvc.HtmlHelper helper,
-    UrlHelper url,
     string text,
     string icon,
     string controller,
@@ -102,6 +102,7 @@
         <a href="@actionLink"><i class="@icon"></i>@text</a>
     </li>
 }
+
 @helper TeamLabel(
     char teamLevel,
     string team

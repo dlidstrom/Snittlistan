@@ -30,11 +30,11 @@ namespace Snittlistan.Web.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             // make sure there's an admin user
-            if (this.DocumentSession.Load<User>("Admin") != null) return;
+            if (DocumentSession.Load<User>("Admin") != null) return;
 
             // first launch
-            this.Response.Redirect("/v1/welcome");
-            this.Response.End();
+            Response.Redirect("/v1/welcome");
+            Response.End();
         }
 
         protected override void OnActionExecuted(ActionExecutedContext filterContext)
