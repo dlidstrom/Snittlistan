@@ -1,0 +1,51 @@
+﻿@model RegisterBitsResult
+
+<form class="form-horizontal" method="POST" action="@Url.Action("RegisterBitsVerify")">
+    @Html.HiddenFor(model => model.RosterId)
+    <div class="control-group">
+        <label class="control-label" for="teamScore">Lagpoäng:</label>
+        <div class="controls">
+            <input name="teamScore" value="@Model.TeamScore" readonly="readonly" />
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label class="control-label" for="opponentScore">Motståndarpoäng:</label>
+        <div class="controls">
+            <input name="opponentScore" value="@Model.OpponentScore" readonly="readonly" />
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label class="control-label" for="bitsMatchId">BITS Match Id:</label>
+        <div class="controls">
+            <input name="bitsMatchId" value="@Model.BitsMatchId" readonly="readonly" />
+        </div>
+    </div>
+    
+    @if (Model.Serie1 != null)
+    {
+        <h3>Serie 1</h3>
+        @Html.EditorFor(model => model.Serie1, "Serie")
+    }
+    @if (Model.Serie2 != null)
+    {
+        <h3>Serie 2</h3>
+        @Html.EditorFor(model => model.Serie2, "Serie")
+    }
+    @if (Model.Serie3 != null)
+    {
+        <h3>Serie 3</h3>
+        @Html.EditorFor(model => model.Serie3, "Serie")
+    }
+    @if (Model.Serie4 != null)
+    {
+        <h3>Serie 4</h3>
+        @Html.EditorFor(model => model.Serie4, "Serie")
+    }
+
+    <div class="form-actions">
+        <button class="btn btn-primary btn-large" type="submit">Spara</button>
+        @Html.ActionLink("Avbryt", "Index", "MatchResult", null, new { @class = "btn btn-large" })
+    </div>
+</form>

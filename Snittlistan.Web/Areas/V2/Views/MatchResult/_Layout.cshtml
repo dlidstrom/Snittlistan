@@ -1,0 +1,14 @@
+﻿@{
+    Layout = "~/Areas/V2/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="span12">
+        <ul class="nav nav-pills">
+            @Html.ActionMenuLink("Matcher", "sprite-glyphicons_074_cup", "Index", Url.Action("Index"))
+            @Html.ActionMenuLink("Veckans lag", "sprite-glyphicons_005_car", "Turns", Url.Action("Turns"))
+        </ul>
+    </div>
+</div>
+
+@RenderBody()

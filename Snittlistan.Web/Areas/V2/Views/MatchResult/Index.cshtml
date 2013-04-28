@@ -5,17 +5,21 @@
         <h2>Resultat @Model.SeasonStart&minus;@Model.SeasonEnd</h2>
     </div>
 </div>
-<div class="row">
-    <div class="span6 admin">
-        @if (Request.IsAuthenticated)
-        {
+@if (Request.IsAuthenticated)
+{
+    <div class="row">
+        <div class="span6 admin">
             <a href="@Url.Action("Register")">
                 <i class="sprite-glyphicons_030_pencil"></i>
                 Registrera matchresultat
             </a>
-        }
+            <a href="@Url.Action("RegisterBits", "MatchResultAdmin")">
+                <i class="sprite-glyphicons_358_file_import"></i>
+                Registrera från BITS
+            </a>
+        </div>
     </div>
-</div>
+}
 @foreach (var turn in Model.Turns.Keys.OrderByDescending(x => x))
 {
     <div class="row">
