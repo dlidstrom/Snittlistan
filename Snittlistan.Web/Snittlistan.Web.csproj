@@ -84,6 +84,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EventStoreLite.0.7\lib\net40\EventStoreLite.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="Jurassic">
       <HintPath>..\packages\Jurassic.2.1.1\lib\Jurassic.dll</HintPath>
     </Reference>
@@ -189,6 +192,7 @@
     <Compile Include="ApplicationMode.cs" />
     <Compile Include="Areas\V2\AutoMapper\AbsenceProfile.cs" />
     <Compile Include="Areas\V2\AutoMapper\ResultProfile.cs" />
+    <Compile Include="Areas\V2\Domain\BitsParser.cs" />
     <Compile Include="Areas\V2\Domain\Match\MatchException.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\MatchResultDeleted.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\SerieRegistered.cs" />
