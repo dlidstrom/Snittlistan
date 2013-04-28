@@ -8,13 +8,13 @@ namespace Snittlistan.Web.Areas.V2.Indexes
     {
         public PlayerSearch()
         {
-            this.Map = players => from player in players
-                                  select new
-                                  {
-                                      player.Name,
-                                      player.Email,
-                                      player.IsSupporter
-                                  };
+            Map = players => from player in players
+                             select new
+                             {
+                                 player.Name,
+                                 player.Email,
+                                 player.IsSupporter
+                             };
         }
     }
 }

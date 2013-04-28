@@ -8,9 +8,9 @@ namespace Snittlistan.Web.Areas.V2.Domain
         {
             if (name == null) throw new ArgumentNullException("name");
             if (email == null) throw new ArgumentNullException("email");
-            this.Name = name;
-            this.Email = email;
-            this.IsSupporter = isSupporter;
+            Name = name;
+            Email = email;
+            IsSupporter = isSupporter;
         }
 
         public string Id { get; set; }
@@ -24,18 +24,18 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public void SetName(string name)
         {
             if (name == null) throw new ArgumentNullException("name");
-            this.Name = name;
+            Name = name;
         }
 
         public void SetEmail(string email)
         {
             if (email == null) throw new ArgumentNullException("email");
-            this.Email = email;
+            Email = email;
         }
 
         public void SetIsSupporter(bool isSupporter)
         {
-            this.IsSupporter = isSupporter;
+            IsSupporter = isSupporter;
         }
     }
 }

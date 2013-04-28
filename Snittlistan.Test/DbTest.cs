@@ -38,7 +38,7 @@ namespace Snittlistan.Test
 
         public void Dispose()
         {
-            this.OnDispose();
+            OnDispose();
             Session.Dispose();
             Store.Dispose();
         }
@@ -53,11 +53,7 @@ namespace Snittlistan.Test
 
         protected User CreateActivatedUser(string firstName, string lastName, string email, string password)
         {
-            var user = new User(
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                password: password);
+            var user = new User(firstName, lastName, email, password);
             user.Activate(false);
             Session.Store(user);
             Session.SaveChanges();

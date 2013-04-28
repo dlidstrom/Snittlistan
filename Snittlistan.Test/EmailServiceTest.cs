@@ -1,11 +1,9 @@
-﻿namespace Snittlistan.Test
+﻿using System.Threading;
+using Snittlistan.Web.Services;
+using Xunit;
+
+namespace Snittlistan.Test
 {
-    using System.Threading;
-
-    using Snittlistan.Web.Services;
-
-    using Xunit;
-
     public class EmailServiceTest
     {
         [Fact(Skip = "Configure before executing")]
