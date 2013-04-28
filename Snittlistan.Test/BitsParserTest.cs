@@ -28,6 +28,32 @@ namespace Snittlistan.Test
         }
 
         [Fact]
+        public void CanParseAlternateHomeTeamName()
+        {
+            // Arrange
+            const string Team = "Fredrikshof A";
+
+            // Act
+            var result = new BitsParser(players).Parse(Resources.Id3048746, Team);
+
+            // Assert
+            Assert.Equal(11, result.TeamScore);
+        }
+
+        [Fact]
+        public void CanParseAlternateAwayTeamName()
+        {
+            // Arrange
+            const string Team = "Fredrikshof A";
+
+            // Act
+            var result = new BitsParser(players).Parse(Resources.Id3048747, Team);
+
+            // Assert
+            Assert.Equal(10, result.TeamScore);
+        }
+
+        [Fact]
         public void CanParseHomeTeam()
         {
             // Arrange
