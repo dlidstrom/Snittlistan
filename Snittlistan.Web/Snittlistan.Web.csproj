@@ -192,6 +192,8 @@
     <Compile Include="ApplicationMode.cs" />
     <Compile Include="Areas\V2\AutoMapper\AbsenceProfile.cs" />
     <Compile Include="Areas\V2\AutoMapper\ResultProfile.cs" />
+    <Compile Include="Areas\V2\Controllers\MatchResultAdminController.cs" />
+    <Compile Include="Areas\V2\DocumentSessionExtensions.cs" />
     <Compile Include="Areas\V2\Domain\BitsParser.cs" />
     <Compile Include="Areas\V2\Domain\Match\MatchException.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\MatchResultDeleted.cs" />
@@ -209,6 +211,8 @@
     <Compile Include="Areas\V2\Domain\Match\MatchGame.cs" />
     <Compile Include="Areas\V2\Domain\Match\MatchSerie.cs" />
     <Compile Include="Areas\V2\Domain\Match\MatchTable.cs" />
+    <Compile Include="Areas\V2\ViewModels\RegisterBitsResult.cs" />
+    <Compile Include="Areas\V2\ViewModels\RegisterBitsVerifyModel.cs" />
     <Compile Include="Areas\V2\ViewModels\RegisterSerie.cs" />
     <Compile Include="Areas\V2\ViewModels\ResultViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\RegisterResult.cs" />
@@ -472,6 +476,14 @@
     <Content Include="Areas\V2\Views\MatchResult\_SerieEditor.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\DisplayTemplates\Header.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\DisplayTemplates\Result.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\_Layout.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\_ViewStart.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\Turns.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResultAdmin\RegisterBits.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResultAdmin\RegisterBitsVerify.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\_BitsSerieEditor.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResultAdmin\EditorTemplates\Table.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResultAdmin\EditorTemplates\Serie.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
@@ -500,6 +512,7 @@
     <Content Include="Content\templates\turn-new-template.html" />
     <Content Include="Content\templates\turn-template.html" />
     <Content Include="Content\templates\turns-template.html" />
+    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="robots.txt" />
     <Content Include="Web.config">
@@ -517,6 +530,7 @@
     <Content Include="Areas\V2\Views\Roster\Create.cshtml" />
     <Content Include="Areas\V2\Views\Roster\Delete.cshtml" />
     <Content Include="Areas\V2\Views\Roster\DisplayTemplates\Roster.cshtml" />
+    <Content Include="NLog.config" />
     <None Include="Properties\PublishProfiles\Snittlistan-Netcetera.pubxml" />
     <Content Include="Views\Emails\InviteUser.cshtml" />
     <Content Include="Views\Emails\_ViewStart.cshtml" />

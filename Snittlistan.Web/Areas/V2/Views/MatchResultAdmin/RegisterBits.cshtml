@@ -1,0 +1,37 @@
+﻿@model RegisterBitsVerifyModel
+
+@{
+    ViewBag.Title = ViewBag.Title ?? "Registrera matchresultat";
+}
+
+<div class="row">
+    <div class="span8">
+        <h3>@ViewBag.Title</h3>
+        <form class="form-horizontal" action="@Url.Action("RegisterBitsVerify")">
+            @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
+            @Html.HiddenFor(model => model.Season)
+            <div class="control-group">
+                <label class="control-label" for="rosterid">Match:</label>
+                <div class="controls">
+                    @Html.DropDownList("rosterid", "Välj match")
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="bitsMatchId">BITS Match Id:</label>
+                <div class="controls">
+                    <input id="bitsMatchId"
+                           name="bitsMatchId"
+                           type="text"
+                           pattern="\d+"
+                           title="Ange matchnumret från BITS"
+                           value="@Model.BitsMatchId"
+                           required="required" />
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary btn-large" type="submit">Verifiera</button>
+                @Html.ActionLink("Avbryt", "Index", "MatchResult", null, new { @class = "btn btn-large" })
+            </div>
+        </form>
+    </div>
+</div>

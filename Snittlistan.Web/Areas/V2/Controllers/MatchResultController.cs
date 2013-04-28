@@ -4,11 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Raven.Abstractions;
-using Raven.Client;
-using Raven.Client.Linq;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
-using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;
@@ -21,7 +18,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         public ActionResult Index(int? season)
         {
             if (season.HasValue == false)
-                season = this.DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+                season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
 
             var vm = new MatchResultViewModel {
                                                   SeasonStart = season.Value,
@@ -30,7 +27,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                                                       .GroupBy(x => x.Turn)
                                                       .ToDictionary(x => x.Key, x => x.ToList())
                                               };
-            return this.View(vm);
+            return View(vm);
         }
 
         public ActionResult Register(int? season)
@@ -38,27 +35,27 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             if (season.HasValue == false)
                 season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
 
-            CreateRosterSelectList(season.Value);
-            return this.View(new RegisterResult());
+            ViewBag.rosterid = DocumentSession.CreateRosterSelectList(season.Value);
+            return View(new RegisterResult());
         }
 
         [HttpPost, Authorize, ActionName("Register")]
         public ActionResult RegisterConfirmed(int? season, RegisterResult vm)
         {
-            if (ModelState.IsValid == false) return this.Register(season);
+            if (ModelState.IsValid == false) return Register(season);
 
-            var roster = this.DocumentSession.Load<Roster>(vm.RosterId);
+            var roster = DocumentSession.Load<Roster>(vm.RosterId);
             if (roster == null)
                 throw new HttpException(404, "Roster not found");
 
             var matchResult = new MatchResult(
                 roster,
-                vm.TeamScore,
-                vm.OpponentScore,
-                vm.BitsMatchId);
+                vm.TeamScore.GetValueOrDefault(),
+                vm.OpponentScore.GetValueOrDefault(),
+                vm.BitsMatchId.GetValueOrDefault());
             EventStoreSession.Store(matchResult);
 
-            return this.RedirectToAction(
+            return RedirectToAction(
                 "RegisterSerie",
                 new
                 {
@@ -74,7 +71,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var matchResult = DocumentSession.Load<ResultHeaderReadModel>(matchId);
             if (matchResult == null) throw new HttpException(404, "Match result not found");
 
-            this.CreateRosterSelectList(matchResult.Season, matchResult.RosterId);
+            ViewBag.rosterid = DocumentSession.CreateRosterSelectList(matchResult.Season, matchResult.RosterId);
 
             ViewBag.Title = "Redigera matchresultat";
             return View("Register", new RegisterResult(matchResult));
@@ -91,24 +88,24 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
             matchResult.Update(
                 DocumentSession.Load<Roster>(registerResult.RosterId),
-                registerResult.TeamScore,
-                registerResult.OpponentScore,
-                registerResult.BitsMatchId);
+                registerResult.TeamScore.GetValueOrDefault(),
+                registerResult.OpponentScore.GetValueOrDefault(),
+                registerResult.BitsMatchId.GetValueOrDefault());
 
-            return this.RedirectToAction("Index");
+            return RedirectToAction("Index");
         }
 
         public ActionResult Delete(string id)
         {
-            if (this.EventStoreSession.Load<MatchResult>(id) == null)
+            if (EventStoreSession.Load<MatchResult>(id) == null)
                 throw new HttpException(404, "MatchResult not found");
-            return this.View();
+            return View();
         }
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(string id)
         {
-            var matchResult = this.EventStoreSession.Load<MatchResult>(id);
+            var matchResult = EventStoreSession.Load<MatchResult>(id);
             if (matchResult == null)
                 throw new HttpException(404, "MatchResult not found");
             matchResult.Delete();
@@ -118,7 +115,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         public ActionResult RegisterSerie(string aggregateId, string rosterId, int bitsMatchId)
         {
-            var roster = this.DocumentSession
+            var roster = DocumentSession
                 .Include<Roster>(r => r.Players)
                 .Load<Roster>(rosterId);
             if (roster == null) throw new HttpException(404, "Roster not found");
@@ -127,12 +124,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 roster.Players.Select(
                     x => new SelectListItem
                          {
-                             Text = this.DocumentSession.Load<Player>(x)
-                                 .Name,
+                             Text = DocumentSession.Load<Player>(x).Name,
                              Value = x
                          })
                     .ToList());
-            return this.View(registerSerie);
+            return View(registerSerie);
         }
 
         [HttpPost]
@@ -176,27 +172,12 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var resultReadModel = DocumentSession.Load<ResultSeriesReadModel>(matchId)
                 ?? new ResultSeriesReadModel();
 
-            return this.View(new ResultViewModel(headerReadModel, resultReadModel));
+            return View(new ResultViewModel(headerReadModel, resultReadModel));
         }
 
-        private void CreateRosterSelectList(int season, string rosterId = "")
+        public ActionResult Turns()
         {
-            ViewBag.rosterid = this.DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
-                .Where(x => x.Season == season)
-                .Where(x => x.Preliminary == false)
-                .Where(x => x.PlayerCount >= 8)
-                .OrderBy(x => x.Date)
-                .AsProjection<RosterSearchTerms.Result>()
-                .ToList()
-                .Where(x => x.MatchResultId == null || string.IsNullOrEmpty(rosterId) == false)
-                .Select(
-                    x => new SelectListItem
-                    {
-                        Text = string.Format("{0}: {1} - {2} ({3})", x.Turn, x.Team, x.Opponent, x.Location),
-                        Value = x.Id,
-                        Selected = x.Id == rosterId
-                    })
-                .ToList();
+            return View();
         }
     }
 }
