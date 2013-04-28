@@ -43,10 +43,24 @@ namespace Snittlistan.Web.Areas.V2.Domain
             var awayTeamLabel =
                 documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchHead_LabelAwayTeam']");
 
-            if (team == homeTeamLabel.InnerText)
+            var homeTeamName = homeTeamLabel.InnerText;
+            if (team == homeTeamName)
                 return ExtractTeam(documentNode, Team.Home, Team.Away);
-            if (team == awayTeamLabel.InnerText)
+            var awayTeamName = awayTeamLabel.InnerText;
+            if (team == awayTeamName)
                 return ExtractTeam(documentNode, Team.Away, Team.Home);
+
+            // try alternate name
+            var teamPrefix = team.Split(' ')
+                .First();
+            if (homeTeamName.StartsWith(teamPrefix) && awayTeamName.StartsWith(teamPrefix))
+                throw new ApplicationException(string.Format("Could not find team with prefix {0}", teamPrefix));
+
+            if (homeTeamName.StartsWith(teamPrefix) && awayTeamName.StartsWith(teamPrefix) == false)
+                return ExtractTeam(documentNode, Team.Home, Team.Away);
+            if (awayTeamName.StartsWith(teamPrefix) && homeTeamName.StartsWith(teamPrefix) == false)
+                return ExtractTeam(documentNode, Team.Away, Team.Home);
+
             throw new ApplicationException(string.Format("No team with name {0} was found", team));
         }
 
