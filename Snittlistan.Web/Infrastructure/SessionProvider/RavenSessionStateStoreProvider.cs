@@ -192,7 +192,7 @@
                     {
                         sessionState = documentSession.Query<SessionState>()
                             .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
-                            .SingleOrDefault(x => x.SessionId == id && x.ApplicationName == this.ApplicationName && x.Expires < DateTime.UtcNow);
+                            .SingleOrDefault(x => x.SessionId == id && x.ApplicationName == ApplicationName && x.Expires < DateTime.UtcNow);
 
                         if (sessionState != null)
                             throw new InvalidOperationException(string.Format("Item aleady exist with SessionId={0} and ApplicationName={1}", id, lockId));

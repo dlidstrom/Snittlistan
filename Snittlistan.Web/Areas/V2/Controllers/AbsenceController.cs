@@ -17,6 +17,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         public ActionResult Index()
         {
             var absences = DocumentSession.Query<AbsenceIndex.Result, AbsenceIndex>()
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .Where(x => x.To >= SystemTime.UtcNow.Date.AddDays(-1))
                 .OrderBy(p => p.From)
                 .ThenBy(p => p.To)
@@ -105,6 +106,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         private void CreatePlayerSelectList(string player = "")
         {
             this.ViewBag.Player = this.DocumentSession.Query<Player, PlayerSearch>()
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .Where(x => x.IsSupporter == false)
                 .OrderBy(x => x.Name)
                 .ToList()

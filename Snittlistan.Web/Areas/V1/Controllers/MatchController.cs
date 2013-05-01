@@ -20,12 +20,13 @@ namespace Snittlistan.Web.Areas.V1.Controllers
         /// <returns></returns>
         public ViewResult Index()
         {
-            var matches = this.DocumentSession.Query<Match_ByDate.Result, Match_ByDate>()
+            var matches = DocumentSession.Query<Match_ByDate.Result, Match_ByDate>()
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .OrderByDescending(m => m.Date)
                 .AsProjection<Match_ByDate.Result>()
                 .ToList();
 
-            return this.View(matches);
+            return View(matches);
         }
 
         /// <summary>
@@ -35,12 +36,13 @@ namespace Snittlistan.Web.Areas.V1.Controllers
         /// <returns></returns>
         public ActionResult Details8x4(int id)
         {
-            var match = this.DocumentSession.Load<Match8x4>(id);
+            var match = DocumentSession.Load<Match8x4>(id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
-            var matchId = this.DocumentSession.Advanced.GetDocumentId(match);
-            var results = this.DocumentSession.Query<Player_ByMatch.Result, Player_ByMatch>()
+            var matchId = DocumentSession.Advanced.GetDocumentId(match);
+            var results = DocumentSession.Query<Player_ByMatch.Result, Player_ByMatch>()
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .Where(x => x.MatchId == matchId)
                 .OrderByDescending(x => x.Pins);
 
@@ -53,7 +55,7 @@ namespace Snittlistan.Web.Areas.V1.Controllers
                 AwayTeamResults = results.Where(g => g.Team == match.AwayTeam.Name).ToList(),
             };
 
-            return this.View(vm);
+            return View(vm);
         }
 
         /// <summary>
@@ -63,7 +65,7 @@ namespace Snittlistan.Web.Areas.V1.Controllers
         [Authorize]
         public ViewResult Register8x4()
         {
-            return this.View(new Register8x4MatchViewModel());
+            return View(new Register8x4MatchViewModel());
         }
 
         /// <summary>
@@ -74,11 +76,11 @@ namespace Snittlistan.Web.Areas.V1.Controllers
         [HttpPost, Authorize]
         public ActionResult Register8x4(Register8x4MatchViewModel model)
         {
-            if (this.DocumentSession.BitsIdExists(model.BitsMatchId))
-                this.ModelState.AddModelError("BitsMatchId", "Matchen redan registrerad");
+            if (DocumentSession.BitsIdExists(model.BitsMatchId))
+                ModelState.AddModelError("BitsMatchId", "Matchen redan registrerad");
 
-            if (!this.ModelState.IsValid)
-                return this.View(model);
+            if (!ModelState.IsValid)
+                return View(model);
 
             var match = new Match8x4(
                 model.Location,
@@ -86,9 +88,9 @@ namespace Snittlistan.Web.Areas.V1.Controllers
                 model.BitsMatchId,
                 model.HomeTeam.MapTo<HomeTeamFactory>().CreateTeam(),
                 model.AwayTeam.MapTo<AwayTeamFactory>().CreateTeam());
-            this.DocumentSession.Store(match);
+            DocumentSession.Store(match);
 
-            return this.RedirectToAction("Details8x4", new { id = match.Id });
+            return RedirectToAction("Details8x4", new { id = match.Id });
         }
 
         /// <summary>
@@ -99,11 +101,11 @@ namespace Snittlistan.Web.Areas.V1.Controllers
         [Authorize]
         public ActionResult EditDetails8x4(int id)
         {
-            var match = this.DocumentSession.Load<Match8x4>(id);
+            var match = DocumentSession.Load<Match8x4>(id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
-            return this.View(match.MapTo<Match8x4ViewModel.MatchDetails>());
+            return View(match.MapTo<Match8x4ViewModel.MatchDetails>());
         }
 
         /// <summary>
@@ -114,10 +116,10 @@ namespace Snittlistan.Web.Areas.V1.Controllers
         [HttpPost, Authorize]
         public ActionResult EditDetails8x4(Match8x4ViewModel.MatchDetails model)
         {
-            if (!this.ModelState.IsValid)
-                return this.View(model);
+            if (!ModelState.IsValid)
+                return View(model);
 
-            var match = this.DocumentSession.Load<Match8x4>(model.Id);
+            var match = DocumentSession.Load<Match8x4>(model.Id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
@@ -125,7 +127,7 @@ namespace Snittlistan.Web.Areas.V1.Controllers
             match.Date = model.Date;
             match.BitsMatchId = model.BitsMatchId;
 
-            return this.RedirectToAction("Details8x4", new { id = match.Id });
+            return RedirectToAction("Details8x4", new { id = match.Id });
         }
 
         /// <summary>
@@ -137,7 +139,7 @@ namespace Snittlistan.Web.Areas.V1.Controllers
         [Authorize]
         public ActionResult EditTeam8x4(int id, bool isHomeTeam)
         {
-            var match = this.DocumentSession.Load<Match8x4>(id);
+            var match = DocumentSession.Load<Match8x4>(id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
@@ -151,7 +153,7 @@ namespace Snittlistan.Web.Areas.V1.Controllers
                 Team = teamViewModel
             };
 
-            return this.View(vm);
+            return View(vm);
         }
 
         /// <summary>
@@ -162,7 +164,7 @@ namespace Snittlistan.Web.Areas.V1.Controllers
         [HttpPost, Authorize]
         public ActionResult EditTeam8x4(EditTeam8x4ViewModel vm)
         {
-            var match = this.DocumentSession.Load<Match8x4>(vm.Id);
+            var match = DocumentSession.Load<Match8x4>(vm.Id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
@@ -171,29 +173,29 @@ namespace Snittlistan.Web.Areas.V1.Controllers
             else
                 match.AwayTeam = vm.Team.MapTo<AwayTeamFactory>().CreateTeam();
 
-            return this.RedirectToAction("Details8x4", new { id = vm.Id });
+            return RedirectToAction("Details8x4", new { id = vm.Id });
         }
 
         [Authorize]
         public ActionResult Delete8x4(int id)
         {
-            var match = this.DocumentSession.Load<Match8x4>(id);
+            var match = DocumentSession.Load<Match8x4>(id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
-            return this.View(match.MapTo<Match8x4ViewModel.MatchDetails>());
+            return View(match.MapTo<Match8x4ViewModel.MatchDetails>());
         }
 
         [Authorize, HttpPost]
         public ActionResult Delete8x4(Match8x4ViewModel.MatchDetails vm)
         {
-            var match = this.DocumentSession.Load<Match8x4>(vm.Id);
+            var match = DocumentSession.Load<Match8x4>(vm.Id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
-            this.DocumentSession.Delete(match);
+            DocumentSession.Delete(match);
 
-            return this.RedirectToAction("Index");
+            return RedirectToAction("Index");
         }
 
         /// <summary>
@@ -203,23 +205,23 @@ namespace Snittlistan.Web.Areas.V1.Controllers
         [Authorize]
         public ViewResult Register4x4()
         {
-            return this.View(new Register4x4MatchViewModel());
+            return View(new Register4x4MatchViewModel());
         }
 
         [HttpPost, Authorize]
         public ActionResult Register4x4(Register4x4MatchViewModel model)
         {
-            if (!this.ModelState.IsValid)
-                return this.View(model);
+            if (!ModelState.IsValid)
+                return View(model);
 
             var match = new Match4x4(
                 model.Location,
                 model.Date,
                 model.HomeTeam.MapTo<Team4x4>(),
                 model.AwayTeam.MapTo<Team4x4>());
-            this.DocumentSession.Store(match);
+            DocumentSession.Store(match);
 
-            return this.RedirectToAction("Details4x4", new { id = match.Id });
+            return RedirectToAction("Details4x4", new { id = match.Id });
         }
 
         /// <summary>
@@ -230,11 +232,11 @@ namespace Snittlistan.Web.Areas.V1.Controllers
         [Authorize]
         public ActionResult EditDetails4x4(int id)
         {
-            var match = this.DocumentSession.Load<Match4x4>(id);
+            var match = DocumentSession.Load<Match4x4>(id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
-            return this.View(match.MapTo<Match4x4ViewModel.MatchDetails>());
+            return View(match.MapTo<Match4x4ViewModel.MatchDetails>());
         }
 
         /// <summary>
@@ -245,17 +247,17 @@ namespace Snittlistan.Web.Areas.V1.Controllers
         [HttpPost, Authorize]
         public ActionResult EditDetails4x4(Match4x4ViewModel.MatchDetails model)
         {
-            if (!this.ModelState.IsValid)
-                return this.View(model);
+            if (!ModelState.IsValid)
+                return View(model);
 
-            var match = this.DocumentSession.Load<Match4x4>(model.Id);
+            var match = DocumentSession.Load<Match4x4>(model.Id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
             match.Location = model.Location;
             match.Date = model.Date;
 
-            return this.RedirectToAction("Details4x4", new { id = match.Id });
+            return RedirectToAction("Details4x4", new { id = match.Id });
         }
 
         /// <summary>
@@ -267,7 +269,7 @@ namespace Snittlistan.Web.Areas.V1.Controllers
         [Authorize]
         public ActionResult EditTeam4x4(int id, bool isHomeTeam)
         {
-            var match = this.DocumentSession.Load<Match4x4>(id);
+            var match = DocumentSession.Load<Match4x4>(id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
@@ -281,7 +283,7 @@ namespace Snittlistan.Web.Areas.V1.Controllers
                 Team = teamViewModel
             };
 
-            return this.View(vm);
+            return View(vm);
         }
 
         /// <summary>
@@ -292,7 +294,7 @@ namespace Snittlistan.Web.Areas.V1.Controllers
         [HttpPost, Authorize]
         public ActionResult EditTeam4x4(EditTeam4x4ViewModel vm)
         {
-            var match = this.DocumentSession.Load<Match4x4>(vm.Id);
+            var match = DocumentSession.Load<Match4x4>(vm.Id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
@@ -301,29 +303,29 @@ namespace Snittlistan.Web.Areas.V1.Controllers
             else
                 match.AwayTeam = vm.Team.MapTo<Team4x4>();
 
-            return this.RedirectToAction("Details4x4", new { id = vm.Id });
+            return RedirectToAction("Details4x4", new { id = vm.Id });
         }
 
         [Authorize]
         public ActionResult Delete4x4(int id)
         {
-            var match = this.DocumentSession.Load<Match4x4>(id);
+            var match = DocumentSession.Load<Match4x4>(id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
-            return this.View(match.MapTo<Match4x4ViewModel.MatchDetails>());
+            return View(match.MapTo<Match4x4ViewModel.MatchDetails>());
         }
 
         [Authorize, HttpPost]
         public ActionResult Delete4x4(Match4x4ViewModel.MatchDetails vm)
         {
-            var match = this.DocumentSession.Load<Match4x4>(vm.Id);
+            var match = DocumentSession.Load<Match4x4>(vm.Id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
-            this.DocumentSession.Delete(match);
+            DocumentSession.Delete(match);
 
-            return this.RedirectToAction("Index");
+            return RedirectToAction("Index");
         }
 
         /// <summary>
@@ -333,12 +335,13 @@ namespace Snittlistan.Web.Areas.V1.Controllers
         /// <returns></returns>
         public ActionResult Details4x4(int id)
         {
-            var match = this.DocumentSession.Load<Match4x4>(id);
+            var match = DocumentSession.Load<Match4x4>(id);
             if (match == null)
                 throw new HttpException(404, "Match not found");
 
-            string matchId = this.DocumentSession.Advanced.GetDocumentId(match);
-            var results = this.DocumentSession.Query<Player_ByMatch.Result, Player_ByMatch>()
+            var matchId = DocumentSession.Advanced.GetDocumentId(match);
+            var results = DocumentSession.Query<Player_ByMatch.Result, Player_ByMatch>()
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .Where(x => x.MatchId == matchId)
                 .OrderByDescending(x => x.Pins);
 
@@ -351,17 +354,17 @@ namespace Snittlistan.Web.Areas.V1.Controllers
                 AwayTeamResults = results.Where(r => r.Team == match.AwayTeam.Name).ToList(),
             };
 
-            return this.View(vm);
+            return View(vm);
         }
 
         public ActionResult Create()
         {
-            return this.RedirectToActionPermanent("Index");
+            return RedirectToActionPermanent("Index");
         }
 
         public ActionResult Edit()
         {
-            return this.RedirectToActionPermanent("Index");
+            return RedirectToActionPermanent("Index");
         }
     }
 }

@@ -16,6 +16,7 @@ namespace Snittlistan.Web.Areas.V1.Controllers
         public JsonResult IsBitsMatchIdAvailable(int bitsMatchId)
         {
             var id = this.DocumentSession.Query<Match_ByBitsMatchId.Result, Match_ByBitsMatchId>()
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .AsProjection<Match_ByBitsMatchId.Result>()
                 .SingleOrDefault(m => m.BitsMatchId == bitsMatchId);
 

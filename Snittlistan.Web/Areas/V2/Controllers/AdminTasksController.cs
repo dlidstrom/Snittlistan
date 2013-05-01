@@ -3,7 +3,6 @@ using System.Web;
 using System.Web.Mvc;
 using EventStoreLite;
 using EventStoreLite.IoC.Castle;
-using Raven.Client;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Helpers;
@@ -15,16 +14,9 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 {
     public class AdminTasksController : AdminController
     {
-        private readonly IDocumentStore store;
-
-        public AdminTasksController(IDocumentStore store)
-        {
-            this.store = store;
-        }
-
         public ActionResult Index()
         {
-            return this.View();
+            return View();
         }
 
         /// <summary>
@@ -33,68 +25,69 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         /// <returns></returns>
         public ActionResult Users()
         {
-            var users = this.DocumentSession.Query<User>()
+            var users = DocumentSession.Query<User>()
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .ToList()
                 .MapTo<UserViewModel>()
                 .OrderByDescending(x => x.IsActive)
                 .ThenBy(x => x.Email)
                 .ToList();
 
-            return this.View(users);
+            return View(users);
         }
 
         public ActionResult CreateUser()
         {
-            return this.View(new CreateUserViewModel());
+            return View(new CreateUserViewModel());
         }
 
         [HttpPost]
         public ActionResult CreateUser(CreateUserViewModel vm)
         {
             // an existing user cannot be registered again
-            if (this.DocumentSession.FindUserByEmail(vm.Email) != null)
-                this.ModelState.AddModelError("Email", "Användaren finns redan");
+            if (DocumentSession.FindUserByEmail(vm.Email) != null)
+                ModelState.AddModelError("Email", "Användaren finns redan");
 
             // redisplay form if any errors at this point
-            if (!this.ModelState.IsValid) return this.View(vm);
+            if (!ModelState.IsValid) return View(vm);
 
             var newUser = new User(string.Empty, string.Empty, vm.Email, string.Empty);
-            this.DocumentSession.Store(newUser);
+            DocumentSession.Store(newUser);
 
-            return this.RedirectToAction("Users");
+            return RedirectToAction("Users");
         }
 
         public ActionResult DeleteUser(string id)
         {
-            var user = this.DocumentSession.Load<User>(id);
+            var user = DocumentSession.Load<User>(id);
             if (user == null) throw new HttpException(404, "User not found");
 
-            return this.View(user.MapTo<UserViewModel>());
+            return View(user.MapTo<UserViewModel>());
         }
 
         [HttpPost]
         [ActionName("DeleteUser")]
         public ActionResult DeleteUserConfirmed(string id)
         {
-            var user = this.DocumentSession.Load<User>(id);
+            var user = DocumentSession.Load<User>(id);
             if (user == null) throw new HttpException(404, "User not found");
             DocumentSession.Delete(user);
-            return this.RedirectToAction("Users");
+            return RedirectToAction("Users");
         }
 
         public ActionResult ActivateUser(string id)
         {
-            var user = this.DocumentSession.Load<User>(id);
+            var user = DocumentSession.Load<User>(id);
             if (user == null) throw new HttpException(404, "User not found");
 
-            return this.View(user.MapTo<UserViewModel>());
+            return View(user.MapTo<UserViewModel>());
         }
 
         [HttpPost]
         [ActionName("ActivateUser")]
         public ActionResult ActivateUserConfirmed(string id, bool? invite)
         {
-            var user = this.DocumentSession.Load<User>(id);
+            var user = DocumentSession.Load<User>(id);
             if (user == null) throw new HttpException(404, "User not found");
             if (user.IsActive) user.Deactivate();
             else
@@ -102,31 +95,31 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 user.Activate(invite.HasValue && invite.Value);
             }
 
-            return this.RedirectToAction("Users");
+            return RedirectToAction("Users");
         }
 
         public ActionResult Raven()
         {
-            return this.View();
+            return View();
         }
 
         public ActionResult CreateIndexes()
         {
-            return this.View();
+            return View();
         }
 
         [HttpPost, ActionName("CreateIndexes")]
         public ActionResult CreateIndexesConfirmed()
         {
             // create indexes
-            IndexCreator.CreateIndexes(store);
+            IndexCreator.CreateIndexes(DocumentStore);
 
-            return this.RedirectToAction("Raven");
+            return RedirectToAction("Raven");
         }
 
         public ActionResult ResetIndexes()
         {
-            return this.View();
+            return View();
         }
 
         [HttpPost, ActionName("ResetIndexes")]
@@ -134,29 +127,29 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             while (true)
             {
-                var indexNames = store.DatabaseCommands.GetIndexNames(0, 20);
+                var indexNames = DocumentStore.DatabaseCommands.GetIndexNames(0, 20);
                 if (indexNames.Length == 0) break;
                 foreach (var indexName in indexNames)
                 {
-                    store.DatabaseCommands.DeleteIndex(indexName);
+                    DocumentStore.DatabaseCommands.DeleteIndex(indexName);
                 }
             }
 
             // create indexes
-            IndexCreator.CreateIndexes(store);
+            IndexCreator.CreateIndexes(DocumentStore);
             EventStore.Initialize(DocumentStore);
 
-            return this.RedirectToAction("Raven");
+            return RedirectToAction("Raven");
         }
 
         public ActionResult EventStoreActions()
         {
-            return this.View();
+            return View();
         }
 
         public ActionResult ReplayEvents()
         {
-            return this.View();
+            return View();
         }
 
         [HttpPost, ActionName("ReplayEvents")]
@@ -165,12 +158,12 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var locator = new WindsorServiceLocator(MvcApplication.ChildContainer);
             EventStore.ReplayEvents(locator);
 
-            return this.RedirectToAction("EventStoreActions");
+            return RedirectToAction("EventStoreActions");
         }
 
         public ActionResult MigrateEvents()
         {
-            return this.View();
+            return View();
         }
 
         [HttpPost, ActionName("MigrateEvents")]
@@ -180,22 +173,22 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 .ToList();
             EventStore.MigrateEvents(eventMigrators);
 
-            return this.RedirectToAction("EventStoreActions");
+            return RedirectToAction("EventStoreActions");
         }
 
         public ActionResult SendMail()
         {
-            return this.View(new SendMailViewModel());
+            return View(new SendMailViewModel());
         }
 
         [HttpPost]
         public ActionResult SendMail(SendMailViewModel vm)
         {
-            if (!ModelState.IsValid) return this.View(vm);
+            if (!ModelState.IsValid) return View(vm);
 
             Emails.SendMail(vm.Recipient, vm.Subject, vm.Content);
 
-            return this.RedirectToAction("Index");
+            return RedirectToAction("Index");
         }
     }
 }

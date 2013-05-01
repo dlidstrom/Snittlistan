@@ -17,10 +17,12 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             if (season.HasValue == false)
                 season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
 
+            var headerReadModels = DocumentSession.Query<ResultHeaderReadModel, ResultHeaderIndex>()
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
+                .ToList();
             var vm = new MatchResultViewModel {
                                                   SeasonStart = season.Value,
-                                                  Turns = DocumentSession.Query<ResultHeaderReadModel, ResultHeaderIndex>()
-                                                      .ToList()
+                                                  Turns = headerReadModels
                                                       .GroupBy(x => x.Turn)
                                                       .ToDictionary(x => x.Key, x => x.ToList())
                                               };
