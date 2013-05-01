@@ -1,0 +1,18 @@
+﻿<div class="row">
+    <div class="span12">
+        <h3>Inga matcher tills vidare</h3>
+        <p>Under tiden kan du titta på @Html.ActionLink("tidigare resultat", "Index", "MatchResult").</p>
+    </div>
+</div>
+
+@if (Request.IsAuthenticated)
+{
+    <div class="row">
+        <div class="span6 admin">
+            <a href="@Url.Action("Create")">
+                <i class="sprite-glyphicons_030_pencil"></i>
+                Lägg till match
+            </a>
+        </div>
+    </div>
+}
