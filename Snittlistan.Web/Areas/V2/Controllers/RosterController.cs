@@ -18,16 +18,14 @@ namespace Snittlistan.Web.Areas.V2.Controllers
     {
         public ActionResult Index(int? season)
         {
-            if (season.HasValue == false)
-                season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
-
             var rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
+                .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
                 .ToList();
             var q = from roster in rosters
                     orderby roster.Turn
                     group roster by roster.Turn into g
                     let lastDate = g.Max(x => x.Date)
-                    where lastDate >= SystemTime.UtcNow.Date
+                    where season.HasValue || lastDate >= SystemTime.UtcNow.Date
                     select new TurnViewModel
                         {
                             Turn = g.Key,
@@ -41,9 +39,10 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var turns = q.ToList();
             if (turns.Count <= 0) return View("Unscheduled");
 
+            var defaultSeason = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
             var vm = new InitialDataViewModel
             {
-                SeasonStart = season.Value,
+                SeasonStart = season.GetValueOrDefault(defaultSeason),
                 Turns = turns
             };
             return View(vm);
@@ -144,6 +143,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             {
                 // find out next turn
                 var rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
+                    .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                     .Where(x => x.Season == season)
                     .Where(x => x.Date > SystemTime.UtcNow.Date)
                     .OrderBy(x => x.Date)
@@ -153,7 +153,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             }
 
             var rostersForTurn = DocumentSession.Query<Roster, RosterSearchTerms>()
-                .Include<Roster>(roster => roster.Players)
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
+                .Include(roster => roster.Players)
                 .Where(roster => roster.Turn == turn)
                 .Where(roster => roster.Season == season)
                 .ToArray();
@@ -180,6 +181,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 throw new HttpException(404, "Roster not found");
 
             var availablePlayers = DocumentSession.Query<Player, PlayerSearch>()
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .OrderBy(x => x.Name)
                 .Where(p => p.IsSupporter == false);
 

@@ -11,7 +11,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
     {
         public JsonResult Teams(string q)
         {
-            var options = this.DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
+            var options = DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .Where(t => t.Team.StartsWith(q))
                 .Distinct()
                 .AsProjection<RosterSearchTerms.Result>()
@@ -19,12 +20,13 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 .Select(t => t.Team)
                 .ToList();
 
-            return this.Json(new { options }, JsonRequestBehavior.AllowGet);
+            return Json(new { options }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult Opponents(string q)
         {
-            var options = this.DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
+            var options = DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .Where(t => t.Opponent.StartsWith(q))
                 .Distinct()
                 .AsProjection<RosterSearchTerms.Result>()
@@ -32,12 +34,13 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 .Select(t => t.Opponent)
                 .ToList();
 
-            return this.Json(new { options }, JsonRequestBehavior.AllowGet);
+            return Json(new { options }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult Locations(string q)
         {
-            var options = this.DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
+            var options = DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .Where(t => t.Location.StartsWith(q))
                 .Distinct()
                 .AsProjection<RosterSearchTerms.Result>()
@@ -45,7 +48,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 .Select(t => t.Location)
                 .ToList();
 
-            return this.Json(new { options }, JsonRequestBehavior.AllowGet);
+            return Json(new { options }, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -1,16 +1,12 @@
-﻿namespace Snittlistan.Web.Areas.V1.Controllers
+﻿using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Snittlistan.Web.Areas.V1.ViewModels;
+using Snittlistan.Web.Controllers;
+using Snittlistan.Web.Infrastructure.Indexes;
+
+namespace Snittlistan.Web.Areas.V1.Controllers
 {
-    using System.Linq;
-    using System.Web;
-    using System.Web.Mvc;
-
-    using Raven.Client;
-    using Raven.Client.Linq;
-
-    using Snittlistan.Web.Areas.V1.ViewModels;
-    using Snittlistan.Web.Controllers;
-    using Snittlistan.Web.Infrastructure.Indexes;
-
     /// <summary>
     /// Manages the start page.
     /// </summary>
@@ -22,12 +18,13 @@
         /// <returns>Index view.</returns>
         public ActionResult Index()
         {
-            var stats = this.DocumentSession.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
+            var stats = DocumentSession.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .ToList()
                 .OrderByDescending(s => s.AveragePins)
                 .ToList();
 
-            return this.View(stats);
+            return View(stats);
         }
 
         /// <summary>
@@ -40,16 +37,18 @@
             if (string.IsNullOrWhiteSpace(player))
                 throw new HttpException(404, "Player not found");
 
-            var stats = this.DocumentSession.Query<Player_ByMatch.Result, Player_ByMatch>()
+            var stats = DocumentSession.Query<Player_ByMatch.Result, Player_ByMatch>()
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .Where(r => r.Player == player)
                 .OrderByDescending(r => r.Date)
                 .ThenByDescending(r => r.BitsMatchId)
                 .ToList();
 
-            var results = this.DocumentSession.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
+            var results = DocumentSession.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .SingleOrDefault(r => r.Player == player);
 
-            return this.View(new PlayerMatchesViewModel
+            return View(new PlayerMatchesViewModel
             {
                 Player = player,
                 Stats = stats,
@@ -63,7 +62,7 @@
         /// <returns></returns>
         public ActionResult About()
         {
-            return this.View();
+            return View();
         }
     }
 }

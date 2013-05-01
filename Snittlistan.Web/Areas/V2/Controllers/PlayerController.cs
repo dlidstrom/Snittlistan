@@ -14,6 +14,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         public ActionResult Index()
         {
             var players = DocumentSession.Query<Player>()
+                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .OrderBy(p => p.IsSupporter)
                 .ThenBy(p => p.Name)
                 .ToList();
@@ -24,18 +25,18 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         [Authorize]
         public ActionResult Create()
         {
-            return this.View(new CreatePlayerViewModel());
+            return View(new CreatePlayerViewModel());
         }
 
         [HttpPost]
         [Authorize]
         public ActionResult Create(CreatePlayerViewModel vm)
         {
-            if (!this.ModelState.IsValid) return this.View(vm);
+            if (!ModelState.IsValid) return View(vm);
 
             var player = new Player(vm.Name, vm.Email, vm.IsSupporter);
-            this.DocumentSession.Store(player);
-            return this.RedirectToAction("Index");
+            DocumentSession.Store(player);
+            return RedirectToAction("Index");
         }
 
         [Authorize]
@@ -43,17 +44,17 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             var player = DocumentSession.Load<Player>(id);
             if (player == null) throw new HttpException(404, "Player not found");
-            return this.View(player.MapTo<CreatePlayerViewModel>());
+            return View(player.MapTo<CreatePlayerViewModel>());
         }
 
         [Authorize]
         [HttpPost]
         public ActionResult Edit(int id, CreatePlayerViewModel vm)
         {
-            if (!this.ModelState.IsValid)
-                return this.View(vm);
+            if (!ModelState.IsValid)
+                return View(vm);
 
-            var player = this.DocumentSession.Load<Player>(id);
+            var player = DocumentSession.Load<Player>(id);
             if (player == null) throw new HttpException(404, "Player not found");
 
             player.SetName(vm.Name);
@@ -66,10 +67,10 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         [Authorize]
         public ActionResult Delete(int id)
         {
-            var player = this.DocumentSession.Load<Player>(id);
+            var player = DocumentSession.Load<Player>(id);
             if (player == null)
                 throw new HttpException(404, "Player not found");
-            return this.View(player.MapTo<PlayerViewModel>());
+            return View(player.MapTo<PlayerViewModel>());
         }
 
         [HttpPost]
@@ -77,11 +78,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            var player = this.DocumentSession.Load<Player>(id);
+            var player = DocumentSession.Load<Player>(id);
             if (player == null)
                 throw new HttpException(404, "Player not found");
-            this.DocumentSession.Delete(player);
-            return this.RedirectToAction("Index");
+            DocumentSession.Delete(player);
+            return RedirectToAction("Index");
         }
     }
 }
