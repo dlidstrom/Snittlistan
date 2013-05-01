@@ -21,7 +21,13 @@ namespace Snittlistan.Web.Areas.V2
                 .Select(
                     x => new SelectListItem
                     {
-                        Text = string.Format("{0}: {1} - {2} ({3})", x.Turn, x.Team, x.Opponent, x.Location),
+                        Text = string.Format(
+                            "{0}: {1} - {2} ({3} {4})",
+                            x.Turn,
+                            x.Team,
+                            x.Opponent,
+                            x.Location,
+                            x.Date.ToShortTimeString()),
                         Value = x.Id,
                         Selected = x.Id == rosterId
                     })
