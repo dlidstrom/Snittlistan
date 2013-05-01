@@ -5,10 +5,15 @@
         @Html.DisplayFor(model => Model.HeaderReadModel, "Header")
         @if (Model.ResultReadModel.Series.Count != 4)
         {
-            <a href="@Url.Action("RegisterSerie", new { Model.HeaderReadModel.AggregateId,
-                                                        Model.HeaderReadModel.RosterId,
-                                                        Model.HeaderReadModel.BitsMatchId
-                                                      })">
+            <a href="@Url.Action(
+                "RegisterSerie",
+                "MatchResultAdmin",
+                new
+                {
+                    Model.HeaderReadModel.AggregateId,
+                    Model.HeaderReadModel.RosterId,
+                    Model.HeaderReadModel.BitsMatchId
+                })">
                 <i class="sprite-glyphicons_030_pencil"></i>
                 Registrera serie
             </a>
