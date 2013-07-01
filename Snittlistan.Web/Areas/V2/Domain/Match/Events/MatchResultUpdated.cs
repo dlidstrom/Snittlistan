@@ -16,15 +16,15 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
             int oldOpponentScore,
             int oldBitsMatchId)
         {
-            this.NewRosterId = rosterId;
-            this.NewTeamScore = teamScore;
-            this.NewOpponentScore = opponentScore;
-            this.NewBitsMatchId = bitsMatchId;
-            this.OldRosterId = oldRosterId;
-            this.OldTeamScore = oldTeamScore;
-            this.OldOpponentScore = oldOpponentScore;
-            this.OldBitsMatchId = oldBitsMatchId;
-            this.RosterPlayers = rosterPlayers;
+            NewRosterId = rosterId;
+            NewTeamScore = teamScore;
+            NewOpponentScore = opponentScore;
+            NewBitsMatchId = bitsMatchId;
+            OldRosterId = oldRosterId;
+            OldTeamScore = oldTeamScore;
+            OldOpponentScore = oldOpponentScore;
+            OldBitsMatchId = oldBitsMatchId;
+            RosterPlayers = rosterPlayers;
         }
 
         public string NewRosterId { get; private set; }
