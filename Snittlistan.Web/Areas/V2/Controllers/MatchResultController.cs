@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Globalization;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Raven.Abstractions;
@@ -47,7 +49,10 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             if (season.HasValue == false)
                 season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
 
-            return View();
+            var vm = DocumentSession.Query<TeamOfWeek>()
+                .Where(x => x.Season == season.Value)
+                .ToList();
+            return View(new TeamOfWeekViewModel(season.Value, vm));
         }
     }
 }
