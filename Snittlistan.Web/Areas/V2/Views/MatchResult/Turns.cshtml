@@ -1,6 +1,14 @@
-﻿
-<div class="row">
-    <div class="span8">
-        <h2>Veckans lag</h2>
+﻿@model TeamOfWeekViewModel
+
+@if (Model.TeamOfWeek.Count == 0)
+{
+    <div class="row">
+        <div class="span12">
+            <p>Inga resultat registrerade för säsong @Model.Season</p>
+        </div>
     </div>
-</div>
+}
+else
+{
+    @Html.Partial("_Turns", Model)
+}

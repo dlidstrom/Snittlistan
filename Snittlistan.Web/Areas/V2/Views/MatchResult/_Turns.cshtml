@@ -1,0 +1,49 @@
+﻿@model TeamOfWeekViewModel
+
+<div class="row">
+    <div class="span12">
+        @*        <section>
+            <h3>Aktuell ställning</h3>
+            <table class="table table-condensed table-striped table-bordered">
+                <tr>
+                    <th>Namn</th>
+                    <th>Antal</th>
+                </tr>
+                @foreach (var item in Model.Total)
+                {
+                    <tr>
+                        <td>@item.Item1</td>
+                        <td>@item.Item2</td>
+                    </tr>
+                }
+            </table>
+        </section>*@
+        @foreach (var item in Model.TeamOfWeek)
+        {
+            <section id="@string.Format("turn-{0}", item.Turn)">
+                <h3>Omgång @item.Turn</h3>
+                <table class="table table-condensed table-striped table-bordered">
+                    <tr>
+                        <th>Namn</th>
+                        <th>Resultat</th>
+                        <th>Lag</th>
+                    </tr>
+                    @foreach (var result in item.Players)
+                    {
+                        <tr>
+                            <td>
+                                @result.Item1
+                            </td>
+                            <td>
+                                @result.Item2
+                            </td>
+                            <td>
+                                @result.Item3
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </section>
+        }*@
+    </div>
+</div>

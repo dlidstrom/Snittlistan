@@ -200,6 +200,7 @@
     <Compile Include="Areas\V2\Domain\Match\Events\SerieRegistered.cs" />
     <Compile Include="Areas\V2\Handlers\MatchResultHandler.cs" />
     <Compile Include="Areas\V2\Handlers\ResultSeriesHandler.cs" />
+    <Compile Include="Areas\V2\Handlers\TeamOfWeekHandler.cs" />
     <Compile Include="Areas\V2\Indexes\ResultHeaderIndex.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\RosterChanged.cs" />
     <Compile Include="Areas\V2\Domain\Match\MatchResult.cs" />
@@ -207,6 +208,7 @@
     <Compile Include="Areas\V2\Domain\Match\Events\MatchResultUpdated.cs" />
     <Compile Include="Areas\V2\ReadModels\ResultSeriesModel.cs" />
     <Compile Include="Areas\V2\ReadModels\ResultHeaderReadModel.cs" />
+    <Compile Include="Areas\V2\ReadModels\TeamOfWeek.cs" />
     <Compile Include="Areas\V2\ViewModels\EditMatchResult.cs" />
     <Compile Include="Areas\V2\Domain\Match\MatchGame.cs" />
     <Compile Include="Areas\V2\Domain\Match\MatchSerie.cs" />
@@ -227,6 +229,7 @@
     <Compile Include="Areas\V2\ViewModels\RavenAdminViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\SendMailViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\SetPasswordViewModel.cs" />
+    <Compile Include="Areas\V2\ViewModels\TeamOfWeekViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\TurnResultViewModel.cs" />
     <Compile Include="Infrastructure\Installers\EventMigratorInstaller.cs" />
     <Compile Include="Infrastructure\Installers\EventStoreSessionInstaller.cs" />
@@ -484,6 +487,7 @@
     <Content Include="Areas\V2\Views\MatchResultAdmin\EditorTemplates\Table.cshtml" />
     <Content Include="Areas\V2\Views\MatchResultAdmin\EditorTemplates\Serie.cshtml" />
     <Content Include="Areas\V2\Views\Roster\Unscheduled.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\_Turns.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
