@@ -6,16 +6,6 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
 {
     public class MatchResultRegistered : Event
     {
-        public string RosterId { get; set; }
-
-        public List<string> RosterPlayers { get; set; }
-
-        public int TeamScore { get; set; }
-
-        public int OpponentScore { get; set; }
-
-        public int BitsMatchId { get; set; }
-
         public MatchResultRegistered(
             string rosterId,
             List<string> rosterPlayers,
@@ -34,5 +24,15 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
             OpponentScore = opponentScore;
             BitsMatchId = bitsMatchId;
         }
+
+        public string RosterId { get; private set; }
+
+        public List<string> RosterPlayers { get; private set; }
+
+        public int TeamScore { get; private set; }
+
+        public int OpponentScore { get; private set; }
+
+        public int BitsMatchId { get; private set; }
     }
 }

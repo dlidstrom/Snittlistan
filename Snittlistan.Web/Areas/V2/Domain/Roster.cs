@@ -7,13 +7,13 @@ namespace Snittlistan.Web.Areas.V2.Domain
     {
         public Roster(int season, int turn, string team, string location, string opponent, DateTime date)
         {
-            this.Season = season;
-            this.Turn = turn;
-            this.Team = team;
-            this.Location = location;
-            this.Opponent = opponent;
-            this.Date = date;
-            this.Players = new List<string>();
+            Season = season;
+            Turn = turn;
+            Team = team;
+            Location = location;
+            Opponent = opponent;
+            Date = date;
+            Players = new List<string>();
         }
 
         public string Id { get; set; }

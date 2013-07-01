@@ -13,9 +13,9 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             if (score != 0 && score != 1) throw new ArgumentOutOfRangeException("score", score, "Score out of range");
             if (game1.Player == game2.Player)
                 throw new MatchException("Table must have different players");
-            this.Score = score;
-            this.Game1 = game1;
-            this.Game2 = game2;
+            Score = score;
+            Game1 = game1;
+            Game2 = game2;
         }
 
         public MatchGame Game1 { get; private set; }
