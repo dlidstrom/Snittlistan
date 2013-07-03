@@ -8,16 +8,6 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
     // TODO Store only roster id. Use index to read and display roster values
     public class ResultHeaderReadModel : IReadModel
     {
-        public static string IdFromBitsMatchId(int bitsMatchId)
-        {
-            return "ResultHeader-" + bitsMatchId;
-        }
-
-        [JsonConstructor]
-        private ResultHeaderReadModel()
-        {
-        }
-
         public ResultHeaderReadModel(
             Roster roster,
             string aggregateId,
@@ -26,52 +16,62 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             int bitsMatchId)
         {
             Id = IdFromBitsMatchId(bitsMatchId);
-            this.SetValues(roster, aggregateId, teamScore, opponentScore, bitsMatchId);
+            SetValues(roster, aggregateId, teamScore, opponentScore, bitsMatchId);
         }
 
-        public void SetValues(Roster roster, string aggregateId, int teamScore, int opponentScore, int bitsMatchId)
+        [JsonConstructor]
+        private ResultHeaderReadModel()
         {
-            this.Season = roster.Season;
-            this.Turn = roster.Turn;
-            this.AggregateId = aggregateId;
-            this.RosterId = roster.Id;
-            this.Date = roster.Date;
-            this.Location = roster.Location;
-            this.TeamLevel = char.ToLower(roster.Team[roster.Team.Length - 1]);
-            this.Team = roster.Team;
-            this.Opponent = roster.Opponent;
-            this.TeamScore = teamScore;
-            this.OpponentScore = opponentScore;
-            this.BitsMatchId = bitsMatchId;
         }
+
+        public string AggregateId { get; private set; }
+
+        public int BitsMatchId { get; private set; }
+
+        public DateTimeOffset Date { get; private set; }
 
         /// <summary>
         /// The BITS match id.
         /// </summary>
         public string Id { get; private set; }
 
-        public int Season { get; private set; }
-
-        public int Turn { get; private set; }
-
-        public string AggregateId { get; private set; }
-
-        public string RosterId { get; private set; }
-
-        public DateTimeOffset Date { get; private set; }
-
         public string Location { get; private set; }
-
-        public char TeamLevel { get; private set; }
-
-        public string Team { get; private set; }
 
         public string Opponent { get; private set; }
 
-        public int TeamScore { get; private set; }
-
         public int OpponentScore { get; private set; }
 
-        public int BitsMatchId { get; private set; }
+        public string RosterId { get; private set; }
+
+        public int Season { get; private set; }
+
+        public string Team { get; private set; }
+
+        public char TeamLevel { get; private set; }
+
+        public int TeamScore { get; private set; }
+
+        public int Turn { get; private set; }
+
+        public static string IdFromBitsMatchId(int bitsMatchId)
+        {
+            return "ResultHeader-" + bitsMatchId;
+        }
+
+        public void SetValues(Roster roster, string aggregateId, int teamScore, int opponentScore, int bitsMatchId)
+        {
+            Season = roster.Season;
+            Turn = roster.Turn;
+            AggregateId = aggregateId;
+            RosterId = roster.Id;
+            Date = roster.Date;
+            Location = roster.Location;
+            TeamLevel = char.ToLower(roster.Team[roster.Team.Length - 1]);
+            Team = roster.Team;
+            Opponent = roster.Opponent;
+            TeamScore = teamScore;
+            OpponentScore = opponentScore;
+            BitsMatchId = bitsMatchId;
+        }
     }
 }
