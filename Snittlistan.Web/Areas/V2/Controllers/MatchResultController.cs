@@ -1,6 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
+﻿using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Raven.Abstractions;
@@ -51,6 +49,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
             var vm = DocumentSession.Query<TeamOfWeek>()
                 .Where(x => x.Season == season.Value)
+                .OrderByDescending(x => x.Turn)
                 .ToList();
             return View(new TeamOfWeekViewModel(season.Value, vm));
         }
