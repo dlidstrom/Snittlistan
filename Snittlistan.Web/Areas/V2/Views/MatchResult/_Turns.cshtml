@@ -18,32 +18,47 @@
                 }
             </table>
         </section>*@
-        @foreach (var item in Model.TeamOfWeek)
+        @foreach (var week in Model.Weeks)
         {
-            <section id="@string.Format("turn-{0}", item.Turn)">
-                <h3>Omgång @item.Turn</h3>
+            <section id="@string.Format("turn-{0}", week.Turn)">
+                <h3>Omgång @week.Turn</h3>
                 <table class="table table-condensed table-striped table-bordered">
                     <tr>
+                        <th>#</th>
                         <th>Namn</th>
                         <th>Resultat</th>
                         <th>Lag</th>
                     </tr>
-                    @foreach (var result in item.Players)
+                    @{
+                        var index = 0;
+                    }
+                    @foreach (var result in week.Players)
                     {
                         <tr>
+                            <th>@(++index)</th>
                             <td>
-                                @result.Item1
+                                @result.Name
                             </td>
                             <td>
-                                @result.Item2
+                                @if (index == 8)
+                                {
+                                    @:@string.Format(
+                                        "{0} = {1}",
+                                        result.Pins,
+                                        week.Top8)
+                                }
+                                else
+                                {
+                                    @result.Pins
+                                }
                             </td>
                             <td>
-                                @result.Item3
+                                @Content.TeamLabel(result.Team)
                             </td>
                         </tr>
                     }
                 </table>
             </section>
-        }*@
+        }
     </div>
 </div>

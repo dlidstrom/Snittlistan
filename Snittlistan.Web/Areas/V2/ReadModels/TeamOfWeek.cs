@@ -6,12 +6,13 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 {
     public class TeamOfWeek : IReadModel
     {
-        public TeamOfWeek(int bitsMatchId, int season, int turn)
+        public TeamOfWeek(int bitsMatchId, int season, int turn, string team)
         {
             PlayerScores = new Dictionary<string, PlayerScore>();
             Id = IdFromBitsMatchId(bitsMatchId);
             Season = season;
             Turn = turn;
+            Team = team;
         }
 
         public string Id { get; private set; }
@@ -19,6 +20,8 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         public Dictionary<string, PlayerScore> PlayerScores { get; private set; }
 
         public int Season { get; private set; }
+
+        public string Team { get; private set; }
 
         public int Turn { get; private set; }
 
@@ -31,22 +34,29 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         {
             if (PlayerScores.ContainsKey(player.Id) == false)
             {
-                PlayerScores.Add(player.Id, new PlayerScore(player.Name));
+                PlayerScores.Add(player.Id, new PlayerScore(player.Name, Team));
             }
 
-            PlayerScores[player.Id].Pins += pins;
+            var playerScore = PlayerScores[player.Id];
+            playerScore.Pins += pins;
+            playerScore.Series++;
         }
 
         public class PlayerScore
         {
-            public PlayerScore(string name)
+            public PlayerScore(string name, string team)
             {
+                Team = team;
                 Name = name;
             }
 
             public string Name { get; private set; }
 
             public int Pins { get; set; }
+
+            public int Series { get; set; }
+
+            public string Team { get; private set; }
         }
     }
 }
