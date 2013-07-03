@@ -17,12 +17,12 @@ namespace Snittlistan.Web.Areas.V2.Handlers
         {
             // find team of week for this roster
             var roster = DocumentSession.Load<Roster>(e.RosterId);
+
+            // TODO: Is this really necessary?
             var teamOfWeek = DocumentSession.Load<TeamOfWeek>(roster.Season);
-            if (teamOfWeek == null)
-            {
-                teamOfWeek = new TeamOfWeek(e.BitsMatchId, roster.Season, roster.Turn);
-                DocumentSession.Store(teamOfWeek);
-            }
+            if (teamOfWeek != null) return;
+            teamOfWeek = new TeamOfWeek(e.BitsMatchId, roster.Season, roster.Turn, roster.Team);
+            DocumentSession.Store(teamOfWeek);
         }
 
         public void Handle(SerieRegistered e, string aggregateId)
@@ -45,7 +45,8 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             foreach (var player in players)
             {
                 var playerId = player.Id;
-                teamOfWeek.AddResultForPlayer(player, playerIds.Single(x => x.Item1 == playerId).Item2);
+                var tuple = playerIds.Single(x => x.Item1 == playerId);
+                teamOfWeek.AddResultForPlayer(player, tuple.Item2);
             }
         }
     }

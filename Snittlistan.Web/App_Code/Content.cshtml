@@ -104,6 +104,12 @@
 }
 
 @helper TeamLabel(
+    string team)
+{
+    @TeamLabel(char.ToLower(team[team.Length - 1]), team)
+}
+
+@helper TeamLabel(
     char teamLevel,
     string team
 )
