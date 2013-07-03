@@ -50,7 +50,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                 get
                 {
                     var series = 0;
-                    return Players.TakeWhile(x => (series += x.Series) != 32).Sum(x => x.Pins);
+                    return Players.TakeWhile(x => (series += x.Series) <= 32).Sum(x => x.Pins);
                 }
             }
 
