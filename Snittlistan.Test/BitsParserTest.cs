@@ -8,11 +8,12 @@ namespace Snittlistan.Test
 {
     public class BitsParserTest
     {
-        private readonly Player[] players;
+        private readonly Player[] playersTeamA;
+        private readonly Player[] playersTeamF;
 
         public BitsParserTest()
         {
-            players = new[]
+            playersTeamA = new[]
             {
                 new Player("Mikael Axelsson", "e@d.com", false) { Id = "player-1" },
                 new Player("Christer Liedholm", "e@d.com", false) { Id = "player-2" },
@@ -25,6 +26,18 @@ namespace Snittlistan.Test
                 new Player("Lennart Axelsson", "e@d.com", false) { Id = "player-9" },
                 new Player("Lars Magnusson", "e@d.com", false) { Id = "player-10" }
             };
+            playersTeamF = new[]
+            {
+                new Player("Kjell Persson", "e@d.com", false) { Id = "player-1" },
+                new Player("Lars Öberg", "e@d.com", false) { Id = "player-2" },
+                new Player("Tomas Gustavsson", "e@d.com", false) { Id = "player-3" },
+                new Player("Thomas Wallgren", "e@d.com", false) { Id = "player-4" },
+                new Player("Bengt Solvander", "e@d.com", false) { Id = "player-5" },
+                new Player("Lars Magnusson", "e@d.com", false) { Id = "player-6" },
+                new Player("Kjell Johansson", "e@d.com", false) { Id = "player-7" },
+                new Player("Thomas Gurell", "e@d.com", false) { Id = "player-8" },
+                new Player("Lars Norbeck", "e@d.com", false) { Id = "player-9" }
+            };
         }
 
         [Fact]
@@ -34,10 +47,24 @@ namespace Snittlistan.Test
             const string Team = "Fredrikshof A";
 
             // Act
-            var result = new BitsParser(players).Parse(Resources.Id3048746, Team);
+            var result = new BitsParser(playersTeamA).Parse(Resources.Id3048746, Team);
 
             // Assert
             Assert.Equal(11, result.TeamScore);
+        }
+
+        [Fact]
+        public void CanParseAlternateHomeTeamNameWithIf()
+        {
+            // Arrange
+            const string Team = "Fredrikshof IF A";
+
+            // Act
+            var result = new BitsParser(playersTeamA).Parse(Resources.Id3048746, Team);
+
+            // Assert
+            Assert.Equal(11, result.TeamScore);
+            Assert.False(true, "Update test");
         }
 
         [Fact]
@@ -47,10 +74,23 @@ namespace Snittlistan.Test
             const string Team = "Fredrikshof A";
 
             // Act
-            var result = new BitsParser(players).Parse(Resources.Id3048747, Team);
+            var result = new BitsParser(playersTeamA).Parse(Resources.Id3048747, Team);
 
             // Assert
             Assert.Equal(10, result.TeamScore);
+        }
+
+        [Fact]
+        public void CanParseAlternateAwayTeamNameWithIf()
+        {
+            // Arrange
+            const string Team = "Fredrikshof F";
+
+            // Act
+            var result = new BitsParser(playersTeamF).Parse(Resources.Id3048477, Team);
+
+            // Assert
+            Assert.Equal(14, result.TeamScore);
         }
 
         [Fact]
@@ -60,7 +100,7 @@ namespace Snittlistan.Test
             const string Team = "Fredrikshof IF";
 
             // Act
-            var result = new BitsParser(players).Parse(Resources.Id3048746, Team);
+            var result = new BitsParser(playersTeamA).Parse(Resources.Id3048746, Team);
             Assert.Equal(11, result.TeamScore);
             Assert.Equal(9, result.OpponentScore);
             var series = result.Series;
@@ -103,7 +143,7 @@ namespace Snittlistan.Test
             const string Team = "Fredrikshof IF";
 
             // Act
-            var result = new BitsParser(players).Parse(Resources.Id3048747, Team);
+            var result = new BitsParser(playersTeamA).Parse(Resources.Id3048747, Team);
             Assert.Equal(10, result.TeamScore);
             Assert.Equal(9, result.OpponentScore);
             var series = result.Series;
