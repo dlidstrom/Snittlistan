@@ -18,14 +18,22 @@ namespace Snittlistan.Web.Areas.V2.Controllers
     {
         public ActionResult Index(int? season)
         {
+            var selectAll = true;
+            if (season.HasValue == false)
+            {
+                season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+                selectAll = false;
+            }
+
             var rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
                 .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
+                .Where(r => r.Season == season)
                 .ToList();
             var q = from roster in rosters
                     orderby roster.Turn
                     group roster by roster.Turn into g
                     let lastDate = g.Max(x => x.Date)
-                    where season.HasValue || lastDate >= SystemTime.UtcNow.Date
+                    where selectAll || lastDate >= SystemTime.UtcNow.Date
                     select new TurnViewModel
                         {
                             Turn = g.Key,
@@ -39,10 +47,9 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var turns = q.ToList();
             if (turns.Count <= 0) return View("Unscheduled");
 
-            var defaultSeason = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
             var vm = new InitialDataViewModel
             {
-                SeasonStart = season.GetValueOrDefault(defaultSeason),
+                SeasonStart = season.Value,
                 Turns = turns
             };
             return View(vm);
