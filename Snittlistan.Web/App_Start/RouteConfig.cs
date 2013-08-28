@@ -1,8 +1,8 @@
-﻿namespace Snittlistan.Web.App_Start
-{
-    using System.Web.Mvc;
-    using System.Web.Routing;
+﻿using System.Web.Mvc;
+using System.Web.Routing;
 
+namespace Snittlistan.Web.App_Start
+{
     public class RouteConfig
     {
         private readonly RouteCollection routes;
@@ -14,13 +14,13 @@
 
         public void Configure()
         {
-            this.routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-            this.routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
 
             // robots.txt
-            this.routes.IgnoreRoute("{file}.txt");
+            routes.IgnoreRoute("{file}.txt");
 
-            this.routes.MapRoute(
+            routes.MapRoute(
                 name: "Hacker-Routes",
                 url: "{*php}",
                 defaults: new { controller = "Hacker", action = "Index" },

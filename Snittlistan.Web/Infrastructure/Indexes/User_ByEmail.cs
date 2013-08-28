@@ -8,8 +8,12 @@ namespace Snittlistan.Web.Infrastructure.Indexes
     {
         public User_ByEmail()
         {
-            this.Map = users => from user in users
-                                select new { user.Email, user.ActivationKey };
+            Map = users => from user in users
+                           select new
+                           {
+                               user.Email,
+                               user.ActivationKey
+                           };
         }
     }
 }

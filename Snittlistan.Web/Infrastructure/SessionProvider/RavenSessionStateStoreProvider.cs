@@ -1,23 +1,21 @@
-﻿namespace Snittlistan.Web.Infrastructure.SessionProvider
+﻿using System;
+using System.Collections.Specialized;
+using System.Configuration;
+using System.IO;
+using System.Linq;
+using System.Web;
+using System.Web.Configuration;
+using System.Web.Hosting;
+using System.Web.SessionState;
+using NLog;
+using Raven.Abstractions.Exceptions;
+using Raven.Client;
+using Raven.Json.Linq;
+
+namespace Snittlistan.Web.Infrastructure.SessionProvider
 {
-    using System;
-    using System.Collections.Specialized;
-    using System.Configuration;
-    using System.IO;
-    using System.Linq;
-    using System.Web;
-    using System.Web.Configuration;
-    using System.Web.Hosting;
-    using System.Web.SessionState;
-
-    using NLog;
-
-    using Raven.Abstractions.Exceptions;
-    using Raven.Client;
-    using Raven.Json.Linq;
-
     /// <summary>
-    /// An ASP.NET session-state store-provider implementation (http://msdn.microsoft.com/en-us/library/ms178588.aspx) using 
+    /// An ASP.NET session-state store-provider implementation (http://msdn.microsoft.com/en-us/library/ms178588.aspx) using
     /// RavenDb (http://ravendb.net) for persistence.
     /// </summary>
     public class RavenSessionStateStoreProvider : SessionStateStoreProviderBase
@@ -40,7 +38,7 @@
         /// <param name="documentStore">Document store.</param>
         public RavenSessionStateStoreProvider(IDocumentStore documentStore)
         {
-            this.storeLocator = () => documentStore;
+            storeLocator = () => documentStore;
         }
 
         /// <summary>
@@ -68,16 +66,16 @@
 
                 int retries;
                 if (int.TryParse(config["retriesOnConcurrentConflicts"], out retries))
-                    this.retriesOnConcurrentConflicts = retries;
+                    retriesOnConcurrentConflicts = retries;
 
-                this.ApplicationName = ConfigurationManager.AppSettings["ApplicationName"];
-                if (string.IsNullOrWhiteSpace(this.ApplicationName))
-                    this.ApplicationName = HostingEnvironment.ApplicationVirtualPath;
+                ApplicationName = ConfigurationManager.AppSettings["ApplicationName"];
+                if (string.IsNullOrWhiteSpace(ApplicationName))
+                    ApplicationName = HostingEnvironment.ApplicationVirtualPath;
 
-                this.sessionStateConfig = (SessionStateSection)ConfigurationManager.GetSection("system.web/sessionState");
+                sessionStateConfig = (SessionStateSection)ConfigurationManager.GetSection("system.web/sessionState");
 
-                if (this.storeLocator == null)
-                    this.storeLocator = () => MvcApplication.Container.Resolve<IDocumentStore>();
+                if (storeLocator == null)
+                    storeLocator = () => MvcApplication.Container.Resolve<IDocumentStore>();
 
                 Logger.Debug("Completed Initalize");
             }
@@ -89,17 +87,17 @@
         }
 
         /// <summary>
-        /// Retrieves session values and information from the session data store and locks the session-item data 
-        /// at the data store for the duration of the request. 
+        /// Retrieves session values and information from the session data store and locks the session-item data
+        /// at the data store for the duration of the request.
         /// </summary>
         /// <param name="context">The HttpContext instance for the current request.</param>
         /// <param name="id">The session identifier.</param>
         /// <param name="locked">An output parameter indicating whether the item is currently exclusively locked.</param>
         /// <param name="lockAge">The age of the exclusive lock (if present).</param>
         /// <param name="lockId">The identifier of the exclusive lock (if present).</param>
-        /// <param name="actions">Used with sessions whose Cookieless property is true, 
-        /// when the regenerateExpiredSessionId attribute is set to true. 
-        /// An actionFlags value set to InitializeItem (1) indicates that the entry in the session data store is a 
+        /// <param name="actions">Used with sessions whose Cookieless property is true,
+        /// when the regenerateExpiredSessionId attribute is set to true.
+        /// An actionFlags value set to InitializeItem (1) indicates that the entry in the session data store is a
         /// new session that requires initialization.</param>
         /// <returns>The session data.</returns>
         public override SessionStateStoreData GetItemExclusive(
@@ -114,8 +112,8 @@
             {
                 Logger.Debug("Beginning GetItemExclusive. SessionId={0}", id);
 
-                var item = this.GetSessionStoreItem(
-                    true, context, id, this.retriesOnConcurrentConflicts, out locked, out lockAge, out lockId, out actions);
+                var item = GetSessionStoreItem(
+                    true, context, id, retriesOnConcurrentConflicts, out locked, out lockAge, out lockId, out actions);
 
                 Logger.Debug("Completed GetItemExclusive. SessionId={0}, locked={1}, lockAge={2}, lockId={3}, actions={4}", id, locked, lockAge, lockId, actions);
 
@@ -148,7 +146,7 @@
             {
                 Logger.Debug("Beginning GetItem. SessionId={0}", id);
 
-                var item = this.GetSessionStoreItem(false, context, id, 0, out locked, out lockAge, out lockId, out actions);
+                var item = GetSessionStoreItem(false, context, id, 0, out locked, out lockAge, out lockId, out actions);
 
                 Logger.Debug("Completed GetItem. SessionId={0}, locked={1}, lockAge={2}, lockId={3}, actions={4}", id, locked, lockAge, lockId, actions);
 
@@ -162,7 +160,7 @@
         }
 
         /// <summary>
-        /// If the newItem parameter is true, the SetAndReleaseItemExclusive method inserts a new item into the data store with the supplied values. 
+        /// If the newItem parameter is true, the SetAndReleaseItemExclusive method inserts a new item into the data store with the supplied values.
         /// Otherwise, the existing item in the data store is updated with the supplied values, and any lock on the data is released.
         /// </summary>
         /// <param name="context">The HttpContext instance for the current request.</param>
@@ -179,9 +177,9 @@
                 Logger.Debug(
                     " Beginning SetAndReleaseItemExclusive. SessionId={0}, LockId={1}, newItem={2}", id, lockId, newItem);
 
-                var serializedItems = this.Serialize((SessionStateItemCollection)item.Items);
+                var serializedItems = Serialize((SessionStateItemCollection)item.Items);
 
-                var store = this.storeLocator();
+                var store = storeLocator();
                 using (var documentSession = store.OpenSession())
                 {
                     // if we get a concurrency conflict, then we want to know about it
@@ -197,17 +195,17 @@
                         if (sessionState != null)
                             throw new InvalidOperationException(string.Format("Item aleady exist with SessionId={0} and ApplicationName={1}", id, lockId));
 
-                        sessionState = new SessionState(id, this.ApplicationName);
+                        sessionState = new SessionState(id, ApplicationName);
                         documentSession.Store(sessionState);
                     }
                     else
                     {
                         sessionState = documentSession.Query<SessionState>()
                             .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
-                            .Single(x => x.SessionId == id && x.ApplicationName == this.ApplicationName && x.LockId == (int)lockId);
+                            .Single(x => x.SessionId == id && x.ApplicationName == ApplicationName && x.LockId == (int)lockId);
                     }
 
-                    var expiryDate = DateTime.UtcNow.AddMinutes(this.sessionStateConfig.Timeout.TotalMinutes);
+                    var expiryDate = DateTime.UtcNow.AddMinutes(sessionStateConfig.Timeout.TotalMinutes);
                     var ravenJObject = documentSession.Advanced.GetMetadataFor(sessionState);
                     ravenJObject["Raven-Expiration-Date"] = new RavenJValue(expiryDate);
                     sessionState.Expires = expiryDate;
@@ -238,7 +236,7 @@
             {
                 Logger.Debug("Beginning ReleaseItemExclusive. SessionId={0}, LockId={1}", id, lockId);
 
-                var store = this.storeLocator();
+                var store = storeLocator();
                 using (var documentSession = store.OpenSession())
                 {
                     // if we get a concurrency conflict, then we want to know about it
@@ -246,11 +244,11 @@
 
                     var sessionState = documentSession.Query<SessionState>()
                         .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
-                        .Single(x => x.SessionId == id && x.ApplicationName == this.ApplicationName && x.LockId == (int)lockId);
+                        .Single(x => x.SessionId == id && x.ApplicationName == ApplicationName && x.LockId == (int)lockId);
 
                     sessionState.Locked = false;
 
-                    var expiry = DateTime.UtcNow.AddMinutes(this.sessionStateConfig.Timeout.TotalMinutes);
+                    var expiry = DateTime.UtcNow.AddMinutes(sessionStateConfig.Timeout.TotalMinutes);
                     sessionState.Expires = expiry;
                     documentSession.Advanced.GetMetadataFor(sessionState)["Raven-Expiration-Date"] =
                         new RavenJValue(expiry);
@@ -268,7 +266,7 @@
         }
 
         /// <summary>
-        /// Deletes the session information from the data store where the data store item matches the supplied SessionID value, 
+        /// Deletes the session information from the data store where the data store item matches the supplied SessionID value,
         /// the current application, and the supplied lock identifier.
         /// </summary>
         /// <param name="context">The HttpContext instance for the current request.</param>
@@ -281,7 +279,7 @@
             {
                 Logger.Debug("Beginning RemoveItem. id={0}, lockId={1}", id, lockId);
 
-                var store = this.storeLocator();
+                var store = storeLocator();
                 using (var documentSession = store.OpenSession())
                 {
                     // if we get a concurrency conflict, then we want to know about it
@@ -291,7 +289,7 @@
                         documentSession.Query<SessionState>()
                         .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
                         .SingleOrDefault(
-                            x => x.SessionId == id && x.ApplicationName == this.ApplicationName && x.LockId == (int)lockId);
+                            x => x.SessionId == id && x.ApplicationName == ApplicationName && x.LockId == (int)lockId);
 
                     if (sessionState != null)
                     {
@@ -320,18 +318,18 @@
             {
                 Logger.Debug("Beginning ResetItemTimeout. id={0}", id);
 
-                var store = this.storeLocator();
+                var store = storeLocator();
                 using (var documentSession = store.OpenSession())
                 {
                     // we do not want to overwrite any changes
                     documentSession.Advanced.UseOptimisticConcurrency = true;
 
                     var sessionState = documentSession.Query<SessionState>().SingleOrDefault(
-                        x => x.SessionId == id && x.ApplicationName == this.ApplicationName);
+                        x => x.SessionId == id && x.ApplicationName == ApplicationName);
 
                     if (sessionState != null)
                     {
-                        var expiry = DateTime.UtcNow.AddMinutes(this.sessionStateConfig.Timeout.TotalMinutes);
+                        var expiry = DateTime.UtcNow.AddMinutes(sessionStateConfig.Timeout.TotalMinutes);
                         sessionState.Expires = expiry;
                         documentSession.Advanced.GetMetadataFor(sessionState)["Raven-Expiration-Date"] =
                             new RavenJValue(expiry);
@@ -365,12 +363,12 @@
             {
                 Logger.Debug("Beginning CreateUninitializedItem. id={0}, timeout={1}", id, timeout);
 
-                var store = this.storeLocator();
+                var store = storeLocator();
                 using (var documentSession = store.OpenSession())
                 {
                     var expiry = DateTime.UtcNow.AddMinutes(timeout);
 
-                    var sessionState = new SessionState(id, this.ApplicationName)
+                    var sessionState = new SessionState(id, ApplicationName)
                                            {
                                                Expires = expiry
                                            };
@@ -391,7 +389,7 @@
         }
 
         /// <summary>
-        /// Returns a new SessionStateStoreData object with an empty ISessionStateItemCollection object, 
+        /// Returns a new SessionStateStoreData object with an empty ISessionStateItemCollection object,
         /// an HttpStaticObjectsCollection collection, and the specified Timeout value.
         /// </summary>
         /// <param name="context">The HttpContext instance for the current request.</param>
@@ -406,8 +404,8 @@
         }
 
         /// <summary>
-        /// Takes as input a delegate that references the Session_OnEnd event defined in the Global.asax file. 
-        /// If the session-state store provider supports the Session_OnEnd event, a local reference to the 
+        /// Takes as input a delegate that references the Session_OnEnd event defined in the Global.asax file.
+        /// If the session-state store provider supports the Session_OnEnd event, a local reference to the
         /// SessionStateItemExpireCallback parameter is set and the method returns true; otherwise, the method returns false.
         /// </summary>
         /// <param name="expireCallback">A callback.</param>
@@ -435,16 +433,16 @@
 
         public override void Dispose()
         {
-        ////    try
-        ////    {
-        ////        if (documentStore != null)
-        ////            documentStore.Dispose();
-        ////    }
-        ////    catch (Exception ex)
-        ////    {
-        ////        // swallow the exception...nothing good can come from throwing it here!
-        ////        Logger.ErrorException("An exception was thrown while disposing the DocumentStore: ", ex);
-        ////    }
+            ////    try
+            ////    {
+            ////        if (documentStore != null)
+            ////            documentStore.Dispose();
+            ////    }
+            ////    catch (Exception ex)
+            ////    {
+            ////        // swallow the exception...nothing good can come from throwing it here!
+            ////        Logger.ErrorException("An exception was thrown while disposing the DocumentStore: ", ex);
+            ////    }
         }
 
         private static SessionStateStoreData Deserialize(
@@ -468,8 +466,8 @@
         }
 
         /// <summary>
-        /// GetSessionStoreItem is called by both the GetItem and 
-        /// GetItemExclusive methods. GetSessionStoreItem retrieves the 
+        /// GetSessionStoreItem is called by both the GetItem and
+        /// GetItemExclusive methods. GetSessionStoreItem retrieves the
         /// session data from the data source. If the lockRecord parameter
         /// is true (in the case of GetItemExclusive), then GetSessionStoreItem
         /// locks the record and sets a new LockId and LockDate.
@@ -499,7 +497,7 @@
             locked = false;
             actionFlags = 0;
 
-            var store = this.storeLocator();
+            var store = storeLocator();
             using (var documentSession = store.OpenSession())
             {
                 // don't tolerate stale data
@@ -508,23 +506,23 @@
                 // if we get a concurrency conflict, then we want to know about it
                 documentSession.Advanced.UseOptimisticConcurrency = true;
 
-                Logger.Debug("Retrieving item from RavenDB. SessionId: {0}; ApplicationName={1}", id, this.ApplicationName);
+                Logger.Debug("Retrieving item from RavenDB. SessionId: {0}; ApplicationName={1}", id, ApplicationName);
 
                 var sessionState =
                     documentSession.Query<SessionState>()
                     .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
-                    .SingleOrDefault(x => x.SessionId == id && x.ApplicationName == this.ApplicationName);
+                    .SingleOrDefault(x => x.SessionId == id && x.ApplicationName == ApplicationName);
 
                 if (sessionState == null)
                 {
-                    Logger.Debug("Item not found in RavenDB with SessionId: {0}; ApplicationName={1}", id, this.ApplicationName);
+                    Logger.Debug("Item not found in RavenDB with SessionId: {0}; ApplicationName={1}", id, ApplicationName);
                     return null;
                 }
 
                 // if the record is locked, we can't have it.
                 if (sessionState.Locked)
                 {
-                    Logger.Debug("Item retrieved is locked. SessionId: {0}; ApplicationName={1}", id, this.ApplicationName);
+                    Logger.Debug("Item retrieved is locked. SessionId: {0}; ApplicationName={1}", id, ApplicationName);
 
                     locked = true;
                     lockAge = DateTime.UtcNow.Subtract(sessionState.LockDate);
@@ -536,7 +534,7 @@
                 // but just in case the bundle isn't installed, or we made the window, we'll delete expired items here.
                 if (sessionState.Expires < DateTime.UtcNow)
                 {
-                    Logger.Debug("Item retrieved has expired. SessionId: {0}; ApplicationName={1}; Expiry (UTC): {3}", id, this.ApplicationName, sessionState.Expires);
+                    Logger.Debug("Item retrieved has expired. SessionId: {0}; ApplicationName={1}; Expiry (UTC): {3}", id, ApplicationName, sessionState.Expires);
 
                     try
                     {
@@ -565,7 +563,7 @@
                     {
                         if (retriesRemaining > 0)
                         {
-                            return this.GetSessionStoreItem(
+                            return GetSessionStoreItem(
                                 true,
                                 context,
                                 id,
@@ -586,10 +584,10 @@
                     return new SessionStateStoreData(
                         new SessionStateItemCollection(),
                         SessionStateUtility.GetSessionStaticObjects(context),
-                        (int)this.sessionStateConfig.Timeout.TotalMinutes);
+                        (int)sessionStateConfig.Timeout.TotalMinutes);
                 }
 
-                return Deserialize(context, sessionState.SessionItems, (int)this.sessionStateConfig.Timeout.TotalMinutes);
+                return Deserialize(context, sessionState.SessionItems, (int)sessionStateConfig.Timeout.TotalMinutes);
             }
         }
 

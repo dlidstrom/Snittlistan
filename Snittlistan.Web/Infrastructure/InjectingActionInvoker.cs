@@ -1,13 +1,12 @@
-﻿namespace Snittlistan.Web.Infrastructure
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Web.Mvc;
+using Castle.MicroKernel;
+using Castle.MicroKernel.ComponentActivator;
+
+namespace Snittlistan.Web.Infrastructure
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
-    using System.Web.Mvc;
-
-    using Castle.MicroKernel;
-    using Castle.MicroKernel.ComponentActivator;
-
     public class InjectingActionInvoker : ControllerActionInvoker
     {
         private readonly IKernel container;
@@ -43,7 +42,7 @@
         {
             foreach (var filter in filters)
             {
-                InjectProperties(this.container, filter);
+                InjectProperties(container, filter);
             }
 
             return base.InvokeActionMethodWithFilters(controllerContext, filters, actionDescriptor, parameters);

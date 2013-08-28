@@ -1,16 +1,16 @@
-﻿namespace Snittlistan.Web.Infrastructure.Validation
-{
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
+namespace Snittlistan.Web.Infrastructure.Validation
+{
     public class RequiredIfExistsAttribute : ValidationAttribute, IClientValidatable
     {
-        private RequiredAttribute innerAttribute = new RequiredAttribute();
+        private readonly RequiredAttribute innerAttribute = new RequiredAttribute();
 
         public RequiredIfExistsAttribute(string dependentProperty)
         {
-            this.DependentProperty = dependentProperty;
+            DependentProperty = dependentProperty;
         }
 
         public string DependentProperty { get; set; }
@@ -19,11 +19,11 @@
         {
             var rule = new ModelClientValidationRule()
             {
-                ErrorMessage = this.FormatErrorMessage(metadata.GetDisplayName()),
+                ErrorMessage = FormatErrorMessage(metadata.GetDisplayName()),
                 ValidationType = "requiredifexists",
             };
 
-            string depProp = this.BuildDependentPropertyId(metadata, context as ViewContext);
+            string depProp = BuildDependentPropertyId(metadata, context as ViewContext);
 
             rule.ValidationParameters.Add("dependentproperty", depProp);
 
@@ -34,7 +34,7 @@
         {
             // get a reference to the property this validation depends upon
             var containerType = validationContext.ObjectInstance.GetType();
-            var field = containerType.GetProperty(this.DependentProperty);
+            var field = containerType.GetProperty(DependentProperty);
 
             if (field != null)
             {
@@ -45,10 +45,10 @@
                 if (dependentvalue != null)
                 {
                     // match => means we should try validating this field
-                    if (!this.innerAttribute.IsValid(value))
+                    if (!innerAttribute.IsValid(value))
                     {
                         // validation failed - return an error
-                        return new ValidationResult(this.ErrorMessage, new[] { validationContext.MemberName });
+                        return new ValidationResult(ErrorMessage, new[] { validationContext.MemberName });
                     }
                 }
             }
@@ -59,7 +59,7 @@
         private string BuildDependentPropertyId(ModelMetadata metadata, ViewContext viewContext)
         {
             // build the ID of the property
-            string depProp = viewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(this.DependentProperty);
+            string depProp = viewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(DependentProperty);
 
             // unfortunately this will have the name of the current field appended to the beginning,
             // because the TemplateInfo's context has had this fieldname appended to it. Instead, we

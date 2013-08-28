@@ -1,17 +1,14 @@
-﻿namespace Snittlistan.Web.Areas.V1.Controllers
+﻿using System;
+using System.Diagnostics;
+using System.Web.Mvc;
+using Snittlistan.Web.Areas.V1.ViewModels.Account;
+using Snittlistan.Web.Controllers;
+using Snittlistan.Web.Helpers;
+using Snittlistan.Web.Models;
+using Snittlistan.Web.Services;
+
+namespace Snittlistan.Web.Areas.V1.Controllers
 {
-    using System;
-    using System.Diagnostics;
-    using System.Web.Mvc;
-
-    using Raven.Client;
-
-    using Snittlistan.Web.Areas.V1.ViewModels.Account;
-    using Snittlistan.Web.Controllers;
-    using Snittlistan.Web.Helpers;
-    using Snittlistan.Web.Models;
-    using Snittlistan.Web.Services;
-
     /// <summary>
     /// Handles user-actions related to accounts: registering and validating
     /// new users, logging in and logging out.
@@ -23,7 +20,6 @@
         /// <summary>
         /// Initializes a new instance of the AccountController class.
         /// </summary>
-        /// <param name="session">Document session.</param>
         /// <param name="authenticationService">Authentication service.</param>
         public AccountController(IAuthenticationService authenticationService)
         {
@@ -36,7 +32,7 @@
         /// <returns></returns>
         public ActionResult LogOn()
         {
-            return this.View();
+            return View();
         }
 
         /// <summary>
@@ -49,38 +45,38 @@
         public ActionResult LogOn(LogOnViewModel vm, string returnUrl)
         {
             // find the user in question
-            var user = this.DocumentSession.FindUserByEmail(vm.Email);
+            var user = DocumentSession.FindUserByEmail(vm.Email);
 
             if (user == null)
             {
-                this.ModelState.AddModelError("Email", "Användaren existerar inte.");
+                ModelState.AddModelError("Email", "Användaren existerar inte.");
             }
             else if (!user.ValidatePassword(vm.Password))
             {
-                this.ModelState.AddModelError("Password", "Lösenordet stämmer inte!");
+                ModelState.AddModelError("Password", "Lösenordet stämmer inte!");
             }
             else if (user.IsActive == false)
             {
-                this.ModelState.AddModelError("Inactive", "Användaren har inte aktiverats");
+                ModelState.AddModelError("Inactive", "Användaren har inte aktiverats");
             }
 
             // redisplay form if any errors at this point
-            if (!this.ModelState.IsValid)
-                return this.View(vm);
+            if (!ModelState.IsValid)
+                return View(vm);
 
             Debug.Assert(user != null, "user != null");
-            this.authenticationService.SetAuthCookie(user.Email, vm.RememberMe);
+            authenticationService.SetAuthCookie(user.Email, vm.RememberMe);
 
-            if (this.Url.IsLocalUrl(returnUrl)
+            if (Url.IsLocalUrl(returnUrl)
                 && returnUrl.Length > 1
                 && returnUrl.StartsWith("/")
                 && !returnUrl.StartsWith("//")
                 && !returnUrl.StartsWith("/\\"))
             {
-                return this.Redirect(returnUrl);
+                return Redirect(returnUrl);
             }
 
-            return this.RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
         /// <summary>
@@ -89,8 +85,8 @@
         /// <returns></returns>
         public ActionResult LogOff()
         {
-            this.authenticationService.SignOut();
-            return this.RedirectToAction("Index", "Home");
+            authenticationService.SignOut();
+            return RedirectToAction("Index", "Home");
         }
 
         /// <summary>
@@ -99,7 +95,7 @@
         /// <returns></returns>
         public ActionResult Register()
         {
-            return this.View();
+            return View();
         }
 
         /// <summary>
@@ -111,18 +107,18 @@
         public ActionResult Register(RegisterViewModel model)
         {
             // an existing user cannot be registered again
-            if (this.DocumentSession.FindUserByEmail(model.Email) != null)
-                this.ModelState.AddModelError("Email", "Adressen finns redan.");
+            if (DocumentSession.FindUserByEmail(model.Email) != null)
+                ModelState.AddModelError("Email", "Adressen finns redan.");
 
             // redisplay form if any errors at this point
-            if (!this.ModelState.IsValid)
-                return this.View(model);
+            if (!ModelState.IsValid)
+                return View(model);
 
             var newUser = new User(model.FirstName, model.LastName, model.Email, model.Password);
             newUser.Initialize();
-            this.DocumentSession.Store(newUser);
+            DocumentSession.Store(newUser);
 
-            return this.RedirectToAction("RegisterSuccess");
+            return RedirectToAction("RegisterSuccess");
         }
 
         /// <summary>
@@ -132,7 +128,10 @@
         [Authorize]
         public ActionResult ChangePassword()
         {
-            return this.View(new ChangePasswordViewModel { Email = this.HttpContext.User.Identity.Name });
+            return View(new ChangePasswordViewModel
+            {
+                Email = HttpContext.User.Identity.Name
+            });
         }
 
         /// <summary>
@@ -143,18 +142,18 @@
         [HttpPost, Authorize]
         public ActionResult ChangePassword(ChangePasswordViewModel model)
         {
-            var user = this.DocumentSession.FindUserByEmail(model.Email);
+            var user = DocumentSession.FindUserByEmail(model.Email);
 
             if (user == null)
-                this.ModelState.AddModelError("Email", "Användaren existerar inte.");
+                ModelState.AddModelError("Email", "Användaren existerar inte.");
 
             // redisplay form if any errors at this point
-            if (!this.ModelState.IsValid)
-                return this.View(model);
+            if (!ModelState.IsValid)
+                return View(model);
 
             Debug.Assert(user != null, "user != null");
             user.SetPassword(model.NewPassword, string.Empty);
-            return this.RedirectToAction("ChangePasswordSuccess");
+            return RedirectToAction("ChangePasswordSuccess");
         }
 
         /// <summary>
@@ -163,7 +162,7 @@
         /// <returns></returns>
         public ActionResult ChangePasswordSuccess()
         {
-            return this.View();
+            return View();
         }
 
         /// <summary>
@@ -172,7 +171,7 @@
         /// <returns></returns>
         public ActionResult RegisterSuccess()
         {
-            return this.View();
+            return View();
         }
 
         /// <summary>
@@ -182,17 +181,17 @@
         /// <returns>LogOn or Register view.</returns>
         public ActionResult Verify(Guid activationKey)
         {
-            var user = this.DocumentSession.FindUserByActivationKey(activationKey.ToString());
+            var user = DocumentSession.FindUserByActivationKey(activationKey.ToString());
 
             if (user == null)
-                return this.RedirectToAction("Register");
+                return RedirectToAction("Register");
 
             if (user.IsActive)
-                return this.RedirectToAction("LogOn");
+                return RedirectToAction("LogOn");
 
             user.Activate(false);
 
-            return this.RedirectToAction("VerifySuccess");
+            return RedirectToAction("VerifySuccess");
         }
 
         /// <summary>
@@ -201,7 +200,7 @@
         /// <returns></returns>
         public ActionResult VerifySuccess()
         {
-            return this.View();
+            return View();
         }
     }
 }

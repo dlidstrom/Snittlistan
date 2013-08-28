@@ -1,17 +1,17 @@
-﻿namespace Snittlistan.Web.Infrastructure
-{
-    using System.Collections;
-    using System.Configuration;
-    using System.Web;
-    using System.Web.Caching;
+﻿using System.Collections;
+using System.Configuration;
+using System.Web;
+using System.Web.Caching;
 
+namespace Snittlistan.Web.Infrastructure
+{
     public class MailHttpContext : HttpContextBase
     {
         private readonly IDictionary items = new Hashtable();
 
         public override IDictionary Items
         {
-            get { return this.items; }
+            get { return items; }
         }
 
         public override Cache Cache

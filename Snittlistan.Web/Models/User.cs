@@ -1,14 +1,12 @@
-﻿using Snittlistan.Web.DomainEvents;
+﻿using System;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using Raven.Imports.Newtonsoft.Json;
+using Snittlistan.Web.DomainEvents;
 
 namespace Snittlistan.Web.Models
 {
-    using System;
-    using System.Linq;
-    using System.Security.Cryptography;
-    using System.Text;
-
-    using Raven.Imports.Newtonsoft.Json;
-
     /// <summary>
     /// Represents a registered user.
     /// </summary>
@@ -22,6 +20,7 @@ namespace Snittlistan.Web.Models
         /// and also when reconstituting (loading an existing user).
         /// </summary>
         private Guid passwordSalt;
+
         private string activationKey;
 
         /// <summary>
@@ -33,10 +32,10 @@ namespace Snittlistan.Web.Models
         /// <param name="password">User password.</param>
         public User(string firstName, string lastName, string email, string password)
         {
-            this.FirstName = firstName;
-            this.LastName = lastName;
-            this.Email = email;
-            this.HashedPassword = this.ComputeHashedPassword(password);
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            HashedPassword = ComputeHashedPassword(password);
         }
 
         /// <summary>
@@ -50,7 +49,8 @@ namespace Snittlistan.Web.Models
         /// <param name="passwordSalt"></param>
         /// <param name="requiresPasswordChange">Indicates whether this user requires password change.</param>
         [JsonConstructor]
-// ReSharper disable UnusedMember.Local Used by Raven when loading.
+
+        // ReSharper disable UnusedMember.Local Used by Raven when loading.
         private User(
             string firstName,
             string lastName,
@@ -58,14 +58,15 @@ namespace Snittlistan.Web.Models
             string hashedPassword,
             Guid passwordSalt,
             bool requiresPasswordChange)
-// ReSharper restore UnusedMember.Local
+
+        // ReSharper restore UnusedMember.Local
         {
-            this.FirstName = firstName;
-            this.LastName = lastName;
-            this.Email = email;
-            this.HashedPassword = hashedPassword;
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            HashedPassword = hashedPassword;
             this.passwordSalt = passwordSalt;
-            this.RequiresPasswordChange = requiresPasswordChange;
+            RequiresPasswordChange = requiresPasswordChange;
         }
 
         /// <summary>
@@ -88,9 +89,9 @@ namespace Snittlistan.Web.Models
         /// </summary>
         public string ActivationKey
         {
-            get { return this.activationKey ?? (this.activationKey = Guid.NewGuid().ToString()); }
+            get { return activationKey ?? (activationKey = Guid.NewGuid().ToString()); }
 
-            private set { this.activationKey = value; }
+            private set { activationKey = value; }
         }
 
         /// <summary>
@@ -120,9 +121,9 @@ namespace Snittlistan.Web.Models
         {
             get
             {
-                if (this.passwordSalt == default(Guid))
-                    this.passwordSalt = Guid.NewGuid();
-                return this.passwordSalt;
+                if (passwordSalt == default(Guid))
+                    passwordSalt = Guid.NewGuid();
+                return passwordSalt;
             }
         }
 
@@ -135,7 +136,7 @@ namespace Snittlistan.Web.Models
         {
             if (RequiresPasswordChange == false) throw new InvalidOperationException("Password change not allowed");
             if (ActivationKey != suppliedActivationKey) throw new InvalidOperationException("Unknown activation key");
-            this.HashedPassword = this.ComputeHashedPassword(password);
+            HashedPassword = ComputeHashedPassword(password);
             RequiresPasswordChange = false;
         }
 
@@ -147,7 +148,7 @@ namespace Snittlistan.Web.Models
         public bool ValidatePassword(string somePassword)
         {
             return RequiresPasswordChange == false
-                && this.HashedPassword == this.ComputeHashedPassword(somePassword);
+                && HashedPassword == ComputeHashedPassword(somePassword);
         }
 
         /// <summary>
@@ -155,7 +156,7 @@ namespace Snittlistan.Web.Models
         /// </summary>
         public void Initialize()
         {
-            this.ActivationKey = Guid.NewGuid().ToString();
+            ActivationKey = Guid.NewGuid().ToString();
             DomainEvent.Raise(new NewUserCreatedEvent { User = this });
         }
 
@@ -164,10 +165,10 @@ namespace Snittlistan.Web.Models
         /// </summary>
         public void Activate(bool invite)
         {
-            this.IsActive = true;
+            IsActive = true;
             if (invite == false) return;
-            this.ActivationKey = Guid.NewGuid().ToString();
-            this.RequiresPasswordChange = true;
+            ActivationKey = Guid.NewGuid().ToString();
+            RequiresPasswordChange = true;
             DomainEvent.Raise(new UserInvitedEvent(this));
         }
 
@@ -176,7 +177,7 @@ namespace Snittlistan.Web.Models
         /// </summary>
         public void Deactivate()
         {
-            this.IsActive = false;
+            IsActive = false;
         }
 
         /// <summary>
@@ -190,8 +191,8 @@ namespace Snittlistan.Web.Models
             using (var sha = SHA256.Create())
             {
                 var computedHash = sha.ComputeHash(
-                    this.PasswordSalt.ToByteArray().Concat(
-                        Encoding.Unicode.GetBytes(password + this.PasswordSalt + ConstantSalt))
+                    PasswordSalt.ToByteArray().Concat(
+                        Encoding.Unicode.GetBytes(password + PasswordSalt + ConstantSalt))
                         .ToArray());
 
                 hashedPassword = Convert.ToBase64String(computedHash);
