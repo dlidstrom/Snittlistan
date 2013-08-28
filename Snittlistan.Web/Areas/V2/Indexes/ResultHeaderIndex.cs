@@ -11,7 +11,8 @@ namespace Snittlistan.Web.Areas.V2.Indexes
             Map = models => from model in models
                             select new
                             {
-                                model.Id
+                                model.Id,
+                                model.Season
                             };
         }
     }

@@ -19,13 +19,15 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
             var headerReadModels = DocumentSession.Query<ResultHeaderReadModel, ResultHeaderIndex>()
                 .Customize(x => x.WaitForNonStaleResultsAsOfNow())
+                .Where(x => x.Season == season)
                 .ToList();
-            var vm = new MatchResultViewModel {
-                                                  SeasonStart = season.Value,
-                                                  Turns = headerReadModels
-                                                      .GroupBy(x => x.Turn)
-                                                      .ToDictionary(x => x.Key, x => x.ToList())
-                                              };
+            var vm = new MatchResultViewModel
+            {
+                SeasonStart = season.Value,
+                Turns = headerReadModels
+                    .GroupBy(x => x.Turn)
+                    .ToDictionary(x => x.Key, x => x.ToList())
+            };
             return View(vm);
         }
 
