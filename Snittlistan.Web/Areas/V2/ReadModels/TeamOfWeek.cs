@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using EventStoreLite;
 using Snittlistan.Web.Areas.V2.Domain;
 
@@ -55,6 +56,16 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             public int Pins { get; set; }
 
             public int Series { get; set; }
+
+            public string PinsAndSeries
+            {
+                get
+                {
+                    return Series != 4
+                        ? string.Format("{0} ({1})", Pins, Series)
+                        : Pins.ToString(CultureInfo.InvariantCulture);
+                }
+            }
 
             public string Team { get; private set; }
         }
