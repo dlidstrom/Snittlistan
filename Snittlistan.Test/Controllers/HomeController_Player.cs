@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Test
+﻿using System.Web.Mvc;
+
+namespace Snittlistan.Test
 {
     using System;
     using System.Collections.Generic;
@@ -69,7 +71,9 @@
             var controller = new HomeController { DocumentSession = Session };
 
             // Act
-            var result = controller.Player("Tomas Gustavsson").Model as PlayerMatchesViewModel;
+            var viewResult = controller.Player("Tomas Gustavsson") as ViewResult;
+            Assert.NotNull(viewResult);
+            var result = viewResult.Model as PlayerMatchesViewModel;
 
             // Assert
             Assert.NotNull(result);
@@ -102,7 +106,9 @@
             var controller = new HomeController { DocumentSession = Session };
 
             // Act
-            var result = controller.Player("Mikael Axelsson").Model as PlayerMatchesViewModel;
+            var viewResult = controller.Player("Mikael Axelsson") as ViewResult;
+            Assert.NotNull(viewResult);
+            var result = viewResult.Model as PlayerMatchesViewModel;
 
             // Assert
             Assert.NotNull(result);

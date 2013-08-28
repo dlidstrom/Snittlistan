@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Snittlistan.Web.Areas.V1.ViewModels;
 using Snittlistan.Web.Controllers;
@@ -32,10 +31,10 @@ namespace Snittlistan.Web.Areas.V1.Controllers
         /// </summary>
         /// <param name="player"></param>
         /// <returns></returns>
-        public ViewResult Player(string player)
+        public ActionResult Player(string player)
         {
             if (string.IsNullOrWhiteSpace(player))
-                throw new HttpException(404, "Player not found");
+                return RedirectToAction("Index");
 
             var stats = DocumentSession.Query<Player_ByMatch.Result, Player_ByMatch>()
                 .Customize(x => x.WaitForNonStaleResultsAsOfNow())
