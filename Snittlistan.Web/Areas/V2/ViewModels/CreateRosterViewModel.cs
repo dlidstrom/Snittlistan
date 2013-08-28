@@ -1,10 +1,9 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+using Raven.Abstractions;
+
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
-    using System;
-    using System.ComponentModel.DataAnnotations;
-
-    using Raven.Abstractions;
-
     public class CreateRosterViewModel
     {
         public CreateRosterViewModel()
@@ -37,5 +36,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         [Required]
         [RegularExpression(@"^(?:0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$", ErrorMessage = "Invalid time.")]
         public string Time { get; set; }
+
+        public bool IsFourPlayer { get; set; }
     }
 }

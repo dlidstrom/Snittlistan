@@ -5,7 +5,14 @@ namespace Snittlistan.Web.Areas.V2.Domain
 {
     public class Roster
     {
-        public Roster(int season, int turn, string team, string location, string opponent, DateTime date)
+        public Roster(
+            int season,
+            int turn,
+            string team,
+            string location,
+            string opponent,
+            DateTime date,
+            bool isFourPlayer)
         {
             Season = season;
             Turn = turn;
@@ -13,6 +20,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
             Location = location;
             Opponent = opponent;
             Date = date;
+            IsFourPlayer = isFourPlayer;
             Players = new List<string>();
         }
 
@@ -29,6 +37,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public string Opponent { get; set; }
 
         public DateTime Date { get; set; }
+
+        public bool IsFourPlayer { get; set; }
 
         public bool Preliminary { get; set; }
 

@@ -86,7 +86,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 vm.Team,
                 vm.Location,
                 vm.Opponent,
-                vm.Date.Add(time));
+                vm.Date.Add(time),
+                vm.IsFourPlayer);
             DocumentSession.Store(roster);
             return RedirectToAction("Index");
         }
@@ -114,6 +115,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             roster.Season = vm.Season;
             roster.Team = vm.Team;
             roster.Turn = vm.Turn;
+            roster.IsFourPlayer = vm.IsFourPlayer;
             var time = new TimeSpan(
                 int.Parse(vm.Time.Substring(0, 2)),
                 int.Parse(vm.Time.Substring(3)),
