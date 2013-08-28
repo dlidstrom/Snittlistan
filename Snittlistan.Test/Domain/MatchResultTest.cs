@@ -13,10 +13,10 @@ namespace Snittlistan.Test.Domain
 
         public MatchResultTest()
         {
-            this.roster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
-                         {
-                             Id = "rosters-1"
-                         };
+            roster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
+            {
+                Id = "rosters-1"
+            };
         }
 
         [Fact]

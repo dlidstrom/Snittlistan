@@ -27,13 +27,15 @@ namespace Snittlistan.Web.Infrastructure.Installers
             switch (MvcApplication.Mode)
             {
                 case ApplicationMode.Debug:
-                    this.mode = DocumentStoreMode.Server;
+                    mode = DocumentStoreMode.Server;
                     break;
+
                 case ApplicationMode.Release:
-                    this.mode = DocumentStoreMode.Embeddable;
+                    mode = DocumentStoreMode.Embeddable;
                     break;
+
                 case ApplicationMode.Test:
-                    this.mode = DocumentStoreMode.InMemory;
+                    mode = DocumentStoreMode.InMemory;
                     break;
             }
         }
@@ -63,7 +65,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(
-                Component.For<IDocumentStore>().Instance(InitializeStore(this.CreateDocumentStore(), this.mode)).LifestyleSingleton(),
+                Component.For<IDocumentStore>().Instance(InitializeStore(CreateDocumentStore(), mode)).LifestyleSingleton(),
                 Component.For<IDocumentSession>().UsingFactoryMethod(GetDocumentSession).LifestylePerWebRequest());
         }
 
@@ -81,10 +83,20 @@ namespace Snittlistan.Web.Infrastructure.Installers
             return documentSession;
         }
 
+        private static void Configure(EmbeddableDocumentStore documentStore)
+        {
+            // limit memory usage when running embedded mode
+            documentStore.Configuration.MemoryCacheLimitMegabytes = 256;
+
+            //documentStore.Configuration.MemoryCacheLimitPercentage = 10;
+            //documentStore.Configuration.Settings["Raven/Esent/CacheSizeMax"] = "256";
+            //documentStore.Configuration.Settings["Raven/Esent/MaxVerPages"] = "512";
+        }
+
         private IDocumentStore CreateDocumentStore()
         {
             IDocumentStore store;
-            switch (this.mode)
+            switch (mode)
             {
                 case DocumentStoreMode.InMemory:
                     {
@@ -98,9 +110,11 @@ namespace Snittlistan.Web.Infrastructure.Installers
                     }
 
                     break;
+
                 case DocumentStoreMode.Server:
                     store = new DocumentStore { ConnectionStringName = "RavenDB" };
                     break;
+
                 default:
                     {
                         var path = AppDomain.CurrentDomain.GetData("DataDirectory").ToString();
@@ -117,15 +131,6 @@ namespace Snittlistan.Web.Infrastructure.Installers
             }
 
             return store;
-        }
-
-        private static void Configure(EmbeddableDocumentStore documentStore)
-        {
-            // limit memory usage when running embedded mode
-            documentStore.Configuration.MemoryCacheLimitMegabytes = 256;
-            //documentStore.Configuration.MemoryCacheLimitPercentage = 10;
-            //documentStore.Configuration.Settings["Raven/Esent/CacheSizeMax"] = "256";
-            //documentStore.Configuration.Settings["Raven/Esent/MaxVerPages"] = "512";
         }
     }
 }

@@ -1,27 +1,35 @@
-﻿namespace Snittlistan.Web.Infrastructure.SessionProvider
-{
-    using System;
-    using System.Web.SessionState;
+﻿using System;
+using System.Web.SessionState;
 
+namespace Snittlistan.Web.Infrastructure.SessionProvider
+{
     internal class SessionState
     {
         public SessionState(string sessionId, string applicationName)
         {
-            this.SessionId = sessionId;
-            this.ApplicationName = applicationName;
-            this.Created = DateTime.UtcNow;
-            this.SessionItems = string.Empty;
+            SessionId = sessionId;
+            ApplicationName = applicationName;
+            Created = DateTime.UtcNow;
+            SessionItems = string.Empty;
         }
 
         [Id]
         public string SessionId { get; set; }
+
         public string ApplicationName { get; set; }
+
         public DateTime Created { get; set; }
+
         public DateTime Expires { get; set; }
+
         public DateTime LockDate { get; set; }
+
         public int LockId { get; set; }
+
         public bool Locked { get; set; }
+
         public string SessionItems { get; set; }
+
         public SessionStateActions Flags { get; set; }
     }
 }

@@ -10,38 +10,38 @@ namespace Snittlistan.Web.Areas.V1.Controllers
     {
         public JsonResult PlayersQuickSearch(string term)
         {
-            var results = this.DocumentSession.Query<PlayersIndex.Result, PlayersIndex>()
+            var results = DocumentSession.Query<PlayersIndex.Result, PlayersIndex>()
                 .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .Where(p => p.Player.StartsWith(term))
                 .OrderBy(p => p.Player)
                 .ToList()
                 .Select(p => new { label = p.Player });
 
-            return this.Json(results, JsonRequestBehavior.AllowGet);
+            return Json(results, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult TeamsQuickSearch(string term)
         {
-            var results = this.DocumentSession.Query<Teams.Result, Teams>()
+            var results = DocumentSession.Query<Teams.Result, Teams>()
                 .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .Where(t => t.Team.StartsWith(term))
                 .OrderBy(t => t.Team)
                 .ToList()
                 .Select(t => new { label = t.Team });
 
-            return this.Json(results, JsonRequestBehavior.AllowGet);
+            return Json(results, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult LocationsQuickSearch(string term)
         {
-            var results = this.DocumentSession.Query<Locations.Result, Locations>()
+            var results = DocumentSession.Query<Locations.Result, Locations>()
                 .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .Where(t => t.Location.StartsWith(term))
                 .OrderBy(t => t.Location)
                 .ToList()
                 .Select(t => new { label = t.Location });
 
-            return this.Json(results, JsonRequestBehavior.AllowGet);
+            return Json(results, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -8,7 +8,7 @@ using Snittlistan.Web.Models;
 using Snittlistan.Web.Services;
 using Xunit;
 
-namespace Snittlistan.Test
+namespace Snittlistan.Test.Controllers
 {
     public class AccountController_Logon : DbTest
     {
@@ -16,12 +16,7 @@ namespace Snittlistan.Test
 
         public AccountController_Logon()
         {
-            this.oldContainer = DomainEvent.SetContainer(new WindsorContainer());
-        }
-
-        protected override void OnDispose()
-        {
-            DomainEvent.SetContainer(oldContainer);
+            oldContainer = DomainEvent.SetContainer(new WindsorContainer());
         }
 
         [Fact]
@@ -111,10 +106,15 @@ namespace Snittlistan.Test
             result.AssertViewRendered().ForView(string.Empty);
         }
 
+        protected override void OnDispose()
+        {
+            DomainEvent.SetContainer(oldContainer);
+        }
+
         private AccountController SetupPasswordTest(Action cookieSetAction)
         {
             // create an active user
-            this.CreateActivatedUser("F", "L", "e@d.com", "some pwd");
+            CreateActivatedUser("F", "L", "e@d.com", "some pwd");
 
             var service = Mock.Of<IAuthenticationService>();
             Mock.Get(service).Setup(

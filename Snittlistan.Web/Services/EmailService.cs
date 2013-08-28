@@ -1,18 +1,18 @@
-﻿namespace Snittlistan.Web.Services
+﻿using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
+using System.Linq;
+using System.Net;
+using System.Net.Configuration;
+using System.Net.Mail;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Configuration;
+using Elmah;
+
+namespace Snittlistan.Web.Services
 {
-    using System.Collections.Generic;
-    using System.Configuration;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Configuration;
-    using System.Net.Mail;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Web;
-    using System.Web.Configuration;
-
-    using Elmah;
-
     /// <summary>
     /// Used to send email.
     /// </summary>
@@ -33,12 +33,13 @@
             // fetch settings from web.config
             var config = WebConfigurationManager.OpenWebConfiguration(HttpContext.Current.Request.ApplicationPath);
             var settings = (MailSettingsSectionGroup)config.GetSectionGroup("system.net/mailSettings");
-            this.host = settings.Smtp.Network.Host;
-            this.port = settings.Smtp.Network.Port;
-            this.username = settings.Smtp.Network.UserName;
-            this.password = settings.Smtp.Network.Password;
-            this.from = new MailAddress(this.username);
-            this.moderatorEmails = ConfigurationManager
+            Debug.Assert(settings != null, "settings != null");
+            host = settings.Smtp.Network.Host;
+            port = settings.Smtp.Network.Port;
+            username = settings.Smtp.Network.UserName;
+            password = settings.Smtp.Network.Password;
+            from = new MailAddress(username);
+            moderatorEmails = ConfigurationManager
                 .AppSettings["OwnerEmail"]
                 .Split(';')
                 .Select(e => new MailAddress(e.Trim()))
@@ -59,8 +60,8 @@
             this.port = port;
             this.username = username;
             this.password = password;
-            this.from = new MailAddress(username);
-            this.moderatorEmails = moderators.Select(e => new MailAddress(e.Trim())).ToList();
+            from = new MailAddress(username);
+            moderatorEmails = moderators.Select(e => new MailAddress(e.Trim())).ToList();
         }
 
         /// <summary>
@@ -82,7 +83,7 @@
         {
             // execute asynchronously
             Task.Factory.StartNew(
-                () => this.DoWork(recipient, subject, body),
+                () => DoWork(recipient, subject, body),
                 TaskCreationOptions.LongRunning)
                     .ContinueWith(
                         task => ErrorLog.GetDefault(null).Log(new Error(task.Exception)),
@@ -95,27 +96,31 @@
             {
                 Body = body,
                 Subject = subject,
-                From = this.from,
+                From = from,
                 IsBodyHtml = true
             };
             mailMessage.To.Add(new MailAddress(recipient));
 
             // add moderators
-            this.moderatorEmails.ForEach(m => mailMessage.Bcc.Add(m));
+            moderatorEmails.ForEach(m => mailMessage.Bcc.Add(m));
 
             using (var smtpClient = new SmtpClient
             {
-                Host = this.host,
-                Port = this.port,
+                Host = host,
+                Port = port,
                 UseDefaultCredentials = false
             })
             {
-                smtpClient.Credentials = new NetworkCredential { UserName = this.username, Password = this.password };
+                smtpClient.Credentials = new NetworkCredential
+                {
+                    UserName = username,
+                    Password = password
+                };
                 smtpClient.Send(mailMessage);
             }
 
-            if (this.ResetEvent != null)
-                this.ResetEvent.Set();
+            if (ResetEvent != null)
+                ResetEvent.Set();
         }
     }
 }

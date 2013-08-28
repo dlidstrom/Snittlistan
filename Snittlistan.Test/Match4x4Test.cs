@@ -1,10 +1,8 @@
-﻿namespace Snittlistan.Test
+﻿using Snittlistan.Web.Areas.V1.Models;
+using Xunit;
+
+namespace Snittlistan.Test
 {
-    using Snittlistan.Web.Areas.V1.Models;
-    using Snittlistan.Web.Models;
-
-    using Xunit;
-
     public class Match4x4Test : DbTest
     {
         private readonly Match4x4 match;
@@ -20,7 +18,7 @@
         [Fact]
         public void PinscoreForPlayer()
         {
-            Assert.Equal(717, this.match.HomeTeam.PinsForPlayer("Lars Norbeck"));
+            Assert.Equal(717, match.HomeTeam.PinsForPlayer("Lars Norbeck"));
         }
 
         [Fact]

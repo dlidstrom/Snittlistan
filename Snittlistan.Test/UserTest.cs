@@ -1,21 +1,18 @@
-﻿using Snittlistan.Web.DomainEvents;
+﻿using System;
+using Castle.Windsor;
+using Snittlistan.Web.DomainEvents;
+using Snittlistan.Web.Models;
+using Xunit;
 
 namespace Snittlistan.Test
 {
-    using System;
-
-    using Castle.Windsor;
-    using Snittlistan.Web.Models;
-
-    using Xunit;
-
     public class UserTest : IDisposable
     {
         private readonly IWindsorContainer oldContainer;
 
         public UserTest()
         {
-            this.oldContainer = DomainEvent.SetContainer(new WindsorContainer());
+            oldContainer = DomainEvent.SetContainer(new WindsorContainer());
         }
 
         public void Dispose()

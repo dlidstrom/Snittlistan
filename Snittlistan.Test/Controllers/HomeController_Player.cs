@@ -1,19 +1,16 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Web.Mvc;
+using Snittlistan.Web.Areas.V1.Controllers;
+using Snittlistan.Web.Areas.V1.Models;
+using Snittlistan.Web.Areas.V1.ViewModels;
+using Snittlistan.Web.Infrastructure.Indexes;
+using Xunit;
 
-namespace Snittlistan.Test
+namespace Snittlistan.Test.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
-
-    using Snittlistan.Web.Areas.V1.Controllers;
-    using Snittlistan.Web.Areas.V1.Models;
-    using Snittlistan.Web.Areas.V1.ViewModels;
-    using Snittlistan.Web.Infrastructure.Indexes;
-
-    using Xunit;
-
     public class HomeController_Player : DbTest
     {
         [Fact]

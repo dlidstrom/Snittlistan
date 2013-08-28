@@ -1,7 +1,7 @@
+using System.Collections.Generic;
+
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
-    using System.Collections.Generic;
-
     public class InitialDataViewModel
     {
         public List<TurnViewModel> Turns { get; set; }
