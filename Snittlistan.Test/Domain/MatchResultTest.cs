@@ -13,7 +13,7 @@ namespace Snittlistan.Test.Domain
 
         public MatchResultTest()
         {
-            this.roster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3))
+            this.roster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
                          {
                              Id = "rosters-1"
                          };
@@ -41,7 +41,7 @@ namespace Snittlistan.Test.Domain
         {
             // Arrange
             var matchResult = new MatchResult(roster, 9, 11, 123);
-            var newRoster = new Roster(2012, 10, "X", "Y", "Z", new DateTime(2012, 1, 1))
+            var newRoster = new Roster(2012, 10, "X", "Y", "Z", new DateTime(2012, 1, 1), false)
                                 {
                                     Id = "rosters-2"
                                 };
@@ -76,7 +76,7 @@ namespace Snittlistan.Test.Domain
         public void RosterCannotHaveSevenPlayers()
         {
             // Arrange
-            var invalidRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3))
+            var invalidRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -106,7 +106,7 @@ namespace Snittlistan.Test.Domain
         public void RosterCanHaveEightPlayers()
         {
             // Arrange
-            var invalidRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3))
+            var invalidRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -135,7 +135,7 @@ namespace Snittlistan.Test.Domain
         public void RosterCanHaveNinePlayers()
         {
             // Arrange
-            var invalidRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3))
+            var invalidRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -164,7 +164,7 @@ namespace Snittlistan.Test.Domain
         public void RosterCannotHaveTenPlayers()
         {
             // Arrange
-            var invalidRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3))
+            var invalidRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -194,7 +194,7 @@ namespace Snittlistan.Test.Domain
         public void CanOnlyRegisterSeriesWithValidPlayer()
         {
             // Arrange
-            var validRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3))
+            var validRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -222,7 +222,7 @@ namespace Snittlistan.Test.Domain
         public void CanRegisterWithReserve()
         {
             // Arrange
-            var validRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3))
+            var validRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -250,7 +250,7 @@ namespace Snittlistan.Test.Domain
         public void CanNotRegisterInvalidPlayer()
         {
             // Arrange
-            var validRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3))
+            var validRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
             {
                 Id = "rosters-1",
                 Players = new List<string>
