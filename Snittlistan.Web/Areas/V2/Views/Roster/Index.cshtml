@@ -15,17 +15,18 @@
     <div class="row">
         <div class="span4">
             <h3>Omgång @turn.Turn</h3>
-            <a href="@Url.Action("View", new { season = Model.SeasonStart, turn = turn.Turn })">
+            <em class="pull-left">
+                (<time datetime="@turn.StartDate.ToString("s")">@turn.StartDate.ToString("d MMM")</time>
+                &minus;
+                <time datetime="@turn.EndDate.ToString("s")">@turn.EndDate.ToString("d MMM")</time>)
+            </em>
+            <a class="pull-right" href="@Url.Action("View", new { season = Model.SeasonStart, turn = turn.Turn })">
                 <i class="sprite-glyphicons_029_notes_2"></i>
                 Uttagningar
             </a>
+            <div class="clearfix"></div>
         </div>
     </div>
-    <em>
-        (<time datetime="@turn.StartDate.ToString("s")">@turn.StartDate.ToString("d MMM")</time>
-        &minus;
-        <time datetime="@turn.EndDate.ToString("s")">@turn.EndDate.ToString("d MMM")</time>)
-    </em>
     var start = 0;
     while (true)
     {
