@@ -15,22 +15,97 @@
             FormMethod.Post,
             new { @class = "form-horizontal"}))
         {
+            @Html.Hidden("IsFourPlayer", Model.Roster.IsFourPlayer)
             @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
-            <table class="table table-condensed">
-                <tr>
-                    <th>Bord</th>
-                    <th>Namn</th>
-                </tr>
-                @for (var i = 0; i < 4; i++ )
-                {
+            if (Model.Roster.IsFourPlayer)
+            {
+                <table class="table table-condensed">
                     <tr>
-                        <td class="table-id" rowspan="2">@(i+1)</td>
+                        <th></th>
+                        <th>Namn</th>
+                    </tr>
+                    @for (var i = 0; i < 4; i++)
+                    {
+                        <tr>
+                            <td class="table-id">@(i+1)</td>
+                            <td>
+                                <select name="@string.Format("Player{0}", i + 1)" required>
+                                    <option value="">Välj spelare</option>
+                                    @foreach (var player in Model.AvailablePlayers)
+                                    {
+                                        var elementAtOrDefault = Model.Roster.Players.ElementAtOrDefault(i);
+                                        if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
+                                        {
+                                            <option value="@player.Id" selected="selected">@player.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@player.Id">@player.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+            else
+            {
+                <table class="table table-condensed">
+                    <tr>
+                        <th>Bord</th>
+                        <th>Namn</th>
+                    </tr>
+                    @for (var i = 0; i < 4; i++ )
+                    {
+                        <tr>
+                            <td class="table-id" rowspan="2">@(i+1)</td>
+                            <td>
+                                <select name="@string.Format("Table{0}Player1", i + 1)" required>
+                                    <option value="">Välj spelare</option>
+                                    @foreach (var player in Model.AvailablePlayers)
+                                    {
+                                        var elementAtOrDefault = Model.Roster.Players.ElementAtOrDefault(2 * i);
+                                        if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
+                                        {
+                                            <option value="@player.Id" selected="selected">@player.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@player.Id">@player.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <select name="@string.Format("Table{0}Player2", i + 1)" required>
+                                    <option value="">Välj spelare</option>
+                                    @foreach (var player in Model.AvailablePlayers)
+                                    {
+                                        var elementAtOrDefault = Model.Roster.Players.ElementAtOrDefault(2 * i + 1);
+                                        if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
+                                        {
+                                            <option value="@player.Id" selected="selected">@player.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@player.Id">@player.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td class="table-id" rowspan="2">R</td>
                         <td>
-                            <select name="@string.Format("Table{0}Player1", i + 1)" required>
-                                <option value="">Välj spelare</option>
+                            <select name="reserve">
+                                <option value="">Välj reserv</option>
                                 @foreach (var player in Model.AvailablePlayers)
                                 {
-                                    var elementAtOrDefault = Model.Roster.Players.ElementAtOrDefault(2 * i);
+                                    var elementAtOrDefault = Model.Roster.Players.ElementAtOrDefault(8);
                                     if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
                                     {
                                         <option value="@player.Id" selected="selected">@player.Name</option>
@@ -43,47 +118,8 @@
                             </select>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <select name="@string.Format("Table{0}Player2", i + 1)" required>
-                                <option value="">Välj spelare</option>
-                                @foreach (var player in Model.AvailablePlayers)
-                                {
-                                    var elementAtOrDefault = Model.Roster.Players.ElementAtOrDefault(2 * i + 1);
-                                    if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
-                                    {
-                                        <option value="@player.Id" selected="selected">@player.Name</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="@player.Id">@player.Name</option>
-                                    }
-                                }
-                            </select>
-                        </td>
-                    </tr>
-                }
-                <tr>
-                    <td class="table-id" rowspan="2">R</td>
-                    <td>
-                        <select name="reserve">
-                            <option value="">Välj reserv</option>
-                            @foreach (var player in Model.AvailablePlayers)
-                            {
-                                var elementAtOrDefault = this.Model.Roster.Players.ElementAtOrDefault(8);
-                                if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
-                                {
-                                    <option value="@player.Id" selected="selected">@player.Name</option>
-                                }
-                                else
-                                {
-                                    <option value="@player.Id">@player.Name</option>
-                                }
-                            }
-                        </select>
-                    </td>
-                </tr>
-            </table>
+                </table>
+            }
             <div class="control-group">
                 <div class="controls">
                     <label class="checkbox">

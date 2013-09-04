@@ -1,11 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
-    using System;
-    using System.Collections.Generic;
-
-    using JetBrains.Annotations;
-
-    [UsedImplicitly]
     public class RosterViewModel
     {
         public RosterViewModel()
@@ -27,6 +25,8 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public DateTime Date { get; set; }
 
+        public bool IsFourPlayer { get; set; }
+
         public string Time { get; set; }
 
         public bool Preliminary { get; set; }
@@ -35,8 +35,8 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         {
             get
             {
-                if (this.Team.Length < 1) throw new InvalidOperationException("Initialize Team first");
-                return char.ToLower(this.Team[this.Team.Length - 1]);
+                if (Team.Length < 1) throw new InvalidOperationException("Initialize Team first");
+                return char.ToLower(Team.Last());
             }
         }
 
