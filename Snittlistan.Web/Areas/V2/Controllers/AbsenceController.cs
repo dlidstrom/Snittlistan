@@ -19,8 +19,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var absences = DocumentSession.Query<AbsenceIndex.Result, AbsenceIndex>()
                 .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .Where(x => x.To >= SystemTime.UtcNow.Date.AddDays(-1))
-                .OrderBy(p => p.From)
-                .ThenBy(p => p.To)
+                .OrderBy(p => p.To)
+                .ThenBy(p => p.PlayerName)
                 .AsProjection<AbsenceIndex.Result>()
                 .ToList();
             return View(absences);
@@ -28,7 +28,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         public ActionResult Create()
         {
-            this.CreatePlayerSelectList();
+            CreatePlayerSelectList();
             return View(new CreateAbsenceViewModel());
         }
 
@@ -44,8 +44,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
             if (ModelState.IsValid == false)
             {
-                this.CreatePlayerSelectList();
-                return this.View(vm);
+                CreatePlayerSelectList();
+                return View(vm);
             }
 
             var absence = new Absence(vm.From, vm.To, vm.Player);
@@ -59,7 +59,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             var absence = DocumentSession.Load<Absence>(id);
             if (absence == null) throw new HttpException(404, "Absence not found");
-            this.CreatePlayerSelectList(absence.Player);
+            CreatePlayerSelectList(absence.Player);
             return View(absence.MapTo<CreateAbsenceViewModel>());
         }
 
@@ -75,8 +75,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
             if (ModelState.IsValid == false)
             {
-                this.CreatePlayerSelectList();
-                return this.View(vm);
+                CreatePlayerSelectList();
+                return View(vm);
             }
 
             var absence = DocumentSession.Load<Absence>(id);
@@ -91,7 +91,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             var absence = DocumentSession.Load<Absence>(id);
             if (absence == null) throw new HttpException(404, "Absence not found");
-            return this.View(absence.MapTo<AbsenceViewModel>());
+            return View(absence.MapTo<AbsenceViewModel>());
         }
 
         [HttpPost, Authorize, ActionName("Delete")]
@@ -105,7 +105,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         private void CreatePlayerSelectList(string player = "")
         {
-            this.ViewBag.Player = this.DocumentSession.Query<Player, PlayerSearch>()
+            ViewBag.Player = DocumentSession.Query<Player, PlayerSearch>()
                 .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .Where(x => x.IsSupporter == false)
                 .OrderBy(x => x.Name)
