@@ -1,4 +1,30 @@
-﻿@model List<PlayerViewModel>
+﻿@using Snittlistan.Web.Areas.V2.Domain
+@model List<PlayerViewModel>
+
+@helper ShowPlayer(PlayerViewModel player)
+{
+    <tr>
+        <td>@player.Name</td>
+        <td>@player.StatusText</td>
+        @if (Request.IsAuthenticated)
+        {
+            <td>
+                <a href="mailto:@player.Email">@player.Email</a>
+            </td>
+            <td>
+                <a href="@Url.Action("Edit", new { id = player.Id.Substring(player.Id.LastIndexOf('-') + 1) })">
+                    <i class="sprite-glyphicons_151_edit"></i>
+                </a>
+            </td>
+            <td>
+                <a href="@Url.Action("Delete", new { id = player.Id.Substring(player.Id.LastIndexOf('-') + 1) })">
+                    <i class="sprite-glyphicons_016_bin"></i>
+                </a>
+            </td>
+        }
+    </tr>
+}
+
 <div class="row">
     <div class="span6">
         <h2>Spelare och supporters</h2>
@@ -8,10 +34,14 @@
     <div class="span6">
         @if (Request.IsAuthenticated)
         {
-            <a href="@Url.Action("Create")">
+            <a class="pull-left" href="@Url.Action("Create")">
                 <i class="sprite-glyphicons_006_user_add"></i>
                 Lägg till spelare
             </a>
+            <a class="btn btn-small btn-primary pull-right" href="mailto:@string.Join(",", Model.Where(x => x.Status != Player.Status.Inactive).Select(x => x.Email))">
+                Skicka e-post till alla
+            </a>
+            <div class="clearfix"></div>
         }
     </div>
 </div>
@@ -28,37 +58,22 @@
                     <th></th>
                 }
             </tr>
-            @foreach (var player in Model)
+            @foreach (var player in Model.Where(x => x.Status == Player.Status.Active))
             {
-                <tr>
-                    <td>@player.Name</td>
-                    <td>
-                        @if (player.IsSupporter)
-                        {
-                            <text>Supporter</text>
-                        }
-                        else
-                        {
-                            <text>Aktiv</text>
-                        }
-                    </td>
-                    @if (Request.IsAuthenticated)
-                    {
-                        <td>
-                            <a href="mailto:@player.Email">@player.Email</a>
-                        </td>
-                        <td>
-                            <a href="@Url.Action("Edit", new { id = player.Id.Substring(player.Id.LastIndexOf('-') + 1) })">
-                                <i class="sprite-glyphicons_151_edit"></i>
-                            </a>
-                        </td>
-                        <td>
-                            <a href="@Url.Action("Delete", new { id = player.Id.Substring(player.Id.LastIndexOf('-') + 1) })">
-                                  <i class="sprite-glyphicons_016_bin"></i>
-                              </a>
-                        </td>
-                    }
-                </tr>
+                @ShowPlayer(player)
+            }
+
+            @foreach (var player in Model.Where(x => x.Status == Player.Status.Supporter))
+            {
+                @ShowPlayer(player)
+            }
+
+            @if (Request.IsAuthenticated)
+            {
+                foreach (var player in Model.Where(x => x.Status == Player.Status.Inactive))
+                {
+                    @ShowPlayer(player)
+                }
             }
         </table>
     </div>

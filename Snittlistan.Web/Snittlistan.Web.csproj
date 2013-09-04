@@ -267,7 +267,6 @@
     <Compile Include="DomainEvents\UserInvitedEvent.cs" />
     <Compile Include="Handlers\UserInvited.cs" />
     <Compile Include="HtmlHelpers\RequestExtensions.cs" />
-    <Compile Include="Areas\V2\AutoMapper\PlayerProfile.cs" />
     <Compile Include="Areas\V2\Indexes\PlayerSearch.cs" />
     <Compile Include="Areas\V2\Indexes\RosterSearchTerms.cs" />
     <Compile Include="Areas\V2\Domain\Roster.cs" />

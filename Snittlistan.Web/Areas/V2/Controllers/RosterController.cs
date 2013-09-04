@@ -192,14 +192,15 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var availablePlayers = DocumentSession.Query<Player, PlayerSearch>()
                 .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .OrderBy(x => x.Name)
-                .Where(p => p.IsSupporter == false);
+                .Where(p => p.PlayerStatus == Player.Status.Active)
+                .ToList();
 
             var vm = new EditRosterPlayersViewModel
             {
                 Id = id,
                 Roster = LoadRoster(roster),
                 Preliminary = roster.Preliminary,
-                AvailablePlayers = availablePlayers.MapTo<PlayerViewModel>().ToArray()
+                AvailablePlayers = availablePlayers.Select(x => new PlayerViewModel(x)).ToArray()
             };
             return View(vm);
         }

@@ -93,7 +93,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             ViewBag.Player = DocumentSession.Query<Player, PlayerSearch>()
                 .Customize(x => x.WaitForNonStaleResultsAsOfNow())
-                .Where(x => x.IsSupporter == false)
+                .Where(x => x.PlayerStatus == Player.Status.Active)
                 .OrderBy(x => x.Name)
                 .ToList()
                 .Select(
