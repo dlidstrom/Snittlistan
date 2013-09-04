@@ -1,10 +1,9 @@
-﻿using Snittlistan.Web.Areas.V2.Domain;
+﻿using AutoMapper;
+using Snittlistan.Web.Areas.V2.Domain;
+using Snittlistan.Web.Areas.V2.ViewModels;
 
 namespace Snittlistan.Web.Infrastructure.AutoMapper.Profiles
 {
-    using global::AutoMapper;
-    using Snittlistan.Web.Areas.V2.ViewModels;
-
     public class RosterProfile : Profile
     {
         protected override void Configure()

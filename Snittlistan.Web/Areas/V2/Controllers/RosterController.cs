@@ -211,7 +211,19 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             if (ModelState.IsValid == false) return EditPlayers(id);
             var roster = DocumentSession.Load<Roster>(id);
             if (roster == null) throw new HttpException(404, "Roster not found");
-            roster.Players = new List<string>
+            if (roster.IsFourPlayer)
+            {
+                roster.Players = new List<string>
+                {
+                    vm.Player1,
+                    vm.Player2,
+                    vm.Player3,
+                    vm.Player4
+                };
+            }
+            else
+            {
+                roster.Players = new List<string>
                 {
                     vm.Table1Player1,
                     vm.Table1Player2,
@@ -222,6 +234,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     vm.Table4Player1,
                     vm.Table4Player2
                 };
+            }
             roster.Preliminary = vm.Preliminary;
             if (vm.Reserve != null && DocumentSession.Load<Player>(vm.Reserve) != null)
                 roster.Players.Add(vm.Reserve);
