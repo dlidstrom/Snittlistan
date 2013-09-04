@@ -12,7 +12,6 @@ using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Helpers;
-using Snittlistan.Web.Infrastructure.AutoMapper;
 
 namespace Snittlistan.Web.Areas.V2.Controllers
 {
@@ -196,7 +195,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     Serie3 = result.Series.ElementAtOrDefault(2),
                     Serie4 = result.Series.ElementAtOrDefault(3)
                 };
-                ViewBag.players = players.MapTo<PlayerViewModel>()
+                ViewBag.players = players.Select(x => new PlayerViewModel(x))
                     .ToArray();
                 return View(vm);
             }

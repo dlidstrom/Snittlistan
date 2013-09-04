@@ -6,8 +6,8 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
     {
         public RosterChanged(string oldId, string newId)
         {
-            this.OldId = oldId;
-            this.NewId = newId;
+            OldId = oldId;
+            NewId = newId;
         }
 
         public string OldId { get; private set; }

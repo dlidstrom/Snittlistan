@@ -6,9 +6,9 @@ namespace Snittlistan.Web.Areas.V2.Domain
     {
         public Absence(DateTime from, DateTime to, string player)
         {
-            this.From = from;
-            this.To = to;
-            this.Player = player;
+            From = from;
+            To = to;
+            Player = player;
         }
 
         public int Id { get; set; }

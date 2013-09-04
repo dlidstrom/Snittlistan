@@ -30,7 +30,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var user = DocumentSession.Load<User>(id);
             if (user == null) throw new HttpException(404, "User not found");
             if (user.ActivationKey != activationKey) throw new InvalidOperationException("Unknown activation key");
-            return this.View(new SetPasswordViewModel { ActivationKey = activationKey });
+            return View(new SetPasswordViewModel { ActivationKey = activationKey });
         }
 
         [HttpPost]
@@ -38,10 +38,10 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             var user = DocumentSession.Load<User>(id);
             if (user == null) throw new HttpException(404, "User not found");
-            if (ModelState.IsValid == false) return this.View(vm);
+            if (ModelState.IsValid == false) return View(vm);
             user.SetPassword(vm.Password, vm.ActivationKey);
             authenticationService.SetAuthCookie(user.Email, true);
-            return this.RedirectToAction("Index", "Roster");
+            return RedirectToAction("Index", "Roster");
         }
     }
 }

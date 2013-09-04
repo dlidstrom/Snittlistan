@@ -1,12 +1,12 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers
-{
-    using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
+namespace Snittlistan.Web.Areas.V2.Controllers
+{
     public class RedirectController : Controller
     {
         public ActionResult Redirect()
         {
-            return this.RedirectToActionPermanent("Index", "Roster");
+            return RedirectToActionPermanent("Index", "Roster");
         }
     }
 }

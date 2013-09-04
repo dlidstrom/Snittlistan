@@ -4,13 +4,19 @@ namespace Snittlistan.Web.Areas.V2.Domain
 {
     public class Player
     {
-        public Player(string name, string email, bool isSupporter)
+        public Player(string name, string email, Status status)
         {
             if (name == null) throw new ArgumentNullException("name");
             if (email == null) throw new ArgumentNullException("email");
             Name = name;
             Email = email;
-            IsSupporter = isSupporter;
+        }
+
+        public enum Status
+        {
+            Active,
+            Supporter,
+            Inactive
         }
 
         public string Id { get; set; }
@@ -19,7 +25,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         public string Email { get; private set; }
 
-        public bool IsSupporter { get; private set; }
+        public Status PlayerStatus { get; private set; }
 
         public void SetName(string name)
         {
@@ -33,9 +39,9 @@ namespace Snittlistan.Web.Areas.V2.Domain
             Email = email;
         }
 
-        public void SetIsSupporter(bool isSupporter)
+        public void SetStatus(Status status)
         {
-            IsSupporter = isSupporter;
+            PlayerStatus = status;
         }
     }
 }

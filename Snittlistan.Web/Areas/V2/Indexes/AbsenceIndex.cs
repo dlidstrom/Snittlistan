@@ -10,17 +10,18 @@ namespace Snittlistan.Web.Areas.V2.Indexes
     {
         public AbsenceIndex()
         {
-            this.Map = absences => from absence in absences
-                                   select new
-                                   {
-                                       absence.Id,
-                                       absence.From,
-                                       absence.To,
-                                       PlayerName = this.LoadDocument<Player>(absence.Player).Name
-                                   };
+            Map = absences => from absence in absences
+                              select new
+                              {
+                                  absence.Id,
+                                  absence.From,
+                                  absence.To,
+                                  PlayerName = LoadDocument<Player>(absence.Player)
+                                      .Name
+                              };
 
-            this.Store(x => x.Id, FieldStorage.Yes);
-            this.Store(x => x.PlayerName, FieldStorage.Yes);
+            Store(x => x.Id, FieldStorage.Yes);
+            Store(x => x.PlayerName, FieldStorage.Yes);
         }
 
         public class Result

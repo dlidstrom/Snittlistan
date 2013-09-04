@@ -1,11 +1,10 @@
 ﻿using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Raven.Client.Linq;
 using Snittlistan.Web.Areas.V2.Domain;
+using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;
-using Snittlistan.Web.Infrastructure.AutoMapper;
 
 namespace Snittlistan.Web.Areas.V2.Controllers
 {
@@ -13,12 +12,12 @@ namespace Snittlistan.Web.Areas.V2.Controllers
     {
         public ActionResult Index()
         {
-            var players = DocumentSession.Query<Player>()
+            var players = DocumentSession.Query<Player, PlayerSearch>()
                 .Customize(x => x.WaitForNonStaleResultsAsOfNow())
-                .OrderBy(p => p.IsSupporter)
+                .OrderBy(p => p.PlayerStatus)
                 .ThenBy(p => p.Name)
                 .ToList();
-            var vm = players.MapTo<PlayerViewModel>();
+            var vm = players.Select(x => new PlayerViewModel(x)).ToList();
             return View(vm);
         }
 
@@ -34,7 +33,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             if (!ModelState.IsValid) return View(vm);
 
-            var player = new Player(vm.Name, vm.Email, vm.IsSupporter);
+            var player = new Player(vm.Name, vm.Email, vm.Status);
             DocumentSession.Store(player);
             return RedirectToAction("Index");
         }
@@ -44,7 +43,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             var player = DocumentSession.Load<Player>(id);
             if (player == null) throw new HttpException(404, "Player not found");
-            return View(player.MapTo<CreatePlayerViewModel>());
+            return View(new CreatePlayerViewModel(player));
         }
 
         [Authorize]
@@ -59,7 +58,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
             player.SetName(vm.Name);
             player.SetEmail(vm.Email);
-            player.SetIsSupporter(vm.IsSupporter);
+            player.SetStatus(vm.Status);
 
             return RedirectToAction("Index");
         }
@@ -70,7 +69,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var player = DocumentSession.Load<Player>(id);
             if (player == null)
                 throw new HttpException(404, "Player not found");
-            return View(player.MapTo<PlayerViewModel>());
+            return View(new PlayerViewModel(player));
         }
 
         [HttpPost]

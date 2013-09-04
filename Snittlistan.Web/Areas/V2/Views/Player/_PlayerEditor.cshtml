@@ -1,4 +1,5 @@
-﻿@model CreatePlayerViewModel
+﻿@using Snittlistan.Web.Areas.V2.Domain
+@model CreatePlayerViewModel
 
 <div class="control-group">
     <label class="control-label" for="name">Namn:</label>
@@ -7,8 +8,8 @@
                name="name"
                placeholder="Fullständigt namn"
                autofocus="autofocus"
-               autocorrect = "off"
-               autocomplete = "off"
+               autocorrect="off"
+               autocomplete="off"
                value="@Model.Name"
                required />
     </div>
@@ -26,9 +27,33 @@
     </div>
 </div>
 <div class="control-group">
+    <label class="control-label" for="status">Status:</label>
     <div class="controls">
-        <label class="checkbox">
-            @Html.EditorFor(model => model.IsSupporter) Supporter
-        </label>
+        <select name="status">
+            <option value="Active"
+                @if (Model.Status == Player.Status.Active)
+                {
+                    <text>selected = "selected"</text>
+                }
+                >
+                Aktiv
+            </option>
+            <option value="Supporter"
+                @if (Model.Status == Player.Status.Supporter)
+                {
+                    <text>selected = "selected"</text>
+                }
+                >
+                Supporter
+            </option>
+            <option value="Inactive"
+                @if (Model.Status == Player.Status.Inactive)
+                {
+                    <text>selected = "selected"</text>
+                }
+                >
+                Inaktiv
+            </option>
+        </select>
     </div>
 </div>

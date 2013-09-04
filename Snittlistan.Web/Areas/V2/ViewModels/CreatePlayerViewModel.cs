@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Snittlistan.Web.Areas.V2.Domain;
 
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
@@ -8,6 +9,14 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         {
             Name = string.Empty;
             Email = string.Empty;
+            Status = Player.Status.Active;
+        }
+
+        public CreatePlayerViewModel(Player player)
+        {
+            Name = player.Name;
+            Email = player.Email;
+            Status = player.PlayerStatus;
         }
 
         [Required]
@@ -16,6 +25,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         [Required]
         public string Email { get; set; }
 
-        public bool IsSupporter { get; set; }
+        [Required]
+        public Player.Status Status { get; set; }
     }
 }

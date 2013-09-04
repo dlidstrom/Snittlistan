@@ -12,8 +12,8 @@ namespace Snittlistan.Test
         public void GroupsByTurn()
         {
             // Arrange
-            var player1 = new Player("Daniel", "e@d.com", false) { Id = "9876" };
-            var player2 = new Player("Tomas", "s@d.com", false) { Id = "8765" };
+            var player1 = new Player("Daniel", "e@d.com", Player.Status.Active) { Id = "9876" };
+            var player2 = new Player("Tomas", "s@d.com", Player.Status.Active) { Id = "8765" };
             var teamOfWeek1 = new TeamOfWeek(1234, 2012, 10, "Team A");
             teamOfWeek1.AddResultForPlayer(player1, 210);
             teamOfWeek1.AddResultForPlayer(player2, 190);

@@ -13,7 +13,7 @@ namespace Snittlistan.Web.Areas.V2.Indexes
                              {
                                  player.Name,
                                  player.Email,
-                                 player.IsSupporter
+                                 player.PlayerStatus
                              };
         }
     }

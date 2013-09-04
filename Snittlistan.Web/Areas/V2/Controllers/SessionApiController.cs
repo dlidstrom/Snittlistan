@@ -20,7 +20,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         public ActionResult CreateSession(string email, string password, string remember)
         {
             InputError error = null;
-            var user = this.DocumentSession.FindUserByEmail(email);
+            var user = DocumentSession.FindUserByEmail(email);
             if (user == null)
                 error = new InputError("email", "Användaren existerar inte");
             else if (!user.ValidatePassword(password))
@@ -31,21 +31,21 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             // any error?
             if (error != null)
             {
-                this.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return this.Json(new { error });
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { error });
             }
 
             // sign in user by creating authentication cookie
-            this.authenticationService.SetAuthCookie(email, remember == "on");
-            return this.Json(new { isAuthenticated = true, email });
+            authenticationService.SetAuthCookie(email, remember == "on");
+            return Json(new { isAuthenticated = true, email });
         }
 
         [HttpDelete]
         [ActionName("Session")]
         public ActionResult DeleteSession()
         {
-            this.authenticationService.SignOut();
-            return this.Json(new { isAuthenticated = false });
+            authenticationService.SignOut();
+            return Json(new { isAuthenticated = false });
         }
     }
 }
