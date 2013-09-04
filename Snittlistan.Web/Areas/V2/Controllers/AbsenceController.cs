@@ -35,13 +35,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         [Authorize, HttpPost]
         public ActionResult Create(CreateAbsenceViewModel vm)
         {
-            if (vm.From < SystemTime.UtcNow.Date.AddDays(1))
-                ModelState.AddModelError("From", "Kan inte välja datum före idag");
-            if (vm.To < SystemTime.UtcNow.Date.AddDays(1))
-                ModelState.AddModelError("From", "Kan inte välja datum före idag");
-            if (vm.From > vm.To)
-                ModelState.AddModelError("From", "Från-datum kan inte vara före till-datum");
-
             if (ModelState.IsValid == false)
             {
                 CreatePlayerSelectList();
@@ -66,13 +59,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         [HttpPost, Authorize]
         public ActionResult Edit(int id, CreateAbsenceViewModel vm)
         {
-            if (vm.From < SystemTime.UtcNow.Date.AddDays(1))
-                ModelState.AddModelError("From", "Kan inte välja datum före idag");
-            if (vm.To < SystemTime.UtcNow.Date.AddDays(1))
-                ModelState.AddModelError("From", "Kan inte välja datum före idag");
-            if (vm.From > vm.To)
-                ModelState.AddModelError("From", "Från-datum kan inte vara före till-datum");
-
             if (ModelState.IsValid == false)
             {
                 CreatePlayerSelectList();
