@@ -173,7 +173,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
             var viewTurnViewModel = new ViewTurnViewModel
             {
-                Id = turn.Value,
+                Turn = turn.Value,
                 Season = season,
                 Rosters = list
             };

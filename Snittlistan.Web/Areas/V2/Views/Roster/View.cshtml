@@ -1,6 +1,6 @@
 ﻿@model ViewTurnViewModel
 
-<h3>Omgång @Model.Id säsongen @Model.Season&minus;@(Model.Season + 1)</h3>
+<h3>Omgång @Model.Turn @Model.Season&minus;@(Model.Season + 1)</h3>
 @{
     var start = 0;
     var rosters = Model.Rosters.Skip(start).Take(3).ToList();
