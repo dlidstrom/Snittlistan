@@ -200,7 +200,14 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 Id = id,
                 Roster = LoadRoster(roster),
                 Preliminary = roster.Preliminary,
-                AvailablePlayers = availablePlayers.Select(x => new PlayerViewModel(x)).ToArray()
+                AvailablePlayers = availablePlayers.Select(x => new PlayerViewModel(x)).ToArray(),
+                AbsentPlayers = DocumentSession.Query<AbsenceIndex.Result, AbsenceIndex>()
+                    .Customize(x => x.WaitForNonStaleResultsAsOfNow())
+                    .Where(x => x.From <= roster.Date.Date && roster.Date.Date <= x.To)
+                    .OrderBy(p => p.To)
+                    .ThenBy(p => p.PlayerName)
+                    .AsProjection<AbsenceIndex.Result>()
+                    .ToArray()
             };
             return View(vm);
         }
