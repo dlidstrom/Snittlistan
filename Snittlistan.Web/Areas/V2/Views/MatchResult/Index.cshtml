@@ -1,22 +1,18 @@
 ﻿@model MatchResultViewModel
 
-<div class="row">
-    <div class="span8">
-        <h2>Resultat @Model.SeasonStart&minus;@Model.SeasonEnd</h2>
-    </div>
-</div>
 @if (Request.IsAuthenticated)
 {
     <div class="row">
         <div class="span6 admin">
-            <a href="@Url.Action("Register", "MatchResultAdmin")">
-                <i class="sprite-glyphicons_030_pencil"></i>
-                Registrera matchresultat
-            </a>
-            <a href="@Url.Action("RegisterBits", "MatchResultAdmin")">
+            <a class="pull-left" href="@Url.Action("RegisterBits", "MatchResultAdmin")">
                 <i class="sprite-glyphicons_358_file_import"></i>
-                Registrera från BITS
+                Från BITS
             </a>
+            <a class="pull-right" href="@Url.Action("Register", "MatchResultAdmin")">
+                <i class="sprite-glyphicons_030_pencil"></i>
+                Manuellt resultat
+            </a>
+            <div class="clearfix"></div>
         </div>
     </div>
 }
