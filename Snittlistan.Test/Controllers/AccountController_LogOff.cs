@@ -1,12 +1,10 @@
-﻿namespace Snittlistan.Test
+﻿using Moq;
+using Snittlistan.Web.Areas.V1.Controllers;
+using Snittlistan.Web.Services;
+using Xunit;
+
+namespace Snittlistan.Test.Controllers
 {
-    using Moq;
-
-    using Snittlistan.Web.Areas.V1.Controllers;
-    using Snittlistan.Web.Services;
-
-    using Xunit;
-
     public class AccountController_LogOff : DbTest
     {
         [Fact]

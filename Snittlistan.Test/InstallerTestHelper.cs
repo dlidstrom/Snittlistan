@@ -1,13 +1,11 @@
-﻿namespace Snittlistan.Test
+﻿using System;
+using System.Linq;
+using Castle.MicroKernel;
+using Castle.Windsor;
+using Snittlistan.Web.Areas.V1.Controllers;
+
+namespace Snittlistan.Test
 {
-    using System;
-    using System.Linq;
-    using Castle.MicroKernel;
-    using Castle.Windsor;
-
-    using Snittlistan.Web.Areas.V1.Controllers;
-    using Snittlistan.Web.Controllers;
-
     public static class InstallerTestHelper
     {
         public static IHandler[] GetAllHandlers(IWindsorContainer container)

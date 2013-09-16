@@ -1,7 +1,7 @@
-﻿namespace Snittlistan.Web.Areas.V1.Controllers
-{
-    using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
+namespace Snittlistan.Web.Areas.V1.Controllers
+{
     /// <summary>
     /// Used to render email content.
     /// </summary>

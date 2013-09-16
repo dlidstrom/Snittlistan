@@ -1,15 +1,12 @@
-﻿namespace Snittlistan.Test
+﻿using System.IO;
+using System.Text;
+using Raven.Imports.Newtonsoft.Json;
+using Snittlistan.Web.Areas.V1.Models;
+using Snittlistan.Web.Models;
+using Xunit;
+
+namespace Snittlistan.Test
 {
-    using System.IO;
-    using System.Text;
-
-    using Raven.Imports.Newtonsoft.Json;
-
-    using Snittlistan.Web.Areas.V1.Models;
-    using Snittlistan.Web.Models;
-
-    using Xunit;
-
     public class SerializationTest : DbTest
     {
         [Fact]

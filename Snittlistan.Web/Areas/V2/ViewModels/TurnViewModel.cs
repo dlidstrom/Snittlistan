@@ -1,8 +1,8 @@
+using System;
+using System.Collections.Generic;
+
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
-    using System;
-    using System.Collections.Generic;
-
     public class TurnViewModel
     {
         public int Turn { get; set; }

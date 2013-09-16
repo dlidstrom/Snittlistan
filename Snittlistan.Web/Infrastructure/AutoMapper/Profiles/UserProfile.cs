@@ -1,8 +1,8 @@
-﻿namespace Snittlistan.Web.Infrastructure.AutoMapper.Profiles
-{
-    using Snittlistan.Web.Areas.V2.ViewModels;
-    using Snittlistan.Web.Models;
+﻿using Snittlistan.Web.Areas.V2.ViewModels;
+using Snittlistan.Web.Models;
 
+namespace Snittlistan.Web.Infrastructure.AutoMapper.Profiles
+{
     public class UserProfile : global::AutoMapper.Profile
     {
         protected override void Configure()

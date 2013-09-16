@@ -9,7 +9,7 @@ using Snittlistan.Web.Models;
 using Snittlistan.Web.Services;
 using Xunit;
 
-namespace Snittlistan.Test
+namespace Snittlistan.Test.Controllers
 {
     public class AccountController_Verify : DbTest
     {
@@ -17,7 +17,7 @@ namespace Snittlistan.Test
 
         public AccountController_Verify()
         {
-            this.oldContainer = DomainEvent.SetContainer(new WindsorContainer());
+            oldContainer = DomainEvent.SetContainer(new WindsorContainer());
         }
 
         [Fact]

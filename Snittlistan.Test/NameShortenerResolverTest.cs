@@ -1,14 +1,12 @@
-﻿namespace Snittlistan.Test
+﻿using Castle.Windsor;
+using Snittlistan.Web.Areas.V1.Models;
+using Snittlistan.Web.Areas.V1.ViewModels.Match;
+using Snittlistan.Web.Infrastructure.AutoMapper;
+using Snittlistan.Web.Infrastructure.Installers;
+using Xunit;
+
+namespace Snittlistan.Test
 {
-    using Castle.Windsor;
-
-    using Snittlistan.Web.Areas.V1.Models;
-    using Snittlistan.Web.Areas.V1.ViewModels.Match;
-    using Snittlistan.Web.Infrastructure.AutoMapper;
-    using Snittlistan.Web.Infrastructure.Installers;
-
-    using Xunit;
-
     public class NameShortenerResolverTest
     {
         public NameShortenerResolverTest()

@@ -1,8 +1,8 @@
-﻿namespace Snittlistan.Web.Areas.V1.ViewModels.Account
-{
-    using System.ComponentModel.DataAnnotations;
-    using System.Web.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
+namespace Snittlistan.Web.Areas.V1.ViewModels.Account
+{
     public class ChangePasswordViewModel
     {
         [HiddenInput]

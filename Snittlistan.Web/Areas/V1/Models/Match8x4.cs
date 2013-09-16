@@ -1,11 +1,10 @@
-﻿namespace Snittlistan.Web.Areas.V1.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Raven.Imports.Newtonsoft.Json;
+
+namespace Snittlistan.Web.Areas.V1.Models
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Raven.Imports.Newtonsoft.Json;
-
     /// <summary>
     /// Represents a league match.
     /// </summary>
@@ -28,9 +27,9 @@
             int bitsMatchId,
             IEnumerable<Team8x4> teams)
         {
-            this.Location = location;
-            this.Date = date;
-            this.BitsMatchId = bitsMatchId;
+            Location = location;
+            Date = date;
+            BitsMatchId = bitsMatchId;
             this.teams = teams.ToList();
         }
 
@@ -49,10 +48,10 @@
             Team8x4 homeTeam,
             Team8x4 awayTeam)
         {
-            this.Location = location;
-            this.Date = date;
-            this.BitsMatchId = bitsMatchId;
-            this.teams = new List<Team8x4> { homeTeam, awayTeam };
+            Location = location;
+            Date = date;
+            BitsMatchId = bitsMatchId;
+            teams = new List<Team8x4> { homeTeam, awayTeam };
         }
 
         /// <summary>
@@ -76,8 +75,8 @@
         [JsonIgnore]
         public Team8x4 HomeTeam
         {
-            get { return this.teams[0]; }
-            set { this.teams[0] = value; }
+            get { return teams[0]; }
+            set { teams[0] = value; }
         }
 
         /// <summary>
@@ -86,8 +85,8 @@
         [JsonIgnore]
         public Team8x4 AwayTeam
         {
-            get { return this.teams[1]; }
-            set { this.teams[1] = value; }
+            get { return teams[1]; }
+            set { teams[1] = value; }
         }
 
         /// <summary>
@@ -100,7 +99,7 @@
         /// </summary>
         public IEnumerable<Team8x4> Teams
         {
-            get { return this.teams; }
+            get { return teams; }
         }
     }
 }

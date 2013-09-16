@@ -1,8 +1,8 @@
-﻿namespace Snittlistan.Web.Areas.V2.ViewModels
-{
-    using System.ComponentModel.DataAnnotations;
-    using System.Web.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
+namespace Snittlistan.Web.Areas.V2.ViewModels
+{
     public class EditUserViewModel
     {
         [HiddenInput]

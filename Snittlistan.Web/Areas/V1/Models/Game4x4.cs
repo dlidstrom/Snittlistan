@@ -13,9 +13,9 @@
         /// <param name="score">Score of the game.</param>
         public Game4x4(string player, int pins, int score)
         {
-            this.Player = player;
-            this.Pins = pins;
-            this.Score = score;
+            Player = player;
+            Pins = pins;
+            Score = score;
         }
 
         /// <summary>

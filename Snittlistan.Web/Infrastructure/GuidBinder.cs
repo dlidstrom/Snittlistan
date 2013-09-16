@@ -1,8 +1,8 @@
-﻿namespace Snittlistan.Web.Infrastructure
-{
-    using System;
-    using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 
+namespace Snittlistan.Web.Infrastructure
+{
     public class GuidBinder : DefaultModelBinder
     {
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)

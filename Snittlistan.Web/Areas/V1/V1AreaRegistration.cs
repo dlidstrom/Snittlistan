@@ -1,7 +1,7 @@
-﻿namespace Snittlistan.Web.Areas.V1
-{
-    using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
+namespace Snittlistan.Web.Areas.V1
+{
     public class V1AreaRegistration : AreaRegistration
     {
         public override string AreaName

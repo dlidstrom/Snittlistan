@@ -1,17 +1,16 @@
+using System;
+using Raven.Imports.Newtonsoft.Json;
+
 namespace Snittlistan.Web.Helpers
 {
-    using System;
-
-    using Raven.Imports.Newtonsoft.Json;
-
     public class InputError
     {
         public InputError(string field, string reason)
         {
             if (field == null) throw new ArgumentNullException("field");
             if (reason == null) throw new ArgumentNullException("reason");
-            this.Field = field;
-            this.Reason = reason;
+            Field = field;
+            Reason = reason;
         }
 
         [JsonProperty(PropertyName = "field")]

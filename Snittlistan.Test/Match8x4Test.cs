@@ -1,10 +1,8 @@
-﻿namespace Snittlistan.Test
+﻿using Snittlistan.Web.Areas.V1.Models;
+using Xunit;
+
+namespace Snittlistan.Test
 {
-    using Snittlistan.Web.Areas.V1.Models;
-    using Snittlistan.Web.Models;
-
-    using Xunit;
-
     public class Match8x4Test : DbTest
     {
         private readonly Match8x4 match;

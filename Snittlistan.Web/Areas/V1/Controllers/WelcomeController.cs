@@ -21,19 +21,19 @@ namespace Snittlistan.Web.Areas.V1.Controllers
         {
             get
             {
-                if (this.HttpContext.Session != null && string.IsNullOrWhiteSpace((string)this.HttpContext.Session[MaintenanceAuthenticationTokenConstant]))
+                if (HttpContext.Session != null && string.IsNullOrWhiteSpace((string)HttpContext.Session[MaintenanceAuthenticationTokenConstant]))
                 {
                     var value = Guid.NewGuid().ToString();
-                    this.HttpContext.Session[MaintenanceAuthenticationTokenConstant] = value;
+                    HttpContext.Session[MaintenanceAuthenticationTokenConstant] = value;
                 }
 
-                return this.HttpContext.Session != null ? (string)this.HttpContext.Session[MaintenanceAuthenticationTokenConstant] : null;
+                return HttpContext.Session != null ? (string)HttpContext.Session[MaintenanceAuthenticationTokenConstant] : null;
             }
         }
 
         public ActionResult Index()
         {
-            this.AssertAdminUserExists();
+            AssertAdminUserExists();
 
             var email = string.Format("admin@{0}", ConfigurationManager.AppSettings["Domain"]);
             var vm = new RegisterViewModel
@@ -42,16 +42,16 @@ namespace Snittlistan.Web.Areas.V1.Controllers
                 ConfirmEmail = email
             };
 
-            return this.View(vm);
+            return View(vm);
         }
 
         [HttpPost]
         public ActionResult CreateAdmin(RegisterViewModel adminUser)
         {
-            this.AssertAdminUserExists();
+            AssertAdminUserExists();
 
-            if (!this.ModelState.IsValid)
-                return this.View("Index");
+            if (!ModelState.IsValid)
+                return View("Index");
 
             var user = new User(
                 adminUser.FirstName,
@@ -62,38 +62,38 @@ namespace Snittlistan.Web.Areas.V1.Controllers
                     Id = "Admin"
                 };
             user.Activate(false);
-            this.DocumentSession.Store(user);
+            DocumentSession.Store(user);
 
-            return this.RedirectToAction("Success");
+            return RedirectToAction("Success");
         }
 
         public ActionResult Success()
         {
-            return this.View();
+            return View();
         }
 
         public ActionResult Reset()
         {
-            Log.Info("Maintenance Authentication Token: {0}", this.MaintenanceAuthenticationToken);
-            return this.View(string.Empty);
+            Log.Info("Maintenance Authentication Token: {0}", MaintenanceAuthenticationToken);
+            return View(string.Empty);
         }
 
         [HttpPost]
         public ActionResult Reset(string token)
         {
-            if (token != this.MaintenanceAuthenticationToken)
+            if (token != MaintenanceAuthenticationToken)
             {
                 // wait a few seconds, to safeguard against attacks
                 Thread.Sleep(5000);
-                return this.View("Reset", null, token);
+                return View("Reset", null, token);
             }
 
-            var user = this.DocumentSession.Load<User>("Admin");
-            this.DocumentSession.Delete(user);
-            this.DocumentSession.SaveChanges();
+            var user = DocumentSession.Load<User>("Admin");
+            DocumentSession.Delete(user);
+            DocumentSession.SaveChanges();
 
             // expect base controller to redirect to /welcome
-            return this.RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -103,11 +103,9 @@ namespace Snittlistan.Web.Areas.V1.Controllers
 
         private void AssertAdminUserExists()
         {
-            if (this.DocumentSession.Load<User>("Admin") != null)
-            {
-                this.Response.Redirect("/");
-                this.Response.End();
-            }
+            if (DocumentSession.Load<User>("Admin") == null) return;
+            Response.Redirect("/");
+            Response.End();
         }
     }
 }

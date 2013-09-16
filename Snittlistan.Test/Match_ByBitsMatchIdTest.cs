@@ -1,9 +1,8 @@
-﻿namespace Snittlistan.Test
+﻿using Snittlistan.Web.Helpers;
+using Xunit;
+
+namespace Snittlistan.Test
 {
-    using Snittlistan.Web.Helpers;
-
-    using Xunit;
-
     public class Match_ByBitsMatchIdTest : DbTest
     {
         [Fact]

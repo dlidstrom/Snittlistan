@@ -1,16 +1,14 @@
-﻿namespace Snittlistan.Test
+﻿using System;
+using System.Diagnostics;
+using System.Web;
+using System.Web.Mvc;
+using Snittlistan.Web.Areas.V1.Controllers;
+using Snittlistan.Web.Areas.V1.Models;
+using Snittlistan.Web.Areas.V1.ViewModels.Match;
+using Xunit;
+
+namespace Snittlistan.Test.Controllers
 {
-    using System;
-    using System.Diagnostics;
-    using System.Web;
-    using System.Web.Mvc;
-
-    using Snittlistan.Web.Areas.V1.Controllers;
-    using Snittlistan.Web.Areas.V1.Models;
-    using Snittlistan.Web.Areas.V1.ViewModels.Match;
-
-    using Xunit;
-
     public class MatchController_Details8x4 : DbTest
     {
         [Fact]

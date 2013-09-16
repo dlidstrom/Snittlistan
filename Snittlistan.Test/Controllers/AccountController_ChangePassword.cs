@@ -1,18 +1,14 @@
-﻿namespace Snittlistan.Test
+﻿using System;
+using Moq;
+using Snittlistan.Web.Areas.V1.Controllers;
+using Snittlistan.Web.Areas.V1.ViewModels.Account;
+using Snittlistan.Web.Helpers;
+using Snittlistan.Web.Models;
+using Snittlistan.Web.Services;
+using Xunit;
+
+namespace Snittlistan.Test.Controllers
 {
-    using System;
-
-    using Moq;
-
-    using Snittlistan.Web.Areas.V1.Controllers;
-    using Snittlistan.Web.Areas.V1.ViewModels.Account;
-    using Snittlistan.Web.Controllers;
-    using Snittlistan.Web.Helpers;
-    using Snittlistan.Web.Models;
-    using Snittlistan.Web.Services;
-
-    using Xunit;
-
     public class AccountController_ChangePassword : DbTest
     {
         [Fact]

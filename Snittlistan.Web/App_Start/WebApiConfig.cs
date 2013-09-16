@@ -1,7 +1,7 @@
-﻿namespace Snittlistan.Web.App_Start
-{
-    using System.Web.Http;
+﻿using System.Web.Http;
 
+namespace Snittlistan.Web.App_Start
+{
     public static class WebApiConfig
     {
         public static void Register(HttpConfiguration config)

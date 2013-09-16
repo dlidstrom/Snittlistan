@@ -1,8 +1,8 @@
-﻿namespace Snittlistan.Web.Areas.V1.ViewModels.Match
-{
-    using System;
-    using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
+namespace Snittlistan.Web.Areas.V1.ViewModels.Match
+{
     public class Register4x4MatchViewModel
     {
         /// <summary>
@@ -10,10 +10,10 @@
         /// </summary>
         public Register4x4MatchViewModel()
         {
-            this.Date = DateTimeOffset.Now;
-            this.Location = string.Empty;
-            this.HomeTeam = new Team4x4ViewModel();
-            this.AwayTeam = new Team4x4ViewModel();
+            Date = DateTimeOffset.Now;
+            Location = string.Empty;
+            HomeTeam = new Team4x4ViewModel();
+            AwayTeam = new Team4x4ViewModel();
         }
 
         /// <summary>

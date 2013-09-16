@@ -1,10 +1,9 @@
-﻿namespace Snittlistan.Web.Areas.V1.Models
+﻿using System.Collections.Generic;
+using System.Linq;
+using Raven.Imports.Newtonsoft.Json;
+
+namespace Snittlistan.Web.Areas.V1.Models
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Raven.Imports.Newtonsoft.Json;
-
     /// <summary>
     /// Represents a serie in a 4-vs-4 match.
     /// </summary>
@@ -27,7 +26,7 @@
         /// </summary>
         public IEnumerable<Game4x4> Games
         {
-            get { return this.games; }
+            get { return games; }
         }
 
         /// <summary>
@@ -36,7 +35,7 @@
         /// <returns>Total pins.</returns>
         public int Pins()
         {
-            return this.Games.Sum(g => g.Pins);
+            return Games.Sum(g => g.Pins);
         }
 
         /// <summary>
@@ -45,7 +44,7 @@
         /// <returns></returns>
         public int Score()
         {
-            return this.Games.Sum(g => g.Score);
+            return Games.Sum(g => g.Score);
         }
 
         /// <summary>
@@ -55,7 +54,7 @@
         /// <returns>Pins for player.</returns>
         public int PinsForPlayer(string player)
         {
-            return this.Games.Where(g => g.Player == player).Sum(g => g.Pins);
+            return Games.Where(g => g.Player == player).Sum(g => g.Pins);
         }
     }
 }

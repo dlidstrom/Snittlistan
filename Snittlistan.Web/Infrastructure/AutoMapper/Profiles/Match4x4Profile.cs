@@ -1,9 +1,8 @@
-﻿namespace Snittlistan.Web.Infrastructure.AutoMapper.Profiles
-{
-    using Snittlistan.Web.Areas.V1.Models;
-    using Snittlistan.Web.Areas.V1.ViewModels.Match;
-    using Snittlistan.Web.Models;
+﻿using Snittlistan.Web.Areas.V1.Models;
+using Snittlistan.Web.Areas.V1.ViewModels.Match;
 
+namespace Snittlistan.Web.Infrastructure.AutoMapper.Profiles
+{
     public class Match4x4Profile : global::AutoMapper.Profile
     {
         protected override void Configure()

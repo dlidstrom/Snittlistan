@@ -11,38 +11,38 @@ namespace Snittlistan.Web.Infrastructure.Indexes
     {
         public Match_ByDate()
         {
-            this.AddMap<Match4x4>(matches => from match in matches
-                                             select new
-                                             {
-                                                 match.Id,
-                                                 Type = "4x4",
-                                                 match.Date,
-                                                 match.Location,
-                                                 HomeTeamName = match.Teams.ElementAt(0).Name,
-                                                 HomeTeamScore = match.Teams.ElementAt(0).Score,
-                                                 AwayTeamName = match.Teams.ElementAt(1).Name,
-                                                 AwayTeamScore = match.Teams.ElementAt(1).Score
-                                             });
+            AddMap<Match4x4>(matches => from match in matches
+                                        select new
+                                        {
+                                            match.Id,
+                                            Type = "4x4",
+                                            match.Date,
+                                            match.Location,
+                                            HomeTeamName = match.Teams.ElementAt(0).Name,
+                                            HomeTeamScore = match.Teams.ElementAt(0).Score,
+                                            AwayTeamName = match.Teams.ElementAt(1).Name,
+                                            AwayTeamScore = match.Teams.ElementAt(1).Score
+                                        });
 
-            this.AddMap<Match8x4>(matches => from match in matches
-                                             select new
-                                             {
-                                                 match.Id,
-                                                 Type = "8x4",
-                                                 match.Date,
-                                                 match.Location,
-                                                 HomeTeamName = match.Teams.ElementAt(0).Name,
-                                                 HomeTeamScore = match.Teams.ElementAt(0).Score,
-                                                 AwayTeamName = match.Teams.ElementAt(1).Name,
-                                                 AwayTeamScore = match.Teams.ElementAt(1).Score
-                                             });
+            AddMap<Match8x4>(matches => from match in matches
+                                        select new
+                                        {
+                                            match.Id,
+                                            Type = "8x4",
+                                            match.Date,
+                                            match.Location,
+                                            HomeTeamName = match.Teams.ElementAt(0).Name,
+                                            HomeTeamScore = match.Teams.ElementAt(0).Score,
+                                            AwayTeamName = match.Teams.ElementAt(1).Name,
+                                            AwayTeamScore = match.Teams.ElementAt(1).Score
+                                        });
 
-            this.Store(x => x.Id, FieldStorage.Yes);
-            this.Store(x => x.Type, FieldStorage.Yes);
-            this.Store(x => x.HomeTeamName, FieldStorage.Yes);
-            this.Store(x => x.HomeTeamScore, FieldStorage.Yes);
-            this.Store(x => x.AwayTeamName, FieldStorage.Yes);
-            this.Store(x => x.AwayTeamScore, FieldStorage.Yes);
+            Store(x => x.Id, FieldStorage.Yes);
+            Store(x => x.Type, FieldStorage.Yes);
+            Store(x => x.HomeTeamName, FieldStorage.Yes);
+            Store(x => x.HomeTeamScore, FieldStorage.Yes);
+            Store(x => x.AwayTeamName, FieldStorage.Yes);
+            Store(x => x.AwayTeamScore, FieldStorage.Yes);
         }
 
         public class Result
@@ -53,12 +53,12 @@ namespace Snittlistan.Web.Infrastructure.Indexes
             {
                 get
                 {
-                    return this.id;
+                    return id;
                 }
 
                 set
                 {
-                    this.id = value.Substring(value.LastIndexOf('-') + 1);
+                    id = value.Substring(value.LastIndexOf('-') + 1);
                 }
             }
 
@@ -68,9 +68,11 @@ namespace Snittlistan.Web.Infrastructure.Indexes
             public DateTimeOffset Date { get; set; }
 
             public string HomeTeamName { get; set; }
+
             public int HomeTeamScore { get; set; }
 
             public string AwayTeamName { get; set; }
+
             public int AwayTeamScore { get; set; }
 
             public string Location { get; set; }

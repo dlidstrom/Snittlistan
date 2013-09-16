@@ -1,15 +1,13 @@
-﻿using Snittlistan.Web.DomainEvents;
+﻿using System.Linq;
+using Castle.Core;
+using Castle.Windsor;
+using Snittlistan.Web.DomainEvents;
+using Snittlistan.Web.Handlers;
+using Snittlistan.Web.Infrastructure.Installers;
+using Xunit;
 
 namespace Snittlistan.Test
 {
-    using System.Linq;
-    using Castle.Core;
-    using Castle.Windsor;
-    using Snittlistan.Web.Handlers;
-    using Snittlistan.Web.Infrastructure.Installers;
-
-    using Xunit;
-
     public class HandlersInstallerTest
     {
         private readonly IWindsorContainer container;

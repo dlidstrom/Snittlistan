@@ -1,13 +1,10 @@
-﻿namespace Snittlistan.Test
+﻿using Castle.Windsor;
+using Raven.Client;
+using Snittlistan.Web.Infrastructure.Installers;
+using Xunit;
+
+namespace Snittlistan.Test
 {
-    using Castle.Windsor;
-
-    using Raven.Client;
-
-    using Snittlistan.Web.Infrastructure.Installers;
-
-    using Xunit;
-
     public class RavenInstallerTest
     {
         private readonly IWindsorContainer container;
