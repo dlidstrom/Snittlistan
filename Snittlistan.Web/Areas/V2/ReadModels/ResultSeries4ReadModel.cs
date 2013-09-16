@@ -5,9 +5,9 @@ using EventStoreLite;
 
 namespace Snittlistan.Web.Areas.V2.ReadModels
 {
-    public class ResultSeriesReadModel : IReadModel
+    public class ResultSeries4ReadModel : IReadModel
     {
-        public ResultSeriesReadModel()
+        public ResultSeries4ReadModel()
         {
             Series = new List<Serie>();
         }
@@ -18,23 +18,20 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
         public static string IdFromBitsMatchId(int id)
         {
-            return "Series-" + id;
+            return "ResultSeries4-" + id;
         }
 
         public IEnumerable<KeyValuePair<string, List<PlayerGame>>> SortedPlayers()
         {
-            var first = Series.SelectMany(x => x.Tables)
-                .Select(x => x.Game1);
-            var second = Series.SelectMany(x => x.Tables)
-                .Select(x => x.Game2);
+            var players = Series.SelectMany(x => x.Games)
+                .Select(x => x.Player);
 
-            var combined = first.Concat(second).ToList();
             var dictionary = new Dictionary<string, List<PlayerGame>>();
-            foreach (var game in combined)
+            foreach (var game in players)
             {
-                if (dictionary.ContainsKey(game.Player) == false)
+                if (dictionary.ContainsKey(game) == false)
                     dictionary.Add(
-                        game.Player,
+                        game,
                         new List<PlayerGame>
                         {
                             null,
@@ -44,15 +41,12 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
                         });
             }
 
-            for (int i = 0; i < Series.Count; i++)
+            for (var i = 0; i < Series.Count; i++)
             {
                 var serie = Series[i];
-                foreach (var table in serie.Tables)
+                foreach (var game in serie.Games)
                 {
-                    var game1 = table.Game1;
-                    var game2 = table.Game2;
-                    dictionary[game1.Player][i] = new PlayerGame(game1, table.Score);
-                    dictionary[game2.Player][i] = new PlayerGame(game2, table.Score);
+                    dictionary[game.Player][i] = new PlayerGame(game, game.Score);
                 }
             }
 
@@ -69,7 +63,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         {
             if (Series.Count > i)
             {
-                var serieSum = Series[i].Tables.Sum(t => t.Game1.Pins + t.Game2.Pins);
+                var serieSum = Series[i].Games.Sum(t => t.Pins);
                 return serieSum.ToString(CultureInfo.InvariantCulture);
             }
 
@@ -80,8 +74,8 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         {
             if (!Series.Any()) return string.Empty;
 
-            var total = Series.SelectMany(s => s.Tables)
-                .Sum(t => t.Game1.Pins + t.Game2.Pins);
+            var total = Series.SelectMany(s => s.Games)
+                .Sum(t => t.Pins);
             return total.ToString(CultureInfo.InvariantCulture);
         }
 
@@ -89,30 +83,16 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         {
             public Serie()
             {
-                Tables = new List<Table> {
-                                             new Table(),
-                                             new Table(),
-                                             new Table(),
-                                             new Table()
-                                         };
+                Games = new List<Game>
+                {
+                    new Game(),
+                    new Game(),
+                    new Game(),
+                    new Game()
+                };
             }
 
-            public List<Table> Tables { get; set; }
-        }
-
-        public class Table
-        {
-            public Table()
-            {
-                Game1 = new Game();
-                Game2 = new Game();
-            }
-
-            public int Score { get; set; }
-
-            public Game Game1 { get; set; }
-
-            public Game Game2 { get; set; }
+            public List<Game> Games { get; set; }
         }
 
         public class Game
@@ -126,9 +106,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
             public int Pins { get; set; }
 
-            public int Strikes { get; set; }
-
-            public int Spares { get; set; }
+            public int Score { get; set; }
         }
 
         public class PlayerGame
@@ -137,17 +115,11 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             {
                 Pins = game.Pins;
                 Score = score;
-                Strikes = game.Strikes;
-                Spares = game.Spares;
             }
 
             public int Score { get; private set; }
 
             public int Pins { get; private set; }
-
-            public int Strikes { get; private set; }
-
-            public int Spares { get; private set; }
         }
     }
 }
