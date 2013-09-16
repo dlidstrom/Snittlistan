@@ -40,7 +40,6 @@
                     <th>Lag</th>
                     <th>Motståndare</th>
                     <th>Resultat</th>
-                    <th></th>
                 </tr>
                 @{
                     var matchResults = Model.Turns[turn];
@@ -51,10 +50,11 @@
                         <td>@result.Location</td>
                         <td>@Content.TeamLabel(result.TeamLevel, result.Team)</td>
                         <td>@result.Opponent</td>
-                        <td>@result.TeamScore&minus;@result.OpponentScore</td>
-                        <td>@Html.ActionLink("Visa", "Details", new {
-                                                                        id = result.BitsMatchId
-                                                                    })</td>
+                        <td>
+                            <a href="@Url.Action("Details", new { id = result.BitsMatchId })">
+                                @result.TeamScore&minus;@result.OpponentScore
+                            </a>
+                        </td>
                     </tr>
                 }
             </table>

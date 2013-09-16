@@ -1,4 +1,4 @@
-﻿@model List<Snittlistan.Web.Areas.V2.Indexes.AbsenceIndex.Result>
+﻿@model Snittlistan.Web.Areas.V2.Indexes.AbsenceIndex.Result[]
 
 <div class="row">
     <div class="span6">
@@ -21,8 +21,7 @@
     <table class="table table-condensed table-striped">
         <tr>
             <th>Namn</th>
-            <th>Från</th>
-            <th>Till</th>
+            <th></th>
             @if (Request.IsAuthenticated)
             {
                 <th></th>
@@ -33,21 +32,25 @@
         {
             <tr>
                 <td>@absence.PlayerName</td>
-                <td>@absence.From.ToShortDateString()</td>
-                <td>@absence.To.ToShortDateString()</td>
-                    @if (Request.IsAuthenticated)
-                    {
-                        <td>
-                            <a href="@Url.Action("Edit", new { id = absence.Id.Substring(absence.Id.LastIndexOf('-') + 1) })">
-                                <i class="sprite-glyphicons_151_edit"></i>
-                            </a>
-                        </td>
-                        <td>
-                            <a href="@Url.Action("Delete", new { id = absence.Id.Substring(absence.Id.LastIndexOf('-') + 1) })">
-                                <i class="sprite-glyphicons_016_bin"></i>
-                            </a>
-                        </td>
-                    }
+                <td>
+                    <time datetime="@absence.From.ToString("s")">@absence.From.ToString("d MMM")</time>
+                    &minus;
+                    <time datetime="@absence.To.ToString("s")">@absence.To.ToString("d MMM")</time>
+                </td>
+
+                @if (Request.IsAuthenticated)
+                {
+                    <td>
+                        <a href="@Url.Action("Edit", new { id = absence.Id.Substring(absence.Id.LastIndexOf('-') + 1) })">
+                            <i class="sprite-glyphicons_151_edit"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Delete", new { id = absence.Id.Substring(absence.Id.LastIndexOf('-') + 1) })">
+                            <i class="sprite-glyphicons_016_bin"></i>
+                        </a>
+                    </td>
+                }
             </tr>
         }
     </table>

@@ -22,7 +22,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 .OrderBy(p => p.To)
                 .ThenBy(p => p.PlayerName)
                 .AsProjection<AbsenceIndex.Result>()
-                .ToList();
+                .ToArray();
             return View(absences);
         }
 
