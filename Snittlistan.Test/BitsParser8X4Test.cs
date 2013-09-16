@@ -6,12 +6,12 @@ using Xunit;
 
 namespace Snittlistan.Test
 {
-    public class BitsParserTest
+    public class BitsParser8X4Test
     {
         private readonly Player[] playersTeamA;
         private readonly Player[] playersTeamF;
 
-        public BitsParserTest()
+        public BitsParser8X4Test()
         {
             playersTeamA = new[]
             {
@@ -53,7 +53,7 @@ namespace Snittlistan.Test
             Assert.Equal(11, result.TeamScore);
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented yet")]
         public void CanParseAlternateHomeTeamNameWithIf()
         {
             // Arrange

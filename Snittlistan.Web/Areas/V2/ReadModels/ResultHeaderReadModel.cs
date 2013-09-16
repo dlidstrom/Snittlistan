@@ -13,10 +13,11 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             string aggregateId,
             int teamScore,
             int opponentScore,
-            int bitsMatchId)
+            int bitsMatchId,
+            bool isFourPlayer)
         {
             Id = IdFromBitsMatchId(bitsMatchId);
-            SetValues(roster, aggregateId, teamScore, opponentScore, bitsMatchId);
+            SetValues(roster, aggregateId, teamScore, opponentScore, bitsMatchId, isFourPlayer);
         }
 
         [JsonConstructor]
@@ -53,12 +54,14 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
         public int Turn { get; private set; }
 
+        public bool IsFourPlayer { get; private set; }
+
         public static string IdFromBitsMatchId(int bitsMatchId)
         {
             return "ResultHeader-" + bitsMatchId;
         }
 
-        public void SetValues(Roster roster, string aggregateId, int teamScore, int opponentScore, int bitsMatchId)
+        public void SetValues(Roster roster, string aggregateId, int teamScore, int opponentScore, int bitsMatchId, bool isFourPlayer)
         {
             Season = roster.Season;
             Turn = roster.Turn;
@@ -72,6 +75,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             TeamScore = teamScore;
             OpponentScore = opponentScore;
             BitsMatchId = bitsMatchId;
+            IsFourPlayer = isFourPlayer;
         }
     }
 }

@@ -173,7 +173,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             if (roster == null)
                 throw new HttpException(404, "Roster not found");
 
-            var players = roster.Players.Select(x => DocumentSession.Load<Player>(x))
+            var players = roster.Players
+                .Select(x => DocumentSession.Load<Player>(x))
                 .ToArray();
             var parser = new BitsParser(players);
             using (var client = new WebClient())
@@ -182,22 +183,9 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     "http://bits.swebowl.se/MatchFact.aspx?MatchId={0}",
                     model.BitsMatchId);
                 var content = client.DownloadString(address);
-                var result = parser.Parse(content, roster.Team);
-                Debug.Assert(model.BitsMatchId != null, "model.BitsMatchId != null");
-                var vm = new RegisterBitsResult
-                {
-                    BitsMatchId = model.BitsMatchId.Value,
-                    TeamScore = result.TeamScore,
-                    OpponentScore = result.OpponentScore,
-                    RosterId = model.RosterId,
-                    Serie1 = result.Series.ElementAtOrDefault(0),
-                    Serie2 = result.Series.ElementAtOrDefault(1),
-                    Serie3 = result.Series.ElementAtOrDefault(2),
-                    Serie4 = result.Series.ElementAtOrDefault(3)
-                };
-                ViewBag.players = players.Select(x => new PlayerViewModel(x))
-                    .ToArray();
-                return View(vm);
+                if (roster.IsFourPlayer)
+                    return Parse4(model, parser, content, roster, players);
+                return Parse(model, parser, content, roster, players);
             }
         }
 
@@ -239,6 +227,82 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             EventStoreSession.Store(matchResult);
 
             return RedirectToAction("Index", "MatchResult");
+        }
+
+        [HttpPost, ActionName("RegisterBitsVerify4")]
+        public ActionResult RegisterBitsVerifyConfirmed4(RegisterBitsResult4 vm)
+        {
+            if (ModelState.IsValid == false) return View(vm);
+
+            var roster = DocumentSession.Load<Roster>(vm.RosterId);
+            if (roster == null)
+                throw new HttpException(404, "Roster not found");
+
+            var matchResult = new MatchResult4(
+                roster,
+                vm.TeamScore,
+                vm.OpponentScore,
+                vm.BitsMatchId);
+            foreach (var serie in new[] { vm.Serie1, vm.Serie2, vm.Serie3, vm.Serie4 }.Where(x => x != null))
+            {
+                var games = new List<MatchGame4>();
+                for (var i = 0; i < 4; i++)
+                {
+                    var game = new MatchGame4(
+                        serie.Games[i].Player,
+                        serie.Games[i].Score,
+                        serie.Games[i].Pins);
+                    games.Add(game);
+                }
+
+                matchResult.RegisterSerie(new MatchSerie4(games));
+            }
+
+            EventStoreSession.Store(matchResult);
+
+            return RedirectToAction("Index", "MatchResult");
+        }
+
+        private ActionResult Parse(RegisterBitsVerifyModel model, BitsParser parser, string content, Roster roster,
+            Player[] players)
+        {
+            var result = parser.Parse(content, roster.Team);
+            Debug.Assert(model.BitsMatchId != null, "model.BitsMatchId != null");
+            var vm = new RegisterBitsResult
+            {
+                BitsMatchId = model.BitsMatchId.Value,
+                TeamScore = result.TeamScore,
+                OpponentScore = result.OpponentScore,
+                RosterId = model.RosterId,
+                Serie1 = result.Series.ElementAtOrDefault(0),
+                Serie2 = result.Series.ElementAtOrDefault(1),
+                Serie3 = result.Series.ElementAtOrDefault(2),
+                Serie4 = result.Series.ElementAtOrDefault(3)
+            };
+            ViewBag.players = players.Select(x => new PlayerViewModel(x))
+                .ToArray();
+            return View("RegisterBitsVerify", vm);
+        }
+
+        private ActionResult Parse4(RegisterBitsVerifyModel model, BitsParser parser, string content, Roster roster,
+            IEnumerable<Player> players)
+        {
+            var result = parser.Parse4(content, roster.Team);
+            Debug.Assert(model.BitsMatchId != null, "model.BitsMatchId != null");
+            var vm = new RegisterBitsResult4
+            {
+                BitsMatchId = model.BitsMatchId.Value,
+                TeamScore = result.TeamScore,
+                OpponentScore = result.OpponentScore,
+                RosterId = model.RosterId,
+                Serie1 = result.Series.ElementAtOrDefault(0),
+                Serie2 = result.Series.ElementAtOrDefault(1),
+                Serie3 = result.Series.ElementAtOrDefault(2),
+                Serie4 = result.Series.ElementAtOrDefault(3)
+            };
+            ViewBag.players = players.Select(x => new PlayerViewModel(x))
+                .ToArray();
+            return View("RegisterBitsVerify4", vm);
         }
     }
 }

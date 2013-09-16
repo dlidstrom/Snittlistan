@@ -1,0 +1,13 @@
+﻿@model Snittlistan.Web.Areas.V2.ReadModels.ResultSeries4ReadModel.Serie
+
+@for (var i = 0; i < 4; i++)
+{
+    <table class="table table-condensed table-bordered table-striped">
+        <tr>
+            <td>Namn</td>
+            <td>Banpoäng</td>
+            <td>Poäng</td>
+        </tr>
+        @Html.EditorFor(model => model.Games[i], "Game4")
+    </table>
+}

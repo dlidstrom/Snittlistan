@@ -14,7 +14,6 @@ namespace Snittlistan.Web.Areas.V2
                 .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .Where(x => x.Season == season)
                 .Where(x => x.Preliminary == false)
-                .Where(x => x.PlayerCount >= 8)
                 .OrderBy(x => x.Date)
                 .AsProjection<RosterSearchTerms.Result>()
                 .ToList()

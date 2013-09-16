@@ -1,0 +1,47 @@
+﻿@model Snittlistan.Web.Areas.V2.ReadModels.ResultSeries4ReadModel.Game
+@{
+    var players = (PlayerViewModel[])ViewData["players"];
+}
+<tr>
+    <td>
+        @Html.DropDownListFor(
+            m => m.Player,
+            players.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.Id,
+                Selected = x.Id == Model.Player,
+            }),
+            "Välj spelare")
+    </td>
+    <td>
+        @Html.TextBoxFor(
+            m => m.Score,
+            new
+            {
+                @class = "span1",
+                required = "required",
+                type = "number",
+                pattern = @"\d*",
+                title = "0 eller 1",
+                min = "0",
+                max = "1",
+                value = Model.Score
+            })
+    </td>
+    <td>
+        @Html.TextBoxFor(
+            m => m.Pins,
+            new
+            {
+                @class = "span1",
+                required = "required",
+                type = "number",
+                pattern = @"\d*",
+                title = "0 till 300",
+                min = "0",
+                max = "300",
+                value = Model.Pins
+            })
+    </td>
+</tr>

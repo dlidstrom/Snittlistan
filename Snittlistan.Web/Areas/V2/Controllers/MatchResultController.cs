@@ -37,11 +37,22 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var headerReadModel = DocumentSession.Load<ResultHeaderReadModel>(headerId);
             if (headerReadModel == null) throw new HttpException(404, "Match result not found");
 
-            var matchId = ResultSeriesReadModel.IdFromBitsMatchId(id);
-            var resultReadModel = DocumentSession.Load<ResultSeriesReadModel>(matchId)
-                ?? new ResultSeriesReadModel();
+            if (headerReadModel.IsFourPlayer)
+            {
+                var matchId = ResultSeries4ReadModel.IdFromBitsMatchId(id);
+                var resultReadModel = DocumentSession.Load<ResultSeries4ReadModel>(matchId)
+                    ?? new ResultSeries4ReadModel();
 
-            return View(new ResultViewModel(headerReadModel, resultReadModel));
+                return View("Details4", new Result4ViewModel(headerReadModel, resultReadModel));
+            }
+            else
+            {
+                var matchId = ResultSeriesReadModel.IdFromBitsMatchId(id);
+                var resultReadModel = DocumentSession.Load<ResultSeriesReadModel>(matchId)
+                    ?? new ResultSeriesReadModel();
+
+                return View(new ResultViewModel(headerReadModel, resultReadModel));
+            }
         }
 
         public ActionResult Turns(int? season)

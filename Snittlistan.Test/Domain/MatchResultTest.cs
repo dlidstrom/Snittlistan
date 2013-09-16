@@ -129,13 +129,14 @@ namespace Snittlistan.Test.Domain
 
             // Assert
             Assert.DoesNotThrow(() => matchResult.RegisterSerie(matchSerie));
+            Assert.Equal(typeof(SerieRegistered), matchResult.GetUncommittedChanges()[1].GetType());
         }
 
         [Fact]
         public void RosterCanHaveNinePlayers()
         {
             // Arrange
-            var invalidRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
+            var validRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -144,7 +145,7 @@ namespace Snittlistan.Test.Domain
                           }
             };
 
-            var matchResult = new MatchResult(invalidRoster, 9, 11, 123);
+            var matchResult = new MatchResult(validRoster, 9, 11, 123);
 
             // Act
             var matchSerie = new MatchSerie(
@@ -153,7 +154,7 @@ namespace Snittlistan.Test.Domain
                     new MatchTable(new MatchGame("p1", 0, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
                     new MatchTable(new MatchGame("p3", 0, 0, 0), new MatchGame("p4", 0, 0, 0), 0),
                     new MatchTable(new MatchGame("p5", 0, 0, 0), new MatchGame("p6", 0, 0, 0), 0),
-                    new MatchTable(new MatchGame("p7", 0, 0, 0), new MatchGame("p8", 0, 0, 0), 0),
+                    new MatchTable(new MatchGame("p7", 0, 0, 0), new MatchGame("p8", 0, 0, 0), 0)
                 });
 
             // Assert
@@ -182,7 +183,7 @@ namespace Snittlistan.Test.Domain
                     new MatchTable(new MatchGame("p1", 0, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
                     new MatchTable(new MatchGame("p3", 0, 0, 0), new MatchGame("p4", 0, 0, 0), 0),
                     new MatchTable(new MatchGame("p5", 0, 0, 0), new MatchGame("p6", 0, 0, 0), 0),
-                    new MatchTable(new MatchGame("p7", 0, 0, 0), new MatchGame("p8", 0, 0, 0), 0),
+                    new MatchTable(new MatchGame("p7", 0, 0, 0), new MatchGame("p8", 0, 0, 0), 0)
                 });
 
             // Assert
@@ -211,7 +212,7 @@ namespace Snittlistan.Test.Domain
                     new MatchTable(new MatchGame("p1", 0, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
                     new MatchTable(new MatchGame("p3", 0, 0, 0), new MatchGame("p4", 0, 0, 0), 0),
                     new MatchTable(new MatchGame("p5", 0, 0, 0), new MatchGame("p6", 0, 0, 0), 0),
-                    new MatchTable(new MatchGame("p7", 0, 0, 0), new MatchGame("p8", 0, 0, 0), 0),
+                    new MatchTable(new MatchGame("p7", 0, 0, 0), new MatchGame("p8", 0, 0, 0), 0)
                 });
 
             // Assert
@@ -239,7 +240,7 @@ namespace Snittlistan.Test.Domain
                     new MatchTable(new MatchGame("p1", 0, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
                     new MatchTable(new MatchGame("p3", 0, 0, 0), new MatchGame("p4", 0, 0, 0), 0),
                     new MatchTable(new MatchGame("p5", 0, 0, 0), new MatchGame("p6", 0, 0, 0), 0),
-                    new MatchTable(new MatchGame("p7", 0, 0, 0), new MatchGame("p8", 0, 0, 0), 0),
+                    new MatchTable(new MatchGame("p7", 0, 0, 0), new MatchGame("p8", 0, 0, 0), 0)
                 });
 
             // Assert
@@ -267,7 +268,7 @@ namespace Snittlistan.Test.Domain
                     new MatchTable(new MatchGame("p1", 0, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
                     new MatchTable(new MatchGame("invalid-id", 0, 0, 0), new MatchGame("p4", 0, 0, 0), 0),
                     new MatchTable(new MatchGame("p5", 0, 0, 0), new MatchGame("p6", 0, 0, 0), 0),
-                    new MatchTable(new MatchGame("p7", 0, 0, 0), new MatchGame("p8", 0, 0, 0), 0),
+                    new MatchTable(new MatchGame("p7", 0, 0, 0), new MatchGame("p8", 0, 0, 0), 0)
                 });
 
             // Assert
