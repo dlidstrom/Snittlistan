@@ -1,10 +1,9 @@
-﻿namespace Snittlistan.Web.Areas.V1.Models
+﻿using System.Collections.Generic;
+using System.Linq;
+using Raven.Imports.Newtonsoft.Json;
+
+namespace Snittlistan.Web.Areas.V1.Models
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Raven.Imports.Newtonsoft.Json;
-
     /// <summary>
     /// Represents a table in a serie.
     /// </summary>
@@ -18,7 +17,7 @@
         /// </summary>
         public Table8x4()
         {
-            this.games = new List<Game8x4>
+            games = new List<Game8x4>
             {
                 new Game8x4(string.Empty, 0),
                 new Game8x4(string.Empty, 0)
@@ -30,9 +29,11 @@
         /// </summary>
         /// <param name="games">Games in the table.</param>
         [JsonConstructor]
-// ReSharper disable UnusedMember.Global
+
+        // ReSharper disable UnusedMember.Global
         public Table8x4(IEnumerable<Game8x4> games)
-// ReSharper restore UnusedMember.Global
+
+        // ReSharper restore UnusedMember.Global
         {
             this.games = games.ToList();
         }
@@ -48,8 +49,8 @@
         [JsonIgnore]
         public Game8x4 Game1
         {
-            get { return this.games[0]; }
-            set { this.games[0] = value; }
+            get { return games[0]; }
+            set { games[0] = value; }
         }
 
         /// <summary>
@@ -58,8 +59,8 @@
         [JsonIgnore]
         public Game8x4 Game2
         {
-            get { return this.games[1]; }
-            set { this.games[1] = value; }
+            get { return games[1]; }
+            set { games[1] = value; }
         }
 
         /// <summary>
@@ -67,7 +68,7 @@
         /// </summary>
         public IEnumerable<Game8x4> Games
         {
-            get { return this.games; }
+            get { return games; }
         }
 
         /// <summary>
@@ -76,7 +77,7 @@
         /// <returns>Total pins.</returns>
         public int Pins()
         {
-            return this.Game1.Pins + this.Game2.Pins;
+            return Game1.Pins + Game2.Pins;
         }
 
         /// <summary>
@@ -86,14 +87,14 @@
         /// <returns>Pins for player.</returns>
         public int PinsForPlayer(string player)
         {
-            if (this.Game1.Player == player)
-                return this.Game1.Pins;
-            return this.Game2.Player == player ? this.Game2.Pins : 0;
+            if (Game1.Player == player)
+                return Game1.Pins;
+            return Game2.Player == player ? Game2.Pins : 0;
         }
 
         public override string ToString()
         {
-            return string.Format("{0};{1}", this.Game1, this.Game2);
+            return string.Format("{0};{1}", Game1, Game2);
         }
     }
 }

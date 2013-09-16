@@ -1,11 +1,10 @@
-﻿namespace Snittlistan.Web.Areas.V1.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Raven.Imports.Newtonsoft.Json;
+
+namespace Snittlistan.Web.Areas.V1.Models
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Raven.Imports.Newtonsoft.Json;
-
     /// <summary>
     /// Represents a league match.
     /// </summary>
@@ -26,8 +25,8 @@
             DateTimeOffset date,
             IEnumerable<Team4x4> teams)
         {
-            this.Location = location;
-            this.Date = date;
+            Location = location;
+            Date = date;
             this.teams = teams.ToList();
         }
 
@@ -44,9 +43,9 @@
             Team4x4 homeTeam,
             Team4x4 awayTeam)
         {
-            this.Location = location;
-            this.Date = date;
-            this.teams = new List<Team4x4> { homeTeam, awayTeam };
+            Location = location;
+            Date = date;
+            teams = new List<Team4x4> { homeTeam, awayTeam };
         }
 
         /// <summary>
@@ -70,8 +69,8 @@
         [JsonIgnore]
         public Team4x4 HomeTeam
         {
-            get { return this.teams[0]; }
-            set { this.teams[0] = value; }
+            get { return teams[0]; }
+            set { teams[0] = value; }
         }
 
         /// <summary>
@@ -80,8 +79,8 @@
         [JsonIgnore]
         public Team4x4 AwayTeam
         {
-            get { return this.teams[1]; }
-            set { this.teams[1] = value; }
+            get { return teams[1]; }
+            set { teams[1] = value; }
         }
 
         /// <summary>
@@ -89,7 +88,7 @@
         /// </summary>
         public IEnumerable<Team4x4> Teams
         {
-            get { return this.teams; }
+            get { return teams; }
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿namespace Snittlistan.Web.Areas.V1.ViewModels.Match
-{
-    using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
+namespace Snittlistan.Web.Areas.V1.ViewModels.Match
+{
     public class EditTeam8x4ViewModel
     {
         [HiddenInput]

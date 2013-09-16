@@ -1,9 +1,8 @@
-﻿namespace Snittlistan.Web.Areas.V1.ViewModels.Match
+﻿using System.ComponentModel.DataAnnotations;
+using Snittlistan.Web.Infrastructure.Validation;
+
+namespace Snittlistan.Web.Areas.V1.ViewModels.Match
 {
-    using System.ComponentModel.DataAnnotations;
-
-    using Snittlistan.Web.Infrastructure.Validation;
-
     /// <summary>
     /// Represents a team.
     /// </summary>
@@ -14,10 +13,10 @@
         /// </summary>
         public Team4x4ViewModel()
         {
-            this.Player1 = new Player();
-            this.Player2 = new Player();
-            this.Player3 = new Player();
-            this.Player4 = new Player();
+            Player1 = new Player();
+            Player2 = new Player();
+            Player3 = new Player();
+            Player4 = new Player();
         }
 
         /// <summary>
@@ -68,10 +67,10 @@
             /// </summary>
             public Player()
             {
-                this.Game1 = new Game();
-                this.Game2 = new Game();
-                this.Game3 = new Game();
-                this.Game4 = new Game();
+                Game1 = new Game();
+                Game2 = new Game();
+                Game3 = new Game();
+                Game4 = new Game();
             }
 
             /// <summary>
@@ -105,7 +104,7 @@
             /// </summary>
             public Game()
             {
-                this.Player = string.Empty;
+                Player = string.Empty;
             }
 
             /// <summary>

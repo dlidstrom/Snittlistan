@@ -1,7 +1,7 @@
-﻿namespace Snittlistan.Web.Infrastructure.AutoMapper.Profiles
-{
-    using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
+namespace Snittlistan.Web.Infrastructure.AutoMapper.Profiles
+{
     public static class NameShortener
     {
         private static readonly Regex ForenameSurnameRegex = new Regex(@"(?<Forename1>\w+)(?<Forename2>-\w+)? (?<Surname>\w+)");

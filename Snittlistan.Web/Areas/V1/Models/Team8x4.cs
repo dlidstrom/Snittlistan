@@ -1,10 +1,9 @@
-﻿namespace Snittlistan.Web.Areas.V1.Models
+﻿using System.Collections.Generic;
+using System.Linq;
+using Raven.Imports.Newtonsoft.Json;
+
+namespace Snittlistan.Web.Areas.V1.Models
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Raven.Imports.Newtonsoft.Json;
-
     /// <summary>
     /// Represents a team in a match.
     /// </summary>
@@ -36,9 +35,9 @@
         /// <param name="score">Total score.</param>
         public Team8x4(string name, int score)
         {
-            this.Name = name;
-            this.Score = score;
-            this.series = new List<Serie8x4>();
+            Name = name;
+            Score = score;
+            series = new List<Serie8x4>();
         }
 
         /// <summary>
@@ -50,8 +49,8 @@
         [JsonConstructor]
         public Team8x4(string name, int score, IEnumerable<Serie8x4> series)
         {
-            this.Name = name;
-            this.Score = score;
+            Name = name;
+            Score = score;
             this.series = series.ToList();
         }
 
@@ -70,7 +69,7 @@
         /// </summary>
         public IEnumerable<Serie8x4> Series
         {
-            get { return this.series; }
+            get { return series; }
         }
 
         [JsonProperty]
@@ -128,7 +127,7 @@
         /// <returns>Total pins.</returns>
         public int Pins()
         {
-            return this.Series.Sum(s => s.Pins());
+            return Series.Sum(s => s.Pins());
         }
 
         /// <summary>
@@ -138,7 +137,7 @@
         /// <returns></returns>
         public int ScoreFor(int serie)
         {
-            return this.Series.ElementAt(serie - 1).Score();
+            return Series.ElementAt(serie - 1).Score();
         }
 
         /// <summary>
@@ -148,7 +147,7 @@
         /// <returns>Total pins for the specified serie.</returns>
         public int PinsFor(int serie)
         {
-            return this.Series.ElementAt(serie - 1).Pins();
+            return Series.ElementAt(serie - 1).Pins();
         }
 
         /// <summary>
@@ -158,7 +157,7 @@
         /// <returns>Total pins for player in all series.</returns>
         public int PinsForPlayer(string player)
         {
-            return this.Series.Sum(s => s.PinsForPlayer(player));
+            return Series.Sum(s => s.PinsForPlayer(player));
         }
 
         /// <summary>
@@ -172,9 +171,9 @@
         /// <returns>Serie for pair.</returns>
         public Table8x4 TableAt(int serie, int pair)
         {
-            if (this.HomeTeam)
-                return this.series[serie].Tables.ElementAt(HomeScheme[pair][serie]);
-            return this.series[serie].Tables.ElementAt(AwayScheme[pair][serie]);
+            if (HomeTeam)
+                return series[serie].Tables.ElementAt(HomeScheme[pair][serie]);
+            return series[serie].Tables.ElementAt(AwayScheme[pair][serie]);
         }
 
         private static Serie8x4 CreateSerie(IEnumerable<Table8x4> tables, int i1, int i2, int i3, int i4)

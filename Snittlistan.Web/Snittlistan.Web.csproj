@@ -242,7 +242,6 @@
     <Compile Include="Areas\V2\ViewModels\SendMailViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\SetPasswordViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\TeamOfWeekViewModel.cs" />
-    <Compile Include="Areas\V2\ViewModels\TurnResultViewModel.cs" />
     <Compile Include="Infrastructure\Installers\EventMigratorInstaller.cs" />
     <Compile Include="Infrastructure\Installers\EventStoreSessionInstaller.cs" />
     <Compile Include="Infrastructure\JetBrains\Annotations.cs" />

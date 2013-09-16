@@ -1,9 +1,9 @@
-﻿namespace Snittlistan.Web.Infrastructure
-{
-    using System;
-    using System.Web.Mvc;
-    using System.Web.Routing;
+﻿using System;
+using System.Web.Mvc;
+using System.Web.Routing;
 
+namespace Snittlistan.Web.Infrastructure
+{
     public static class RouteCollectionExtension
     {
         public static Route MapRouteLowerCase(this RouteCollection routes, string name, string url, object defaults)

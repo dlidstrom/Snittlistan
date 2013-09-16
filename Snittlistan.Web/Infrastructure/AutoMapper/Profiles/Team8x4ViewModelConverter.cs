@@ -1,11 +1,9 @@
-﻿namespace Snittlistan.Web.Infrastructure.AutoMapper.Profiles
+﻿using System.Collections.Generic;
+using Snittlistan.Web.Areas.V1.Models;
+using Snittlistan.Web.Areas.V1.ViewModels.Match;
+
+namespace Snittlistan.Web.Infrastructure.AutoMapper.Profiles
 {
-    using System.Collections.Generic;
-
-    using Snittlistan.Web.Areas.V1.Models;
-    using Snittlistan.Web.Areas.V1.ViewModels.Match;
-    using Snittlistan.Web.Models;
-
     public class Team8x4ViewModelConverter<TFactory> : global::AutoMapper.ITypeConverter<Team8x4ViewModel, TFactory>
         where TFactory : TeamFactory, new()
     {

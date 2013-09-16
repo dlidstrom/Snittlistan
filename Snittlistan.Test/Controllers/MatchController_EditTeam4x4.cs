@@ -1,17 +1,13 @@
-﻿namespace Snittlistan.Test
+﻿using System;
+using System.Web;
+using Snittlistan.Web.Areas.V1.Controllers;
+using Snittlistan.Web.Areas.V1.Models;
+using Snittlistan.Web.Areas.V1.ViewModels.Match;
+using Snittlistan.Web.Infrastructure.AutoMapper;
+using Xunit;
+
+namespace Snittlistan.Test.Controllers
 {
-    using System;
-    using System.Web;
-
-    using Snittlistan.Web.Areas.V1.Controllers;
-    using Snittlistan.Web.Areas.V1.Models;
-    using Snittlistan.Web.Areas.V1.ViewModels.Match;
-    using Snittlistan.Web.Controllers;
-    using Snittlistan.Web.Infrastructure.AutoMapper;
-    using Snittlistan.Web.Models;
-
-    using Xunit;
-
     public class MatchController_EditTeam4x4 : DbTest
     {
         [Fact]

@@ -1,7 +1,7 @@
-﻿namespace Snittlistan.Web.Areas.V2.ViewModels
-{
-    using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
+namespace Snittlistan.Web.Areas.V2.ViewModels
+{
     public class UserViewModel
     {
         public string Id { get; set; }

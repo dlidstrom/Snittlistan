@@ -1,8 +1,8 @@
-﻿namespace Snittlistan.Web.Areas.V2.ViewModels
-{
-    using System.Collections.Generic;
-    using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
+namespace Snittlistan.Web.Areas.V2.ViewModels
+{
     public static class RosterExtensionMethods
     {
         private static readonly Dictionary<char, int> TeamLevelSortOrder = new Dictionary<char, int>

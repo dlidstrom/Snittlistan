@@ -1,11 +1,9 @@
-﻿namespace Snittlistan.Web.Infrastructure.AutoMapper.Profiles
+﻿using System.Collections.Generic;
+using Snittlistan.Web.Areas.V1.Models;
+using Snittlistan.Web.Areas.V1.ViewModels.Match;
+
+namespace Snittlistan.Web.Infrastructure.AutoMapper.Profiles
 {
-    using System.Collections.Generic;
-
-    using Snittlistan.Web.Areas.V1.Models;
-    using Snittlistan.Web.Areas.V1.ViewModels.Match;
-    using Snittlistan.Web.Models;
-
     public class Team4x4ViewModelConverter : global::AutoMapper.ITypeConverter<Team4x4ViewModel, Team4x4>
     {
         public Team4x4 Convert(global::AutoMapper.ResolutionContext context)

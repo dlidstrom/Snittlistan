@@ -1,27 +1,22 @@
-﻿using Snittlistan.Web.DomainEvents;
+﻿using System;
+using Castle.Windsor;
+using Moq;
+using Snittlistan.Web.Areas.V1.Controllers;
+using Snittlistan.Web.Areas.V1.ViewModels.Account;
+using Snittlistan.Web.DomainEvents;
+using Snittlistan.Web.Helpers;
+using Snittlistan.Web.Services;
+using Xunit;
 
-namespace Snittlistan.Test
+namespace Snittlistan.Test.Controllers
 {
-    using System;
-
-    using Castle.Windsor;
-
-    using Moq;
-
-    using Snittlistan.Web.Areas.V1.Controllers;
-    using Snittlistan.Web.Areas.V1.ViewModels.Account;
-    using Snittlistan.Web.Helpers;
-    using Snittlistan.Web.Services;
-
-    using Xunit;
-
     public class AccountController_Scenario : DbTest
     {
         private readonly IWindsorContainer oldContainer;
 
         public AccountController_Scenario()
         {
-            this.oldContainer = DomainEvent.SetContainer(new WindsorContainer());
+            oldContainer = DomainEvent.SetContainer(new WindsorContainer());
         }
 
         [Fact]

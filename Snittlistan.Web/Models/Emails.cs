@@ -1,15 +1,13 @@
-﻿namespace Snittlistan.Web.Models
+﻿using System;
+using System.Configuration;
+using System.Linq;
+using System.Net.Mail;
+using System.Text;
+using JetBrains.Annotations;
+using Postal;
+
+namespace Snittlistan.Web.Models
 {
-    using System;
-    using System.Configuration;
-    using System.Linq;
-    using System.Net.Mail;
-    using System.Text;
-
-    using JetBrains.Annotations;
-
-    using Postal;
-
     public static class Emails
     {
         public static void InviteUser(string recipient, string subject, string id, string activationKey)
@@ -32,10 +30,10 @@
                 recipient,
                 subject,
                 o =>
-                    {
-                        o.Id = id;
-                        o.ActivationKey = activationKey;
-                    });
+                {
+                    o.Id = id;
+                    o.ActivationKey = activationKey;
+                });
         }
 
         public static void SendMail(string email, string subject, string content)
@@ -57,6 +55,7 @@
             email.To = recipient;
             email.From = ConfigurationManager.AppSettings["OwnerEmail"];
             email.Subject = string.Format("=?utf-8?B?{0}?=", Convert.ToBase64String(Encoding.UTF8.GetBytes(subject)));
+
             // add moderators
             var moderators = new MailAddressCollection();
             var moderatorEmails = ConfigurationManager.AppSettings["OwnerEmail"].Split(';')

@@ -1,9 +1,9 @@
-﻿namespace Snittlistan.Web.Areas.V1.ViewModels.Match
-{
-    using System;
-    using System.ComponentModel.DataAnnotations;
-    using System.Web.Mvc;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
+namespace Snittlistan.Web.Areas.V1.ViewModels.Match
+{
     /// <summary>
     /// Represents the view used to register a match.
     /// </summary>
@@ -14,10 +14,10 @@
         /// </summary>
         public Register8x4MatchViewModel()
         {
-            this.Date = DateTime.Now;
-            this.Location = string.Empty;
-            this.HomeTeam = new Team8x4ViewModel();
-            this.AwayTeam = new Team8x4ViewModel();
+            Date = DateTime.Now;
+            Location = string.Empty;
+            HomeTeam = new Team8x4ViewModel();
+            AwayTeam = new Team8x4ViewModel();
         }
 
         /// <summary>

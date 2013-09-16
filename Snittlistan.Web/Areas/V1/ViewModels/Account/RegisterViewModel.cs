@@ -1,7 +1,7 @@
-﻿namespace Snittlistan.Web.Areas.V1.ViewModels.Account
-{
-    using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
+namespace Snittlistan.Web.Areas.V1.ViewModels.Account
+{
     public class RegisterViewModel
     {
         [Required(ErrorMessage = "Ange ditt förnamn")]

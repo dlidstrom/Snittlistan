@@ -1,11 +1,13 @@
-﻿namespace Snittlistan.Web.Areas.V1.Models
-{
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
+namespace Snittlistan.Web.Areas.V1.Models
+{
     public abstract class TeamFactory
     {
         public List<Serie8x4> Series { get; set; }
+
         public string Name { get; set; }
+
         public int Score { get; set; }
 
         public abstract Team8x4 CreateTeam();

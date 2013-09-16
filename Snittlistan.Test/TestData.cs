@@ -1,13 +1,10 @@
-﻿namespace Snittlistan.Test
+﻿using System.Collections.Generic;
+using System.Linq;
+using Snittlistan.Web.Areas.V1.Models;
+using Xunit;
+
+namespace Snittlistan.Test
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Snittlistan.Web.Areas.V1.Models;
-    using Snittlistan.Web.Models;
-
-    using Xunit;
-
     public static class TestData
     {
         private static readonly Dictionary<int, int[]> Result8X4 = new Dictionary<int, int[]>

@@ -1,8 +1,8 @@
-﻿namespace Snittlistan.Web.Areas.V1.ViewModels.Match
-{
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
+namespace Snittlistan.Web.Areas.V1.ViewModels.Match
+{
     /// <summary>
     /// Used to display match details for a single team.
     /// </summary>
@@ -24,7 +24,9 @@
         public class Game
         {
             public string Player { get; set; }
+
             public int Pins { get; set; }
+
             public int Score { get; set; }
         }
     }

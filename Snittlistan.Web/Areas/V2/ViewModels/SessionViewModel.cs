@@ -1,7 +1,7 @@
+using Raven.Imports.Newtonsoft.Json;
+
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
-    using Raven.Imports.Newtonsoft.Json;
-
     public class SessionViewModel
     {
         [JsonProperty(PropertyName = "isAuthenticated")]

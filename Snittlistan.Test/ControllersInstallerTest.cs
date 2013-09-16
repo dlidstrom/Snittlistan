@@ -1,15 +1,13 @@
-﻿namespace Snittlistan.Test
+﻿using System.Linq;
+using System.Web.Mvc;
+using Castle.Core;
+using Castle.Core.Internal;
+using Castle.Windsor;
+using Snittlistan.Web.Infrastructure.Installers;
+using Xunit;
+
+namespace Snittlistan.Test
 {
-    using System.Linq;
-    using System.Web.Mvc;
-    using Castle.Core;
-    using Castle.Core.Internal;
-    using Castle.Windsor;
-
-    using Snittlistan.Web.Infrastructure.Installers;
-
-    using Xunit;
-
     public class ControllersInstallerTest
     {
         private readonly IWindsorContainer container;

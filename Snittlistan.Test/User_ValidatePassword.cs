@@ -1,12 +1,10 @@
 ﻿using Snittlistan.Web.DomainEvents;
+using Snittlistan.Web.Helpers;
+using Snittlistan.Web.Models;
+using Xunit;
 
 namespace Snittlistan.Test
 {
-    using Snittlistan.Web.Helpers;
-    using Snittlistan.Web.Models;
-
-    using Xunit;
-
     public class User_ValidatePassword : DbTest
     {
         [Fact]

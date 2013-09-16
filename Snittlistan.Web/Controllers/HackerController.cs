@@ -1,12 +1,12 @@
-﻿namespace Snittlistan.Web.Controllers
-{
-    using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
+namespace Snittlistan.Web.Controllers
+{
     public class HackerController : Controller
     {
         public ActionResult Index()
         {
-            return this.View();
+            return View();
         }
     }
 }

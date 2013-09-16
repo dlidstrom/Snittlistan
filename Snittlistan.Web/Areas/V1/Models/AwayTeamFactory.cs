@@ -7,7 +7,7 @@
     {
         public override Team8x4 CreateTeam()
         {
-            return Team8x4.CreateAwayTeam(this.Name, this.Score, this.Series);
+            return Team8x4.CreateAwayTeam(Name, Score, Series);
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿namespace Snittlistan.Web.Infrastructure
-{
-    using System.Web;
+﻿using System.Web;
 
+namespace Snittlistan.Web.Infrastructure
+{
     public class MailHttpResponse : HttpResponseBase
     {
         /// <summary>

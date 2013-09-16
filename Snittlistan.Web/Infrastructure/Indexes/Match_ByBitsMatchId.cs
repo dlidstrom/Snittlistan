@@ -8,8 +8,11 @@ namespace Snittlistan.Web.Infrastructure.Indexes
     {
         public Match_ByBitsMatchId()
         {
-            this.Map = matches => from match in matches
-                                  select new { match.BitsMatchId };
+            Map = matches => from match in matches
+                             select new
+                             {
+                                 match.BitsMatchId
+                             };
         }
 
         public class Result

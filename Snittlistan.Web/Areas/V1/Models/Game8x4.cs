@@ -12,8 +12,8 @@
         /// <param name="pins">Pins of the game.</param>
         public Game8x4(string player, int pins)
         {
-            this.Player = player;
-            this.Pins = pins;
+            Player = player;
+            Pins = pins;
         }
 
         /// <summary>

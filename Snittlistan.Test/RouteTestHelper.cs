@@ -1,15 +1,14 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Web;
+using System.Web.Routing;
+using Moq;
+using Xunit;
+
 namespace Snittlistan.Test
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Linq;
-    using System.Web;
-    using System.Web.Routing;
-    using Moq;
-
-    using Xunit;
-
     public static class RouteTestHelper
     {
         public static void Maps(this RouteCollection routes, string httpVerb, string url, object expectations)

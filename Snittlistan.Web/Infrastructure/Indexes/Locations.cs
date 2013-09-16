@@ -8,15 +8,19 @@ namespace Snittlistan.Web.Infrastructure.Indexes
     {
         public Locations()
         {
-            this.Map = matches => from match in matches
-                                  select new { match.Location };
+            Map = matches => from match in matches
+                             select new
+                             {
+                                 match.Location
+                             };
 
-            this.Reduce = results => from result in results
-                                     group result by result.Location into g
-                                     select new Result
-                                     {
-                                         Location = g.Key
-                                     };
+            Reduce = results => from result in results
+                                group result by result.Location
+                                    into g
+                                    select new Result
+                                    {
+                                        Location = g.Key
+                                    };
         }
 
         public class Result

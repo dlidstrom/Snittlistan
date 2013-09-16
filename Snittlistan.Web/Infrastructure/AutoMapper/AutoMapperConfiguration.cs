@@ -1,7 +1,7 @@
-﻿namespace Snittlistan.Web.Infrastructure.AutoMapper
-{
-    using Castle.Windsor;
+﻿using Castle.Windsor;
 
+namespace Snittlistan.Web.Infrastructure.AutoMapper
+{
     public static class AutoMapperConfiguration
     {
         public static void Configure(IWindsorContainer container)

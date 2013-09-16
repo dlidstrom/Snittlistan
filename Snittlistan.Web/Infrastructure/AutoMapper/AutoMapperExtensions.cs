@@ -1,9 +1,9 @@
-﻿namespace Snittlistan.Web.Infrastructure.AutoMapper
-{
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
+namespace Snittlistan.Web.Infrastructure.AutoMapper
+{
     public static class AutoMapperExtensions
     {
         public static List<TResult> MapTo<TResult>(this IEnumerable self)

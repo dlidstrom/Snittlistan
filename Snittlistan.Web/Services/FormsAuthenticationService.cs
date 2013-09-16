@@ -1,7 +1,7 @@
-﻿namespace Snittlistan.Web.Services
-{
-    using System.Web.Security;
+﻿using System.Web.Security;
 
+namespace Snittlistan.Web.Services
+{
     /// <summary>
     /// Implements an authentication service using FormsAuthentication.
     /// </summary>
