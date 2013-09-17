@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Raven.Client.Indexes;
 using Snittlistan.Web.Areas.V2.ReadModels;
@@ -18,7 +19,7 @@ namespace Snittlistan.Web.Areas.V2.Indexes
                                  result.TotalPins,
                                  Last5 = Enumerable.Repeat(new
                                  {
-                                     result.BitsMatchId,
+                                     result.Date,
                                      result.TotalSeries,
                                      result.TotalPins
                                  }, 1),
@@ -39,14 +40,14 @@ namespace Snittlistan.Web.Areas.V2.Indexes
                                     TotalSeries = g.Sum(x => x.TotalSeries),
                                     TotalPins = g.Sum(x => x.TotalPins),
                                     Last5 = g.SelectMany(x => x.Last5)
-                                        .OrderByDescending(x => x.BitsMatchId)
+                                        .OrderByDescending(x => x.Date)
                                         .Take(5),
                                     Last5TotalPins = g.SelectMany(x => x.Last5)
-                                        .OrderByDescending(x => x.BitsMatchId)
+                                        .OrderByDescending(x => x.Date)
                                         .Take(5)
                                         .Sum(x => x.TotalPins),
                                     Last5TotalSeries = g.SelectMany(x => x.Last5)
-                                        .OrderByDescending(x => x.BitsMatchId)
+                                        .OrderByDescending(x => x.Date)
                                         .Take(5)
                                         .Sum(x => x.TotalSeries)
                                 };
@@ -54,7 +55,7 @@ namespace Snittlistan.Web.Areas.V2.Indexes
 
         public class Game
         {
-            public int BitsMatchId { get; set; }
+            public DateTimeOffset Date { get; set; }
 
             public int TotalSeries { get; set; }
 

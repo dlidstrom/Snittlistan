@@ -1,16 +1,18 @@
-﻿using EventStoreLite;
+﻿using System;
+using EventStoreLite;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 
 namespace Snittlistan.Web.Areas.V2.ReadModels
 {
     public class ResultForPlayerReadModel : IReadModel
     {
-        public ResultForPlayerReadModel(int season, string playerId, int bitsMatchId)
+        public ResultForPlayerReadModel(int season, string playerId, int bitsMatchId, DateTime date)
         {
             Season = season;
             PlayerId = playerId;
             BitsMatchId = bitsMatchId;
             Id = GetId(playerId, bitsMatchId);
+            Date = date;
         }
 
         public string Id { get; private set; }
@@ -20,6 +22,8 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         public string PlayerId { get; private set; }
 
         public int BitsMatchId { get; private set; }
+
+        public DateTime Date { get; set; }
 
         public int TotalPins { get; private set; }
 
