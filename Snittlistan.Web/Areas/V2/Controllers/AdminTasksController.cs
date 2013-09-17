@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using EventStoreLite;
@@ -131,7 +132,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 if (indexNames.Length == 0) break;
                 foreach (var indexName in indexNames)
                 {
-                    DocumentStore.DatabaseCommands.DeleteIndex(indexName);
+                    if (string.Equals(indexName, "Raven/DocumentsByEntityName", StringComparison.OrdinalIgnoreCase) == false)
+                        DocumentStore.DatabaseCommands.DeleteIndex(indexName);
                 }
             }
 
