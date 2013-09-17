@@ -11,7 +11,6 @@
             <tr>
                 <th>#</th>
                 <th>Namn</th>
-                <th>Serier</th>
                 <th>Säsong</th>
                 <th><span class="badge badge-success">5</span></th>
                 <th>Form</th>
@@ -24,8 +23,7 @@
                 <tr>
                     <td>@(++index)</td>
                     <td>@item.Name</td>
-                    <td>@item.TotalSeries</td>
-                    <td>@item.FormattedSeasonAverage()</td>
+                    <td>@string.Format("{0} ({1})", item.FormattedSeasonAverage(), item.TotalSeries)</td>
                     <td>@item.FormattedLast5Average()</td>
                     <td class="@item.Class()">
                         @item.FormattedDiff()
