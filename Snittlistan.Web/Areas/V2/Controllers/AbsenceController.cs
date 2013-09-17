@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Raven.Abstractions;
@@ -91,19 +92,29 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         private void CreatePlayerSelectList(string player = "")
         {
-            ViewBag.Player = DocumentSession.Query<Player, PlayerSearch>()
-                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
-                .Where(x => x.PlayerStatus == Player.Status.Active)
-                .OrderBy(x => x.Name)
-                .ToList()
-                .Select(
-                    x => new SelectListItem
-                    {
-                        Text = x.Name,
-                        Value = x.Id,
-                        Selected = x.Id == player
-                    })
-                .ToList();
+            var playerList = new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Text = "Välj medlem",
+                    Value = string.Empty
+                }
+            };
+            playerList.AddRange(
+                DocumentSession.Query<Player, PlayerSearch>()
+                    .Customize(x => x.WaitForNonStaleResultsAsOfNow())
+                    .Where(x => x.PlayerStatus == Player.Status.Active)
+                    .OrderBy(x => x.Name)
+                    .ToList()
+                    .Select(
+                        x => new SelectListItem
+                        {
+                            Text = x.Name,
+                            Value = x.Id,
+                            Selected = x.Id == player
+                        })
+                    .ToArray());
+            ViewBag.Player = playerList;
         }
     }
 }
