@@ -39,7 +39,8 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             var roster = DocumentSession.Load<Roster>(e.RosterId);
             foreach (var player in e.RosterPlayers)
             {
-                DocumentSession.Store(new ResultForPlayerReadModel(roster.Season, player, e.BitsMatchId));
+                var model = new ResultForPlayerReadModel(roster.Season, player, e.BitsMatchId, roster.Date);
+                DocumentSession.Store(model);
             }
         }
 
@@ -48,7 +49,8 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             var roster = DocumentSession.Load<Roster>(e.RosterId);
             foreach (var player in e.RosterPlayers)
             {
-                DocumentSession.Store(new ResultForPlayerReadModel(roster.Season, player, e.BitsMatchId));
+                var model = new ResultForPlayerReadModel(roster.Season, player, e.BitsMatchId, roster.Date);
+                DocumentSession.Store(model);
             }
         }
     }
