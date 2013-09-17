@@ -56,6 +56,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
             store.Conventions.DefaultQueryingConsistency = ConsistencyOptions.QueryYourWrites;
             store.Conventions.FindTypeTagName = type => type == typeof(Match8x4) ? "Matches" : DocumentConvention.DefaultTypeTagName(type);
             store.Conventions.FindIdentityProperty = FindIdentityProperty;
+            store.Conventions.MaxNumberOfRequestsPerSession = 1024;
 
             // create indexes
             IndexCreator.CreateIndexes(store);

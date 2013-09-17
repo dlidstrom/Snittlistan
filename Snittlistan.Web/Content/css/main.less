@@ -5,6 +5,15 @@
 @personal-best-color: gold;
 @season-best-color: silver;
 @game-300-color: red;
+@form-plus-10: #63be7b;
+@form-plus-6: #a2d07f;
+@form-plus-4: #c1da81;
+@form-plus-2: #e0e383;
+@form-0: #ffeb84;
+@form-minus-2: #fdd17f;
+@form-minus-4: #fcb77a;
+@form-minus-6: #fa9d75;
+@form-minus-10: #f8696b;
 
 .container
 {
@@ -95,9 +104,134 @@ button.btn
     .team-label(@team-f-color);
 }
 
-.label-team-b
-{
+.label-team-b {
     .team-label(@team-b-color);
+}
+
+.form (@color) {
+    background-color: @color;
+    color: black;
+    font-weight: bold;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.6);
+}
+
+.form-plus-10 {
+    .form(@form-plus-10);
+
+    &:before {
+        content: '\25B2';
+        display: inline-block;
+        text-shadow: 0 1px 1px rgba(255,255,255,0.6);
+        font-size: 16px;
+    }
+}
+
+.form-plus-6 {
+    .form(@form-plus-6);
+
+    &:before {
+        content: '\25B2';
+        display: inline-block;
+        text-shadow: 0 1px 1px rgba(255,255,255,0.6);
+        font-size: 16px;
+    }
+}
+
+.form-plus-4 {
+    .form(@form-plus-4);
+
+    &:before {
+        content: '\25B2';
+        display: inline-block;
+        text-shadow: 0 1px 1px rgba(255,255,255,0.6);
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+        font-size: 16px;
+    }
+}
+
+.form-plus-2 {
+    .form(@form-plus-2);
+
+    &:before {
+        content: '\25B2';
+        display: inline-block;
+        text-shadow: 0 1px 1px rgba(255,255,255,0.6);
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+        font-size: 16px;
+    }
+}
+
+.form-0 {
+    .form(@form-0);
+
+    &:before {
+        content: '\25BA';
+        display: inline-block;
+        text-shadow: 0 1px 1px rgba(255,255,255,0.6);
+        font-size: 16px;
+    }
+}
+
+.form-minus-2 {
+    .form(@form-minus-2);
+
+    &:before {
+        content: '\25BA';
+        display: inline-block;
+        text-shadow: 0 1px 1px rgba(255,255,255,0.6);
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+        font-size: 16px;
+    }
+}
+
+.form-minus-4 {
+    .form(@form-minus-4);
+
+    &:before {
+        content: '\25BA';
+        display: inline-block;
+        text-shadow: 0 1px 1px rgba(255,255,255,0.6);
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+        font-size: 16px;
+    }
+}
+
+.form-minus-6 {
+    .form(@form-minus-6);
+
+    &:before {
+        content: '\25BC';
+        display: inline-block;
+        text-shadow: 0 1px 1px rgba(255,255,255,0.6);
+        font-size: 16px;
+    }
+}
+
+.form-minus-10 {
+    .form(@form-minus-10);
+
+    &:before {
+        content: '\25BC';
+        display: inline-block;
+        text-shadow: 0 1px 1px rgba(255,255,255,0.6);
+        font-size: 16px;
+    }
 }
 
 .accomplishment-label (@color)
