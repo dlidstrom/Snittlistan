@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Snittlistan.Web.Areas.V2.Controllers.MatchResultController.PlayerForm>
+
+<div class="row">
+    <div class="span12">
+        <p class="lead">
+            <span class="badge badge-success">5</span> innebär medel över de senaste 5 matcherna.
+            Säsong innebär medel över säsongen.
+            Form är skillnaden mellan de två.
+        </p>
+        <table class="table table-condensed table-bordered">
+            <tr>
+                <th>#</th>
+                <th>Namn</th>
+                <th>Serier</th>
+                <th>Säsong</th>
+                <th><span class="badge badge-success">5</span></th>
+                <th>Form</th>
+            </tr>
+            @{
+                var index = 0;
+            }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@(++index)</td>
+                    <td>@item.Name</td>
+                    <td>@item.TotalSeries</td>
+                    <td>@item.FormattedSeasonAverage()</td>
+                    <td>@item.FormattedLast5Average()</td>
+                    <td class="@item.Class()">
+                        @item.FormattedDiff()
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

@@ -43,7 +43,8 @@ namespace Snittlistan.Web.HtmlHelpers
             var anchor = new TagBuilder("a");
             anchor.MergeAttribute("href", url);
             var li = new TagBuilder("i");
-            li.MergeAttribute("class", icon);
+            if (string.IsNullOrWhiteSpace(icon) == false)
+                li.MergeAttribute("class", icon);
             anchor.InnerHtml = li + text;
             tag.InnerHtml = anchor.ToString();
             return new HtmlString(tag.ToString());

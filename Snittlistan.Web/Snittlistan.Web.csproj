@@ -210,11 +210,14 @@
     <Compile Include="Areas\V2\Handlers\ResultSeries4Handler.cs" />
     <Compile Include="Areas\V2\Handlers\ResultSeriesHandler.cs" />
     <Compile Include="Areas\V2\Handlers\TeamOfWeekHandler.cs" />
+    <Compile Include="Areas\V2\Handlers\Top5Handler.cs" />
+    <Compile Include="Areas\V2\Indexes\ResultForPlayerIndex.cs" />
     <Compile Include="Areas\V2\Indexes\ResultHeaderIndex.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\RosterChanged.cs" />
     <Compile Include="Areas\V2\Domain\Match\MatchResult.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\MatchResultRegistered.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\MatchResultUpdated.cs" />
+    <Compile Include="Areas\V2\ReadModels\ResultForPlayerReadModel.cs" />
     <Compile Include="Areas\V2\ReadModels\ResultSeries4ReadModel.cs" />
     <Compile Include="Areas\V2\ReadModels\ResultSeriesModel.cs" />
     <Compile Include="Areas\V2\ReadModels\ResultHeaderReadModel.cs" />
@@ -503,6 +506,7 @@
     <Content Include="Areas\V2\Views\MatchResultAdmin\EditorTemplates\Game4.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\Details4.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\DisplayTemplates\Result4.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\Form.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />

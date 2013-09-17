@@ -66,30 +66,29 @@ namespace Snittlistan.Web.Infrastructure.Indexes
                                         });
 
             Reduce = results => from result in results
-                                group result by result.Player
-                                    into stat
-                                    select new Result
-                                    {
-                                        Player = stat.Key,
-                                        Pins = stat.Sum(s => s.Pins),
-                                        MinDate = new DateTime(stat.Min(x => x.MinDate.Ticks)),
-                                        Last20Games = stat.SelectMany(x => x.Last20Games)
-                                            .OrderByDescending(x => x.Date)
-                                            .Take(20),
-                                        Last20GamesAvg = stat.SelectMany(x => x.Last20Games)
-                                            .OrderByDescending(x => x.Date)
-                                            .Take(20)
-                                            .Average(x => x.Pins),
-                                        Series = stat.Sum(s => s.Series),
-                                        Score = stat.Sum(s => s.Score),
-                                        BestGame = stat.Max(s => s.BestGame),
-                                        GamesWithStats = stat.Sum(x => x.GamesWithStats),
-                                        Strikes = stat.Sum(s => s.Strikes),
-                                        Misses = stat.Sum(s => s.Misses),
-                                        OnePinMisses = stat.Sum(s => s.OnePinMisses),
-                                        Splits = stat.Sum(s => s.Splits),
-                                        CoveredAll = stat.Sum(s => s.CoveredAll)
-                                    };
+                                group result by result.Player into stat
+                                select new Result
+                                {
+                                    Player = stat.Key,
+                                    Pins = stat.Sum(s => s.Pins),
+                                    MinDate = new DateTime(stat.Min(x => x.MinDate.Ticks)),
+                                    Last20Games = stat.SelectMany(x => x.Last20Games)
+                                        .OrderByDescending(x => x.Date)
+                                        .Take(20),
+                                    Last20GamesAvg = stat.SelectMany(x => x.Last20Games)
+                                        .OrderByDescending(x => x.Date)
+                                        .Take(20)
+                                        .Average(x => x.Pins),
+                                    Series = stat.Sum(s => s.Series),
+                                    Score = stat.Sum(s => s.Score),
+                                    BestGame = stat.Max(s => s.BestGame),
+                                    GamesWithStats = stat.Sum(x => x.GamesWithStats),
+                                    Strikes = stat.Sum(s => s.Strikes),
+                                    Misses = stat.Sum(s => s.Misses),
+                                    OnePinMisses = stat.Sum(s => s.OnePinMisses),
+                                    Splits = stat.Sum(s => s.Splits),
+                                    CoveredAll = stat.Sum(s => s.CoveredAll)
+                                };
         }
 
         public class Game
