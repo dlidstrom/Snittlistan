@@ -248,9 +248,9 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
                 .Where(x => x.Turn == turn && x.Season == season)
                 .ToArray();
-            var from = rosters.Select(x => x.Date)
+            var from = rosters.Select(x => x.Date.Date)
                 .Min();
-            var to = rosters.Select(x => x.Date)
+            var to = rosters.Select(x => x.Date.Date)
                 .Max();
 
             /*
