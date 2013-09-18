@@ -11,7 +11,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
     /// <summary>
     /// User administration.
     /// </summary>
-    public class UserController : AdminController
+    public class UserController : AbstractController
     {
         private readonly IAuthenticationService authenticationService;
 
