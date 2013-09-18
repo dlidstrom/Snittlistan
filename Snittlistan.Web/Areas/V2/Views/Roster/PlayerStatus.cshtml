@@ -1,19 +1,17 @@
 ﻿@model IEnumerable<PlayerStatusViewModel>
 
 <div class="row">
-    <div class="span6">
-        <h5>Spelarstatus</h5>
-    </div>
-</div>
-<div class="row">
-    <div class="span8">
+    <div class="span12">
+        <p class="lead">
+            Verifiera att inga uttagna spelare har anmält frånvaro.
+        </p>
         <table class="table table-condensed">
             <tr>
                 <th>Namn</th>
                 <th></th>
                 <th>Säsong</th>
                 <th><span class="badge badge-success">5</span></th>
-                <th></th>
+                <th>Form</th>
             </tr>
             @foreach (var activity in Model)
             {
