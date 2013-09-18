@@ -20,3 +20,11 @@
     start += 3;
     rosters = Model.Rosters.Skip(start).Take(3).ToList();
 }
+@if (Request.IsAuthenticated)
+{
+    @Html.Action("PlayerStatus", new
+    {
+        turn = Model.Turn,
+        season = Model.Season
+    })
+}

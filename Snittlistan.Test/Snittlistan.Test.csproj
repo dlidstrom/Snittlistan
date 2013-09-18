@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BitsParser4x4Test.cs" />
+    <Compile Include="PlayerStatusViewModelTest.cs" />
     <Compile Include="Domain\MatchGame4Test.cs" />
     <Compile Include="Domain\MatchResult4Test.cs" />
     <Compile Include="TeamViewModelTest.cs" />

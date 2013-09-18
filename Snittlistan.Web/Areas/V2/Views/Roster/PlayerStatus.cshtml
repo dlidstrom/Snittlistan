@@ -1,0 +1,51 @@
+﻿@model IEnumerable<PlayerStatusViewModel>
+
+<div class="row">
+    <div class="span6">
+        <h5>Spelarstatus</h5>
+    </div>
+</div>
+<div class="row">
+    <div class="span8">
+        <table class="table table-condensed">
+            <tr>
+                <th>Namn</th>
+                <th></th>
+                <th>Säsong</th>
+                <th><span class="badge badge-success">5</span></th>
+                <th></th>
+            </tr>
+            @foreach (var activity in Model)
+            {
+                <tr>
+                    <td>@activity.Name</td>
+                    <td>
+                        @if (activity.Absences.Count > 0)
+                        {
+                            foreach (var absence in activity.Absences)
+                            {
+                                <time datetime="@absence.From.ToString("s")">@absence.From.ToString("d MMM")</time>
+                                <text>&minus;</text>
+                                <time datetime="@absence.To.ToString("s")">@absence.To.ToString("d MMM")</time>
+                            }
+                        }
+
+                        @foreach (var team in activity.Teams.SortRosters())
+                        {
+                            @Content.TeamLabel(team.TeamLevel, team.Team)
+                        }
+                    </td>
+                    <td>
+                        @activity.PlayerForm.FormattedSeasonAverage()
+                    </td>
+                    <td>
+                        @activity.PlayerForm.FormattedLast5Average()
+                    </td>
+                    <td class="@activity.PlayerForm.Class()">
+                        @activity.PlayerForm.FormattedDiff()
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
