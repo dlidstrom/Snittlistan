@@ -200,14 +200,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 Id = id,
                 Roster = LoadRoster(roster),
                 Preliminary = roster.Preliminary,
-                AvailablePlayers = availablePlayers.Select(x => new PlayerViewModel(x)).ToArray(),
-                AbsentPlayers = DocumentSession.Query<AbsenceIndex.Result, AbsenceIndex>()
-                    .Customize(x => x.WaitForNonStaleResultsAsOfNow())
-                    .Where(x => x.From <= roster.Date.Date && roster.Date.Date <= x.To)
-                    .OrderBy(p => p.To)
-                    .ThenBy(p => p.PlayerName)
-                    .AsProjection<AbsenceIndex.Result>()
-                    .ToArray()
+                AvailablePlayers = availablePlayers.Select(x => new PlayerViewModel(x)).ToArray()
             };
             return View(vm);
         }
@@ -247,6 +240,109 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             if (vm.Reserve != null && DocumentSession.Load<Player>(vm.Reserve) != null)
                 roster.Players.Add(vm.Reserve);
             return RedirectToAction("View", new { season = roster.Season, turn = roster.Turn });
+        }
+
+        [ChildActionOnly]
+        public ActionResult PlayerStatus(int turn, int season)
+        {
+            var rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
+                .Where(x => x.Turn == turn && x.Season == season)
+                .ToArray();
+            var from = rosters.Select(x => x.Date)
+                .Min();
+            var to = rosters.Select(x => x.Date)
+                .Max();
+
+            /*
+             *    x   y
+             * 1         1
+             * 2    2
+             *      3   3
+             *     4 4
+             */
+            var absences = DocumentSession.Query<AbsenceIndex.Result, AbsenceIndex>()
+                .Where(x => x.From <= from && to <= x.To
+                    || x.From <= from && from <= x.To
+                    || x.From <= to && to <= x.To
+                    || from <= x.From && x.To <= to)
+                .OrderBy(p => p.To)
+                .ThenBy(p => p.PlayerName)
+                .AsProjection<AbsenceIndex.Result>()
+                .ToArray()
+                .ToLookup(x => x.Player)
+                .ToDictionary(x => x.Key, x => x.ToList());
+
+            var players = DocumentSession.Query<Player, PlayerSearch>()
+                .ToArray();
+            var rostersForPlayers = new Dictionary<string, List<RosterViewModel>>();
+            foreach (var roster in rosters)
+            {
+                var rosterViewModel = roster.MapTo<RosterViewModel>();
+                foreach (var player in roster.Players)
+                {
+                    List<RosterViewModel> rosterViewModels;
+                    if (rostersForPlayers.TryGetValue(player, out rosterViewModels) == false)
+                    {
+                        rosterViewModels = new List<RosterViewModel>();
+                        rostersForPlayers.Add(player, rosterViewModels);
+                    }
+
+                    rosterViewModels.Add(rosterViewModel);
+                }
+            }
+
+            var resultsForPlayer = DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
+                .Where(x => x.Season == season)
+                .ToArray()
+                .ToDictionary(x => x.PlayerId);
+
+            var activities = new List<PlayerStatusViewModel>();
+            foreach (var player in players)
+            {
+                PlayerFormViewModel playerForm = null;
+                ResultForPlayerIndex.Result resultForPlayer;
+                if (resultsForPlayer.TryGetValue(player.Id, out resultForPlayer)
+                    && resultForPlayer.TotalSeries > 0)
+                {
+                    playerForm = new PlayerFormViewModel(player.Name)
+                    {
+                        TotalSeries = resultForPlayer.TotalSeries,
+                        SeasonAverage = (double)resultForPlayer.TotalPins / Math.Max(1, resultForPlayer.TotalSeries),
+                        Last5Average = (double)resultForPlayer.Last5TotalPins / Math.Max(1, resultForPlayer.Last5TotalSeries),
+                        HasResult = true
+                    };
+                }
+                else if (player.PlayerStatus == Player.Status.Active)
+                {
+                    playerForm = new PlayerFormViewModel(player.Name);
+                }
+                else
+                {
+                    continue;
+                }
+
+                var activity = new PlayerStatusViewModel(player.Name, playerForm);
+
+                if (rostersForPlayers.ContainsKey(player.Id))
+                {
+                    var rostersForPlayer = rostersForPlayers[player.Id];
+                    activity.Teams.AddRange(rostersForPlayer);
+                }
+
+                List<AbsenceIndex.Result> playerAbsences;
+                if (absences.TryGetValue(player.Id, out playerAbsences))
+                {
+                    activity.Absences.AddRange(playerAbsences.OrderBy(x => x.From));
+                }
+
+                activities.Add(activity);
+            }
+
+            var activitiesWithNoAbsence = activities.Where(x => x.Absences.Count == 0);
+            var activitiesWithAbsence = activities.Where(x => x.Absences.Count > 0);
+            var vm = activitiesWithNoAbsence.OrderByDescending(x => x, new PlayerStatusViewModel.Comparer())
+                .Concat(activitiesWithAbsence.OrderBy(x => x.Absences.Min(y => y.To)).ThenBy(x => x.Name));
+            return PartialView(vm);
         }
 
         private RosterViewModel LoadRoster(Roster roster)

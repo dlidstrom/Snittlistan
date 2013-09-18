@@ -134,29 +134,11 @@
         }
     </div>
 </div>
-<div class="row">
-    <div class="span6">
-        <h5>Anmäld frånvaro</h5>
-    </div>
-</div>
-<div class="row">
-    <div class="span8">
-        <table class="table table-condensed table-striped">
-            <tr>
-                <th>Namn</th>
-                <th></th>
-            </tr>
-            @foreach (var absence in Model.AbsentPlayers)
-            {
-                <tr>
-                    <td>@absence.PlayerName</td>
-                    <td>
-                        <time datetime="@absence.From.ToString("s")">@absence.From.ToString("d MMM")</time>
-                        &minus;
-                        <time datetime="@absence.To.ToString("s")">@absence.To.ToString("d MMM")</time>
-                    </td>
-                </tr>
-            }
-        </table>
-    </div>
-</div>
+@if (Request.IsAuthenticated)
+{
+    @Html.Action("PlayerStatus", new
+    {
+        turn = Model.Roster.Turn,
+        season = Model.Roster.Season
+    })
+}

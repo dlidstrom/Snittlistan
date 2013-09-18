@@ -83,7 +83,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 .ToArray();
             var seasonAverages = results.ToDictionary(x => x.PlayerId);
 
-            var response = new List<PlayerForm>();
+            var response = new List<PlayerFormViewModel>();
             foreach (var player in players)
             {
                 var name = player.Name;
@@ -91,9 +91,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 if (seasonAverages.TryGetValue(player.Id, out result)
                     && result.TotalSeries > 0)
                 {
-                    var playerForm = new PlayerForm
+                    var playerForm = new PlayerFormViewModel(name)
                     {
-                        Name = name,
                         TotalSeries = result.TotalSeries,
                         SeasonAverage = (double)result.TotalPins / Math.Max(1, result.TotalSeries),
                         Last5Average = (double)result.Last5TotalPins / Math.Max(1, result.Last5TotalSeries),
@@ -103,91 +102,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 }
                 else if (player.PlayerStatus == Player.Status.Active)
                 {
-                    response.Add(new PlayerForm
-                    {
-                        Name = name
-                    });
+                    response.Add(new PlayerFormViewModel(name));
                 }
             }
 
             return View(response.OrderByDescending(x => x.SeasonAverage).ThenBy(x => x.Name));
-        }
-
-        public class PlayerForm
-        {
-            public string Name { get; set; }
-
-            public double Last5Average { get; set; }
-
-            public double SeasonAverage { get; set; }
-
-            public bool HasResult { get; set; }
-
-            public int TotalSeries { get; set; }
-
-            public string FormattedSeasonAverage()
-            {
-                if (HasResult == false) return string.Empty;
-                return SeasonAverage.ToString("0.0");
-            }
-
-            public string FormattedLast5Average()
-            {
-                if (HasResult == false) return string.Empty;
-                return Last5Average.ToString("0.0");
-            }
-
-            public string FormattedDiff()
-            {
-                if (HasResult == false) return string.Empty;
-                var diff = Last5Average - SeasonAverage;
-                return diff.ToString("+0.0;-0.0;0");
-            }
-
-            public string Class()
-            {
-                if (HasResult == false) return string.Empty;
-                var diff = Last5Average - SeasonAverage;
-                string klass;
-                if (diff <= -10)
-                {
-                    klass = "form-minus-10";
-                }
-                else if (diff <= -6)
-                {
-                    klass = "form-minus-6";
-                }
-                else if (diff <= -4)
-                {
-                    klass = "form-minus-4";
-                }
-                else if (diff <= -2)
-                {
-                    klass = "form-minus-2";
-                }
-                else if (diff >= 10)
-                {
-                    klass = "form-plus-10";
-                }
-                else if (diff >= 6)
-                {
-                    klass = "form-plus-6";
-                }
-                else if (diff >= 4)
-                {
-                    klass = "form-plus-4";
-                }
-                else if (diff >= 2)
-                {
-                    klass = "form-plus-2";
-                }
-                else
-                {
-                    klass = "form-0";
-                }
-
-                return klass;
-            }
         }
     }
 }

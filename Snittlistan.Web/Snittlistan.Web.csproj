@@ -226,6 +226,8 @@
     <Compile Include="Areas\V2\Domain\Match\MatchGame.cs" />
     <Compile Include="Areas\V2\Domain\Match\MatchSerie.cs" />
     <Compile Include="Areas\V2\Domain\Match\MatchTable.cs" />
+    <Compile Include="Areas\V2\ViewModels\PlayerStatusViewModel.cs" />
+    <Compile Include="Areas\V2\ViewModels\PlayerForm.cs" />
     <Compile Include="Areas\V2\ViewModels\RegisterBitsResult.cs" />
     <Compile Include="Areas\V2\ViewModels\RegisterBitsResult4.cs" />
     <Compile Include="Areas\V2\ViewModels\RegisterBitsVerifyModel.cs" />
@@ -507,6 +509,8 @@
     <Content Include="Areas\V2\Views\MatchResult\Details4.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\DisplayTemplates\Result4.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\Form.cshtml" />
+    <Content Include="Areas\V2\Views\Roster\Absences.cshtml" />
+    <Content Include="Areas\V2\Views\Roster\PlayerStatus.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />

@@ -14,6 +14,7 @@ namespace Snittlistan.Web.Areas.V2.Indexes
                               select new
                               {
                                   absence.Id,
+                                  absence.Player,
                                   absence.From,
                                   absence.To,
                                   PlayerName = LoadDocument<Player>(absence.Player)
@@ -27,6 +28,8 @@ namespace Snittlistan.Web.Areas.V2.Indexes
         public class Result
         {
             public string Id { get; set; }
+
+            public string Player { get; set; }
 
             public DateTime From { get; set; }
 

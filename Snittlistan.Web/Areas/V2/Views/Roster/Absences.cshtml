@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Snittlistan.Web.Areas.V2.Indexes.AbsenceIndex.Result>
+
+<div class="row">
+    <div class="span6">
+        <h5>Anmäld frånvaro</h5>
+    </div>
+</div>
+<div class="row">
+    <div class="span8">
+        <table class="table table-condensed table-striped">
+            <tr>
+                <th>Namn</th>
+                <th></th>
+            </tr>
+            @foreach (var absence in Model)
+            {
+                <tr>
+                    <td>@absence.PlayerName</td>
+                    <td>
+                        <time datetime="@absence.From.ToString("s")">@absence.From.ToString("d MMM")</time>
+                        &minus;
+                        <time datetime="@absence.To.ToString("s")">@absence.To.ToString("d MMM")</time>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
