@@ -2,6 +2,10 @@
 
 <div class="row">
     <div class="span12">
+        <p class="lead">
+            De första 9 spelarna får en inteckning i veckans lag.
+            Vinnare är den spelare som samlat flest inteckningar under säsongen.
+        </p>
         @*        <section>
             <h3>Aktuell ställning</h3>
             <table class="table table-condensed table-striped table-bordered">
@@ -22,7 +26,7 @@
         {
             <section id="@string.Format("turn-{0}", week.Turn)">
                 <h3>Omgång @week.Turn</h3>
-                <table class="table table-condensed table-striped table-bordered">
+                <table class="table table-condensed table-striped table-bordered table-medals">
                     <tr>
                         <th>#</th>
                         <th>Namn</th>
@@ -31,21 +35,42 @@
                     </tr>
                     @{
                         var index = 0;
+                        var rank = 0;
+                        var rankstep = 1;
+                        var previous = int.MaxValue;
                     }
                     @foreach (var result in week.Players)
                     {
-                        <tr>
-                            <th>@(++index)</th>
+                        if (previous != result.Pins)
+                        {
+                            rank += rankstep;
+                            rankstep = 1;
+                        }
+                        else
+                        {
+                            rankstep++;
+                        }
+
+                        previous = result.Pins;
+
+                        var cl = string.Empty;
+                        if (rank == 10)
+                        {
+                            cl = "top9";
+                        }
+
+                        <tr class="@cl">
+                            <td>@rank</td>
                             <td>
                                 @result.Name
                             </td>
                             <td>
-                                @if (index == 8)
+                                @if (++index == 8)
                                 {
                                     @:@string.Format(
-                                        "{0} = {1}",
-                                        result.PinsAndSeries,
-                                        week.Top8)
+                                          "{0} = {1}",
+                                          result.PinsAndSeries,
+                                          week.Top8)
                                 }
                                 else
                                 {

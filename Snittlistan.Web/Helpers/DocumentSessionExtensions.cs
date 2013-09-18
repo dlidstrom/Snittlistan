@@ -34,13 +34,11 @@ namespace Snittlistan.Web.Helpers
         public static int LatestSeasonOrDefault(this IDocumentSession sess, int def)
         {
             return sess.Query<Roster, RosterSearchTerms>()
-                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .OrderByDescending(s => s.Season)
                 .Select(r => r.Season)
                 .ToList()
                 .DefaultIfEmpty(def)
                 .First();
         }
-
     }
 }
