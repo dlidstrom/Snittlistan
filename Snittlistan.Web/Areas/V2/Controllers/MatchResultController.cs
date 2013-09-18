@@ -63,10 +63,10 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             if (season.HasValue == false)
                 season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
 
-            var vm = DocumentSession.Query<TeamOfWeek>()
+            var vm = DocumentSession.Query<TeamOfWeek, TeamOfWeekIndex>()
                 .Where(x => x.Season == season.Value)
                 .OrderByDescending(x => x.Turn)
-                .ToList();
+                .ToArray();
             return View(new TeamOfWeekViewModel(season.Value, vm));
         }
 

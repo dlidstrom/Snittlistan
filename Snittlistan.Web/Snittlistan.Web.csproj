@@ -217,6 +217,7 @@
     <Compile Include="Areas\V2\Domain\Match\MatchResult.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\MatchResultRegistered.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\MatchResultUpdated.cs" />
+    <Compile Include="Areas\V2\Indexes\TeamOfWeekIndex.cs" />
     <Compile Include="Areas\V2\ReadModels\ResultForPlayerReadModel.cs" />
     <Compile Include="Areas\V2\ReadModels\ResultSeries4ReadModel.cs" />
     <Compile Include="Areas\V2\ReadModels\ResultSeriesModel.cs" />
