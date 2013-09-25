@@ -299,7 +299,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var activities = new List<PlayerStatusViewModel>();
             foreach (var player in players)
             {
-                PlayerFormViewModel playerForm = null;
+                PlayerFormViewModel playerForm;
                 ResultForPlayerIndex.Result resultForPlayer;
                 if (resultsForPlayer.TryGetValue(player.Id, out resultForPlayer)
                     && resultForPlayer.TotalSeries > 0)

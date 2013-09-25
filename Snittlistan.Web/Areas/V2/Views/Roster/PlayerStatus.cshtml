@@ -22,9 +22,8 @@
                         {
                             foreach (var absence in activity.Absences)
                             {
-                                <time datetime="@absence.From.ToString("s")">@absence.From.ToString("d MMM")</time>
-                                <text>&minus;</text>
-                                <time datetime="@absence.To.ToString("s")">@absence.To.ToString("d MMM")</time>
+                                @Content.FormatDateSpan(absence.From, absence.To)
+                                @absence.Comment
                             }
                         }
 
