@@ -17,6 +17,7 @@ namespace Snittlistan.Web.Areas.V2.Indexes
                                   absence.Player,
                                   absence.From,
                                   absence.To,
+                                  absence.Comment,
                                   PlayerName = LoadDocument<Player>(absence.Player)
                                       .Name
                               };
@@ -36,6 +37,8 @@ namespace Snittlistan.Web.Areas.V2.Indexes
             public DateTime To { get; set; }
 
             public string PlayerName { get; set; }
+
+            public string Comment { get; set; }
         }
     }
 }

@@ -31,27 +31,34 @@
         @foreach (var absence in Model)
         {
             <tr>
-                <td>@absence.PlayerName</td>
+                @{
+                    var rowspan = string.IsNullOrWhiteSpace(absence.Comment) ? 1 : 2;
+                }
+                <td class="center" rowspan="@rowspan">@absence.PlayerName</td>
                 <td>
-                    <time datetime="@absence.From.ToString("s")">@absence.From.ToString("d MMM")</time>
-                    &minus;
-                    <time datetime="@absence.To.ToString("s")">@absence.To.ToString("d MMM")</time>
+                    @Content.FormatDateSpan(absence.From, absence.To)
                 </td>
 
                 @if (Request.IsAuthenticated)
                 {
-                    <td>
+                    <td class="center" rowspan="@rowspan">
                         <a href="@Url.Action("Edit", new { id = absence.Id.Substring(absence.Id.LastIndexOf('-') + 1) })">
                             <i class="sprite-glyphicons_151_edit"></i>
                         </a>
                     </td>
-                    <td>
+                    <td class="center" rowspan="@rowspan">
                         <a href="@Url.Action("Delete", new { id = absence.Id.Substring(absence.Id.LastIndexOf('-') + 1) })">
                             <i class="sprite-glyphicons_016_bin"></i>
                         </a>
                     </td>
                 }
             </tr>
+            if (string.IsNullOrWhiteSpace(absence.Comment) == false)
+            {
+                <tr>
+                    <td>@absence.Comment</td>
+                </tr>
+            }
         }
     </table>
     </div>

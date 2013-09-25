@@ -116,3 +116,25 @@
 {
     <span class="label @string.Format("{0}{1}", "label-team-", teamLevel)">@team</span>
 }
+
+@helper FormatDateSpan(
+    DateTime from,
+    DateTime to)
+{
+    if (from.Date == to.Date)
+    {
+        <time datetime="@from.ToString("s")">@from.ToString("d MMM")</time>
+    }
+    else if (from.Month == to.Month)
+    {
+        <time datetime="@from.ToString("s")">@from.Day</time>
+        <text>&minus;</text>
+        <time datetime="@to.ToString("s")">@to.ToString("d MMM")</time>
+    }
+    else
+    {
+        <time datetime="@from.ToString("s")">@from.ToString("d MMM")</time>
+        <text>&minus;</text>
+        <time datetime="@to.ToString("s")">@to.ToString("d MMM")</time>
+    }
+}

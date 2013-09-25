@@ -42,7 +42,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 return View(vm);
             }
 
-            var absence = new Absence(vm.From, vm.To, vm.Player);
+            var absence = new Absence(vm.From, vm.To, vm.Player, vm.Comment);
             DocumentSession.Store(absence);
 
             return RedirectToAction("Index");
@@ -70,6 +70,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             absence.Player = vm.Player;
             absence.From = vm.From;
             absence.To = vm.To;
+            absence.Comment = vm.Comment;
             return RedirectToAction("Index");
         }
 
