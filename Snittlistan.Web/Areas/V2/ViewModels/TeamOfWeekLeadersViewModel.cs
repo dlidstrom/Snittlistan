@@ -20,23 +20,6 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                 {
                     list.AddRange(week.PlayerScores.Values);
                 }
-
-                //var bestOfWeek = new SortedSet<PlayerScore>(new PlayerScore.Comparer());
-                //var current = -1;
-                //var rank = 0;
-                //foreach (var player in week.PlayerScores.Values.AsEnumerable()
-                //    .OrderByDescending(x => x.Pins))
-                //{
-                /*if (player.Pins != current)
-                {
-                    rank++;
-                    current = player.Pins;
-                }
-
-                if (rank > 9) break;*/
-
-                //    bestOfWeek.Add(player.Name);
-                //}
             }
 
             var bestOfBest = new List<string>();
