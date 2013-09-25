@@ -6,22 +6,41 @@
             De första 9 spelarna får en inteckning i veckans lag.
             Vinnare är den spelare som samlat flest inteckningar under säsongen.
         </p>
-        @*        <section>
+        <section>
             <h3>Aktuell ställning</h3>
             <table class="table table-condensed table-striped table-bordered">
                 <tr>
+                    <th>#</th>
                     <th>Namn</th>
                     <th>Antal</th>
                 </tr>
-                @foreach (var item in Model.Total)
+                @{
+                    var rank = 0;
+                    var rankstep = 1;
+                    var previous = int.MaxValue;
+                }
+                @foreach (var item in Model.Leaders.Top9Total)
                 {
+                    if (previous != item.Count)
+                    {
+                        rank += rankstep;
+                        rankstep = 1;
+                    }
+                    else
+                    {
+                        rankstep++;
+                    }
+
+                    previous = item.Count;
+
                     <tr>
-                        <td>@item.Item1</td>
-                        <td>@item.Item2</td>
+                        <td>@rank</td>
+                        <td>@item.Name</td>
+                        <td>@item.Count</td>
                     </tr>
                 }
             </table>
-        </section>*@
+        </section>
         @foreach (var week in Model.Weeks)
         {
             <section id="@string.Format("turn-{0}", week.Turn)">
@@ -35,9 +54,9 @@
                     </tr>
                     @{
                         var index = 0;
-                        var rank = 0;
-                        var rankstep = 1;
-                        var previous = int.MaxValue;
+                        rank = 0;
+                        rankstep = 1;
+                        previous = int.MaxValue;
                     }
                     @foreach (var result in week.Players)
                     {

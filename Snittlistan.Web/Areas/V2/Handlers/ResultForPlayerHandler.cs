@@ -6,7 +6,8 @@ using Snittlistan.Web.Areas.V2.ReadModels;
 
 namespace Snittlistan.Web.Areas.V2.Handlers
 {
-    public class Top5Handler : IEventHandler<MatchResultRegistered>,
+    public class ResultForPlayerHandler :
+        IEventHandler<MatchResultRegistered>,
         IEventHandler<MatchResult4Registered>,
         IEventHandler<Serie4Registered>,
         IEventHandler<SerieRegistered>

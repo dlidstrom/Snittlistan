@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Snittlistan.Web.Areas.V2.Domain;
+﻿using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Xunit;
@@ -22,11 +21,13 @@ namespace Snittlistan.Test
             teamOfWeek2.AddResultForPlayer(player2, 180);
 
             // Act
-            var vm = new TeamOfWeekViewModel(2012, new List<TeamOfWeek>
-            {
-                teamOfWeek1,
-                teamOfWeek2
-            });
+            var vm = new TeamOfWeekViewModel(
+                2012,
+                new[]
+                {
+                    teamOfWeek1,
+                    teamOfWeek2
+                });
 
             // Assert
             var weeks = vm.Weeks;
