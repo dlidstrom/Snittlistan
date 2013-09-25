@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Globalization;
 using EventStoreLite;
 using Snittlistan.Web.Areas.V2.Domain;
 
@@ -41,33 +40,6 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             var playerScore = PlayerScores[player.Id];
             playerScore.Pins += pins;
             playerScore.Series++;
-        }
-
-        public class PlayerScore
-        {
-            public PlayerScore(string name, string team)
-            {
-                Team = team;
-                Name = name;
-            }
-
-            public string Name { get; private set; }
-
-            public int Pins { get; set; }
-
-            public int Series { get; set; }
-
-            public string PinsAndSeries
-            {
-                get
-                {
-                    return Series != 4
-                        ? string.Format("{0} ({1})", Pins, Series)
-                        : Pins.ToString(CultureInfo.InvariantCulture);
-                }
-            }
-
-            public string Team { get; private set; }
         }
     }
 }
