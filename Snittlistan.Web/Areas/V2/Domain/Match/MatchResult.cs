@@ -21,6 +21,14 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                 new MatchResultRegistered(roster.Id, roster.Players, teamScore, opponentScore, bitsMatchId));
         }
 
+        private string RosterId { get; set; }
+
+        private int BitsMatchId { get; set; }
+
+        private int OpponentScore { get; set; }
+
+        private int TeamScore { get; set; }
+
         public void Update(Roster roster, int teamScore, int opponentScore, int bitsMatchId)
         {
             if (roster == null) throw new ArgumentNullException("roster");
@@ -42,20 +50,12 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         public void RegisterSerie(MatchSerie matchSerie)
         {
             if (matchSerie == null) throw new ArgumentNullException("matchSerie");
-            if (rosterPlayers.Count != 8 && rosterPlayers.Count != 9)
-                throw new MatchException("Roster must have 8 or 9 players when registering results");
+            if (rosterPlayers.Count != 8 && rosterPlayers.Count != 9 && rosterPlayers.Count != 10)
+                throw new MatchException("Roster must have 8, 9, or 10 players when registering results");
             VerifyPlayers(matchSerie);
 
             ApplyChange(new SerieRegistered(matchSerie, BitsMatchId));
         }
-
-        private string RosterId { get; set; }
-
-        private int BitsMatchId { get; set; }
-
-        private int OpponentScore { get; set; }
-
-        private int TeamScore { get; set; }
 
         private static void VerifyScores(int teamScore, int opponentScore)
         {
@@ -88,8 +88,10 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
                 return;
             }
+
             // ReSharper disable CSharpWarnings::CS0162
             while (false);
+
             // ReSharper restore CSharpWarnings::CS0162
 
             throw new MatchException("Can only register players from roster");

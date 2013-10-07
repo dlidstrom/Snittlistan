@@ -99,7 +99,7 @@ namespace Snittlistan.Test.Domain
 
             // Assert
             var ex = Assert.Throws<MatchException>(() => matchResult.RegisterSerie(matchSerie));
-            Assert.Equal("Roster must have 8 or 9 players when registering results", ex.Message);
+            Assert.Equal("Roster must have 8, 9, or 10 players when registering results", ex.Message);
         }
 
         [Fact]
@@ -162,7 +162,36 @@ namespace Snittlistan.Test.Domain
         }
 
         [Fact]
-        public void RosterCannotHaveTenPlayers()
+        public void RosterCanHaveTenPlayers()
+        {
+            // Arrange
+            var validRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
+            {
+                Id = "rosters-1",
+                Players = new List<string>
+                          {
+                              "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10"
+                          }
+            };
+
+            var matchResult = new MatchResult(validRoster, 9, 11, 123);
+
+            // Act
+            var matchSerie = new MatchSerie(
+                new List<MatchTable>
+                {
+                    new MatchTable(new MatchGame("p1", 0, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
+                    new MatchTable(new MatchGame("p3", 0, 0, 0), new MatchGame("p4", 0, 0, 0), 0),
+                    new MatchTable(new MatchGame("p5", 0, 0, 0), new MatchGame("p6", 0, 0, 0), 0),
+                    new MatchTable(new MatchGame("p7", 0, 0, 0), new MatchGame("p8", 0, 0, 0), 0)
+                });
+
+            // Assert
+            Assert.DoesNotThrow(() => matchResult.RegisterSerie(matchSerie));
+        }
+
+        [Fact]
+        public void RosterCannotHaveElevenPlayers()
         {
             // Arrange
             var invalidRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
@@ -170,7 +199,7 @@ namespace Snittlistan.Test.Domain
                 Id = "rosters-1",
                 Players = new List<string>
                           {
-                              "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10"
+                              "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10", "p11"
                           }
             };
 
@@ -188,7 +217,7 @@ namespace Snittlistan.Test.Domain
 
             // Assert
             var ex = Assert.Throws<MatchException>(() => matchResult.RegisterSerie(matchSerie));
-            Assert.Equal("Roster must have 8 or 9 players when registering results", ex.Message);
+            Assert.Equal("Roster must have 8, 9, or 10 players when registering results", ex.Message);
         }
 
         [Fact]
@@ -220,7 +249,7 @@ namespace Snittlistan.Test.Domain
         }
 
         [Fact]
-        public void CanRegisterWithReserve()
+        public void CanRegisterWithReserve1()
         {
             // Arrange
             var validRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
@@ -229,6 +258,34 @@ namespace Snittlistan.Test.Domain
                 Players = new List<string>
                           {
                               "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9"
+                          }
+            };
+            var matchResult = new MatchResult(validRoster, 9, 11, 123);
+
+            // Act
+            var matchSerie = new MatchSerie(
+                new List<MatchTable>
+                {
+                    new MatchTable(new MatchGame("p1", 0, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
+                    new MatchTable(new MatchGame("p3", 0, 0, 0), new MatchGame("p4", 0, 0, 0), 0),
+                    new MatchTable(new MatchGame("p5", 0, 0, 0), new MatchGame("p6", 0, 0, 0), 0),
+                    new MatchTable(new MatchGame("p7", 0, 0, 0), new MatchGame("p8", 0, 0, 0), 0)
+                });
+
+            // Assert
+            Assert.DoesNotThrow(() => matchResult.RegisterSerie(matchSerie));
+        }
+
+        [Fact]
+        public void CanRegisterWithReserve1AndReserve2()
+        {
+            // Arrange
+            var validRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
+            {
+                Id = "rosters-1",
+                Players = new List<string>
+                          {
+                              "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10"
                           }
             };
             var matchResult = new MatchResult(validRoster, 9, 11, 123);

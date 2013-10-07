@@ -101,11 +101,30 @@
                     <tr>
                         <td class="table-id" rowspan="2">R</td>
                         <td>
-                            <select name="reserve">
-                                <option value="">Välj reserv</option>
+                            <select name="reserve1">
+                                <option value="">Välj reserv 1</option>
                                 @foreach (var player in Model.AvailablePlayers)
                                 {
                                     var elementAtOrDefault = Model.Roster.Players.ElementAtOrDefault(8);
+                                    if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
+                                    {
+                                        <option value="@player.Id" selected="selected">@player.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@player.Id">@player.Name</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select name="reserve2">
+                                <option value="">Välj reserv 2</option>
+                                @foreach (var player in Model.AvailablePlayers)
+                                {
+                                    var elementAtOrDefault = Model.Roster.Players.ElementAtOrDefault(9);
                                     if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
                                     {
                                         <option value="@player.Id" selected="selected">@player.Name</option>

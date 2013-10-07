@@ -33,7 +33,7 @@
                         }
                     </td>
                     <td>
-                        @activity.PlayerForm.FormattedSeasonAverage()
+                        @string.Format("{0} ({1})", activity.PlayerForm.FormattedSeasonAverage(), activity.PlayerForm.TotalSeries)
                     </td>
                     <td>
                         @activity.PlayerForm.FormattedLast5Average()
