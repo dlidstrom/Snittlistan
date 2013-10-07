@@ -237,8 +237,23 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 };
             }
             roster.Preliminary = vm.Preliminary;
-            if (vm.Reserve != null && DocumentSession.Load<Player>(vm.Reserve) != null)
-                roster.Players.Add(vm.Reserve);
+            if (vm.Reserve1 != null && DocumentSession.Load<Player>(vm.Reserve1) != null)
+            {
+                roster.Players.Add(vm.Reserve1);
+                if (vm.Reserve2 != null && DocumentSession.Load<Player>(vm.Reserve2) != null)
+                {
+                    roster.Players.Add(vm.Reserve2);
+                }
+            }
+
+            // case where reserve1 is unselected while reserve2 is selected
+            if (vm.Reserve2 != null
+                && roster.Players.Find(x => x == vm.Reserve2) == null
+                && DocumentSession.Load<Player>(vm.Reserve2) != null)
+            {
+                roster.Players.Add(vm.Reserve2);
+            }
+
             return RedirectToAction("View", new { season = roster.Season, turn = roster.Turn });
         }
 

@@ -32,7 +32,7 @@
         <!--[if lt IE 9]><script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6/html5shiv.min.js"></script><![endif]-->
         @Content.GoogleAnalytics()
     </head>
-    <body>
+    <body ng-app>
         @* header will be placed here, as first element under body *@
         @* modal dialogs are placed here *@
         <div id="modal-root"></div>
@@ -177,6 +177,7 @@
             <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js" type="text/javascript"></script>
         }
 
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
         @* local scripts *@
         @Bundles.RenderScripts("hogan")
         @Bundles.RenderHtmlTemplates()

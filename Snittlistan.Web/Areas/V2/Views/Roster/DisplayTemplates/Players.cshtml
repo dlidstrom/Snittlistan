@@ -79,11 +79,22 @@
                 <td class="table-id" rowspan="2">R</td>
                 <td>
                     @{
-                        var reserve = Model.Players.ElementAtOrDefault(8);
+                        var reserve1 = Model.Players.ElementAtOrDefault(8);
                     }
-                    @if (reserve != null)
+                    @if (reserve1 != null)
                     {
-                        @reserve.Item2
+                        @reserve1.Item2
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @{
+                        var reserve2 = Model.Players.ElementAtOrDefault(9);
+                    }
+                    @if (reserve2 != null)
+                    {
+                        @reserve2.Item2
                     }
                 </td>
             </tr>
