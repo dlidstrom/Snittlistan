@@ -104,7 +104,7 @@ namespace Snittlistan.Test.Domain
         public void RosterCanHaveFourPlayers()
         {
             // Arrange
-            var invalidRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
+            var validRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -113,7 +113,7 @@ namespace Snittlistan.Test.Domain
                 }
             };
 
-            var matchResult = new MatchResult4(invalidRoster, 9, 11, 123);
+            var matchResult = new MatchResult4(validRoster, 9, 11, 123);
 
             // Act
             var matchSerie = new MatchSerie4(
@@ -301,6 +301,106 @@ namespace Snittlistan.Test.Domain
             Assert.Throws<ArgumentOutOfRangeException>(() => matchResult.Update(roster, 0, -1, 0));
             Assert.Throws<ArgumentOutOfRangeException>(() => matchResult.Update(roster, 0, 21, 0));
             Assert.Throws<ArgumentException>(() => matchResult.Update(roster, 10, 11, 0));
+        }
+
+        [Fact]
+        public void MedalFor4Score()
+        {
+            // Arrange
+            var validRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
+            {
+                Id = "rosters-1",
+                Players = new List<string>
+                {
+                    "p1", "p2", "p3", "p4"
+                }
+            };
+
+            var matchResult = new MatchResult4(validRoster, 9, 11, 123);
+
+            // Act
+            for (var i = 0; i < 4; i++)
+            {
+                var matchSerie = new MatchSerie4(
+                    new List<MatchGame4>
+                    {
+                        new MatchGame4("p1", 0, 0),
+                        new MatchGame4("p2", 1, 0),
+                        new MatchGame4("p3", 0, 0),
+                        new MatchGame4("p4", 0, 0)
+                    });
+                matchResult.RegisterSerie(matchSerie);
+            }
+
+            // Assert
+            var changes = matchResult.GetUncommittedChanges();
+            Assert.Equal(6, changes.Length);
+            var medal = changes[5] as AwardedMedal;
+            Assert.NotNull(medal);
+            Assert.Equal("p2", medal.Player);
+            Assert.Equal(MedalType.TotalScore, medal.MedalType);
+            Assert.Equal(4, medal.Value);
+        }
+
+        [Fact]
+        public void MedalFor270OrMore()
+        {
+            // Arrange
+            var validRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
+            {
+                Id = "rosters-1",
+                Players = new List<string>
+                {
+                    "p1", "p2", "p3", "p4"
+                }
+            };
+
+            var matchResult = new MatchResult4(validRoster, 9, 11, 123);
+
+            // Act
+            var matchSerie = new MatchSerie4(
+                new List<MatchGame4>
+                {
+                    new MatchGame4("p1", 0, 269), new MatchGame4("p2", 0, 270),
+                    new MatchGame4("p3", 0, 0), new MatchGame4("p4", 0, 300)
+                });
+            matchResult.RegisterSerie(matchSerie);
+
+            // Assert
+            var changes = matchResult.GetUncommittedChanges();
+            Assert.Equal(4, changes.Length);
+            var medal1 = changes[2] as AwardedMedal;
+            var medal2 = changes[3] as AwardedMedal;
+            Assert.NotNull(medal1);
+            Assert.NotNull(medal2);
+            Assert.Equal("p2", medal1.Player);
+            Assert.Equal(MedalType.PinsInSerie, medal1.MedalType);
+            Assert.Equal(270, medal1.Value);
+            Assert.Equal("p4", medal2.Player);
+            Assert.Equal(MedalType.PinsInSerie, medal2.MedalType);
+            Assert.Equal(300, medal2.Value);
+        }
+
+        [Fact]
+        public void CannotAwardMedalsTwice()
+        {
+            // Arrange
+            var validRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
+            {
+                Id = "rosters-1",
+                Players = new List<string>
+                {
+                    "p1", "p2", "p3", "p4"
+                }
+            };
+
+            var matchResult = new MatchResult4(validRoster, 9, 11, 123);
+
+            // Act
+            matchResult.AwardMedals();
+
+            // Assert
+            Assert.Throws<ApplicationException>(() => matchResult.AwardMedals());
         }
     }
 }

@@ -1,0 +1,23 @@
+using EventStoreLite;
+
+namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
+{
+    public class AwardedMedal : Event
+    {
+        public AwardedMedal(int bitsMatchId, string player, MedalType medalType, int value)
+        {
+            BitsMatchId = bitsMatchId;
+            Value = value;
+            MedalType = medalType;
+            Player = player;
+        }
+
+        public int BitsMatchId { get; private set; }
+
+        public string Player { get; private set; }
+
+        public MedalType MedalType { get; private set; }
+
+        public int Value { get; private set; }
+    }
+}

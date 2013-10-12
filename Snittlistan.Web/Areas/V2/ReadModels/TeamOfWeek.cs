@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using EventStoreLite;
 using Snittlistan.Web.Areas.V2.Domain;
@@ -30,7 +31,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             return "TeamOfWeek-" + bitsMatchId;
         }
 
-        public void AddResultForPlayer(Player player, int pins)
+        public void AddResultForPlayer(Player player, int score, int pins)
         {
             if (PlayerScores.ContainsKey(player.Id) == false)
             {
@@ -38,8 +39,17 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             }
 
             var playerScore = PlayerScores[player.Id];
+            playerScore.Score += score;
             playerScore.Pins += pins;
             playerScore.Series++;
+        }
+
+        public void AddMedal(AwardedMedalReadModel awardedMedal)
+        {
+            if (PlayerScores.ContainsKey(awardedMedal.Player) == false)
+                throw new ApplicationException(string.Format("No player with id {0} found", awardedMedal.Player));
+
+            PlayerScores[awardedMedal.Player].AddMedal(awardedMedal);
         }
     }
 }

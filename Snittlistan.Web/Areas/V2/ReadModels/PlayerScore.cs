@@ -7,11 +7,14 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
     {
         public PlayerScore(string name, string team)
         {
+            Medals = new List<AwardedMedalReadModel>();
             Team = team;
             Name = name;
         }
 
         public string Name { get; private set; }
+
+        public int Score { get; set; }
 
         public int Pins { get; set; }
 
@@ -28,6 +31,13 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         }
 
         public string Team { get; private set; }
+
+        public List<AwardedMedalReadModel> Medals { get; set; }
+
+        public void AddMedal(AwardedMedalReadModel awardedMedal)
+        {
+            Medals.Add(awardedMedal);
+        }
 
         public class Comparer : IComparer<PlayerScore>
         {

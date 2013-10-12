@@ -27,7 +27,9 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                         select new PlayerScore(g.Key.Name, maxValue.Value.Team)
                         {
                             Pins = maxValue.Value.Pins,
-                            Series = maxValue.Value.Series
+                            Score = maxValue.Value.Score,
+                            Series = maxValue.Value.Series,
+                            Medals = g.SelectMany(x => x.Value.Medals).ToList()
                         };
                 var week = new Week(turn.Key, q.ToList());
                 Weeks.Add(week);

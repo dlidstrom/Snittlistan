@@ -14,6 +14,8 @@
 @form-minus-4: #fcb77a;
 @form-minus-6: #fa9d75;
 @form-minus-10: #f8696b;
+@score-accomplishment-color: silver;
+@pins-accomplishment-color: darkorange;
 
 .container
 {
@@ -232,6 +234,14 @@ button.btn
     text-shadow: 0 1px 1px rgba(255,255,255,0.6);
     border: solid 1px black;
     padding: 1px 4px 0;
+}
+
+.label-score-accomplishment {
+    .accomplishment-label(@score-accomplishment-color);
+}
+
+.label-pins-accomplishment {
+    .accomplishment-label(@pins-accomplishment-color);
 }
 
 .label-miss-free
