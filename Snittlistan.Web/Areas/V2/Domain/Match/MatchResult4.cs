@@ -8,9 +8,13 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
     public class MatchResult4 : AggregateRoot
     {
+        private readonly Dictionary<string, int> playerScores;
+        private readonly Dictionary<string, List<int>> playerPins;
         private HashSet<string> rosterPlayers;
+        private bool medalsAwarded;
 
         public MatchResult4(Roster roster, int teamScore, int opponentScore, int bitsMatchId)
+            : this()
         {
             if (roster == null) throw new ArgumentNullException("roster");
             if (roster.MatchResultId != null)
@@ -19,6 +23,12 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
             ApplyChange(
                 new MatchResult4Registered(roster.Id, roster.Players, teamScore, opponentScore, bitsMatchId));
+        }
+
+        private MatchResult4()
+        {
+            playerScores = new Dictionary<string, int>();
+            playerPins = new Dictionary<string, List<int>>();
         }
 
         private string RosterId { get; set; }
@@ -55,6 +65,15 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             VerifyPlayers(matchSerie);
 
             ApplyChange(new Serie4Registered(matchSerie, BitsMatchId));
+            DoAwardMedals();
+        }
+
+        public void AwardMedals()
+        {
+            if (medalsAwarded)
+                throw new ApplicationException("Medals have already been awarded");
+            DoAwardMedals();
+            ApplyChange(new MedalsAwarded());
         }
 
         private static void VerifyScores(int teamScore, int opponentScore)
@@ -70,6 +89,25 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             if (teamScore + opponentScore > 20)
             {
                 throw new ArgumentException("Team score and opponent score must be at most 20");
+            }
+        }
+
+        private void DoAwardMedals()
+        {
+            foreach (var key in playerScores.Keys)
+            {
+                var value = playerScores[key];
+                if (value == 4)
+                    ApplyChange(new AwardedMedal(BitsMatchId, key, MedalType.TotalScore, 4));
+            }
+
+            foreach (var key in playerPins.Keys)
+            {
+                foreach (var pins in playerPins[key])
+                {
+                    if (pins >= 270)
+                        ApplyChange(new AwardedMedal(BitsMatchId, key, MedalType.PinsInSerie, pins));
+                }
             }
         }
 
@@ -108,6 +146,35 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             OpponentScore = e.NewOpponentScore;
             BitsMatchId = e.NewBitsMatchId;
             rosterPlayers = new HashSet<string>(e.RosterPlayers);
+        }
+
+        [UsedImplicitly]
+        private void Apply(Serie4Registered e)
+        {
+            foreach (var game in new[] { e.MatchSerie.Game1, e.MatchSerie.Game2, e.MatchSerie.Game3, e.MatchSerie.Game4 })
+            {
+                if (playerScores.ContainsKey(game.Player))
+                {
+                    playerScores[game.Player] += game.Score;
+                }
+                else
+                {
+                    playerScores[game.Player] = game.Score;
+                }
+
+                if (playerPins.ContainsKey(game.Player) == false)
+                {
+                    playerPins.Add(game.Player, new List<int>());
+                }
+
+                playerPins[game.Player].Add(game.Pins);
+            }
+        }
+
+        [UsedImplicitly]
+        private void Apply(MedalsAwarded e)
+        {
+            medalsAwarded = true;
         }
     }
 }

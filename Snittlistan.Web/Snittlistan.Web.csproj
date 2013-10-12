@@ -198,6 +198,8 @@
     <Compile Include="Areas\V2\Domain\Match\Events\MatchResult4Deleted.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\MatchResult4Registered.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\MatchResult4Updated.cs" />
+    <Compile Include="Areas\V2\Domain\Match\Events\AwardedMedal.cs" />
+    <Compile Include="Areas\V2\Domain\Match\Events\MedalType.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\Roster4Changed.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\Serie4Registered.cs" />
     <Compile Include="Areas\V2\Domain\Match\MatchException.cs" />
@@ -206,11 +208,13 @@
     <Compile Include="Areas\V2\Domain\Match\MatchGame4.cs" />
     <Compile Include="Areas\V2\Domain\Match\MatchResult4.cs" />
     <Compile Include="Areas\V2\Domain\Match\MatchSerie4.cs" />
+    <Compile Include="Areas\V2\Handlers\AggregateIdHandler.cs" />
     <Compile Include="Areas\V2\Handlers\MatchResultHandler.cs" />
     <Compile Include="Areas\V2\Handlers\ResultSeries4Handler.cs" />
     <Compile Include="Areas\V2\Handlers\ResultSeriesHandler.cs" />
     <Compile Include="Areas\V2\Handlers\TeamOfWeekHandler.cs" />
     <Compile Include="Areas\V2\Handlers\ResultForPlayerHandler.cs" />
+    <Compile Include="Areas\V2\Indexes\MatchResultIndex.cs" />
     <Compile Include="Areas\V2\Indexes\ResultForPlayerIndex.cs" />
     <Compile Include="Areas\V2\Indexes\ResultHeaderIndex.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\RosterChanged.cs" />
@@ -218,6 +222,8 @@
     <Compile Include="Areas\V2\Domain\Match\Events\MatchResultRegistered.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\MatchResultUpdated.cs" />
     <Compile Include="Areas\V2\Indexes\TeamOfWeekIndex.cs" />
+    <Compile Include="Areas\V2\ReadModels\AggregateIdReadModel.cs" />
+    <Compile Include="Areas\V2\ReadModels\AwardedMedalReadModel.cs" />
     <Compile Include="Areas\V2\ReadModels\PlayerScore.cs" />
     <Compile Include="Areas\V2\ReadModels\ResultForPlayerReadModel.cs" />
     <Compile Include="Areas\V2\ReadModels\ResultSeries4ReadModel.cs" />
@@ -514,6 +520,7 @@
     <Content Include="Areas\V2\Views\MatchResult\Form.cshtml" />
     <Content Include="Areas\V2\Views\Roster\Absences.cshtml" />
     <Content Include="Areas\V2\Views\Roster\PlayerStatus.cshtml" />
+    <Content Include="Areas\V2\Views\AdminTasks\AwardMedals.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
