@@ -43,7 +43,7 @@
                 @{
                     var matchResults = Model.Turns[turn];
                 }
-                @foreach (var result in matchResults)
+                @foreach (var result in matchResults.SortResults())
                 {
                     <tr>
                         <td class="center" rowspan="2">@result.Location</td>

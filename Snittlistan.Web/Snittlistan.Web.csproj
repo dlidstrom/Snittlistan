@@ -264,7 +264,7 @@
     <Compile Include="Areas\V2\AutoMapper\UserProfile.cs" />
     <Compile Include="Areas\V2\Controllers\UserController.cs" />
     <Compile Include="Areas\V2\ViewModels\CreateUserViewModel.cs" />
-    <Compile Include="Areas\V2\ViewModels\RosterExtensionMethods.cs" />
+    <Compile Include="Areas\V2\ViewModels\ExtensionMethods.cs" />
     <Compile Include="Areas\V2\ViewModels\RosterPlayersViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\EditRosterPlayersViewModel.cs" />
     <Compile Include="Areas\V2\Controllers\SearchTermsController.cs" />
