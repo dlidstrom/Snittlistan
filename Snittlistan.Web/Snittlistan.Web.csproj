@@ -214,7 +214,7 @@
     <Compile Include="Areas\V2\Handlers\ResultSeriesHandler.cs" />
     <Compile Include="Areas\V2\Handlers\TeamOfWeekHandler.cs" />
     <Compile Include="Areas\V2\Handlers\ResultForPlayerHandler.cs" />
-    <Compile Include="Areas\V2\Indexes\MatchResultIndex.cs" />
+    <Compile Include="Areas\V2\Indexes\AggregateIdIndex.cs" />
     <Compile Include="Areas\V2\Indexes\ResultForPlayerIndex.cs" />
     <Compile Include="Areas\V2\Indexes\ResultHeaderIndex.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\RosterChanged.cs" />
