@@ -1,6 +1,5 @@
 using System.IO;
 using Cassette;
-using Cassette.HtmlTemplates;
 using Cassette.Scripts;
 using Cassette.Stylesheets;
 
@@ -25,9 +24,6 @@ namespace Snittlistan.Web.Infrastructure
                 "Content/js",
                 new FileSearch { SearchOption = SearchOption.TopDirectoryOnly });
             bundles.AddPerIndividualFile<ScriptBundle>("Content/js/helpers");
-            bundles.AddPerSubDirectory<ScriptBundle>("Content/js/app");
-            bundles.AddPerIndividualFile<ScriptBundle>("Content/external/hogan");
-            bundles.Add<HtmlTemplateBundle>("Content/templates");
 
             // To combine files, try something like this instead:
             //   bundles.Add<StylesheetBundle>("Content");
