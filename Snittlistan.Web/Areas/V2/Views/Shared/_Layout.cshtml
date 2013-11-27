@@ -3,8 +3,6 @@
     ViewBag.Title = "Snittlistan";
     Bundles.Reference("Content/css/main.less");
     Bundles.Reference("Content/css/glyphicons.css");
-    Bundles.Reference("Content/templates");
-    Bundles.Reference("Content/external/hogan/hogan.js", "hogan");
 }
 <!DOCTYPE html>
 <html lang="se">
@@ -100,64 +98,6 @@
         </div>
         <div id="main" class="container">
             @RenderBody()
-            @*
-            <section class="page-header">
-                <h1>Kommande matchomgångar</h1>
-            </section>
-            <div class="row-fluid">
-                <div class="span6">
-                    <div class="alert alert-info">
-                        <button class="close" data-dismiss="alert">
-                            <i class="icon-pencil"></i>
-                        </button>
-                        Om du inte kan medverka, vänligen meddela detta så tidigt som möjligt.
-                        <i class="icon-question-sign pull-right" title="Meddelande" data-content="Här tänkte jag att pennan är klickbar, och att man då kan redigera texten. Troligen måste man ha en viss roll för att ha möjlighet att ändra texten."></i>
-                    </div>
-                </div>
-                <div class="span6">
-                    <div class="alert alert-error">
-                        <button class="close" data-dismiss="alert">&times;</button>
-                        <button class="btn btn-mini btn-primary">Logga in</button> för att kvittera spel eller meddela din frånvaro.
-                    </div>
-                </div>
-            </div>
-            <div class="row-fluid">
-                @Html.Partial("_Turn3")
-            </div>
-            *@
-            @*
-            <section class="page-header">
-                <h1>
-                    Avklarade
-                    <i class="icon-question-sign" title="Avklarade omgångar" data-placement="right" data-content="Den här delen kommer vara en egen sida."></i>
-                </h1>
-            </section>
-            <div class="row-fluid">
-                <div class="span3">
-                    <table class="table table-medals">
-                        <tr><th colspan="2">Medaljer</th></tr>
-                        <tr><td><span class="label label-personal-best">PB</span></td><td>Personbästa</td></tr>
-                        <tr><td><span class="label label-season-best">SB</span></td><td>Säsongsbästa</td></tr>
-                        <tr><td><span class="label label-miss-free">missfri</span></td><td>En serie med enbart täckta rutor</td></tr>
-                        <tr><td><span class="label label-300">300</span></td><td>En 300-serie</td></tr>
-                    </table>
-                </div>
-            </div>
-            <div class="row-fluid">
-                @Html.Partial("_CompletedTurns")
-            </div>
-            *@
-            @*
-            <section class="page-header">
-                <h1>
-                    Christer Liedholm
-                    <i class="icon-question-sign" title="Att göra" data-placement="right" data-content="Lägg till vy för spelare. En spelares medaljer ska visas. Lägg till förklaring på medaljerna (eller titel åtminstone). Lägg till vy för att göra laguttagningen."></i>
-                </h1>
-            </section>
-            <div class="row-fluid">
-                @Html.Partial("_Player")
-            </div>
-            *@
         </div>
         @* Use content delivery networks *@
         @if (Html.ApplicationMode() == ApplicationMode.Debug)
@@ -175,10 +115,8 @@
             <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js" type="text/javascript"></script>
         }
 
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular.min.js"></script>
         @* local scripts *@
-        @Bundles.RenderScripts("hogan")
-        @Bundles.RenderHtmlTemplates()
         @Bundles.RenderScripts()
         @RenderSection("scripts", false)
     </body>
