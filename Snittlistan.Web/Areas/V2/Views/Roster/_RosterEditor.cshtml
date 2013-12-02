@@ -87,18 +87,9 @@
 <div class="control-group">
     <label class="control-label" for="date">Datum:</label>
     <div class="controls">
-        <input type="date"
+        <input type="datetime-local"
                name="date"
-               value="@Model.Date.ToShortDateString()"
-               required />
-    </div>
-</div>
-<div class="control-group">
-    <label class="control-label" for="time">Tid:</label>
-    <div class="controls">
-        <input type="time"
-               name="time"
-               value="@Model.Time"
+               value="@Model.Date.ToString("yyyy-MM-ddThh:mm:ss")"
                required />
     </div>
 </div>
