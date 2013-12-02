@@ -16,18 +16,18 @@
                     <i class="sprite-glyphicons_151_edit"></i>
                 </a>
             </td>
-            <td>
+            @*<td>
                 <a href="@Url.Action("Delete", new { id = player.Id.Substring(player.Id.LastIndexOf('-') + 1) })">
                     <i class="sprite-glyphicons_016_bin"></i>
                 </a>
-            </td>
+            </td>*@
         }
     </tr>
 }
 
 <div class="row">
     <div class="span6">
-        <h2>Spelare och supporters</h2>
+        <h4>Spelare och supporters</h4>
     </div>
 </div>
 <div class="row">
@@ -55,7 +55,7 @@
                 {
                     <th>E-postadress</th>
                     <th></th>
-                    <th></th>
+                    @*<th></th>*@
                 }
             </tr>
             @foreach (var player in Model.Where(x => x.Status == Player.Status.Active))

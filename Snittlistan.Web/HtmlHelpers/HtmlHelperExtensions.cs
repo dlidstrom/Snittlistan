@@ -49,5 +49,44 @@ namespace Snittlistan.Web.HtmlHelpers
             tag.InnerHtml = anchor.ToString();
             return new HtmlString(tag.ToString());
         }
+
+        public static HtmlString FormatDateSpan(this HtmlHelper helper, DateTime from, DateTime to)
+        {
+            var builder = new StringBuilder();
+            if (from.Date == to.Date)
+            {
+                builder.AppendFormat(
+                    @"<time datetime=""{0}"">{1}</time>",
+                    from.ToString("s"),
+                    from.ToString("d MMM"));
+            }
+            else if (from.Month == to.Month)
+            {
+                builder.AppendFormat(
+                    @"<time datetime=""{0}"">{1}</time>",
+                    from.ToString("s"),
+                    from.Day);
+                builder.Append("<text>&minus;</text>");
+                builder.AppendFormat(
+                    @"<time datetime=""{0}"">{1}</time>",
+                    to.ToString("s"),
+                    to.ToString("d MMM"));
+            }
+            else
+            {
+                builder.AppendFormat(
+                    @"<time datetime=""{0}"">{1}</time>",
+                    from.ToString("s"),
+                    from.ToString("d MMM"));
+                builder.AppendFormat(
+                    "<text>&minus;</text>");
+                builder.AppendFormat(
+                    @"<time datetime=""{0}"">{1}</time>",
+                    to.ToString("s"),
+                    to.ToString("d MMM"));
+            }
+
+            return new HtmlString(builder.ToString());
+        }
     }
 }

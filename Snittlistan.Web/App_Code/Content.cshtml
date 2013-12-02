@@ -40,7 +40,7 @@
             src = "http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.0.6-development-only.js";
             break;
     }
-<script src="@src" type="text/javascript"></script>
+    <script src="@src" type="text/javascript"></script>
 }
 
 @helper GoogleAnalytics()
@@ -77,7 +77,7 @@
             src = "http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/themes/blitzer/jquery-ui.css";
             break;
     }
-    
+
     <link href="@src" rel="Stylesheet" type="text/css" />
 }
 
@@ -115,26 +115,4 @@
 )
 {
     <span class="label @string.Format("{0}{1}", "label-team-", teamLevel)">@team</span>
-}
-
-@helper FormatDateSpan(
-    DateTime from,
-    DateTime to)
-{
-    if (from.Date == to.Date)
-    {
-        <time datetime="@from.ToString("s")">@from.ToString("d MMM")</time>
-    }
-    else if (from.Month == to.Month)
-    {
-        <time datetime="@from.ToString("s")">@from.Day</time>
-        <text>&minus;</text>
-        <time datetime="@to.ToString("s")">@to.ToString("d MMM")</time>
-    }
-    else
-    {
-        <time datetime="@from.ToString("s")">@from.ToString("d MMM")</time>
-        <text>&minus;</text>
-        <time datetime="@to.ToString("s")">@to.ToString("d MMM")</time>
-    }
 }

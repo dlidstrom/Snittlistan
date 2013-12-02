@@ -6,7 +6,7 @@
 
 <div class="row">
     <div class="span8">
-        <h3>@ViewBag.Title</h3>
+        <h4>@ViewBag.Title</h4>
         @using (Html.BeginForm("Create", "Absence", FormMethod.Post, new { @class = "form-horizontal"}))
         {
             @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
