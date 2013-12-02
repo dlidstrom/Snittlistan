@@ -11,8 +11,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             Team = string.Empty;
             Location = string.Empty;
             Opponent = string.Empty;
-            Date = SystemTime.UtcNow.ToLocalTime().Date;
-            Time = "10:00";
+            Date = SystemTime.UtcNow.ToLocalTime().Date.AddHours(10);
         }
 
         [Required]
@@ -32,10 +31,6 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         [Required]
         public DateTime Date { get; set; }
-
-        [Required]
-        [RegularExpression(@"^(?:0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$", ErrorMessage = "Invalid time.")]
-        public string Time { get; set; }
 
         public bool IsFourPlayer { get; set; }
     }

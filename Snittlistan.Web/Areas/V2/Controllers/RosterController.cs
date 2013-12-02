@@ -76,17 +76,13 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             if (!ModelState.IsValid) return View(vm);
 
-            var time = new TimeSpan(
-                int.Parse(vm.Time.Substring(0, 2)),
-                int.Parse(vm.Time.Substring(3)),
-                0);
             var roster = new Roster(
                 vm.Season,
                 vm.Turn,
                 vm.Team,
                 vm.Location,
                 vm.Opponent,
-                vm.Date.Add(time),
+                vm.Date,
                 vm.IsFourPlayer);
             DocumentSession.Store(roster);
             return RedirectToAction("Index");
@@ -116,11 +112,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             roster.Team = vm.Team;
             roster.Turn = vm.Turn;
             roster.IsFourPlayer = vm.IsFourPlayer;
-            var time = new TimeSpan(
-                int.Parse(vm.Time.Substring(0, 2)),
-                int.Parse(vm.Time.Substring(3)),
-                0);
-            roster.Date = vm.Date.Add(time);
+            roster.Date = vm.Date;
 
             return RedirectToAction("Index");
         }

@@ -12,8 +12,7 @@ namespace Snittlistan.Web.Infrastructure.AutoMapper.Profiles
                 .ForMember(vm => vm.Time, o => o.MapFrom(m => m.Date.ToShortTimeString()))
                 .ForMember(vm => vm.Players, o => o.Ignore());
 
-            Mapper.CreateMap<Roster, CreateRosterViewModel>()
-                .ForMember(vm => vm.Time, o => o.MapFrom(r => r.Date.ToShortTimeString()));
+            Mapper.CreateMap<Roster, CreateRosterViewModel>();
         }
     }
 }
