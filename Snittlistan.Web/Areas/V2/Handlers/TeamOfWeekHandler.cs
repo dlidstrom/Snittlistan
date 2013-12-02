@@ -8,11 +8,13 @@ using Snittlistan.Web.Areas.V2.ReadModels;
 
 namespace Snittlistan.Web.Areas.V2.Handlers
 {
-    public class TeamOfWeekHandler : IEventHandler<MatchResultRegistered>,
-                                     IEventHandler<SerieRegistered>,
-                                     IEventHandler<MatchResult4Registered>,
-                                     IEventHandler<Serie4Registered>,
-                                     IEventHandler<AwardedMedal>
+    public class TeamOfWeekHandler :
+        IEventHandler<MatchResultRegistered>,
+        IEventHandler<SerieRegistered>,
+        IEventHandler<MatchResult4Registered>,
+        IEventHandler<Serie4Registered>,
+        IEventHandler<AwardedMedal>,
+        IEventHandler<ClearMedals>
     {
         public IDocumentSession DocumentSession { get; set; }
 
@@ -127,6 +129,13 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId);
             var teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
             teamOfWeek.AddMedal(new AwardedMedalReadModel(e.Player, e.MedalType, e.Value));
+        }
+
+        public void Handle(ClearMedals e, string aggregateId)
+        {
+            var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId);
+            var teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
+            teamOfWeek.ClearMedals();
         }
     }
 }

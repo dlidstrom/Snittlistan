@@ -402,5 +402,98 @@ namespace Snittlistan.Test.Domain
             // Assert
             Assert.Throws<ApplicationException>(() => matchResult.AwardMedals());
         }
+
+        [Fact]
+        public void OnlyAwardMedalsOnce()
+        {
+            // Arrange
+            var validRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
+            {
+                Id = "rosters-1",
+                Players = new List<string>
+                {
+                    "p1", "p2", "p3", "p4"
+                }
+            };
+
+            var matchResult = new MatchResult4(validRoster, 9, 11, 123);
+
+            // Act
+            matchResult.RegisterSerie(new MatchSerie4(
+                                          new List<MatchGame4>
+                                          {
+                                              new MatchGame4("p1", 0, 269), new MatchGame4("p2", 0, 270),
+                                              new MatchGame4("p3", 0, 0), new MatchGame4("p4", 0, 300)
+                                          }));
+            matchResult.RegisterSerie(new MatchSerie4(
+                                          new List<MatchGame4>
+                                          {
+                                              new MatchGame4("p1", 0, 169), new MatchGame4("p2", 0, 170),
+                                              new MatchGame4("p3", 0, 0), new MatchGame4("p4", 0, 200)
+                                          }));
+
+            // Assert
+            var changes = matchResult.GetUncommittedChanges();
+            Assert.Equal(5, changes.Length);
+            var medal1 = changes[2] as AwardedMedal;
+            var medal2 = changes[3] as AwardedMedal;
+            Assert.NotNull(medal1);
+            Assert.NotNull(medal2);
+            Assert.Equal("p2", medal1.Player);
+            Assert.Equal(MedalType.PinsInSerie, medal1.MedalType);
+            Assert.Equal(270, medal1.Value);
+            Assert.Equal("p4", medal2.Player);
+            Assert.Equal(MedalType.PinsInSerie, medal2.MedalType);
+            Assert.Equal(300, medal2.Value);
+        }
+
+        [Fact]
+        public void CanClearMedals()
+        {
+            // Arrange
+            var validRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
+            {
+                Id = "rosters-1",
+                Players = new List<string>
+                {
+                    "p1", "p2", "p3", "p4"
+                }
+            };
+
+            var matchResult = new MatchResult4(validRoster, 9, 11, 123);
+
+            // Act
+            matchResult.ClearMedals();
+
+            // Assert
+            var changes = matchResult.GetUncommittedChanges();
+            Assert.Equal(2, changes.Length);
+            var domainEvent = changes[1];
+            Assert.IsAssignableFrom<ClearMedals>(domainEvent);
+            Assert.Equal(((ClearMedals)domainEvent).BitsMatchId, 123);
+        }
+
+        [Fact]
+        public void CanClearAndReAwardMedals()
+        {
+            // Arrange
+            var validRoster = new Roster(2012, 11, "H", "L", "A", new DateTime(2012, 2, 3), false)
+            {
+                Id = "rosters-1",
+                Players = new List<string>
+                {
+                    "p1", "p2", "p3", "p4"
+                }
+            };
+
+            var matchResult = new MatchResult4(validRoster, 9, 11, 123);
+            matchResult.AwardMedals();
+
+            // Act
+            matchResult.ClearMedals();
+
+            // Assert
+            Assert.DoesNotThrow(matchResult.AwardMedals);
+        }
     }
 }

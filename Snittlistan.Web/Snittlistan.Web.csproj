@@ -195,10 +195,12 @@
     <Compile Include="Areas\V2\Controllers\MatchResultAdminController.cs" />
     <Compile Include="Areas\V2\DocumentSessionExtensions.cs" />
     <Compile Include="Areas\V2\Domain\BitsParser.cs" />
+    <Compile Include="Areas\V2\Domain\Match\Events\ClearMedals.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\MatchResult4Deleted.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\MatchResult4Registered.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\MatchResult4Updated.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\AwardedMedal.cs" />
+    <Compile Include="Areas\V2\Domain\Match\Events\MedalsAwarded.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\MedalType.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\Roster4Changed.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\Serie4Registered.cs" />
@@ -208,6 +210,7 @@
     <Compile Include="Areas\V2\Domain\Match\MatchGame4.cs" />
     <Compile Include="Areas\V2\Domain\Match\MatchResult4.cs" />
     <Compile Include="Areas\V2\Domain\Match\MatchSerie4.cs" />
+    <Compile Include="Areas\V2\Domain\Match\PinsAndScoreResult.cs" />
     <Compile Include="Areas\V2\Handlers\AggregateIdHandler.cs" />
     <Compile Include="Areas\V2\Handlers\MatchResultHandler.cs" />
     <Compile Include="Areas\V2\Handlers\ResultSeries4Handler.cs" />

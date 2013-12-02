@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using EventStoreLite;
 using JetBrains.Annotations;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
@@ -8,10 +9,12 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
     public class MatchResult4 : AggregateRoot
     {
-        private readonly Dictionary<string, int> playerScores;
-        private readonly Dictionary<string, List<int>> playerPins;
+        private readonly Dictionary<string, List<PinsAndScoreResult>> playerPins;
         private HashSet<string> rosterPlayers;
         private bool medalsAwarded;
+
+        // 1-based
+        private int registeredSeries;
 
         public MatchResult4(Roster roster, int teamScore, int opponentScore, int bitsMatchId)
             : this()
@@ -27,8 +30,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
         private MatchResult4()
         {
-            playerScores = new Dictionary<string, int>();
-            playerPins = new Dictionary<string, List<int>>();
+            playerPins = new Dictionary<string, List<PinsAndScoreResult>>();
         }
 
         private string RosterId { get; set; }
@@ -65,15 +67,24 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             VerifyPlayers(matchSerie);
 
             ApplyChange(new Serie4Registered(matchSerie, BitsMatchId));
-            DoAwardMedals();
+            DoAwardMedals(registeredSeries);
         }
 
         public void AwardMedals()
         {
             if (medalsAwarded)
                 throw new ApplicationException("Medals have already been awarded");
-            DoAwardMedals();
+            for (var i = 1; i <= registeredSeries; i++)
+            {
+                DoAwardMedals(i);
+            }
+
             ApplyChange(new MedalsAwarded());
+        }
+
+        public void ClearMedals()
+        {
+            ApplyChange(new ClearMedals(BitsMatchId));
         }
 
         private static void VerifyScores(int teamScore, int opponentScore)
@@ -82,31 +93,49 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             {
                 throw new ArgumentOutOfRangeException("teamScore", "Team score must be between 0 and 20");
             }
+
             if (opponentScore < 0 || opponentScore > 20)
             {
                 throw new ArgumentOutOfRangeException("opponentScore", "Opponent score must be between 0 and 20");
             }
+
             if (teamScore + opponentScore > 20)
             {
                 throw new ArgumentException("Team score and opponent score must be at most 20");
             }
         }
 
-        private void DoAwardMedals()
+        private void DoAwardMedals(int serie)
         {
-            foreach (var key in playerScores.Keys)
-            {
-                var value = playerScores[key];
-                if (value == 4)
-                    ApplyChange(new AwardedMedal(BitsMatchId, key, MedalType.TotalScore, 4));
-            }
-
             foreach (var key in playerPins.Keys)
             {
-                foreach (var pins in playerPins[key])
+                var pinsResult = playerPins[key].SingleOrDefault(x => x.SerieNumber == serie);
+                if (pinsResult == null) continue;
+
+                if (pinsResult.Pins >= 270)
                 {
-                    if (pins >= 270)
-                        ApplyChange(new AwardedMedal(BitsMatchId, key, MedalType.PinsInSerie, pins));
+                    var medal = new AwardedMedal(
+                        BitsMatchId,
+                        key,
+                        MedalType.PinsInSerie,
+                        pinsResult.Pins);
+                    ApplyChange(medal);
+                }
+            }
+
+            if (serie == 4)
+            {
+                foreach (var key in playerPins.Keys)
+                {
+                    var list = playerPins[key];
+                    var score = list.Sum(x => x.Score);
+                    if (score != 4) continue;
+                    var medal = new AwardedMedal(
+                        BitsMatchId,
+                        key,
+                        MedalType.TotalScore,
+                        4);
+                    ApplyChange(medal);
                 }
             }
         }
@@ -151,23 +180,19 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         [UsedImplicitly]
         private void Apply(Serie4Registered e)
         {
+            registeredSeries++;
             foreach (var game in new[] { e.MatchSerie.Game1, e.MatchSerie.Game2, e.MatchSerie.Game3, e.MatchSerie.Game4 })
             {
-                if (playerScores.ContainsKey(game.Player))
-                {
-                    playerScores[game.Player] += game.Score;
-                }
-                else
-                {
-                    playerScores[game.Player] = game.Score;
-                }
-
                 if (playerPins.ContainsKey(game.Player) == false)
                 {
-                    playerPins.Add(game.Player, new List<int>());
+                    playerPins.Add(game.Player, new List<PinsAndScoreResult>());
                 }
 
-                playerPins[game.Player].Add(game.Pins);
+                var pinsAndScoreResult = new PinsAndScoreResult(
+                    game.Pins,
+                    game.Score,
+                    registeredSeries);
+                playerPins[game.Player].Add(pinsAndScoreResult);
             }
         }
 
@@ -175,6 +200,12 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         private void Apply(MedalsAwarded e)
         {
             medalsAwarded = true;
+        }
+
+        [UsedImplicitly]
+        private void Apply(ClearMedals e)
+        {
+            medalsAwarded = false;
         }
     }
 }

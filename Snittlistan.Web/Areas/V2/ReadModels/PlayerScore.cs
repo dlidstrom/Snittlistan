@@ -39,6 +39,11 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             Medals.Add(awardedMedal);
         }
 
+        public void ClearMedals()
+        {
+            Medals.Clear();
+        }
+
         public class Comparer : IComparer<PlayerScore>
         {
             public int Compare(PlayerScore x, PlayerScore y)
