@@ -26,13 +26,8 @@
                 var maxDate = Model.Turns[turn].Select(x => x.Date)
                     .Max();
             }
-            <h4>
-                Omgång @turn
-                <em>
-                    (<time datetime="@minDate.ToString("s")">@minDate.ToString("d MMM")</time>
-                    &minus;
-                    <time datetime="@maxDate.ToString("s")">@maxDate.ToString("d MMM")</time>)
-                </em>
+            <h4>Omgång @turn
+                <em>(@Html.FormatDateSpan(minDate.Date, maxDate.Date))</em>
             </h4>
             <table class="table table-condensed table-striped result-header-table">
                 <tr>

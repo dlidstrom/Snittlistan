@@ -22,7 +22,7 @@
                         {
                             foreach (var absence in activity.Absences)
                             {
-                                @Content.FormatDateSpan(absence.From, absence.To)
+                                @Html.FormatDateSpan(absence.From, absence.To)
                                 @absence.Comment
                             }
                         }

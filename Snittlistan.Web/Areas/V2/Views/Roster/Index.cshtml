@@ -14,11 +14,9 @@
 {
     <div class="row">
         <div class="span4">
-            <h3>Omgång @turn.Turn</h3>
+            <h4>Omgång @turn.Turn</h4>
             <em class="pull-left">
-                (<time datetime="@turn.StartDate.ToString("s")">@turn.StartDate.ToString("d MMM")</time>
-                &minus;
-                <time datetime="@turn.EndDate.ToString("s")">@turn.EndDate.ToString("d MMM")</time>)
+                @Html.FormatDateSpan(turn.StartDate, turn.EndDate)
             </em>
             <a class="pull-right" href="@Url.Action("View", new { season = Model.SeasonStart, turn = turn.Turn })">
                 <i class="sprite-glyphicons_029_notes_2"></i>
@@ -35,14 +33,14 @@
         {
             break;
         }
-        <div class="row">
-            @foreach (var roster in rosters)
-            {
-                <div class="span4">
-                    @Html.DisplayFor(model => roster, "Roster")
-                </div>
-            }
-        </div>
+    <div class="row">
+        @foreach (var roster in rosters)
+        {
+            <div class="span4">
+                @Html.DisplayFor(model => roster, "Roster")
+            </div>
+        }
+    </div>
         start += 3;
     }
 }

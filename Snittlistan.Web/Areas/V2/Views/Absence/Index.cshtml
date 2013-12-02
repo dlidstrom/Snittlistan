@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="span6">
-        <h2>Anmäld frånvaro</h2>
+        <h4>Anmäld frånvaro</h4>
     </div>
 </div>
 <div class="row">
@@ -18,48 +18,48 @@
 </div>
 <div class="row">
     <div class="span8">
-    <table class="table table-condensed table-striped">
-        <tr>
-            <th>Namn</th>
-            <th></th>
-            @if (Request.IsAuthenticated)
-            {
-                <th></th>
-                <th></th>
-            }
-        </tr>
-        @foreach (var absence in Model)
-        {
+        <table class="table table-condensed table-striped">
             <tr>
-                @{
-                    var rowspan = string.IsNullOrWhiteSpace(absence.Comment) ? 1 : 2;
-                }
-                <td class="center" rowspan="@rowspan">@absence.PlayerName</td>
-                <td>
-                    @Content.FormatDateSpan(absence.From, absence.To)
-                </td>
-
+                <th>Namn</th>
+                <th></th>
                 @if (Request.IsAuthenticated)
                 {
-                    <td class="center" rowspan="@rowspan">
-                        <a href="@Url.Action("Edit", new { id = absence.Id.Substring(absence.Id.LastIndexOf('-') + 1) })">
-                            <i class="sprite-glyphicons_151_edit"></i>
-                        </a>
-                    </td>
-                    <td class="center" rowspan="@rowspan">
-                        <a href="@Url.Action("Delete", new { id = absence.Id.Substring(absence.Id.LastIndexOf('-') + 1) })">
-                            <i class="sprite-glyphicons_016_bin"></i>
-                        </a>
-                    </td>
+                    <th></th>
+                    <th></th>
                 }
             </tr>
-            if (string.IsNullOrWhiteSpace(absence.Comment) == false)
+            @foreach (var absence in Model)
             {
+                <tr>
+                    @{
+                        var rowspan = string.IsNullOrWhiteSpace(absence.Comment) ? 1 : 2;
+                    }
+                    <td class="center" rowspan="@rowspan">@absence.PlayerName</td>
+                    <td>
+                        @Html.FormatDateSpan(absence.From, absence.To)
+                    </td>
+
+                    @if (Request.IsAuthenticated)
+                    {
+                        <td class="center" rowspan="@rowspan">
+                            <a href="@Url.Action("Edit", new { id = absence.Id.Substring(absence.Id.LastIndexOf('-') + 1) })">
+                                <i class="sprite-glyphicons_151_edit"></i>
+                            </a>
+                        </td>
+                        <td class="center" rowspan="@rowspan">
+                            <a href="@Url.Action("Delete", new { id = absence.Id.Substring(absence.Id.LastIndexOf('-') + 1) })">
+                                <i class="sprite-glyphicons_016_bin"></i>
+                            </a>
+                        </td>
+                    }
+                </tr>
+                    if (string.IsNullOrWhiteSpace(absence.Comment) == false)
+                    {
                 <tr>
                     <td>@absence.Comment</td>
                 </tr>
+                    }
             }
-        }
-    </table>
+        </table>
     </div>
 </div>
