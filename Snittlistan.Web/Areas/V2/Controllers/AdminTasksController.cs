@@ -215,9 +215,17 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 foreach (var result in results)
                 {
                     if (result.Type == typeof(MatchResult))
-                        EventStoreSession.Load<MatchResult>(result.AggregateId).AwardMedals();
+                    {
+                        var matchResult = EventStoreSession.Load<MatchResult>(result.AggregateId);
+                        matchResult.ClearMedals();
+                        matchResult.AwardMedals();
+                    }
                     else if (result.Type == typeof(MatchResult4))
-                        EventStoreSession.Load<MatchResult4>(result.AggregateId).AwardMedals();
+                    {
+                        var matchResult4 = EventStoreSession.Load<MatchResult4>(result.AggregateId);
+                        matchResult4.ClearMedals();
+                        matchResult4.AwardMedals();
+                    }
                 }
 
                 current += results.Length;

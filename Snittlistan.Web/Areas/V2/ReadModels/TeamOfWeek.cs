@@ -51,5 +51,13 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
             PlayerScores[awardedMedal.Player].AddMedal(awardedMedal);
         }
+
+        public void ClearMedals()
+        {
+            foreach (var key in PlayerScores.Keys)
+            {
+                PlayerScores[key].ClearMedals();
+            }
+        }
     }
 }
