@@ -5,12 +5,15 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 {
     public class PlayerScore
     {
-        public PlayerScore(string name, string team)
+        public PlayerScore(string playerId, string name, string team)
         {
             Medals = new List<AwardedMedalReadModel>();
+            PlayerId = playerId;
             Team = team;
             Name = name;
         }
+
+        public string PlayerId { get; private set; }
 
         public string Name { get; private set; }
 

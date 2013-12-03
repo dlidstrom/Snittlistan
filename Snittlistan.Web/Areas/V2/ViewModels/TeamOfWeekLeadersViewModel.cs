@@ -18,7 +18,17 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                 }
                 else
                 {
-                    list.AddRange(week.PlayerScores.Values);
+                    foreach (var value in week.PlayerScores.Values)
+                    {
+                        var item = list.SingleOrDefault(x => x.PlayerId == value.PlayerId);
+                        if (item == null)
+                            list.Add(value);
+                        else if (item.Pins < value.Pins)
+                        {
+                            list.Remove(item);
+                            list.Add(value);
+                        }
+                    }
                 }
             }
 

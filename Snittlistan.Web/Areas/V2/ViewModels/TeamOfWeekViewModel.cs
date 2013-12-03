@@ -20,11 +20,12 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                         group playerScore by new
                         {
                             playerScore.Key,
+                            playerScore.Value.PlayerId,
                             playerScore.Value.Name
                         } into g
                         let maxValue = g.OrderByDescending(x => x.Value.Pins).FirstOrDefault()
                         orderby maxValue.Value.Pins descending
-                        select new PlayerScore(g.Key.Name, maxValue.Value.Team)
+                        select new PlayerScore(g.Key.PlayerId, g.Key.Name, maxValue.Value.Team)
                         {
                             Pins = maxValue.Value.Pins,
                             Score = maxValue.Value.Score,

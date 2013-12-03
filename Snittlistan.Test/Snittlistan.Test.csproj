@@ -90,7 +90,7 @@
     <Compile Include="PlayerStatusViewModelTest.cs" />
     <Compile Include="Domain\MatchGame4Test.cs" />
     <Compile Include="Domain\MatchResult4Test.cs" />
-    <Compile Include="TeamViewModelTest.cs" />
+    <Compile Include="TeamOfWeekLeadersViewModelTest.cs" />
     <Compile Include="Controllers\AccountController_ChangePassword.cs" />
     <Compile Include="Controllers\AccountController_LogOff.cs" />
     <Compile Include="Controllers\AccountController_Logon.cs" />
