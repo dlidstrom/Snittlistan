@@ -1,14 +1,16 @@
-﻿using Snittlistan.Web.Areas.V2.Domain;
+﻿using System.Linq;
+using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Xunit;
 
 namespace Snittlistan.Test
 {
-    public class TeamViewModelTest
+    public class TeamOfWeekLeadersViewModelTest
     {
-        [Fact]
-        public void GroupsByTurn()
+        private readonly TeamOfWeekViewModel viewModel;
+
+        public TeamOfWeekLeadersViewModelTest()
         {
             // Arrange
             var player1 = new Player("Daniel", "e@d.com", Player.Status.Active) { Id = "9876" };
@@ -21,16 +23,20 @@ namespace Snittlistan.Test
             teamOfWeek2.AddResultForPlayer(player2, 1, 180);
 
             // Act
-            var vm = new TeamOfWeekViewModel(
+            viewModel = new TeamOfWeekViewModel(
                 2012,
                 new[]
                 {
                     teamOfWeek1,
                     teamOfWeek2
                 });
+        }
 
+        [Fact]
+        public void GroupsByTurn()
+        {
             // Assert
-            var weeks = vm.Weeks;
+            var weeks = viewModel.Weeks;
             Assert.Equal(1, weeks.Count);
             var week = weeks[0];
             Assert.Equal(10, week.Turn);
@@ -47,6 +53,16 @@ namespace Snittlistan.Test
             Assert.Equal(190, playerScore2.Pins);
             Assert.Equal(1, playerScore2.Series);
             Assert.Equal(410, week.Top8);
+        }
+
+        [Fact]
+        public void CalculatesLeaders()
+        {
+            // Assert
+            var top = viewModel.Leaders.Top9Total.ToList();
+            Assert.Equal(2, top.Count);
+            Assert.Equal(1, top[0].Count);
+            Assert.Equal(1, top[1].Count);
         }
     }
 }

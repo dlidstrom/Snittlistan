@@ -35,7 +35,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         {
             if (PlayerScores.ContainsKey(player.Id) == false)
             {
-                PlayerScores.Add(player.Id, new PlayerScore(player.Name, Team));
+                PlayerScores.Add(player.Id, new PlayerScore(player.Id, player.Name, Team));
             }
 
             var playerScore = PlayerScores[player.Id];
