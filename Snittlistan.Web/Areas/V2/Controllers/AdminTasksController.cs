@@ -132,12 +132,13 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             while (true)
             {
                 var indexNames = DocumentStore.DatabaseCommands.GetIndexNames(0, 20);
-                if (indexNames.Length == 0) break;
                 foreach (var indexName in indexNames)
                 {
                     if (string.Equals(indexName, "Raven/DocumentsByEntityName", StringComparison.OrdinalIgnoreCase) == false)
                         DocumentStore.DatabaseCommands.DeleteIndex(indexName);
                 }
+
+                if (indexNames.Length <= 1) break;
             }
 
             // create indexes
