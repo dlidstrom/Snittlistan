@@ -107,20 +107,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return View();
         }
 
-        public ActionResult CreateIndexes()
-        {
-            return View();
-        }
-
-        [HttpPost, ActionName("CreateIndexes")]
-        public ActionResult CreateIndexesConfirmed()
-        {
-            // create indexes
-            IndexCreator.CreateIndexes(DocumentStore);
-
-            return RedirectToAction("Raven");
-        }
-
         public ActionResult ResetIndexes()
         {
             return View();
