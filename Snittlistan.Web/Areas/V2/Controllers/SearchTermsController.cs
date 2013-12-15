@@ -12,7 +12,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         public JsonResult Teams(string q)
         {
             var options = DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
-                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .Where(t => t.Team.StartsWith(q))
                 .Distinct()
                 .AsProjection<RosterSearchTerms.Result>()
@@ -26,7 +25,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         public JsonResult Opponents(string q)
         {
             var options = DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
-                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .Where(t => t.Opponent.StartsWith(q))
                 .Distinct()
                 .AsProjection<RosterSearchTerms.Result>()
@@ -40,7 +38,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         public JsonResult Locations(string q)
         {
             var options = DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
-                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .Where(t => t.Location.StartsWith(q))
                 .Distinct()
                 .AsProjection<RosterSearchTerms.Result>()

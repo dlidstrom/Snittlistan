@@ -26,7 +26,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             }
 
             var rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
-                .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
                 .Where(r => r.Season == season)
                 .ToList();
             var q = from roster in rosters
@@ -144,7 +143,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             {
                 // find out next turn
                 var rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
-                    .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                     .Where(x => x.Season == season)
                     .Where(x => x.Date > SystemTime.UtcNow.Date)
                     .OrderBy(x => x.Date)
@@ -154,7 +152,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             }
 
             var rostersForTurn = DocumentSession.Query<Roster, RosterSearchTerms>()
-                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .Include(roster => roster.Players)
                 .Where(roster => roster.Turn == turn)
                 .Where(roster => roster.Season == season)
@@ -182,7 +179,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 throw new HttpException(404, "Roster not found");
 
             var availablePlayers = DocumentSession.Query<Player, PlayerSearch>()
-                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .OrderBy(x => x.Name)
                 .Where(p => p.PlayerStatus == Player.Status.Active)
                 .ToList();

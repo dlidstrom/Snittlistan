@@ -30,7 +30,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         public ActionResult Users()
         {
             var users = DocumentSession.Query<User>()
-                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .ToList()
                 .MapTo<UserViewModel>()
                 .OrderByDescending(x => x.IsActive)

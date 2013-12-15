@@ -18,7 +18,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         public ActionResult Index()
         {
             var absences = DocumentSession.Query<AbsenceIndex.Result, AbsenceIndex>()
-                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .Where(x => x.To >= SystemTime.UtcNow.Date.AddDays(-1))
                 .OrderBy(p => p.To)
                 .ThenBy(p => p.PlayerName)
@@ -103,7 +102,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             };
             playerList.AddRange(
                 DocumentSession.Query<Player, PlayerSearch>()
-                    .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                     .Where(x => x.PlayerStatus == Player.Status.Active)
                     .OrderBy(x => x.Name)
                     .ToList()
