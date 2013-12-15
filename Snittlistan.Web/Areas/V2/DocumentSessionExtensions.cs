@@ -11,7 +11,6 @@ namespace Snittlistan.Web.Areas.V2
         public static List<SelectListItem> CreateRosterSelectList(this IDocumentSession session, int season, string rosterId = "")
         {
             return session.Query<RosterSearchTerms.Result, RosterSearchTerms>()
-                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .Where(x => x.Season == season)
                 .Where(x => x.Preliminary == false)
                 .Where(x => x.PlayerCount > 0)

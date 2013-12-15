@@ -13,7 +13,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         public ActionResult Index()
         {
             var players = DocumentSession.Query<Player, PlayerSearch>()
-                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .OrderBy(p => p.PlayerStatus)
                 .ThenBy(p => p.Name)
                 .ToList();

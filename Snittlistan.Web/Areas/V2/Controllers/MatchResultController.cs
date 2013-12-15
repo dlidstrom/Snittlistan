@@ -21,7 +21,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
 
             var headerReadModels = DocumentSession.Query<ResultHeaderReadModel, ResultHeaderIndex>()
-                .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .Where(x => x.Season == season)
                 .ToList();
             var vm = new MatchResultViewModel
