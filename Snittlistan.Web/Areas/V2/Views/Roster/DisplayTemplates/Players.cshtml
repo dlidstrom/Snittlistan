@@ -40,6 +40,18 @@
                     </td>
                 </tr>
             }
+            <tr>
+                <td class="table-id">R</td>
+                <td>
+                    @{
+                        var reserve = Model.Players.ElementAtOrDefault(4);
+                    }
+                    @if (reserve != null)
+                    {
+                        @reserve.Item2
+                    }
+                </td>
+            </tr>
         </table>
     }
     else
