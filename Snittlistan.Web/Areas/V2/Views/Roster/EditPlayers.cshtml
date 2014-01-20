@@ -47,6 +47,26 @@
                             </td>
                         </tr>
                     }
+                    <tr>
+                        <td class="table-id">R</td>
+                        <td>
+                            <select name="reserve1" required>
+                                <option value="">Välj reserv</option>
+                                @foreach (var player in Model.AvailablePlayers)
+                                {
+                                    var elementAtOrDefault = Model.Roster.Players.ElementAtOrDefault(4);
+                                    if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
+                                    {
+                                        <option value="@player.Id" selected="selected">@player.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@player.Id">@player.Name</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                    </tr>
                 </table>
             }
             else
