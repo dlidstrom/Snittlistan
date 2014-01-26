@@ -18,8 +18,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         private enum Team
         {
-            Home,
-            Away
+            Home = 0,
+            Away = 2
         }
 
         public ParseResult Parse(string content, string team)
@@ -30,9 +30,9 @@ namespace Snittlistan.Web.Areas.V2.Domain
             // find which team we should import
             var documentNode = document.DocumentNode;
             var homeTeamLabel =
-                documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchHead_LabelHomeTeam']");
+                documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelHomeTeam']");
             var awayTeamLabel =
-                documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchHead_LabelAwayTeam']");
+                documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelAwayTeam']");
 
             var homeTeamName = homeTeamLabel.InnerText;
             if (team == homeTeamName)
@@ -63,9 +63,9 @@ namespace Snittlistan.Web.Areas.V2.Domain
             // find which team we should import
             var documentNode = document.DocumentNode;
             var homeTeamLabel =
-                documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchHead_LabelHomeTeam']");
+                documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelHomeTeam']");
             var awayTeamLabel =
-                documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchHead_LabelAwayTeam']");
+                documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelAwayTeam']");
 
             var homeTeamName = homeTeamLabel.InnerText;
             if (team == homeTeamName)
@@ -93,38 +93,32 @@ namespace Snittlistan.Web.Areas.V2.Domain
             var series = new List<ResultSeriesReadModel.Serie>();
             var tableNode = documentNode.SelectSingleNode("//table[@id='MainContentPlaceHolder_MatchFact1_TableMatch']");
 
-            for (var round = 1; round <= 4; round++)
+            for (var serieNumber = 1; serieNumber <= 4; serieNumber++)
             {
-                var row =
-                    tableNode.SelectSingleNode(string.Format("tr[@id='MainContentPlaceHolder_MatchFact1_TableRow{1}{0}']",
-                                                             round * 2, team));
-                if (row == null) continue;
                 var serie = new ResultSeriesReadModel.Serie();
                 var tables = new List<ResultSeriesReadModel.Table>();
-                for (var serieNumber = 1; serieNumber <= 4; serieNumber++)
+                for (var tableNumber = 1; tableNumber <= 4; tableNumber++)
                 {
                     var name1 =
-                        row.SelectSingleNode(
-                            string.Format("//span[@id='MainContentPlaceHolder_MatchFact1_LblTable{0}Ser{1}{2}RoundNbr1Name']",
-                                          round, serieNumber, team));
+                        tableNode.SelectSingleNode(
+                            string.Format("//td[@class='MatchFactTable{0}Player']/span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{1}Table{2}Order{3}Player']",
+                                          team, serieNumber, tableNumber, 1 + (int)team));
                     var name2 =
-                        row.SelectSingleNode(
-                            string.Format("//span[@id='MainContentPlaceHolder_MatchFact1_LblTable{0}Ser{1}{2}RoundNbr2Name']",
-                                          round, serieNumber, team));
+                        tableNode.SelectSingleNode(
+                            string.Format("//td[@class='MatchFactTable{0}Player']/span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{1}Table{2}Order{3}Player']",
+                                          team, serieNumber, tableNumber, 2 + (int)team));
                     var res1Node =
-                        row.SelectSingleNode(
-                            string.Format(
-                                "//span[@id='MainContentPlaceHolder_MatchFact1_LblTable{0}Ser{1}{2}RoundNbr1Result']", round,
-                                serieNumber, team));
+                        tableNode.SelectSingleNode(
+                            string.Format("//td[@class='MatchFactTable{0}Result']/span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{1}Table{2}Order{3}Result']",
+                                          team, serieNumber, tableNumber, 1 + (int)team));
                     var res2Node =
-                        row.SelectSingleNode(
-                            string.Format(
-                                "//span[@id='MainContentPlaceHolder_MatchFact1_LblTable{0}Ser{1}{2}RoundNbr2Result']", round,
-                                serieNumber, team));
+                        tableNode.SelectSingleNode(
+                            string.Format("//td[@class='MatchFactTable{0}Result']/span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{1}Table{2}Order{3}Result']",
+                                          team, serieNumber, tableNumber, 2 + (int)team));
                     var scoreNode =
-                        row.SelectSingleNode(
-                            string.Format("//span[@id='MainContentPlaceHolder_MatchFact1_LblTable{0}Ser{1}{2}RoundNbr1Rank']",
-                                          round, serieNumber, team));
+                        tableNode.SelectSingleNode(
+                            string.Format("//td[@class='MatchFactTable{0}Result']/span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{1}Table{2}Order{3}Total']",
+                                          team, serieNumber, tableNumber, 1 + (int)team));
                     var score = int.Parse(scoreNode.InnerText);
                     var res1 = int.Parse(res1Node.InnerText);
                     var res2 = int.Parse(res2Node.InnerText);
@@ -149,10 +143,10 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 series.Add(serie);
             }
 
-            var teamScoreNode = documentNode.SelectSingleNode(string.Format("//span[@id='MainContentPlaceHolder_MatchHead_LblSumPoints{0}']", team));
+            var teamScoreNode = documentNode.SelectSingleNode(string.Format("//span[@id='MainContentPlaceHolder_MatchHead1_LblSumPoints{0}']", team));
             var teamScore = int.Parse(teamScoreNode.InnerText);
 
-            var awayScoreNode = documentNode.SelectSingleNode(string.Format("//span[@id='MainContentPlaceHolder_MatchHead_LblSumPoints{0}']", away));
+            var awayScoreNode = documentNode.SelectSingleNode(string.Format("//span[@id='MainContentPlaceHolder_MatchHead1_LblSumPoints{0}']", away));
             var awayScore = int.Parse(awayScoreNode.InnerText);
 
             return new ParseResult(teamScore, awayScore, series.ToArray());
@@ -162,36 +156,33 @@ namespace Snittlistan.Web.Areas.V2.Domain
         {
             var series = new List<ResultSeries4ReadModel.Serie>();
             var tableNode = documentNode.SelectSingleNode("//table[@id='MainContentPlaceHolder_MatchFact1_TableMatch']");
+            var order = team == Team.Home ? 1 : 2;
 
-            for (var round = 1; round <= 4; round++)
+            for (var serieNumber = 1; serieNumber <= 4; serieNumber++)
             {
-                var row =
-                    tableNode.SelectSingleNode(string.Format("tr[@id='MainContentPlaceHolder_MatchFact1_TableRow{1}{0}']",
-                                                             round * 2, team));
-                if (row == null) continue;
                 var games = new List<ResultSeries4ReadModel.Game>();
-                for (var serieNumber = 1; serieNumber <= 4; serieNumber++)
+                for (var tableNumber = 1; tableNumber <= 4; tableNumber++)
                 {
-                    var name1 =
-                        row.SelectSingleNode(
-                            string.Format("//span[@id='MainContentPlaceHolder_MatchFact1_LblTable{0}Ser{1}{2}RoundNbr1Name']",
-                                          round, serieNumber, team));
-                    var res1Node =
-                        row.SelectSingleNode(
-                            string.Format(
-                                "//span[@id='MainContentPlaceHolder_MatchFact1_LblTable{0}Ser{1}{2}RoundNbr1Result']", round,
-                                serieNumber, team));
-                    var scoreNode =
-                        row.SelectSingleNode(
-                            string.Format("//span[@id='MainContentPlaceHolder_MatchFact1_LblTable{0}Ser{1}{2}RoundNbr1Rank']",
-                                          round, serieNumber, team));
-                    var score = int.Parse(scoreNode.InnerText);
-                    var res1 = int.Parse(res1Node.InnerText);
+                    var playerNameNode =
+                        tableNode.SelectSingleNode(
+                            string.Format("//td[@class='MatchFactTable{0}Player']/span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{1}Table{2}Order{3}Player']",
+                                          team, serieNumber, tableNumber, order));
+                    var playerPinsNode =
+                        tableNode.SelectSingleNode(
+                            string.Format("//td[@class='MatchFactTable{0}Result']/span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{1}Table{2}Order{3}Result']",
+                                          team, serieNumber, tableNumber, order));
+                    var opponentPinsNode =
+                        tableNode.SelectSingleNode(
+                            string.Format("//td[@class='MatchFactTable{0}Result']/span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{1}Table{2}Order{3}Result']",
+                                          away, serieNumber, tableNumber, 3 - order));
+                    var playerPins = int.Parse(playerPinsNode.InnerText);
+                    var opponentPins = int.Parse(opponentPinsNode.InnerText);
+                    var score = playerPins > opponentPins ? 1 : 0;
                     var game = new ResultSeries4ReadModel.Game
                     {
                         Score = score,
-                        Pins = res1,
-                        Player = GetPlayerId(name1.InnerText).Id
+                        Pins = playerPins,
+                        Player = GetPlayerId(playerNameNode.InnerText).Id
                     };
                     games.Add(game);
                 }
@@ -203,10 +194,10 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 series.Add(serie);
             }
 
-            var teamScoreNode = documentNode.SelectSingleNode(string.Format("//span[@id='MainContentPlaceHolder_MatchHead_LblSumPoints{0}']", team));
+            var teamScoreNode = documentNode.SelectSingleNode(string.Format("//span[@id='MainContentPlaceHolder_MatchHead1_LblSumPoints{0}']", team));
             var teamScore = int.Parse(teamScoreNode.InnerText);
 
-            var awayScoreNode = documentNode.SelectSingleNode(string.Format("//span[@id='MainContentPlaceHolder_MatchHead_LblSumPoints{0}']", away));
+            var awayScoreNode = documentNode.SelectSingleNode(string.Format("//span[@id='MainContentPlaceHolder_MatchHead1_LblSumPoints{0}']", away));
             var awayScore = int.Parse(awayScoreNode.InnerText);
 
             return new Parse4Result(teamScore, awayScore, series.ToArray());
