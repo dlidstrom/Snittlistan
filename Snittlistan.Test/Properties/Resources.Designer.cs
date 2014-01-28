@@ -106,6 +106,19 @@ namespace Snittlistan.Test.Properties {
         ///
         ///&lt;head id=&quot;Head1&quot;&gt;&lt;meta name=&quot;description&quot; content=&quot;Svenska Bowlingförbundet, Bowlingförbundet, Sv. Bowlingförbundet, SvBF, Bowling, BITS, Bowlingens IT-System, Bowlingranking, Query, MatchFakta, Ranking, Tävlingar, Hcp, Slutspel&quot; /&gt;&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset= [rest of string was truncated]&quot;;.
         /// </summary>
+        internal static string Id3050651 {
+            get {
+                return ResourceManager.GetString("Id3050651", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+        ///&lt;html lang=&quot;sv&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+        ///
+        ///&lt;head id=&quot;Head1&quot;&gt;&lt;meta name=&quot;description&quot; content=&quot;Svenska Bowlingförbundet, Bowlingförbundet, Sv. Bowlingförbundet, SvBF, Bowling, BITS, Bowlingens IT-System, Bowlingranking, Query, MatchFakta, Ranking, Tävlingar, Hcp, Slutspel&quot; /&gt;&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset= [rest of string was truncated]&quot;;.
+        /// </summary>
         internal static string Id3060803 {
             get {
                 return ResourceManager.GetString("Id3060803", resourceCulture);

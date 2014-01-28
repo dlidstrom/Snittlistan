@@ -180,7 +180,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             using (var client = new WebClient())
             {
                 var address = string.Format(
-                    "http://bits.swebowl.se/MatchFact.aspx?MatchId={0}",
+                    "http://bits.swebowl.se/Matches/MatchFact.aspx?MatchId={0}",
                     model.BitsMatchId);
                 var content = client.DownloadString(address);
                 if (roster.IsFourPlayer)
