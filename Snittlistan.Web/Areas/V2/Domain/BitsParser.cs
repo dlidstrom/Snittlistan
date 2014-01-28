@@ -52,7 +52,12 @@ namespace Snittlistan.Web.Areas.V2.Domain
             if (awayTeamName.StartsWith(teamPrefix) && homeTeamName.StartsWith(teamPrefix) == false)
                 return ExtractTeam(documentNode, Team.Away, Team.Home);
 
-            throw new ApplicationException(string.Format("No team with name {0} was found", team));
+            var message = string.Format(
+                "No team with name {0} was found (homeTeamName = {1}, awayTeamName = {2})",
+                team,
+                homeTeamName,
+                awayTeamName);
+            throw new ApplicationException(message);
         }
 
         public Parse4Result Parse4(string content, string team)
