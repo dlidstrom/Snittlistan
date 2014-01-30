@@ -176,18 +176,24 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 var games = new List<ResultSeries4ReadModel.Game>();
                 for (var tableNumber = 1; tableNumber <= 4; tableNumber++)
                 {
-                    var playerNameNode =
-                        tableNode.SelectSingleNode(
-                            string.Format("//td[@class='MatchFactTable{0}Player']/span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{1}Table{2}Order{3}Player']",
-                                          team, serieNumber, tableNumber, order));
-                    var playerPinsNode =
-                        tableNode.SelectSingleNode(
-                            string.Format("//td[@class='MatchFactTable{0}Result']/span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{1}Table{2}Order{3}Result']",
-                                          team, serieNumber, tableNumber, order));
-                    var opponentPinsNode =
-                        tableNode.SelectSingleNode(
-                            string.Format("//td[@class='MatchFactTable{0}Result']/span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{1}Table{2}Order{3}Result']",
-                                          away, serieNumber, tableNumber, 3 - order));
+                    var playerNameNode = tableNode.SelectSingleNode(
+                        string.Format(
+                            "//span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{0}Table{1}Order{2}Player']",
+                            serieNumber,
+                            tableNumber,
+                            order));
+                    var playerPinsNode = tableNode.SelectSingleNode(
+                        string.Format(
+                            "//span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{0}Table{1}Order{2}Result']",
+                            serieNumber,
+                            tableNumber,
+                            order));
+                    var opponentPinsNode = tableNode.SelectSingleNode(
+                        string.Format(
+                            "//span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{0}Table{1}Order{2}Result']",
+                            serieNumber,
+                            tableNumber,
+                            3 - order));
                     var playerPins = int.Parse(playerPinsNode.InnerText);
                     var opponentPins = int.Parse(opponentPinsNode.InnerText);
                     var score = playerPins > opponentPins ? 1 : 0;
