@@ -14,7 +14,7 @@ namespace Snittlistan.Test
             left.Absences.Add(new AbsenceIndex.Result());
             var right = new PlayerStatusViewModel("B", null);
             right.Absences.Add(new AbsenceIndex.Result());
-            var comparer = new PlayerStatusViewModel.Comparer();
+            var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
             var result = comparer.Compare(left, right);
@@ -30,7 +30,7 @@ namespace Snittlistan.Test
             var left = new PlayerStatusViewModel("A", null);
             left.Absences.Add(new AbsenceIndex.Result());
             var right = new PlayerStatusViewModel("B", null);
-            var comparer = new PlayerStatusViewModel.Comparer();
+            var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
             var result = comparer.Compare(left, right);
@@ -46,7 +46,7 @@ namespace Snittlistan.Test
             var left = new PlayerStatusViewModel("A", null);
             var right = new PlayerStatusViewModel("B", null);
             right.Absences.Add(new AbsenceIndex.Result());
-            var comparer = new PlayerStatusViewModel.Comparer();
+            var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
             var result = comparer.Compare(left, right);
@@ -56,7 +56,7 @@ namespace Snittlistan.Test
         }
 
         [Fact]
-        public void ComparesPlayerFormLess()
+        public void ComparesSeasonAverageLess()
         {
             // Arrange
             var left = new PlayerStatusViewModel("A", new PlayerFormViewModel("A")
@@ -67,7 +67,51 @@ namespace Snittlistan.Test
             {
                 SeasonAverage = 195
             });
-            var comparer = new PlayerStatusViewModel.Comparer();
+            var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
+
+            // Act
+            var result = comparer.Compare(left, right);
+
+            // Assert
+            Assert.Equal(-1, result);
+        }
+
+        [Fact]
+        public void ComparesSeasonAverageGreater()
+        {
+            // Arrange
+            var left = new PlayerStatusViewModel("A", new PlayerFormViewModel("A")
+            {
+                SeasonAverage = 197
+            });
+            var right = new PlayerStatusViewModel("B", new PlayerFormViewModel("B")
+            {
+                SeasonAverage = 195
+            });
+            var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
+
+            // Act
+            var result = comparer.Compare(left, right);
+
+            // Assert
+            Assert.Equal(1, result);
+        }
+
+        [Fact]
+        public void ComparesPlayerFormLess()
+        {
+            // Arrange
+            var left = new PlayerStatusViewModel("A", new PlayerFormViewModel("A")
+            {
+                SeasonAverage = 190,
+                Last5Average = 190
+            });
+            var right = new PlayerStatusViewModel("B", new PlayerFormViewModel("B")
+            {
+                SeasonAverage = 190,
+                Last5Average = 195
+            });
+            var comparer = new PlayerStatusViewModel.Comparer(CompareMode.PlayerForm);
 
             // Act
             var result = comparer.Compare(left, right);
@@ -82,13 +126,15 @@ namespace Snittlistan.Test
             // Arrange
             var left = new PlayerStatusViewModel("A", new PlayerFormViewModel("A")
             {
-                SeasonAverage = 197
+                SeasonAverage = 190,
+                Last5Average = 197
             });
             var right = new PlayerStatusViewModel("B", new PlayerFormViewModel("B")
             {
-                SeasonAverage = 195
+                SeasonAverage = 190,
+                Last5Average = 195
             });
-            var comparer = new PlayerStatusViewModel.Comparer();
+            var comparer = new PlayerStatusViewModel.Comparer(CompareMode.PlayerForm);
 
             // Act
             var result = comparer.Compare(left, right);
@@ -98,7 +144,7 @@ namespace Snittlistan.Test
         }
 
         [Fact]
-        public void ComparesPlayerFormLeft()
+        public void ComparesSeasonAverageLeft()
         {
             // Arrange
             var left = new PlayerStatusViewModel("A", new PlayerFormViewModel("A")
@@ -106,7 +152,43 @@ namespace Snittlistan.Test
                 SeasonAverage = 190
             });
             var right = new PlayerStatusViewModel("B", null);
-            var comparer = new PlayerStatusViewModel.Comparer();
+            var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
+
+            // Act
+            var result = comparer.Compare(left, right);
+
+            // Assert
+            Assert.Equal(1, result);
+        }
+
+        [Fact]
+        public void ComparesSeasonAverageRight()
+        {
+            // Arrange
+            var left = new PlayerStatusViewModel("A", null);
+            var right = new PlayerStatusViewModel("B", new PlayerFormViewModel("B")
+            {
+                SeasonAverage = 195
+            });
+            var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
+
+            // Act
+            var result = comparer.Compare(left, right);
+
+            // Assert
+            Assert.Equal(-1, result);
+        }
+
+        [Fact]
+        public void ComparesPlayerFormLeft()
+        {
+            // Arrange
+            var left = new PlayerStatusViewModel("A", new PlayerFormViewModel("A")
+            {
+                Last5Average = 190
+            });
+            var right = new PlayerStatusViewModel("B", null);
+            var comparer = new PlayerStatusViewModel.Comparer(CompareMode.PlayerForm);
 
             // Act
             var result = comparer.Compare(left, right);
@@ -122,9 +204,9 @@ namespace Snittlistan.Test
             var left = new PlayerStatusViewModel("A", null);
             var right = new PlayerStatusViewModel("B", new PlayerFormViewModel("B")
             {
-                SeasonAverage = 195
+                Last5Average = 195
             });
-            var comparer = new PlayerStatusViewModel.Comparer();
+            var comparer = new PlayerStatusViewModel.Comparer(CompareMode.PlayerForm);
 
             // Act
             var result = comparer.Compare(left, right);
@@ -140,7 +222,7 @@ namespace Snittlistan.Test
             var left = new PlayerStatusViewModel("A", null);
             left.Absences.Add(new AbsenceIndex.Result());
             var right = new PlayerStatusViewModel("B", new PlayerFormViewModel("B"));
-            var comparer = new PlayerStatusViewModel.Comparer();
+            var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
             var result = comparer.Compare(left, right);
@@ -156,7 +238,7 @@ namespace Snittlistan.Test
             var left = new PlayerStatusViewModel("A", new PlayerFormViewModel("A"));
             var right = new PlayerStatusViewModel("B", null);
             right.Absences.Add(new AbsenceIndex.Result());
-            var comparer = new PlayerStatusViewModel.Comparer();
+            var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
             var result = comparer.Compare(left, right);
