@@ -343,7 +343,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
             var activitiesWithNoAbsence = activities.Where(x => x.Absences.Count == 0);
             var activitiesWithAbsence = activities.Where(x => x.Absences.Count > 0);
-            var vm = activitiesWithNoAbsence.OrderByDescending(x => x, new PlayerStatusViewModel.Comparer())
+            var vm = activitiesWithNoAbsence.OrderByDescending(x => x, new PlayerStatusViewModel.Comparer(CompareMode.PlayerForm))
                 .Concat(activitiesWithAbsence.OrderBy(x => x.Absences.Min(y => y.To)).ThenBy(x => x.Name));
             return PartialView(vm);
         }

@@ -1,8 +1,15 @@
+using System;
 using System.Collections.Generic;
 using Snittlistan.Web.Areas.V2.Indexes;
 
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
+    public enum CompareMode
+    {
+        SeasonAverage,
+        PlayerForm
+    }
+
     public class PlayerStatusViewModel
     {
         public PlayerStatusViewModel(string name, PlayerFormViewModel playerForm)
@@ -23,6 +30,22 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public class Comparer : IComparer<PlayerStatusViewModel>
         {
+            private readonly Func<PlayerStatusViewModel, PlayerStatusViewModel, int> comparer;
+
+            public Comparer(CompareMode compareMode)
+            {
+                switch (compareMode)
+                {
+                    case CompareMode.SeasonAverage:
+                        comparer = (left, right) => left.PlayerForm.SeasonAverage.CompareTo(right.PlayerForm.SeasonAverage);
+                        break;
+
+                    case CompareMode.PlayerForm:
+                        comparer = (left, right) => left.PlayerForm.Last5Average.CompareTo(right.PlayerForm.Last5Average);
+                        break;
+                }
+            }
+
             public int Compare(PlayerStatusViewModel x, PlayerStatusViewModel y)
             {
                 if (x.Absences.Count > 0 && y.Absences.Count == 0)
@@ -37,8 +60,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                 var f = CompareForm(x, y);
                 if (f != 0) return f;
 
-                var s = x.PlayerForm.SeasonAverage.CompareTo(y.PlayerForm.SeasonAverage);
-                return s;
+                return comparer.Invoke(x, y);
             }
 
             private static int CompareForm(PlayerStatusViewModel x, PlayerStatusViewModel y)
