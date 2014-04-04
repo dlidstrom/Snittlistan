@@ -1,7 +1,10 @@
 ﻿@model RosterViewModel
+@{
+    var hideControls = Convert.ToBoolean(ViewData["hideControls"]);
+}
 
 <div class="well well-small editable">
-    @if (Request.IsAuthenticated)
+    @if (Request.IsAuthenticated && hideControls == false)
     {
         <a href="@Url.Action("EditPlayers", new { Model.Id })" class="edit-right">
             <i class="sprite-glyphicons_151_edit"></i>

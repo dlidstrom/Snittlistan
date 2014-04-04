@@ -1,0 +1,18 @@
+﻿@model ViewTurnViewModel
+
+@foreach (var roster in Model.Rosters)
+{
+    <div class="row">
+        <div class="span4">
+            @Html.DisplayFor(model => roster, "Roster", new { hideControls = true })
+            @Html.DisplayFor(model => roster, "Players", new { hideControls = true })
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="span4">
+        <h4>Anmäld frånvaro</h4>
+    </div>
+</div>
+@Html.Action("AbsenceTable", "Absence", new { hideControls = true })

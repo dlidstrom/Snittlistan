@@ -17,12 +17,19 @@ namespace Snittlistan.Web.Areas.V2.Controllers
     {
         public ActionResult Index()
         {
+            return View();
+        }
+
+        [ChildActionOnly]
+        public ActionResult AbsenceTable(bool? hideControls)
+        {
+            ViewBag.HideControls = hideControls.GetValueOrDefault();
             var absences = DocumentSession.Query<AbsenceIndex.Result, AbsenceIndex>()
-                .Where(x => x.To >= SystemTime.UtcNow.Date.AddDays(-1))
-                .OrderBy(p => p.To)
-                .ThenBy(p => p.PlayerName)
-                .AsProjection<AbsenceIndex.Result>()
-                .ToArray();
+                                          .Where(x => x.To >= SystemTime.UtcNow.Date.AddDays(-1))
+                                          .OrderBy(p => p.To)
+                                          .ThenBy(p => p.PlayerName)
+                                          .AsProjection<AbsenceIndex.Result>()
+                                          .ToArray();
             return View(absences);
         }
 
@@ -100,19 +107,18 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     Value = string.Empty
                 }
             };
-            playerList.AddRange(
-                DocumentSession.Query<Player, PlayerSearch>()
-                    .Where(x => x.PlayerStatus == Player.Status.Active)
-                    .OrderBy(x => x.Name)
-                    .ToList()
-                    .Select(
-                        x => new SelectListItem
-                        {
-                            Text = x.Name,
-                            Value = x.Id,
-                            Selected = x.Id == player
-                        })
-                    .ToArray());
+            var players = DocumentSession.Query<Player, PlayerSearch>()
+                                         .Where(x => x.PlayerStatus == Player.Status.Active)
+                                         .OrderBy(x => x.Name)
+                                         .ToList()
+                                         .Select(x => new SelectListItem
+                                         {
+                                             Text = x.Name,
+                                             Value = x.Id,
+                                             Selected = x.Id == player
+                                         })
+                                         .ToArray();
+            playerList.AddRange(players);
             ViewBag.Player = playerList;
         }
     }
