@@ -17,43 +17,39 @@
 @score-accomplishment-color: silver;
 @pins-accomplishment-color: darkorange;
 
-.container
-{
+.container {
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
 }
 
-.navbar .brand
-{
+.navbar .brand {
     font-weight: bold;
     text-shadow: 0 1px 0 rgba(255, 255, 0, 0.1), rgba(255, 255, 0, .125) 0 0 30px;
     color: black;
 }
 
-.navbar
-{
-    p.navbar-text
-    {
+.navbar {
+    p.navbar-text {
         padding: 0 15px;
     }
 
-    .nav > li > a
-    {
+    .nav > li > a {
         font-size: 20px;
     }
 }
 
-.admin
-{
-    a
-    {
+.admin {
+    a {
         font-size: 20px;
     }
 }
 
-td.table-id
-{
+a.rosters {
+    margin-top: 11px;
+}
+
+td.table-id {
     vertical-align: middle;
     font-weight: bold;
     font-size: 22px;
@@ -64,8 +60,7 @@ td.center {
 }
 
 /* team of the week */
-table.team-of-week tfoot
-{
+table.team-of-week tfoot {
     border-top: 2px solid black;
 }
 
@@ -74,25 +69,21 @@ table.team-of-week tfoot
     border-top: 2px solid black;
 }
 
-button.btn
-{
+button.btn {
     /* prevent buttons from wrapping text */
     white-space: nowrap;
 }
 
-.team-label (@color)
-{
+.team-label (@color) {
     background-color: @color;
     text-transform: uppercase;
 }
 
-.label-team-a
-{
+.label-team-a {
     .team-label(@team-a-color);
 }
 
-.label-team-f
-{
+.label-team-f {
     .team-label(@team-f-color);
 }
 
@@ -226,8 +217,7 @@ button.btn
     }
 }
 
-.accomplishment-label (@color)
-{
+.accomplishment-label (@color) {
     background-color: @color;
     text-transform: uppercase;
     color: black;
@@ -244,69 +234,60 @@ button.btn
     .accomplishment-label(@pins-accomplishment-color);
 }
 
-.label-miss-free
-{
+.label-miss-free {
     .accomplishment-label(@miss-free-color);
 }
 
-.label-personal-best
-{
+.label-personal-best {
     .accomplishment-label(@personal-best-color);
 }
 
-.label-season-best
-{
+.label-season-best {
     .accomplishment-label(@season-best-color);
 }
 
-.label-300
-{
+.label-300 {
     .accomplishment-label(@game-300-color);
 }
 
-h2 em, h3 em, h4 em
-{
+h2 em, h3 em, h4 em {
     color: gray;
     font-style: normal;
 }
 
-dl em
-{
+dl em {
     /* make emphasized elements stand out in definition lists */
     font-weight: bold;
     font-style: normal;
     color: black;
 }
 
-dt
-{
+dt {
     color: gray;
 }
 
-.editable
-{
+.editable {
     position: relative;
-    .edit-left
-    {
+
+    .edit-left {
         position: absolute;
         top: 2px;
         left: 2px;
     }
-    .edit-right
-    {
+
+    .edit-right {
         position: absolute;
         top: 2px;
         right: -2px;
     }
-    .dropdown .caret
-    {
+
+    .dropdown .caret {
         margin-left: -5px;
     }
 }
 
 /* Prevent textarea resize */
-textarea
-{
+textarea {
     resize: none;
 }
 
@@ -315,21 +296,28 @@ textarea
 }
 
 /* media queries */
-@media (min-width: 768px) and (max-width: 979px)
-{
+@media (min-width: 768px) and (max-width: 979px) {
     /* reduce width of definition list on iPad */
-    .dl-horizontal
-    {
-        dt { width: 80px; }
-        dd { margin-left: 90px; }
+    .dl-horizontal {
+        dt {
+            width: 80px;
+        }
+
+        dd {
+            margin-left: 90px;
+        }
     }
 }
-@media (min-width: 980px) and (max-width: 1199px)
-{
+
+@media (min-width: 980px) and (max-width: 1199px) {
     /* reduce width of definition list on iPad */
-    .dl-horizontal
-    {
-        dt { width: 120px; }
-        dd { margin-left: 140px; }
+    .dl-horizontal {
+        dt {
+            width: 120px;
+        }
+
+        dd {
+            margin-left: 140px;
+        }
     }
 }

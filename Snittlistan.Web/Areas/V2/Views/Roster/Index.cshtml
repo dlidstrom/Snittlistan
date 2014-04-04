@@ -17,11 +17,10 @@
             <h4 class="pull-left">Omgång @turn.Turn
                 <em>(@Html.FormatDateSpan(turn.StartDate, turn.EndDate))</em>
             </h4>
-            <a class="pull-right" href="@Url.Action("View", new { season = Model.SeasonStart, turn = turn.Turn })">
-                <i class="sprite-glyphicons_029_notes_2"></i>
+            <a class="pull-right rosters" href="@Url.Action("View", new { season = Model.SeasonStart, turn = turn.Turn })">
+                <i class="icon-user"></i>
                 Uttagningar
             </a>
-            <div class="clearfix"></div>
         </div>
     </div>
     var start = 0;
