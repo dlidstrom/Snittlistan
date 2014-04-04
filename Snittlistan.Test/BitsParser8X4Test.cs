@@ -66,20 +66,6 @@ namespace Snittlistan.Test
             Assert.Equal(11, result.TeamScore);
         }
 
-        [Fact(Skip = "Not implemented yet")]
-        public void CanParseAlternateHomeTeamNameWithIf()
-        {
-            // Arrange
-            const string Team = "Fredrikshof IF A";
-
-            // Act
-            var result = new BitsParser(playersTeamA).Parse(Resources.Id3048746, Team);
-
-            // Assert
-            Assert.Equal(11, result.TeamScore);
-            Assert.False(true, "Update test");
-        }
-
         [Fact]
         public void CanParseAlternateAwayTeamName()
         {

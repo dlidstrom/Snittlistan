@@ -20,12 +20,5 @@ namespace Snittlistan.Test
             var service = container.Resolve<IAuthenticationService>();
             Assert.NotNull(service);
         }
-
-        [Fact]
-        public void InstallsEmailService()
-        {
-            var handlers = InstallerTestHelper.GetHandlersFor(typeof(IEmailService), container);
-            Assert.Equal(1, handlers.Length);
-        }
     }
 }

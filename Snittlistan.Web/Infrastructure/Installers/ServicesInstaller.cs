@@ -1,7 +1,6 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using Snittlistan.Web.Services;
 
 namespace Snittlistan.Web.Infrastructure.Installers
 {
@@ -12,7 +11,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
             container.Register(
                 AllTypes
                     .FromThisAssembly()
-                    .Where(Component.IsInSameNamespaceAs<IEmailService>())
+                    .Where(Component.IsInNamespace("Snittlistan.Web.Services"))
                     .WithServiceDefaultInterfaces()
                     .LifestyleTransient());
         }

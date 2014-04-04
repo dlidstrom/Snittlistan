@@ -108,7 +108,6 @@
     <Compile Include="Domain\MatchResultTest.cs" />
     <Compile Include="Domain\MatchSerieTest.cs" />
     <Compile Include="Domain\MatchTableTest.cs" />
-    <Compile Include="EmailServiceTest.cs" />
     <Compile Include="HandlersInstallerTest.cs" />
     <Compile Include="Controllers\HomeController_Player.cs" />
     <Compile Include="InstallerTestHelper.cs" />
