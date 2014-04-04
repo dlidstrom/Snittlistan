@@ -8,7 +8,6 @@ namespace Snittlistan.Web.Areas.V2.AutoMapper
     {
         protected override void Configure()
         {
-            Mapper.CreateMap<Absence, AbsenceViewModel>();
             Mapper.CreateMap<Absence, CreateAbsenceViewModel>();
         }
     }

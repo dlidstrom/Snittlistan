@@ -48,7 +48,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 return View(vm);
             }
 
-            var absence = new Absence(vm.From, vm.To, vm.Player, vm.Comment);
+            var absence = Absence.Create(vm.From, vm.To, vm.Player, vm.Comment);
             DocumentSession.Store(absence);
 
             return RedirectToAction("Index");
@@ -83,9 +83,10 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         [Authorize]
         public ActionResult Delete(int id)
         {
-            var absence = DocumentSession.Load<Absence>(id);
+            var absence = DocumentSession.Include<Absence>(x => x.Player).Load<Absence>(id);
             if (absence == null) throw new HttpException(404, "Absence not found");
-            return View(absence.MapTo<AbsenceViewModel>());
+            var player = DocumentSession.Load<Player>(absence.Player);
+            return View(new AbsenceViewModel(absence, player));
         }
 
         [HttpPost, Authorize, ActionName("Delete")]

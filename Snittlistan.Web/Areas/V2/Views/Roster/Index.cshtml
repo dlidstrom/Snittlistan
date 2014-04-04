@@ -14,10 +14,9 @@
 {
     <div class="row">
         <div class="span4">
-            <h4>Omgång @turn.Turn</h4>
-            <em class="pull-left">
-                @Html.FormatDateSpan(turn.StartDate, turn.EndDate)
-            </em>
+            <h4 class="pull-left">Omgång @turn.Turn
+                <em>(@Html.FormatDateSpan(turn.StartDate, turn.EndDate))</em>
+            </h4>
             <a class="pull-right" href="@Url.Action("View", new { season = Model.SeasonStart, turn = turn.Turn })">
                 <i class="sprite-glyphicons_029_notes_2"></i>
                 Uttagningar

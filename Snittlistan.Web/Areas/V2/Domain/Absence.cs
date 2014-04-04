@@ -1,18 +1,17 @@
 ﻿using System;
+using Raven.Imports.Newtonsoft.Json;
 
 namespace Snittlistan.Web.Areas.V2.Domain
 {
     public class Absence
     {
-        public Absence(
+        [JsonConstructor]
+        private Absence(
             DateTime from,
             DateTime to,
             string player,
             string comment)
         {
-            if (comment == null) comment = string.Empty;
-            if (comment.Length > 160) throw new ArgumentException("Comment can be at most 160 characters", "comment");
-            if (from.Year != to.Year) throw new ArgumentOutOfRangeException("to", "Absence can not span over multiple years");
             From = from;
             To = to;
             Player = player;
@@ -28,5 +27,16 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public string Player { get; set; }
 
         public string Comment { get; set; }
+
+        public static Absence Create(
+            DateTime from,
+            DateTime to,
+            string player,
+            string comment)
+        {
+            if (comment == null) comment = string.Empty;
+            if (comment.Length > 160) throw new ArgumentException("Comment can be at most 160 characters", "comment");
+            return new Absence(from, to, player, comment);
+        }
     }
 }
