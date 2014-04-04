@@ -2,7 +2,6 @@
 using Moq;
 using Snittlistan.Web.Areas.V1.Controllers;
 using Snittlistan.Web.Areas.V1.ViewModels.Account;
-using Snittlistan.Web.Helpers;
 using Snittlistan.Web.Models;
 using Snittlistan.Web.Services;
 using Xunit;
@@ -21,26 +20,6 @@ namespace Snittlistan.Test.Controllers
                 NewPassword = "somepasswd",
                 ConfirmPassword = "somepasswd"
             }).AssertViewRendered().ForView(string.Empty);
-        }
-
-        [Fact(Skip = "Password change not completed")]
-        public void ChangePasswordSuccess()
-        {
-            var controller = CreateUserAndController("e@d.com");
-            var result = controller.ChangePassword(
-                new ChangePasswordViewModel
-                    {
-                        Email = "e@d.com",
-                        NewPassword = "newpass",
-                        ConfirmPassword = "newpass"
-                    });
-
-            result.AssertActionRedirect().ToAction("ChangePasswordSuccess");
-
-            // also make sure password actually changed
-            var user = Session.FindUserByEmail("e@d.com");
-            Assert.NotNull(user);
-            Assert.True(user.ValidatePassword("newpass"));
         }
 
         [Fact]
