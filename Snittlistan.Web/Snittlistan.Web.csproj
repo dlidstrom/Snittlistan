@@ -508,6 +508,8 @@
     <Content Include="Areas\V2\Views\Roster\Absences.cshtml" />
     <Content Include="Areas\V2\Views\Roster\PlayerStatus.cshtml" />
     <Content Include="Areas\V2\Views\AdminTasks\AwardMedals.cshtml" />
+    <Content Include="Areas\V2\Views\Roster\Print.cshtml" />
+    <Content Include="Areas\V2\Views\Absence\AbsenceTable.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />

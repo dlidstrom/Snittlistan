@@ -143,26 +143,47 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             {
                 // find out next turn
                 var rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
-                    .Where(x => x.Season == season)
-                    .Where(x => x.Date > SystemTime.UtcNow.Date)
-                    .OrderBy(x => x.Date)
-                    .Take(1)
-                    .ToList();
+                                             .Where(x => x.Season == season)
+                                             .Where(x => x.Date > SystemTime.UtcNow.Date)
+                                             .OrderBy(x => x.Date)
+                                             .Take(1)
+                                             .ToList();
                 turn = rosters.Select(x => x.Turn).FirstOrDefault();
             }
 
             var rostersForTurn = DocumentSession.Query<Roster, RosterSearchTerms>()
-                .Include(roster => roster.Players)
-                .Where(roster => roster.Turn == turn)
-                .Where(roster => roster.Season == season)
-                .ToArray();
+                                                .Include(roster => roster.Players)
+                                                .Where(roster => roster.Turn == turn)
+                                                .Where(roster => roster.Season == season)
+                                                .ToArray();
             var list = rostersForTurn.Select(LoadRoster)
-                .SortRosters()
-                .ToArray();
+                                     .SortRosters()
+                                     .ToArray();
 
             var viewTurnViewModel = new ViewTurnViewModel
             {
                 Turn = turn.Value,
+                Season = season,
+                Rosters = list
+            };
+            return View(viewTurnViewModel);
+        }
+
+        [Authorize]
+        public ActionResult Print(int season, int turn)
+        {
+            var rostersForTurn = DocumentSession.Query<Roster, RosterSearchTerms>()
+                                                .Include(roster => roster.Players)
+                                                .Where(roster => roster.Turn == turn)
+                                                .Where(roster => roster.Season == season)
+                                                .ToArray();
+            var list = rostersForTurn.Select(LoadRoster)
+                                     .SortRosters()
+                                     .ToArray();
+
+            var viewTurnViewModel = new ViewTurnViewModel
+            {
+                Turn = turn,
                 Season = season,
                 Rosters = list
             };
@@ -295,9 +316,9 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             }
 
             var resultsForPlayer = DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
-                .Where(x => x.Season == season)
-                .ToArray()
-                .ToDictionary(x => x.PlayerId);
+                                                  .Where(x => x.Season == season)
+                                                  .ToArray()
+                                                  .ToDictionary(x => x.PlayerId);
 
             var activities = new List<PlayerStatusViewModel>();
             foreach (var player in players)

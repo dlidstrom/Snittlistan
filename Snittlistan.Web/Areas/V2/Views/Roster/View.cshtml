@@ -1,6 +1,19 @@
 ﻿@model ViewTurnViewModel
 
-<h4>Omgång @Model.Turn</h4>
+<div class="row">
+    <div class="span12">
+        <h4 class="pull-left">Omgång @Model.Turn</h4>
+        @if (Request.IsAuthenticated)
+        {
+            <a class="pull-right" href="@Url.Action("Print", new { season = Model.Season, turn = Model.Turn })">
+                <i class="sprite-glyphicons_015_print"></i>
+                Utskrift
+            </a>
+        }
+        <div class="clearfix"></div>
+    </div>
+</div>
+
 @{
     var start = 0;
     var rosters = Model.Rosters.Skip(start).Take(3).ToList();
