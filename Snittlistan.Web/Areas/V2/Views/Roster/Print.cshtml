@@ -1,5 +1,6 @@
 ﻿@model ViewTurnViewModel
 
+<hr/>
 @foreach (var roster in Model.Rosters)
 {
     <div class="row">
@@ -16,4 +17,3 @@
     </div>
 </div>
 @Html.Action("AbsenceTable", "Absence", new { hideControls = true })
-<hr/>
