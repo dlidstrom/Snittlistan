@@ -98,7 +98,16 @@ namespace Snittlistan.Web.Areas.V2.Domain
             var series = new List<ResultSeriesReadModel.Serie>();
             var tableNode = documentNode.SelectSingleNode("//table[@id='MainContentPlaceHolder_MatchFact1_TableMatch']");
 
-            for (var serieNumber = 1; serieNumber <= 4; serieNumber++)
+            // adjust for header and footer rows
+            var tableRows = documentNode.SelectNodes("//table[@id='MainContentPlaceHolder_MatchHead1_matchinfo']//tr");
+            var numberOfSeries = tableRows.Count - 2;
+            if (numberOfSeries != 3 && numberOfSeries != 4)
+            {
+                var message = string.Format("Found {0} number of series. Expected 3 or 4.", numberOfSeries);
+                throw new ApplicationException(message);
+            }
+
+            for (var serieNumber = 1; serieNumber <= numberOfSeries; serieNumber++)
             {
                 var serie = new ResultSeriesReadModel.Serie();
                 var tables = new List<ResultSeriesReadModel.Table>();
@@ -109,7 +118,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
                             "//span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{0}Table{1}Order{2}Player']",
                             serieNumber,
                             tableNumber,
-                            1 + (int) team));
+                            1 + (int)team));
                     var name2 = tableNode.SelectSingleNode(
                         string.Format(
                             "//span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{0}Table{1}Order{2}Player']",
