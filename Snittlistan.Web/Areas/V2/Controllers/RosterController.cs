@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Raven.Abstractions;
@@ -60,6 +61,46 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         }
 
         [Authorize]
+        public ActionResult CreateBits()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult CreateBitsVerify(VerifyBitsViewModel vm)
+        {
+            if (ModelState.IsValid == false)
+                return View("CreateBits");
+            var season = DocumentSession.LatestSeasonOrDefault(DateTime.Now.Year);
+            var possibleTeams = DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
+                                               .Select(t => t.Team)
+                                               .Distinct()
+                                               .ToArray();
+
+            using (var client = new WebClient())
+            {
+                var address = string.Format(
+                    "http://bits.swebowl.se/Matches/MatchFact.aspx?MatchId={0}",
+                    vm.BitsMatchId);
+                var content = client.DownloadString(address);
+                var header = BitsParser.ParseHeader(content, possibleTeams);
+                return View(
+                    "Create", new CreateRosterViewModel
+                    {
+                        Season = season,
+                        Turn = 1,
+                        BitsMatchId = vm.BitsMatchId,
+                        Team = header.HomeTeam,
+                        IsFourPlayer = false,
+                        Opponent = header.AwayTeam,
+                        Date = header.Date,
+                        Location = header.Location
+                    });
+            }
+        }
+
+        [Authorize]
         public ActionResult Create()
         {
             var vm = new CreateRosterViewModel
@@ -78,6 +119,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var roster = new Roster(
                 vm.Season,
                 vm.Turn,
+                vm.BitsMatchId,
                 vm.Team,
                 vm.Location,
                 vm.Opponent,
@@ -110,6 +152,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             roster.Season = vm.Season;
             roster.Team = vm.Team;
             roster.Turn = vm.Turn;
+            roster.BitsMatchId = vm.BitsMatchId;
             roster.IsFourPlayer = vm.IsFourPlayer;
             roster.Date = vm.Date;
 

@@ -32,6 +32,18 @@
     </div>
 </div>
 <div class="control-group">
+    <label class="control-label" for="season">BITS Match Id:</label>
+    <div class="controls">
+        <input type="text"
+               name="bitsMatchId"
+               placeholder="Säsong"
+               title="Ange match id"
+               pattern="\d*"
+               required="required"
+               value="@Model.BitsMatchId" />
+    </div>
+</div>
+<div class="control-group">
     <label class="control-label" for="team">Lag:</label>
     <div class="controls">
         <input type="text"
@@ -52,21 +64,6 @@
         <label class="checkbox">
             @Html.EditorFor(model => model.IsFourPlayer) 4-manna
         </label>
-    </div>
-</div>
-<div class="control-group">
-    <label class="control-label" for="location">Plats:</label>
-    <div class="controls">
-        <input type="text"
-               name="location"
-               placeholder="Bowlinghall"
-               autocorrect="off"
-               autocomplete="off"
-               spellcheck="false"
-               value="@Model.Location"
-               required
-               data-enabletypeahead="yes"
-               data-url="/search/locations" />
     </div>
 </div>
 <div class="control-group">
@@ -91,5 +88,20 @@
                name="date"
                value="@Model.Date.ToString("yyyy-MM-ddThh:mm:ss")"
                required />
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="location">Plats:</label>
+    <div class="controls">
+        <input type="text"
+               name="location"
+               placeholder="Bowlinghall"
+               autocorrect="off"
+               autocomplete="off"
+               spellcheck="false"
+               value="@Model.Location"
+               required
+               data-enabletypeahead="yes"
+               data-url="/search/locations" />
     </div>
 </div>
