@@ -1,0 +1,15 @@
+﻿@if (Request.IsAuthenticated)
+{
+    <div class="row">
+        <div class="span6 admin">
+            <a href="@Url.Action("CreateBits")">
+                <i class="sprite-glyphicons_358_file_import"></i>
+                Lägg till från BITS
+            </a>
+            <a href="@Url.Action("Create")">
+                <i class="sprite-glyphicons_030_pencil"></i>
+                Lägg till match manuellt
+            </a>
+        </div>
+    </div>
+}

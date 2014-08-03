@@ -8,6 +8,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public Roster(
             int season,
             int turn,
+            int bitsMatchId,
             string team,
             string location,
             string opponent,
@@ -16,6 +17,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
         {
             Season = season;
             Turn = turn;
+            BitsMatchId = bitsMatchId;
             Team = team;
             Location = location;
             Opponent = opponent;
@@ -29,6 +31,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public int Season { get; set; }
 
         public int Turn { get; set; }
+
+        public int BitsMatchId { get; set; }
 
         public string Team { get; set; }
 
