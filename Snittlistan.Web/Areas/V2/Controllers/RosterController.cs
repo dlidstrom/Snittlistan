@@ -70,8 +70,15 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         [HttpPost]
         public ActionResult CreateBitsVerify(VerifyBitsViewModel vm)
         {
+            if (DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
+                               .SingleOrDefault(x => x.BitsMatchId == vm.BitsMatchId) != null)
+            {
+                ModelState.AddModelError("BitsMatchId", "Matchen redan upplagd");
+            }
+
             if (ModelState.IsValid == false)
                 return View("CreateBits");
+
             var season = DocumentSession.LatestSeasonOrDefault(DateTime.Now.Year);
             var possibleTeams = DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
                                                .Select(t => t.Team)
@@ -121,6 +128,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 vm.Turn,
                 vm.BitsMatchId,
                 vm.Team,
+                vm.TeamLevel,
                 vm.Location,
                 vm.Opponent,
                 vm.Date,
@@ -151,6 +159,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             roster.Opponent = vm.Opponent;
             roster.Season = vm.Season;
             roster.Team = vm.Team;
+            roster.TeamLevel = vm.TeamLevel;
             roster.Turn = vm.Turn;
             roster.BitsMatchId = vm.BitsMatchId;
             roster.IsFourPlayer = vm.IsFourPlayer;
