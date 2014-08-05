@@ -10,6 +10,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
             int turn,
             int bitsMatchId,
             string team,
+            string teamLevel,
             string location,
             string opponent,
             DateTime date,
@@ -19,6 +20,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
             Turn = turn;
             BitsMatchId = bitsMatchId;
             Team = team;
+            TeamLevel = teamLevel;
             Location = location;
             Opponent = opponent;
             Date = date;
@@ -35,6 +37,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public int BitsMatchId { get; set; }
 
         public string Team { get; set; }
+
+        public string TeamLevel { get; set; }
 
         public string Location { get; set; }
 

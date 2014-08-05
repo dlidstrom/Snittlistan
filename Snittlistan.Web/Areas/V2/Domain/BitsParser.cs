@@ -42,20 +42,23 @@ namespace Snittlistan.Web.Areas.V2.Domain
             var locationText = locationNode.InnerText;
 
             var homeTeamNameSplit = homeTeamName.Split();
-            var homeTeam = possibleTeams.SingleOrDefault(x =>
+            string homeTeam = null;
+            foreach (var possibleTeam in possibleTeams)
+            {
+                var equals = possibleTeam.Equals(homeTeamName, StringComparison.InvariantCultureIgnoreCase);
+                if (equals)
                 {
-                    var equals = x.Equals(homeTeamName, StringComparison.InvariantCultureIgnoreCase);
-                    if (equals) return true;
+                    homeTeam = possibleTeam;
+                    break;
+                }
 
-                    var split = x.Split(' ');
-                    if (split.Last().Equals("A", StringComparison.InvariantCultureIgnoreCase)
-                        && homeTeamName.IndexOf(split.First(), StringComparison.InvariantCultureIgnoreCase) >= 0)
-                        return true;
+                var contains = possibleTeam.IndexOf(homeTeamNameSplit.First(), StringComparison.InvariantCultureIgnoreCase);
+                if (contains >= 0)
+                {
+                    homeTeam = possibleTeam;
+                }
+            }
 
-                    var startsWith = homeTeamName.StartsWith(split.First(), StringComparison.InvariantCultureIgnoreCase);
-                    var endsWith = homeTeamNameSplit.Last().Equals(split.Last(), StringComparison.InvariantCultureIgnoreCase);
-                    return startsWith && endsWith;
-                });
             if (homeTeam != null)
                 return new ParseHeaderResult(homeTeam, awayTeamName, DateTime.Parse(dateText), locationText);
 
@@ -65,14 +68,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 var equals = x.Equals(awayTeamName, StringComparison.InvariantCultureIgnoreCase);
                 if (equals) return true;
 
-                var split = x.Split(' ');
-                if (split.Last().Equals("A", StringComparison.InvariantCultureIgnoreCase)
-                    && awayTeamName.IndexOf(split.First(), StringComparison.InvariantCultureIgnoreCase) >= 0)
-                    return true;
-
-                var startsWith = awayTeamName.StartsWith(split.First(), StringComparison.InvariantCultureIgnoreCase);
-                var endsWith = awayTeamNameSplit.Last().Equals(split.Last(), StringComparison.InvariantCultureIgnoreCase);
-                return startsWith && endsWith;
+                var contains = x.IndexOf(awayTeamNameSplit.First(), StringComparison.InvariantCultureIgnoreCase);
+                return contains >= 0;
             });
 
             if (awayTeam == null)
