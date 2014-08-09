@@ -18,7 +18,7 @@ namespace Snittlistan.Test
             var header = BitsParser.ParseHeader(content, possibleTeams);
 
             // Assert
-            Assert.Equal(header.HomeTeam, "Fredrikshof F");
+            Assert.Equal("Fredrikshof F", header.Team);
         }
 
         [Fact]
@@ -32,7 +32,7 @@ namespace Snittlistan.Test
             var header = BitsParser.ParseHeader(content, possibleTeams);
 
             // Assert
-            Assert.Equal(header.HomeTeam, "Fredrikshof IF F");
+            Assert.Equal("Fredrikshof IF F", header.Team);
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace Snittlistan.Test
             var header = BitsParser.ParseHeader(content, possibleTeams);
 
             // Assert
-            Assert.Equal(header.HomeTeam, "Fredrikshof IF F");
+            Assert.Equal("Fredrikshof IF F", header.Team);
         }
 
         [Fact]
@@ -60,7 +60,63 @@ namespace Snittlistan.Test
             var header = BitsParser.ParseHeader(content, possibleTeams);
 
             // Assert
-            Assert.Equal(header.HomeTeam, "Fredrikshof IF F");
+            Assert.Equal("Fredrikshof IF F", header.Team);
+        }
+
+        [Fact]
+        public void ParsesTeamName5()
+        {
+            // Arrange
+            var content = Resources.Id3048747;
+            var possibleTeams = new[] { "Fredrikshof F" };
+
+            // Act
+            var header = BitsParser.ParseHeader(content, possibleTeams);
+
+            // Assert
+            Assert.Equal("Fredrikshof F", header.Team);
+        }
+
+        [Fact]
+        public void ParsesTeamName6()
+        {
+            // Arrange
+            var content = Resources.Id3048747;
+            var possibleTeams = new[] { "Fredrikshof IF F" };
+
+            // Act
+            var header = BitsParser.ParseHeader(content, possibleTeams);
+
+            // Assert
+            Assert.Equal("Fredrikshof IF F", header.Team);
+        }
+
+        [Fact]
+        public void ParsesTeamName7()
+        {
+            // Arrange
+            var content = Resources.Id3048747;
+            var possibleTeams = new[] { "Fredrikshof IF F", "Fredrikshof F" };
+
+            // Act
+            var header = BitsParser.ParseHeader(content, possibleTeams);
+
+            // Assert
+            Assert.Equal("Fredrikshof F", header.Team);
+        }
+
+        [Fact]
+        public void ParsesTeamName8()
+        {
+            // Arrange
+            var content = Resources.Id3048747;
+            var possibleTeams = new[] { "Fredrikshof F", "Fredrikshof IF F" };
+
+            // Act
+            var header = BitsParser.ParseHeader(content, possibleTeams);
+
+            // Assert
+            Assert.Equal("Fredrikshof IF F", header.Team);
         }
 
         [Fact]

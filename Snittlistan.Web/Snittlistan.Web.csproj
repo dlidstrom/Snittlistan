@@ -211,6 +211,9 @@
     <Compile Include="Areas\V2\Domain\Match\MatchResult4.cs" />
     <Compile Include="Areas\V2\Domain\Match\MatchSerie4.cs" />
     <Compile Include="Areas\V2\Domain\Match\PinsAndScoreResult.cs" />
+    <Compile Include="Areas\V2\Domain\Parse4Result.cs" />
+    <Compile Include="Areas\V2\Domain\ParseHeaderResult.cs" />
+    <Compile Include="Areas\V2\Domain\ParseResult.cs" />
     <Compile Include="Areas\V2\Handlers\AggregateIdHandler.cs" />
     <Compile Include="Areas\V2\Handlers\MatchResultHandler.cs" />
     <Compile Include="Areas\V2\Handlers\ResultSeries4Handler.cs" />

@@ -98,9 +98,9 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                         Season = season,
                         Turn = 1,
                         BitsMatchId = vm.BitsMatchId,
-                        Team = header.HomeTeam,
+                        Team = header.Team,
                         IsFourPlayer = false,
-                        Opponent = header.AwayTeam,
+                        Opponent = header.Opponent,
                         Date = header.Date,
                         Location = header.Location
                     });

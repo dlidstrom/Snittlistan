@@ -63,14 +63,22 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 return new ParseHeaderResult(homeTeam, awayTeamName, DateTime.Parse(dateText), locationText);
 
             var awayTeamNameSplit = awayTeamName.Split();
-            var awayTeam = possibleTeams.SingleOrDefault(x =>
+            string awayTeam = null;
+            foreach (var possibleTeam in possibleTeams)
             {
-                var equals = x.Equals(awayTeamName, StringComparison.InvariantCultureIgnoreCase);
-                if (equals) return true;
+                var equals = possibleTeam.Equals(awayTeamName, StringComparison.InvariantCultureIgnoreCase);
+                if (equals)
+                {
+                    awayTeam = possibleTeam;
+                    break;
+                }
 
-                var contains = x.IndexOf(awayTeamNameSplit.First(), StringComparison.InvariantCultureIgnoreCase);
-                return contains >= 0;
-            });
+                var contains = possibleTeam.IndexOf(awayTeamNameSplit.First(), StringComparison.InvariantCultureIgnoreCase);
+                if (contains >= 0)
+                {
+                    awayTeam = possibleTeam;
+                }
+            }
 
             if (awayTeam == null)
             {
@@ -306,62 +314,6 @@ namespace Snittlistan.Web.Areas.V2.Domain
             if (p == null)
                 throw new ApplicationException(string.Format("No player with name {0} was found", name));
             return p;
-        }
-
-        public class ParseResult
-        {
-            public ParseResult(int teamScore, int awayScore, ResultSeriesReadModel.Serie[] series)
-            {
-                if (series == null) throw new ArgumentNullException("series");
-                Series = series;
-                OpponentScore = awayScore;
-                TeamScore = teamScore;
-            }
-
-            public int TeamScore { get; private set; }
-
-            public int OpponentScore { get; private set; }
-
-            public ResultSeriesReadModel.Serie[] Series { get; private set; }
-        }
-
-        public class Parse4Result
-        {
-            public Parse4Result(int teamScore, int awayScore, ResultSeries4ReadModel.Serie[] series)
-            {
-                if (series == null) throw new ArgumentNullException("series");
-                Series = series;
-                OpponentScore = awayScore;
-                TeamScore = teamScore;
-            }
-
-            public int TeamScore { get; private set; }
-
-            public int OpponentScore { get; private set; }
-
-            public ResultSeries4ReadModel.Serie[] Series { get; private set; }
-        }
-
-        public class ParseHeaderResult
-        {
-            public ParseHeaderResult(string homeTeam, string awayTeam, DateTime date, string location)
-            {
-                if (homeTeam == null) throw new ArgumentNullException("homeTeam");
-                if (awayTeam == null) throw new ArgumentNullException("awayTeam");
-                if (location == null) throw new ArgumentNullException("location");
-                HomeTeam = homeTeam;
-                AwayTeam = awayTeam;
-                Date = date;
-                Location = location;
-            }
-
-            public string HomeTeam { get; private set; }
-
-            public string AwayTeam { get; private set; }
-
-            public DateTime Date { get; private set; }
-
-            public string Location { get; private set; }
         }
     }
 }
