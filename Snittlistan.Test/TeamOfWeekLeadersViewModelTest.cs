@@ -15,10 +15,10 @@ namespace Snittlistan.Test
             // Arrange
             var player1 = new Player("Daniel", "e@d.com", Player.Status.Active) { Id = "9876" };
             var player2 = new Player("Tomas", "s@d.com", Player.Status.Active) { Id = "8765" };
-            var teamOfWeek1 = new TeamOfWeek(1234, 2012, 10, "Team A");
+            var teamOfWeek1 = new TeamOfWeek(1234, 2012, 10, "Team A", "A");
             teamOfWeek1.AddResultForPlayer(player1, 1, 210);
             teamOfWeek1.AddResultForPlayer(player2, 1, 190);
-            var teamOfWeek2 = new TeamOfWeek(5432, 2012, 10, "Team B");
+            var teamOfWeek2 = new TeamOfWeek(5432, 2012, 10, "Team B", "B");
             teamOfWeek2.AddResultForPlayer(player1, 0, 220);
             teamOfWeek2.AddResultForPlayer(player2, 1, 180);
 

@@ -48,7 +48,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
         public string Team { get; private set; }
 
-        public char TeamLevel { get; private set; }
+        public string TeamLevel { get; private set; }
 
         public int TeamScore { get; private set; }
 
@@ -69,7 +69,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             RosterId = roster.Id;
             Date = roster.Date;
             Location = roster.Location;
-            TeamLevel = char.ToLower(roster.Team[roster.Team.Length - 1]);
+            TeamLevel = roster.TeamLevel;
             Team = roster.Team;
             Opponent = roster.Opponent;
             TeamScore = teamScore;

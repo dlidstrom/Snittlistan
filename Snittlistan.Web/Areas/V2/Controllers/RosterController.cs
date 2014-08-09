@@ -27,22 +27,22 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             }
 
             var rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
-                .Where(r => r.Season == season)
-                .ToList();
+                                         .Where(r => r.Season == season)
+                                         .ToList();
             var q = from roster in rosters
                     orderby roster.Turn
-                    group roster by roster.Turn into g
-                    let lastDate = g.Max(x => x.Date)
-                    where selectAll || lastDate >= SystemTime.UtcNow.Date
-                    select new TurnViewModel
+                    group roster by roster.Turn
+                        into g
+                        let lastDate = g.Max(x => x.Date)
+                        where selectAll || lastDate >= SystemTime.UtcNow.Date
+                        select new TurnViewModel
                         {
                             Turn = g.Key,
                             StartDate = g.Min(x => x.Date),
                             EndDate = lastDate,
-                            Rosters =
-                                g.Select(x => x.MapTo<RosterViewModel>())
-                                .SortRosters()
-                                .ToList()
+                            Rosters = g.Select(x => x.MapTo<RosterViewModel>())
+                                       .SortRosters()
+                                       .ToList()
                         };
             var turns = q.ToList();
             if (turns.Count <= 0) return View("Unscheduled");
@@ -70,7 +70,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         [HttpPost]
         public ActionResult CreateBitsVerify(VerifyBitsViewModel vm)
         {
-            if (DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
+            if (DocumentSession.Query<Roster, RosterSearchTerms>()
                                .SingleOrDefault(x => x.BitsMatchId == vm.BitsMatchId) != null)
             {
                 ModelState.AddModelError("BitsMatchId", "Matchen redan upplagd");

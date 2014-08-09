@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
@@ -19,6 +18,8 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public string Team { get; set; }
 
+        public string TeamLevel { get; set; }
+
         public string Location { get; set; }
 
         public string Opponent { get; set; }
@@ -30,15 +31,6 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         public string Time { get; set; }
 
         public bool Preliminary { get; set; }
-
-        public char TeamLevel
-        {
-            get
-            {
-                if (Team.Length < 1) throw new InvalidOperationException("Initialize Team first");
-                return char.ToLower(Team.Last());
-            }
-        }
 
         public List<Tuple<string, string>> Players { get; set; }
     }

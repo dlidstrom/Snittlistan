@@ -5,6 +5,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
 {
     public class Roster
     {
+        private string teamLevel;
+
         public Roster(
             int season,
             int turn,
@@ -20,7 +22,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
             Turn = turn;
             BitsMatchId = bitsMatchId;
             Team = team;
-            TeamLevel = teamLevel;
+            TeamLevel = teamLevel ?? Team.Substring(team.Length - 1);
             Location = location;
             Opponent = opponent;
             Date = date;
@@ -38,7 +40,11 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         public string Team { get; set; }
 
-        public string TeamLevel { get; set; }
+        public string TeamLevel
+        {
+            get { return teamLevel; }
+            set { teamLevel = value.Trim(); }
+        }
 
         public string Location { get; set; }
 

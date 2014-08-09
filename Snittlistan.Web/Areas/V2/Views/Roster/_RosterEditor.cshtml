@@ -63,9 +63,30 @@
     <label class="control-label" for="teamLevel">Nivå:</label>
     <div class="controls">
         <select id="teamLevel" name="teamLevel">
-            <option>A</option>
-            <option>F</option>
-            <option>B</option>
+            <option
+                @if (Model.TeamLevel == "A")
+                {
+                    <text>selected="selected"</text>
+                }
+                >
+                A
+            </option>
+            <option
+                @if (Model.TeamLevel == "F")
+                {
+                    <text>selected="selected"</text>
+                }
+                >
+                F
+            </option>
+            <option
+                @if (Model.TeamLevel == "B")
+                {
+                    <text>selected="selected"</text>
+                }
+                >
+                B
+            </option>
         </select>
     </div>
 </div>
