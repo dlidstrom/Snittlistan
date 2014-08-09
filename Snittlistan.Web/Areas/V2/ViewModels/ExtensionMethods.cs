@@ -6,12 +6,12 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     public static class ExtensionMethods
     {
-        private static readonly Dictionary<char, int> TeamLevelSortOrder = new Dictionary<char, int>
+        private static readonly Dictionary<string, int> TeamLevelSortOrder = new Dictionary<string, int>
             {
-                { 'a', 1 },
-                { 'f', 2 },
-                { 'b', 3 },
-                { 'c', 4 }
+                { "A", 1 },
+                { "F", 2 },
+                { "B", 3 },
+                { "C", 4 }
             };
 
         public static IEnumerable<RosterViewModel> SortRosters(this IEnumerable<RosterViewModel> rosters)

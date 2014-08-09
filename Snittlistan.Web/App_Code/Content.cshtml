@@ -104,15 +104,9 @@
 }
 
 @helper TeamLabel(
-    string team)
-{
-    @TeamLabel(char.ToLower(team[team.Length - 1]), team)
-}
-
-@helper TeamLabel(
-    char teamLevel,
+    string teamLevel,
     string team
 )
 {
-    <span class="label @string.Format("{0}{1}", "label-team-", teamLevel)">@team</span>
+    <span class="label @string.Format("{0}{1}", "label-team-", teamLevel.ToLower())">@team</span>
 }
