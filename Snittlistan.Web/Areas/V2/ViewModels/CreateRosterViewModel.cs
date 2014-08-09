@@ -9,6 +9,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         public CreateRosterViewModel()
         {
             Team = string.Empty;
+            TeamLevel = string.Empty;
             Location = string.Empty;
             Opponent = string.Empty;
             Date = SystemTime.UtcNow.ToLocalTime().Date.AddHours(10);
@@ -21,7 +22,13 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         public int Turn { get; set; }
 
         [Required]
+        public int BitsMatchId { get; set; }
+
+        [Required]
         public string Team { get; set; }
+
+        [Required]
+        public string TeamLevel { get; set; }
 
         [Required]
         public string Location { get; set; }

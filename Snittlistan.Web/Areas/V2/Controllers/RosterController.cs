@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Raven.Abstractions;
@@ -26,22 +27,22 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             }
 
             var rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
-                .Where(r => r.Season == season)
-                .ToList();
+                                         .Where(r => r.Season == season)
+                                         .ToList();
             var q = from roster in rosters
                     orderby roster.Turn
-                    group roster by roster.Turn into g
-                    let lastDate = g.Max(x => x.Date)
-                    where selectAll || lastDate >= SystemTime.UtcNow.Date
-                    select new TurnViewModel
+                    group roster by roster.Turn
+                        into g
+                        let lastDate = g.Max(x => x.Date)
+                        where selectAll || lastDate >= SystemTime.UtcNow.Date
+                        select new TurnViewModel
                         {
                             Turn = g.Key,
                             StartDate = g.Min(x => x.Date),
                             EndDate = lastDate,
-                            Rosters =
-                                g.Select(x => x.MapTo<RosterViewModel>())
-                                .SortRosters()
-                                .ToList()
+                            Rosters = g.Select(x => x.MapTo<RosterViewModel>())
+                                       .SortRosters()
+                                       .ToList()
                         };
             var turns = q.ToList();
             if (turns.Count <= 0) return View("Unscheduled");
@@ -57,6 +58,53 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         public ActionResult Results()
         {
             return RedirectToAction("Index");
+        }
+
+        [Authorize]
+        public ActionResult CreateBits()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult CreateBitsVerify(VerifyBitsViewModel vm)
+        {
+            if (DocumentSession.Query<Roster, RosterSearchTerms>()
+                               .SingleOrDefault(x => x.BitsMatchId == vm.BitsMatchId) != null)
+            {
+                ModelState.AddModelError("BitsMatchId", "Matchen redan upplagd");
+            }
+
+            if (ModelState.IsValid == false)
+                return View("CreateBits");
+
+            var season = DocumentSession.LatestSeasonOrDefault(DateTime.Now.Year);
+            var possibleTeams = DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
+                                               .Select(t => t.Team)
+                                               .Distinct()
+                                               .ToArray();
+
+            using (var client = new WebClient())
+            {
+                var address = string.Format(
+                    "http://bits.swebowl.se/Matches/MatchFact.aspx?MatchId={0}",
+                    vm.BitsMatchId);
+                var content = client.DownloadString(address);
+                var header = BitsParser.ParseHeader(content, possibleTeams);
+                return View(
+                    "Create", new CreateRosterViewModel
+                    {
+                        Season = season,
+                        Turn = 1,
+                        BitsMatchId = vm.BitsMatchId,
+                        Team = header.HomeTeam,
+                        IsFourPlayer = false,
+                        Opponent = header.AwayTeam,
+                        Date = header.Date,
+                        Location = header.Location
+                    });
+            }
         }
 
         [Authorize]
@@ -78,7 +126,9 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var roster = new Roster(
                 vm.Season,
                 vm.Turn,
+                vm.BitsMatchId,
                 vm.Team,
+                vm.TeamLevel,
                 vm.Location,
                 vm.Opponent,
                 vm.Date,
@@ -109,7 +159,9 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             roster.Opponent = vm.Opponent;
             roster.Season = vm.Season;
             roster.Team = vm.Team;
+            roster.TeamLevel = vm.TeamLevel;
             roster.Turn = vm.Turn;
+            roster.BitsMatchId = vm.BitsMatchId;
             roster.IsFourPlayer = vm.IsFourPlayer;
             roster.Date = vm.Date;
 

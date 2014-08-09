@@ -22,6 +22,69 @@ namespace Snittlistan.Web.Areas.V2.Domain
             Away = 2
         }
 
+        public static ParseHeaderResult ParseHeader(string content, string[] possibleTeams)
+        {
+            if (content == null) throw new ArgumentNullException("content");
+            if (possibleTeams == null) throw new ArgumentNullException("possibleTeams");
+
+            var document = new HtmlDocument();
+            document.LoadHtml(content);
+
+            // find team
+            var documentNode = document.DocumentNode;
+            var homeTeamNode = documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelHomeTeam']");
+            var homeTeamName = homeTeamNode.InnerText;
+            var awayTeamNode = documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelAwayTeam']");
+            var awayTeamName = awayTeamNode.InnerText;
+            var dateNode = documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelMatchDate']");
+            var dateText = dateNode.InnerText;
+            var locationNode = documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelHallName']");
+            var locationText = locationNode.InnerText;
+
+            var homeTeamNameSplit = homeTeamName.Split();
+            string homeTeam = null;
+            foreach (var possibleTeam in possibleTeams)
+            {
+                var equals = possibleTeam.Equals(homeTeamName, StringComparison.InvariantCultureIgnoreCase);
+                if (equals)
+                {
+                    homeTeam = possibleTeam;
+                    break;
+                }
+
+                var contains = possibleTeam.IndexOf(homeTeamNameSplit.First(), StringComparison.InvariantCultureIgnoreCase);
+                if (contains >= 0)
+                {
+                    homeTeam = possibleTeam;
+                }
+            }
+
+            if (homeTeam != null)
+                return new ParseHeaderResult(homeTeam, awayTeamName, DateTime.Parse(dateText), locationText);
+
+            var awayTeamNameSplit = awayTeamName.Split();
+            var awayTeam = possibleTeams.SingleOrDefault(x =>
+            {
+                var equals = x.Equals(awayTeamName, StringComparison.InvariantCultureIgnoreCase);
+                if (equals) return true;
+
+                var contains = x.IndexOf(awayTeamNameSplit.First(), StringComparison.InvariantCultureIgnoreCase);
+                return contains >= 0;
+            });
+
+            if (awayTeam == null)
+            {
+                var message = string.Format(
+                    "No matching teams found (homeTeamName = {0}, awayTeamName = {1}, possible = {2})",
+                    homeTeamName,
+                    awayTeamName,
+                    string.Join(", ", possibleTeams));
+                throw new ApplicationException(message);
+            }
+
+            return new ParseHeaderResult(awayTeam, homeTeamName, DateTime.Parse(dateText), locationText);
+        }
+
         public ParseResult Parse(string content, string team)
         {
             var document = new HtmlDocument();
@@ -42,8 +105,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 return ExtractTeam(documentNode, Team.Away, Team.Home);
 
             // try alternate name
-            var teamPrefix = team.Split(' ')
-                .First();
+            var teamPrefix = team.Split(' ').First();
             if (homeTeamName.StartsWith(teamPrefix) && awayTeamName.StartsWith(teamPrefix))
                 throw new ApplicationException(string.Format("Could not find team with prefix {0}", teamPrefix));
 
@@ -278,6 +340,28 @@ namespace Snittlistan.Web.Areas.V2.Domain
             public int OpponentScore { get; private set; }
 
             public ResultSeries4ReadModel.Serie[] Series { get; private set; }
+        }
+
+        public class ParseHeaderResult
+        {
+            public ParseHeaderResult(string homeTeam, string awayTeam, DateTime date, string location)
+            {
+                if (homeTeam == null) throw new ArgumentNullException("homeTeam");
+                if (awayTeam == null) throw new ArgumentNullException("awayTeam");
+                if (location == null) throw new ArgumentNullException("location");
+                HomeTeam = homeTeam;
+                AwayTeam = awayTeam;
+                Date = date;
+                Location = location;
+            }
+
+            public string HomeTeam { get; private set; }
+
+            public string AwayTeam { get; private set; }
+
+            public DateTime Date { get; private set; }
+
+            public string Location { get; private set; }
         }
     }
 }

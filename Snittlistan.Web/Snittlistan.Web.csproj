@@ -259,6 +259,7 @@
     <Compile Include="Areas\V2\ViewModels\SetPasswordViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\TeamOfWeekLeadersViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\TeamOfWeekViewModel.cs" />
+    <Compile Include="Areas\V2\ViewModels\VerifyBitsViewModel.cs" />
     <Compile Include="Infrastructure\Installers\EventMigratorInstaller.cs" />
     <Compile Include="Infrastructure\Installers\EventStoreSessionInstaller.cs" />
     <Compile Include="Infrastructure\JetBrains\Annotations.cs" />
@@ -508,6 +509,8 @@
     <Content Include="Areas\V2\Views\AdminTasks\AwardMedals.cshtml" />
     <Content Include="Areas\V2\Views\Roster\Print.cshtml" />
     <Content Include="Areas\V2\Views\Absence\AbsenceTable.cshtml" />
+    <Content Include="Areas\V2\Views\Roster\_Register.cshtml" />
+    <Content Include="Areas\V2\Views\Roster\CreateBits.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />

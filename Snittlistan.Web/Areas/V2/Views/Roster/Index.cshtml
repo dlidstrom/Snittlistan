@@ -1,15 +1,7 @@
 @model InitialDataViewModel
-@if (Request.IsAuthenticated)
-{
-    <div class="row">
-        <div class="span6 admin">
-            <a href="@Url.Action("Create")">
-                <i class="sprite-glyphicons_030_pencil"></i>
-                Lägg till match
-            </a>
-        </div>
-    </div>
-}
+
+@Html.Partial("_Register")
+
 @foreach (var turn in Model.Turns)
 {
     <div class="row">
