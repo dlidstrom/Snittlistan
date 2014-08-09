@@ -18,6 +18,7 @@ namespace Snittlistan.Web.Areas.V2.Indexes
                                  roster.Opponent,
                                  roster.Location,
                                  roster.Turn,
+                                 roster.BitsMatchId,
                                  roster.Season,
                                  roster.Date,
                                  roster.MatchResultId,
@@ -40,6 +41,8 @@ namespace Snittlistan.Web.Areas.V2.Indexes
             public string Location { get; set; }
 
             public int Turn { get; set; }
+
+            public int BitsMatchId { get; set; }
 
             public int Season { get; set; }
 

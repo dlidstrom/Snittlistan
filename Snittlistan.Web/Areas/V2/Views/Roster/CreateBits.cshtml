@@ -1,0 +1,24 @@
+﻿<div class="row">
+    <div class="span8">
+        <h4>Lägg till schemalagd match från BITS</h4>
+        <form class="form-horizontal" method="POST" action="@Url.Action("CreateBitsVerify")">
+            @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
+            <div class="control-group">
+                <label class="control-label" for="bitsMatchId">BITS Match Id:</label>
+                <div class="controls">
+                    <input id="bitsMatchId"
+                           name="bitsMatchId"
+                           type="text"
+                           autofocus="autofocus"
+                           pattern="\d*"
+                           title="Ange matchnumret från BITS"
+                           required="required" />
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary btn-large" type="submit">Verifiera</button>
+                @Html.ActionLink("Avbryt", "Index", "Roster", null, new { @class = "btn btn-large" })
+            </div>
+        </form>
+    </div>
+</div>
