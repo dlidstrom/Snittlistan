@@ -16,11 +16,6 @@
                     <i class="sprite-glyphicons_151_edit"></i>
                 </a>
             </td>
-            @*<td>
-                <a href="@Url.Action("Delete", new { id = player.Id.Substring(player.Id.LastIndexOf('-') + 1) })">
-                    <i class="sprite-glyphicons_016_bin"></i>
-                </a>
-            </td>*@
         }
     </tr>
 }
@@ -31,16 +26,30 @@
     </div>
 </div>
 <div class="row">
-    <div class="span6">
+    <div class="span8">
         @if (Request.IsAuthenticated)
         {
             <a class="pull-left" href="@Url.Action("Create")">
                 <i class="sprite-glyphicons_006_user_add"></i>
                 Lägg till spelare
             </a>
-            <a class="btn btn-small btn-primary pull-right" href="mailto:@string.Join(",", Model.Where(x => x.Status != Player.Status.Inactive).Select(x => x.Email))">
-                Skicka e-post till alla
-            </a>
+            <div class="btn-group pull-right">
+                <button type="button" class="btn btn-small btn-primary" data-toggle="dropdown">
+                    Skicka e-post
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="mailto:@string.Join(",", Model.Where(x => x.Status != Player.Status.Inactive).Select(x => x.Email))">
+                            Till alla (komma-separerade)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mailto:@string.Join(";", Model.Where(x => x.Status != Player.Status.Inactive).Select(x => x.Email))">
+                            Till alla (semikolon-separerade)
+                        </a>
+                    </li>
+                </ul>
+            </div>
             <div class="clearfix"></div>
         }
     </div>
