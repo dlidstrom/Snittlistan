@@ -21,7 +21,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public static IEnumerable<ResultHeaderReadModel> SortResults(this IEnumerable<ResultHeaderReadModel> results)
         {
-            return results.OrderBy(r => TeamLevelSortOrder[r.TeamLevel]).ThenBy(r => r.Date);
+            return results.OrderBy(r => TeamLevelSortOrder[r.TeamLevel.ToUpper()]).ThenBy(r => r.Date);
         }
     }
 }
