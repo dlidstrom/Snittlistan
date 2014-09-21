@@ -98,7 +98,7 @@
                                 @Html.Raw(string.Join(" ", result.Medals.Select(x => x.ToHtml())))
                             </td>
                             <td>
-                                @Content.TeamLabel(result.Team, result.TeamLevel)
+                                @Content.TeamLabel(result.TeamLevel, result.Team)
                             </td>
                         </tr>
                     }
