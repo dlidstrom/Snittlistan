@@ -80,9 +80,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Elmah.MVC.2.0.2\lib\net40\Elmah.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="EventStoreLite, Version=0.7.5097.32447, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="EventStoreLite, Version=0.7.5404.18229, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EventStoreLite.0.7.2\lib\net40\EventStoreLite.dll</HintPath>
+      <HintPath>..\packages\EventStoreLite.0.7.3\lib\net40\EventStoreLite.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
