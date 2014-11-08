@@ -192,6 +192,8 @@
     <Compile Include="ApplicationMode.cs" />
     <Compile Include="Areas\V2\AutoMapper\AbsenceProfile.cs" />
     <Compile Include="Areas\V2\AutoMapper\ResultProfile.cs" />
+    <Compile Include="Controllers\AbstractApiController.cs" />
+    <Compile Include="Areas\V2\Controllers\Api\RegisterMatchController.cs" />
     <Compile Include="Areas\V2\Controllers\MatchResultAdminController.cs" />
     <Compile Include="Areas\V2\DocumentSessionExtensions.cs" />
     <Compile Include="Areas\V2\Domain\BitsParser.cs" />
@@ -263,6 +265,8 @@
     <Compile Include="Areas\V2\ViewModels\TeamOfWeekLeadersViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\TeamOfWeekViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\VerifyBitsViewModel.cs" />
+    <Compile Include="Infrastructure\Attributes\SaveChangesAttribute.cs" />
+    <Compile Include="Infrastructure\Installers\ApiControllerInstaller.cs" />
     <Compile Include="Infrastructure\Installers\EventMigratorInstaller.cs" />
     <Compile Include="Infrastructure\Installers\EventStoreSessionInstaller.cs" />
     <Compile Include="Infrastructure\JetBrains\Annotations.cs" />
@@ -286,6 +290,8 @@
     <Compile Include="Areas\V2\V2AreaRegistration.cs" />
     <Compile Include="Areas\V2\ViewModels\CreateRosterViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\PlayerViewModel.cs" />
+    <Compile Include="Infrastructure\IoC\WindsorHttpDependencyResolver.cs" />
+    <Compile Include="Infrastructure\IoC\WindsorDependencyScope.cs" />
     <Content Include="Content\css\glyphicons.css" />
     <Content Include="Content\css\images\glyphicons-free.png" />
     <Content Include="Content\css\images\touch-icon-ipad-precomposed.png" />

@@ -2,6 +2,7 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=B2001F9E_002D431F_002D429C_002D9A90_002D956F89CC5169_002Fd_003AContent_002Fd_003Aexternal_002Fd_003Abootstrap/@EntryIndexedValue">ExplicitlyExcluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=B2001F9E_002D431F_002D429C_002D9A90_002D956F89CC5169_002Fd_003AContent_002Fd_003Atemplates/@EntryIndexedValue">ExplicitlyExcluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/GeneratedFilesAndFolders/=B2001F9E_002D431F_002D429C_002D9A90_002D956F89CC5169_002Fd_003AContent_002Fd_003Atemplates/@EntryIndexedValue">B2001F9E-431F-429C-9A90-956F89CC5169/d:Content/d:templates</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=CheckNamespace/@EntryIndexedValue">ERROR</s:String>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=ParameterTypeCanBeEnumerable_002ELocal/@EntryIndexedValue">HINT</s:String>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantThisQualifier/@EntryIndexedValue">ERROR</s:String>
 	

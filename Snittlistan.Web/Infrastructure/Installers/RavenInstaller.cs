@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using Castle.Core;
 using Castle.MicroKernel;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
@@ -49,7 +50,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
             this.mode = mode;
         }
 
-        public static IDocumentStore InitializeStore(IDocumentStore store, DocumentStoreMode mode)
+        public static IDocumentStore InitializeStore(IDocumentStore store)
         {
             store.Initialize();
             store.Conventions.IdentityPartsSeparator = "-";
@@ -65,9 +66,13 @@ namespace Snittlistan.Web.Infrastructure.Installers
 
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
+            Component.For<IDocumentSession>()
+                     .UsingFactoryMethod(GetDocumentSession)
+                     .LifeStyle.Is(mode == DocumentStoreMode.InMemory ? LifestyleType.Scoped : LifestyleType.PerWebRequest);
+
             container.Register(
-                Component.For<IDocumentStore>().Instance(InitializeStore(CreateDocumentStore(), mode)).LifestyleSingleton(),
-                Component.For<IDocumentSession>().UsingFactoryMethod(GetDocumentSession).LifestylePerWebRequest());
+                Component.For<IDocumentStore>().Instance(InitializeStore(CreateDocumentStore())).LifestyleSingleton(),
+                Component.For<IDocumentSession>().UsingFactoryMethod(GetDocumentSession));
         }
 
         private static bool FindIdentityProperty(PropertyInfo property)

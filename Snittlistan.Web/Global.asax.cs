@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.MicroKernel.Registration;
@@ -23,7 +24,8 @@ namespace Snittlistan.Web
 
         private static ApplicationMode applicationMode =
 #if DEBUG
-            ApplicationMode.Debug;
+ ApplicationMode.Debug;
+
 #else
             ApplicationMode.Release;
 #endif
@@ -34,44 +36,14 @@ namespace Snittlistan.Web
 
         public static ApplicationMode Mode { get { return applicationMode; } }
 
-        public static void Bootstrap(ApplicationMode mode)
+        public static void Bootstrap(IWindsorContainer container, HttpConfiguration configuration)
         {
-            applicationMode = mode;
-            Bootstrap();
+            Container = container;
+            applicationMode = ApplicationMode.Test;
+            Bootstrap(configuration);
         }
 
-        public static void Bootstrap()
-        {
-            RegisterGlobalFilters(GlobalFilters.Filters);
-
-            // initialize container and controller factory
-            InitializeContainer();
-
-            // register routes
-            new RouteConfig(RouteTable.Routes).Configure();
-            if (Mode != ApplicationMode.Test)
-                AreaRegistration.RegisterAllAreas();
-
-            // add model binders
-            ModelBinders.Binders.Add(typeof(Guid), new GuidBinder());
-
-            // configure AutoMapper
-            AutoMapperConfiguration.Configure(Container);
-        }
-
-        protected void Application_Start()
-        {
-            Log.Info("Application Starting");
-            Bootstrap();
-        }
-
-        protected void Application_End()
-        {
-            Log.Info("Application Ending");
-            Shutdown();
-        }
-
-        private static void Shutdown()
+        public static void Shutdown()
         {
             ModelBinders.Binders.Clear();
             RouteTable.Routes.Clear();
@@ -85,6 +57,38 @@ namespace Snittlistan.Web
                 Container.Dispose();
         }
 
+        protected void Application_Start()
+        {
+            Log.Info("Application Starting");
+            Bootstrap(GlobalConfiguration.Configuration);
+        }
+
+        protected void Application_End()
+        {
+            Log.Info("Application Ending");
+            Shutdown();
+        }
+
+        private static void Bootstrap(HttpConfiguration configuration)
+        {
+            RegisterGlobalFilters(GlobalFilters.Filters);
+
+            // initialize container and controller factory
+            InitializeContainer(configuration);
+
+            // register routes
+            new RouteConfig(RouteTable.Routes).Configure();
+            WebApiConfig.Register(configuration);
+            if (Mode != ApplicationMode.Test)
+                AreaRegistration.RegisterAllAreas();
+
+            // add model binders
+            ModelBinders.Binders.Add(typeof(Guid), new GuidBinder());
+
+            // configure AutoMapper
+            AutoMapperConfiguration.Configure(Container);
+        }
+
         private static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new ElmahHandleErrorAttribute());
@@ -92,7 +96,7 @@ namespace Snittlistan.Web
             filters.Add(new UserTrackerLogAttribute());
         }
 
-        private static void InitializeContainer()
+        private static void InitializeContainer(HttpConfiguration configuration)
         {
             if (Container == null)
             {
@@ -114,6 +118,8 @@ namespace Snittlistan.Web
             }
 
             DependencyResolver.SetResolver(new WindsorDependencyResolver(Container));
+            configuration.DependencyResolver =
+                new WindsorHttpDependencyResolver(Container.Kernel);
         }
     }
 }
