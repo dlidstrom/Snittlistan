@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -181,11 +180,16 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             {
                 var address = string.Format(
                     "http://bits.swebowl.se/Matches/MatchFact.aspx?MatchId={0}",
-                    model.BitsMatchId);
+                    roster.BitsMatchId);
                 var content = client.DownloadString(address);
                 if (roster.IsFourPlayer)
-                    return Parse4(model, parser, content, roster, players);
-                return Parse(model, parser, content, roster, players);
+                {
+                    var parse4Result = Parse4(model, parser, content, roster, players);
+                    return parse4Result;
+                }
+
+                var parseResult = Parse(model, parser, content, roster, players);
+                return parseResult;
             }
         }
 
@@ -263,14 +267,17 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return RedirectToAction("Index", "MatchResult");
         }
 
-        private ActionResult Parse(RegisterBitsVerifyModel model, BitsParser parser, string content, Roster roster,
+        private ActionResult Parse(
+            RegisterBitsVerifyModel model,
+            BitsParser parser,
+            string content,
+            Roster roster,
             Player[] players)
         {
             var result = parser.Parse(content, roster.Team);
-            Debug.Assert(model.BitsMatchId != null, "model.BitsMatchId != null");
             var vm = new RegisterBitsResult
             {
-                BitsMatchId = model.BitsMatchId.Value,
+                BitsMatchId = roster.BitsMatchId,
                 TeamScore = result.TeamScore,
                 OpponentScore = result.OpponentScore,
                 RosterId = model.RosterId,
@@ -284,14 +291,17 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return View("RegisterBitsVerify", vm);
         }
 
-        private ActionResult Parse4(RegisterBitsVerifyModel model, BitsParser parser, string content, Roster roster,
+        private ActionResult Parse4(
+            RegisterBitsVerifyModel model,
+            BitsParser parser,
+            string content,
+            Roster roster,
             IEnumerable<Player> players)
         {
             var result = parser.Parse4(content, roster.Team);
-            Debug.Assert(model.BitsMatchId != null, "model.BitsMatchId != null");
             var vm = new RegisterBitsResult4
             {
-                BitsMatchId = model.BitsMatchId.Value,
+                BitsMatchId = roster.BitsMatchId,
                 TeamScore = result.TeamScore,
                 OpponentScore = result.OpponentScore,
                 RosterId = model.RosterId,

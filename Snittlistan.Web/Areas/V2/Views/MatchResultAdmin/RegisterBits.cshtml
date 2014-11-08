@@ -16,18 +16,6 @@
                     @Html.DropDownList("rosterid", "Välj match")
                 </div>
             </div>
-            <div class="control-group">
-                <label class="control-label" for="bitsMatchId">BITS Match Id:</label>
-                <div class="controls">
-                    <input id="bitsMatchId"
-                           name="bitsMatchId"
-                           type="text"
-                           pattern="\d*"
-                           title="Ange matchnumret från BITS"
-                           value="@Model.BitsMatchId"
-                           required="required" />
-                </div>
-            </div>
             <div class="form-actions">
                 <button class="btn btn-primary btn-large" type="submit">Verifiera</button>
                 @Html.ActionLink("Avbryt", "Index", "MatchResult", null, new { @class = "btn btn-large" })
