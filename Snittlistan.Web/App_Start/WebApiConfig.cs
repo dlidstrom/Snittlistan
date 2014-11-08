@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using Newtonsoft.Json.Serialization;
 
 namespace Snittlistan.Web.App_Start
 {
@@ -10,6 +11,10 @@ namespace Snittlistan.Web.App_Start
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional });
+
+            // camelCase by default
+            var formatter = config.Formatters.JsonFormatter;
+            formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }
     }
 }

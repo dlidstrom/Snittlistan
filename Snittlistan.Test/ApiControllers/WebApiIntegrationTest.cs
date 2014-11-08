@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Castle.Core;
 using Castle.Windsor;
 using EventStoreLite.IoC.Castle;
+using NUnit.Framework;
 using Raven.Client;
 using Snittlistan.Web;
 using Snittlistan.Web.Infrastructure.Installers;
@@ -12,9 +14,14 @@ using Snittlistan.Web.Infrastructure.IoC;
 
 namespace Snittlistan.Test.ApiControllers
 {
-    public abstract class WebApiIntegrationTest : IDisposable
+    public abstract class WebApiIntegrationTest
     {
-        protected WebApiIntegrationTest()
+        protected HttpClient Client { get; private set; }
+
+        private IWindsorContainer Container { get; set; }
+
+        [SetUp]
+        public void SetUp()
         {
             var configuration = new HttpConfiguration();
             Container = new WindsorContainer();
@@ -26,16 +33,14 @@ namespace Snittlistan.Test.ApiControllers
                 new HandlersInstaller(),
                 EventStoreInstaller.FromAssembly(typeof(MvcApplication).Assembly),
                 new EventStoreSessionInstaller(LifestyleType.Scoped));
+            OnSetUp(Container);
 
             MvcApplication.Bootstrap(Container, configuration);
             Client = new HttpClient(new HttpServer(configuration));
         }
 
-        protected HttpClient Client { get; private set; }
-
-        private IWindsorContainer Container { get; set; }
-
-        public void Dispose()
+        [TearDown]
+        public void TearDown()
         {
             MvcApplication.Shutdown();
         }
@@ -51,20 +56,22 @@ namespace Snittlistan.Test.ApiControllers
             WaitForIndexing();
         }
 
-        protected virtual void SetUp(Action<IWindsorContainer> action)
+        protected virtual void OnSetUp(IWindsorContainer container)
         {
-            action.Invoke(Container);
         }
 
         private void WaitForIndexing()
         {
             var documentStore = Container.Resolve<IDocumentStore>();
+            const int Timeout = 15000;
             var indexingTask = Task.Factory.StartNew(
                 () =>
                 {
-                    while (true)
+                    var sw = Stopwatch.StartNew();
+                    while (sw.Elapsed.TotalMilliseconds < Timeout)
                     {
-                        var s = documentStore.DatabaseCommands.GetStatistics().StaleIndexes;
+                        var s = documentStore.DatabaseCommands.GetStatistics()
+                                             .StaleIndexes;
                         if (s.Length == 0)
                         {
                             break;
@@ -73,7 +80,7 @@ namespace Snittlistan.Test.ApiControllers
                         Task.Delay(500);
                     }
                 });
-            indexingTask.Wait(15000);
+            indexingTask.Wait(Timeout);
         }
     }
 }
