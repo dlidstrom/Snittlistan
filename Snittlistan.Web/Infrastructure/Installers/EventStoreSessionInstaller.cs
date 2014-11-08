@@ -12,6 +12,11 @@ namespace Snittlistan.Web.Infrastructure.Installers
     {
         private readonly LifestyleType lifestyleType;
 
+        public EventStoreSessionInstaller()
+        {
+            lifestyleType = LifestyleType.PerWebRequest;
+        }
+
         public EventStoreSessionInstaller(LifestyleType lifestyleType)
         {
             this.lifestyleType = lifestyleType;

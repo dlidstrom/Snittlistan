@@ -8,7 +8,13 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
     {
         public HttpResponseMessage Get()
         {
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return Request.CreateResponse(HttpStatusCode.OK, new[]
+            {
+                new
+                {
+                    Id = 654321
+                }
+            });
         }
     }
 }
