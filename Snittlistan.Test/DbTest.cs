@@ -26,15 +26,11 @@ namespace Snittlistan.Test
             Store = new EmbeddableDocumentStore { RunInMemory = true };
 
             // initialize
-            RavenInstaller.InitializeStore(Store, DocumentStoreMode.InMemory);
+            RavenInstaller.InitializeStore(Store);
             Session = Store.OpenSession();
         }
 
         protected IDocumentSession Session { get; private set; }
-
-        protected virtual void OnDispose()
-        {
-        }
 
         public void Dispose()
         {
@@ -49,6 +45,10 @@ namespace Snittlistan.Test
             var routes = new RouteCollection();
             new RouteConfig(routes).Configure();
             return new UrlHelper(new RequestContext(Mock.Get(context).Object, new RouteData()), routes);
+        }
+
+        protected virtual void OnDispose()
+        {
         }
 
         protected User CreateActivatedUser(string firstName, string lastName, string email, string password)
