@@ -190,8 +190,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="App_Code\Areas\V2\Queries\GetPendingMatchesQuery.cs" />
+    <Compile Include="App_Code\Areas\V2\Queries\GetPlayersQuery.cs" />
     <Compile Include="Areas\V2\AutoMapper\AbsenceProfile.cs" />
     <Compile Include="Areas\V2\AutoMapper\ResultProfile.cs" />
+    <Compile Include="Areas\V2\Controllers\Api\RegisterMatch4Command.cs" />
+    <Compile Include="Areas\V2\Controllers\Api\RegisterMatchCommand.cs" />
     <Compile Include="Controllers\AbstractApiController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\RegisterMatchController.cs" />
     <Compile Include="Areas\V2\Controllers\MatchResultAdminController.cs" />
@@ -266,9 +270,14 @@
     <Compile Include="Areas\V2\ViewModels\TeamOfWeekViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\VerifyBitsViewModel.cs" />
     <Compile Include="Infrastructure\Attributes\SaveChangesAttribute.cs" />
+    <Compile Include="Infrastructure\BitsClient.cs" />
+    <Compile Include="Infrastructure\IBitsClient.cs" />
+    <Compile Include="Infrastructure\ICommand.cs" />
     <Compile Include="Infrastructure\Installers\ApiControllerInstaller.cs" />
     <Compile Include="Infrastructure\Installers\EventMigratorInstaller.cs" />
     <Compile Include="Infrastructure\Installers\EventStoreSessionInstaller.cs" />
+    <Compile Include="Infrastructure\Installers\BitsClientInstaller.cs" />
+    <Compile Include="Infrastructure\IQuery.cs" />
     <Compile Include="Infrastructure\JetBrains\Annotations.cs" />
     <Compile Include="Models\Emails.cs" />
     <Compile Include="ViewModels\UserInvitedViewModel.cs" />
