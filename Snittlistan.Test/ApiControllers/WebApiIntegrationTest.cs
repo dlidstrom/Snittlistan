@@ -37,6 +37,8 @@ namespace Snittlistan.Test.ApiControllers
 
             MvcApplication.Bootstrap(Container, configuration);
             Client = new HttpClient(new HttpServer(configuration));
+
+            Act();
         }
 
         [TearDown]
@@ -45,8 +47,14 @@ namespace Snittlistan.Test.ApiControllers
             MvcApplication.Shutdown();
         }
 
+        protected virtual void Act()
+        {
+        }
+
         protected void Transact(Action<IDocumentSession> action)
         {
+            WaitForIndexing();
+
             using (var session = Container.Resolve<IDocumentStore>().OpenSession())
             {
                 action.Invoke(session);

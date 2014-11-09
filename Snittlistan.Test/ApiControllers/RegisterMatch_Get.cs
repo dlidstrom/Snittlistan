@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using Castle.MicroKernel.Registration;
+using Moq;
 using NUnit.Framework;
 using Raven.Imports.Newtonsoft.Json;
+using Snittlistan.Test.Properties;
 using Snittlistan.Web.Areas.V2.Domain;
+using Snittlistan.Web.Areas.V2.ReadModels;
+using Snittlistan.Web.Infrastructure;
 
 namespace Snittlistan.Test.ApiControllers
 {
@@ -12,18 +18,14 @@ namespace Snittlistan.Test.ApiControllers
     {
         private HttpResponseMessage responseMessage;
         private string content;
+        private HttpContent httpContent;
 
         [Test]
         public void ShouldRegisterPendingResult()
         {
-            // Act
-            responseMessage = Client.GetAsync("http://temp.uri/api/registermatch").Result;
-            var httpContent = responseMessage.Content;
-
             // Assert
             Assert.That(httpContent, Is.Not.Null);
-            content = httpContent.ReadAsStringAsync()
-                                     .Result;
+            content = httpContent.ReadAsStringAsync().Result;
             Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
 
@@ -34,10 +36,33 @@ namespace Snittlistan.Test.ApiControllers
             {
                 new
                 {
-                    id = 654321
+                    date = "2013-04-27T00:00:00",
+                    season = 2012,
+                    turn = 1,
+                    bitsMatchId = 3048746,
+                    team = "Fredrikshof IF",
+                    location = "Bowl-O-Rama",
+                    opponent = "Högdalen BK"
                 }
             };
             Assert.That(content, Is.EqualTo(JsonConvert.SerializeObject(expected)));
+        }
+
+        [Test]
+        public void ShouldStoreMatchResult()
+        {
+            Transact(session =>
+                {
+                    var resultReadModel = session.Load<ResultHeaderReadModel>("ResultHeader-3048746");
+                    Assert.That(resultReadModel, Is.Not.Null);
+                });
+        }
+
+        protected override void Act()
+        {
+            // Act
+            responseMessage = Client.GetAsync("http://temp.uri/api/registermatch").Result;
+            httpContent = responseMessage.Content;
         }
 
         protected override void OnSetUp(Castle.Windsor.IWindsorContainer container)
@@ -45,9 +70,33 @@ namespace Snittlistan.Test.ApiControllers
             // Arrange
             Transact(session =>
             {
-                var roster = new Roster(2012, 1, 654321, "FIF", "A", "Bowl-O-Rama", "AIK F", new DateTime(2012, 1, 1), false);
+                var players = new[]
+                {
+                    new Player("Christer Liedholm", "e@d.com", Player.Status.Active),
+                    new Player("Mathias Ernest", "e@d.com", Player.Status.Active),
+                    new Player("Torbjörn Jensen", "e@d.com", Player.Status.Active),
+                    new Player("Alf Kindblom", "e@d.com", Player.Status.Active),
+                    new Player("Peter Sjöberg", "e@d.com", Player.Status.Active),
+                    new Player("Lars Öberg", "e@d.com", Player.Status.Active),
+                    new Player("Mikael Axelsson", "e@d.com", Player.Status.Active),
+                    new Player("Hans Norbeck", "e@d.com", Player.Status.Active),
+                    new Player("Lennart Axelsson", "e@d.com", Player.Status.Active)
+                };
+
+                foreach (var player in players)
+                {
+                    session.Store(player);
+                }
+
+                var roster = new Roster(2012, 1, 3048746, "Fredrikshof IF", "A", "Bowl-O-Rama", "Högdalen BK", new DateTime(2013, 4, 27), false)
+                {
+                    Players = players.Select(x => x.Id).ToList()
+                };
                 session.Store(roster);
             });
+
+            var bitsClient = Mock.Of<IBitsClient>(x => x.DownloadMatchResult(3048746) == Resources.Id3048746);
+            container.Register(Component.For<IBitsClient>().Instance(bitsClient));
         }
     }
 }
