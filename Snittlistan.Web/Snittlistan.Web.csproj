@@ -196,6 +196,7 @@
     <Compile Include="Areas\V2\AutoMapper\ResultProfile.cs" />
     <Compile Include="Areas\V2\Controllers\Api\RegisterMatch4Command.cs" />
     <Compile Include="Areas\V2\Controllers\Api\RegisterMatchCommand.cs" />
+    <Compile Include="Areas\V2\Domain\Match\MatchRegisteredEvent.cs" />
     <Compile Include="Controllers\AbstractApiController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\RegisterMatchController.cs" />
     <Compile Include="Areas\V2\Controllers\MatchResultAdminController.cs" />
@@ -269,6 +270,7 @@
     <Compile Include="Areas\V2\ViewModels\TeamOfWeekLeadersViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\TeamOfWeekViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\VerifyBitsViewModel.cs" />
+    <Compile Include="Handlers\MatchRegistered.cs" />
     <Compile Include="Infrastructure\Attributes\SaveChangesAttribute.cs" />
     <Compile Include="Infrastructure\BitsClient.cs" />
     <Compile Include="Infrastructure\IBitsClient.cs" />
@@ -572,6 +574,7 @@
     <None Include="Properties\PublishProfiles\Snittlistan-Netcetera.pubxml" />
     <Content Include="Views\Emails\InviteUser.cshtml" />
     <Content Include="Views\Emails\_ViewStart.cshtml" />
+    <Content Include="Views\Emails\MatchRegistered.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
