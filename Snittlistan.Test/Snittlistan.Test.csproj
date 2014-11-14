@@ -95,6 +95,7 @@
     <Compile Include="ApiControllers\WebApiIntegrationTest.cs" />
     <Compile Include="BitsParser4x4Test.cs" />
     <Compile Include="BitsParser_Header.cs" />
+    <Compile Include="Domain\MatchResult_RegisterSeries.cs" />
     <Compile Include="PlayerStatusViewModelTest.cs" />
     <Compile Include="Domain\MatchGame4Test.cs" />
     <Compile Include="Domain\MatchResult4Test.cs" />

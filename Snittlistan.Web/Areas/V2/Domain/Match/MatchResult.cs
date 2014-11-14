@@ -4,6 +4,7 @@ using System.Linq;
 using EventStoreLite;
 using JetBrains.Annotations;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
+using Snittlistan.Web.DomainEvents;
 
 namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
@@ -57,6 +58,23 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         public void Delete()
         {
             ApplyChange(new MatchResultDeleted(RosterId, BitsMatchId));
+        }
+
+        public void RegisterSeries(IEnumerable<MatchSerie> matchSeries)
+        {
+            if (matchSeries == null) throw new ArgumentNullException("matchSeries");
+            if (rosterPlayers.Count != 8 && rosterPlayers.Count != 9 && rosterPlayers.Count != 10)
+                throw new MatchException("Roster must have 8, 9, or 10 players when registering results");
+            foreach (var matchSerie in matchSeries)
+            {
+                VerifyPlayers(matchSerie);
+                ApplyChange(new SerieRegistered(matchSerie, BitsMatchId));
+                if (registeredSeries > 4) throw new ArgumentException("Can only register up to 4 series");
+            }
+
+            DoAwardMedals(registeredSeries);
+
+            DomainEvent.Raise(new MatchRegisteredEvent(RosterId, TeamScore, OpponentScore));
         }
 
         public void RegisterSerie(MatchSerie matchSerie)

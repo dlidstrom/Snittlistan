@@ -36,6 +36,21 @@ namespace Snittlistan.Web.Models
                 });
         }
 
+        public static void MatchRegistered(string subject, string team, string opponent, int score, int awayScore)
+        {
+            Send(
+                "MatchRegistered",
+                ConfigurationManager.AppSettings["OwnerEmail"],
+                subject,
+                o =>
+                {
+                    o.Team = team;
+                    o.Opponent = opponent;
+                    o.Score = score;
+                    o.AwayScore = awayScore;
+                });
+        }
+
         public static void SendMail(string email, string subject, string content)
         {
             Send(
