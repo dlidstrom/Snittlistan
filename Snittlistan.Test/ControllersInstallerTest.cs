@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Web.Http.Controllers;
 using System.Web.Mvc;
 using Castle.Core;
 using Castle.Core.Internal;
@@ -15,7 +16,8 @@ namespace Snittlistan.Test
         public ControllersInstallerTest()
         {
             container = new WindsorContainer()
-                .Install(new ControllerInstaller());
+                .Install(new ControllerInstaller())
+                .Install(new ApiControllerInstaller());
         }
 
         [Fact]
@@ -23,8 +25,11 @@ namespace Snittlistan.Test
         {
             var allHandlers = InstallerTestHelper.GetAllHandlers(container);
             var controllerHandlers = InstallerTestHelper.GetAssignableHandlers(typeof(IController), container);
+            var apiControllerHandlers = InstallerTestHelper.GetAssignableHandlers(typeof(IHttpController), container);
             Assert.NotEmpty(allHandlers);
-            Assert.Equal(allHandlers, controllerHandlers);
+            var handlers = controllerHandlers.Concat(apiControllerHandlers)
+                                             .ToArray();
+            Assert.Equal(allHandlers, handlers);
         }
 
         [Fact]
@@ -42,7 +47,11 @@ namespace Snittlistan.Test
         {
             var allControllers = InstallerTestHelper.GetPublicClassesFromApplicationAssembly(c => c.Name.EndsWith("Controller"));
             var registeredControllers = InstallerTestHelper.GetImplementationTypesFor(typeof(IController), container);
-            Assert.Equal(allControllers, registeredControllers);
+            var registeredApiControllers = InstallerTestHelper.GetImplementationTypesFor(typeof(IHttpController), container);
+            var actual = registeredControllers.Concat(registeredApiControllers)
+                                              .OrderBy(x => x.Name)
+                                              .ToArray();
+            Assert.Equal(allControllers, actual);
         }
 
         [Fact]
@@ -50,7 +59,11 @@ namespace Snittlistan.Test
         {
             var allControllers = InstallerTestHelper.GetPublicClassesFromApplicationAssembly(c => c.Namespace.Contains("Controllers"));
             var registeredControllers = InstallerTestHelper.GetImplementationTypesFor(typeof(IController), container);
-            Assert.Equal(allControllers, registeredControllers);
+            var registeredApiControllers = InstallerTestHelper.GetImplementationTypesFor(typeof(IHttpController), container);
+            var actual = registeredControllers.Concat(registeredApiControllers)
+                                              .OrderBy(x => x.Name)
+                                              .ToArray();
+            Assert.Equal(allControllers, actual);
         }
 
         [Fact]

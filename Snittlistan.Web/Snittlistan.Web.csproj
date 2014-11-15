@@ -190,8 +190,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="App_Code\Areas\V2\Queries\GetPendingMatchesQuery.cs" />
+    <Compile Include="App_Code\Areas\V2\Queries\GetPlayersQuery.cs" />
     <Compile Include="Areas\V2\AutoMapper\AbsenceProfile.cs" />
     <Compile Include="Areas\V2\AutoMapper\ResultProfile.cs" />
+    <Compile Include="Areas\V2\Commands\RegisterMatch4Command.cs" />
+    <Compile Include="Areas\V2\Commands\RegisterMatchCommand.cs" />
+    <Compile Include="Areas\V2\Domain\Match\MatchRegisteredEvent.cs" />
+    <Compile Include="Controllers\AbstractApiController.cs" />
+    <Compile Include="Areas\V2\Controllers\Api\RegisterMatchController.cs" />
     <Compile Include="Areas\V2\Controllers\MatchResultAdminController.cs" />
     <Compile Include="Areas\V2\DocumentSessionExtensions.cs" />
     <Compile Include="Areas\V2\Domain\BitsParser.cs" />
@@ -263,8 +270,16 @@
     <Compile Include="Areas\V2\ViewModels\TeamOfWeekLeadersViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\TeamOfWeekViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\VerifyBitsViewModel.cs" />
+    <Compile Include="Handlers\MatchRegistered.cs" />
+    <Compile Include="Infrastructure\Attributes\SaveChangesAttribute.cs" />
+    <Compile Include="Infrastructure\BitsClient.cs" />
+    <Compile Include="Infrastructure\IBitsClient.cs" />
+    <Compile Include="Infrastructure\ICommand.cs" />
+    <Compile Include="Infrastructure\Installers\ApiControllerInstaller.cs" />
     <Compile Include="Infrastructure\Installers\EventMigratorInstaller.cs" />
     <Compile Include="Infrastructure\Installers\EventStoreSessionInstaller.cs" />
+    <Compile Include="Infrastructure\Installers\BitsClientInstaller.cs" />
+    <Compile Include="Infrastructure\IQuery.cs" />
     <Compile Include="Infrastructure\JetBrains\Annotations.cs" />
     <Compile Include="Models\Emails.cs" />
     <Compile Include="ViewModels\UserInvitedViewModel.cs" />
@@ -286,6 +301,8 @@
     <Compile Include="Areas\V2\V2AreaRegistration.cs" />
     <Compile Include="Areas\V2\ViewModels\CreateRosterViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\PlayerViewModel.cs" />
+    <Compile Include="Infrastructure\IoC\WindsorHttpDependencyResolver.cs" />
+    <Compile Include="Infrastructure\IoC\WindsorDependencyScope.cs" />
     <Content Include="Content\css\glyphicons.css" />
     <Content Include="Content\css\images\glyphicons-free.png" />
     <Content Include="Content\css\images\touch-icon-ipad-precomposed.png" />
@@ -557,6 +574,7 @@
     <None Include="Properties\PublishProfiles\Snittlistan-Netcetera.pubxml" />
     <Content Include="Views\Emails\InviteUser.cshtml" />
     <Content Include="Views\Emails\_ViewStart.cshtml" />
+    <Content Include="Views\Emails\MatchRegistered.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
