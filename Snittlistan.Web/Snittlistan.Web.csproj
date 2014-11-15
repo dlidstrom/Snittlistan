@@ -194,8 +194,8 @@
     <Compile Include="App_Code\Areas\V2\Queries\GetPlayersQuery.cs" />
     <Compile Include="Areas\V2\AutoMapper\AbsenceProfile.cs" />
     <Compile Include="Areas\V2\AutoMapper\ResultProfile.cs" />
-    <Compile Include="Areas\V2\Controllers\Api\RegisterMatch4Command.cs" />
-    <Compile Include="Areas\V2\Controllers\Api\RegisterMatchCommand.cs" />
+    <Compile Include="Areas\V2\Commands\RegisterMatch4Command.cs" />
+    <Compile Include="Areas\V2\Commands\RegisterMatchCommand.cs" />
     <Compile Include="Areas\V2\Domain\Match\MatchRegisteredEvent.cs" />
     <Compile Include="Controllers\AbstractApiController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\RegisterMatchController.cs" />

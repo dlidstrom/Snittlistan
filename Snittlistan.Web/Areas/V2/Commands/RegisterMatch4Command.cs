@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using EventStoreLite;
@@ -7,14 +7,14 @@ using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Infrastructure;
 
-namespace Snittlistan.Web.Areas.V2.Controllers.Api
+namespace Snittlistan.Web.Areas.V2.Commands
 {
-    public class RegisterMatchCommand : ICommand
+    public class RegisterMatch4Command : ICommand
     {
         private readonly Roster roster;
-        private readonly ParseResult result;
+        private readonly Parse4Result result;
 
-        public RegisterMatchCommand(Roster roster, ParseResult result)
+        public RegisterMatch4Command(Roster roster, Parse4Result result)
         {
             if (roster == null) throw new ArgumentNullException("roster");
             if (result == null) throw new ArgumentNullException("result");
@@ -24,7 +24,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
 
         public void Execute(IDocumentSession session, IEventStoreSession eventStoreSession)
         {
-            var matchResult = new MatchResult(
+            var matchResult = new MatchResult4(
                 roster,
                 result.TeamScore,
                 result.OpponentScore,
@@ -38,23 +38,15 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             };
             foreach (var serie in series.Where(x => x != null))
             {
-                var tables = new List<MatchTable>();
+                var games = new List<MatchGame4>();
                 for (var i = 0; i < 4; i++)
                 {
-                    var game1 = new MatchGame(
-                        serie.Tables[i].Game1.Player,
-                        serie.Tables[i].Game1.Pins,
-                        serie.Tables[i].Game1.Strikes,
-                        serie.Tables[i].Game1.Spares);
-                    var game2 = new MatchGame(
-                        serie.Tables[i].Game2.Player,
-                        serie.Tables[i].Game2.Pins,
-                        serie.Tables[i].Game2.Strikes,
-                        serie.Tables[i].Game2.Spares);
-                    tables.Add(new MatchTable(game1, game2, serie.Tables[i].Score));
+                    var game = serie.Games[i];
+                    var matchGame = new MatchGame4(game.Player, game.Score, game.Pins);
+                    games.Add(matchGame);
                 }
 
-                matchResult.RegisterSerie(new MatchSerie(tables));
+                matchResult.RegisterSerie(new MatchSerie4(games));
             }
 
             eventStoreSession.Store(matchResult);

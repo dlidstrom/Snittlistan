@@ -16,6 +16,8 @@ namespace Snittlistan.Web.Areas.V2.Queries
                                  .Where(x => x.Preliminary == false)
                                  .Where(x => x.PlayerCount > 0)
                                  .Where(x => x.Date < DateTime.Now)
+                                 .Where(x => x.BitsMatchId != 0)
+                                 .Where(x => x.MatchResultId == null)
                                  .AsProjection<RosterSearchTerms.Result>()
                                  .ToArray();
 
