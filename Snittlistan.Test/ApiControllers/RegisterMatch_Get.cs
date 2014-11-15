@@ -9,6 +9,7 @@ using Raven.Imports.Newtonsoft.Json;
 using Snittlistan.Test.Properties;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.ReadModels;
+using Snittlistan.Web.DomainEvents;
 using Snittlistan.Web.Infrastructure;
 
 namespace Snittlistan.Test.ApiControllers
@@ -25,7 +26,6 @@ namespace Snittlistan.Test.ApiControllers
         {
             // Assert
             Assert.That(httpContent, Is.Not.Null);
-            content = httpContent.ReadAsStringAsync().Result;
             Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
 
@@ -61,8 +61,10 @@ namespace Snittlistan.Test.ApiControllers
         protected override void Act()
         {
             // Act
-            responseMessage = Client.GetAsync("http://temp.uri/api/registermatch").Result;
+            using (DomainEvent.Disable())
+                responseMessage = Client.GetAsync("http://temp.uri/api/registermatch").Result;
             httpContent = responseMessage.Content;
+            content = httpContent.ReadAsStringAsync().Result;
         }
 
         protected override void OnSetUp(Castle.Windsor.IWindsorContainer container)

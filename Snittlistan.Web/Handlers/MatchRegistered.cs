@@ -17,7 +17,8 @@ namespace Snittlistan.Web.Handlers
         public void Handle(MatchRegisteredEvent @event)
         {
             var roster = documentSession.Load<Roster>(@event.RosterId);
-            Emails.MatchRegistered("Match registrerad", roster.Team, roster.Opponent, @event.Score, @event.OpponentScore);
+            var subject = string.Format("{0} - {1}", roster.Team, roster.Opponent);
+            Emails.MatchRegistered(subject, roster.Team, roster.Opponent, @event.Score, @event.OpponentScore);
         }
     }
 }

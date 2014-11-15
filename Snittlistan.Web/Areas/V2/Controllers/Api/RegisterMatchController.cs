@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using Snittlistan.Web.Areas.V2.Commands;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Queries;
 using Snittlistan.Web.Controllers;
@@ -21,24 +24,35 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
         {
             var pendingMatches = ExecuteQuery(new GetPendingMatchesQuery());
 
+            var registeredMatches = new List<Roster>();
             foreach (var pendingMatch in pendingMatches)
             {
-                var players = ExecuteQuery(new GetPlayersQuery(pendingMatch));
-                var parser = new BitsParser(players);
-                var content = bitsClient.DownloadMatchResult(pendingMatch.BitsMatchId);
-                if (pendingMatch.IsFourPlayer)
+                try
                 {
-                    var parse4Result = parser.Parse4(content, pendingMatch.Team);
-                    ExecuteCommand(new RegisterMatch4Command(pendingMatch, parse4Result));
+                    var players = ExecuteQuery(new GetPlayersQuery(pendingMatch));
+                    var parser = new BitsParser(players);
+                    var content = bitsClient.DownloadMatchResult(pendingMatch.BitsMatchId);
+                    if (pendingMatch.IsFourPlayer)
+                    {
+                        var parse4Result = parser.Parse4(content, pendingMatch.Team);
+                        ExecuteCommand(new RegisterMatch4Command(pendingMatch, parse4Result));
+                    }
+                    else
+                    {
+                        var parseResult = parser.Parse(content, pendingMatch.Team);
+                        ExecuteCommand(new RegisterMatchCommand(pendingMatch, parseResult));
+                    }
+
+                    registeredMatches.Add(pendingMatch);
                 }
-                else
+                catch (Exception e)
                 {
-                    var parseResult = parser.Parse(content, pendingMatch.Team);
-                    ExecuteCommand(new RegisterMatchCommand(pendingMatch, parseResult));
+                    var message = string.Format("Unable to auto register match {0} ({1})", pendingMatch.Id, pendingMatch.BitsMatchId);
+                    throw new ApplicationException(message, e);
                 }
             }
 
-            var result = pendingMatches.Select(x => new
+            var result = registeredMatches.Select(x => new
             {
                 x.Date,
                 x.Season,
@@ -47,8 +61,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                 x.Team,
                 x.Location,
                 x.Opponent
-            });
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+            }).ToArray();
+            if (result.Length > 0)
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+
+            return Request.CreateResponse(HttpStatusCode.OK, "No matches to register");
         }
     }
 }
