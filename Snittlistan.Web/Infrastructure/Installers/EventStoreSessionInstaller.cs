@@ -1,4 +1,5 @@
-﻿using Castle.MicroKernel;
+﻿using Castle.Core;
+using Castle.MicroKernel;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
@@ -9,12 +10,24 @@ namespace Snittlistan.Web.Infrastructure.Installers
 {
     public class EventStoreSessionInstaller : IWindsorInstaller
     {
+        private readonly LifestyleType lifestyleType;
+
+        public EventStoreSessionInstaller()
+        {
+            lifestyleType = LifestyleType.PerWebRequest;
+        }
+
+        public EventStoreSessionInstaller(LifestyleType lifestyleType)
+        {
+            this.lifestyleType = lifestyleType;
+        }
+
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(
                 Component.For<IEventStoreSession>()
                     .UsingFactoryMethod(CreateEventStoreSession)
-                    .LifestylePerWebRequest());
+                    .LifeStyle.Is(lifestyleType));
         }
 
         private static IEventStoreSession CreateEventStoreSession(IKernel kernel)

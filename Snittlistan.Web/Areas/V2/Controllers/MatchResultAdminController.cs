@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Raven.Abstractions;
@@ -12,11 +10,19 @@ using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Helpers;
+using Snittlistan.Web.Infrastructure;
 
 namespace Snittlistan.Web.Areas.V2.Controllers
 {
     public class MatchResultAdminController : AdminController
     {
+        private readonly IBitsClient bitsClient;
+
+        public MatchResultAdminController(IBitsClient bitsClient)
+        {
+            this.bitsClient = bitsClient;
+        }
+
         public ActionResult Register(int? season)
         {
             if (season.HasValue == false)
@@ -174,19 +180,18 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 throw new HttpException(404, "Roster not found");
 
             var players = roster.Players
-                .Select(x => DocumentSession.Load<Player>(x))
-                .ToArray();
+                                .Select(x => DocumentSession.Load<Player>(x))
+                                .ToArray();
             var parser = new BitsParser(players);
-            using (var client = new WebClient())
+            var content = bitsClient.DownloadMatchResult(roster.BitsMatchId);
+            if (roster.IsFourPlayer)
             {
-                var address = string.Format(
-                    "http://bits.swebowl.se/Matches/MatchFact.aspx?MatchId={0}",
-                    model.BitsMatchId);
-                var content = client.DownloadString(address);
-                if (roster.IsFourPlayer)
-                    return Parse4(model, parser, content, roster, players);
-                return Parse(model, parser, content, roster, players);
+                var parse4Result = Parse4(model, parser, content, roster, players);
+                return parse4Result;
             }
+
+            var parseResult = Parse(model, parser, content, roster, players);
+            return parseResult;
         }
 
         [HttpPost, ActionName("RegisterBitsVerify")]
@@ -263,14 +268,17 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return RedirectToAction("Index", "MatchResult");
         }
 
-        private ActionResult Parse(RegisterBitsVerifyModel model, BitsParser parser, string content, Roster roster,
+        private ActionResult Parse(
+            RegisterBitsVerifyModel model,
+            BitsParser parser,
+            string content,
+            Roster roster,
             Player[] players)
         {
             var result = parser.Parse(content, roster.Team);
-            Debug.Assert(model.BitsMatchId != null, "model.BitsMatchId != null");
             var vm = new RegisterBitsResult
             {
-                BitsMatchId = model.BitsMatchId.Value,
+                BitsMatchId = roster.BitsMatchId,
                 TeamScore = result.TeamScore,
                 OpponentScore = result.OpponentScore,
                 RosterId = model.RosterId,
@@ -284,14 +292,17 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return View("RegisterBitsVerify", vm);
         }
 
-        private ActionResult Parse4(RegisterBitsVerifyModel model, BitsParser parser, string content, Roster roster,
+        private ActionResult Parse4(
+            RegisterBitsVerifyModel model,
+            BitsParser parser,
+            string content,
+            Roster roster,
             IEnumerable<Player> players)
         {
-            var result = parser.Parse4(content, roster.Team);
-            Debug.Assert(model.BitsMatchId != null, "model.BitsMatchId != null");
+            Parse4Result result = parser.Parse4(content, roster.Team);
             var vm = new RegisterBitsResult4
             {
-                BitsMatchId = model.BitsMatchId.Value,
+                BitsMatchId = roster.BitsMatchId,
                 TeamScore = result.TeamScore,
                 OpponentScore = result.OpponentScore,
                 RosterId = model.RosterId,

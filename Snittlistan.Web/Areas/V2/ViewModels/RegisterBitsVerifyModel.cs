@@ -8,9 +8,6 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         [Required]
         public string RosterId { get; set; }
 
-        [Required]
-        public int? BitsMatchId { get; set; }
-
         [HiddenInput]
         public int Season { get; set; }
     }
