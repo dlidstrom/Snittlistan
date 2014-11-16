@@ -1,5 +1,6 @@
 ﻿using System.Web.Http;
 using Newtonsoft.Json.Serialization;
+using Snittlistan.Web.Infrastructure.Attributes;
 
 namespace Snittlistan.Web.App_Start
 {
@@ -15,6 +16,8 @@ namespace Snittlistan.Web.App_Start
             // camelCase by default
             var formatter = config.Formatters.JsonFormatter;
             formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            config.Filters.Add(new UnhandledExceptionFilter());
         }
     }
 }

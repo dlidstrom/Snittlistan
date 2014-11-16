@@ -272,6 +272,7 @@
     <Compile Include="Areas\V2\ViewModels\VerifyBitsViewModel.cs" />
     <Compile Include="Handlers\MatchRegistered.cs" />
     <Compile Include="Infrastructure\Attributes\SaveChangesAttribute.cs" />
+    <Compile Include="Infrastructure\Attributes\UnhandledExceptionFilter.cs" />
     <Compile Include="Infrastructure\BitsClient.cs" />
     <Compile Include="Infrastructure\IBitsClient.cs" />
     <Compile Include="Infrastructure\ICommand.cs" />
