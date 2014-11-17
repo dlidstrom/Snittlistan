@@ -50,20 +50,6 @@ namespace Snittlistan.Web.Infrastructure.Installers
             this.mode = mode;
         }
 
-        public static IDocumentStore InitializeStore(IDocumentStore store)
-        {
-            store.Initialize();
-            store.Conventions.IdentityPartsSeparator = "-";
-            store.Conventions.DefaultQueryingConsistency = ConsistencyOptions.QueryYourWrites;
-            store.Conventions.FindTypeTagName = type => type == typeof(Match8x4) ? "Matches" : DocumentConvention.DefaultTypeTagName(type);
-            store.Conventions.FindIdentityProperty = FindIdentityProperty;
-            store.Conventions.MaxNumberOfRequestsPerSession = 1024;
-
-            // create indexes
-            IndexCreator.CreateIndexes(store);
-            return store;
-        }
-
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             Component.For<IDocumentSession>()
@@ -71,7 +57,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
                      .LifeStyle.Is(mode == DocumentStoreMode.InMemory ? LifestyleType.Scoped : LifestyleType.PerWebRequest);
 
             container.Register(
-                Component.For<IDocumentStore>().Instance(InitializeStore(CreateDocumentStore())).LifestyleSingleton(),
+                Component.For<IDocumentStore>().UsingFactoryMethod(k => InitializeStore(CreateDocumentStore())).LifestyleSingleton(),
                 Component.For<IDocumentSession>().UsingFactoryMethod(GetDocumentSession));
         }
 
@@ -99,6 +85,22 @@ namespace Snittlistan.Web.Infrastructure.Installers
             //documentStore.Configuration.Settings["Raven/Esent/MaxVerPages"] = "512";
         }
 
+        private IDocumentStore InitializeStore(IDocumentStore store)
+        {
+            store.Initialize();
+            store.Conventions.IdentityPartsSeparator = "-";
+            store.Conventions.DefaultQueryingConsistency = ConsistencyOptions.QueryYourWrites;
+            store.Conventions.FindTypeTagName = type => type == typeof(Match8x4) ? "Matches" : DocumentConvention.DefaultTypeTagName(type);
+            store.Conventions.FindIdentityProperty = FindIdentityProperty;
+            store.Conventions.MaxNumberOfRequestsPerSession = 1024;
+
+            // create indexes
+            if (mode == DocumentStoreMode.InMemory)
+                IndexCreator.CreateIndexes(store);
+
+            return store;
+        }
+
         private IDocumentStore CreateDocumentStore()
         {
             IDocumentStore store;
@@ -112,6 +114,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
                         };
 
                         Configure(documentStore);
+
                         store = documentStore;
                     }
 

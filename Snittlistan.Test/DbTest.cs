@@ -5,7 +5,6 @@ using System.Web.Routing;
 using Castle.Windsor;
 using Moq;
 using Raven.Client;
-using Raven.Client.Embedded;
 using Snittlistan.Web.App_Start;
 using Snittlistan.Web.Infrastructure.AutoMapper;
 using Snittlistan.Web.Infrastructure.Installers;
@@ -19,14 +18,12 @@ namespace Snittlistan.Test
 
         protected DbTest()
         {
+            var container = new WindsorContainer().Install(new RavenInstaller(DocumentStoreMode.InMemory), new AutoMapperInstaller());
+
             // configure AutoMapper too
-            AutoMapperConfiguration
-                .Configure(new WindsorContainer().Install(new AutoMapperInstaller()));
+            AutoMapperConfiguration.Configure(container);
 
-            Store = new EmbeddableDocumentStore { RunInMemory = true };
-
-            // initialize
-            RavenInstaller.InitializeStore(Store);
+            Store = container.Resolve<IDocumentStore>();
             Session = Store.OpenSession();
         }
 
