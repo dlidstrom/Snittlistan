@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -16,6 +17,7 @@ using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Attributes;
 using Snittlistan.Web.Infrastructure.AutoMapper;
 using Snittlistan.Web.Infrastructure.IoC;
+using Snittlistan.Web.Models;
 
 namespace Snittlistan.Web
 {
@@ -88,6 +90,8 @@ namespace Snittlistan.Web
 
             // configure AutoMapper
             AutoMapperConfiguration.Configure(Container);
+
+            Emails.Initialize(HostingEnvironment.MapPath("~/Views/Emails"));
         }
 
         private static void RegisterGlobalFilters(GlobalFilterCollection filters)

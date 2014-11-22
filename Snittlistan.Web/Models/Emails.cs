@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
+using System.Web.Mvc;
 using JetBrains.Annotations;
 using Postal;
 
@@ -10,6 +11,8 @@ namespace Snittlistan.Web.Models
 {
     public static class Emails
     {
+        private static EmailService service;
+
         public static void InviteUser(string recipient, string subject, string id, string activationKey)
         {
             Send(
@@ -60,6 +63,15 @@ namespace Snittlistan.Web.Models
                 o => o.Content = content);
         }
 
+        public static void Initialize(string viewsPath)
+        {
+            var engines = new ViewEngineCollection
+            {
+                new FileSystemRazorViewEngine(viewsPath)
+            };
+            service = new EmailService(engines);
+        }
+
         private static void Send(
             [AspMvcView] string view,
             string recipient,
@@ -79,7 +91,7 @@ namespace Snittlistan.Web.Models
             moderatorEmails.ForEach(moderators.Add);
             email.Bcc = moderators;
             action.Invoke(email);
-            email.Send();
+            service.Send(email);
         }
     }
 }
