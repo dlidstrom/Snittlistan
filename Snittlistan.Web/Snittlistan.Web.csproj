@@ -584,6 +584,7 @@
     <Content Include="Views\Emails\InviteUser.cshtml" />
     <Content Include="Views\Emails\_ViewStart.cshtml" />
     <Content Include="Views\Emails\MatchRegistered.cshtml" />
+    <Content Include="Views\Emails\Mail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
