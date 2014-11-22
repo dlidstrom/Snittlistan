@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Castle.Facilities.Startable;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
@@ -100,7 +101,9 @@ namespace Snittlistan.Web
         {
             if (Container == null)
             {
-                Container = new WindsorContainer().Install(
+                Container = new WindsorContainer();
+                Container.AddFacility<StartableFacility>();
+                Container.Install(
                     FromAssembly.This(), EventStoreInstaller.FromAssembly(Assembly.GetExecutingAssembly()));
             }
 
