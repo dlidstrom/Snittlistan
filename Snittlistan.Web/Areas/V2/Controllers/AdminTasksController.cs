@@ -13,6 +13,7 @@ using Snittlistan.Web.Helpers;
 using Snittlistan.Web.Infrastructure.AutoMapper;
 using Snittlistan.Web.Infrastructure.Indexes;
 using Snittlistan.Web.Models;
+using Snittlistan.Web.Tasks;
 
 namespace Snittlistan.Web.Areas.V2.Controllers
 {
@@ -177,7 +178,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             if (!ModelState.IsValid) return View(vm);
 
-            Emails.SendMail(vm.Recipient, vm.Subject, vm.Content);
+            SendTask(new EmailTask(vm.Recipient, vm.Subject, vm.Content));
 
             return RedirectToAction("Index");
         }

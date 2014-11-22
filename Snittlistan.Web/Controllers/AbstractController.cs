@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using EventStoreLite;
 using Raven.Client;
+using Snittlistan.Web.Infrastructure.BackgroundTasks;
 using Snittlistan.Web.Models;
 
 namespace Snittlistan.Web.Controllers
@@ -26,6 +27,11 @@ namespace Snittlistan.Web.Controllers
         /// Gets the event store.
         /// </summary>
         public EventStore EventStore { get; set; }
+
+        protected void SendTask<TTask>(TTask task)
+        {
+            DocumentSession.Store(new BackgroundTask(task));
+        }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
