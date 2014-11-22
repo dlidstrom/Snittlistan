@@ -1,7 +1,8 @@
-﻿To: @ViewBag.To
-From: @ViewBag.From
-Bcc: @ViewBag.Bcc
-Subject: @ViewBag.Subject
+﻿@model dynamic
+To: @Model.To
+From: @Model.From
+Bcc: @Model.Bcc
+Subject: @Model.Subject
 Content-Type: text/html; charset=utf-8
 
-@ViewBag.Content
+@Model.Content
