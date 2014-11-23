@@ -270,6 +270,7 @@
     <Compile Include="Areas\V2\ViewModels\TeamOfWeekLeadersViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\TeamOfWeekViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\VerifyBitsViewModel.cs" />
+    <Compile Include="Handlers\HandleBase.cs" />
     <Compile Include="Handlers\MatchRegistered.cs" />
     <Compile Include="Infrastructure\Attributes\SaveChangesAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\UnhandledExceptionFilter.cs" />
@@ -291,6 +292,8 @@
     <Compile Include="Models\Emails.cs" />
     <Compile Include="Tasks\EmailTask.cs" />
     <Compile Include="Tasks\EmailTaskHandler.cs" />
+    <Compile Include="Tasks\MatchRegisteredTask.cs" />
+    <Compile Include="Tasks\MatchRegisteredTaskHandler.cs" />
     <Compile Include="ViewModels\UserInvitedViewModel.cs" />
     <Compile Include="Areas\V2\AutoMapper\UserProfile.cs" />
     <Compile Include="Areas\V2\Controllers\UserController.cs" />

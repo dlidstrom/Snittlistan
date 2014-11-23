@@ -93,6 +93,7 @@
   <ItemGroup>
     <Compile Include="ApiControllers\RegisterMatch_Get.cs" />
     <Compile Include="ApiControllers\WebApiIntegrationTest.cs" />
+    <Compile Include="BackgroundTasks\Serialization.cs" />
     <Compile Include="BitsParser4x4Test.cs" />
     <Compile Include="BitsParser_Header.cs" />
     <Compile Include="Domain\MatchResult_RegisterSeries.cs" />
