@@ -28,9 +28,9 @@ namespace Snittlistan.Web.Controllers
         /// </summary>
         public EventStore EventStore { get; set; }
 
-        protected void SendTask<TTask>(TTask task)
+        protected void SendTask<TTask>(TTask task) where TTask : class
         {
-            DocumentSession.Store(new BackgroundTask(task));
+            DocumentSession.Store(BackgroundTask.Create(task));
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)

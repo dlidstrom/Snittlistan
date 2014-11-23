@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using Raven.Imports.Newtonsoft.Json;
 
 namespace Snittlistan.Web.Infrastructure.BackgroundTasks
 {
     public class BackgroundTask
     {
-        public BackgroundTask(object body)
+        [JsonConstructor]
+        private BackgroundTask(object body)
         {
             if (body == null) throw new ArgumentNullException("body");
             Body = body;
             Exceptions = new List<Exception>();
             NextTry = DateTimeOffset.UtcNow;
         }
+
+        public string Id { get; private set; }
 
         public int Retries { get; private set; }
 
@@ -24,6 +28,11 @@ namespace Snittlistan.Web.Infrastructure.BackgroundTasks
         public DateTimeOffset NextTry { get; private set; }
 
         public List<Exception> Exceptions { get; private set; }
+
+        public static BackgroundTask Create<TBody>(TBody body) where TBody : class
+        {
+            return new BackgroundTask(body);
+        }
 
         public void MarkFinished()
         {
