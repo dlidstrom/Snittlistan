@@ -59,5 +59,11 @@ namespace Snittlistan.Web.Infrastructure.BackgroundTasks
                 NextTry = DateTimeOffset.UtcNow;
             }
         }
+
+        public string GetInfo()
+        {
+            var info = string.Format("Type: {0}{1}{2}", Body.GetType(), Environment.NewLine, Body);
+            return info;
+        }
     }
 }

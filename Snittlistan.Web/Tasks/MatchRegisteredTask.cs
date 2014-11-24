@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 
 namespace Snittlistan.Web.Tasks
 {
@@ -25,5 +26,16 @@ namespace Snittlistan.Web.Tasks
         public int Score { get; private set; }
 
         public int OpponentScore { get; private set; }
+
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine("Subject:       " + Subject);
+            builder.AppendLine("Team:          " + Team);
+            builder.AppendLine("Opponent:      " + Opponent);
+            builder.AppendLine("Score:         " + Score);
+            builder.AppendLine("OpponentScore: " + OpponentScore);
+            return builder.ToString();
+        }
     }
 }
