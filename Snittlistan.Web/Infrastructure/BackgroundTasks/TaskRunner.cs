@@ -3,8 +3,9 @@ using System.ComponentModel.Composition.Hosting;
 using System.Linq;
 using System.Threading;
 using System.Timers;
-using Castle.Core;
+using System.Web.Hosting;
 using Castle.MicroKernel;
+using Elmah;
 using NLog;
 using Raven.Client;
 using Raven.Client.Indexes;
@@ -14,41 +15,71 @@ using Timer = System.Timers.Timer;
 
 namespace Snittlistan.Web.Infrastructure.BackgroundTasks
 {
-    public class TaskRunner : IStartable
+    public class TaskRunner : IRegisteredObject
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private readonly IKernel kernel;
         private readonly IDocumentStore documentStore;
         private readonly Timer timer;
-        private int counter;
+        private readonly object locker = new object();
+        private readonly AutoResetEvent resetEvent = new AutoResetEvent(true);
 
-        public TaskRunner(IKernel kernel, IDocumentStore documentStore)
+        public TaskRunner(IKernel kernel, IDocumentStore documentStore, int taskRunnerPollingInterval)
         {
             this.kernel = kernel;
             this.documentStore = documentStore;
 
             var typeCatalog = new TypeCatalog(new[] { typeof(BackgroundTasksIndex) });
             IndexCreation.CreateIndexes(new CompositionContainer(typeCatalog), documentStore);
-            timer = new Timer();
-        }
 
-        public void Start()
-        {
-            timer.Interval = 1000;
+            timer = new Timer
+            {
+                Interval = taskRunnerPollingInterval
+            };
             timer.Elapsed += TimerOnElapsed;
             timer.Start();
+
+            Log.Info("Registering with HostingEnvironment");
+            HostingEnvironment.RegisterObject(this);
         }
 
-        public void Stop()
+        public void Stop(bool immediate)
         {
-            timer.Stop();
+            try
+            {
+                timer.Stop();
+                resetEvent.WaitOne(10000);
+            }
+            catch (Exception e)
+            {
+                Log.ErrorException(e.GetType().ToString(), e);
+            }
+
+            Log.Info("Unregistering from HostingEnvironment");
+            HostingEnvironment.UnregisterObject(this);
         }
 
         private void TimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {
-            if (Interlocked.CompareExchange(ref counter, 1, 0) != 0) return;
-            PerformWork();
-            counter--;
+            if (Monitor.IsEntered(locker))
+            {
+                Log.Error("Task being processed, exiting");
+                return;
+            }
+
+            lock (locker)
+            {
+                try
+                {
+                    resetEvent.Reset();
+                    PerformWork();
+                    resetEvent.Set();
+                }
+                catch (Exception e)
+                {
+                    Log.ErrorException(e.GetType().ToString(), e);
+                }
+            }
         }
 
         private void PerformWork()
@@ -57,44 +88,49 @@ namespace Snittlistan.Web.Infrastructure.BackgroundTasks
             {
                 using (var session = documentStore.OpenSession())
                 {
-                    ProcessTask(session);
-                    session.SaveChanges();
+                    if (ProcessTask(session))
+                        session.SaveChanges();
                 }
             }
             catch (Exception e)
             {
                 Log.ErrorException(e.GetType().ToString(), e);
-                Elmah.ErrorSignal.FromCurrentContext().Raise(e);
+                ErrorLog.GetDefault(null).Log(new Error(e));
             }
         }
 
-        private void ProcessTask(IDocumentSession session)
+        private bool ProcessTask(IDocumentSession session)
         {
             var task = session.Query<BackgroundTask, BackgroundTasksIndex>()
                               .Where(x => x.IsFinished == false && x.IsFailed == false)
                               .OrderBy(x => x.NextTry)
                               .FirstOrDefault();
-            if (task == null) return;
+            if (task == null) return false;
 
             object handler = null;
             try
             {
+                Log.Info("Handling task {0}", task.GetInfo());
                 var handlerType = typeof(IBackgroundTaskHandler<>).MakeGenericType(task.Body.GetType());
                 handler = kernel.Resolve(handlerType);
                 var method = handler.GetType().GetMethod("Handle");
                 method.Invoke(handler, new[] { task.Body });
                 task.MarkFinished();
+                Log.Info("Task finished successfully");
             }
             catch (Exception e)
             {
                 Log.ErrorException(e.GetType().ToString(), e);
-                Elmah.ErrorSignal.FromCurrentContext().Raise(e);
+                ErrorLog.GetDefault(null).Log(new Error(e));
                 task.UpdateNextTry(e);
+                Log.Info("Task failed attempt #{0}", task.Retries);
             }
             finally
             {
                 if (handler != null) kernel.ReleaseComponent(handler);
             }
+
+            return true;
         }
     }
 }
