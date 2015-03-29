@@ -18,12 +18,13 @@
                 <tr>
                     <td>@activity.Name</td>
                     <td>
-                        @if (activity.Absences.Count > 0)
+                        @foreach (var absence in activity.Absences)
                         {
-                            foreach (var absence in activity.Absences)
+                            @Html.FormatDateSpan(absence.From, absence.To)
+                            if (string.IsNullOrWhiteSpace(absence.Comment) == false)
                             {
-                                @Html.FormatDateSpan(absence.From, absence.To)
-                                @absence.Comment
+                                var comment = string.Format(" ({0})", absence.Comment);
+                                @comment
                             }
                         }
 

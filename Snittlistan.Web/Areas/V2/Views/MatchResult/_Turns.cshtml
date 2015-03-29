@@ -57,6 +57,7 @@
                         rank = 0;
                         rankstep = 1;
                         previous = int.MaxValue;
+                        var indicatedTop9 = false;
                     }
                     @foreach (var result in week.Players)
                     {
@@ -73,9 +74,10 @@
                         previous = result.Pins;
 
                         var cl = string.Empty;
-                        if (rank == 10)
+                        if (rank >= 10 && !indicatedTop9)
                         {
                             cl = "top9";
+                            indicatedTop9 = true;
                         }
 
                         <tr class="@cl">
