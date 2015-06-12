@@ -290,6 +290,7 @@
     <Compile Include="Infrastructure\IQuery.cs" />
     <Compile Include="Infrastructure\JetBrains\Annotations.cs" />
     <Compile Include="Models\Emails.cs" />
+    <Compile Include="Models\WebsiteConfig.cs" />
     <Compile Include="Tasks\EmailTask.cs" />
     <Compile Include="Tasks\EmailTaskHandler.cs" />
     <Compile Include="Tasks\MatchRegisteredTask.cs" />
@@ -688,4 +689,7 @@
   </Target>
   <Target Name="AfterBuild">
   </Target> -->
+  <Target Name="BeforeBuild" Condition="'$(Configuration)' == 'Release'">
+    <Exec Command="del /F /S /Q bin\Snittlistan.Web.dll" />
+  </Target>
 </Project>

@@ -9,12 +9,14 @@ using Castle.Facilities.Startable;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
+using EventStoreLite;
 using EventStoreLite.IoC.Castle;
 using NLog;
 using Raven.Client;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Attributes;
 using Snittlistan.Web.Infrastructure.AutoMapper;
+using Snittlistan.Web.Infrastructure.Indexes;
 using Snittlistan.Web.Infrastructure.IoC;
 using Snittlistan.Web.Models;
 
@@ -57,6 +59,13 @@ namespace Snittlistan.Web
 
             if (Container != null)
                 Container.Dispose();
+        }
+
+        public static string GetAssemblyVersion()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var version = assembly.GetName().Version;
+            return version.ToString();
         }
 
         protected void Application_Start()
@@ -123,9 +132,43 @@ namespace Snittlistan.Web
                 Container.AddChildContainer(ChildContainer);
             }
 
+            // create indexes
+            var store = Container.Resolve<IDocumentStore>();
+            if (ShouldInitializeIndexes(store, GetAssemblyVersion()))
+            {
+                Log.Info("Creating indexes");
+                var eventStore = Container.Resolve<EventStore>();
+                IndexCreator.ResetIndexes(store, eventStore);
+            }
+            else
+            {
+                Log.Info("Skipping creation of indexes");
+            }
+
             DependencyResolver.SetResolver(new WindsorDependencyResolver(Container));
             configuration.DependencyResolver =
                 new WindsorHttpDependencyResolver(Container.Kernel);
+        }
+
+        private static bool ShouldInitializeIndexes(IDocumentStore documentStore, string version)
+        {
+            using (var session = documentStore.OpenSession())
+            {
+                var config = session.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+                if (config == null)
+                {
+                    Log.Info("Creating website config");
+                    config = new WebsiteConfig();
+                    session.Store(config);
+                }
+
+                Log.Info("Current version: {0}, IndexCreatedVersion: {1}", version, config.IndexCreatedVersion);
+                var newVersion = config.IndexCreatedVersion != version;
+                config.SetIndexCreatedVersion(version);
+                session.SaveChanges();
+
+                return newVersion;
+            }
         }
     }
 }

@@ -10,7 +10,6 @@ using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Embedded;
 using Snittlistan.Web.Areas.V1.Models;
-using Snittlistan.Web.Infrastructure.Indexes;
 
 namespace Snittlistan.Web.Infrastructure.Installers
 {
@@ -85,7 +84,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
             //documentStore.Configuration.Settings["Raven/Esent/MaxVerPages"] = "512";
         }
 
-        private IDocumentStore InitializeStore(IDocumentStore store)
+        private static IDocumentStore InitializeStore(IDocumentStore store)
         {
             store.Initialize();
             store.Conventions.IdentityPartsSeparator = "-";
@@ -93,10 +92,6 @@ namespace Snittlistan.Web.Infrastructure.Installers
             store.Conventions.FindTypeTagName = type => type == typeof(Match8x4) ? "Matches" : DocumentConvention.DefaultTypeTagName(type);
             store.Conventions.FindIdentityProperty = FindIdentityProperty;
             store.Conventions.MaxNumberOfRequestsPerSession = 1024;
-
-            // create indexes
-            if (mode == DocumentStoreMode.InMemory)
-                IndexCreator.CreateIndexes(store);
 
             return store;
         }
