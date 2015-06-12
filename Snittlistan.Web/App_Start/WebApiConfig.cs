@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Serialization;
 using Snittlistan.Web.Infrastructure.Attributes;
 
-namespace Snittlistan.Web.App_Start
+namespace Snittlistan.Web
 {
     public static class WebApiConfig
     {

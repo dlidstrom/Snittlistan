@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace Snittlistan.Web.App_Start
+namespace Snittlistan.Web
 {
     public class FilterConfig
     {

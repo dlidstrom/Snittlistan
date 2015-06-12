@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace Snittlistan.Web.App_Start
+namespace Snittlistan.Web
 {
     public class RouteConfig
     {

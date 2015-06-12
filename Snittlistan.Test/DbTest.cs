@@ -5,7 +5,7 @@ using System.Web.Routing;
 using Castle.Windsor;
 using Moq;
 using Raven.Client;
-using Snittlistan.Web.App_Start;
+using Snittlistan.Web;
 using Snittlistan.Web.Infrastructure.AutoMapper;
 using Snittlistan.Web.Infrastructure.Installers;
 using Snittlistan.Web.Models;

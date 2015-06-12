@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Snittlistan.Web.App_Start;
+using Snittlistan.Web;
 using Snittlistan.Web.Areas.V1;
 using Snittlistan.Web.Areas.V2;
 using Xunit;
