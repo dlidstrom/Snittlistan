@@ -12,7 +12,6 @@ using Castle.Windsor.Installer;
 using EventStoreLite.IoC.Castle;
 using NLog;
 using Raven.Client;
-using Snittlistan.Web.App_Start;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Attributes;
 using Snittlistan.Web.Infrastructure.AutoMapper;
