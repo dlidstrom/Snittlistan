@@ -7,6 +7,7 @@ using Moq;
 using Raven.Client;
 using Snittlistan.Web;
 using Snittlistan.Web.Infrastructure.AutoMapper;
+using Snittlistan.Web.Infrastructure.Indexes;
 using Snittlistan.Web.Infrastructure.Installers;
 using Snittlistan.Web.Models;
 
@@ -24,6 +25,7 @@ namespace Snittlistan.Test
             AutoMapperConfiguration.Configure(container);
 
             Store = container.Resolve<IDocumentStore>();
+            IndexCreator.CreateIndexes(Store);
             Session = Store.OpenSession();
         }
 

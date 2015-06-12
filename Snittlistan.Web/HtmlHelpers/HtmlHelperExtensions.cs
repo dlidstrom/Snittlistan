@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -92,9 +91,8 @@ namespace Snittlistan.Web.HtmlHelpers
 
         public static HtmlString GetAssemblyVersion(this HtmlHelper helper)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var version = assembly.GetName().Version;
-            return new HtmlString(version.ToString());
+            var version = MvcApplication.GetAssemblyVersion();
+            return new HtmlString(version);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using EventStoreLite;
@@ -115,21 +114,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         [HttpPost, ActionName("ResetIndexes")]
         public ActionResult ResetIndexesConfirmed()
         {
-            while (true)
-            {
-                var indexNames = DocumentStore.DatabaseCommands.GetIndexNames(0, 20);
-                foreach (var indexName in indexNames)
-                {
-                    if (string.Equals(indexName, "Raven/DocumentsByEntityName", StringComparison.OrdinalIgnoreCase) == false)
-                        DocumentStore.DatabaseCommands.DeleteIndex(indexName);
-                }
-
-                if (indexNames.Length <= 1) break;
-            }
-
-            // create indexes
-            IndexCreator.CreateIndexes(DocumentStore);
-            EventStore.Initialize(DocumentStore);
+            IndexCreator.ResetIndexes(DocumentStore, EventStore);
 
             return RedirectToAction("Raven");
         }

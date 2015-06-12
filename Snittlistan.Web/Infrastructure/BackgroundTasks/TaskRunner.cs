@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.Composition.Hosting;
 using System.Linq;
 using System.Threading;
 using System.Timers;
@@ -8,7 +7,6 @@ using Castle.MicroKernel;
 using Elmah;
 using NLog;
 using Raven.Client;
-using Raven.Client.Indexes;
 using Raven.Client.Linq;
 using Snittlistan.Web.Infrastructure.Indexes;
 using Timer = System.Timers.Timer;
@@ -28,9 +26,6 @@ namespace Snittlistan.Web.Infrastructure.BackgroundTasks
         {
             this.kernel = kernel;
             this.documentStore = documentStore;
-
-            var typeCatalog = new TypeCatalog(new[] { typeof(BackgroundTasksIndex) });
-            IndexCreation.CreateIndexes(new CompositionContainer(typeCatalog), documentStore);
 
             timer = new Timer
             {
