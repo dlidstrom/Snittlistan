@@ -51,7 +51,7 @@
     <script type="text/javascript">
         var logErrorUrl = '@Url.Action("LogJavaScriptError", "Error")';
         $(function() {
-            window.Waypoints.debug(true).intercept('a').resume();
+            window.Waypoints.debug(true).intercept('a');
         });
     </script>
     @Bundles.RenderScripts()
