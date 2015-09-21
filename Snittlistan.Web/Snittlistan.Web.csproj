@@ -322,6 +322,7 @@
     <Content Include="Content\css\images\touch-icon-ipad-retina-precomposed.png" />
     <Content Include="Content\css\images\touch-icon-iphone-precomposed.png" />
     <Content Include="Content\css\images\touch-icon-iphone-retina-precomposed.png" />
+    <Content Include="Content\external\waypoints\waypoints-0.0.1.min.js" />
     <Content Include="Content\js\helpers\typeahead.js" />
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="Areas\V1\Controllers\AccountController.cs" />
