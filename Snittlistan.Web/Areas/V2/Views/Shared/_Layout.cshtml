@@ -1,14 +1,14 @@
-@using Snittlistan.Web
+ï»¿@using Snittlistan.Web
 @{
     ViewBag.Title = "Snittlistan";
     Bundles.Reference("Content/css/main.less");
     Bundles.Reference("Content/css/glyphicons.css");
-}
-<!DOCTYPE html>
+    Bundles.Reference("Content/external/waypoints/waypoints-0.0.1.min.js");
+}<!DOCTYPE html>
 <html lang="se">
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+        <meta name="viewport" content="initial-scale=1.0,user-scalable=no" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <meta name="google-site-verification" content="g8KwkjfVGgtu5zxYGhIEfJS4JGVkCMS1YMdp5WNOOpU" />
@@ -37,19 +37,19 @@
         <div class="navbar">
             <div class="navbar-inner">
                 <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
-                    </a>
+                    </button>
                     <a href="@Url.RouteUrl("V2_default", new { controller = "Roster", action = "Index" })" class="brand">
                         Snittlistan
                     </a>
                     <div class="nav-collapse">
                         <ul class="nav">
-                            @Content.ControllerMenuLink(Html, "Omgångar", "sprite-glyphicons_045_calendar", "Roster", Url.Action("Index", "Roster"))
+                            @Content.ControllerMenuLink(Html, "OmgÃ¥ngar", "sprite-glyphicons_045_calendar", "Roster", Url.Action("Index", "Roster"))
                             @Content.ControllerMenuLink(Html, "Resultat", "sprite-glyphicons_040_stats", "MatchResult", Url.Action("Index", "MatchResult"))
-                            @Content.ControllerMenuLink(Html, "Frånvaro", "sprite-glyphicons_045_calendar", "Absence", Url.Action("Index", "Absence"))
+                            @Content.ControllerMenuLink(Html, "FrÃ¥nvaro", "sprite-glyphicons_045_calendar", "Absence", Url.Action("Index", "Absence"))
                             @Content.ControllerMenuLink(Html, "Medlemmar", "sprite-glyphicons_043_group", "Player", Url.Action("Index", "Player"))
                             @Content.ControllerMenuLink(Html, "2011-2012", "sprite-glyphicons_090_table", "Home", Url.Action("Index", "Home", new { area = "V1" } ))
                         </ul>
@@ -116,5 +116,10 @@
         @* local scripts *@
         @Bundles.RenderScripts()
         @RenderSection("scripts", false)
+        <script>
+            $(function () {
+                window.Waypoints.debug(true).intercept('a').resume();
+            });
+        </script>
     </body>
 </html>

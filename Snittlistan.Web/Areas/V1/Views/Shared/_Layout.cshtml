@@ -2,8 +2,8 @@
     Bundles.Reference("Content/js/stacktrace.js");
     Bundles.Reference("Content/js/feedback.js");
     Bundles.Reference("Content/js/button.js");
-}
-<!DOCTYPE html>
+    Bundles.Reference("Content/external/waypoints/waypoints-0.0.1.min.js");
+}<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -28,6 +28,11 @@
                 <ul id="menu">
                     <li>@Html.ActionLink("Matcher", "Index", "Match")</li>
                     <li>@Html.ActionLink("Om", "About", "Home")</li>
+                    <li>
+                        <a href="@Url.Action("Index", "Roster", new { area = "V2" })">
+                            Tillbaka till nuvarande säsong
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </header>
@@ -45,6 +50,9 @@
     @Content.Script(ScriptType.JQueryUII18N)
     <script type="text/javascript">
         var logErrorUrl = '@Url.Action("LogJavaScriptError", "Error")';
+        $(function() {
+            window.Waypoints.debug(true).intercept('a').resume();
+        });
     </script>
     @Bundles.RenderScripts()
     @RenderSection("scripts", false)
