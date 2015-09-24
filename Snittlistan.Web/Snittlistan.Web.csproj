@@ -272,6 +272,7 @@
     <Compile Include="Areas\V2\ViewModels\VerifyBitsViewModel.cs" />
     <Compile Include="Handlers\HandleBase.cs" />
     <Compile Include="Handlers\MatchRegistered.cs" />
+    <Compile Include="HtmlHelpers\UrlExtensions.cs" />
     <Compile Include="Infrastructure\Attributes\SaveChangesAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\UnhandledExceptionFilter.cs" />
     <Compile Include="Infrastructure\BackgroundTasks\BackgroundTask.cs" />
@@ -317,11 +318,12 @@
     <Compile Include="Infrastructure\IoC\WindsorHttpDependencyResolver.cs" />
     <Compile Include="Infrastructure\IoC\WindsorDependencyScope.cs" />
     <Content Include="Content\css\glyphicons.css" />
+    <Content Include="Content\css\images\apple-touch-icon-57x57.png" />
+    <Content Include="Content\css\images\apple-touch-icon-60x60.png" />
+    <Content Include="Content\css\images\apple-touch-icon-72x72.png" />
+    <Content Include="Content\css\images\apple-touch-icon-76x76.png" />
+    <Content Include="Content\css\images\apple-touch-icon.png" />
     <Content Include="Content\css\images\glyphicons-free.png" />
-    <Content Include="Content\css\images\touch-icon-ipad-precomposed.png" />
-    <Content Include="Content\css\images\touch-icon-ipad-retina-precomposed.png" />
-    <Content Include="Content\css\images\touch-icon-iphone-precomposed.png" />
-    <Content Include="Content\css\images\touch-icon-iphone-retina-precomposed.png" />
     <Content Include="Content\external\waypoints\waypoints-0.0.1.min.js" />
     <Content Include="Content\js\helpers\typeahead.js" />
     <Compile Include="Controllers\AbstractController.cs" />
