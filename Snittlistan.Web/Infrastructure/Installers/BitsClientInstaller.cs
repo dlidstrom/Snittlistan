@@ -1,7 +1,6 @@
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using Snittlistan.Web.Areas.V2.Controllers.Api;
 
 namespace Snittlistan.Web.Infrastructure.Installers
 {
