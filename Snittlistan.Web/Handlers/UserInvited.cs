@@ -9,10 +9,9 @@ namespace Snittlistan.Web.Handlers
         {
             var recipient = @event.User.Email;
             const string Subject = "Välkommen till Snittlistan!";
-            var activationKey = @event.User.ActivationKey;
-            var id = @event.User.Id;
+            var activationUri = @event.ActivationUri;
 
-            Emails.InviteUser(recipient, Subject, id, activationKey);
+            Emails.InviteUser(recipient, Subject, activationUri);
         }
     }
 }

@@ -61,7 +61,7 @@ namespace Snittlistan.Web.Areas.V1.Controllers
                 {
                     Id = "Admin"
                 };
-            user.Activate(false);
+            user.Activate();
             DocumentSession.Store(user);
 
             return RedirectToAction("Success");

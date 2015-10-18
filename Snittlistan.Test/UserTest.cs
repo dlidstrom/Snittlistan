@@ -48,7 +48,7 @@ namespace Snittlistan.Test
         public void CanActivate()
         {
             var user = new User("F", "L", "e@d.com", "pwd");
-            user.Activate(false);
+            user.Activate();
             Assert.True(user.IsActive);
         }
     }

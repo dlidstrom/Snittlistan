@@ -13,7 +13,7 @@ namespace Snittlistan.Test
             var original = new User("F", "L", "e@d.com", "some pwd");
             using (DomainEvent.Disable())
             {
-                original.Activate(false);
+                original.Activate();
                 Session.Store(original);
                 Session.SaveChanges();
             }

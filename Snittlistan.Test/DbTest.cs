@@ -53,7 +53,7 @@ namespace Snittlistan.Test
         protected User CreateActivatedUser(string firstName, string lastName, string email, string password)
         {
             var user = new User(firstName, lastName, email, password);
-            user.Activate(false);
+            user.Activate();
             Session.Store(user);
             Session.SaveChanges();
             return user;
