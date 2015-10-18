@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using System.Linq;
-using System.Net.Mail;
 using System.Text;
 using System.Web.Mvc;
 using JetBrains.Annotations;
@@ -13,7 +11,7 @@ namespace Snittlistan.Web.Models
     {
         private static EmailService service;
 
-        public static void InviteUser(string recipient, string subject, string id, string activationKey)
+        public static void InviteUser(string recipient, string subject, string activationUri)
         {
             Send(
                 "InviteUser",
@@ -21,8 +19,7 @@ namespace Snittlistan.Web.Models
                 subject,
                 o =>
                 {
-                    o.Id = id;
-                    o.ActivationKey = activationKey;
+                    o.ActivationUri = activationUri;
                 });
         }
 
@@ -84,13 +81,10 @@ namespace Snittlistan.Web.Models
             email.Subject = string.Format("=?utf-8?B?{0}?=", Convert.ToBase64String(Encoding.UTF8.GetBytes(subject)));
 
             // add moderators
-            var moderators = new MailAddressCollection();
-            var moderatorEmails = ConfigurationManager.AppSettings["OwnerEmail"].Split(';')
-                .Select(e => new MailAddress(e.Trim()))
-                .ToList();
-            moderatorEmails.ForEach(moderators.Add);
-            email.Bcc = moderators;
+            var moderatorEmails = string.Join(", ", ConfigurationManager.AppSettings["OwnerEmail"].Split(';'));
+            email.Bcc = moderatorEmails;
             action.Invoke(email);
+
             service.Send(email);
         }
     }

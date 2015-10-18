@@ -1,7 +1,8 @@
-﻿To: @ViewBag.To
-From: @ViewBag.From
-Bcc: @ViewBag.Bcc
-Subject: @ViewBag.Subject
+﻿@model dynamic
+To: @Model.To
+From: @Model.From
+Bcc: @Model.Bcc
+Subject: @Model.Subject
 Content-Type: text/html; charset=utf-8
 
 <p>
@@ -11,15 +12,7 @@ Content-Type: text/html; charset=utf-8
 </p>
 <p>
     Klicka här för att aktivera ditt konto:
-    <a href="@Url.Action(
-        "SetPassword",
-        "User",
-        new
-        {
-            id = ViewBag.Id,
-            activationKey = Model.ActivationKey
-        },
-        Request.Url.Scheme)">
+    <a href="@ViewBag.ActivationUri">
         Aktivera mitt konto
     </a>
 </p>

@@ -189,7 +189,7 @@ namespace Snittlistan.Web.Areas.V1.Controllers
             if (user.IsActive)
                 return RedirectToAction("LogOn");
 
-            user.Activate(false);
+            user.Activate();
 
             return RedirectToAction("VerifySuccess");
         }

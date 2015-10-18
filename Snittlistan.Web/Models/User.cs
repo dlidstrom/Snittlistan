@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Web.Mvc;
 using Raven.Imports.Newtonsoft.Json;
 using Snittlistan.Web.DomainEvents;
 
@@ -163,13 +165,27 @@ namespace Snittlistan.Web.Models
         /// <summary>
         /// Activates a user. This allows them to log on.
         /// </summary>
-        public void Activate(bool invite)
+        public void Activate()
         {
             IsActive = true;
-            if (invite == false) return;
+        }
+
+        /// <summary>
+        /// Activates a user and sends an invite email. This allows them to log on.
+        /// </summary>
+        public void ActivateWithEmail(UrlHelper urlHelper, string urlScheme)
+        {
+            IsActive = true;
             ActivationKey = Guid.NewGuid().ToString();
             RequiresPasswordChange = true;
-            DomainEvent.Raise(new UserInvitedEvent(this));
+            var activationUri = urlHelper.Action("SetPassword", "User", new
+            {
+                id = Id,
+                activationKey = ActivationKey
+            },
+            urlScheme);
+            Debug.Assert(activationUri != null, "activationUri != null");
+            DomainEvent.Raise(new UserInvitedEvent(this, activationUri));
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using EventStoreLite;
@@ -95,7 +96,15 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             if (user.IsActive) user.Deactivate();
             else
             {
-                user.Activate(invite.HasValue && invite.Value);
+                if (invite.GetValueOrDefault())
+                {
+                    Debug.Assert(Request.Url != null, "Request.Url != null");
+                    user.ActivateWithEmail(Url, Request.Url.Scheme);
+                }
+                else
+                {
+                    user.Activate();
+                }
             }
 
             return RedirectToAction("Users");
