@@ -7,10 +7,10 @@
     @if (Request.IsAuthenticated && hideControls == false)
     {
         <div class="dropdown edit-left">
-            <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">
+            <button class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">
                 <i class="sprite-glyphicons_019_cogwheel"></i>
                 <b class="caret"></b>
-            </a>
+            </button>
             <ul class="dropdown-menu">
                 <li>
                     <a href="@Url.Action("Edit", new { Model.Id })">
