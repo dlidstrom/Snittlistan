@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using Elmah;
 using Snittlistan.Web.Areas.V2.Commands;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Queries;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Infrastructure;
+using ApplicationException = System.ApplicationException;
 
 namespace Snittlistan.Web.Areas.V2.Controllers.Api
 {
@@ -48,7 +50,9 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                 catch (Exception e)
                 {
                     var message = string.Format("Unable to auto register match {0} ({1})", pendingMatch.Id, pendingMatch.BitsMatchId);
-                    throw new ApplicationException(message, e);
+                    ErrorSignal
+                        .FromCurrentContext()
+                        .Raise(new ApplicationException(message, e));
                 }
             }
 
