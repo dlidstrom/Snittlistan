@@ -46,7 +46,7 @@
                     <a href="@Url.RouteUrl("V2_default", new { controller = "Roster", action = "Index" })" class="brand">
                         Snittlistan
                     </a>
-                    <div class="nav-collapse">
+                    <div class="nav-collapse" data-nav-collapse>
                         <ul class="nav">
                             @Content.ControllerMenuLink(Html, "Omgångar", "sprite-glyphicons_045_calendar", "Roster", Url.Action("Index", "Roster"))
                             @Content.ControllerMenuLink(Html, "Resultat", "sprite-glyphicons_040_stats", "MatchResult", Url.Action("Index", "MatchResult"))
@@ -58,10 +58,10 @@
                             @if (Request.IsAuthenticated)
                             {
                                 <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <button data-auth-menu-toggle class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                         <i class="sprite-glyphicons_019_cogwheel"></i>
                                         <b class="caret"></b>
-                                    </a>
+                                    </button>
                                     <ul class="dropdown-menu">
                                         @if (Request.IsAdmin(User))
                                         {
@@ -120,6 +120,13 @@
         <script>
             $(function () {
                 window.Waypoints.debug(true).intercept('a');
+                $('[data-auth-menu-toggle]').on('click', function() {
+                    setTimeout(function() {
+                        $('[data-nav-collapse]').css({
+                            height: 'auto'
+                        });
+                    });
+                });
             });
         </script>
     </body>
