@@ -679,7 +679,7 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
@@ -687,5 +687,6 @@
   </Target> -->
   <Target Name="BeforeBuild" Condition="'$(Configuration)' == 'Release'">
     <Exec Command="del /F /S /Q bin\Snittlistan.Web.dll" />
+    <Exec Command="del /F /S /Q obj\Release\Snittlistan.Web.dll" />
   </Target>
 </Project>
