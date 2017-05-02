@@ -36,6 +36,7 @@ namespace Snittlistan.Test
             RouteTable.Routes.Maps("GET", "~/v1/Match/Register8x4", new { controller = "Match", action = "Register8x4" });
             RouteTable.Routes.Maps("GET", "~/v1/Match/Register4x4", new { controller = "Match", action = "Register4x4" });
             RouteTable.Routes.Maps("GET", "~/v1/About", new { controller = "Home", action = "About" });
+            RouteTable.Routes.Maps("GET", "~/Home/About", new { controller = "Home", action = "About" });
         }
 
         [Fact]
