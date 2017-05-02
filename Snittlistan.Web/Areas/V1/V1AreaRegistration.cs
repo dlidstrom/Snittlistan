@@ -21,12 +21,24 @@ namespace Snittlistan.Web.Areas.V1
                 defaults: new { controller = "Home" },
                 constraints: new { action = "About" });
 
+            // ~/Home/About which is also matched by rule in V2, which results in no view being found
+            context.MapRoute(
+                name: "HomeController-About",
+                url: "Home/About",
+                defaults: new { controller = "Home", action = "About" });
+
             // ~/logon|register|verify
             context.MapRoute(
                 name: "AccountController-Action",
                 url: "v1/{action}",
                 defaults: new { controller = "Account" },
                 constraints: new { action = "^LogOn$|^Register$|^Verify$" });
+
+            // ~/Account/LogOn which is also matched by rule in V2, which results in no view being found
+            context.MapRoute(
+                name: "AccountController-LogOn",
+                url: "Account/LogOn",
+                defaults: new { controller = "Account", action = "LogOn" });
 
             context.MapRoute(
                 name: "WelcomeController-Reset",
