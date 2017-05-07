@@ -4,6 +4,7 @@
     <label class="control-label" for="season">Säsong:</label>
     <div class="controls">
         <input type="text"
+               id="season"
                name="season"
                placeholder="Säsong"
                autofocus="autofocus"
@@ -16,7 +17,7 @@
 <div class="control-group">
     <label class="control-label" for="turn">Omgång:</label>
     <div class="controls">
-        <select name="turn">
+        <select id="turn" name="turn">
             @for (var i = 1; i <= 25; i++)
             {
                 if (Model.Turn == i)
@@ -32,11 +33,12 @@
     </div>
 </div>
 <div class="control-group">
-    <label class="control-label" for="season">BITS Match Id:</label>
+    <label class="control-label" for="bitsMatchId">BITS Match Id:</label>
     <div class="controls">
         <input type="text"
+               id="bitsMatchId"
                name="bitsMatchId"
-               placeholder="Säsong"
+               placeholder="BITS Match Id"
                title="Ange match id"
                pattern="\d*"
                required="required"
@@ -47,6 +49,7 @@
     <label class="control-label" for="team">Lag:</label>
     <div class="controls">
         <input type="text"
+               id="team"
                name="team"
                placeholder="Lag"
                autofocus="autofocus"
@@ -101,6 +104,7 @@
     <label class="control-label" for="opponent">Motståndare:</label>
     <div class="controls">
         <input type="text"
+               id="opponent"
                name="opponent"
                placeholder="Motståndare"
                autocorrect="off"
@@ -116,6 +120,7 @@
     <label class="control-label" for="date">Datum:</label>
     <div class="controls">
         <input type="datetime-local"
+               id="date"
                name="date"
                value="@Model.Date.ToString("yyyy-MM-ddThh:mm:ss")"
                required />
@@ -125,6 +130,7 @@
     <label class="control-label" for="location">Plats:</label>
     <div class="controls">
         <input type="text"
+               id="location"
                name="location"
                placeholder="Bowlinghall"
                autocorrect="off"
