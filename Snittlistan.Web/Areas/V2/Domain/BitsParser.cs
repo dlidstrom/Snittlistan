@@ -171,9 +171,9 @@ namespace Snittlistan.Web.Areas.V2.Domain
             // adjust for header and footer rows
             var tableRows = documentNode.SelectNodes("//table[@id='MainContentPlaceHolder_MatchHead1_matchinfo']//tr");
             var numberOfSeries = tableRows.Count - 2;
-            if (numberOfSeries != 3 && numberOfSeries != 4)
+            if (numberOfSeries < 1 || numberOfSeries > 4)
             {
-                var message = string.Format("Found {0} number of series. Expected 3 or 4.", numberOfSeries);
+                var message = string.Format("Found {0} number of series. Expected 1, 2, 3, or 4.", numberOfSeries);
                 throw new ApplicationException(message);
             }
 

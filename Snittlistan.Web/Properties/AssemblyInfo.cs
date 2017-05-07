@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("PDL")]
 [assembly: AssemblyProduct("Snittlistan.Web")]
-[assembly: AssemblyCopyright("Copyright © Daniel Lidström 2011-2012")]
+[assembly: AssemblyCopyright("Copyright © Daniel Lidström 2011-2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,6 +29,7 @@ using System.Runtime.InteropServices;
 //      Revision
 //
 // You can specify all the values or you can default the Revision and Build Numbers
-// by using the '*' as shown below:
+// by using the '*' as shown below.
+// Increase minor version to force index creation.
 [assembly: AssemblyVersion("5.3.*")]
 [assembly: AssemblyFileVersion("1.0.0.0")]

@@ -163,7 +163,17 @@ namespace Snittlistan.Web
                 }
 
                 Log.Info("Current version: {0}, IndexCreatedVersion: {1}", version, config.IndexCreatedVersion);
-                var newVersion = config.IndexCreatedVersion != version;
+                var newVersion = true;
+                try
+                {
+                    var oldMajorMinor = config.IndexCreatedVersion.Substring(0, config.IndexCreatedVersion.IndexOf('.', 1 + config.IndexCreatedVersion.IndexOf('.')));
+                    var newMajorMinor = version.Substring(0, version.IndexOf('.', 1 + version.IndexOf('.')));
+                    newVersion = oldMajorMinor != newMajorMinor;
+                }
+                catch
+                {
+                }
+
                 config.SetIndexCreatedVersion(version);
                 session.SaveChanges();
 
