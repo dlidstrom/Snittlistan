@@ -23,9 +23,11 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
         public int BitsMatchId { get; private set; }
 
-        public DateTime Date { get; set; }
+        public DateTime Date { get; private set; }
 
         public int TotalPins { get; private set; }
+
+        public int TotalScore { get; private set; }
 
         public int TotalSeries { get; private set; }
 
@@ -38,12 +40,19 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         {
             TotalSeries++;
             TotalPins += game.Pins;
+            TotalScore += game.Score;
         }
 
-        public void AddGame(MatchGame game)
+        public void AddGame(int score, MatchGame game)
         {
             TotalSeries++;
             TotalPins += game.Pins;
+            TotalScore += score;
+        }
+
+        public void SetTotalScore(int totalScore)
+        {
+            TotalScore = totalScore;
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Snittlistan.Web.Areas.V2.Indexes
                                  result.Season,
                                  result.TotalSeries,
                                  result.TotalPins,
+                                 result.TotalScore,
                                  Last5 = Enumerable.Repeat(new
                                  {
                                      result.Date,
@@ -39,6 +40,7 @@ namespace Snittlistan.Web.Areas.V2.Indexes
                                     Season = g.Key.Season,
                                     TotalSeries = g.Sum(x => x.TotalSeries),
                                     TotalPins = g.Sum(x => x.TotalPins),
+                                    TotalScore = g.Sum(x => x.TotalScore),
                                     Last5 = g.SelectMany(x => x.Last5)
                                         .OrderByDescending(x => x.Date)
                                         .Take(5),
@@ -71,6 +73,8 @@ namespace Snittlistan.Web.Areas.V2.Indexes
             public int TotalSeries { get; set; }
 
             public int TotalPins { get; set; }
+
+            public int TotalScore { get; set; }
 
             public IEnumerable<Game> Last5 { get; set; }
 

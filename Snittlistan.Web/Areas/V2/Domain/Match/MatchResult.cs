@@ -69,10 +69,9 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             {
                 VerifyPlayers(matchSerie);
                 ApplyChange(new SerieRegistered(matchSerie, BitsMatchId));
+                DoAwardMedals(registeredSeries);
                 if (registeredSeries > 4) throw new ArgumentException("Can only register up to 4 series");
             }
-
-            DoAwardMedals(registeredSeries);
 
             DomainEvent.Raise(new MatchRegisteredEvent(RosterId, TeamScore, OpponentScore));
         }
@@ -103,6 +102,18 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         public void ClearMedals()
         {
             ApplyChange(new ClearMedals(BitsMatchId));
+        }
+
+        public void AwardScores()
+        {
+            var dict = new Dictionary<string, int>();
+            foreach (var key in playerPins.Keys)
+            {
+                var totalScore = playerPins[key].Sum(x => x.Score);
+                dict[key] = totalScore;
+            }
+
+            ApplyChange(new ScoreAwarded(dict, BitsMatchId));
         }
 
         private static void VerifyScores(int teamScore, int opponentScore)
@@ -226,6 +237,11 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         private void Apply(ClearMedals e)
         {
             medalsAwarded = false;
+        }
+
+        [UsedImplicitly]
+        private void Apply(ScoreAwarded e)
+        {
         }
     }
 }

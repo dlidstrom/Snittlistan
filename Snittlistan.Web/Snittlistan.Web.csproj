@@ -197,6 +197,7 @@
     <Compile Include="Areas\V2\AutoMapper\ResultProfile.cs" />
     <Compile Include="Areas\V2\Commands\RegisterMatch4Command.cs" />
     <Compile Include="Areas\V2\Commands\RegisterMatchCommand.cs" />
+    <Compile Include="Areas\V2\Domain\Match\Events\ScoreAwarded.cs" />
     <Compile Include="Areas\V2\Domain\Match\MatchRegisteredEvent.cs" />
     <Compile Include="Controllers\AbstractApiController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\RegisterMatchController.cs" />
@@ -540,6 +541,7 @@
     <Content Include="Areas\V2\Views\Absence\AbsenceTable.cshtml" />
     <Content Include="Areas\V2\Views\Roster\_Register.cshtml" />
     <Content Include="Areas\V2\Views\Roster\CreateBits.cshtml" />
+    <Content Include="Areas\V2\Views\AdminTasks\AwardScores.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />

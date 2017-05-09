@@ -18,7 +18,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
         public string Player { get; private set; }
 
-        public int Score { get; set; }
+        public int Score { get; private set; }
 
         public int Pins { get; private set; }
     }

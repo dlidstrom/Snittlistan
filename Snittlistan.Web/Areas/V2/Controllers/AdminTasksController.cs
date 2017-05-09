@@ -214,5 +214,36 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public ActionResult AwardScores()
+        {
+            return View();
+        }
+
+        [HttpPost, ActionName("AwardScores")]
+        public ActionResult AwardScoresConfirmed()
+        {
+            var query = DocumentSession.Query<AggregateIdReadModel, AggregateIdIndex>();
+            var current = 0;
+            while (true)
+            {
+                var results = query.Skip(current)
+                    .Take(10)
+                    .ToArray();
+                if (results.Length == 0) break;
+                foreach (var result in results)
+                {
+                    if (result.Type == typeof(MatchResult))
+                    {
+                        var matchResult = EventStoreSession.Load<MatchResult>(result.AggregateId);
+                        matchResult.AwardScores();
+                    }
+                }
+
+                current += results.Length;
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }

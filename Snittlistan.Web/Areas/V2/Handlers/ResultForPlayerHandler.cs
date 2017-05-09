@@ -1,6 +1,7 @@
 ﻿using EventStoreLite;
 using Raven.Client;
 using Snittlistan.Web.Areas.V2.Domain;
+using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
 using Snittlistan.Web.Areas.V2.ReadModels;
 
@@ -10,7 +11,8 @@ namespace Snittlistan.Web.Areas.V2.Handlers
         IEventHandler<MatchResultRegistered>,
         IEventHandler<MatchResult4Registered>,
         IEventHandler<Serie4Registered>,
-        IEventHandler<SerieRegistered>
+        IEventHandler<SerieRegistered>,
+        IEventHandler<ScoreAwarded>
     {
         public IDocumentSession DocumentSession { get; set; }
 
@@ -28,10 +30,10 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             foreach (var table in new[] { e.MatchSerie.Table1, e.MatchSerie.Table2, e.MatchSerie.Table3, e.MatchSerie.Table4 })
             {
                 var id1 = ResultForPlayerReadModel.GetId(table.Game1.Player, e.BitsMatchId);
-                DocumentSession.Load<ResultForPlayerReadModel>(id1).AddGame(table.Game1);
+                DocumentSession.Load<ResultForPlayerReadModel>(id1).AddGame(table.Score, table.Game1);
 
                 var id2 = ResultForPlayerReadModel.GetId(table.Game2.Player, e.BitsMatchId);
-                DocumentSession.Load<ResultForPlayerReadModel>(id2).AddGame(table.Game2);
+                DocumentSession.Load<ResultForPlayerReadModel>(id2).AddGame(table.Score, table.Game2);
             }
         }
 
@@ -52,6 +54,16 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             {
                 var model = new ResultForPlayerReadModel(roster.Season, player, e.BitsMatchId, roster.Date);
                 DocumentSession.Store(model);
+            }
+        }
+
+        public void Handle(ScoreAwarded e, string aggregateId)
+        {
+            foreach (var playerId in e.PlayerIdToScore.Keys)
+            {
+                var totalScore = e.PlayerIdToScore[playerId];
+                var id = ResultForPlayerReadModel.GetId(playerId, e.BitsMatchId);
+                DocumentSession.Load<ResultForPlayerReadModel>(id).SetTotalScore(totalScore);
             }
         }
     }

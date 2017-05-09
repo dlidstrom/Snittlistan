@@ -9,10 +9,10 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             SerieNumber = serieNumber;
         }
 
-        public int Pins { get; set; }
+        public int Pins { get; private set; }
 
-        public int Score { get; set; }
+        public int Score { get; private set; }
 
-        public int SerieNumber { get; set; }
+        public int SerieNumber { get; private set; }
     }
 }
