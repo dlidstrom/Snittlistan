@@ -13,6 +13,10 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public double SeasonAverage { get; set; }
 
+        public int TotalScore { get; set; }
+
+        public double ScoreAverage { get; set; }
+
         public bool HasResult { get; set; }
 
         public int TotalSeries { get; set; }
@@ -25,7 +29,6 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public string FormattedLast5Average()
         {
-            if (HasResult == false) return string.Empty;
             return Last5Average.ToString("0.0");
         }
 
@@ -34,6 +37,11 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             if (HasResult == false) return string.Empty;
             var diff = Last5Average - SeasonAverage;
             return diff.ToString("+0.0;-0.0;0");
+        }
+
+        public string FormattedScoreAverage()
+        {
+            return ScoreAverage.ToString("0%");
         }
 
         public string Class()

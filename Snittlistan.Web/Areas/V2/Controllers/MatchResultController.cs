@@ -94,6 +94,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     var playerForm = new PlayerFormViewModel(name)
                     {
                         TotalSeries = result.TotalSeries,
+                        TotalScore = result.TotalScore,
+                        ScoreAverage = (double)result.TotalScore / Math.Max(1, result.TotalSeries),
                         SeasonAverage = (double)result.TotalPins / Math.Max(1, result.TotalSeries),
                         Last5Average = (double)result.Last5TotalPins / Math.Max(1, result.Last5TotalSeries),
                         HasResult = true
