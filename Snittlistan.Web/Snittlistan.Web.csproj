@@ -199,6 +199,7 @@
     <Compile Include="Areas\V2\Commands\RegisterMatchCommand.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\ScoreAwarded.cs" />
     <Compile Include="Areas\V2\Domain\Match\MatchRegisteredEvent.cs" />
+    <Compile Include="Areas\V2\ViewModels\DocumentStoreStatisticsViewModel.cs" />
     <Compile Include="Controllers\AbstractApiController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\RegisterMatchController.cs" />
     <Compile Include="Areas\V2\Controllers\MatchResultAdminController.cs" />
