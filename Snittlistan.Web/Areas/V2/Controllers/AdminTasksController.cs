@@ -112,7 +112,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         public ActionResult Raven()
         {
-            return View();
+            var databaseStatistics = DocumentStore.DatabaseCommands.GetStatistics();
+            return View(new DocumentStoreStatisticsViewModel(databaseStatistics));
         }
 
         public ActionResult ResetIndexes()
