@@ -1,0 +1,212 @@
+﻿@using Snittlistan.Web.Areas.V2.Domain
+@model EliteMedalsViewModel
+
+<div class="row">
+    <div class="span12">
+        <p class="lead">Här visas vilka elitmärken som delats ut och vilka som erövrats under säsongen @Model.FormatSeason().</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span12">
+        <h3>Elitmärke och Elitplakett (regelverk enligt Blå Boken)</h3>
+        <ol>
+            <li>
+                Elitmärket kan erövras vid officiell tävling sanktionerad av SvBF eller SDF.
+            </li>
+            <li>
+                Elitmärket finns i tre valörer: Brons, Silver och Guld.
+            </li>
+            <li>
+                Endast ett Elitmärke kan erövras per spelår. Märke av högre valör kan inte erövras förrän märke av närmast
+                lägre valör erhållits.
+            </li>
+            <li>
+                Följande fordringar skall uppfyllas - alternativt:
+                <table class="table">
+                    <caption>
+                        Medelpoäng per serie vid tävling över
+                    </caption>
+                    <tr>
+                        <th>
+                        </th>
+                        <th>
+                            3 ser
+                        </th>
+                        <th>
+                            4 ser
+                        </th>
+                        <th>
+                            6-8ser
+                        </th>
+                        <th>
+                            fler än 8 ser
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            För Brons
+                        </td>
+                        <td>
+                            200
+                        </td>
+                        <td>
+                            190
+                        </td>
+                        <td>
+                            185
+                        </td>
+                        <td>
+                            180
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            För Silver
+                        </td>
+                        <td>
+                            210
+                        </td>
+                        <td>
+                            200
+                        </td>
+                        <td>
+                            195
+                        </td>
+                        <td>
+                            190
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            För Guld
+                        </td>
+                        <td>
+                            220
+                        </td>
+                        <td>
+                            210
+                        </td>
+                        <td>
+                            205
+                        </td>
+                        <td>
+                            200
+                        </td>
+                    </tr>
+                </table>
+            </li>
+            <li>
+                För varje märke fordras att ha uppnått de
+                samma spelår och räknas endast resultat uppnådda vid hel tävling.
+                <p>
+                    <i>
+                        <strong>
+                            Kommentar:
+                        </strong>
+                        I de fall tävlingen är uppdelad i s.k. "Block", kan resultat räknas i respektive "Block" med omstart.
+                        (se Kap G, § 3:3)
+                    </i>
+                </p>
+            </li>
+            <li>
+                Elitplakett <br />
+                Spelare som under ytterligare fyra år uppfyllt fordringarna för guldmärket, är berättigad erhålla
+                elitplaketten i Guld och Emalj.
+                <p>
+                    <i>
+                        <strong>
+                            Kommentar:
+                        </strong>
+                        Elitmärken kan även erövras på hallar med endast två banor, varvid högst två serier får spelas på
+                        samma bana - dock inte i följd.
+                    </i>
+                </p>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span12">
+        <div class="alert">
+            <strong>
+                Snittlistan kan bara identifiera 4 serier enligt ovan. Om du vet att du har gjort ett godkänt resultat
+                med ett annat tillvägagångssätt, kontakta <a href="mailto:dlidstrom@gmail.com">Daniel Lidström</a>.
+            </strong>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span12">
+        <table class="table table-condensed table-bordered">
+            <caption>Hittils erövrade elitmärken (vänster sida) samt 3 bästa resultat under säsongen (höger sida)</caption>
+            <tr>
+                <th>
+                    Namn
+                </th>
+                <th>
+                    Innehar
+                </th>
+                <th>
+                    Ska ha
+                </th>
+                <th>
+                    Datum
+                </th>
+                <th>
+                    Tävling
+                </th>
+                <th>
+                    Poäng
+                </th>
+            </tr>
+            @foreach (var player in Model.Players.OrderBy(x => x.ExistingMedal).ThenBy(x => x.Name))
+            {
+                <tr>
+                    <td>
+                        @(player.Name + " (" + player.PersonalNumber + ")")
+                    </td>
+                    <td>
+                        @player.FormattedExistingMedal()
+                        @if (Request.IsAuthenticated)
+                        {
+                            <a href="@Url.Action("EditMedals", new {id = player.PlayerId.Substring(player.PlayerId.LastIndexOf('-') + 1)})">
+                                <i class="sprite-glyphicons_151_edit"></i>
+                            </a>
+                        }
+                    </td>
+                    <td>
+                        @player.FormattedNextMedal()
+                    </td>
+                    <td colspan="3"></td>
+                </tr>
+                if (player.ExistingMedal != EliteMedals.EliteMedal.EliteMedalValue.Gold5)
+                {
+                    foreach (var result in player.TopThreeResults.GroupBy(x => new { x.Item1.BitsMatchId, x.Item1.Turn, x.Item1.Date, IsValidResult = x.Item2 }).OrderBy(x => x.Key.Turn).ThenBy(x => x.Key.Date))
+                    {
+                        var style = string.Empty;
+                        if (result.Key.IsValidResult)
+                        {
+                            style = "background-color: #dff0d8;";
+                        }
+                        
+                        <tr>
+                            <td colspan="3"></td>
+                            <td>@result.Key.Date.ToString("yyyy-MM-dd")</td>
+                            <td>
+                                <a href="@Html.GenerateBitsUrl(result.Key.BitsMatchId)">
+                                    Omgång @result.Key.Turn
+                                </a>
+                            </td>
+                            <td style="@style">
+                                @result.Sum(x => x.Item1.Pins)
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+        </table>
+    </div>
+</div>

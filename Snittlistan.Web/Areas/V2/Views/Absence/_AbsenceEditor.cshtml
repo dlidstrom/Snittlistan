@@ -3,7 +3,7 @@
 <div class="control-group">
     <label class="control-label" for="player">Spelare:</label>
     <div class="controls">
-        @Html.DropDownList("Player", null, new { required = "required" })
+        @Html.DropDownList("Player", null, new { required = "required", id="player" })
     </div>
 </div>
 <div class="control-group">
@@ -11,6 +11,7 @@
     <div class="controls">
         <input type="date"
                name="from"
+               id="from"
                value="@Model.From.ToShortDateString()"
                required />
     </div>
@@ -20,15 +21,17 @@
     <div class="controls">
         <input type="date"
                name="to"
+               id="to"
                value="@Model.To.ToShortDateString()"
                required />
     </div>
 </div>
 <div class="control-group">
-    <label class="control-label" for="to">Kommentar:</label>
+    <label class="control-label" for="comment">Kommentar:</label>
     <div class="controls">
         <input type="text"
                name="comment"
+               id="comment"
                maxlength="160"
                value="@Model.Comment" />
     </div>

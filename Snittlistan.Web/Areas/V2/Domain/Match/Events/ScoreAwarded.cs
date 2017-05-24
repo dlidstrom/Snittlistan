@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using EventStoreLite;
 
-// ReSharper disable CheckNamespace
+// ReSharper disable once CheckNamespace
 namespace Snittlistan.Web.Areas.V2.Domain.Match
-// ReSharper restore CheckNamespace
 {
     public class ScoreAwarded : Event
     {

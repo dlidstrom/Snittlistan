@@ -1,7 +1,7 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using EventStoreLite;
+using Snittlistan.Web.Areas.V2.Migration;
 
 namespace Snittlistan.Web.Infrastructure.Installers
 {
@@ -11,8 +11,8 @@ namespace Snittlistan.Web.Infrastructure.Installers
         {
             container.Register(
                 AllTypes.FromThisAssembly()
-                    .BasedOn<IEventMigrator>()
-                    .WithServiceFromInterface(typeof(IEventMigrator))
+                    .BasedOn<IEventMigratorWithResults>()
+                    .WithServiceFromInterface(typeof(IEventMigratorWithResults))
                     .LifestyleTransient());
         }
     }

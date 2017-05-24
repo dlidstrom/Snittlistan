@@ -6,6 +6,7 @@
     <div class="controls">
         <input type="text"
                name="name"
+               id="name"
                placeholder="Fullständigt namn"
                autofocus="autofocus"
                autocorrect="off"
@@ -15,10 +16,26 @@
     </div>
 </div>
 <div class="control-group">
+    <label class="control-label" for="personalNumber">Födelsedag:</label>
+    <div class="controls">
+        <input type="text"
+               name="personalNumber"
+               id="personalNumber"
+               placeholder="T.ex. 791231"
+               autocorrect="off"
+               autocomplete="off"
+               pattern="\d*"
+               title="Ange 6 siffror enligt ÅÅMMDD"
+               value="@(Model.PersonalNumber != null ? Model.PersonalNumber.Value.ToString() : string.Empty)"
+               required />
+    </div>
+</div>
+<div class="control-group">
     <label class="control-label" for="email">E-postadress:</label>
     <div class="controls">
         <input type="email"
                name="email"
+               id="email"
                placeholder=""
                autocorrect="off"
                autocomplete="off"
@@ -29,7 +46,7 @@
 <div class="control-group">
     <label class="control-label" for="status">Status:</label>
     <div class="controls">
-        <select name="status">
+        <select name="status" id="status">
             <option value="Active"
                 @if (Model.Status == Player.Status.Active)
                 {

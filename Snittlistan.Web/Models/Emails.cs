@@ -4,6 +4,7 @@ using System.Text;
 using System.Web.Mvc;
 using JetBrains.Annotations;
 using Postal;
+using Snittlistan.Web.Areas.V2.ReadModels;
 
 namespace Snittlistan.Web.Models
 {
@@ -36,18 +37,31 @@ namespace Snittlistan.Web.Models
                 });
         }
 
-        public static void MatchRegistered(string subject, string team, string opponent, int score, int awayScore)
+        public static void MatchRegistered(
+            string team,
+            string opponent,
+            int score,
+            int opponentScore,
+            ResultSeriesReadModel resultSeriesReadModel)
         {
+            var subject = string.Format(
+                "{0} mot {1}: {2} - {3}",
+                team,
+                opponent,
+                score,
+                opponentScore);
             Send(
                 "MatchRegistered",
                 ConfigurationManager.AppSettings["OwnerEmail"],
                 subject,
                 o =>
                 {
+                    o.Subject = subject;
                     o.Team = team;
                     o.Opponent = opponent;
                     o.Score = score;
-                    o.AwayScore = awayScore;
+                    o.OpponentScore = opponentScore;
+                    o.ResultSeriesReadModel = resultSeriesReadModel;
                 });
         }
 

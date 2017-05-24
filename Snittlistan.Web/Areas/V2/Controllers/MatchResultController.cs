@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -109,6 +110,60 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             }
 
             return View(response.OrderByDescending(x => x.SeasonAverage).ThenBy(x => x.Name));
+        }
+
+        public ActionResult EliteMedals(int? season)
+        {
+            if (season.HasValue == false)
+            {
+                season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+            }
+
+            var playersDict = DocumentSession.Query<Player, PlayerSearch>()
+                .Where(p => p.PlayerStatus == Player.Status.Active)
+                .ToDictionary(x => x.Id);
+            var eliteMedals = DocumentSession.Load<EliteMedals>(Domain.EliteMedals.TheId);
+            if (eliteMedals == null)
+            {
+                eliteMedals = new EliteMedals();
+                DocumentSession.Store(eliteMedals);
+            }
+
+            var seasonResults = DocumentSession.Load<SeasonResults>(SeasonResults.GetId(season.Value));
+            if (seasonResults == null)
+            {
+                seasonResults = new SeasonResults(season.Value);
+                DocumentSession.Store(seasonResults);
+            }
+
+            return View(new EliteMedalsViewModel(season.Value, playersDict, eliteMedals, seasonResults));
+        }
+
+        [Authorize]
+        public ActionResult EditMedals(int id)
+        {
+            var player = DocumentSession.Load<Player>(id);
+            var eliteMedals = DocumentSession.Load<EliteMedals>(Domain.EliteMedals.TheId);
+            var eliteMedal = eliteMedals.GetExistingMedal(player.Id);
+            var viewModel = new EditMedalsViewModel(
+                player.Name,
+                eliteMedal.Value,
+                eliteMedal.CapturedSeason.GetValueOrDefault());
+            return View(viewModel);
+        }
+
+        [HttpPost, Authorize, ActionName("EditMedals")]
+        public ActionResult EditMedalsPost(int id, EditMedalsPostModel postModel)
+        {
+            if (ModelState.IsValid == false)
+            {
+                return EditMedals(id);
+            }
+
+            var eliteMedals = DocumentSession.Load<EliteMedals>(Domain.EliteMedals.TheId);
+            Debug.Assert(postModel.EliteMedal != null, "postModel.EliteMedal != null");
+            eliteMedals.AwardMedal("players-" + id, postModel.EliteMedal.Value, postModel.CapturedSeason);
+            return RedirectToAction("EliteMedals");
         }
     }
 }

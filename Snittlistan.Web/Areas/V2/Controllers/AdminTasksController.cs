@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -6,6 +7,7 @@ using EventStoreLite;
 using EventStoreLite.IoC.Castle;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Areas.V2.Indexes;
+using Snittlistan.Web.Areas.V2.Migration;
 using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;
@@ -150,17 +152,18 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         public ActionResult MigrateEvents()
         {
-            return View();
+            return View("MigrateEvents", (HtmlString)null);
         }
 
         [HttpPost, ActionName("MigrateEvents")]
         public ActionResult MigrateEventsConfirmed()
         {
-            var eventMigrators = MvcApplication.Container.ResolveAll<IEventMigrator>()
+            var eventMigrators = MvcApplication.Container.ResolveAll<IEventMigratorWithResults>()
                 .ToList();
             EventStore.MigrateEvents(eventMigrators);
+            var results = string.Join("", eventMigrators.Select(x => x.GetResults()));
 
-            return RedirectToAction("EventStoreActions");
+            return View("MigrateEvents", new HtmlString(results));
         }
 
         public ActionResult SendMail()
@@ -224,12 +227,19 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         [HttpPost, ActionName("AwardScores")]
         public ActionResult AwardScoresConfirmed()
         {
+            ForEachMatchResult(x => x.AwardScores());
+
+            return RedirectToAction("Index");
+        }
+
+        private void ForEachMatchResult(Action<MatchResult> action)
+        {
             var query = DocumentSession.Query<AggregateIdReadModel, AggregateIdIndex>();
             var current = 0;
             while (true)
             {
                 var results = query.Skip(current)
-                    .Take(10)
+                    .Take(30)
                     .ToArray();
                 if (results.Length == 0) break;
                 foreach (var result in results)
@@ -237,14 +247,12 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     if (result.Type == typeof(MatchResult))
                     {
                         var matchResult = EventStoreSession.Load<MatchResult>(result.AggregateId);
-                        matchResult.AwardScores();
+                        action.Invoke(matchResult);
                     }
                 }
 
                 current += results.Length;
             }
-
-            return RedirectToAction("Index");
         }
     }
 }
