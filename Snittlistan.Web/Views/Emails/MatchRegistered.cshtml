@@ -1,9 +1,65 @@
-﻿@model dynamic
+﻿@using System.Globalization
+@using Snittlistan.Web.Areas.V2.ReadModels
+
 To: @Model.To
 From: @Model.From
 Subject: @Model.Subject
 Content-Type: text/html; charset=utf-8
 
 <p>
-    Matchen mellan @Model.Team och @Model.Opponent har registrerats med resultatet @Model.Score-@Model.AwayScore.
+    Matchen mellan @Model.Team och @Model.Opponent har registrerats med resultatet @Model.Score-@Model.OpponentScore.
 </p>
+<div class="row">
+    <div class="span12">
+        <h3>Resultat</h3>
+        <table class="table table-condensed table-bordered table-striped">
+            <tr>
+                <td>#</td>
+                <td>Namn</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>Tot</td>
+                <td>Banp</td>
+            </tr>
+            @{
+                var row = 1;
+            }
+            @foreach (KeyValuePair<string, List<ResultSeriesReadModel.PlayerGame>> player in Model.ResultSeriesReadModel.SortedPlayers())
+            {
+                <tr>
+                    <td>@(row++)</td>
+                    <td>@player.Key</td>
+                    @for (int serie = 0; serie < 4; serie++)
+                    {
+                        <td>
+                            @{
+                                var game = player.Value[serie];
+                            }
+                            @(game != null ? game.Pins.ToString(CultureInfo.InvariantCulture) : "")
+                        </td>
+                    }
+                    @{
+                        var series = player.Value.Where(x => x != null).ToList();
+                    }
+                    <td>
+                        @series.Sum(x => x.Pins)
+                    </td>
+                    <td>
+                        @series.Sum(x => x.Score)
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td colspan="2"></td>
+                <td>@Model.ResultSeriesReadModel.SerieSum(0)</td>
+                <td>@Model.ResultSeriesReadModel.SerieSum(1)</td>
+                <td>@Model.ResultSeriesReadModel.SerieSum(2)</td>
+                <td>@Model.ResultSeriesReadModel.SerieSum(3)</td>
+                <td>@Model.ResultSeriesReadModel.Total()</td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</div>

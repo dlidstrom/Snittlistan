@@ -1,0 +1,39 @@
+﻿@using Snittlistan.Web.Areas.V2.Domain
+@model EditMedalsViewModel
+
+<div class="control-group">
+    <label class="control-label" for="eliteMedal">Har medalj:</label>
+    <div class="controls">
+        <select name="eliteMedal" id="eliteMedal">
+            @foreach (var enumValue in Enum.GetValues(typeof(EliteMedals.EliteMedal.EliteMedalValue)))
+            {
+                var desc = EliteMedals.EliteMedal.GetDescription((Enum)enumValue);
+                if (string.IsNullOrEmpty(desc))
+                {
+                    desc = "Ingen medalj";
+                }
+
+                <option value="@enumValue.ToString()"
+                        @if (Model.ExistingMedal == (EliteMedals.EliteMedal.EliteMedalValue)enumValue)
+                        {
+                            <text> selected="selected" </text>
+                        }>
+                    @desc
+                </option>
+            }
+        </select>
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="capturedSeason">Säsong:</label>
+    <div class="controls">
+        <input type="text"
+               name="capturedSeason"
+               id="capturedSeason"
+               value="@Model.CapturedSeason"
+               pattern="\d*"
+               title="Ange säsong, t.ex. @DateTime.Now.Year"
+               required />
+        <span class="help-block">Ange säsongen då medaljen uppnåddes. Skriv första delen av säsongen, t.ex. <strong>2016</strong>&minus;2017.</span>
+    </div>
+</div>

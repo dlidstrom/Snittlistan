@@ -21,7 +21,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             return "Series-" + id;
         }
 
-        public IEnumerable<KeyValuePair<string, List<PlayerGame>>> SortedPlayers()
+        public KeyValuePair<string, List<PlayerGame>>[] SortedPlayers()
         {
             var first = Series.SelectMany(x => x.Tables)
                 .Select(x => x.Game1);
@@ -62,7 +62,8 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
                     let sum = series.Sum(z => z.Pins)
                     orderby sum descending
                     select x;
-            return q;
+            var result = q.ToArray();
+            return result;
         }
 
         public string SerieSum(int i)

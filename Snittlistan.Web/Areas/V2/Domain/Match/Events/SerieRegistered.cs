@@ -15,5 +15,8 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
         public MatchSerie MatchSerie { get; private set; }
 
         public int BitsMatchId { get; private set; }
+
+        // TODO: From constructor
+        public string RosterId { get; set; }
     }
 }

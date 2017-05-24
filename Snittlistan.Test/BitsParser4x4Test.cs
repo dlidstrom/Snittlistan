@@ -15,18 +15,18 @@ namespace Snittlistan.Test
         {
             homePlayers = new[]
             {
-                new Player("Markus Norbeck", "e@d.com", Player.Status.Active) { Id = "player-1" },
-                new Player("Lars Norbeck", "e@d.com", Player.Status.Active) { Id = "player-2" },
-                new Player("Daniel Solvander", "e@d.com", Player.Status.Active) { Id = "player-3" },
-                new Player("Matz Classon", "e@d.com", Player.Status.Active) { Id = "player-4" }
+                new Player("Markus Norbeck", "e@d.com", Player.Status.Active, 0) { Id = "player-1" },
+                new Player("Lars Norbeck", "e@d.com", Player.Status.Active, 0) { Id = "player-2" },
+                new Player("Daniel Solvander", "e@d.com", Player.Status.Active, 0) { Id = "player-3" },
+                new Player("Matz Classon", "e@d.com", Player.Status.Active, 0) { Id = "player-4" }
             };
             awayPlayers = new[]
             {
-                new Player("Tobias Wiklund", "e@d.com", Player.Status.Active) { Id = "player-5" },
-                new Player("Wiktor Svensson", "e@d.com", Player.Status.Active) { Id = "player-6" },
-                new Player("Moa Nilsson", "e@d.com", Player.Status.Active) { Id = "player-7" },
-                new Player("Rebecka Wahlström", "e@d.com", Player.Status.Active) { Id = "player-8" },
-                new Player("Hanna Engevall", "e@d.com", Player.Status.Active) { Id = "player-9" }
+                new Player("Tobias Wiklund", "e@d.com", Player.Status.Active, 0) { Id = "player-5" },
+                new Player("Wiktor Svensson", "e@d.com", Player.Status.Active, 0) { Id = "player-6" },
+                new Player("Moa Nilsson", "e@d.com", Player.Status.Active, 0) { Id = "player-7" },
+                new Player("Rebecka Wahlström", "e@d.com", Player.Status.Active, 0) { Id = "player-8" },
+                new Player("Hanna Engevall", "e@d.com", Player.Status.Active, 0) { Id = "player-9" }
             };
         }
 

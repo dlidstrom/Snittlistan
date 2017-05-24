@@ -33,6 +33,9 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             Table4 = tables[3];
         }
 
+        // TODO: From constructor
+        public int SerieNumber { get; set; }
+
         public MatchTable Table1 { get; private set; }
 
         public MatchTable Table2 { get; private set; }

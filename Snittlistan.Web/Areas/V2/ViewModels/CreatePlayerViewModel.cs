@@ -17,6 +17,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             Name = player.Name;
             Email = player.Email;
             Status = player.PlayerStatus;
+            PersonalNumber = player.PersonalNumber;
         }
 
         [Required]
@@ -27,5 +28,8 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         [Required]
         public Player.Status Status { get; set; }
+
+        [Required]
+        public int? PersonalNumber { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Snittlistan.Web.Areas.V2.Domain;
@@ -32,7 +33,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             if (!ModelState.IsValid) return View(vm);
 
-            var player = new Player(vm.Name, vm.Email, vm.Status);
+            Debug.Assert(vm.PersonalNumber != null, "vm.PersonalNumber != null");
+            var player = new Player(vm.Name, vm.Email, vm.Status, vm.PersonalNumber.Value);
             DocumentSession.Store(player);
             return RedirectToAction("Index");
         }
@@ -58,6 +60,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             player.SetName(vm.Name);
             player.SetEmail(vm.Email);
             player.SetStatus(vm.Status);
+            Debug.Assert(vm.PersonalNumber != null, "vm.PersonalNumber != null");
+            player.SetPersonalNumber(vm.PersonalNumber.Value);
 
             return RedirectToAction("Index");
         }

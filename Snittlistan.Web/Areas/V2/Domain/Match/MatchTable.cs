@@ -18,6 +18,9 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             Game2 = game2;
         }
 
+        // @TODO From constructor
+        public int TableNumber { get; set; }
+
         public MatchGame Game1 { get; private set; }
 
         public MatchGame Game2 { get; private set; }

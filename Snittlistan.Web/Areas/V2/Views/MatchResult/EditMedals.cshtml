@@ -1,0 +1,20 @@
+﻿@model EditMedalsViewModel
+
+@{
+    ViewBag.Title = "Redigera medaljer för " + Model.Name;
+}
+
+<div class="row">
+    <div class="span8">
+        <h4>@ViewBag.Title</h4>
+        @using (Html.BeginForm("EditMedals", "MatchResult", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
+            @Html.Partial("_MedalsEditor", Model)
+            <div class="form-actions">
+                <button class="btn btn-primary btn-large" type="submit">Spara</button>
+                @Html.ActionLink("Avbryt", "EliteMedals", null, new { @class = "btn btn-large" })
+            </div>
+        }
+    </div>
+</div>

@@ -197,9 +197,18 @@
     <Compile Include="Areas\V2\AutoMapper\ResultProfile.cs" />
     <Compile Include="Areas\V2\Commands\RegisterMatch4Command.cs" />
     <Compile Include="Areas\V2\Commands\RegisterMatchCommand.cs" />
+    <Compile Include="Areas\V2\Domain\EliteMedals.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\ScoreAwarded.cs" />
     <Compile Include="Areas\V2\Domain\Match\MatchRegisteredEvent.cs" />
+    <Compile Include="Areas\V2\Handlers\SeasonResultsHandler.cs" />
+    <Compile Include="Areas\V2\Migration\IEventMigratorWithResults.cs" />
+    <Compile Include="Areas\V2\Migration\RosterIdMigrator.cs" />
+    <Compile Include="Areas\V2\Migration\SerieNumberMigrator.cs" />
+    <Compile Include="Areas\V2\ReadModels\SeasonResults.cs" />
     <Compile Include="Areas\V2\ViewModels\DocumentStoreStatisticsViewModel.cs" />
+    <Compile Include="Areas\V2\ViewModels\EditMedalsPostModel.cs" />
+    <Compile Include="Areas\V2\ViewModels\EditMedalsViewModel.cs" />
+    <Compile Include="Areas\V2\ViewModels\EliteMedalsViewModel.cs" />
     <Compile Include="Controllers\AbstractApiController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\RegisterMatchController.cs" />
     <Compile Include="Areas\V2\Controllers\MatchResultAdminController.cs" />
@@ -279,6 +288,7 @@
     <Compile Include="Infrastructure\Attributes\SaveChangesAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\UnhandledExceptionFilter.cs" />
     <Compile Include="Infrastructure\BackgroundTasks\BackgroundTask.cs" />
+    <Compile Include="Infrastructure\BackgroundTasks\BackgroundTaskHandler.cs" />
     <Compile Include="Infrastructure\BackgroundTasks\IBackgroundTaskHandler.cs" />
     <Compile Include="Infrastructure\BackgroundTasks\TaskRunner.cs" />
     <Compile Include="Infrastructure\BitsClient.cs" />
@@ -518,7 +528,7 @@
     <Content Include="Areas\V2\Views\MatchResultAdmin\RegisterSerie.cshtml" />
     <Content Include="Areas\V2\Views\MatchResultAdmin\_SerieEditor.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\DisplayTemplates\Header.cshtml" />
-    <Content Include="Areas\V2\Views\MatchResult\DisplayTemplates\Result.cshtml" />
+    <Content Include="Areas\V2\Views\Shared\DisplayTemplates\ResultSeriesReadModel.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\_Layout.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\_ViewStart.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\Turns.cshtml" />
@@ -543,6 +553,9 @@
     <Content Include="Areas\V2\Views\Roster\_Register.cshtml" />
     <Content Include="Areas\V2\Views\Roster\CreateBits.cshtml" />
     <Content Include="Areas\V2\Views\AdminTasks\AwardScores.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\EditMedals.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\EliteMedals.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\_MedalsEditor.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
@@ -593,7 +606,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\V1\ViewModels\Admin\" />
-    <Folder Include="Areas\V2\Migration\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

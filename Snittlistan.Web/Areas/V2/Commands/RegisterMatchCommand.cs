@@ -59,7 +59,7 @@ namespace Snittlistan.Web.Areas.V2.Commands
                 matchSeries.Add(new MatchSerie(tables));
             }
 
-            matchResult.RegisterSeries(matchSeries);
+            matchResult.RegisterSeries(matchSeries.ToArray());
             eventStoreSession.Store(matchResult);
         }
     }

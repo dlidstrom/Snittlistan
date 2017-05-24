@@ -28,7 +28,7 @@ namespace Snittlistan.Web
 
         private static ApplicationMode applicationMode =
 #if DEBUG
- ApplicationMode.Debug;
+ ApplicationMode.Release;
 
 #else
             ApplicationMode.Release;
