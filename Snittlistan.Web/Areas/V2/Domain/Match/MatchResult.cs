@@ -68,7 +68,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             foreach (var matchSerie in matchSeries)
             {
                 VerifyPlayers(matchSerie);
-                ApplyChange(new SerieRegistered(matchSerie, BitsMatchId) { RosterId = RosterId });
+                ApplyChange(new SerieRegistered(matchSerie, BitsMatchId, RosterId));
                 DoAwardMedals(registeredSeries);
                 if (registeredSeries > 4) throw new ArgumentException("Can only register up to 4 series");
             }
@@ -76,14 +76,15 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             DomainEvent.Raise(new MatchRegisteredEvent(RosterId, TeamScore, OpponentScore));
         }
 
-        public void RegisterSerie(MatchSerie matchSerie)
+        public void RegisterSerie(MatchTable[] matchTables)
         {
-            if (matchSerie == null) throw new ArgumentNullException("matchSerie");
+            if (matchTables == null) throw new ArgumentNullException("matchTables");
             if (rosterPlayers.Count != 8 && rosterPlayers.Count != 9 && rosterPlayers.Count != 10)
                 throw new MatchException("Roster must have 8, 9, or 10 players when registering results");
+            var matchSerie = new MatchSerie(registeredSeries + 1, matchTables);
             VerifyPlayers(matchSerie);
 
-            ApplyChange(new SerieRegistered(matchSerie, BitsMatchId) { RosterId = RosterId });
+            ApplyChange(new SerieRegistered(matchSerie, BitsMatchId, RosterId));
             DoAwardMedals(registeredSeries);
         }
 

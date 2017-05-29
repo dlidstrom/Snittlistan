@@ -10,11 +10,12 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         {
         }
 
-        public MatchSerie(IReadOnlyList<MatchTable> tables)
+        public MatchSerie(int serieNumber, IReadOnlyList<MatchTable> tables)
         {
             if (tables == null) throw new ArgumentNullException("tables");
             if (tables.Count != 4) throw new ArgumentException("tables");
 
+            SerieNumber = serieNumber;
             var players = new HashSet<string>();
             foreach (var matchTable in tables)
             {
@@ -33,8 +34,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             Table4 = tables[3];
         }
 
-        // TODO: From constructor
-        public int SerieNumber { get; set; }
+        public int SerieNumber { get; private set; }
 
         public MatchTable Table1 { get; private set; }
 

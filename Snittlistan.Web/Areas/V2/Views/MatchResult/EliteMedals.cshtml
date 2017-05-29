@@ -140,60 +140,102 @@
 
 <div class="row">
     <div class="span12">
-        <table class="table table-condensed table-bordered">
-            <caption>Hittils erövrade elitmärken (vänster sida) samt 3 bästa resultat under säsongen (höger sida)</caption>
-            <tr>
-                <th>
-                    Namn
-                </th>
-                <th>
-                    Innehar
-                </th>
-                <th>
-                    Ska ha
-                </th>
-                <th>
-                    Datum
-                </th>
-                <th>
-                    Tävling
-                </th>
-                <th>
-                    Poäng
-                </th>
-            </tr>
-            @foreach (var player in Model.Players.OrderBy(x => x.ExistingMedal).ThenBy(x => x.Name))
-            {
+        @{
+            var first = true;
+        }
+        @foreach (var player in Model.Players.OrderBy(x => x.ExistingMedal).ThenBy(x => x.Name))
+        {
+            <table class="table table-condensed table-bordered table-striped">
+                @{
+                    if (first)
+                    {
+                        <caption>Hittils erövrade elitmärken samt bästa resultat under säsongen</caption>
+                        first = false;
+                    }
+                }
                 <tr>
-                    <td>
+                    <th style="width: 25%;">
                         @(player.Name + " (" + player.PersonalNumber + ")")
-                    </td>
+                    </th>
+                    <th style="width: 25%;">
+                        Innehar
+                    </th>
+                    <th style="width: 25%;">
+                        Ska ha
+                    </th>
+                    <th style="width: 25%;"></th>
+                </tr>
+                <tr>
+                    <th>
+                    </th>
                     <td>
-                        @player.FormattedExistingMedal()
+                        @{
+                            var existingMedal = player.FormattedExistingMedal();
+                        }
+                        @if (string.IsNullOrEmpty(existingMedal.Item1) == false)
+                        {
+                            <span class="label label-inverse">
+                                @player.FormattedExistingMedal().Item1
+                            </span>
+                        }
+                        @player.FormattedExistingMedal().Item2
                         @if (Request.IsAuthenticated)
                         {
-                            <a href="@Url.Action("EditMedals", new {id = player.PlayerId.Substring(player.PlayerId.LastIndexOf('-') + 1)})">
+                            <a href="@Url.Action("EditMedals", new
+                                     {
+                                         id = player.PlayerId.Substring(player.PlayerId.LastIndexOf('-') + 1)
+                                     })">
                                 <i class="sprite-glyphicons_151_edit"></i>
                             </a>
                         }
                     </td>
                     <td>
-                        @player.FormattedNextMedal()
+                        @{
+                            var nextMedal = player.FormattedNextMedal();
+                        }
+                        @if (string.IsNullOrEmpty(nextMedal.Item1) == false)
+                        {
+                            <span class="label label-inverse">
+                                @nextMedal.Item1
+                            </span>
+                        }
+                        @nextMedal.Item2
                     </td>
                     <td colspan="3"></td>
                 </tr>
-                if (player.ExistingMedal != EliteMedals.EliteMedal.EliteMedalValue.Gold5)
+                @if (player.ExistingMedal != EliteMedals.EliteMedal.EliteMedalValue.Gold5 && player.TopThreeResults.Any())
                 {
-                    foreach (var result in player.TopThreeResults.GroupBy(x => new { x.Item1.BitsMatchId, x.Item1.Turn, x.Item1.Date, IsValidResult = x.Item2 }).OrderBy(x => x.Key.Turn).ThenBy(x => x.Key.Date))
+                    <tr>
+                        <th colspan="4" style="text-align: center;">Säsongsbästa @Model.FormatSeason()</th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th>
+                            Datum
+                        </th>
+                        <th>
+                            Tävling
+                        </th>
+                        <th>
+                            Poäng
+                        </th>
+                    </tr>
+                    foreach (var result in player.TopThreeResults.GroupBy(x => new
+                    {
+                        x.Item1.BitsMatchId,
+                        x.Item1.Turn,
+                        x.Item1.Date,
+                        IsValidResult = x.Item2
+                    }).OrderBy(x => x.Key.Turn).ThenBy(x => x.Key.Date))
                     {
                         var style = string.Empty;
                         if (result.Key.IsValidResult)
                         {
                             style = "background-color: #dff0d8;";
                         }
-                        
+
                         <tr>
-                            <td colspan="3"></td>
+                            <td></td>
                             <td>@result.Key.Date.ToString("yyyy-MM-dd")</td>
                             <td>
                                 <a href="@Html.GenerateBitsUrl(result.Key.BitsMatchId)">
@@ -206,7 +248,7 @@
                         </tr>
                     }
                 }
-            }
-        </table>
+            </table>
+        }
     </div>
 </div>

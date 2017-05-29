@@ -40,6 +40,7 @@ namespace Snittlistan.Test.Domain
             var series = new[]
             {
                 new MatchSerie(
+                    1,
                     new List<MatchTable>
                     {
                         new MatchTable(new MatchGame("p1", 169, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
@@ -48,6 +49,7 @@ namespace Snittlistan.Test.Domain
                         new MatchTable(new MatchGame("p7", 200, 0, 0), new MatchGame("p8", 0, 0, 0), 0),
                     }),
                 new MatchSerie(
+                    2,
                     new List<MatchTable>
                     {
                         new MatchTable(new MatchGame("p1", 169, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
