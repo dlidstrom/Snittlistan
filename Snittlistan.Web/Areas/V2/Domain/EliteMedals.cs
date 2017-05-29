@@ -26,7 +26,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
             return existingMedal;
         }
 
-        public string GetFormattedExistingMedal(string playerId)
+        public Tuple<string, string> GetFormattedExistingMedal(string playerId)
         {
             EliteMedal existingMedal;
             if (AwardedMedals.TryGetValue(playerId, out existingMedal) == false)
@@ -34,12 +34,13 @@ namespace Snittlistan.Web.Areas.V2.Domain
             return existingMedal.GetDescription();
         }
 
-        public string GetNextMedal(string playerId)
+        public Tuple<string, string> GetNextMedal(string playerId)
         {
             EliteMedal existingMedal;
             if (AwardedMedals.TryGetValue(playerId, out existingMedal) == false)
                 existingMedal = EliteMedal.None;
-            string nextMedal;
+            var nextMedal = string.Empty;
+            var text = string.Empty;
             switch (existingMedal.Value)
             {
                 case EliteMedal.EliteMedalValue.None:
@@ -64,68 +65,14 @@ namespace Snittlistan.Web.Areas.V2.Domain
                     nextMedal = EliteMedal.GetDescription(EliteMedal.EliteMedalValue.Gold5);
                     break;
                 case EliteMedal.EliteMedalValue.Gold5:
-                    nextMedal = "KLAR";
+                    text = "KLAR";
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
-            return nextMedal;
+            return Tuple.Create(nextMedal, text);
         }
-
-        //public void AddResults(Dictionary<string, Tuple<int, int>> playerIdToTotalAndSeries, DateTime date, int bitsMatchId, int turn)
-        //{
-        //    foreach (var playerId in playerIdToTotalAndSeries.Keys)
-        //    {
-        //        var totalAndSeries = playerIdToTotalAndSeries[playerId];
-        //        EliteMedal existingMedal;
-        //        if (AwardedMedals.TryGetValue(playerId, out existingMedal) == false)
-        //            existingMedal = EliteMedal.None;
-        //        var isCandidateResult = false;
-        //        switch (existingMedal.Value)
-        //        {
-        //            case EliteMedal.EliteMedalValue.None:
-        //                {
-        //                    isCandidateResult = totalAndSeries.Item1 > 4 * 190 && totalAndSeries.Item2 == 4
-        //                        || totalAndSeries.Item1 > 3 * 200 && totalAndSeries.Item2 == 3;
-        //                    break;
-        //                }
-        //            case EliteMedal.EliteMedalValue.Bronze:
-        //                {
-        //                    isCandidateResult = totalAndSeries.Item1 > 4 * 200 && totalAndSeries.Item2 == 4
-        //                        || totalAndSeries.Item1 > 3 * 210 && totalAndSeries.Item2 == 3;
-        //                    break;
-        //                }
-        //            case EliteMedal.EliteMedalValue.Silver:
-        //            case EliteMedal.EliteMedalValue.Gold1:
-        //            case EliteMedal.EliteMedalValue.Gold2:
-        //            case EliteMedal.EliteMedalValue.Gold3:
-        //            case EliteMedal.EliteMedalValue.Gold4:
-        //                {
-        //                    isCandidateResult = totalAndSeries.Item1 > 4 * 210 && totalAndSeries.Item2 == 4
-        //                        || totalAndSeries.Item1 > 3 * 220 && totalAndSeries.Item2 == 3;
-        //                    break;
-        //                }
-        //            case EliteMedal.EliteMedalValue.Gold5:
-        //                break;
-        //            default:
-        //                throw new ArgumentOutOfRangeException();
-        //        }
-
-        //        if (isCandidateResult)
-        //        {
-        //            //List<CandidateResult> candidateResults;
-        //            //if (CandidateResults.TryGetValue(playerId, out candidateResults) == false)
-        //            //{
-        //            //    candidateResults = new List<CandidateResult>();
-        //            //    CandidateResults.Add(playerId, candidateResults);
-        //            //}
-
-        //            //if (candidateResults.SingleOrDefault(x => x.BitsMatchId == bitsMatchId) == null)
-        //            //    candidateResults.Add(new CandidateResult(date, bitsMatchId, turn, totalAndSeries.Item1));
-        //        }
-        //    }
-        //}
 
         public void AwardMedal(string playerId, EliteMedal.EliteMedalValue eliteMedalValue, int? capturedSeason)
         {
@@ -169,10 +116,10 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 Gold5
             }
 
-            public string GetDescription()
+            public Tuple<string, string> GetDescription()
             {
-                if (Value == EliteMedalValue.None) return "Saknar medalj";
-                return string.Format("{0} ({1} - {2})", GetDescription(Value), CapturedSeason, CapturedSeason + 1);
+                if (Value == EliteMedalValue.None) return Tuple.Create(string.Empty, "Saknar medalj");
+                return Tuple.Create(GetDescription(Value), string.Format("({0} - {1})", CapturedSeason, CapturedSeason + 1));
             }
 
             public static string GetDescription(Enum value)

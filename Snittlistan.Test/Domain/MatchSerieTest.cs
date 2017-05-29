@@ -18,6 +18,7 @@ namespace Snittlistan.Test.Domain
             // Act & Assert
             Assert.DoesNotThrow(
                 () => new MatchSerie(
+                    1,
                     new List<MatchTable>
                     {
                         table1,
@@ -39,6 +40,7 @@ namespace Snittlistan.Test.Domain
             // Act & Assert
             var ex = Assert.Throws<MatchException>(
                 () => new MatchSerie(
+                    1,
                     new List<MatchTable>
                     {
                         table1,

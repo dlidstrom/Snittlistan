@@ -126,7 +126,9 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         [HttpPost]
         public ActionResult RegisterSerie(
-            string aggregateId, int bitsMatchId, ResultSeriesReadModel.Serie serie)
+            string aggregateId,
+            int bitsMatchId,
+            ResultSeriesReadModel.Serie serie)
         {
             var matchResult = EventStoreSession.Load<MatchResult>(aggregateId);
             if (matchResult == null) throw new HttpException(404, "Match result not found");
@@ -146,7 +148,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 tables.Add(new MatchTable(game1, game2, serie.Tables[i].Score));
             }
 
-            matchResult.RegisterSerie(new MatchSerie(tables));
+            matchResult.RegisterSerie(tables.ToArray());
             return RedirectToAction(
                 "Details",
                 "MatchResult",
@@ -226,7 +228,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     tables.Add(new MatchTable(game1, game2, serie.Tables[i].Score));
                 }
 
-                matchResult.RegisterSerie(new MatchSerie(tables));
+                matchResult.RegisterSerie(tables.ToArray());
             }
 
             EventStoreSession.Store(matchResult);

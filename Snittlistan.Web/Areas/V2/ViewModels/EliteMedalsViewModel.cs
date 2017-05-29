@@ -46,15 +46,10 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             return new HtmlString(string.Format("{0} &minus; {1}", season, season + 1));
         }
 
-        public bool IsValid(int totalPins)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public class PlayerInfo
         {
-            private readonly string formattedExistingMedal;
-            private readonly string nextMedal;
+            private readonly Tuple<string, string> formattedExistingMedal;
+            private readonly Tuple<string, string> formattedNextMedal;
 
             public PlayerInfo(
                 string playerId,
@@ -62,8 +57,8 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                 int personalNumber,
                 HashSet<Tuple<SeasonResults.PlayerResult, bool>> topThreeResults,
                 EliteMedals.EliteMedal.EliteMedalValue existingMedal,
-                string formattedExistingMedal,
-                string nextMedal)
+                Tuple<string, string> formattedExistingMedal,
+                Tuple<string, string> formattedNextMedal)
             {
                 PlayerId = playerId;
                 Name = name;
@@ -71,7 +66,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                 TopThreeResults = topThreeResults;
                 ExistingMedal = existingMedal;
                 this.formattedExistingMedal = formattedExistingMedal;
-                this.nextMedal = nextMedal;
+                this.formattedNextMedal = formattedNextMedal;
             }
 
             public string PlayerId { get; private set; }
@@ -84,14 +79,14 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
             public HashSet<Tuple<SeasonResults.PlayerResult, bool>> TopThreeResults { get; private set; }
 
-            public HtmlString FormattedExistingMedal()
+            public Tuple<string, string> FormattedExistingMedal()
             {
-                return new HtmlString(formattedExistingMedal);
+                return formattedExistingMedal;
             }
 
-            public HtmlString FormattedNextMedal()
+            public Tuple<string, string> FormattedNextMedal()
             {
-                return new HtmlString(nextMedal);
+                return formattedNextMedal;
             }
         }
     }

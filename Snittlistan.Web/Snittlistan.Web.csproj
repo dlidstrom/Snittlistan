@@ -202,8 +202,6 @@
     <Compile Include="Areas\V2\Domain\Match\MatchRegisteredEvent.cs" />
     <Compile Include="Areas\V2\Handlers\SeasonResultsHandler.cs" />
     <Compile Include="Areas\V2\Migration\IEventMigratorWithResults.cs" />
-    <Compile Include="Areas\V2\Migration\RosterIdMigrator.cs" />
-    <Compile Include="Areas\V2\Migration\SerieNumberMigrator.cs" />
     <Compile Include="Areas\V2\ReadModels\SeasonResults.cs" />
     <Compile Include="Areas\V2\ViewModels\DocumentStoreStatisticsViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\EditMedalsPostModel.cs" />

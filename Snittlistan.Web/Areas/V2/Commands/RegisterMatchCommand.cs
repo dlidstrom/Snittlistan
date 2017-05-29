@@ -38,6 +38,7 @@ namespace Snittlistan.Web.Areas.V2.Commands
             };
 
             var matchSeries = new List<MatchSerie>();
+            var serieNumber = 1;
             foreach (var serie in series.Where(x => x != null))
             {
                 var tables = new List<MatchTable>();
@@ -56,7 +57,7 @@ namespace Snittlistan.Web.Areas.V2.Commands
                     tables.Add(new MatchTable(game1, game2, serie.Tables[i].Score));
                 }
 
-                matchSeries.Add(new MatchSerie(tables));
+                matchSeries.Add(new MatchSerie(serieNumber++, tables));
             }
 
             matchResult.RegisterSeries(matchSeries.ToArray());
