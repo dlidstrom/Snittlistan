@@ -157,18 +157,17 @@
                     <th style="width: 25%;">
                         @(player.Name + " (" + player.PersonalNumber + ")")
                     </th>
-                    <th style="width: 25%;">
+                    <th colspan="2" style="width: 50%;">
                         Innehar
                     </th>
-                    <th style="width: 25%;">
+                    <th colspan="2" style="width: 25%;">
                         Ska ha
                     </th>
-                    <th style="width: 25%;"></th>
                 </tr>
                 <tr>
                     <th>
                     </th>
-                    <td>
+                    <td colspan="2">
                         @{
                             var existingMedal = player.FormattedExistingMedal();
                         }
@@ -201,7 +200,6 @@
                         }
                         @nextMedal.Item2
                     </td>
-                    <td colspan="3"></td>
                 </tr>
                 @if (player.ExistingMedal != EliteMedals.EliteMedal.EliteMedalValue.Gold5 && player.TopThreeResults.Any())
                 {
@@ -209,8 +207,7 @@
                         <th colspan="4" style="text-align: center;">Säsongsbästa @Model.FormatSeason()</th>
                     </tr>
                     <tr>
-                        <th></th>
-                        <th>
+                        <th colspan="2">
                             Datum
                         </th>
                         <th>
@@ -235,8 +232,7 @@
                         }
 
                         <tr>
-                            <td></td>
-                            <td>@result.Key.Date.ToString("yyyy-MM-dd")</td>
+                            <td colspan="2">@result.Key.Date.ToString("yyyy-MM-dd")</td>
                             <td>
                                 <a href="@Html.GenerateBitsUrl(result.Key.BitsMatchId)">
                                     Omgång @result.Key.Turn
