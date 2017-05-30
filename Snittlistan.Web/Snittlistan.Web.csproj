@@ -97,9 +97,13 @@
     <Reference Include="MvcContrib">
       <HintPath>..\packages\MvcContrib.Mvc3-ci.3.0.100.0\lib\MvcContrib.dll</HintPath>
     </Reference>
-    <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.9\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog.Targets.Syslog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=a15d6ba50060b73f, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.Targets.Syslog.4.0.0\lib\net45\NLog.Targets.Syslog.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Postal, Version=1.0.0.0, Culture=neutral, PublicKeyToken=45719375b8b4d528, processorArchitecture=MSIL">
       <HintPath>..\packages\Postal.Mvc4.1.2.0\lib\net40\Postal.dll</HintPath>
@@ -593,7 +597,12 @@
     <Content Include="Areas\V2\Views\Roster\Create.cshtml" />
     <Content Include="Areas\V2\Views\Roster\Delete.cshtml" />
     <Content Include="Areas\V2\Views\Roster\DisplayTemplates\Roster.cshtml" />
-    <Content Include="NLog.config" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\PublishProfiles\Snittlistan-Netcetera.pubxml" />
     <Content Include="Views\Emails\InviteUser.cshtml" />
     <Content Include="Views\Emails\MatchRegistered.cshtml" />
