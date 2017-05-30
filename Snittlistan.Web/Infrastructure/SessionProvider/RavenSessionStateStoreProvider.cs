@@ -81,7 +81,7 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
             }
             catch (Exception ex)
             {
-                Logger.ErrorException("Error while initializing", ex);
+                Logger.Error(ex, "Error while initializing");
                 throw;
             }
         }
@@ -121,7 +121,7 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
             }
             catch (Exception ex)
             {
-                Logger.ErrorException(string.Format("Error during GetItemExclusive. SessionId={0}", id), ex);
+                Logger.Error(ex, "Error during GetItemExclusive. SessionId={0}", id);
                 throw;
             }
         }
@@ -154,7 +154,7 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
             }
             catch (Exception ex)
             {
-                Logger.ErrorException(string.Format("Error during GetItem. SessionId={0}", id), ex);
+                Logger.Error(ex, "Error during GetItem. SessionId={0}", id);
                 throw;
             }
         }
@@ -219,7 +219,7 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
             }
             catch (Exception ex)
             {
-                Logger.ErrorException(string.Format("Error during SetAndReleaseItemExclusive. SessionId={0}, LockId={1}, newItem={2}", id, lockId, newItem), ex);
+                Logger.Error(ex, "Error during SetAndReleaseItemExclusive. SessionId={0}, LockId={1}, newItem={2}", id, lockId, newItem);
                 throw;
             }
         }
@@ -260,7 +260,7 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
             }
             catch (Exception ex)
             {
-                Logger.ErrorException(string.Format("Error during ReleaseItemExclusive. SessionId={0}, LockId={1}", id, lockId), ex);
+                Logger.Error(ex, "Error during ReleaseItemExclusive. SessionId={0}, LockId={1}", id, lockId);
                 throw;
             }
         }
@@ -302,7 +302,7 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
             }
             catch (Exception ex)
             {
-                Logger.ErrorException(string.Format("Error during RemoveItem. SessionId={0}; LockId={1}", id, lockId), ex);
+                Logger.Error(ex, "Error during RemoveItem. SessionId={0}; LockId={1}", id, lockId);
                 throw;
             }
         }
@@ -342,11 +342,11 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
             catch (ConcurrencyException cEx)
             {
                 // we log and ignore. Should never happen, but not fatal if it does.
-                Logger.ErrorException("ConcurrencyException during ResetTimeout. SessionId=" + id, cEx);
+                Logger.Error(cEx, "ConcurrencyException during ResetTimeout. SessionId=" + id);
             }
             catch (Exception ex)
             {
-                Logger.ErrorException("Error during ResetItemTimeout. SessionId=" + id, ex);
+                Logger.Error(ex, "Error during ResetItemTimeout. SessionId=" + id);
                 throw;
             }
         }
@@ -383,7 +383,7 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
             }
             catch (Exception ex)
             {
-                Logger.ErrorException("Error during CreateUninitializedItem", ex);
+                Logger.Error(ex, "Error during CreateUninitializedItem");
                 throw;
             }
         }

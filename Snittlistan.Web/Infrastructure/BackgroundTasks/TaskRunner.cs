@@ -47,7 +47,7 @@ namespace Snittlistan.Web.Infrastructure.BackgroundTasks
             }
             catch (Exception e)
             {
-                Log.ErrorException(e.GetType().ToString(), e);
+                Log.Error(e, e.GetType().ToString());
             }
 
             Log.Info("Unregistering from HostingEnvironment");
@@ -72,7 +72,7 @@ namespace Snittlistan.Web.Infrastructure.BackgroundTasks
                 }
                 catch (Exception e)
                 {
-                    Log.ErrorException(e.GetType().ToString(), e);
+                    Log.Error(e, e.GetType().ToString());
                 }
             }
         }
@@ -89,7 +89,7 @@ namespace Snittlistan.Web.Infrastructure.BackgroundTasks
             }
             catch (Exception e)
             {
-                Log.ErrorException(e.GetType().ToString(), e);
+                Log.Error(e, e.GetType().ToString());
                 ErrorLog.GetDefault(null).Log(new Error(e));
             }
         }
@@ -115,7 +115,7 @@ namespace Snittlistan.Web.Infrastructure.BackgroundTasks
             }
             catch (Exception e)
             {
-                Log.ErrorException(e.GetType().ToString(), e);
+                Log.Error(e, e.GetType().ToString());
                 ErrorLog.GetDefault(null).Log(new Error(e));
                 task.UpdateNextTry(e);
                 Log.Info("Task failed attempt #{0}", task.Retries);
