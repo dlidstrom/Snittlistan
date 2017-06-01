@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension" xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension">
+
+  <!-- unique identifier for this package, DO NOT CHANGE! -->
+  <?define UpgradeCode="{a2cb3a4e-9c6a-4a9b-ae08-55842492db9d}"?>
+
+  <Product Id="*"
+           UpgradeCode="$(var.UpgradeCode)"
+           Name="Snittlistan"
+           Manufacturer="Daniel Lidstrom AB"
+           Language="1033"
+           Version="$(var.Version)">
+    <Package Id="*"
+             Description="Snittlistan installer"
+             InstallerVersion="300"
+             Languages="1033"
+             Compressed="yes"
+             SummaryCodepage="1252"
+             Platform="x64" />
+    <Media Id="1" Cabinet="service.cab" EmbedCab="yes" />
+    <Icon Id="icon.ico" SourceFile="Snittlistan.Web\favicon.ico"/>
+    <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+
+    <MajorUpgrade DowngradeErrorMessage="A later version of this product is already installed. Setup will now exit." />
+    <Property Id="ALLUSERS" Value="1" />
+    <PropertyRef Id="NETFRAMEWORK40FULLINSTALLROOTDIR" />
+    <PropertyRef Id="WIX_IS_NETFRAMEWORK_452_OR_LATER_INSTALLED" />
+    <Condition Message="This application requires .NET Framework 4.5.2 (or later version). Please install the .NET Framework then run this installer again.">
+      Installed OR WIX_IS_NETFRAMEWORK_452_OR_LATER_INSTALLED
+    </Condition>
+
+    <?include iis.wxi?>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFiles64Folder" Name="PFiles">
+        <Directory Id="INSTALLDIR" Name="Snittlistan">
+          <Component Id="Snittlistan.Web.config" Guid="*" Win64="yes">
+            <File Id="Snittlistan.Web.config"
+                  KeyPath="yes"
+                  Source="$(var.Snittlistan_App)\Web.config" />
+          </Component>
+          <Directory Id="Snittlistan_Logs" Name="Logs">
+            <Component Id="Snittlistan_Logs" Guid="{07655794-20ae-4272-89f9-96adcec0eb2a}"
+                       SharedDllRefCount="no" KeyPath="no" NeverOverwrite="no" Permanent="no" Transitive="no"
+                       Win64="yes" Location="either">
+              <CreateFolder>
+                <util:PermissionEx GenericAll="yes"
+                                   CreateFile="yes"
+                                   ChangePermission="yes"
+                                   Delete="yes"
+                                   DeleteChild="yes"
+                                   User="IIS_IUSRS" />
+              </CreateFolder>
+            </Component>
+          </Directory>
+        </Directory>
+      </Directory>
+      <Component Id="AppPool" Guid="{84eb7913-9244-48cd-89d5-6baf98b0b0d3}" Permanent="yes" Win64="yes">
+        <!-- Create an application pool. Set automatic recycling to once every 24 hours.
+             Keep the application active until its been idle 24 hours, only then shut down the worker process. -->
+        <iis:WebAppPool Id="AppPool"
+                        Name="Snittlistan"
+                        ManagedPipelineMode="Integrated"
+                        ManagedRuntimeVersion="v4.0"
+                        Identity="applicationPoolIdentity"
+                        RecycleMinutes="1440"
+                        IdleTimeout="1440" />
+      </Component>
+      <Component Id="Snittlistan" Guid="{0c289e8a-e4de-4f0f-b585-5d42b44126ea}">
+        <!-- Creates the Snittlistan web site -->
+        <iis:WebSite Id="SnittlistanWebSite" Description="Snittlistan" Directory="INSTALLDIR">
+          <iis:WebAddress Id="Binding1" Port="80" Header="snittlistan.se" />
+          <iis:WebAddress Id="Binding2" Port="80" Header="www.snittlistan.se" />
+          <iis:WebApplication Id="SnittlistanApplication" Name="Snittlistan" WebAppPool="AppPool" />
+        </iis:WebSite>
+      </Component>
+    </Directory>
+
+    <Feature Id="Service" Level="1">
+      <ComponentRef Id="Snittlistan.Web.config" />
+      <ComponentRef Id="Snittlistan_Logs" />
+      <ComponentRef Id="AppPool" />
+      <ComponentRef Id="Snittlistan" />
+    </Feature>
+    <Feature Id="Libraries" Level="1">
+      <ComponentGroupRef Id="Snittlistan" />
+    </Feature>
+  </Product>
+</Wix>

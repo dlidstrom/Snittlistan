@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <!-- IIS needs to be installed -->
+  <Property Id="IIS_MAJOR_VERSION">
+    <RegistrySearch Id="CheckIISVersion" Root="HKLM" Key="SOFTWARE\Microsoft\InetStp" Name="MajorVersion" Type="raw" />
+  </Property>
+  <Condition Message="IIS must be installed">
+    Installed OR IIS_MAJOR_VERSION
+  </Condition>
+  <Property Id="APPLICATION_DEVELOPMENT">
+    <RegistrySearch Id="CheckApplicationDevelopment" Root="HKLM" Key="SOFTWARE\Microsoft\InetStp\Components" Name="ASPNET" Type="raw" />
+  </Property>
+  <Condition Message="IIS needs to have Application Development installed.">
+    APPLICATION_DEVELOPMENT
+  </Condition>
+</Include>

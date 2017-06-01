@@ -31,3 +31,6 @@ packages
 Snittlistan.Web/Web.Release.config
 Snittlistan.Web/Snittlistan.Publish.xml
 Snittlistan.Web/App_Data/Database
+Tools/
+_install/
+Build/_build/
