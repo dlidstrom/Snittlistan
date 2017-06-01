@@ -71,6 +71,7 @@
         <iis:WebSite Id="SnittlistanWebSite" Description="Snittlistan" Directory="INSTALLDIR">
           <iis:WebAddress Id="Binding1" Port="80" Header="snittlistan.se" />
           <iis:WebAddress Id="Binding2" Port="80" Header="www.snittlistan.se" />
+          <iis:WebAddress Id="Binding3" Port="80" Header="localhost" />
           <iis:WebApplication Id="SnittlistanApplication" Name="Snittlistan" WebAppPool="AppPool" />
         </iis:WebSite>
       </Component>
