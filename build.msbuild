@@ -1,0 +1,134 @@
+<Project Name="Snittlistan" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+    Version is required. Run like this:
+    msbuild build.msbuild /property:Version=1.0.0
+  -->
+  <PropertyGroup>
+    <WixTasksPath>WixTasks.dll</WixTasksPath>
+    <!-- for AssemblyInfo element -->
+    <MSBuildCommunityTasksPath>.\</MSBuildCommunityTasksPath>
+    <OutputName>Snittlistan.Installer</OutputName>
+    <OutputType>Package</OutputType>
+    <OutputDirectory>$(MSBuildProjectDirectory)\Build\_build</OutputDirectory>
+    <InstallDirectory>_install</InstallDirectory>
+  </PropertyGroup>
+
+  <Import Project="Tools\wix311-binaries\wix.targets" />
+  <Import Project="Tools\MSBuild.Community.Tasks.v1.5.0.235\MSBuild.Community.Tasks.Targets" />
+
+  <ItemGroup>
+    <SolutionFile Include="Snittlistan.sln" />
+    <AssemblyVersionFiles Include="**\Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+
+  <Target Name="All">
+    <CallTarget Targets="Initialize;Build;WixPrepare;Wix" />
+  </Target>
+
+  <Target Name="Wix">
+    <CallTarget Targets="Cop;Heat;Candle;Light" />
+  </Target>
+
+  <Target Name="Initialize">
+    <Message Text="Verifying command line..." />
+
+    <!-- check the required properties (http://stackoverflow.com/a/2746543) -->
+    <ItemGroup>
+      <_RequiredProperties Include="Version">
+        <Value>$(Version)</Value>
+      </_RequiredProperties>
+    </ItemGroup>
+    <Error Condition ="'%(_RequiredProperties.Value)'=='' " Text=" Missing required property [%(_RequiredProperties.Identity)]" />
+
+    <RemoveDir Directories="$(OutputDirectory)" />
+  </Target>
+
+  <Target Name="AssemblyVersion" Inputs="@(AssemblyVersionFiles)" Outputs="UpdatedAssemblyVersionFiles" DependsOnTargets="Initialize">
+    <Attrib Files="%(AssemblyVersionFiles.FullPath)" Normal="true"/>
+    <AssemblyInfo CodeLanguage="CS"
+                  OutputFile="%(AssemblyVersionFiles.FullPath)"
+                  AssemblyProduct="Snittlistan"
+                  AssemblyTitle="Snittlistan"
+                  AssemblyCompany="Daniel Lidström AB"
+                  AssemblyCopyright="Copyright © Daniel Lidström AB"
+                  AssemblyVersion="$(Version)"
+                  AssemblyFileVersion="$(Version)"
+                  AssemblyInformationalVersion="$(Version)"
+                  Guid="e72bc5fa-8c5b-4727-80a5-1044667fe500">
+        <Output TaskParameter="OutputFile" ItemName="UpdatedAssemblyVersionFiles" />
+    </AssemblyInfo>
+  </Target>
+
+  <!-- Build the application -->
+  <Target Name="Build" DependsOnTargets="AssemblyVersion">
+    <!-- web projects -->
+    <MSBuild Projects="@(SolutionFile)" Properties="Configuration=Release;UseWPP_CopyWebApplication=True;PipelineDependsOnBuild=False;OutDir=$(OutputDirectory)" />
+  </Target>
+
+  <!-- Preparations for WiX -->
+  <Target Name="WixPrepare">
+    <!-- Copy configuration files in order to perform variable substitutions with WiX -->
+    <Copy SourceFiles="$(OutputDirectory)\_PublishedWebsites\Snittlistan.Web\Web.config"
+          DestinationFolder="$(OutputDirectory)\app\Snittlistan" />
+
+    <!-- Copy everything except configuration files -->
+    <ItemGroup>
+      <Snittlistan_Libraries Include="$(OutputDirectory)\_PublishedWebsites\Snittlistan.Web\**\*.*"
+                             Exclude="$(OutputDirectory)\_PublishedWebsites\Snittlistan.Web\Web.config" />
+    </ItemGroup>
+    <Copy SourceFiles="@(Snittlistan_Libraries)" DestinationFolder="$(OutputDirectory)\lib\Snittlistan.Web\%(RecursiveDir)" />
+  </Target>
+
+  <Target Name="Cop">
+    <Exec Command="Tools\wix311-binaries\WixCop.exe -indent:2 *.wxs" />
+  </Target>
+
+  <!-- Generate components for libraries -->
+  <Target Name="Heat">
+    <HeatDirectory SuppressCom="true"
+                   SuppressRegistry="true"
+                   Directory="$(OutputDirectory)\lib\Snittlistan.Web"
+                   OutputFile="$(OutputDirectory)\tmp\Snittlistan.lib.wxs"
+                   ToolPath="Tools\wix311-binaries"
+                   ComponentGroupName="Snittlistan"
+                   AutogenerateGuids="true"
+                   SuppressUniqueIds="true"
+                   SuppressFragments="true"
+                   PreprocessorVariable="var.Snittlistan_Lib"
+                   SuppressRootDirectory="true"
+                   DirectoryRefId="INSTALLDIR" />
+    <XslTransformation XmlInputPaths="$(OutputDirectory)\tmp\Snittlistan.lib.wxs"
+                       OutputPaths="$(OutputDirectory)\tmp\Snittlistan.lib.transformed.wxs"
+                       XslInputPath="Build\add_64bit.xsl" />
+  </Target>
+
+  <Target Name="Candle">
+    <!-- Reference wix files to include -->
+    <ItemGroup>
+      <WixSources Include="Snittlistan.main.wxs" />
+      <WixSources Include="$(OutputDirectory)\tmp\Snittlistan.lib.transformed.wxs" />
+    </ItemGroup>
+    <Candle OutputFile="$(OutputDirectory)\tmp\"
+            SourceFiles="%(WixSources.FullPath)"
+            ToolPath="Tools\wix311-binaries"
+            DefineConstants="Snittlistan_App=$(OutputDirectory)\app\Snittlistan;Snittlistan_Lib=$(OutputDirectory)\lib\Snittlistan.Web;Version=$(Version)"
+            Extensions="Tools\wix311-binaries\WixUtilExtension.dll;Tools\wix311-binaries\WiXNetFxExtension.dll;Tools\wix311-binaries\WixIIsExtension.dll" />
+  </Target>
+
+  <Target Name="Light">
+    <!-- Reference wixobj files to include  -->
+    <ItemGroup>
+      <WixObjects Include="$(OutputDirectory)\tmp\*.wixobj" />
+    </ItemGroup>
+    <Light ObjectFiles="@(WixObjects)"
+           OutputFile="$(OutputDirectory)\Snittlistan.msi"
+           ToolPath="Tools/wix311-binaries"
+           Extensions="Tools/wix311-binaries/WixUtilExtension.dll;Tools/wix311-binaries/WiXNetFxExtension.dll;Tools\wix311-binaries\WixIIsExtension.dll" />
+    <MakeDir Directories="$(InstallDirectory)\$(Version)" />
+    <ItemGroup>
+      <InstallFiles Include="$(OutputDirectory)\Snittlistan.msi" />
+    </ItemGroup>
+    <Copy SourceFiles="@(InstallFiles);SnittlistanInstall.ps1"
+          DestinationFolder="$(InstallDirectory)\$(Version)" />
+  </Target>
+</Project>
