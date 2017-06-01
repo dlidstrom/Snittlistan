@@ -39,6 +39,20 @@
                   KeyPath="yes"
                   Source="$(var.Snittlistan_App)\Web.config" />
           </Component>
+          <Directory Id="Snittlistan_AppData" Name="App_Data">
+            <Component Id="Snittlistan_AppData" Guid="{3ddc6c33-9655-455a-bfb2-709023091c3c}"
+                       SharedDllRefCount="no" KeyPath="no" NeverOverwrite="no" Permanent="no" Transitive="no"
+                       Win64="yes" Location="either">
+              <CreateFolder>
+                <util:PermissionEx GenericAll="yes"
+                                   CreateFile="yes"
+                                   ChangePermission="yes"
+                                   Delete="yes"
+                                   DeleteChild="yes"
+                                   User="IIS_IUSRS" />
+              </CreateFolder>
+            </Component>
+          </Directory>
           <Directory Id="Snittlistan_Logs" Name="Logs">
             <Component Id="Snittlistan_Logs" Guid="{07655794-20ae-4272-89f9-96adcec0eb2a}"
                        SharedDllRefCount="no" KeyPath="no" NeverOverwrite="no" Permanent="no" Transitive="no"
@@ -79,6 +93,7 @@
 
     <Feature Id="Service" Level="1">
       <ComponentRef Id="Snittlistan.Web.config" />
+      <ComponentRef Id="Snittlistan_AppData" />
       <ComponentRef Id="Snittlistan_Logs" />
       <ComponentRef Id="AppPool" />
       <ComponentRef Id="Snittlistan" />
