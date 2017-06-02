@@ -7,10 +7,10 @@
   <Condition Message="IIS must be installed">
     Installed OR IIS_MAJOR_VERSION
   </Condition>
-  <Property Id="APPLICATION_DEVELOPMENT">
-    <RegistrySearch Id="CheckApplicationDevelopment" Root="HKLM" Key="SOFTWARE\Microsoft\InetStp\Components" Name="ASPNET" Type="raw" />
+  <Property Id="ASPNET45">
+    <RegistrySearch Id="CheckApplicationDevelopment" Root="HKLM" Key="SOFTWARE\Microsoft\InetStp\Components" Name="ASPNET45" Type="raw" />
   </Property>
-  <Condition Message="IIS needs to have Application Development installed.">
-    APPLICATION_DEVELOPMENT
+  <Condition Message="IIS needs to have ASP.NET 4.6 installed.">
+    ASPNET45
   </Condition>
 </Include>
