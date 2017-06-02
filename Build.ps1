@@ -79,7 +79,7 @@ foreach ($file in $filesToReset) {
 }
 
 # push tag
-#& "${env:ProgramFiles(x86)}\Git\cmd\git.exe" "push" "--tags"
+& "${env:ProgramFiles(x86)}\Git\cmd\git.exe" "push" "--tags"
 
 # done
 "Press [ENTER] to exit."
