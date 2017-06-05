@@ -31,6 +31,27 @@
 
     <?include iis.wxi?>
 
+    <CustomAction Id="LetsEncrypt_Cmd"
+                  Property="LetsEncryptTask"
+                  Execute="immediate"
+                  Value="&quot;[LetsEncrypt]letsencrypt.exe&quot; --emailaddress dlidstrom@gmail.com --usedefaulttaskuser --accepttos --manualhost snittlistan.se --webroot &quot;C:\Program Files\Snittlistan&quot;" />
+    <CustomAction Id="LetsEncryptTask"
+                  BinaryKey="WixCA"
+                  DllEntry="CAQuietExec"
+                  Return="ignore"
+                  Execute="deferred"
+                  Impersonate="no" />
+    <CustomAction Id="LetsEncrypt_DeleteTask_Cmd"
+                  Property="LetsEncrypt_DeleteTask"
+                  Execute="immediate"
+                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Delete /TN &quot;letsencrypt-win-simple httpsacme-v01.api.letsencrypt.org&quot; /F" />
+    <CustomAction Id="LetsEncrypt_DeleteTask"
+                  BinaryKey="WixCA"
+                  DllEntry="CAQuietExec"
+                  Return="ignore"
+                  Execute="deferred"
+                  Impersonate="no" />
+
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFiles64Folder" Name="PFiles">
         <Directory Id="INSTALLDIR" Name="Snittlistan">
@@ -39,6 +60,30 @@
                   KeyPath="yes"
                   Source="$(var.Snittlistan_App)\Web.config" />
           </Component>
+          <Directory Id="LetsEncrypt" Name="letsencrypt-win-simple.V1.9.3">
+            <Component Id="letsencrypt_exe" Guid="*" Win64="yes">
+              <File KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.3\letsencrypt.exe" />
+            </Component>
+            <Component Id="letsencrypt_exe_config" Guid="*" Win64="yes">
+              <File KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.3\letsencrypt.exe.config" />
+            </Component>
+            <Directory Id="letsencrypt_x86" Name="x86">
+              <Component Id="libeay32_dll_x86" Guid="*" Win64="yes">
+                <File Id="libeay32_dll_x86" KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.3\x86\libeay32.dll" />
+              </Component>
+              <Component Id="ssleay32_dll_x86" Guid="*" Win64="yes">
+                <File Id="ssleay32_dll_x86" KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.3\x86\ssleay32.dll" />
+              </Component>
+            </Directory>
+            <Directory Id="letsencrypt_x64" Name="x64">
+              <Component Id="libeay32_dll_64" Guid="*" Win64="yes">
+                <File Id="libeay32_dll_64" KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.3\x64\libeay32.dll" />
+              </Component>
+              <Component Id="ssleay32_dll_64" Guid="*" Win64="yes">
+                <File Id="ssleay32_dll_64" KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.3\x64\ssleay32.dll" />
+              </Component>
+            </Directory>
+          </Directory>
           <Directory Id="Snittlistan_AppData" Name="App_Data">
             <Component Id="Snittlistan_AppData" Guid="{3ddc6c33-9655-455a-bfb2-709023091c3c}"
                        SharedDllRefCount="no" KeyPath="no" NeverOverwrite="no" Permanent="no" Transitive="no"
@@ -83,13 +128,21 @@
       <Component Id="Snittlistan" Guid="{0c289e8a-e4de-4f0f-b585-5d42b44126ea}">
         <!-- Creates the Snittlistan web site -->
         <iis:WebSite Id="SnittlistanWebSite" Description="Snittlistan" Directory="INSTALLDIR">
-          <iis:WebAddress Id="Binding1" Port="80" Header="snittlistan.se" />
-          <iis:WebAddress Id="Binding2" Port="80" Header="www.snittlistan.se" />
-          <iis:WebAddress Id="Binding3" Port="80" />
+          <iis:WebAddress Id="Binding1" Port="443" Header="snittlistan.se" Secure="yes" />
+          <iis:WebAddress Id="Binding2" Port="80" Header="snittlistan.se" />
+          <iis:WebAddress Id="Binding3" Port="80" Header="www.snittlistan.se" />
+          <iis:WebAddress Id="Binding4" Port="80" />
           <iis:WebApplication Id="SnittlistanApplication" Name="Snittlistan" WebAppPool="AppPool" />
         </iis:WebSite>
       </Component>
     </Directory>
+    <InstallExecuteSequence>
+      <!-- add task on install or upgrade -->
+      <Custom Action="LetsEncrypt_DeleteTask_Cmd" Before="InstallFinalize">NOT Installed</Custom>
+      <Custom Action="LetsEncrypt_DeleteTask" After="LetsEncrypt_DeleteTask_Cmd">NOT Installed</Custom>
+      <Custom Action="LetsEncrypt_Cmd" After="LetsEncrypt_DeleteTask">NOT Installed</Custom>
+      <Custom Action="LetsEncryptTask" After="LetsEncrypt_Cmd">NOT Installed</Custom>
+    </InstallExecuteSequence>
 
     <Feature Id="Service" Level="1">
       <ComponentRef Id="Snittlistan.Web.config" />
@@ -97,6 +150,12 @@
       <ComponentRef Id="Snittlistan_Logs" />
       <ComponentRef Id="AppPool" />
       <ComponentRef Id="Snittlistan" />
+      <ComponentRef Id="letsencrypt_exe" />
+      <ComponentRef Id="letsencrypt_exe_config" />
+      <ComponentRef Id="libeay32_dll_x86" />
+      <ComponentRef Id="ssleay32_dll_x86" />
+      <ComponentRef Id="libeay32_dll_64" />
+      <ComponentRef Id="ssleay32_dll_64" />
     </Feature>
     <Feature Id="Libraries" Level="1">
       <ComponentGroupRef Id="Snittlistan" />
