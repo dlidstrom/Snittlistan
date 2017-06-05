@@ -79,8 +79,15 @@ foreach ($file in $filesToReset) {
 }
 
 # push tag
-& "${env:ProgramFiles(x86)}\Git\cmd\git.exe" "push" "--tags"
+$yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes", "Push the tag."
+$no = New-Object System.Management.Automation.Host.ChoiceDescription "&No", "Exit script."
+$options = [System.Management.Automation.Host.ChoiceDescription[]]($yes, $no)
+$result = $host.ui.PromptForChoice("Push the tag", "Push the tag to remote?", $options, 1)
 
-# done
-"Press [ENTER] to exit."
-Read-Host
+switch ($result)
+    {
+        0 {
+            & "${env:ProgramFiles(x86)}\Git\cmd\git.exe" "push" "--tags"
+        }
+        1 { return }
+    }

@@ -561,6 +561,9 @@
     <Content Include="Areas\V2\Views\MatchResult\EditMedals.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\EliteMedals.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\_MedalsEditor.cshtml" />
+    <Content Include=".well-known\acme-challenge\Web.Config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
