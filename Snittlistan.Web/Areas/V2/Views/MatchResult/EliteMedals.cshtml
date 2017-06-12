@@ -158,21 +158,12 @@
                         @(player.Name + " (" + player.PersonalNumber + ")")
                     </th>
                     <th colspan="2" style="width: 50%;">
-                        Innehar
-                    </th>
-                    <th colspan="2" style="width: 25%;">
-                        Ska ha
-                    </th>
-                </tr>
-                <tr>
-                    <th>
-                    </th>
-                    <td colspan="2">
                         @{
                             var existingMedal = player.FormattedExistingMedal();
                         }
                         @if (string.IsNullOrEmpty(existingMedal.Item1) == false)
                         {
+                            <text>Innehar</text>
                             <span class="label label-inverse">
                                 @player.FormattedExistingMedal().Item1
                             </span>
@@ -187,8 +178,9 @@
                                 <i class="sprite-glyphicons_151_edit"></i>
                             </a>
                         }
-                    </td>
-                    <td>
+                    </th>
+                    <th colspan="2" style="width: 25%;">
+                        Ska ha
                         @{
                             var nextMedal = player.FormattedNextMedal();
                         }
@@ -199,7 +191,7 @@
                             </span>
                         }
                         @nextMedal.Item2
-                    </td>
+                    </th>
                 </tr>
                 @if (player.ExistingMedal != EliteMedals.EliteMedal.EliteMedalValue.Gold5 && player.TopThreeResults.Any())
                 {

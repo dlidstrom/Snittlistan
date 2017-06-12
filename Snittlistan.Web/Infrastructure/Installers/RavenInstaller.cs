@@ -31,7 +31,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
                     break;
 
                 case ApplicationMode.Release:
-                    mode = DocumentStoreMode.Embeddable;
+                    mode = DocumentStoreMode.Server;
                     break;
 
                 case ApplicationMode.Test:
