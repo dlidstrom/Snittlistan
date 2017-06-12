@@ -17,7 +17,7 @@ namespace Snittlistan.Tool
                 var dumper = new DataDumper(documentStore.DocumentDatabase, new SmugglerOptions());
                 dumper.ExportData(new SmugglerOptions
                 {
-                    BackupPath = "raven.dump"
+                    BackupPath = args[1]
                 });
             }
         }
