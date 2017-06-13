@@ -34,7 +34,7 @@
     <CustomAction Id="LetsEncrypt_Cmd"
                   Property="LetsEncryptTask"
                   Execute="immediate"
-                  Value="&quot;[LetsEncrypt]letsencrypt.exe&quot; --emailaddress dlidstrom@gmail.com --usedefaulttaskuser --accepttos --manualhost snittlistan.se --webroot &quot;C:\Program Files\Snittlistan&quot;" />
+                  Value="&quot;[LetsEncrypt]letsencrypt.exe&quot; --emailaddress dlidstrom@gmail.com --usedefaulttaskuser --accepttos --manualhost snittlistan.se --norenewaltask --webroot &quot;C:\Program Files\Snittlistan&quot;" />
     <CustomAction Id="LetsEncryptTask"
                   BinaryKey="WixCA"
                   DllEntry="CAQuietExec"
@@ -60,27 +60,27 @@
                   KeyPath="yes"
                   Source="$(var.Snittlistan_App)\Web.config" />
           </Component>
-          <Directory Id="LetsEncrypt" Name="letsencrypt-win-simple.V1.9.3">
+          <Directory Id="LetsEncrypt" Name="letsencrypt-win-simple.V1.9.4">
             <Component Id="letsencrypt_exe" Guid="*" Win64="yes">
-              <File KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.3\letsencrypt.exe" />
+              <File KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.4\letsencrypt.exe" />
             </Component>
             <Component Id="letsencrypt_exe_config" Guid="*" Win64="yes">
-              <File KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.3\letsencrypt.exe.config" />
+              <File KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.4\letsencrypt.exe.config" />
             </Component>
             <Directory Id="letsencrypt_x86" Name="x86">
               <Component Id="libeay32_dll_x86" Guid="*" Win64="yes">
-                <File Id="libeay32_dll_x86" KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.3\x86\libeay32.dll" />
+                <File Id="libeay32_dll_x86" KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.4\x86\libeay32.dll" />
               </Component>
               <Component Id="ssleay32_dll_x86" Guid="*" Win64="yes">
-                <File Id="ssleay32_dll_x86" KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.3\x86\ssleay32.dll" />
+                <File Id="ssleay32_dll_x86" KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.4\x86\ssleay32.dll" />
               </Component>
             </Directory>
             <Directory Id="letsencrypt_x64" Name="x64">
               <Component Id="libeay32_dll_64" Guid="*" Win64="yes">
-                <File Id="libeay32_dll_64" KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.3\x64\libeay32.dll" />
+                <File Id="libeay32_dll_64" KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.4\x64\libeay32.dll" />
               </Component>
               <Component Id="ssleay32_dll_64" Guid="*" Win64="yes">
-                <File Id="ssleay32_dll_64" KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.3\x64\ssleay32.dll" />
+                <File Id="ssleay32_dll_64" KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.4\x64\ssleay32.dll" />
               </Component>
             </Directory>
           </Directory>
@@ -138,9 +138,9 @@
     </Directory>
     <InstallExecuteSequence>
       <!-- add task on install or upgrade -->
-      <Custom Action="LetsEncrypt_DeleteTask_Cmd" Before="InstallFinalize">NOT Installed</Custom>
-      <Custom Action="LetsEncrypt_DeleteTask" After="LetsEncrypt_DeleteTask_Cmd">NOT Installed</Custom>
-      <Custom Action="LetsEncrypt_Cmd" After="LetsEncrypt_DeleteTask">NOT Installed</Custom>
+      <!--<Custom Action="LetsEncrypt_DeleteTask_Cmd" Before="InstallFinalize">NOT Installed</Custom>
+      <Custom Action="LetsEncrypt_DeleteTask" After="LetsEncrypt_DeleteTask_Cmd">NOT Installed</Custom>-->
+      <Custom Action="LetsEncrypt_Cmd" Before="InstallFinalize">NOT Installed</Custom>
       <Custom Action="LetsEncryptTask" After="LetsEncrypt_Cmd">NOT Installed</Custom>
     </InstallExecuteSequence>
 
