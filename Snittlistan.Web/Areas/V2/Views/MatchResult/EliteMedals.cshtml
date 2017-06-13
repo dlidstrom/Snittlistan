@@ -180,12 +180,12 @@
                         }
                     </th>
                     <th colspan="2" style="width: 25%;">
-                        Ska ha
                         @{
                             var nextMedal = player.FormattedNextMedal();
                         }
                         @if (string.IsNullOrEmpty(nextMedal.Item1) == false)
                         {
+                            <text>Ska ha</text>
                             <span class="label label-inverse">
                                 @nextMedal.Item1
                             </span>
