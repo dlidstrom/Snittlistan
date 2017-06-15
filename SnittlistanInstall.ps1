@@ -43,7 +43,34 @@ if ($winver.Major -eq 6 -and $winver.Minor -ge 3) {
     }
 }
 
+if (-not (Test-Path ..\administrator-password.txt)) {
+    Read-Host -AsSecureString "Enter Administrator password" | ConvertFrom-SecureString | Out-File ..\administrator-password.txt
+}
+
+$administratorPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
+    [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
+        (ConvertTo-SecureString (gc ..\administrator-password.txt))))
+
+$settings = @{
+    ADMINISTRATOR_PASSWORD = $administratorPassword
+}
+
+$settingsFormatted = ($settings.Keys | % { "$_=$($settings[$_])" }) -join "`n"
+"Settings:`n$settingsFormatted"
+
+$yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes", "Continue with installation."
+$no = New-Object System.Management.Automation.Host.ChoiceDescription "&No", "Aborts the script."
+$options = [System.Management.Automation.Host.ChoiceDescription[]]($yes, $no)
+$result = $host.ui.PromptForChoice("Verify environment variables.", "Are the variables correct?", $options, 1)
+
+switch ($result)
+    {
+        0 {"You selected Yes."}
+        1 { return }
+    }
+
 "Installing new version..."
+$settingsJoined = ($settings.Keys | % { "$_=""$($settings[$_])""" }) -join " "
 
 $pinfo = New-Object System.Diagnostics.ProcessStartInfo
 $pinfo.WorkingDirectory = $ScriptDirectory
@@ -51,7 +78,7 @@ $pinfo.FileName = "msiexec.exe"
 $pinfo.RedirectStandardError = $true
 $pinfo.RedirectStandardOutput = $true
 $pinfo.UseShellExecute = $false
-$pinfo.Arguments = "/l* Snittlistan_install.log /i Snittlistan.msi"
+$pinfo.Arguments = "/l* Snittlistan_install.log /i Snittlistan.msi $settingsJoined"
 $p = New-Object System.Diagnostics.Process
 $p.StartInfo = $pinfo
 $p.Start() | Out-Null
