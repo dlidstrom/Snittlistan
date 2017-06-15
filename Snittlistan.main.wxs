@@ -28,6 +28,9 @@
     <Condition Message="This application requires .NET Framework 4.5.2 (or later version). Please install the .NET Framework then run this installer again.">
       Installed OR WIX_IS_NETFRAMEWORK_452_OR_LATER_INSTALLED
     </Condition>
+    <Condition Message="ADMINISTRATOR_PASSWORD variable must be set in the command line">
+      Installed OR ADMINISTRATOR_PASSWORD
+    </Condition>
 
     <?include iis.wxi?>
 
@@ -38,17 +41,17 @@
     <CustomAction Id="LetsEncryptTask"
                   BinaryKey="WixCA"
                   DllEntry="CAQuietExec"
-                  Return="ignore"
+                  Return="check"
                   Execute="deferred"
                   Impersonate="no" />
-    <CustomAction Id="LetsEncrypt_DeleteTask_Cmd"
-                  Property="LetsEncrypt_DeleteTask"
+    <CustomAction Id="LetsEncrypt_RenewTask_Cmd"
+                  Property="LetsEncrypt_RenewTask_CreateTask"
                   Execute="immediate"
-                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Delete /TN &quot;letsencrypt-win-simple httpsacme-v01.api.letsencrypt.org&quot; /F" />
-    <CustomAction Id="LetsEncrypt_DeleteTask"
+                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU Administrator /RP [ADMINISTRATOR_PASSWORD] /SC DAILY /TN LetsEncryptRenewSnittlistan /ST 03:00 /TR &quot;\&quot;[#letsencrypt_exe_file]\&quot; --renew --baseuri \&quot;https://acme-v01.api.letsencrypt.org/\&quot;&quot;" />
+    <CustomAction Id="LetsEncrypt_RenewTask_CreateTask"
                   BinaryKey="WixCA"
                   DllEntry="CAQuietExec"
-                  Return="ignore"
+                  Return="check"
                   Execute="deferred"
                   Impersonate="no" />
 
@@ -62,7 +65,7 @@
           </Component>
           <Directory Id="LetsEncrypt" Name="letsencrypt-win-simple.V1.9.4">
             <Component Id="letsencrypt_exe" Guid="*" Win64="yes">
-              <File KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.4\letsencrypt.exe" />
+              <File Id="letsencrypt_exe_file" KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.4\letsencrypt.exe" />
             </Component>
             <Component Id="letsencrypt_exe_config" Guid="*" Win64="yes">
               <File KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.4\letsencrypt.exe.config" />
@@ -130,18 +133,17 @@
         <iis:WebSite Id="SnittlistanWebSite" Description="Snittlistan" Directory="INSTALLDIR">
           <iis:WebAddress Id="Binding1" Port="443" Header="snittlistan.se" Secure="yes" />
           <iis:WebAddress Id="Binding2" Port="80" Header="snittlistan.se" />
-          <iis:WebAddress Id="Binding3" Port="80" Header="www.snittlistan.se" />
-          <iis:WebAddress Id="Binding4" Port="80" />
+          <iis:WebAddress Id="Binding3" Port="80" />
           <iis:WebApplication Id="SnittlistanApplication" Name="Snittlistan" WebAppPool="AppPool" />
         </iis:WebSite>
       </Component>
     </Directory>
     <InstallExecuteSequence>
-      <!-- add task on install or upgrade -->
-      <!--<Custom Action="LetsEncrypt_DeleteTask_Cmd" Before="InstallFinalize">NOT Installed</Custom>
-      <Custom Action="LetsEncrypt_DeleteTask" After="LetsEncrypt_DeleteTask_Cmd">NOT Installed</Custom>-->
-      <Custom Action="LetsEncrypt_Cmd" Before="InstallFinalize">NOT Installed</Custom>
-      <Custom Action="LetsEncryptTask" After="LetsEncrypt_Cmd">NOT Installed</Custom>
+      <!-- add task on install -->
+      <!--<Custom Action="LetsEncrypt_Cmd" Before="InstallFinalize">NOT Installed</Custom>
+      <Custom Action="LetsEncryptTask" After="LetsEncrypt_Cmd">NOT Installed</Custom>-->
+      <Custom Action="LetsEncrypt_RenewTask_Cmd" Before="InstallFinalize">NOT Installed</Custom>
+      <Custom Action="LetsEncrypt_RenewTask_CreateTask" After="LetsEncrypt_RenewTask_Cmd">NOT Installed</Custom>
     </InstallExecuteSequence>
 
     <Feature Id="Service" Level="1">
