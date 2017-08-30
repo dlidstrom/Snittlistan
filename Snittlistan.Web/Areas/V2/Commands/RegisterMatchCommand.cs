@@ -36,6 +36,7 @@ namespace Snittlistan.Web.Areas.V2.Commands
                 result.Series.ElementAtOrDefault(2),
                 result.Series.ElementAtOrDefault(3)
             };
+            var players = session.Load<Player>(roster.Players);
 
             var matchSeries = new List<MatchSerie>();
             var serieNumber = 1;
@@ -60,7 +61,7 @@ namespace Snittlistan.Web.Areas.V2.Commands
                 matchSeries.Add(new MatchSerie(serieNumber++, tables));
             }
 
-            matchResult.RegisterSeries(matchSeries.ToArray(), result.OpponentSeries);
+            matchResult.RegisterSeries(matchSeries.ToArray(), result.OpponentSeries, players);
             eventStoreSession.Store(matchResult);
         }
     }

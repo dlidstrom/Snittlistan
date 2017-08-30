@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EventStoreLite;
 using JetBrains.Annotations;
+using Snittlistan.Web.Areas.V2.Domain.Match.Commentary;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
 using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.DomainEvents;
@@ -61,10 +62,14 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             ApplyChange(new MatchResultDeleted(RosterId, BitsMatchId));
         }
 
-        public void RegisterSeries(MatchSerie[] matchSeries, ResultSeriesReadModel.Serie[] opponentSeries)
+        public void RegisterSeries(
+            MatchSerie[] matchSeries,
+            ResultSeriesReadModel.Serie[] opponentSeries,
+            Player[] players)
         {
             if (matchSeries == null) throw new ArgumentNullException("matchSeries");
             if (opponentSeries == null) throw new ArgumentNullException("opponentSeries");
+            if (players == null) throw new ArgumentNullException("players");
             if (rosterPlayers.Count != 8 && rosterPlayers.Count != 9 && rosterPlayers.Count != 10)
                 throw new MatchException("Roster must have 8, 9, or 10 players when registering results");
             foreach (var matchSerie in matchSeries)
@@ -75,7 +80,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                 if (registeredSeries > 4) throw new ArgumentException("Can only register up to 4 series");
             }
 
-            ApplyChange(CreateMatchCommentary(matchSeries, opponentSeries));
+            ApplyChange(CreateMatchCommentary(matchSeries, opponentSeries, players.ToDictionary(x => x.Id)));
             DomainEvent.Raise(new MatchRegisteredEvent(RosterId, TeamScore, OpponentScore));
         }
 
@@ -190,12 +195,13 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
         private MatchCommentaryEvent CreateMatchCommentary(
             MatchSerie[] matchSeries,
-            ResultSeriesReadModel.Serie[] opponentSeries)
+            ResultSeriesReadModel.Serie[] opponentSeries,
+            Dictionary<string, Player> players)
         {
-            var matchCommentary = new List<string>();
             var commentaryAnalyzer = new MatchAnalyzer(matchSeries, opponentSeries);
-            matchCommentary.Add(commentaryAnalyzer.GetSummaryText());
-            return new MatchCommentaryEvent(BitsMatchId, string.Join(" ", matchCommentary));
+            var summaryText = commentaryAnalyzer.GetSummaryText();
+            var bodyText = commentaryAnalyzer.GetBodyText(players);
+            return new MatchCommentaryEvent(BitsMatchId, summaryText, bodyText);
         }
 
         // events

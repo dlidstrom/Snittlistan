@@ -4,7 +4,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
 {
     public class Player
     {
-        public Player(string name, string email, Status playerStatus, int personalNumber)
+        public Player(string name, string email, Status playerStatus, int personalNumber, string nickname)
         {
             if (name == null) throw new ArgumentNullException("name");
             if (email == null) throw new ArgumentNullException("email");
@@ -12,6 +12,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
             Email = email;
             PlayerStatus = playerStatus;
             PersonalNumber = personalNumber;
+            Nickname = nickname ?? name;
         }
 
         public enum Status
@@ -30,6 +31,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public Status PlayerStatus { get; private set; }
 
         public int PersonalNumber { get; private set; }
+
+        public string Nickname { get; private set; }
 
         public void SetName(string name)
         {
@@ -51,6 +54,12 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public void SetPersonalNumber(int personalNumber)
         {
             PersonalNumber = personalNumber;
+        }
+
+        public void SetNickname(string nickname)
+        {
+            if (nickname == null) throw new ArgumentNullException("nickname");
+            Nickname = nickname;
         }
     }
 }

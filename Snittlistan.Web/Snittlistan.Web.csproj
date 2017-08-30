@@ -205,7 +205,11 @@
     <Compile Include="Areas\V2\Commands\RegisterMatch4Command.cs" />
     <Compile Include="Areas\V2\Commands\RegisterMatchCommand.cs" />
     <Compile Include="Areas\V2\Domain\EliteMedals.cs" />
-    <Compile Include="Areas\V2\Domain\Match\MatchAnalyzer.cs" />
+    <Compile Include="Areas\V2\Domain\Match\Commentary\MatchAnalyzer.cs" />
+    <Compile Include="Areas\V2\Domain\Match\Commentary\MatchResultType.cs" />
+    <Compile Include="Areas\V2\Domain\Match\Commentary\SeriesScores.cs" />
+    <Compile Include="Areas\V2\Domain\Match\Commentary\SummaryPattern.cs" />
+    <Compile Include="Areas\V2\Domain\Match\Commentary\SummaryPatterns.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\MatchCommentaryEvent.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\ScoreAwarded.cs" />
     <Compile Include="Areas\V2\Domain\Match\MatchRegisteredEvent.cs" />

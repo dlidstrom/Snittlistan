@@ -60,7 +60,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
         {
             var id = ResultSeriesReadModel.IdFromBitsMatchId(e.BitsMatchId);
             var results = DocumentSession.Load<ResultSeriesReadModel>(id);
-            results.SetMatchCommentary(e.MatchCommentary);
+            results.SetMatchCommentary(e.SummaryText);
         }
 
         private static ResultSeriesReadModel.Table CreateTable(
