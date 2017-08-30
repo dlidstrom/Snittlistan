@@ -114,6 +114,9 @@ namespace Snittlistan.Test.Domain
                 yield return new TestCase(3119116, "20-0", null);
                 yield return new TestCase(3119211, "19-1", null);
                 yield return new TestCase(3083803, "13-7", null);
+                yield return new TestCase(3119140, "17-3", null);
+                yield return new TestCase(3119150, "6-13", null);
+                yield return new TestCase(3119219, "11-8", null);
             }
         }
 

@@ -120,6 +120,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                     OpponentScore = (teamScore, opponentScore) => true,
                     Commentary = seriesScores =>
                     {
+                        var lastLastLastSeries = seriesScores[seriesScores.Length-3];
                         var sentences = new List<string>
                         {
                             string.Format(
@@ -136,6 +137,13 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                                     greatSeries.FormattedResult,
                                     greatSeries.FormattedDeltaResult));
                         }
+                        else if (lastLastLastSeries.OpponentScoreTotal > 5)
+                        {
+                            sentences.Add(
+                                string.Format(
+                                    "Laget stod för en stark upphämtning då matchen vändes i serie 2 när det stod {0}.",
+                                    lastLastLastSeries.FormattedResult));
+                        }
 
                         sentences.Add(seriesFormatter.Invoke(seriesScores));
                         return string.Join(" ", sentences);
@@ -147,7 +155,29 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                     MatchWon = MatchResult.Loss,
                     TeamScore = (teamScore, opponentScore, seriesScores) => true,
                     OpponentScore = (teamScore, opponentScore) => true,
-                    Commentary = seriesScores => "4 series loss, all results"
+                    Commentary = seriesScores =>
+                    {
+                        var sentences = new List<string>
+                        {
+                            string.Format(
+                                "Matchen slutade {0}.",
+                                seriesScores[3].FormattedResult)
+                        };
+
+                        var lossSeries = seriesScores.FirstOrDefault(x => x.TeamScoreDelta == 0 && x.TeamScoreTotal <= 5);
+                        if (lossSeries != null)
+                        {
+                            sentences.Add(
+                                string.Format(
+                                    "Motståndarna lade grunden till vinsten i serie {0} då poängställningen var {1} efter {2}.",
+                                    lossSeries.SerieNumber,
+                                    lossSeries.FormattedResult,
+                                    lossSeries.FormattedDeltaResult));
+                        }
+
+                        sentences.Add(seriesFormatter.Invoke(seriesScores));
+                        return string.Join(" ", sentences);
+                    }
                 },
                 new SummaryPattern("all 4 series draws")
                 {
