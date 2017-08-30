@@ -54,13 +54,13 @@ namespace Snittlistan.Web.Areas.V2.Commands
                         serie.Tables[i].Game2.Pins,
                         serie.Tables[i].Game2.Strikes,
                         serie.Tables[i].Game2.Spares);
-                    tables.Add(new MatchTable(game1, game2, serie.Tables[i].Score));
+                    tables.Add(new MatchTable(i + 1, game1, game2, serie.Tables[i].Score));
                 }
 
                 matchSeries.Add(new MatchSerie(serieNumber++, tables));
             }
 
-            matchResult.RegisterSeries(matchSeries.ToArray());
+            matchResult.RegisterSeries(matchSeries.ToArray(), result.OpponentSeries);
             eventStoreSession.Store(matchResult);
         }
     }

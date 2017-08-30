@@ -10,15 +10,23 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         public ResultSeriesReadModel()
         {
             Series = new List<Serie>();
+            MatchCommentary = string.Empty;
         }
 
         public string Id { get; set; }
 
         public List<Serie> Series { get; private set; }
 
+        public string MatchCommentary { get; private set; }
+
         public static string IdFromBitsMatchId(int id)
         {
             return "Series-" + id;
+        }
+
+        public void SetMatchCommentary(string matchCommentary)
+        {
+            MatchCommentary = matchCommentary;
         }
 
         public KeyValuePair<string, List<PlayerGame>>[] SortedPlayers()
@@ -99,6 +107,11 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             }
 
             public List<Table> Tables { get; set; }
+
+            public int TeamTotal
+            {
+                get { return Tables.Sum(x => x.Game1.Pins + x.Game2.Pins); }
+            }
         }
 
         public class Table

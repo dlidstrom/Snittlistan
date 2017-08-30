@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
+using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.DomainEvents;
 
 namespace Snittlistan.Test.Domain
@@ -43,25 +44,80 @@ namespace Snittlistan.Test.Domain
                     1,
                     new List<MatchTable>
                     {
-                        new MatchTable(new MatchGame("p1", 169, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
-                        new MatchTable(new MatchGame("p3", 0, 0, 0), new MatchGame("p4", 170, 0, 0), 0),
-                        new MatchTable(new MatchGame("p5", 0, 0, 0), new MatchGame("p6", 0, 0, 0), 0),
-                        new MatchTable(new MatchGame("p7", 200, 0, 0), new MatchGame("p8", 0, 0, 0), 0),
+                        new MatchTable(1, new MatchGame("p1", 169, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
+                        new MatchTable(2, new MatchGame("p3", 0, 0, 0), new MatchGame("p4", 170, 0, 0), 0),
+                        new MatchTable(3, new MatchGame("p5", 0, 0, 0), new MatchGame("p6", 0, 0, 0), 0),
+                        new MatchTable(4, new MatchGame("p7", 200, 0, 0), new MatchGame("p8", 0, 0, 0), 0),
                     }),
                 new MatchSerie(
                     2,
                     new List<MatchTable>
                     {
-                        new MatchTable(new MatchGame("p1", 169, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
-                        new MatchTable(new MatchGame("p3", 0, 0, 0), new MatchGame("p4", 170, 0, 0), 0),
-                        new MatchTable(new MatchGame("p5", 0, 0, 0), new MatchGame("p6", 0, 0, 0), 0),
-                        new MatchTable(new MatchGame("p7", 200, 0, 0), new MatchGame("p8", 0, 0, 0), 0),
+                        new MatchTable(1, new MatchGame("p1", 169, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
+                        new MatchTable(2, new MatchGame("p3", 0, 0, 0), new MatchGame("p4", 170, 0, 0), 0),
+                        new MatchTable(3, new MatchGame("p5", 0, 0, 0), new MatchGame("p6", 0, 0, 0), 0),
+                        new MatchTable(4, new MatchGame("p7", 200, 0, 0), new MatchGame("p8", 0, 0, 0), 0),
                     })
             };
 
             using (DomainEvent.TestWith(e => ev = (MatchRegisteredEvent)e))
             {
-                matchResult.RegisterSeries(series);
+                var opponentSeries = new[]
+                {
+                    new ResultSeriesReadModel.Serie
+                    {
+                        Tables = new List<ResultSeriesReadModel.Table>
+                        {
+                            new ResultSeriesReadModel.Table
+                            {
+                                Game1 = new ResultSeriesReadModel.Game(),
+                                Game2 = new ResultSeriesReadModel.Game()
+                            },
+                            new ResultSeriesReadModel.Table
+                            {
+                                Game1 = new ResultSeriesReadModel.Game(),
+                                Game2 = new ResultSeriesReadModel.Game()
+                            },
+                            new ResultSeriesReadModel.Table
+                            {
+                                Game1 = new ResultSeriesReadModel.Game(),
+                                Game2 = new ResultSeriesReadModel.Game()
+                            },
+                            new ResultSeriesReadModel.Table
+                            {
+                                Game1 = new ResultSeriesReadModel.Game(),
+                                Game2 = new ResultSeriesReadModel.Game()
+                            }
+                        }
+                    },
+                    new ResultSeriesReadModel.Serie
+                    {
+                        Tables = new List<ResultSeriesReadModel.Table>
+                        {
+                            new ResultSeriesReadModel.Table
+                            {
+                                Game1 = new ResultSeriesReadModel.Game(),
+                                Game2 = new ResultSeriesReadModel.Game()
+                            },
+                            new ResultSeriesReadModel.Table
+                            {
+                                Game1 = new ResultSeriesReadModel.Game(),
+                                Game2 = new ResultSeriesReadModel.Game()
+                            },
+                            new ResultSeriesReadModel.Table
+                            {
+                                Game1 = new ResultSeriesReadModel.Game(),
+                                Game2 = new ResultSeriesReadModel.Game()
+                            },
+                            new ResultSeriesReadModel.Table
+                            {
+                                Game1 = new ResultSeriesReadModel.Game(),
+                                Game2 = new ResultSeriesReadModel.Game()
+                            }
+                        }
+                    }
+                };
+                matchResult.RegisterSeries(series, opponentSeries);
             }
         }
 
@@ -70,7 +126,7 @@ namespace Snittlistan.Test.Domain
         {
             // Assert
             var changes = matchResult.GetUncommittedChanges();
-            Assert.That(changes, Has.Length.EqualTo(3));
+            Assert.That(changes, Has.Length.EqualTo(4));
             Assert.IsAssignableFrom<SerieRegistered>(changes[1]);
         }
 

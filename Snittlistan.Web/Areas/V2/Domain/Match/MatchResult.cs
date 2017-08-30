@@ -4,6 +4,7 @@ using System.Linq;
 using EventStoreLite;
 using JetBrains.Annotations;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
+using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.DomainEvents;
 
 namespace Snittlistan.Web.Areas.V2.Domain.Match
@@ -60,9 +61,10 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             ApplyChange(new MatchResultDeleted(RosterId, BitsMatchId));
         }
 
-        public void RegisterSeries(MatchSerie[] matchSeries)
+        public void RegisterSeries(MatchSerie[] matchSeries, ResultSeriesReadModel.Serie[] opponentSeries)
         {
             if (matchSeries == null) throw new ArgumentNullException("matchSeries");
+            if (opponentSeries == null) throw new ArgumentNullException("opponentSeries");
             if (rosterPlayers.Count != 8 && rosterPlayers.Count != 9 && rosterPlayers.Count != 10)
                 throw new MatchException("Roster must have 8, 9, or 10 players when registering results");
             foreach (var matchSerie in matchSeries)
@@ -73,6 +75,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                 if (registeredSeries > 4) throw new ArgumentException("Can only register up to 4 series");
             }
 
+            ApplyChange(CreateMatchCommentary(matchSeries, opponentSeries));
             DomainEvent.Raise(new MatchRegisteredEvent(RosterId, TeamScore, OpponentScore));
         }
 
@@ -185,6 +188,16 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             throw new MatchException("Can only register players from roster");
         }
 
+        private MatchCommentaryEvent CreateMatchCommentary(
+            MatchSerie[] matchSeries,
+            ResultSeriesReadModel.Serie[] opponentSeries)
+        {
+            var matchCommentary = new List<string>();
+            var commentaryAnalyzer = new MatchAnalyzer(matchSeries, opponentSeries);
+            matchCommentary.Add(commentaryAnalyzer.GetSummaryText());
+            return new MatchCommentaryEvent(BitsMatchId, string.Join(" ", matchCommentary));
+        }
+
         // events
         [UsedImplicitly]
         private void Apply(MatchResultRegistered e)
@@ -242,6 +255,11 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
         [UsedImplicitly]
         private void Apply(ScoreAwarded e)
+        {
+        }
+
+        [UsedImplicitly]
+        private void Apply(MatchCommentaryEvent e)
         {
         }
     }
