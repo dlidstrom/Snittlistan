@@ -62,9 +62,15 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
         private static SummaryPattern[] CreateSummaryPatterns()
         {
-            Func<SeriesScores[], string> seriesFormatter = seriesScores => string.Format(
-                "Serierna slutade {0}.",
-                string.Join(", ", seriesScores.Select(x => x.FormattedDeltaResult)));
+            Func<SeriesScores[], string> seriesFormatter = seriesScores =>
+            {
+                var result = string.Format(
+                    "Serierna slutade {0}.",
+                    string.Join(
+                        ", ",
+                        seriesScores.Select(x => string.Format("{0} ({1}-{2})", x.FormattedDeltaResult, x.TeamPins, x.OpponentPins))));
+                return result;
+            };
 
             var summaryPatterns = new[]
             {
@@ -82,6 +88,8 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                                 "Motståndarna hade inget att säga emot då resultatet blev {0}. Stark insats av laget där alltså alla spelare to 4 poäng!",
                                 seriesScores[3].FormattedResult)
                         };
+
+                        sentences.Add(seriesFormatter.Invoke(seriesScores));
                         return string.Join(" ", sentences);
                     }
                 },
@@ -110,9 +118,28 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                     TeamScore = (teamScore, opponentScore, seriesScores)
                         => teamScore < 14 && teamScore > opponentScore,
                     OpponentScore = (teamScore, opponentScore) => true,
-                    Commentary = seriesScores => string.Format(
-                        "Matchen vanns med resultatet {0}.",
-                        seriesScores[3].FormattedResult)
+                    Commentary = seriesScores =>
+                    {
+                        var sentences = new List<string>
+                        {
+                            string.Format(
+                                "Matchen vanns med resultatet {0}.",
+                                seriesScores[3].FormattedResult)
+                        };
+                        var greatSeries = seriesScores.FirstOrDefault(x => x.TeamScoreDelta == 5 && x.TeamScoreTotal <= 10);
+                        if (greatSeries != null)
+                        {
+                            sentences.Add(
+                                string.Format(
+                                    "Grunden till vinsten lades i serie {0} då poängställningen var {1} efter {2}.",
+                                    greatSeries.SerieNumber,
+                                    greatSeries.FormattedResult,
+                                    greatSeries.FormattedDeltaResult));
+                        }
+
+                        sentences.Add(seriesFormatter.Invoke(seriesScores));
+                        return string.Join(" ", sentences);
+                    }
                 },
                 new SummaryPattern("all 4 series losses")
                 {
@@ -225,12 +252,18 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                 TeamScoreTotal = TeamScoreDelta + cumulativeScore;
                 OpponentScoreDelta = opponentSerie.Tables.Sum(x => x.Score) + opponentScore;
                 OpponentScoreTotal = OpponentScoreDelta + cumulativeOpponentScore;
+                SerieNumber = matchSerie.SerieNumber;
+                TeamPins = matchSerie.TeamTotal;
+                OpponentPins = opponentSerie.TeamTotal;
             }
 
             public int TeamScoreTotal { get; private set; }
             public int TeamScoreDelta { get; private set; }
             public int OpponentScoreTotal { get; private set; }
             public int OpponentScoreDelta { get; private set; }
+            public int SerieNumber { get; private set; }
+            public int TeamPins { get; private set; }
+            public int OpponentPins { get; private set; }
 
             public string FormattedResult
             {
