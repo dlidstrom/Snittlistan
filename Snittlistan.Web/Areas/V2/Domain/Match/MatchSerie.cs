@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
@@ -14,6 +15,13 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         {
             if (tables == null) throw new ArgumentNullException("tables");
             if (tables.Count != 4) throw new ArgumentException("tables");
+            if (tables[0].TableNumber != 1
+                || tables[1].TableNumber != 2
+                || tables[2].TableNumber != 3
+                || tables[3].TableNumber != 4)
+            {
+                throw new ArgumentException("Invalid table number", "tables");
+            }
 
             SerieNumber = serieNumber;
             var players = new HashSet<string>();
@@ -43,5 +51,23 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         public MatchTable Table3 { get; private set; }
 
         public MatchTable Table4 { get; private set; }
+
+        public int TeamTotal
+        {
+            get
+            {
+                return new[]
+                {
+                    Table1.Game1.Pins,
+                    Table1.Game2.Pins,
+                    Table2.Game1.Pins,
+                    Table2.Game2.Pins,
+                    Table3.Game1.Pins,
+                    Table3.Game2.Pins,
+                    Table4.Game1.Pins,
+                    Table4.Game2.Pins,
+                }.Sum();
+            }
+        }
     }
 }

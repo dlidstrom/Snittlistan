@@ -17,7 +17,7 @@ namespace Snittlistan.Web.Infrastructure.Validation
 
         public IEnumerable<ModelClientValidationRule> GetClientValidationRules(ModelMetadata metadata, ControllerContext context)
         {
-            var rule = new ModelClientValidationRule()
+            var rule = new ModelClientValidationRule
             {
                 ErrorMessage = FormatErrorMessage(metadata.GetDisplayName()),
                 ValidationType = "requiredifexists",

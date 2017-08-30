@@ -165,7 +165,6 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         private ParseResult ExtractTeam(HtmlNode documentNode, Team team, Team away)
         {
-            var series = new List<ResultSeriesReadModel.Serie>();
             var tableNode = documentNode.SelectSingleNode("//table[@id='MainContentPlaceHolder_MatchFact1_TableMatch']");
 
             // adjust for header and footer rows
@@ -177,6 +176,25 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 throw new ApplicationException(message);
             }
 
+            var teamSeries = ExtractSeriesForTeam(team, numberOfSeries, tableNode, s => GetPlayerId(s).Id);
+            var opponentSeries = ExtractSeriesForTeam(away, numberOfSeries, tableNode, s => s);
+
+            var teamScoreNode = documentNode.SelectSingleNode(string.Format("//span[@id='MainContentPlaceHolder_MatchHead1_LblSumPoints{0}']", team));
+            var teamScore = int.Parse(teamScoreNode.InnerText);
+
+            var awayScoreNode = documentNode.SelectSingleNode(string.Format("//span[@id='MainContentPlaceHolder_MatchHead1_LblSumPoints{0}']", away));
+            var awayScore = int.Parse(awayScoreNode.InnerText);
+
+            return new ParseResult(teamScore, awayScore, teamSeries, opponentSeries);
+        }
+
+        private ResultSeriesReadModel.Serie[] ExtractSeriesForTeam(
+            Team team,
+            int numberOfSeries,
+            HtmlNode tableNode,
+            Func<string, string> getPlayerId)
+        {
+            var series = new List<ResultSeriesReadModel.Serie>();
             for (var serieNumber = 1; serieNumber <= numberOfSeries; serieNumber++)
             {
                 var serie = new ResultSeriesReadModel.Serie();
@@ -220,12 +238,12 @@ namespace Snittlistan.Web.Areas.V2.Domain
                         Game1 = new ResultSeriesReadModel.Game
                         {
                             Pins = res1,
-                            Player = GetPlayerId(name1.InnerText).Id
+                            Player = getPlayerId(name1.InnerText)
                         },
                         Game2 = new ResultSeriesReadModel.Game
                         {
                             Pins = res2,
-                            Player = GetPlayerId(name2.InnerText).Id
+                            Player = getPlayerId(name2.InnerText)
                         }
                     };
                     tables.Add(table);
@@ -235,13 +253,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 series.Add(serie);
             }
 
-            var teamScoreNode = documentNode.SelectSingleNode(string.Format("//span[@id='MainContentPlaceHolder_MatchHead1_LblSumPoints{0}']", team));
-            var teamScore = int.Parse(teamScoreNode.InnerText);
-
-            var awayScoreNode = documentNode.SelectSingleNode(string.Format("//span[@id='MainContentPlaceHolder_MatchHead1_LblSumPoints{0}']", away));
-            var awayScore = int.Parse(awayScoreNode.InnerText);
-
-            return new ParseResult(teamScore, awayScore, series.ToArray());
+            return series.ToArray();
         }
 
         private Parse4Result ExtractTeam4(HtmlNode documentNode, Team team, Team away)

@@ -6,13 +6,14 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
     [DebuggerDisplay("{Game1.Player} {Game2.Player} {Score}")]
     public class MatchTable
     {
-        public MatchTable(MatchGame game1, MatchGame game2, int score)
+        public MatchTable(int tableNumber, MatchGame game1, MatchGame game2, int score)
         {
             if (game1 == null) throw new ArgumentNullException("game1");
             if (game2 == null) throw new ArgumentNullException("game2");
             if (score != 0 && score != 1) throw new ArgumentOutOfRangeException("score", score, "Score out of range");
             if (game1.Player == game2.Player)
                 throw new MatchException("Table must have different players");
+            TableNumber = tableNumber;
             Score = score;
             Game1 = game1;
             Game2 = game2;
