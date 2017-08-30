@@ -34,7 +34,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             if (!ModelState.IsValid) return View(vm);
 
             Debug.Assert(vm.PersonalNumber != null, "vm.PersonalNumber != null");
-            var player = new Player(vm.Name, vm.Email, vm.Status, vm.PersonalNumber.Value);
+            var player = new Player(vm.Name, vm.Email, vm.Status, vm.PersonalNumber.Value, null);
             DocumentSession.Store(player);
             return RedirectToAction("Index");
         }

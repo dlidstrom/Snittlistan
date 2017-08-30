@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
@@ -20,20 +21,45 @@ namespace Snittlistan.Test.Domain
         public void SetUp()
         {
             // Arrange
+            var players = new[]
+            {
+                new Player("n", "e@d.com", Player.Status.Active, -1, null)
+                {
+                    Id = "p1"
+                },
+                new Player("n", "e@d.com", Player.Status.Active, -1, null)
+                {
+                    Id = "p2"
+                },
+                new Player("n", "e@d.com", Player.Status.Active, -1, null)
+                {
+                    Id = "p3"
+                },
+                new Player("n", "e@d.com", Player.Status.Active, -1, null)
+                {
+                    Id = "p4"
+                },
+                new Player("n", "e@d.com", Player.Status.Active, -1, null)
+                {
+                    Id = "p5"
+                },
+                new Player("n", "e@d.com", Player.Status.Active, -1, null)
+                {
+                    Id = "p6"
+                },
+                new Player("n", "e@d.com", Player.Status.Active, -1, null)
+                {
+                    Id = "p7"
+                },
+                new Player("n", "e@d.com", Player.Status.Active, -1, null)
+                {
+                    Id = "p8"
+                },
+            };
             roster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false)
             {
                 Id = "rosters-1",
-                Players = new List<string>
-                {
-                    "p1",
-                    "p2",
-                    "p3",
-                    "p4",
-                    "p5",
-                    "p6",
-                    "p7",
-                    "p8"
-                }
+                Players = players.Select(x => x.Id).ToList()
             };
             matchResult = new MatchResult(roster, 9, 11, 123);
 
@@ -117,7 +143,7 @@ namespace Snittlistan.Test.Domain
                         }
                     }
                 };
-                matchResult.RegisterSeries(series, opponentSeries);
+                matchResult.RegisterSeries(series, opponentSeries, players);
             }
         }
 
