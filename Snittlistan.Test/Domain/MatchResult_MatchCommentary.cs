@@ -5,18 +5,19 @@ using System.Linq;
 using EventStoreLite;
 using Moq;
 using NUnit.Framework;
-using Raven.Client;
+using Snittlistan.Test.ApiControllers;
 using Snittlistan.Web.Areas.V2.Commands;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
+using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.DomainEvents;
 using Snittlistan.Web.Infrastructure;
 
 namespace Snittlistan.Test.Domain
 {
     [TestFixture]
-    public class MatchResult_MatchCommentary
+    public class MatchResult_MatchCommentary : WebApiIntegrationTest
     {
         [TestCaseSource("BitsMatchIdAndCommentaries")]
         public void MatchCommentarySummaryText(TestCase testCase)
@@ -39,144 +40,55 @@ namespace Snittlistan.Test.Domain
             // Assert
             var changes = matchResult.GetUncommittedChanges();
             var matchCommentaryEvent = (MatchCommentaryEvent)changes.Single(x => x is MatchCommentaryEvent);
-            Assert.That(matchCommentaryEvent.BodyText, Is.EqualTo(testCase.ExpectedBodyText));
+            Assert.That(string.Join(" ", matchCommentaryEvent.BodyText), Is.EqualTo(testCase.ExpectedBodyText));
         }
 
-        private static MatchResult Act(TestCase testCase)
+        private MatchResult Act(TestCase testCase)
         {
             // Arrange
             var bitsClient = new BitsClient();
             var players = new[]
             {
-                new Player("Alf Kindblom", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-31"
-                },
-                new Player("Bengt Solvander", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-1"
-                },
-                new Player("Christer Holmström", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-10"
-                },
-                new Player("Christer Liedholm", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-19"
-                },
-                new Player("Claes Trankärr", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-29"
-                },
-                new Player("Daniel Lidström", "e@d.com", Player.Status.Active, -1, "Lidas")
-                {
-                    Id = "players-2"
-                },
-                new Player("Daniel Solvander", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-3"
-                },
-                new Player("Hans Norbeck", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-30"
-                },
-                new Player("Håkan Gustavsson", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-4"
-                },
-                new Player("Karl-Erik Frick", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-11"
-                },
-                new Player("Kjell Jansson", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-25"
-                },
-                new Player("Kjell Johansson", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-5"
-                },
-                new Player("Lars Magnusson", "e@d.com", Player.Status.Active, -1, "Lasse Magnus")
-                {
-                    Id = "players-17"
-                },
-                new Player("Lars Norbeck", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-13"
-                },
-                new Player("Lars Öberg", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-14"
-                },
-                new Player("Lennart Axelsson", "e@d.com", Player.Status.Active, -1, "Laxen")
-                {
-                    Id = "players-6"
-                },
-                new Player("Magnus Sjöholm", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-18"
-                },
-                new Player("Markus Norbeck", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-27"
-                },
-                new Player("Mathias Ernest", "e@d.com", Player.Status.Active, -1, "Ernest")
-                {
-                    Id = "players-15"
-                },
-                new Player("Matz Classon", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-7"
-                },
-                new Player("Mikael Axelsson", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-20"
-                },
-                new Player("Per-Erik Freij", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-23"
-                },
-                new Player("Peter Engborg", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-24"
-                },
-                new Player("Peter Sjöberg", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-32"
-                },
-                new Player("Ralph Svensson", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-22"
-                },
-                new Player("Stefan Markenfelt", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-28"
-                },
-                new Player("Stefan Traav", "e@d.com", Player.Status.Active, -1, "Traav")
-                {
-                    Id = "players-8"
-                },
-                new Player("Thomas Wallgren", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-12"
-                },
-                new Player("Thomas Gurell", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-9"
-                },
-                new Player("Tomas Gustavsson", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-21"
-                },
-                new Player("Tony Nordström", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-26"
-                },
-                new Player("Torbjörn Jensen", "e@d.com", Player.Status.Active, -1, null)
-                {
-                    Id = "players-16"
-                }
+                new Player("Alf Kindblom", "e@d.com", Player.Status.Active, -1, "Affe"),
+                new Player("Bengt Solvander", "e@d.com", Player.Status.Active, -1, "Sollan"),
+                new Player("Christer Holmström", "e@d.com", Player.Status.Active, -1, "Holmis"),
+                new Player("Christer Liedholm", "e@d.com", Player.Status.Active, -1, "Chrille"),
+                new Player("Claes Trankärr", "e@d.com", Player.Status.Active, -1, "Traanan"),
+                new Player("Daniel Lidström", "e@d.com", Player.Status.Active, -1, "Lidas"),
+                new Player("Daniel Solvander", "e@d.com", Player.Status.Active, -1, "Solen"),
+                new Player("Hans Norbeck", "e@d.com", Player.Status.Active, -1, "Hasse"),
+                new Player("Håkan Gustavsson", "e@d.com", Player.Status.Active, -1, "Håkan"),
+                new Player("Karl-Erik Frick", "e@d.com", Player.Status.Active, -1, "Kalle"),
+                new Player("Kjell Jansson", "e@d.com", Player.Status.Active, -1, "Jansson"),
+                new Player("Kjell Johansson", "e@d.com", Player.Status.Active, -1, "Kjelle"),
+                new Player("Lars Magnusson", "e@d.com", Player.Status.Active, -1, "Lasse Magnus"),
+                new Player("Lars Norbeck", "e@d.com", Player.Status.Active, -1, "Norpan"),
+                new Player("Lars Öberg", "e@d.com", Player.Status.Active, -1, "Öberg"),
+                new Player("Lennart Axelsson", "e@d.com", Player.Status.Active, -1, "Laxen"),
+                new Player("Magnus Sjöholm", "e@d.com", Player.Status.Active, -1, "Masken"),
+                new Player("Markus Norbeck", "e@d.com", Player.Status.Active, -1, "Markus"),
+                new Player("Mathias Ernest", "e@d.com", Player.Status.Active, -1, "Ernest"),
+                new Player("Matz Classon", "e@d.com", Player.Status.Active, -1, "Classon"),
+                new Player("Mikael Axelsson", "e@d.com", Player.Status.Active, -1, "Micke"),
+                new Player("Per-Erik Freij", "e@d.com", Player.Status.Active, -1, "Perre"),
+                new Player("Peter Engborg", "e@d.com", Player.Status.Active, -1, "Peter E"),
+                new Player("Peter Sjöberg", "e@d.com", Player.Status.Active, -1, "Peter S"),
+                new Player("Ralph Svensson", "e@d.com", Player.Status.Active, -1, "Raffe"),
+                new Player("Stefan Markenfelt", "e@d.com", Player.Status.Active, -1, "Marken"),
+                new Player("Stefan Traav", "e@d.com", Player.Status.Active, -1, "Traav"),
+                new Player("Thomas Wallgren", "e@d.com", Player.Status.Active, -1, "TW"),
+                new Player("Thomas Gurell", "e@d.com", Player.Status.Active, -1, "Gurkan"),
+                new Player("Tomas Gustavsson", "e@d.com", Player.Status.Active, -1, "Gusten"),
+                new Player("Tony Nordström", "e@d.com", Player.Status.Active, -1, "Tony"),
+                new Player("Torbjörn Jensen", "e@d.com", Player.Status.Active, -1, "Tobbe")
             };
+            Transact(session =>
+            {
+                foreach (var player in players)
+                {
+                    session.Store(player);
+                }
+            });
             var bitsParser = new BitsParser(players);
 
             string content;
@@ -204,19 +116,41 @@ namespace Snittlistan.Test.Domain
             };
             var command = new RegisterMatchCommand(roster, parseResult);
 
+            // prepare some results
+            Transact(session =>
+            {
+                var playerResults = new Dictionary<string, int[]>(); 
+                var nicknameToId = players.ToDictionary(x => x.Nickname);
+                playerResults[nicknameToId["Ernest"].Id] = new[] { 205, 205, 205, 205, 205 };
+                playerResults[nicknameToId["Lidas"].Id] = new[] { 190, 190, 190, 190, 190 };
+                playerResults[nicknameToId["Laxen"].Id] = new[] { 190, 190, 190, 190, 190 };
+                playerResults[nicknameToId["Lasse Magnus"].Id] = new[] { 205, 205, 205, 205, 205 };
+                playerResults[nicknameToId["Norpan"].Id] = new[] { 190, 190, 190, 190, 190 };
+                playerResults[nicknameToId["Traav"].Id] = new[] { 190, 190, 190, 190, 190 };
+                foreach (var playerId in playerResults.Keys)
+                {
+                    var resultForPlayer = new ResultForPlayerReadModel(2017, playerId, -1, DateTime.Now);
+                    foreach (var playerResult in playerResults[playerId])
+                    {
+                        resultForPlayer.AddGame(1, new MatchGame(playerId, playerResult, 0, 0));
+                    }
+
+                    session.Store(resultForPlayer);
+                }
+            });
+
             // Act
             MatchResult matchResult = null;
             using (DomainEvent.Disable())
             {
-                var session = Mock.Of<IDocumentSession>();
-                Mock.Get(session)
-                    .Setup(x => x.Load<Player>(It.IsAny<List<string>>()))
-                    .Returns(players);
-                var eventStoreSession = Mock.Of<IEventStoreSession>();
-                Mock.Get(eventStoreSession)
-                    .Setup(x => x.Store(It.IsAny<AggregateRoot>()))
-                    .Callback((AggregateRoot ar) => matchResult = (MatchResult)ar);
-                command.Execute(session, eventStoreSession);
+                Transact(session =>
+                {
+                    var eventStoreSession = Mock.Of<IEventStoreSession>();
+                    Mock.Get(eventStoreSession)
+                        .Setup(x => x.Store(It.IsAny<AggregateRoot>()))
+                        .Callback((AggregateRoot ar) => matchResult = (MatchResult)ar);
+                    command.Execute(session, eventStoreSession);
+                });
             }
             return matchResult;
         }

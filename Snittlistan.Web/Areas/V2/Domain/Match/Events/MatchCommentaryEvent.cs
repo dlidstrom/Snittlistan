@@ -4,7 +4,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
 {
     public class MatchCommentaryEvent : Event
     {
-        public MatchCommentaryEvent(int bitsMatchId, string summaryText, string bodyText)
+        public MatchCommentaryEvent(int bitsMatchId, string summaryText, string[] bodyText)
         {
             BitsMatchId = bitsMatchId;
             SummaryText = summaryText;
@@ -15,6 +15,6 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
 
         public string SummaryText { get; private set; }
 
-        public string BodyText { get; private set; }
+        public string[] BodyText { get; private set; }
     }
 }

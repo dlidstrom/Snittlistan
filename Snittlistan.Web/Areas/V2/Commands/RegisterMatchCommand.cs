@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using EventStoreLite;
 using Raven.Client;
+using Raven.Client.Linq;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
+using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Infrastructure;
 
 namespace Snittlistan.Web.Areas.V2.Commands
@@ -61,7 +63,15 @@ namespace Snittlistan.Web.Areas.V2.Commands
                 matchSeries.Add(new MatchSerie(serieNumber++, tables));
             }
 
-            matchResult.RegisterSeries(matchSeries.ToArray(), result.OpponentSeries, players);
+            var resultsForPlayer = session.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
+                                          .Where(x => x.Season == roster.Season)
+                                          .ToArray()
+                                          .ToDictionary(x => x.PlayerId);
+            matchResult.RegisterSeries(
+                matchSeries.ToArray(),
+                result.OpponentSeries,
+                players,
+                resultsForPlayer);
             eventStoreSession.Store(matchResult);
         }
     }
