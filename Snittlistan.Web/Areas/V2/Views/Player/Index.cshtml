@@ -4,7 +4,7 @@
 @helper ShowPlayer(PlayerViewModel player)
 {
     <tr>
-        <td>@player.Name</td>
+        <td>@player.Name (@player.Nickname)</td>
         <td>@player.StatusText</td>
         @if (Request.IsAuthenticated)
         {
@@ -41,12 +41,12 @@
                 <ul class="dropdown-menu">
                     <li>
                         <a href="mailto:@string.Join(",", Model.Where(x => x.Status != Player.Status.Inactive).Select(x => x.Email))">
-                            Till alla (komma-separerade)
+                            Till alla (komma-separerade; iPhone/Android)
                         </a>
                     </li>
                     <li>
                         <a href="mailto:@string.Join(";", Model.Where(x => x.Status != Player.Status.Inactive).Select(x => x.Email))">
-                            Till alla (semikolon-separerade)
+                            Till alla (semikolon-separerade; Outlook)
                         </a>
                     </li>
                 </ul>

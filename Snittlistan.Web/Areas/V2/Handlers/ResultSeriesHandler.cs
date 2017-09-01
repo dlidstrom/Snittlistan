@@ -10,8 +10,7 @@ using Snittlistan.Web.Areas.V2.ReadModels;
 namespace Snittlistan.Web.Areas.V2.Handlers
 {
     public class ResultSeriesHandler :
-        IEventHandler<SerieRegistered>,
-        IEventHandler<MatchCommentaryEvent>
+        IEventHandler<SerieRegistered>
     {
         public IDocumentSession DocumentSession { get; set; }
 
@@ -54,13 +53,6 @@ namespace Snittlistan.Web.Areas.V2.Handlers
                                                 table4
                                             }
                                });
-        }
-
-        public void Handle(MatchCommentaryEvent e, string aggregateId)
-        {
-            var id = ResultSeriesReadModel.IdFromBitsMatchId(e.BitsMatchId);
-            var results = DocumentSession.Load<ResultSeriesReadModel>(id);
-            results.SetMatchCommentary(e.SummaryText);
         }
 
         private static ResultSeriesReadModel.Table CreateTable(

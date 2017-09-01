@@ -8,6 +8,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         {
             Id = player.Id;
             Name = player.Name;
+            Nickname = player.Nickname;
             Email = player.Email;
             Status = player.PlayerStatus;
             switch (player.PlayerStatus)
@@ -26,14 +27,16 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             }
         }
 
-        public string Id { get; set; }
+        public string Id { get; private set; }
 
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
-        public string Email { get; set; }
+        public string Email { get; private set; }
 
-        public Player.Status Status { get; set; }
+        public Player.Status Status { get; private set; }
 
-        public string StatusText { get; set; }
+        public string StatusText { get; private set; }
+
+        public string Nickname { get; private set; }
     }
 }

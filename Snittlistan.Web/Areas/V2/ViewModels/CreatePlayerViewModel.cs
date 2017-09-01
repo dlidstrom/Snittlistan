@@ -8,6 +8,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         public CreatePlayerViewModel()
         {
             Name = string.Empty;
+            Nickname = string.Empty;
             Email = string.Empty;
             Status = Player.Status.Active;
         }
@@ -15,6 +16,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         public CreatePlayerViewModel(Player player)
         {
             Name = player.Name;
+            Nickname = player.Nickname;
             Email = player.Email;
             Status = player.PlayerStatus;
             PersonalNumber = player.PersonalNumber;
@@ -22,6 +24,9 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         [Required]
         public string Name { get; set; }
+
+        [Required]
+        public string Nickname { get; set; }
 
         [Required]
         public string Email { get; set; }

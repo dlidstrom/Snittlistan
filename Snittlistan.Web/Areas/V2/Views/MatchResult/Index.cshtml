@@ -18,44 +18,60 @@
 }
 @foreach (var turn in Model.Turns.Keys.OrderByDescending(x => x))
 {
+    var minDate = Model.Turns[turn].Select(x => x.Date)
+        .Min();
+    var maxDate = Model.Turns[turn].Select(x => x.Date)
+        .Max();
+    var matchResults = Model.Turns[turn];
     <div class="row">
-        <div class="span8">
-            @{
-                var minDate = Model.Turns[turn].Select(x => x.Date)
-                    .Min();
-                var maxDate = Model.Turns[turn].Select(x => x.Date)
-                    .Max();
-            }
-            <h4>Omgång @turn
-                <em>(@Html.FormatDateSpan(minDate.Date, maxDate.Date))</em>
-            </h4>
-            <table class="table table-condensed table-striped result-header-table">
-                <tr>
-                    <th>Plats</th>
-                    <th>Lag</th>
-                    <th>Resultat</th>
-                </tr>
-                @{
-                    var matchResults = Model.Turns[turn];
-                }
-                @foreach (var result in matchResults.SortResults())
-                {
-                    <tr>
-                        <td class="center" rowspan="2">@result.Location</td>
-                        <td>
+        <h4>
+            Omgång @turn
+            <em>(@Html.FormatDateSpan(minDate.Date, maxDate.Date))</em>
+        </h4>
+        @foreach (var result in matchResults.SortResults())
+        {
+            <div class="span4">
+                <div class="well-small">
+
+                    <dl>
+                        <dt>
+                            Lag
+                        </dt>
+                        <dt>
                             @Content.TeamLabel(result.TeamLevel, result.Team)
-                        </td>
-                        <td class="center" rowspan="2">
-                            <a href="@Url.Action("Details", new { id = result.BitsMatchId })">
+                        </dt>
+                        <dt>
+                            Motståndare
+                        </dt>
+                        <dd>
+                            @result.Opponent
+                        </dd>
+                        <dt>
+                            Detaljer
+                        </dt>
+                        <dd>
+                            <a href="@Url.Action("Details", new
+                                     {
+                                         id = result.BitsMatchId
+                                     })">
                                 @result.TeamScore&minus;@result.OpponentScore
                             </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@result.Opponent</td>
-                    </tr>
-                }
-            </table>
-        </div>
+                        </dd>
+                    </dl>
+                    <p>
+                        <strong>
+                            @result.Location
+                        </strong>
+                        @result.MatchCommentary
+                    </p>
+                    @foreach (var part in result.BodyText)
+                    {
+                        <p>
+                            @part
+                        </p>
+                    }
+                </div>
+            </div>
+        }
     </div>
 }
