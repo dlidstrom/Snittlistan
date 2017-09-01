@@ -42,7 +42,8 @@ namespace Snittlistan.Web.Models
             string opponent,
             int score,
             int opponentScore,
-            ResultSeriesReadModel resultSeriesReadModel)
+            ResultSeriesReadModel resultSeriesReadModel,
+            ResultHeaderReadModel resultHeaderReadModel)
         {
             var subject = string.Format(
                 "{0} mot {1}: {2} - {3}",
@@ -62,6 +63,7 @@ namespace Snittlistan.Web.Models
                     o.Score = score;
                     o.OpponentScore = opponentScore;
                     o.ResultSeriesReadModel = resultSeriesReadModel;
+                    o.ResultHeaderReadModel = resultHeaderReadModel;
                 });
         }
 

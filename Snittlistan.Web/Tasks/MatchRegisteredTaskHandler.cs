@@ -13,14 +13,17 @@ namespace Snittlistan.Web.Tasks
             {
                 var roster = session.Load<Roster>(task.RosterId);
                 if (roster.IsFourPlayer) return;
-                var id = ResultSeriesReadModel.IdFromBitsMatchId(roster.BitsMatchId);
-                var resultSeriesReadModel = session.Load<ResultSeriesReadModel>(id);
+                var resultSeriesReadModelId = ResultSeriesReadModel.IdFromBitsMatchId(roster.BitsMatchId);
+                var resultSeriesReadModel = session.Load<ResultSeriesReadModel>(resultSeriesReadModelId);
+                var resultHeaderReadModelId = ResultHeaderReadModel.IdFromBitsMatchId(roster.BitsMatchId);
+                var resultHeaderReadModel = session.Load<ResultHeaderReadModel>(resultHeaderReadModelId);
                 Emails.MatchRegistered(
                     roster.Team,
                     roster.Opponent,
                     task.Score,
                     task.OpponentScore,
-                    resultSeriesReadModel);
+                    resultSeriesReadModel,
+                    resultHeaderReadModel);
             });
         }
     }

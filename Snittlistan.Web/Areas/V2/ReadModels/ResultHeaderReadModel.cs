@@ -18,11 +18,15 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         {
             Id = IdFromBitsMatchId(bitsMatchId);
             SetValues(roster, aggregateId, teamScore, opponentScore, bitsMatchId, isFourPlayer);
+            MatchCommentary = string.Empty;
+            BodyText = new string[0];
         }
 
         [JsonConstructor]
         private ResultHeaderReadModel()
         {
+            MatchCommentary = string.Empty;
+            BodyText = new string[0];
         }
 
         public string AggregateId { get; private set; }
@@ -56,6 +60,10 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
         public bool IsFourPlayer { get; private set; }
 
+        public string MatchCommentary { get; private set; }
+
+        public string[] BodyText { get; private set; }
+
         public static string IdFromBitsMatchId(int bitsMatchId)
         {
             return "ResultHeader-" + bitsMatchId;
@@ -76,6 +84,12 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             OpponentScore = opponentScore;
             BitsMatchId = bitsMatchId;
             IsFourPlayer = isFourPlayer;
+        }
+
+        public void SetMatchCommentary(string matchCommentary, string[] bodyText)
+        {
+            MatchCommentary = matchCommentary;
+            BodyText = bodyText;
         }
     }
 }

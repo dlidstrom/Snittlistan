@@ -16,7 +16,8 @@ namespace Snittlistan.Web.Areas.V2.Handlers
         IEventHandler<MatchResult4Registered>,
         IEventHandler<MatchResult4Updated>,
         IEventHandler<Roster4Changed>,
-        IEventHandler<MatchResult4Deleted>
+        IEventHandler<MatchResult4Deleted>,
+        IEventHandler<MatchCommentaryEvent>
     {
         public IDocumentSession DocumentSession { get; set; }
 
@@ -58,6 +59,13 @@ namespace Snittlistan.Web.Areas.V2.Handlers
         public void Handle(MatchResult4Deleted e, string aggregateId)
         {
             DoDeleted(e.RosterId, e.BitsMatchId);
+        }
+
+        public void Handle(MatchCommentaryEvent e, string aggregateId)
+        {
+            var id = ResultHeaderReadModel.IdFromBitsMatchId(e.BitsMatchId);
+            var results = DocumentSession.Load<ResultHeaderReadModel>(id);
+            results.SetMatchCommentary(e.SummaryText, e.BodyText);
         }
 
         private void DoDeleted(string rosterId, int bitsMatchId)
