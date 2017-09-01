@@ -5,6 +5,7 @@ using EventStoreLite;
 using JetBrains.Annotations;
 using Snittlistan.Web.Areas.V2.Domain.Match.Commentary;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
+using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.DomainEvents;
 
@@ -65,11 +66,13 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         public void RegisterSeries(
             MatchSerie[] matchSeries,
             ResultSeriesReadModel.Serie[] opponentSeries,
-            Player[] players)
+            Player[] players,
+            Dictionary<string, ResultForPlayerIndex.Result> resultsForPlayer)
         {
             if (matchSeries == null) throw new ArgumentNullException("matchSeries");
             if (opponentSeries == null) throw new ArgumentNullException("opponentSeries");
             if (players == null) throw new ArgumentNullException("players");
+            if (resultsForPlayer == null) throw new ArgumentNullException("resultsForPlayer");
             if (rosterPlayers.Count != 8 && rosterPlayers.Count != 9 && rosterPlayers.Count != 10)
                 throw new MatchException("Roster must have 8, 9, or 10 players when registering results");
             foreach (var matchSerie in matchSeries)
@@ -80,7 +83,12 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                 if (registeredSeries > 4) throw new ArgumentException("Can only register up to 4 series");
             }
 
-            ApplyChange(CreateMatchCommentary(matchSeries, opponentSeries, players.ToDictionary(x => x.Id)));
+            var matchCommentaryEvent = CreateMatchCommentary(
+                matchSeries,
+                opponentSeries,
+                players.ToDictionary(x => x.Id),
+                resultsForPlayer);
+            ApplyChange(matchCommentaryEvent);
             DomainEvent.Raise(new MatchRegisteredEvent(RosterId, TeamScore, OpponentScore));
         }
 
@@ -196,11 +204,12 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         private MatchCommentaryEvent CreateMatchCommentary(
             MatchSerie[] matchSeries,
             ResultSeriesReadModel.Serie[] opponentSeries,
-            Dictionary<string, Player> players)
+            Dictionary<string, Player> players,
+            Dictionary<string, ResultForPlayerIndex.Result> resultsForPlayer)
         {
             var commentaryAnalyzer = new MatchAnalyzer(matchSeries, opponentSeries);
             var summaryText = commentaryAnalyzer.GetSummaryText();
-            var bodyText = commentaryAnalyzer.GetBodyText(players);
+            var bodyText = commentaryAnalyzer.GetBodyText(players, resultsForPlayer);
             return new MatchCommentaryEvent(BitsMatchId, summaryText, bodyText);
         }
 

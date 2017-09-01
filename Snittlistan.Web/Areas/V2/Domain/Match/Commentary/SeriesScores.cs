@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Snittlistan.Web.Areas.V2.ReadModels;
 
 namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
@@ -37,17 +36,17 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                     : MatchResultType.Draw);
             PlayerResults = new[]
             {
-                matchSerie.Table1.Game1,
-                matchSerie.Table1.Game2,
-                matchSerie.Table2.Game1,
-                matchSerie.Table2.Game2,
-                matchSerie.Table3.Game1,
-                matchSerie.Table3.Game2,
-                matchSerie.Table4.Game1,
-                matchSerie.Table4.Game2
+                matchSerie.Table1,
+                matchSerie.Table2,
+                matchSerie.Table3,
+                matchSerie.Table4
             }
-            .Select(x => Tuple.Create(x.Player, x.Pins))
-            .ToArray();
+                .SelectMany(x => new[]
+                {
+                    new PlayerResult(x.Game1.Player, x.Game1.Pins, x.Score),
+                    new PlayerResult(x.Game2.Player, x.Game2.Pins, x.Score)
+                })
+                .ToArray();
         }
 
         public int TeamScoreTotal { get; private set; }
@@ -58,7 +57,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
         public int TeamPins { get; private set; }
         public int OpponentPins { get; private set; }
         public MatchResultType MatchResult { get; private set; }
-        public Tuple<string, int>[] PlayerResults { get; private set; }
+        public PlayerResult[] PlayerResults { get; private set; }
 
         public string FormattedResult
         {
@@ -68,6 +67,22 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
         public string FormattedDeltaResult
         {
             get { return string.Format("{0}-{1}", TeamScoreDelta, OpponentScoreDelta); }
+        }
+
+        public class PlayerResult
+        {
+            public PlayerResult(string playerId, int pins, int score)
+            {
+                PlayerId = playerId;
+                Pins = pins;
+                Score = score;
+            }
+
+            public string PlayerId { get; private set; }
+
+            public int Pins { get; private set; }
+
+            public int Score { get; private set; }
         }
     }
 }

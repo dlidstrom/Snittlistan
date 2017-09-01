@@ -5,6 +5,7 @@ using NUnit.Framework;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
+using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.DomainEvents;
 
@@ -143,7 +144,11 @@ namespace Snittlistan.Test.Domain
                         }
                     }
                 };
-                matchResult.RegisterSeries(series, opponentSeries, players);
+                matchResult.RegisterSeries(
+                    series,
+                    opponentSeries,
+                    players,
+                    new Dictionary<string, ResultForPlayerIndex.Result>());
             }
         }
 
