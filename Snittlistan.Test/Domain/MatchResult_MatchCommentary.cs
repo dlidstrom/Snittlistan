@@ -121,21 +121,24 @@ namespace Snittlistan.Test.Domain
             {
                 var playerResults = new Dictionary<string, int[]>(); 
                 var nicknameToId = players.ToDictionary(x => x.Nickname);
-                playerResults[nicknameToId["Ernest"].Id] = new[] { 205, 205, 205, 205, 205 };
-                playerResults[nicknameToId["Lidas"].Id] = new[] { 190, 190, 190, 190, 190 };
-                playerResults[nicknameToId["Laxen"].Id] = new[] { 190, 190, 190, 190, 190 };
-                playerResults[nicknameToId["Lasse Magnus"].Id] = new[] { 205, 205, 205, 205, 205 };
-                playerResults[nicknameToId["Norpan"].Id] = new[] { 190, 190, 190, 190, 190 };
-                playerResults[nicknameToId["Traav"].Id] = new[] { 190, 190, 190, 190, 190 };
+                playerResults[nicknameToId["Ernest"].Id] = new[] { 205 };
+                playerResults[nicknameToId["Lidas"].Id] = new[] { 190 };
+                playerResults[nicknameToId["Laxen"].Id] = new[] { 190 };
+                playerResults[nicknameToId["Lasse Magnus"].Id] = new[] { 205 };
+                playerResults[nicknameToId["Norpan"].Id] = new[] { 190 };
+                playerResults[nicknameToId["Traav"].Id] = new[] { 190 };
                 foreach (var playerId in playerResults.Keys)
                 {
-                    var resultForPlayer = new ResultForPlayerReadModel(2017, playerId, -1, DateTime.Now);
-                    foreach (var playerResult in playerResults[playerId])
+                    for (var bitsMatchId = 0; bitsMatchId < 5; bitsMatchId++)
                     {
-                        resultForPlayer.AddGame(1, new MatchGame(playerId, playerResult, 0, 0));
-                    }
+                        var resultForPlayer = new ResultForPlayerReadModel(2017, playerId, bitsMatchId, DateTime.Now);
+                        foreach (var playerResult in playerResults[playerId])
+                        {
+                            resultForPlayer.AddGame(1, new MatchGame(playerId, playerResult, 0, 0));
+                        }
 
-                    session.Store(resultForPlayer);
+                        session.Store(resultForPlayer);
+                    }
                 }
             });
 
