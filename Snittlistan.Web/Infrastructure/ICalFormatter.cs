@@ -37,6 +37,7 @@ namespace Snittlistan.Web.Infrastructure
         {
             base.SetDefaultContentHeaders(type, headers, mediaType);
             headers.ContentType = new MediaTypeHeaderValue("text/calendar");
+            headers.ContentDisposition = new ContentDispositionHeaderValue("attachment; filename=snittlistan.ics");
         }
 
         public override void WriteToStream(Type type, object value, Stream writeStream, HttpContent content)
