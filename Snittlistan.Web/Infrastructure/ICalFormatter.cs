@@ -47,7 +47,6 @@ namespace Snittlistan.Web.Infrastructure
                 writer.WriteLine("PRODID:-//Daniel Lidstrom AB//Snittlistan//EN");
                 writer.WriteLine("VERSION:2.0");
                 writer.WriteLine("X-PUBLISHED-TTL:PT1H");
-                writer.WriteLine("URL:http://snittlistan.se/");
                 writer.WriteLine("NAME:Snittlistan");
                 writer.WriteLine("DESCRIPTION:Spelschema för säsongen");
                 var rosters = value as IEnumerable<RosterCalendarEvent>;
