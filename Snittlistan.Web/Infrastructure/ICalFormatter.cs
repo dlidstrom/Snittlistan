@@ -36,7 +36,7 @@ namespace Snittlistan.Web.Infrastructure
         public override void SetDefaultContentHeaders(Type type, HttpContentHeaders headers, MediaTypeHeaderValue mediaType)
         {
             base.SetDefaultContentHeaders(type, headers, mediaType);
-            headers.ContentType = new MediaTypeHeaderValue("text/calendar; charset=utf-8");
+            headers.ContentType = new MediaTypeHeaderValue("text/calendar");
         }
 
         public override void WriteToStream(Type type, object value, Stream writeStream, HttpContent content)
