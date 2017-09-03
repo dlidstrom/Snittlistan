@@ -33,6 +33,12 @@ namespace Snittlistan.Web.Infrastructure
             return enumerableType.IsAssignableFrom(type);
         }
 
+        public override void SetDefaultContentHeaders(Type type, HttpContentHeaders headers, MediaTypeHeaderValue mediaType)
+        {
+            base.SetDefaultContentHeaders(type, headers, mediaType);
+            headers.ContentType = new MediaTypeHeaderValue("text/calendar; charset=utf-8");
+        }
+
         public override void WriteToStream(Type type, object value, Stream writeStream, HttpContent content)
         {
             using (var writer = new StreamWriter(writeStream))
