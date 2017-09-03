@@ -1,5 +1,10 @@
 @model InitialDataViewModel
 
+<a href="/api/calendar">
+    <i class="sprite-glyphicons_045_calendar"></i>
+    Lägg till i din kalender
+</a>
+
 @Html.Partial("_Register")
 
 @foreach (var turn in Model.Turns)

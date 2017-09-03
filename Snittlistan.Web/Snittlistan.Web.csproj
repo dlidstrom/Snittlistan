@@ -204,6 +204,7 @@
     <Compile Include="Areas\V2\AutoMapper\ResultProfile.cs" />
     <Compile Include="Areas\V2\Commands\RegisterMatch4Command.cs" />
     <Compile Include="Areas\V2\Commands\RegisterMatchCommand.cs" />
+    <Compile Include="Areas\V2\Controllers\Api\CalendarController.cs" />
     <Compile Include="Areas\V2\Domain\EliteMedals.cs" />
     <Compile Include="Areas\V2\Domain\Match\Commentary\MatchAnalyzer.cs" />
     <Compile Include="Areas\V2\Domain\Match\Commentary\MatchResultType.cs" />
@@ -220,6 +221,7 @@
     <Compile Include="Areas\V2\ViewModels\EditMedalsPostModel.cs" />
     <Compile Include="Areas\V2\ViewModels\EditMedalsViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\EliteMedalsViewModel.cs" />
+    <Compile Include="Areas\V2\ViewModels\RosterCalendarEvent.cs" />
     <Compile Include="Controllers\AbstractApiController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\RegisterMatchController.cs" />
     <Compile Include="Areas\V2\Controllers\MatchResultAdminController.cs" />
@@ -304,6 +306,7 @@
     <Compile Include="Infrastructure\BackgroundTasks\TaskRunner.cs" />
     <Compile Include="Infrastructure\BitsClient.cs" />
     <Compile Include="Infrastructure\IBitsClient.cs" />
+    <Compile Include="Infrastructure\ICalFormatter.cs" />
     <Compile Include="Infrastructure\ICommand.cs" />
     <Compile Include="Infrastructure\Indexes\BackgroundTasksIndex.cs" />
     <Compile Include="Infrastructure\Installers\ApiControllerInstaller.cs" />
@@ -314,6 +317,7 @@
     <Compile Include="Infrastructure\Installers\TaskRunnerInstaller.cs" />
     <Compile Include="Infrastructure\IQuery.cs" />
     <Compile Include="Infrastructure\JetBrains\Annotations.cs" />
+    <Compile Include="Infrastructure\OutlookAgentMessageHandler.cs" />
     <Compile Include="Models\Emails.cs" />
     <Compile Include="Models\WebsiteConfig.cs" />
     <Compile Include="Tasks\EmailTask.cs" />

@@ -1,5 +1,6 @@
 ﻿using System.Web.Http;
 using Newtonsoft.Json.Serialization;
+using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Attributes;
 
 namespace Snittlistan.Web
@@ -18,6 +19,8 @@ namespace Snittlistan.Web
             formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
             config.Filters.Add(new UnhandledExceptionFilter());
+            config.Formatters.Add(new ICalFormatter());
+            config.MessageHandlers.Add(new OutlookAgentMessageHandler());
         }
     }
 }
