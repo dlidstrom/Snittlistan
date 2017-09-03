@@ -36,8 +36,14 @@ namespace Snittlistan.Web.Infrastructure
         public override void SetDefaultContentHeaders(Type type, HttpContentHeaders headers, MediaTypeHeaderValue mediaType)
         {
             base.SetDefaultContentHeaders(type, headers, mediaType);
-            headers.ContentType = new MediaTypeHeaderValue("text/calendar");
-            headers.ContentDisposition = new ContentDispositionHeaderValue("attachment; filename=snittlistan.ics");
+            headers.ContentType = new MediaTypeHeaderValue("text/calendar")
+            {
+                CharSet = "utf-8"
+            };
+            headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = "snittlistan.ics"
+            };
         }
 
         public override void WriteToStream(Type type, object value, Stream writeStream, HttpContent content)
