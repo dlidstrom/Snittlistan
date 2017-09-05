@@ -84,9 +84,9 @@ namespace Snittlistan.Web.Infrastructure
         {
             writer.WriteLine("BEGIN:VEVENT");
             writer.WriteLine("UID:" + roster.Id);
-            writer.WriteLine("DTSTAMP:" + string.Format("{0:yyyyMMddTHHmmssZ}", DateTime.UtcNow));
-            writer.WriteLine("DTSTART:" + string.Format("{0:yyyyMMddTHHmmssZ}", roster.Date.ToUniversalTime()));
-            writer.WriteLine("DTEND:" + string.Format("{0:yyyyMMddTHHmmssZ}", roster.Date.ToUniversalTime().AddMinutes(60 + 45)));
+            writer.WriteLine("DTSTAMP;TZID=Europe/Stockholm:" + string.Format("{0:yyyyMMddTHHmmss}", DateTime.Now));
+            writer.WriteLine("DTSTART;TZID=Europe/Stockholm:" + string.Format("{0:yyyyMMddTHHmmss}", roster.Date));
+            writer.WriteLine("DTEND;TZID=Europe/Stockholm:" + string.Format("{0:yyyyMMddTHHmmss}", roster.Date.AddMinutes(60 + 45)));
             writer.WriteLine("SUMMARY:{0} - {1}", roster.Team, roster.Opponent);
             var description = string.Format("DESCRIPTION:{0}", roster.Description);
             writer.WriteLine(description.Substring(0, Math.Min(description.Length, 74)));
