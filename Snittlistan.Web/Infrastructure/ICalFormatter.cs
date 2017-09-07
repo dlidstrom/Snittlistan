@@ -55,7 +55,6 @@ namespace Snittlistan.Web.Infrastructure
                 writer.WriteLine("VERSION:2.0");
                 writer.WriteLine("X-PUBLISHED-TTL:PT1H");
                 writer.WriteLine("X-WR-CALNAME:Snittlistan");
-                writer.WriteLine("TZ:+00");
                 var rosters = value as IEnumerable<RosterCalendarEvent>;
                 if (rosters != null)
                 {
