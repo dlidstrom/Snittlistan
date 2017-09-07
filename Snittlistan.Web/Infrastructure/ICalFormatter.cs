@@ -55,6 +55,7 @@ namespace Snittlistan.Web.Infrastructure
                 writer.WriteLine("VERSION:2.0");
                 writer.WriteLine("X-PUBLISHED-TTL:PT1H");
                 writer.WriteLine("X-WR-CALNAME:Snittlistan");
+                writer.WriteLine("TZ:+00");
                 var rosters = value as IEnumerable<RosterCalendarEvent>;
                 if (rosters != null)
                 {
@@ -85,8 +86,8 @@ namespace Snittlistan.Web.Infrastructure
             writer.WriteLine("BEGIN:VEVENT");
             writer.WriteLine("UID:" + roster.Id);
             writer.WriteLine("DTSTAMP:" + string.Format("{0:yyyyMMddTHHmmssZ}", DateTime.UtcNow));
-            writer.WriteLine("DTSTART;TZID=Europe/Stockholm:" + string.Format("{0:yyyyMMddTHHmmss}", roster.Date));
-            writer.WriteLine("DTEND;TZID=Europe/Stockholm:" + string.Format("{0:yyyyMMddTHHmmss}", roster.Date.AddMinutes(60 + 45)));
+            writer.WriteLine("DTSTART:" + string.Format("{0:yyyyMMddTHHmmssZ}", roster.Date.ToUniversalTime()));
+            writer.WriteLine("DTEND:" + string.Format("{0:yyyyMMddTHHmmssZ}", roster.Date.ToUniversalTime().AddMinutes(60 + 40)));
             writer.WriteLine("SUMMARY:{0} - {1}", roster.Team, roster.Opponent);
             var description = string.Format("DESCRIPTION:{0}", roster.Description);
             writer.WriteLine(description.Substring(0, Math.Min(description.Length, 74)));
