@@ -6,7 +6,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
 {
     public static class SummaryPatterns
     {
-        public static SummaryPattern[] Create()
+        public static SummaryPattern[] Create(Dictionary<string, Player> players)
         {
             Func<SeriesScores[], string> seriesFormatter = seriesScores =>
             {
@@ -67,6 +67,8 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                     Commentary = seriesScores =>
                     {
                         var lastLastLastSeries = seriesScores[seriesScores.Length-3];
+                        var lastLastSeries = seriesScores[seriesScores.Length-2];
+                        var lastSeries = seriesScores.Last();
                         var sentences = new List<string>
                         {
                             string.Format(
@@ -91,6 +93,24 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                                     lastLastLastSeries.FormattedResult));
                         }
 
+                        if (lastSeries.OpponentScoreDelta > lastSeries.TeamScoreDelta)
+                        {
+                            var winningPlayers = lastSeries.PlayerResults.Where(x => x.Score > 0);
+                            var nicknames = string.Join(
+                                " och ",
+                                winningPlayers.Select(x => players[x.PlayerId].Nickname));
+                            var sentence = string.Format(
+                                "{0} avgjorde matchen med en stark insats i sista serien.",
+                                nicknames);
+                            sentences.Add(sentence);
+                        }
+
+                        if (lastLastSeries.OpponentScoreTotal == 7
+                            && lastLastSeries.TeamScoreTotal == 8)
+                        {
+                            sentences.Add("Laget avgjorde matchen med en stark avslutning i sista serien.");
+                        }
+
                         sentences.Add(seriesFormatter.Invoke(seriesScores));
                         return string.Join(" ", sentences);
                     }
@@ -110,15 +130,16 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                                 seriesScores[3].FormattedResult)
                         };
 
-                        var lossSeries = seriesScores.FirstOrDefault(x => x.TeamScoreDelta == 0 && x.TeamScoreTotal <= 5);
+                        var lossSeries = seriesScores.Skip(1).FirstOrDefault(x => x.TeamScoreDelta == 0
+                            && x.TeamScoreTotal <= 5);
                         if (lossSeries != null)
                         {
-                            sentences.Add(
-                                string.Format(
-                                    "Motståndarna lade grunden till vinsten i serie {0} då poängställningen var {1} efter {2}.",
-                                    lossSeries.SerieNumber,
-                                    lossSeries.FormattedResult,
-                                    lossSeries.FormattedDeltaResult));
+                            var sentence = string.Format(
+                                "Motståndarna lade grunden till vinsten genom att göra {0} i serie {1} vilket resulterade i poängställningen {2}.",
+                                lossSeries.FormattedInvertedDeltaResult,
+                                lossSeries.SerieNumber,
+                                lossSeries.FormattedResult);
+                            sentences.Add(sentence);
                         }
 
                         sentences.Add(seriesFormatter.Invoke(seriesScores));

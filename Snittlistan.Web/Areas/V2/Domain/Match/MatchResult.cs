@@ -207,9 +207,9 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             Dictionary<string, Player> players,
             Dictionary<string, ResultForPlayerIndex.Result> resultsForPlayer)
         {
-            var commentaryAnalyzer = new MatchAnalyzer(matchSeries, opponentSeries);
+            var commentaryAnalyzer = new MatchAnalyzer(matchSeries, opponentSeries, players);
             var summaryText = commentaryAnalyzer.GetSummaryText();
-            var bodyText = commentaryAnalyzer.GetBodyText(players, resultsForPlayer);
+            var bodyText = commentaryAnalyzer.GetBodyText(resultsForPlayer);
             return new MatchCommentaryEvent(BitsMatchId, summaryText, bodyText);
         }
 
