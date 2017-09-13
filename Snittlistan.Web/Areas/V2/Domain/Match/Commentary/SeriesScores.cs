@@ -69,6 +69,11 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
             get { return string.Format("{0}-{1}", TeamScoreDelta, OpponentScoreDelta); }
         }
 
+        public string FormattedInvertedDeltaResult
+        {
+            get { return string.Format("{0}-{1}", OpponentScoreDelta, TeamScoreDelta); }
+        }
+
         public class PlayerResult
         {
             public PlayerResult(string playerId, int pins, int score)

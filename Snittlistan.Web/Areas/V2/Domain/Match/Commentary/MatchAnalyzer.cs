@@ -10,19 +10,22 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
     {
         private readonly MatchSerie[] matchSeries;
         private readonly ResultSeriesReadModel.Serie[] opponentSeries;
+        private readonly Dictionary<string, Player> players;
 
         public MatchAnalyzer(
             MatchSerie[] matchSeries,
-            ResultSeriesReadModel.Serie[] opponentSeries)
+            ResultSeriesReadModel.Serie[] opponentSeries,
+            Dictionary<string, Player> players)
         {
             this.matchSeries = matchSeries;
             this.opponentSeries = opponentSeries;
+            this.players = players;
         }
 
         public string GetSummaryText()
         {
             var seriesScores = GetSeriesScores();
-            var summaryPatterns = SummaryPatterns.Create();
+            var summaryPatterns = SummaryPatterns.Create(players);
 
             var matches = summaryPatterns.Where(x => x.Matches(seriesScores)).ToArray();
             string matchCommentary;
@@ -43,7 +46,6 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
         }
 
         public string[] GetBodyText(
-            Dictionary<string, Player> players,
             Dictionary<string, ResultForPlayerIndex.Result> resultsForPlayer)
         {
             Func<Tuple<string, int>[], bool, string> nicknameFormatter = (ids, includeResult) =>
