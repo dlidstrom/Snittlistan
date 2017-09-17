@@ -90,6 +90,14 @@
                 >
                 B
             </option>
+            <option
+                @if (Model.TeamLevel == "C")
+                {
+                    <text>selected="selected"</text>
+                }
+                >
+                C
+            </option>
         </select>
     </div>
 </div>
