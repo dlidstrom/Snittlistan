@@ -93,7 +93,9 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                                     lastLastLastSeries.FormattedResult));
                         }
 
-                        if (lastSeries.OpponentScoreDelta > lastSeries.TeamScoreDelta)
+                        if (lastLastSeries.OpponentScoreTotal < 10
+                            && lastLastSeries.TeamScoreTotal <= 10
+                            && lastSeries.OpponentScoreDelta > lastSeries.TeamScoreDelta)
                         {
                             var winningPlayers = lastSeries.PlayerResults.Where(x => x.Score > 0);
                             var nicknames = string.Join(
@@ -130,8 +132,11 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                                 seriesScores[3].FormattedResult)
                         };
 
-                        var lossSeries = seriesScores.Skip(1).FirstOrDefault(x => x.TeamScoreDelta == 0
-                            && x.TeamScoreTotal <= 5);
+                        var lossSeries = seriesScores.Take(3)
+                                                     .Skip(1)
+                                                     .FirstOrDefault(x => x.TeamScoreDelta == 0
+                                                                          && x.TeamScoreTotal <= 5
+                                                                          && x.OpponentScoreTotal <= 10);
                         if (lossSeries != null)
                         {
                             var sentence = string.Format(
