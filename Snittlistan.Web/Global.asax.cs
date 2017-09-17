@@ -80,6 +80,18 @@ namespace Snittlistan.Web
             Shutdown();
         }
 
+        protected void Application_BeginRequest()
+        {
+            if (!Context.Request.IsSecureConnection
+                && !Context.Request.Url.ToString().StartsWith("http://localhost:"))
+            {
+                Response.Clear();
+                Response.Status = "301 Moved Permanently";
+                Response.AddHeader("Location", Context.Request.Url.ToString().Insert(4, "s"));
+                Response.End();
+            }
+        }
+
         private static void Bootstrap(HttpConfiguration configuration)
         {
             RegisterGlobalFilters(GlobalFilters.Filters);
