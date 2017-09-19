@@ -33,5 +33,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         public bool Preliminary { get; set; }
 
         public List<Tuple<string, string>> Players { get; set; }
+
+        public Tuple<string, string> TeamLeader { get; set; }
     }
 }

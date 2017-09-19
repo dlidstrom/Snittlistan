@@ -59,5 +59,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public List<string> Players { get; set; }
 
         public string MatchResultId { get; set; }
+
+        public string TeamLeader { get; set; }
     }
 }

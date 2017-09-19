@@ -67,6 +67,25 @@
                             </select>
                         </td>
                     </tr>
+                    <tr>
+                        <td class="table-id-medium">Lagledare</td>
+                        <td>
+                            <select name="teamleader">
+                                <option value="">Välj lagledare</option>
+                                @foreach (var player in Model.AvailablePlayers)
+                                {
+                                    if (Model.Roster.TeamLeader != null && player.Id == Model.Roster.TeamLeader.Item1)
+                                    {
+                                        <option value="@player.Id" selected="selected">@player.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@player.Id">@player.Name</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                    </tr>
                 </table>
             }
             else
@@ -146,6 +165,25 @@
                                 {
                                     var elementAtOrDefault = Model.Roster.Players.ElementAtOrDefault(9);
                                     if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
+                                    {
+                                        <option value="@player.Id" selected="selected">@player.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@player.Id">@player.Name</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="table-id-medium">Lagledare</td>
+                        <td>
+                            <select name="teamleader">
+                                <option value="">Välj lagledare</option>
+                                @foreach (var player in Model.AvailablePlayers)
+                                {
+                                    if (Model.Roster.TeamLeader != null && player.Id == Model.Roster.TeamLeader.Item1)
                                     {
                                         <option value="@player.Id" selected="selected">@player.Name</option>
                                     }
