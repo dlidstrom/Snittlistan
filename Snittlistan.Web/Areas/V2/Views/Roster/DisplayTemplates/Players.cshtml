@@ -55,6 +55,17 @@
                     }
                 </td>
             </tr>
+            <tr>
+                <td class="table-id-medium">
+                    Lagledare
+                </td>
+                <td>
+                    @if (Model.TeamLeader != null)
+                    {
+                        @Model.TeamLeader.Item2
+                    }
+                </td>
+            </tr>
         </table>
     }
     else
@@ -110,6 +121,17 @@
                     @if (reserve2 != null)
                     {
                         @reserve2.Item2
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td class="table-id-medium">
+                    Lagledare
+                </td>
+                <td>
+                    @if (Model.TeamLeader != null)
+                    {
+                        @Model.TeamLeader.Item2
                     }
                 </td>
             </tr>

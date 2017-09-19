@@ -38,6 +38,8 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public bool Preliminary { get; set; }
 
+        public string TeamLeader { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             HashSet<string> hash;

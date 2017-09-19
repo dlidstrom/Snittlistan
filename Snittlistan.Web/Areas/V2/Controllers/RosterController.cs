@@ -315,6 +315,15 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 roster.Players.Add(vm.Reserve2);
             }
 
+            if (vm.TeamLeader != null && DocumentSession.Load<Player>(vm.TeamLeader) != null)
+            {
+                roster.TeamLeader = vm.TeamLeader;
+            }
+            else
+            {
+                roster.TeamLeader = null;
+            }
+
             return RedirectToAction("View", new { season = roster.Season, turn = roster.Turn });
         }
 
@@ -427,6 +436,12 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             foreach (var player in roster.Players.Where(p => p != null).Select(playerId => DocumentSession.Load<Player>(playerId)))
             {
                 vm.Players.Add(Tuple.Create(player.Id, player.Name));
+            }
+
+            if (roster.TeamLeader != null)
+            {
+                var teamLeader = DocumentSession.Load<Player>(roster.TeamLeader);
+                vm.TeamLeader = Tuple.Create(teamLeader.Id, teamLeader.Name);
             }
 
             return vm;
