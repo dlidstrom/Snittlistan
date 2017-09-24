@@ -1,11 +1,14 @@
 using System;
 using Snittlistan.Web.Areas.V2.Domain;
+using Snittlistan.Web.Areas.V2.ReadModels;
 
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     public class RosterCalendarEvent
     {
-        public RosterCalendarEvent(Roster roster, Player[] players)
+        const string TextLineFeed = @"\" + "n";
+
+        public RosterCalendarEvent(Roster roster, Player[] players, Player teamLeader, ResultHeaderReadModel resultHeaderReadModel)
         {
             Id = roster.Id;
             Date = roster.Date;
@@ -13,7 +16,21 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             Opponent = roster.Opponent;
             Location = roster.Location;
             Description = string.Empty;
-            const string TextLineFeed = @"\" + "n";
+            if (resultHeaderReadModel == null)
+            {
+                GetPlayersDescription(roster, players, teamLeader);
+            }
+            else
+            {
+                Description = resultHeaderReadModel.MatchCommentary
+                    + TextLineFeed
+                    + TextLineFeed
+                    + string.Join(TextLineFeed + TextLineFeed, resultHeaderReadModel.BodyText);
+            }
+        }
+
+        private void GetPlayersDescription(Roster roster, Player[] players, Player teamLeader)
+        {
             if (roster.Preliminary == false)
             {
                 if (players.Length >= 8)
@@ -38,6 +55,11 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                                   + TextLineFeed + "3 " + players[2].Nickname
                                   + TextLineFeed + "4 " + players[3].Nickname;
                 }
+            }
+
+            if (teamLeader != null)
+            {
+                Description += TextLineFeed + "LL " + teamLeader.Nickname;
             }
         }
 
