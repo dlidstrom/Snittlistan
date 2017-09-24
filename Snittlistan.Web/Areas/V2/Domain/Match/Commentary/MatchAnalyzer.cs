@@ -176,14 +176,14 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                                          .Select(x => new PlayerPin(x.Key, (double)x.Sum(y => y.Pins) / x.Count(), x.Sum(y => y.Score), x.Sum(y => y.Pins), x.Count()))
                                          .ToArray();
 
-            // kolla om någon i playerPins är över senaste 20 (måste ha spelat 5 matcher)
+            // kolla om någon i playerPins är över senaste 20 (måste ha spelat minst 16 serier)
             var aboveLast20Players = new HashSet<string>();
             foreach (var playerPin in playerPins)
             {
                 ResultForPlayerIndex.Result resultForPlayer;
                 if (resultsForPlayer.TryGetValue(playerPin.PlayerId, out resultForPlayer))
                 {
-                    var hasEnoughGames = resultForPlayer.Last5.Count() >= 5;
+                    var hasEnoughGames = resultForPlayer.Last5TotalSeries >= 16;
                     var last5Average = (double)resultForPlayer.Last5TotalPins / resultForPlayer.Last5TotalSeries;
                     if (hasEnoughGames
                         && playerPin.SeriesPlayed >= 3
