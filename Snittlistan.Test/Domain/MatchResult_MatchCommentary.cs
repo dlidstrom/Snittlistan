@@ -19,7 +19,7 @@ namespace Snittlistan.Test.Domain
     [TestFixture]
     public class MatchResult_MatchCommentary : WebApiIntegrationTest
     {
-        [TestCaseSource("BitsMatchIdAndCommentaries")]
+        [TestCaseSource(nameof(BitsMatchIdAndCommentaries))]
         public void MatchCommentarySummaryText(TestCase testCase)
         {
             // Act
@@ -31,7 +31,7 @@ namespace Snittlistan.Test.Domain
             Assert.That(matchCommentaryEvent.SummaryText, Is.EqualTo(testCase.ExpectedSummaryText));
         }
 
-        [TestCaseSource("BitsMatchIdAndCommentaries")]
+        [TestCaseSource(nameof(BitsMatchIdAndCommentaries))]
         public void MatchCommentaryBodyText(TestCase testCase)
         {
             // Act
@@ -97,7 +97,7 @@ namespace Snittlistan.Test.Domain
             var directoryName = Directory.GetCurrentDirectory();
             var path = Path.Combine(
                 directoryName,
-                string.Format("BitsMatch-{0}.html", testCase.BitsMatchId));
+                $"BitsMatch-{testCase.BitsMatchId}.html");
             try
             {
                 content = File.ReadAllText(path);
@@ -121,14 +121,16 @@ namespace Snittlistan.Test.Domain
             // prepare some results
             Transact(session =>
             {
-                var playerResults = new Dictionary<string, int[]>(); 
                 var nicknameToId = players.ToDictionary(x => x.Nickname);
-                playerResults[nicknameToId["Ernest"].Id] = new[] { 205 };
-                playerResults[nicknameToId["Lidas"].Id] = new[] { 190 };
-                playerResults[nicknameToId["Laxen"].Id] = new[] { 190 };
-                playerResults[nicknameToId["Lasse Magnus"].Id] = new[] { 205 };
-                playerResults[nicknameToId["Norpan"].Id] = new[] { 190 };
-                playerResults[nicknameToId["Traav"].Id] = new[] { 190 };
+                var playerResults = new Dictionary<string, int[]>
+                {
+                    [nicknameToId["Ernest"].Id] = new[] { 205 },
+                    [nicknameToId["Lidas"].Id] = new[] { 190 },
+                    [nicknameToId["Laxen"].Id] = new[] { 190 },
+                    [nicknameToId["Lasse Magnus"].Id] = new[] { 205 },
+                    [nicknameToId["Norpan"].Id] = new[] { 190 },
+                    [nicknameToId["Traav"].Id] = new[] { 190 }
+                };
                 foreach (var playerId in playerResults.Keys)
                 {
                     for (var bitsMatchId = 0; bitsMatchId < 5; bitsMatchId++)
@@ -136,6 +138,9 @@ namespace Snittlistan.Test.Domain
                         var resultForPlayer = new ResultForPlayerReadModel(2017, playerId, bitsMatchId, DateTime.Now);
                         foreach (var playerResult in playerResults[playerId])
                         {
+                            resultForPlayer.AddGame(1, new MatchGame(playerId, playerResult, 0, 0));
+                            resultForPlayer.AddGame(1, new MatchGame(playerId, playerResult, 0, 0));
+                            resultForPlayer.AddGame(1, new MatchGame(playerId, playerResult, 0, 0));
                             resultForPlayer.AddGame(1, new MatchGame(playerId, playerResult, 0, 0));
                         }
 

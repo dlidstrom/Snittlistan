@@ -1,6 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Reflection;
+using System.Web;
 using Castle.Core;
 using Castle.MicroKernel;
 using Castle.MicroKernel.Registration;
@@ -56,8 +56,8 @@ namespace Snittlistan.Web.Infrastructure.Installers
 
             container.Register(
                 Component.For<IDocumentSession>()
-                     .UsingFactoryMethod(GetDocumentSession)
-                     .LifeStyle.Is(mode == DocumentStoreMode.InMemory ? LifestyleType.Scoped : LifestyleType.PerWebRequest));
+                         .UsingFactoryMethod(GetDocumentSession)
+                         .LifeStyle.Is(mode == DocumentStoreMode.InMemory ? LifestyleType.Scoped : LifestyleType.PerWebRequest));
         }
 
         private static bool FindIdentityProperty(PropertyInfo property)
@@ -72,16 +72,6 @@ namespace Snittlistan.Web.Infrastructure.Installers
             var documentSession = store.OpenSession();
             documentSession.Advanced.UseOptimisticConcurrency = true;
             return documentSession;
-        }
-
-        private static void Configure(EmbeddableDocumentStore documentStore)
-        {
-            // limit memory usage when running embedded mode
-            documentStore.Configuration.MemoryCacheLimitMegabytes = 256;
-
-            //documentStore.Configuration.MemoryCacheLimitPercentage = 10;
-            //documentStore.Configuration.Settings["Raven/Esent/CacheSizeMax"] = "256";
-            //documentStore.Configuration.Settings["Raven/Esent/MaxVerPages"] = "512";
         }
 
         private static IDocumentStore InitializeStore(IDocumentStore store)
@@ -108,8 +98,6 @@ namespace Snittlistan.Web.Infrastructure.Installers
                             RunInMemory = true
                         };
 
-                        Configure(documentStore);
-
                         store = documentStore;
                     }
 
@@ -120,18 +108,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
                     break;
 
                 default:
-                    {
-                        var path = AppDomain.CurrentDomain.GetData("DataDirectory").ToString();
-                        var dataDirectory = Path.Combine(path, "Database");
-                        var documentStore = new EmbeddableDocumentStore
-                        {
-                            DataDirectory = dataDirectory
-                        };
-
-                        Configure(documentStore);
-                        store = documentStore;
-                    }
-                    break;
+                    throw new ArgumentOutOfRangeException();
             }
 
             return store;
