@@ -13,14 +13,14 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
         public MatchSerie(int serieNumber, IReadOnlyList<MatchTable> tables)
         {
-            if (tables == null) throw new ArgumentNullException("tables");
+            if (tables == null) throw new ArgumentNullException(nameof(tables));
             if (tables.Count != 4) throw new ArgumentException("tables");
             if (tables[0].TableNumber != 1
                 || tables[1].TableNumber != 2
                 || tables[2].TableNumber != 3
                 || tables[3].TableNumber != 4)
             {
-                throw new ArgumentException("Invalid table number", "tables");
+                throw new ArgumentException("Invalid table number", nameof(tables));
             }
 
             SerieNumber = serieNumber;
@@ -33,8 +33,10 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                 players.Add(p2);
             }
 
-            if (players.Count != 8)
-                throw new MatchException("Serie must have 8 different players");
+            if (players.Count != 7 && players.Count != 8)
+            {
+                throw new MatchException($"Serie {serieNumber} must have 7 or 8 different players (detected {players.Count} players)");
+            }
 
             Table1 = tables[0];
             Table2 = tables[1];

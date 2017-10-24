@@ -25,7 +25,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             }
 
             var matchSerie = e.MatchSerie;
-            var playerIds = new[]
+            var playerIds = new HashSet<string>
             {
                 matchSerie.Table1.Game1.Player,
                 matchSerie.Table1.Game2.Player,

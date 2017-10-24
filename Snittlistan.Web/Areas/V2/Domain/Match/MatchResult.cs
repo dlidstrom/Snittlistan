@@ -154,14 +154,16 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             foreach (var key in playerPins.Keys)
             {
                 var list = playerPins[key];
-                var pinsResult = list.SingleOrDefault(x => x.SerieNumber == serieNumber);
-                if (pinsResult == null || pinsResult.Pins < 270) continue;
-                var medal = new AwardedMedal(
-                    BitsMatchId,
-                    key,
-                    MedalType.PinsInSerie,
-                    pinsResult.Pins);
-                ApplyChange(medal);
+                foreach (var pinsResult in list.Where(x => x.SerieNumber == serieNumber))
+                {
+                    if (pinsResult.Pins < 270) continue;
+                    var medal = new AwardedMedal(
+                        BitsMatchId,
+                        key,
+                        MedalType.PinsInSerie,
+                        pinsResult.Pins);
+                    ApplyChange(medal);
+                }
             }
 
             if (serieNumber == 4)

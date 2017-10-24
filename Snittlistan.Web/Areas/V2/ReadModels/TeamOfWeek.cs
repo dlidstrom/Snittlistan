@@ -50,7 +50,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         public void AddMedal(AwardedMedalReadModel awardedMedal)
         {
             if (PlayerScores.ContainsKey(awardedMedal.Player) == false)
-                throw new ApplicationException(string.Format("No player with id {0} found", awardedMedal.Player));
+                throw new ApplicationException($"No player with id {awardedMedal.Player} found");
 
             PlayerScores[awardedMedal.Player].AddMedal(awardedMedal);
         }

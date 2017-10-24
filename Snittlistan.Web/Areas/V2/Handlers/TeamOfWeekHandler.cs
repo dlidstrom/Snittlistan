@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EventStoreLite;
 using Raven.Client;
@@ -70,12 +71,15 @@ namespace Snittlistan.Web.Areas.V2.Handlers
                     matchSerie.Table4.Score,
                     matchSerie.Table4.Game2.Pins)
             };
-            var players = DocumentSession.Load<Player>(playerIds.Select(x => x.Item1));
+            var uniquePlayerIds = new HashSet<string>(playerIds.Select(x => x.Item1));
+            var players = DocumentSession.Load<Player>(uniquePlayerIds);
             foreach (var player in players)
             {
                 var playerId = player.Id;
-                var tuple = playerIds.Single(x => x.Item1 == playerId);
-                teamOfWeek.AddResultForPlayer(player, tuple.Item2, tuple.Item3);
+                foreach (var tuple in playerIds.Where(x => x.Item1 == playerId))
+                {
+                    teamOfWeek.AddResultForPlayer(player, tuple.Item2, tuple.Item3);
+                }
             }
         }
 

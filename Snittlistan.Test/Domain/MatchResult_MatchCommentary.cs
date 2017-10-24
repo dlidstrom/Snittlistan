@@ -186,6 +186,7 @@ namespace Snittlistan.Test.Domain
                 yield return new TestCase(3138423, "12-8", "Matchen vanns med resultatet 12-8. Laget avgjorde matchen med en stark avslutning i sista serien. Serierna slutade 4-1 (1265-1237), 1-4 (1264-1386), 3-2 (1319-1270), 4-1 (1370-1280).", "Affe 740, Kalle 714, Hammarn 660, Jansson 659, Solen 651, Perre 638, Raffe 454 (3), Tony 448 (3), Marken 254 (2).");
                 yield return new TestCase(3152187, "4-16", "Matchen slutade 4-16. Serierna slutade 1-4 (1318-1415), 2-3 (1516-1594), 1-4 (1395-1522), 0-5 (1367-1581).", "Höken 789, Tobbe 731, Peter S 726, Ernest 724, TW 711, Holmis 697, Lidas 605, Laxen 474 (3), Raffe 139 (1).");
                 yield return new TestCase(3139904, "13-7", "Matchen vanns med resultatet 13-7. Serierna slutade 4-1 (1534-1381), 2-3 (1393-1417), 5-0 (1462-1326), 2-3 (1321-1395).", "Öberg 782, KP 774, Tranan 760, Affe 744, Hockey 701, Gurkan 681, Classon 675, Hammarn 485 (3), Markus 108 (1).");
+                yield return new TestCase(3139862, "6-14", "Matchen slutade 6-14. Serierna slutade 1-4 (1293-1491), 1-4 (1424-1469), 2-3 (1383-1469), 2-3 (1369-1387).", "Öberg 756, KP 713, Classon 667, Hasse 666, Hockey 664, Affe 663, Tranan 525 (3), Solen 494 (3), Laxen 321 (2).");
             }
         }
 
