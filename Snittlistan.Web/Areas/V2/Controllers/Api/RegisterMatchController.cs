@@ -49,7 +49,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                 }
                 catch (Exception e)
                 {
-                    var message = string.Format("Unable to auto register match {0} ({1})", pendingMatch.Id, pendingMatch.BitsMatchId);
+                    var message = $"Unable to auto register match {pendingMatch.Id} ({pendingMatch.BitsMatchId})";
                     ErrorSignal
                         .FromCurrentContext()
                         .Raise(new ApplicationException(message, e));

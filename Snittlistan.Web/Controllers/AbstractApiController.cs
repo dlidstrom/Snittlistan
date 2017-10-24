@@ -38,13 +38,13 @@ namespace Snittlistan.Web.Controllers
 
         protected TResult ExecuteQuery<TResult>(IQuery<TResult> query)
         {
-            if (query == null) throw new ArgumentNullException("query");
+            if (query == null) throw new ArgumentNullException(nameof(query));
             return query.Execute(DocumentSession);
         }
 
         protected void ExecuteCommand(ICommand command)
         {
-            if (command == null) throw new ArgumentNullException("command");
+            if (command == null) throw new ArgumentNullException(nameof(command));
             command.Execute(DocumentSession, EventStoreSession);
         }
     }

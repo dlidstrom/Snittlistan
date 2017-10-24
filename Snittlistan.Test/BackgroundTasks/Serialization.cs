@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Diagnostics;
+using NUnit.Framework;
 using Snittlistan.Test.ApiControllers;
 using Snittlistan.Web.Infrastructure.BackgroundTasks;
 
@@ -22,6 +23,7 @@ namespace Snittlistan.Test.BackgroundTasks
             Assert.That(stored, Is.Not.Null);
             var body = stored.Body as MyClass;
             Assert.That(body, Is.Not.Null);
+            Debug.Assert(body != null, "body != null");
             Assert.That(body.Data, Is.EqualTo(5));
         }
 
