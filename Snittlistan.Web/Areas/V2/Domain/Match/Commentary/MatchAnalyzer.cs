@@ -31,7 +31,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
             string matchCommentary;
             if (matches.Length > 1)
             {
-                matchCommentary = string.Join(", ", matches.Select(x => string.Format("'{0}'", x.Description)));
+                matchCommentary = string.Join(", ", matches.Select(x => $"'{x.Description}'"));
             }
             else if (matches.Length == 0)
             {
@@ -52,7 +52,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
             {
                 Func<string, int, string> formatOne = (nickname, pins) =>
                     includeResult
-                    ? string.Format("{0} ({1})", nickname, pins)
+                    ? $"{nickname} ({pins})"
                     : nickname;
                 if (ids.Length == 1)
                 {
@@ -63,12 +63,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                     ", ",
                     ids.Take(ids.Length - 1)
                        .Select(x => formatOne(players[x.Item1].Nickname, x.Item2)));
-                var nicknames = string.Format(
-                    "{0} och {1}",
-                    firstNicknames,
-                    formatOne(
-                        players[ids.Last().Item1].Nickname,
-                        ids.Last().Item2));
+                var nicknames = $"{firstNicknames} och {formatOne(players[ids.Last().Item1].Nickname, ids.Last().Item2)}";
                 return nicknames;
             };
 
@@ -84,10 +79,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                 {
                     hasSerieNumber = true;
                     seriesText.Add(
-                        string.Format(
-                            "Serie {0} vanns med enbart {1} pinnar.",
-                            seriesScore.SerieNumber,
-                            diff));
+                        $"Serie {seriesScore.SerieNumber} vanns med enbart {diff} pinnar.");
                     foreach (var playerResult in seriesScore.PlayerResults)
                     {
                         if ((seriesScore.TeamPins - playerResult.Pins) / 7 < playerResult.Pins - 20)
@@ -101,10 +93,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                         var joiner = playersContributingToWin.Count > 1 ? "sina" : "sitt";
                         var nicknames = nicknameFormatter.Invoke(playersContributingToWin.OrderByDescending(x => x.Item2).ToArray(), true);
                         seriesText.Add(
-                            string.Format(
-                                "{0} låg bakom serievinsten med {1} fina resultat.",
-                                nicknames,
-                                joiner));
+                            $"{nicknames} låg bakom serievinsten med {joiner} fina resultat.");
                     }
                 }
 
@@ -127,19 +116,12 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                     {
                         if (!hasSerieNumber)
                         {
-                            var sentence = string.Format(
-                                "I serie {0} stod {1} för {2}.",
-                                seriesScore.SerieNumber,
-                                nicknameFormatter.Invoke(seriesExcept300.OrderByDescending(x => x.Item2).ToArray(), true),
-                                trail);
+                            var sentence = $"I serie {seriesScore.SerieNumber} stod {nicknameFormatter.Invoke(seriesExcept300.OrderByDescending(x => x.Item2).ToArray(), true)} för {trail}.";
                             seriesText.Add(sentence);
                         }
                         else
                         {
-                            var sentence = string.Format(
-                                "{0} stod för bra {1}.",
-                                nicknameFormatter.Invoke(seriesExcept300.OrderByDescending(x => x.Item2).ToArray(), true),
-                                trail);
+                            var sentence = $"{nicknameFormatter.Invoke(seriesExcept300.OrderByDescending(x => x.Item2).ToArray(), true)} stod för bra {trail}.";
                             seriesText.Add(sentence);
                         }
                     }
@@ -148,17 +130,12 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                     {
                         if (!hasSerieNumber)
                         {
-                            var sentence = string.Format(
-                                "I serie {0} smällde {1} till med 300!",
-                                seriesScore.SerieNumber,
-                                nicknameFormatter.Invoke(series300, false));
+                            var sentence = $"I serie {seriesScore.SerieNumber} smällde {nicknameFormatter.Invoke(series300, false)} till med 300!";
                             seriesText.Add(sentence);
                         }
                         else
                         {
-                            var sentence = string.Format(
-                                "{0} smällde till med 300!",
-                                nicknameFormatter.Invoke(series300, false));
+                            var sentence = $"{nicknameFormatter.Invoke(series300, false)} smällde till med 300!";
                             seriesText.Add(sentence);
                         }
                     }
@@ -200,9 +177,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                                             .OrderByDescending(x => x.Average)
                                             .ToArray();
                 var nicknames = nicknameFormatter.Invoke(aboveLast20.Select(x => Tuple.Create(x.PlayerId, 0)).ToArray(), false);
-                var formSentence = string.Format(
-                    "{0} visade att formkurvan pekar uppåt med bra spel.",
-                    nicknames);
+                var formSentence = $"{nicknames} visade att formkurvan pekar uppåt med bra spel.";
                 bodySummaryText.Add(formSentence);
             }
 
@@ -225,15 +200,12 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                 if (fourPoints.Length < 8)
                 {
                     var ending = fourPointPlayers.Count > 1 ? " vardera" : string.Empty;
-                    var fourPointsSentence = string.Format(
-                        "{0} blev matchens viktigaste spelare med 4 vunna serier{1}.",
-                        nicknames,
-                        ending);
+                    var fourPointsSentence = $"{nicknames} blev matchens viktigaste spelare med 4 vunna serier{ending}.";
                     bodySummaryText.Add(fourPointsSentence);
                 }
                 else
                 {
-                    bodySummaryText.Add(string.Format("{0} får ses som matchvinnare då alla tog 4 poäng!", nicknames));
+                    bodySummaryText.Add($"{nicknames} får ses som matchvinnare då alla tog 4 poäng!");
                 }
             }
 
@@ -241,9 +213,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
             if (thousand.Any())
             {
                 var nicknames = nicknameFormatter.Invoke(thousand.Select(x => Tuple.Create(x.PlayerId, 0)).ToArray(), false);
-                var sentence = string.Format(
-                    "Grattis till {0} som uppnådde magiska 1000 poäng!",
-                    nicknames);
+                var sentence = $"Grattis till {nicknames} som uppnådde magiska 1000 poäng!";
                 bodySummaryText.Add(sentence);
             }
 
@@ -259,11 +229,11 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                     string part;
                     if (x.SeriesPlayed == 4)
                     {
-                        part = string.Format("{0} {1}", players[x.PlayerId].Nickname, x.Pins);
+                        part = $"{players[x.PlayerId].Nickname} {x.Pins}";
                     }
                     else
                     {
-                        part = string.Format("{0} {1} ({2})", players[x.PlayerId].Nickname, x.Pins, x.SeriesPlayed);
+                        part = $"{players[x.PlayerId].Nickname} {x.Pins} ({x.SeriesPlayed})";
                     }
 
                     return part;

@@ -8,11 +8,6 @@ namespace Snittlistan.Web.Infrastructure.Installers
         InMemory,
 
         /// <summary>
-        /// Run embedded. Used when in production.
-        /// </summary>
-        Embeddable,
-
-        /// <summary>
         /// Run with standalone server. Used when debugging.
         /// </summary>
         Server
