@@ -53,7 +53,7 @@ namespace Snittlistan.Test.Controllers
                 .ToAction("LogOn");
         }
 
-        protected override void OnDispose()
+        protected override void OnTearDown()
         {
             DomainEvent.SetContainer(oldContainer);
         }

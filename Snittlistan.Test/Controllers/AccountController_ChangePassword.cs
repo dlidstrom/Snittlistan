@@ -1,16 +1,17 @@
 ﻿using System;
 using Moq;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V1.Controllers;
 using Snittlistan.Web.Areas.V1.ViewModels.Account;
 using Snittlistan.Web.Models;
 using Snittlistan.Web.Services;
-using Xunit;
 
 namespace Snittlistan.Test.Controllers
 {
+    [TestFixture]
     public class AccountController_ChangePassword : DbTest
     {
-        [Fact]
+        [Test]
         public void InvalidUserFails()
         {
             var controller = CreateUserAndController("e@d.com");
@@ -22,7 +23,7 @@ namespace Snittlistan.Test.Controllers
             }).AssertViewRendered().ForView(string.Empty);
         }
 
-        [Fact]
+        [Test]
         public void ChangePasswordSuccessReturnsView()
         {
             var controller = new AccountController(Mock.Of<IAuthenticationService>()) { DocumentSession = Session };

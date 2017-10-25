@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using System.Web;
 using Castle.Core;
 using Castle.MicroKernel;
 using Castle.MicroKernel.Registration;

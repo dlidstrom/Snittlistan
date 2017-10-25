@@ -21,7 +21,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             return "Series-" + id;
         }
 
-        public KeyValuePair<string, List<PlayerGame>>[] SortedPlayers()
+        public KeyValuePair<string, List<PlayerGame>[]>[] SortedPlayers()
         {
             var first = Series.SelectMany(x => x.Tables)
                 .Select(x => x.Game1);
@@ -29,37 +29,36 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
                 .Select(x => x.Game2);
 
             var combined = first.Concat(second).ToList();
-            var dictionary = new Dictionary<string, List<PlayerGame>>();
+            var dictionary = new Dictionary<string, List<PlayerGame>[]>();
             foreach (var game in combined)
             {
                 if (dictionary.ContainsKey(game.Player) == false)
                     dictionary.Add(
                         game.Player,
-                        new List<PlayerGame>
+                        new[]
                         {
-                            null,
-                            null,
-                            null,
-                            null
+                            new List<PlayerGame>(),
+                            new List<PlayerGame>(),
+                            new List<PlayerGame>(),
+                            new List<PlayerGame>()
                         });
             }
 
-            for (int i = 0; i < Series.Count; i++)
+            for (var i = 0; i < Series.Count; i++)
             {
                 var serie = Series[i];
                 foreach (var table in serie.Tables)
                 {
                     var game1 = table.Game1;
                     var game2 = table.Game2;
-                    dictionary[game1.Player][i] = new PlayerGame(game1, table.Score);
-                    dictionary[game2.Player][i] = new PlayerGame(game2, table.Score);
+                    dictionary[game1.Player][i].Add(new PlayerGame(game1, table.Score));
+                    dictionary[game2.Player][i].Add(new PlayerGame(game2, table.Score));
                 }
             }
 
             var q = from x in dictionary
                     let value = dictionary[x.Key]
-                    let series = value.Where(y => y != null)
-                    let sum = series.Sum(z => z.Pins)
+                    let sum = value.SelectMany(y => y).Sum(z => z.Pins)
                     orderby sum descending
                     select x;
             var result = q.ToArray();

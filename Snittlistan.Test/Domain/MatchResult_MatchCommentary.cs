@@ -204,17 +204,17 @@ namespace Snittlistan.Test.Domain
                 ExpectedBodyText = expectedBodyText;
             }
 
-            public int BitsMatchId { get; private set; }
+            public int BitsMatchId { get; }
 
-            public string Result { get; private set; }
+            public string Result { get; }
 
-            public string ExpectedSummaryText { get; private set; }
+            public string ExpectedSummaryText { get; }
 
-            public string ExpectedBodyText { get; private set; }
+            public string ExpectedBodyText { get; }
 
             public override string ToString()
             {
-                return string.Format("{0}, {1}", BitsMatchId, Result);
+                return $"{BitsMatchId}, {Result}";
             }
         }
     }

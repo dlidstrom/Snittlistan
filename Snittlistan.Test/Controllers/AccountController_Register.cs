@@ -117,7 +117,7 @@ namespace Snittlistan.Test.Controllers
             Assert.True(controller.ModelState.ContainsKey("Email"));
         }
 
-        protected override void OnDispose()
+        protected override void OnTearDown()
         {
             DomainEvent.SetContainer(oldContainer);
         }

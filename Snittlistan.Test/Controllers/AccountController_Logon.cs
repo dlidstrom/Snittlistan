@@ -106,7 +106,7 @@ namespace Snittlistan.Test.Controllers
             result.AssertViewRendered().ForView(string.Empty);
         }
 
-        protected override void OnDispose()
+        protected override void OnTearDown()
         {
             DomainEvent.SetContainer(oldContainer);
         }

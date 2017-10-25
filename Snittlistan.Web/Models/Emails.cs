@@ -45,12 +45,7 @@ namespace Snittlistan.Web.Models
             ResultSeriesReadModel resultSeriesReadModel,
             ResultHeaderReadModel resultHeaderReadModel)
         {
-            var subject = string.Format(
-                "{0} mot {1}: {2} - {3}",
-                team,
-                opponent,
-                score,
-                opponentScore);
+            var subject = $"{team} mot {opponent}: {score} - {opponentScore}";
             Send(
                 "MatchRegistered",
                 ConfigurationManager.AppSettings["OwnerEmail"],
@@ -94,7 +89,7 @@ namespace Snittlistan.Web.Models
             dynamic email = new Email(view);
             email.To = recipient;
             email.From = ConfigurationManager.AppSettings["OwnerEmail"];
-            email.Subject = string.Format("=?utf-8?B?{0}?=", Convert.ToBase64String(Encoding.UTF8.GetBytes(subject)));
+            email.Subject = $"=?utf-8?B?{Convert.ToBase64String(Encoding.UTF8.GetBytes(subject))}?=";
 
             // add moderators
             var moderatorEmails = string.Join(", ", ConfigurationManager.AppSettings["OwnerEmail"].Split(';'));
