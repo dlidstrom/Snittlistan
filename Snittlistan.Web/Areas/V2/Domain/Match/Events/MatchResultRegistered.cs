@@ -14,9 +14,9 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
             int bitsMatchId)
         {
             if (rosterId == null)
-                throw new ArgumentNullException("rosterId");
+                throw new ArgumentNullException(nameof(rosterId));
             if (rosterPlayers == null)
-                throw new ArgumentNullException("rosterPlayers");
+                throw new ArgumentNullException(nameof(rosterPlayers));
 
             RosterId = rosterId;
             RosterPlayers = rosterPlayers;

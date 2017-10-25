@@ -31,17 +31,14 @@
                     @{
                         var game = player.Value[serie];
                     }
-                    @(game != null ? game.Pins.ToString(CultureInfo.InvariantCulture) : "")
+                    @string.Join("+", game.Select(x => x.Pins.ToString(CultureInfo.InvariantCulture)))
                 </td>
             }
-            @{
-                var series = player.Value.Where(x => x != null).ToList();
-            }
             <td>
-                @series.Sum(x => x.Pins)
+                @player.Value.SelectMany(x => x).Sum(x => x.Pins)
             </td>
             <td>
-                @series.Sum(x => x.Score)
+                @player.Value.SelectMany(x => x).Sum(x => x.Score)
             </td>
         </tr>
     }

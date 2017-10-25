@@ -1,16 +1,17 @@
 ﻿using System.IO;
 using System.Text;
+using NUnit.Framework;
 using Raven.Imports.Newtonsoft.Json;
 using Snittlistan.Web.Areas.V1.Models;
 using Snittlistan.Web.Models;
-using Xunit;
 
 namespace Snittlistan.Test
 {
+    [TestFixture]
     public class SerializationTest : DbTest
     {
-        [Fact]
-        public void CanSerialize8x4Match()
+        [Test]
+        public void CanSerialize8X4Match()
         {
             // Arrange
             var serializer = Store.Conventions.CreateSerializer();
@@ -25,8 +26,8 @@ namespace Snittlistan.Test
             TestData.VerifyTeam(match.AwayTeam);
         }
 
-        [Fact]
-        public void CanSerialize4x4Match()
+        [Test]
+        public void CanSerialize4X4Match()
         {
             // Arrange
             var serializer = Store.Conventions.CreateSerializer();
@@ -41,7 +42,7 @@ namespace Snittlistan.Test
             TestData.VerifyTeam(match.HomeTeam);
         }
 
-        [Fact]
+        [Test]
         public void CanSerializeUser()
         {
             // Arrange

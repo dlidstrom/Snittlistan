@@ -23,7 +23,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         public MatchResult(Roster roster, int teamScore, int opponentScore, int bitsMatchId)
             : this()
         {
-            if (roster == null) throw new ArgumentNullException("roster");
+            if (roster == null) throw new ArgumentNullException(nameof(roster));
             if (roster.MatchResultId != null)
                 throw new ApplicationException("Roster already has result registered");
             VerifyScores(teamScore, opponentScore);
@@ -47,7 +47,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
         public void Update(Roster roster, int teamScore, int opponentScore, int bitsMatchId)
         {
-            if (roster == null) throw new ArgumentNullException("roster");
+            if (roster == null) throw new ArgumentNullException(nameof(roster));
             VerifyScores(teamScore, opponentScore);
 
             roster.MatchResultId = Id;
@@ -69,10 +69,10 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             Player[] players,
             Dictionary<string, ResultForPlayerIndex.Result> resultsForPlayer)
         {
-            if (matchSeries == null) throw new ArgumentNullException("matchSeries");
-            if (opponentSeries == null) throw new ArgumentNullException("opponentSeries");
-            if (players == null) throw new ArgumentNullException("players");
-            if (resultsForPlayer == null) throw new ArgumentNullException("resultsForPlayer");
+            if (matchSeries == null) throw new ArgumentNullException(nameof(matchSeries));
+            if (opponentSeries == null) throw new ArgumentNullException(nameof(opponentSeries));
+            if (players == null) throw new ArgumentNullException(nameof(players));
+            if (resultsForPlayer == null) throw new ArgumentNullException(nameof(resultsForPlayer));
             if (rosterPlayers.Count != 8 && rosterPlayers.Count != 9 && rosterPlayers.Count != 10)
                 throw new MatchException("Roster must have 8, 9, or 10 players when registering results");
             foreach (var matchSerie in matchSeries)
@@ -94,7 +94,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
         public void RegisterSerie(MatchTable[] matchTables)
         {
-            if (matchTables == null) throw new ArgumentNullException("matchTables");
+            if (matchTables == null) throw new ArgumentNullException(nameof(matchTables));
             if (rosterPlayers.Count != 8 && rosterPlayers.Count != 9 && rosterPlayers.Count != 10)
                 throw new MatchException("Roster must have 8, 9, or 10 players when registering results");
             var matchSerie = new MatchSerie(registeredSeries + 1, matchTables);
@@ -137,11 +137,11 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         {
             if (teamScore < 0 || teamScore > 20)
             {
-                throw new ArgumentOutOfRangeException("teamScore", "Team score must be between 0 and 20");
+                throw new ArgumentOutOfRangeException(nameof(teamScore), "Team score must be between 0 and 20");
             }
             if (opponentScore < 0 || opponentScore > 20)
             {
-                throw new ArgumentOutOfRangeException("opponentScore", "Opponent score must be between 0 and 20");
+                throw new ArgumentOutOfRangeException(nameof(opponentScore), "Opponent score must be between 0 and 20");
             }
             if (teamScore + opponentScore > 20)
             {

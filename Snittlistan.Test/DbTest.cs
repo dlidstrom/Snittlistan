@@ -1,9 +1,9 @@
-﻿using System;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Windsor;
 using Moq;
+using NUnit.Framework;
 using Raven.Client;
 using Snittlistan.Web;
 using Snittlistan.Web.Infrastructure.AutoMapper;
@@ -13,11 +13,12 @@ using Snittlistan.Web.Models;
 
 namespace Snittlistan.Test
 {
-    public abstract class DbTest : IDisposable
+    public abstract class DbTest
     {
-        protected readonly IDocumentStore Store;
+        protected IDocumentStore Store;
 
-        protected DbTest()
+        [SetUp]
+        public void SetUp()
         {
             var container = new WindsorContainer().Install(new RavenInstaller(DocumentStoreMode.InMemory), new AutoMapperInstaller());
 
@@ -31,9 +32,10 @@ namespace Snittlistan.Test
 
         protected IDocumentSession Session { get; private set; }
 
-        public void Dispose()
+        [TearDown]
+        public void TearDown()
         {
-            OnDispose();
+            OnTearDown();
             Session.Dispose();
             Store.Dispose();
         }
@@ -46,7 +48,7 @@ namespace Snittlistan.Test
             return new UrlHelper(new RequestContext(Mock.Get(context).Object, new RouteData()), routes);
         }
 
-        protected virtual void OnDispose()
+        protected virtual void OnTearDown()
         {
         }
 

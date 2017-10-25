@@ -27,8 +27,7 @@ namespace Snittlistan.Test
             { 15, new[] { 159, 190 } }
         };
 
-        private static readonly int[] result4x4 = new[]
-        {
+        private static readonly int[] Result4X4 = {
             160, 154, 169, 140, 141, 114, 163, 127, 128, 165, 231, 165, 132, 165, 154, 162
         };
 
@@ -80,7 +79,7 @@ namespace Snittlistan.Test
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    int result = result4x4[(i * 4) + j];
+                    int result = Result4X4[(i * 4) + j];
 
                     Assert.Equal(result, team.Series.ElementAt(i).Games.ElementAt(j).Pins);
                 }
