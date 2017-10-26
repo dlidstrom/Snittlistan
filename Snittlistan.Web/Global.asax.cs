@@ -137,6 +137,10 @@ namespace Snittlistan.Web
                              .Named("test.localhost"));
                 Container.Register(
                     Component.For<TenantConfiguration>()
+                             .Instance(new TenantConfiguration("Snittlistan"))
+                             .Named("snittlistan.se"));
+                Container.Register(
+                    Component.For<TenantConfiguration>()
                              .Instance(new TenantConfiguration("Snittlistan-vartansik"))
                              .Named("vartansik.snittlistan.se"));
                 Container.Kernel.AddHandlerSelector(new HostBasedComponentSelector());
