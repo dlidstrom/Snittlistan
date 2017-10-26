@@ -57,8 +57,7 @@ namespace Snittlistan.Web
                 ChildContainer.Dispose();
             }
 
-            if (Container != null)
-                Container.Dispose();
+            Container?.Dispose();
         }
 
         public static string GetAssemblyVersion()
@@ -82,8 +81,13 @@ namespace Snittlistan.Web
 
         protected void Application_BeginRequest()
         {
-            if (!Context.Request.IsSecureConnection
-                && !Context.Request.Url.ToString().StartsWith("http://localhost:"))
+            if (Context.IsDebuggingEnabled)
+            {
+                return;
+            }
+
+            if (Context.Request.IsSecureConnection == false
+                && Context.Request.Url.ToString().Contains("localhost:") == false)
             {
                 Response.Clear();
                 Response.Status = "301 Moved Permanently";
@@ -127,17 +131,27 @@ namespace Snittlistan.Web
             {
                 Container = new WindsorContainer();
                 Container.AddFacility<StartableFacility>();
+                Container.Register(
+                    Component.For<TenantConfiguration>()
+                             .Instance(new TenantConfiguration("Snittlistan"))
+                             .Named("test.localhost"));
+                Container.Register(
+                    Component.For<TenantConfiguration>()
+                             .Instance(new TenantConfiguration("Snittlistan-vartansik"))
+                             .Named("vartansik.snittlistan.se"));
+                Container.Kernel.AddHandlerSelector(new HostBasedComponentSelector());
                 Container.Install(
-                    FromAssembly.This(), EventStoreInstaller.FromAssembly(Assembly.GetExecutingAssembly()));
+                    FromAssembly.This(),
+                    EventStoreInstaller.FromAssembly(Assembly.GetExecutingAssembly()));
             }
 
             if (ChildContainer == null)
             {
                 ChildContainer = new WindsorContainer().Register(
                     Component.For<IDocumentSession>().UsingFactoryMethod(kernel =>
-                        {
-                            var documentSession = kernel.Resolve<IDocumentStore>()
-                                .OpenSession();
+                    {
+                        var documentSession = kernel.Resolve<IDocumentStore>()
+                                                    .OpenSession();
                             documentSession.Advanced.UseOptimisticConcurrency = true;
                             return documentSession;
                         }).LifestyleTransient());

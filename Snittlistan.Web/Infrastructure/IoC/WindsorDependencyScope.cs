@@ -20,7 +20,8 @@ namespace Snittlistan.Web.Infrastructure.IoC
 
         public object GetService(Type serviceType)
         {
-            return container.HasComponent(serviceType) ? container.Resolve(serviceType) : null;
+            var service = container.HasComponent(serviceType) ? container.Resolve(serviceType) : null;
+            return service;
         }
 
         public IEnumerable<object> GetServices(Type serviceType)

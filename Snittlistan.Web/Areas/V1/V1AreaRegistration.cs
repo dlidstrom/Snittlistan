@@ -4,13 +4,7 @@ namespace Snittlistan.Web.Areas.V1
 {
     public class V1AreaRegistration : AreaRegistration
     {
-        public override string AreaName
-        {
-            get
-            {
-                return "V1";
-            }
-        }
+        public override string AreaName => "V1";
 
         public override void RegisterArea(AreaRegistrationContext context)
         {

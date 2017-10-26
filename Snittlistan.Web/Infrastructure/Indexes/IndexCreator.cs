@@ -15,8 +15,8 @@ namespace Snittlistan.Web.Infrastructure.Indexes
 
         public static void ResetIndexes(IDocumentStore store, EventStore eventStore)
         {
-            if (store == null) throw new ArgumentNullException("store");
-            if (eventStore == null) throw new ArgumentNullException("eventStore");
+            if (store == null) throw new ArgumentNullException(nameof(store));
+            if (eventStore == null) throw new ArgumentNullException(nameof(eventStore));
             while (true)
             {
                 var indexNames = store.DatabaseCommands.GetIndexNames(0, 20);
