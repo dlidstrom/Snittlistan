@@ -136,6 +136,8 @@
           <iis:WebAddress Id="Binding3" Port="80" Header="snittlistan.se" />
           <iis:WebAddress Id="Binding4" Port="80" Header="www.snittlistan.se" />
           <iis:WebAddress Id="Binding5" Port="80" />
+          <iis:WebAddress Id="Binding6" Port="443" Header="vartansik.snittlistan.se" Secure="yes" />
+          <iis:WebAddress Id="Binding7" Port="80" Header="vartansik.snittlistan.se" />
           <iis:WebApplication Id="SnittlistanApplication" Name="Snittlistan" WebAppPool="AppPool" />
         </iis:WebSite>
       </Component>
