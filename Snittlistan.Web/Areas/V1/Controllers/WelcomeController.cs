@@ -6,6 +6,7 @@ using NLog;
 using Snittlistan.Web.Areas.V1.ViewModels.Account;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Models;
+using Snittlistan.Web.Services;
 
 namespace Snittlistan.Web.Areas.V1.Controllers
 {
@@ -13,6 +14,12 @@ namespace Snittlistan.Web.Areas.V1.Controllers
     {
         private const string MaintenanceAuthenticationTokenConstant = "Maintenance Authentication Token";
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        private readonly IAuthenticationService authenticationService;
+
+        public WelcomeController(IAuthenticationService authenticationService)
+        {
+            this.authenticationService = authenticationService;
+        }
 
         /// <summary>
         /// Gets the maintenance authentication token.
@@ -35,7 +42,7 @@ namespace Snittlistan.Web.Areas.V1.Controllers
         {
             AssertAdminUserExists();
 
-            var email = string.Format("admin@{0}", ConfigurationManager.AppSettings["Domain"]);
+            var email = $"admin@{ConfigurationManager.AppSettings["Domain"]}";
             var vm = new RegisterViewModel
             {
                 Email = email,
@@ -63,6 +70,7 @@ namespace Snittlistan.Web.Areas.V1.Controllers
                 };
             user.Activate();
             DocumentSession.Store(user);
+            authenticationService.SetAuthCookie(adminUser.Email, true);
 
             return RedirectToAction("Success");
         }

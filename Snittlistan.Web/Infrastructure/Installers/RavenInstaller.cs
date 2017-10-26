@@ -68,7 +68,8 @@ namespace Snittlistan.Web.Infrastructure.Installers
         private static IDocumentSession GetDocumentSession(IKernel kernel)
         {
             var store = kernel.Resolve<IDocumentStore>();
-            var documentSession = store.OpenSession();
+            var tenantConfiguration = kernel.Resolve<TenantConfiguration>();
+            var documentSession = store.OpenSession(tenantConfiguration.Database);
             documentSession.Advanced.UseOptimisticConcurrency = true;
             return documentSession;
         }
