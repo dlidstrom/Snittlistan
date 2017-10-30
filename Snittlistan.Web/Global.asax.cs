@@ -130,9 +130,33 @@ namespace Snittlistan.Web
                 Container = new WindsorContainer();
                 var tenantConfigurations = new[]
                 {
-                    new TenantConfiguration("test.localhost", "Snittlistan", "Snittlistan-hofvet", new[] { "Fredrikshof IF A", "Fredrikshof IF F", "Fredrikshof IF B", "Fredrikshof IF C" }),
-                    new TenantConfiguration("snittlistan.se", "Snittlistan", "Snittlistan-hofvet", new[] { "Fredrikshof IF A", "Fredrikshof IF F", "Fredrikshof IF B", "Fredrikshof IF C" }),
-                    new TenantConfiguration("vartansik.snittlistan.se", "Snittlistan-vartansik", "Snittlistan-vartansik", new[] { "Värtans IK A", "Värtans IK F", "Värtans IK B" })
+                    new TenantConfiguration(
+                        "test.localhost",
+                        "Snittlistan",
+                        "Snittlistan-hofvet",
+                        new[]
+                        {
+                            "Fredrikshof IF A", "Fredrikshof IF F", "Fredrikshof IF B", "Fredrikshof IF C"
+                        },
+                        true),
+                    new TenantConfiguration(
+                        "snittlistan.se",
+                        "Snittlistan",
+                        "Snittlistan-hofvet",
+                        new[]
+                        {
+                            "Fredrikshof IF A", "Fredrikshof IF F", "Fredrikshof IF B", "Fredrikshof IF C"
+                        },
+                        true),
+                    new TenantConfiguration(
+                        "vartansik.snittlistan.se",
+                        "Snittlistan-vartansik",
+                        "Snittlistan-vartansik",
+                        new[]
+                        {
+                            "Värtans IK A", "Värtans IK F", "Värtans IK B"
+                        },
+                        false)
                 };
                 foreach (var tenantConfiguration in tenantConfigurations)
                 {
