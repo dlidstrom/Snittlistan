@@ -19,7 +19,8 @@ namespace Snittlistan.Test.BackgroundTasks
                     "name",
                     "database",
                     "connectionstringname",
-                    new string[0]));
+                    new string[0],
+                    false));
             Transact(session => session.Store(task));
 
             // Act
