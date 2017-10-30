@@ -84,11 +84,11 @@ namespace Snittlistan.Web.Infrastructure
         {
             writer.WriteLine("BEGIN:VEVENT");
             writer.WriteLine("UID:" + roster.Id);
-            writer.WriteLine("DTSTAMP:" + string.Format("{0:yyyyMMddTHHmmssZ}", DateTime.UtcNow));
-            writer.WriteLine("DTSTART:" + string.Format("{0:yyyyMMddTHHmmssZ}", roster.Date.ToUniversalTime()));
-            writer.WriteLine("DTEND:" + string.Format("{0:yyyyMMddTHHmmssZ}", roster.Date.ToUniversalTime().AddMinutes(60 + 40)));
+            writer.WriteLine("DTSTAMP:" + $"{DateTime.UtcNow:yyyyMMddTHHmmssZ}");
+            writer.WriteLine("DTSTART:" + $"{roster.Date.ToUniversalTime():yyyyMMddTHHmmssZ}");
+            writer.WriteLine("DTEND:" + $"{roster.Date.ToUniversalTime().AddMinutes(60 + 40):yyyyMMddTHHmmssZ}");
             writer.WriteLine("SUMMARY:{0} - {1}", roster.Team, roster.Opponent);
-            var description = string.Format("DESCRIPTION:{0}", roster.Description);
+            var description = $"DESCRIPTION:{roster.Description}";
             writer.WriteLine(description.Substring(0, Math.Min(description.Length, 74)));
             while (description.Length > 74)
             {
