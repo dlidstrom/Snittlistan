@@ -3,20 +3,18 @@ using System.Reflection;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
+using System.Web.Http.Dispatcher;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Castle.Facilities.Startable;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
-using Castle.Windsor.Installer;
-using EventStoreLite;
-using EventStoreLite.IoC.Castle;
+using EventStoreLite.IoC;
 using NLog;
 using Raven.Client;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Attributes;
 using Snittlistan.Web.Infrastructure.AutoMapper;
-using Snittlistan.Web.Infrastructure.Indexes;
+using Snittlistan.Web.Infrastructure.Installers;
 using Snittlistan.Web.Infrastructure.IoC;
 using Snittlistan.Web.Models;
 
@@ -130,22 +128,33 @@ namespace Snittlistan.Web
             if (Container == null)
             {
                 Container = new WindsorContainer();
-                Container.AddFacility<StartableFacility>();
-                Container.Register(
-                    Component.For<TenantConfiguration>()
-                             .Instance(new TenantConfiguration("Snittlistan"))
-                             .Named("test.localhost"));
-                Container.Register(
-                    Component.For<TenantConfiguration>()
-                             .Instance(new TenantConfiguration("Snittlistan"))
-                             .Named("snittlistan.se"));
-                Container.Register(
-                    Component.For<TenantConfiguration>()
-                             .Instance(new TenantConfiguration("Snittlistan-vartansik"))
-                             .Named("vartansik.snittlistan.se"));
+                var tenantConfigurations = new[]
+                {
+                    new TenantConfiguration("test.localhost", "Snittlistan", "Snittlistan-hofvet", new[] { "Fredrikshof IF A", "Fredrikshof IF F", "Fredrikshof IF B", "Fredrikshof IF C" }),
+                    new TenantConfiguration("snittlistan.se", "Snittlistan", "Snittlistan-hofvet", new[] { "Fredrikshof IF A", "Fredrikshof IF F", "Fredrikshof IF B", "Fredrikshof IF C" }),
+                    new TenantConfiguration("vartansik.snittlistan.se", "Snittlistan-vartansik", "Snittlistan-vartansik", new[] { "Värtans IK A", "Värtans IK F", "Värtans IK B" })
+                };
+                foreach (var tenantConfiguration in tenantConfigurations)
+                {
+                    Container.Register(
+                        Component.For<TenantConfiguration>()
+                                 .Instance(tenantConfiguration)
+                                 .Named(tenantConfiguration.Name));
+                }
+
                 Container.Kernel.AddHandlerSelector(new HostBasedComponentSelector());
                 Container.Install(
-                    FromAssembly.This(),
+                    new ApiControllerInstaller(),
+                    new AutoMapperInstaller(),
+                    new BackgroundTaskHandlersInstaller(),
+                    new BitsClientInstaller(),
+                    new ControllerInstaller(),
+                    new EventMigratorInstaller(),
+                    new EventStoreSessionInstaller(),
+                    new HandlersInstaller(),
+                    new RavenInstaller(),
+                    new ServicesInstaller(),
+                    new TaskRunnerInstaller(),
                     EventStoreInstaller.FromAssembly(Assembly.GetExecutingAssembly()));
             }
 
@@ -156,28 +165,31 @@ namespace Snittlistan.Web
                     {
                         var documentSession = kernel.Resolve<IDocumentStore>()
                                                     .OpenSession();
-                            documentSession.Advanced.UseOptimisticConcurrency = true;
-                            return documentSession;
-                        }).LifestyleTransient());
+                        documentSession.Advanced.UseOptimisticConcurrency = true;
+                        return documentSession;
+                    }).LifestyleTransient());
                 Container.AddChildContainer(ChildContainer);
             }
 
             // create indexes
-            var store = Container.Resolve<IDocumentStore>();
-            if (ShouldInitializeIndexes(store, GetAssemblyVersion()))
-            {
-                Log.Info("Creating indexes");
-                var eventStore = Container.Resolve<EventStore>();
-                IndexCreator.ResetIndexes(store, eventStore);
-            }
-            else
-            {
-                Log.Info("Skipping creation of indexes");
-            }
+            //var store = Container.Resolve<IDocumentStore>();
+            //if (ShouldInitializeIndexes(store, GetAssemblyVersion()))
+            //{
+            //    Log.Info("Creating indexes");
+            //    var eventStore = Container.Resolve<EventStore>();
+            //    IndexCreator.ResetIndexes(store, eventStore);
+            //}
+            //else
+            //{
+            //    Log.Info("Skipping creation of indexes");
+            //}
 
             DependencyResolver.SetResolver(new WindsorDependencyResolver(Container));
-            configuration.DependencyResolver =
-                new WindsorHttpDependencyResolver(Container.Kernel);
+            //configuration.DependencyResolver =
+            //    new WindsorHttpDependencyResolver(Container.Kernel);
+            configuration.Services.Replace(
+                typeof(IHttpControllerActivator),
+                new WindsorCompositionRoot(Container));
         }
 
         private static bool ShouldInitializeIndexes(IDocumentStore documentStore, string version)

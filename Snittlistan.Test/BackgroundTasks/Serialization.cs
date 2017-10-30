@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using NUnit.Framework;
 using Snittlistan.Test.ApiControllers;
+using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.BackgroundTasks;
 
 namespace Snittlistan.Test.BackgroundTasks
@@ -12,7 +13,13 @@ namespace Snittlistan.Test.BackgroundTasks
         public void SerializesCorrectly()
         {
             // Arrange
-            var task = BackgroundTask.Create(new MyClass(5));
+            var task = BackgroundTask.Create(
+                new MyClass(5),
+                new TenantConfiguration(
+                    "name",
+                    "database",
+                    "connectionstringname",
+                    new string[0]));
             Transact(session => session.Store(task));
 
             // Act

@@ -1,4 +1,5 @@
 ﻿using Raven.Client;
+using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.BackgroundTasks;
 
 namespace Snittlistan.Web.Handlers
@@ -7,11 +8,13 @@ namespace Snittlistan.Web.Handlers
     {
         public IDocumentSession DocumentSession { get; set; }
 
+        public TenantConfiguration TenantConfiguration { get; set; }
+
         public abstract void Handle(TEvent @event);
 
         protected void SendTask<TTask>(TTask task) where TTask : class
         {
-            DocumentSession.Store(BackgroundTask.Create(task));
+            DocumentSession.Store(BackgroundTask.Create(task, TenantConfiguration));
         }
     }
 }

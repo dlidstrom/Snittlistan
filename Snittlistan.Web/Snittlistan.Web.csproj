@@ -81,10 +81,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Elmah.MVC.2.0.2\lib\net40\Elmah.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="EventStoreLite, Version=0.7.5404.18229, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EventStoreLite.0.7.3\lib\net40\EventStoreLite.dll</HintPath>
-    </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -306,7 +302,25 @@
     <Compile Include="Infrastructure\BackgroundTasks\IBackgroundTaskHandler.cs" />
     <Compile Include="Infrastructure\BackgroundTasks\TaskRunner.cs" />
     <Compile Include="Infrastructure\BitsClient.cs" />
-    <Compile Include="Infrastructure\HostBasedComponentSelector.cs" />
+    <Compile Include="Infrastructure\EventStoreLite\AggregateRoot.cs" />
+    <Compile Include="Infrastructure\EventStoreLite\Event.cs" />
+    <Compile Include="Infrastructure\EventStoreLite\EventDispatcher.cs" />
+    <Compile Include="Infrastructure\EventStoreLite\EventStore.cs" />
+    <Compile Include="Infrastructure\EventStoreLite\EventStoreSession.cs" />
+    <Compile Include="Infrastructure\EventStoreLite\EventStream.cs" />
+    <Compile Include="Infrastructure\EventStoreLite\EventStreamAndAggregateRoot.cs" />
+    <Compile Include="Infrastructure\EventStoreLite\IAggregate.cs" />
+    <Compile Include="Infrastructure\EventStoreLite\IDomainEvent.cs" />
+    <Compile Include="Infrastructure\EventStoreLite\IEventHandler.cs" />
+    <Compile Include="Infrastructure\EventStoreLite\IEventMigrator.cs" />
+    <Compile Include="Infrastructure\EventStoreLite\IEventStoreSession.cs" />
+    <Compile Include="Infrastructure\EventStoreLite\Indexes\EventsIndex.cs" />
+    <Compile Include="Infrastructure\EventStoreLite\Indexes\ReadModelIndex.cs" />
+    <Compile Include="Infrastructure\EventStoreLite\Infrastructure\PrivateReflectionDynamicObject.cs" />
+    <Compile Include="Infrastructure\EventStoreLite\Infrastructure\PrivateReflectionDynamicObjectExtensions.cs" />
+    <Compile Include="Infrastructure\EventStoreLite\IoC\EventStoreInstaller.cs" />
+    <Compile Include="Infrastructure\EventStoreLite\IReadModel.cs" />
+    <Compile Include="Infrastructure\EventStoreLite\ObjectReferenceEqualityComparer.cs" />
     <Compile Include="Infrastructure\IBitsClient.cs" />
     <Compile Include="Infrastructure\ICalFormatter.cs" />
     <Compile Include="Infrastructure\ICommand.cs" />
@@ -317,6 +331,8 @@
     <Compile Include="Infrastructure\Installers\EventStoreSessionInstaller.cs" />
     <Compile Include="Infrastructure\Installers\BitsClientInstaller.cs" />
     <Compile Include="Infrastructure\Installers\TaskRunnerInstaller.cs" />
+    <Compile Include="Infrastructure\IoC\WindsorCompositionRoot.cs" />
+    <Compile Include="Infrastructure\IoC\HostBasedComponentSelector.cs" />
     <Compile Include="Infrastructure\IQuery.cs" />
     <Compile Include="Infrastructure\JetBrains\Annotations.cs" />
     <Compile Include="Infrastructure\OutlookAgentMessageHandler.cs" />
@@ -346,8 +362,6 @@
     <Compile Include="Areas\V2\V2AreaRegistration.cs" />
     <Compile Include="Areas\V2\ViewModels\CreateRosterViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\PlayerViewModel.cs" />
-    <Compile Include="Infrastructure\IoC\WindsorHttpDependencyResolver.cs" />
-    <Compile Include="Infrastructure\IoC\WindsorDependencyScope.cs" />
     <Content Include="Content\css\glyphicons.css" />
     <Content Include="Content\css\images\apple-touch-icon-57x57.png" />
     <Content Include="Content\css\images\apple-touch-icon-60x60.png" />

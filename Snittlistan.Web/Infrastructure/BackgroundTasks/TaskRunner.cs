@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Timers;
@@ -109,7 +110,8 @@ namespace Snittlistan.Web.Infrastructure.BackgroundTasks
                 var handlerType = typeof(IBackgroundTaskHandler<>).MakeGenericType(task.Body.GetType());
                 handler = kernel.Resolve(handlerType);
                 var method = handler.GetType().GetMethod("Handle");
-                method.Invoke(handler, new[] { task.Body });
+                Debug.Assert(method != null, "method != null");
+                method.Invoke(handler, new[] { task.Body, task.TenantConfiguration });
                 task.MarkFinished();
                 Log.Info("Task finished successfully");
             }

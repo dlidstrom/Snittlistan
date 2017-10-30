@@ -50,8 +50,16 @@ namespace Snittlistan.Web.Infrastructure.Installers
 
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            container.Register(
-                Component.For<IDocumentStore>().Instance(InitializeStore(CreateDocumentStore())).LifestyleSingleton());
+            var tenantConfigurations = container.ResolveAll<TenantConfiguration>();
+            foreach (var tenantConfiguration in tenantConfigurations)
+            {
+                var documentStore = InitializeStore(CreateDocumentStore(tenantConfiguration.ConnectionStringName));
+                var documentStoreComponent = Component.For<IDocumentStore>()
+                                                      .Instance(documentStore)
+                                                      .Named($"DocumentStore-{tenantConfiguration.Name}")
+                                                      .LifestyleSingleton();
+                container.Register(documentStoreComponent);
+            }
 
             container.Register(
                 Component.For<IDocumentSession>()
@@ -86,7 +94,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
             return store;
         }
 
-        private IDocumentStore CreateDocumentStore()
+        private IDocumentStore CreateDocumentStore(string connectionStringName)
         {
             IDocumentStore store;
             switch (mode)
@@ -104,7 +112,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
                     break;
 
                 case DocumentStoreMode.Server:
-                    store = new DocumentStore { ConnectionStringName = "RavenDB" };
+                    store = new DocumentStore { ConnectionStringName = connectionStringName };
                     break;
 
                 default:

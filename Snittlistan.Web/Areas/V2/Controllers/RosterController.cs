@@ -80,10 +80,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 return View("CreateBits");
 
             var season = DocumentSession.LatestSeasonOrDefault(DateTime.Now.Year);
-            var possibleTeams = DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
-                                               .Select(t => t.Team)
-                                               .Distinct()
-                                               .ToArray();
 
             using (var client = new WebClient())
             {
@@ -91,7 +87,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     "http://bits.swebowl.se/Matches/MatchFact.aspx?MatchId={0}",
                     vm.BitsMatchId);
                 var content = client.DownloadString(address);
-                var header = BitsParser.ParseHeader(content, possibleTeams);
+                var header = BitsParser.ParseHeader(content, TenantConfiguration.TeamNames);
                 return View(
                     "Create", new CreateRosterViewModel
                     {

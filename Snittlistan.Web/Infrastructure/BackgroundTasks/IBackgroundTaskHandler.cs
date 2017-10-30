@@ -2,6 +2,6 @@
 {
     public interface IBackgroundTaskHandler<in TTask>
     {
-        void Handle(TTask task);
+        void Handle(TTask task, TenantConfiguration tenantConfiguration);
     }
 }

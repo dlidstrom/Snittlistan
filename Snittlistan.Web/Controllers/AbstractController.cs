@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using EventStoreLite;
 using Raven.Client;
+using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.BackgroundTasks;
 using Snittlistan.Web.Models;
 
@@ -28,9 +29,14 @@ namespace Snittlistan.Web.Controllers
         /// </summary>
         public EventStore EventStore { get; set; }
 
+        /// <summary>
+        /// Gets the tenant configuration.
+        /// </summary>
+        public TenantConfiguration TenantConfiguration { get; set; }
+
         protected void SendTask<TTask>(TTask task) where TTask : class
         {
-            DocumentSession.Store(BackgroundTask.Create(task));
+            DocumentSession.Store(BackgroundTask.Create(task, TenantConfiguration));
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
