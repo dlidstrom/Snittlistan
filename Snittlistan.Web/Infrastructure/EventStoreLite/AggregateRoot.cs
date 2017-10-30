@@ -31,13 +31,13 @@ namespace EventStoreLite
 
         internal void SetId(string id)
         {
-            if (id == null) throw new ArgumentNullException("id");
+            if (id == null) throw new ArgumentNullException(nameof(id));
             Id = id;
         }
 
         internal void LoadFromHistory(IEnumerable<IDomainEvent> history)
         {
-            if (history == null) throw new ArgumentNullException("history");
+            if (history == null) throw new ArgumentNullException(nameof(history));
             uncommittedChanges = new List<IDomainEvent>();
             foreach (var domainEvent in history) ApplyChange(domainEvent, false);
         }
@@ -59,7 +59,7 @@ namespace EventStoreLite
         [DebuggerStepThrough]
         protected void ApplyChange(Event @event)
         {
-            if (@event == null) throw new ArgumentNullException("event");
+            if (@event == null) throw new ArgumentNullException(nameof(@event));
             @event.SetTimeStamp(DateTimeOffset.Now);
             ApplyChange(@event, true);
         }

@@ -26,9 +26,9 @@ namespace EventStoreLite
 
         public EventStoreSession(IDocumentStore documentStore, IDocumentSession documentSession, EventDispatcher dispatcher)
         {
-            if (documentStore == null) throw new ArgumentNullException("documentStore");
-            if (documentSession == null) throw new ArgumentNullException("documentSession");
-            if (dispatcher == null) throw new ArgumentNullException("dispatcher");
+            if (documentStore == null) throw new ArgumentNullException(nameof(documentStore));
+            if (documentSession == null) throw new ArgumentNullException(nameof(documentSession));
+            if (dispatcher == null) throw new ArgumentNullException(nameof(dispatcher));
 
             this.documentStore = documentStore;
             this.documentSession = documentSession;
@@ -37,7 +37,7 @@ namespace EventStoreLite
 
         public TAggregate Load<TAggregate>(string id) where TAggregate : AggregateRoot
         {
-            if (id == null) throw new ArgumentNullException("id");
+            if (id == null) throw new ArgumentNullException(nameof(id));
 
             EventStreamAndAggregateRoot unitOfWorkInstance;
             if (entitiesByKey.TryGetValue(id, out unitOfWorkInstance))
@@ -70,7 +70,7 @@ namespace EventStoreLite
 
         public void Store(AggregateRoot aggregate)
         {
-            if (aggregate == null) throw new ArgumentNullException("aggregate");
+            if (aggregate == null) throw new ArgumentNullException(nameof(aggregate));
 
             var eventStream = new EventStream();
             GenerateId(eventStream, aggregate);

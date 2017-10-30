@@ -83,9 +83,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
             using (var client = new WebClient())
             {
-                var address = string.Format(
-                    "http://bits.swebowl.se/Matches/MatchFact.aspx?MatchId={0}",
-                    vm.BitsMatchId);
+                var address = $"http://bits.swebowl.se/Matches/MatchFact.aspx?MatchId={vm.BitsMatchId}";
                 var content = client.DownloadString(address);
                 var header = BitsParser.ParseHeader(content, TenantConfiguration.TeamNames);
                 return View(
