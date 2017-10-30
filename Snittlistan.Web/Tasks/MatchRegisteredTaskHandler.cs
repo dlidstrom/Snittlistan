@@ -7,7 +7,7 @@ namespace Snittlistan.Web.Tasks
 {
     public class MatchRegisteredTaskHandler : BackgroundTaskHandler<MatchRegisteredTask>
     {
-        public override void Handle(MatchRegisteredTask task)
+        protected override void Handle(MatchRegisteredTask task)
         {
             Transact(session =>
             {

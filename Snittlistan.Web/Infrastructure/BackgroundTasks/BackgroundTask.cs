@@ -7,10 +7,10 @@ namespace Snittlistan.Web.Infrastructure.BackgroundTasks
     public class BackgroundTask
     {
         [JsonConstructor]
-        private BackgroundTask(object body)
+        private BackgroundTask(object body, TenantConfiguration tenantConfiguration)
         {
-            if (body == null) throw new ArgumentNullException("body");
             Body = body;
+            TenantConfiguration = tenantConfiguration;
             Exceptions = new List<Exception>();
             NextTry = DateTimeOffset.UtcNow;
         }
@@ -21,6 +21,8 @@ namespace Snittlistan.Web.Infrastructure.BackgroundTasks
 
         public object Body { get; private set; }
 
+        public TenantConfiguration TenantConfiguration { get; set; }
+
         public bool IsFinished { get; private set; }
 
         public bool IsFailed { get; private set; }
@@ -29,9 +31,9 @@ namespace Snittlistan.Web.Infrastructure.BackgroundTasks
 
         public List<Exception> Exceptions { get; private set; }
 
-        public static BackgroundTask Create<TBody>(TBody body) where TBody : class
+        public static BackgroundTask Create<TBody>(TBody body, TenantConfiguration tenantConfiguration) where TBody : class
         {
-            return new BackgroundTask(body);
+            return new BackgroundTask(body, tenantConfiguration);
         }
 
         public void MarkFinished()
@@ -62,7 +64,7 @@ namespace Snittlistan.Web.Infrastructure.BackgroundTasks
 
         public string GetInfo()
         {
-            var info = string.Format("Type: {0}{1}{2}", Body.GetType(), Environment.NewLine, Body);
+            var info = $"Type: {Body.GetType()}{Environment.NewLine}{Body}";
             return info;
         }
     }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using EventStoreLite;
-using EventStoreLite.IoC.Castle;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.Migration;
@@ -144,8 +143,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         [HttpPost, ActionName("ReplayEvents")]
         public ActionResult ReplayEventsConfirmed()
         {
-            var locator = new WindsorServiceLocator(MvcApplication.ChildContainer);
-            EventStore.ReplayEvents(locator);
+            EventStore.ReplayEvents(MvcApplication.ChildContainer);
 
             return RedirectToAction("EventStoreActions");
         }

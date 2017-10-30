@@ -2,20 +2,36 @@
 using System.Linq;
 using System.Web;
 using Castle.MicroKernel;
+using Raven.Client;
 
-namespace Snittlistan.Web.Infrastructure
+namespace Snittlistan.Web.Infrastructure.IoC
 {
     public class HostBasedComponentSelector : IHandlerSelector
     {
         public bool HasOpinionAbout(string key, Type service)
         {
-            return service == typeof(TenantConfiguration);
+            try
+            {
+                GetHostname();
+                var result = service == typeof(TenantConfiguration)
+                    || service == typeof(IDocumentStore);
+                return result;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public IHandler SelectHandler(string key, Type service, IHandler[] handlers)
         {
-            var id = GetHostname();
-            var selectedHandler = handlers.FirstOrDefault(h => h.ComponentModel.Name == id)
+            var hostname = GetHostname();
+            if (service == typeof(IDocumentStore))
+            {
+                hostname = $"DocumentStore-{hostname}";
+            }
+
+            var selectedHandler = handlers.FirstOrDefault(h => h.ComponentModel.Name == hostname)
                                   ?? GetDefaultHandler(service, handlers);
             return selectedHandler;
         }

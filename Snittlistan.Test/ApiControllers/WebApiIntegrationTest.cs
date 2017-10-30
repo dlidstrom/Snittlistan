@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Castle.Core;
 using Castle.Windsor;
-using EventStoreLite.IoC.Castle;
+using EventStoreLite.IoC;
 using NUnit.Framework;
 using Raven.Client;
 using Snittlistan.Web;
