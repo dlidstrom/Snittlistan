@@ -15,7 +15,7 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
         <meta name="apple-mobile-web-app-title" content="@tenantConfiguration.WebAppTitle"/>
         <meta name="google-site-verification" content="g8KwkjfVGgtu5zxYGhIEfJS4JGVkCMS1YMdp5WNOOpU"/>
-        <link rel="icon" href="@Url.ContentCacheBreak(string.Format("~/Content/css/images/{0}", tenantConfiguration.Favicon))" />>
+        <link rel="icon" href="@Url.ContentCacheBreak(string.Format("~/Content/css/images/{0}", tenantConfiguration.Favicon))" />
         <link rel="apple-touch-icon" sizes="@tenantConfiguration.AppleTouchIconSize" href="@Url.ContentCacheBreak(string.Format("~/Content/css/images/{0}", tenantConfiguration.AppleTouchIcon))" />
         <title>@ViewBag.Title</title>
         @if (Html.ApplicationMode() == ApplicationMode.Debug)
