@@ -5,7 +5,7 @@ using Raven.Client.Indexes;
 // ReSharper disable once CheckNamespace
 namespace EventStoreLite.Indexes
 {
-    internal class EventsIndex : AbstractIndexCreationTask<EventStream, EventsIndex.Result>
+    public class EventsIndex : AbstractIndexCreationTask<EventStream, EventsIndex.Result>
     {
         public EventsIndex()
         {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 // ReSharper disable once CheckNamespace
 namespace EventStoreLite
 {
-    internal class EventStream
+    public class EventStream
     {
         public EventStream()
         {

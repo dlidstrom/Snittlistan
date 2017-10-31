@@ -10,7 +10,7 @@ using Raven.Client.Indexes;
 // ReSharper disable once CheckNamespace
 namespace EventStoreLite.Indexes
 {
-    internal class ReadModelIndex : AbstractMultiMapIndexCreationTask<IReadModel>
+    public class ReadModelIndex : AbstractMultiMapIndexCreationTask<IReadModel>
     {
         public ReadModelIndex(IEnumerable<Type> types)
         {
