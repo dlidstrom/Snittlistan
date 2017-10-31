@@ -18,7 +18,7 @@
              SummaryCodepage="1252"
              Platform="x64" />
     <Media Id="1" Cabinet="service.cab" EmbedCab="yes" />
-    <Icon Id="icon.ico" SourceFile="Snittlistan.Web\favicon.ico"/>
+    <Icon Id="icon.ico" SourceFile="Snittlistan.Web\Content\css\images\hofvet.ico"/>
     <Property Id="ARPPRODUCTICON" Value="icon.ico" />
 
     <MajorUpgrade DowngradeErrorMessage="A later version of this product is already installed. Setup will now exit." />
