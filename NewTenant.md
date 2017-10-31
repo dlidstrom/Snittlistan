@@ -4,6 +4,7 @@
 * Ny connectionString i Snittlistan.Tool.exe.config och Snittlistan.Web.config
 * Skapa databasen
 * Kör Snittlistan.Tool.exe /initialize
+* Fixa bilderna med https://realfavicongenerator.net
 * Ny TenantConfiguration i Global.asax.cs
 * Uppdatera bindings i Snittlistan.main.wxs
 * Installera ny version

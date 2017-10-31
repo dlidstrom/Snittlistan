@@ -34,6 +34,11 @@ namespace Snittlistan.Web.Controllers
         /// </summary>
         public TenantConfiguration TenantConfiguration { get; set; }
 
+        /// <summary>
+        /// Gets the website configuration.
+        /// </summary>
+        public WebsiteConfig WebsiteConfig => DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+
         protected void SendTask<TTask>(TTask task) where TTask : class
         {
             DocumentSession.Store(BackgroundTask.Create(task, TenantConfiguration));

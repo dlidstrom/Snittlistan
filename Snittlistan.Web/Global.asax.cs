@@ -134,29 +134,26 @@ namespace Snittlistan.Web
                         "test.localhost",
                         "Snittlistan",
                         "Snittlistan-hofvet",
-                        new[]
-                        {
-                            "Fredrikshof IF A", "Fredrikshof IF F", "Fredrikshof IF B", "Fredrikshof IF C"
-                        },
-                        true),
+                        "hofvet.ico",
+                        "hofvet.png",
+                        "76x76",
+                        "Hofvet"),
                     new TenantConfiguration(
                         "snittlistan.se",
                         "Snittlistan",
                         "Snittlistan-hofvet",
-                        new[]
-                        {
-                            "Fredrikshof IF A", "Fredrikshof IF F", "Fredrikshof IF B", "Fredrikshof IF C"
-                        },
-                        true),
+                        "hofvet.ico",
+                        "hofvet.png",
+                        "76x76",
+                        "Hofvet"),
                     new TenantConfiguration(
                         "vartansik.snittlistan.se",
                         "Snittlistan-vartansik",
                         "Snittlistan-vartansik",
-                        new[]
-                        {
-                            "Värtans IK A", "Värtans IK F", "Värtans IK B"
-                        },
-                        false)
+                        "vartansik.ico",
+                        "vartansik.png",
+                        "180x180",
+                        "Värtans IK")
                 };
                 foreach (var tenantConfiguration in tenantConfigurations)
                 {
@@ -214,37 +211,6 @@ namespace Snittlistan.Web
             configuration.Services.Replace(
                 typeof(IHttpControllerActivator),
                 new WindsorCompositionRoot(Container));
-        }
-
-        private static bool ShouldInitializeIndexes(IDocumentStore documentStore, string version)
-        {
-            using (var session = documentStore.OpenSession())
-            {
-                var config = session.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
-                if (config == null)
-                {
-                    Log.Info("Creating website config");
-                    config = new WebsiteConfig();
-                    session.Store(config);
-                }
-
-                Log.Info("Current version: {0}, IndexCreatedVersion: {1}", version, config.IndexCreatedVersion);
-                var newVersion = true;
-                try
-                {
-                    var oldMajorMinor = config.IndexCreatedVersion.Substring(0, config.IndexCreatedVersion.IndexOf('.', 1 + config.IndexCreatedVersion.IndexOf('.')));
-                    var newMajorMinor = version.Substring(0, version.IndexOf('.', 1 + version.IndexOf('.')));
-                    newVersion = oldMajorMinor != newMajorMinor;
-                }
-                catch
-                {
-                }
-
-                config.SetIndexCreatedVersion(version);
-                session.SaveChanges();
-
-                return newVersion;
-            }
         }
     }
 }
