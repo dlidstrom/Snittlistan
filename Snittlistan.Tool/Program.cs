@@ -4,6 +4,7 @@ using Raven.Client.Document;
 using Raven.Client.Embedded;
 using Raven.Database.Smuggler;
 using Snittlistan.Web.Infrastructure.Indexes;
+using Snittlistan.Web.Models;
 
 namespace Snittlistan.Tool
 {
@@ -39,6 +40,11 @@ namespace Snittlistan.Tool
                 var documentStore = new DocumentStore { ConnectionStringName = connectionStringName };
                 documentStore.Initialize();
                 IndexCreator.CreateIndexes(documentStore);
+                using (var documentSession = documentStore.OpenSession())
+                {
+                    documentSession.Store(new WebsiteConfig(new string[0], false));
+                    documentSession.SaveChanges();
+                }
             }
             else
             {

@@ -85,7 +85,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             {
                 var address = $"http://bits.swebowl.se/Matches/MatchFact.aspx?MatchId={vm.BitsMatchId}";
                 var content = client.DownloadString(address);
-                var header = BitsParser.ParseHeader(content, TenantConfiguration.TeamNames);
+                var header = BitsParser.ParseHeader(content, WebsiteConfig.TeamNames);
                 return View(
                     "Create", new CreateRosterViewModel
                     {

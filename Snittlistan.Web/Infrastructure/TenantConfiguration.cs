@@ -4,17 +4,29 @@ namespace Snittlistan.Web.Infrastructure
 {
     public class TenantConfiguration
     {
-        public TenantConfiguration(string name, string database, string connectionStringName, string[] teamNames, bool hasV1)
+        public TenantConfiguration(
+            string name,
+            string database,
+            string connectionStringName,
+            string favicon,
+            string appleTouchIcon,
+            string appleTouchIconSize,
+            string webAppTitle)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
             if (database == null) throw new ArgumentNullException(nameof(database));
             if (connectionStringName == null) throw new ArgumentNullException(nameof(connectionStringName));
-            if (teamNames == null) throw new ArgumentNullException(nameof(teamNames));
+            if (favicon == null) throw new ArgumentNullException(nameof(favicon));
+            if (appleTouchIcon == null) throw new ArgumentNullException(nameof(appleTouchIcon));
+            if (appleTouchIconSize == null) throw new ArgumentNullException(nameof(appleTouchIconSize));
+            if (webAppTitle == null) throw new ArgumentNullException(nameof(webAppTitle));
             Name = name;
             Database = database;
             ConnectionStringName = connectionStringName;
-            TeamNames = teamNames;
-            HasV1 = hasV1;
+            Favicon = favicon;
+            AppleTouchIcon = appleTouchIcon;
+            AppleTouchIconSize = appleTouchIconSize;
+            WebAppTitle = webAppTitle;
         }
 
         public string Name { get; }
@@ -23,8 +35,12 @@ namespace Snittlistan.Web.Infrastructure
 
         public string ConnectionStringName { get; }
 
-        public string[] TeamNames { get; }
+        public string Favicon { get; }
 
-        public bool HasV1 { get; }
+        public string AppleTouchIcon { get; }
+
+        public string AppleTouchIconSize { get; }
+
+        public string WebAppTitle { get; }
     }
 }

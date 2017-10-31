@@ -6,20 +6,18 @@ namespace Snittlistan.Web.Models
     {
         public const string GlobalId = "WebsiteConfig";
 
-        public WebsiteConfig()
+        public WebsiteConfig(string[] teamNames, bool hasV1)
         {
+            if (teamNames == null) throw new ArgumentNullException(nameof(teamNames));
             Id = GlobalId;
-            IndexCreatedVersion = string.Empty;
+            TeamNames = teamNames;
+            HasV1 = hasV1;
         }
 
-        public string Id { get; private set; }
+        public string Id { get; }
 
-        public string IndexCreatedVersion { get; private set; }
+        public string[] TeamNames { get; }
 
-        public void SetIndexCreatedVersion(string version)
-        {
-            if (version == null) throw new ArgumentNullException("version");
-            IndexCreatedVersion = version;
-        }
+        public bool HasV1 { get; }
     }
 }
