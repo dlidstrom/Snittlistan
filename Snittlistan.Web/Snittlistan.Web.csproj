@@ -363,12 +363,11 @@
     <Compile Include="Areas\V2\ViewModels\CreateRosterViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\PlayerViewModel.cs" />
     <Content Include="Content\css\glyphicons.css" />
-    <Content Include="Content\css\images\apple-touch-icon-57x57.png" />
-    <Content Include="Content\css\images\apple-touch-icon-60x60.png" />
-    <Content Include="Content\css\images\apple-touch-icon-72x72.png" />
-    <Content Include="Content\css\images\apple-touch-icon-76x76.png" />
-    <Content Include="Content\css\images\apple-touch-icon.png" />
     <Content Include="Content\css\images\glyphicons-free.png" />
+    <Content Include="Content\css\images\hofvet.ico" />
+    <Content Include="Content\css\images\hofvet.png" />
+    <Content Include="Content\css\images\vartansik.ico" />
+    <Content Include="Content\css\images\vartansik.png" />
     <Content Include="Content\external\waypoints\waypoints-0.0.1.min.js" />
     <Content Include="Content\js\helpers\typeahead.js" />
     <Compile Include="Controllers\AbstractController.cs" />
