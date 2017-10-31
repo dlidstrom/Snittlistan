@@ -611,7 +611,6 @@
     <Content Include="Content\templates\turn-new-template.html" />
     <Content Include="Content\templates\turn-template.html" />
     <Content Include="Content\templates\turns-template.html" />
-    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="robots.txt" />
     <Content Include="Web.config">
