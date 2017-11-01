@@ -192,22 +192,7 @@ namespace Snittlistan.Web
                 Container.AddChildContainer(ChildContainer);
             }
 
-            // create indexes
-            //var store = Container.Resolve<IDocumentStore>();
-            //if (ShouldInitializeIndexes(store, GetAssemblyVersion()))
-            //{
-            //    Log.Info("Creating indexes");
-            //    var eventStore = Container.Resolve<EventStore>();
-            //    IndexCreator.ResetIndexes(store, eventStore);
-            //}
-            //else
-            //{
-            //    Log.Info("Skipping creation of indexes");
-            //}
-
             DependencyResolver.SetResolver(new WindsorDependencyResolver(Container));
-            //configuration.DependencyResolver =
-            //    new WindsorHttpDependencyResolver(Container.Kernel);
             configuration.Services.Replace(
                 typeof(IHttpControllerActivator),
                 new WindsorCompositionRoot(Container));
