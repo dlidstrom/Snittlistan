@@ -202,6 +202,7 @@
     <Compile Include="Areas\V2\Commands\RegisterMatch4Command.cs" />
     <Compile Include="Areas\V2\Commands\RegisterMatchCommand.cs" />
     <Compile Include="Areas\V2\Controllers\Api\CalendarController.cs" />
+    <Compile Include="Areas\V2\Controllers\LayoutController.cs" />
     <Compile Include="Areas\V2\Domain\EliteMedals.cs" />
     <Compile Include="Areas\V2\Domain\Match\Commentary\MatchAnalyzer.cs" />
     <Compile Include="Areas\V2\Domain\Match\Commentary\MatchResultType.cs" />
@@ -590,6 +591,7 @@
     <Content Include=".well-known\acme-challenge\Web.Config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Areas\V2\Views\Layout\NavPart.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />

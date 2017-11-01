@@ -12,6 +12,7 @@ using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Helpers;
 using Snittlistan.Web.Infrastructure.AutoMapper;
+using Snittlistan.Web.Models;
 
 namespace Snittlistan.Web.Areas.V2.Controllers
 {
@@ -80,12 +81,13 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 return View("CreateBits");
 
             var season = DocumentSession.LatestSeasonOrDefault(DateTime.Now.Year);
+            var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
 
             using (var client = new WebClient())
             {
                 var address = $"http://bits.swebowl.se/Matches/MatchFact.aspx?MatchId={vm.BitsMatchId}";
                 var content = client.DownloadString(address);
-                var header = BitsParser.ParseHeader(content, WebsiteConfig.TeamNames);
+                var header = BitsParser.ParseHeader(content, websiteConfig.TeamNames);
                 return View(
                     "Create", new CreateRosterViewModel
                     {

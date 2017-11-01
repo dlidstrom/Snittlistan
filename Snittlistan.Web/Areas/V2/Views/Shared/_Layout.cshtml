@@ -4,7 +4,6 @@
     Bundles.Reference("Content/css/main.less");
     Bundles.Reference("Content/css/glyphicons.css");
     Bundles.Reference("Content/external/waypoints/waypoints-0.0.1.min.js");
-    var websiteConfig = Html.GetWebsiteConfig();
     var tenantConfiguration = Html.GetTenantConfiguration();
 }<!DOCTYPE html>
 <html lang="se">
@@ -47,16 +46,7 @@
                         Snittlistan
                     </a>
                     <div class="nav-collapse" data-nav-collapse>
-                        <ul class="nav">
-                            @Content.ControllerMenuLink(Html, "Omgångar", "sprite-glyphicons_045_calendar", "Roster", Url.Action("Index", "Roster"))
-                            @Content.ControllerMenuLink(Html, "Resultat", "sprite-glyphicons_040_stats", "MatchResult", Url.Action("Index", "MatchResult"))
-                            @Content.ControllerMenuLink(Html, "Frånvaro", "sprite-glyphicons_045_calendar", "Absence", Url.Action("Index", "Absence"))
-                            @Content.ControllerMenuLink(Html, "Medlemmar", "sprite-glyphicons_043_group", "Player", Url.Action("Index", "Player"))
-                            @if (websiteConfig.HasV1)
-                            {
-                                @Content.ControllerMenuLink(Html, "2011-2012", "sprite-glyphicons_090_table", "Home", Url.Action("Index", "Home", new { area = "V1" }))
-                            }
-                        </ul>
+                        @Html.Action("NavPart", "Layout")
                         <ul class="nav pull-right">
                             @if (Request.IsAuthenticated)
                             {

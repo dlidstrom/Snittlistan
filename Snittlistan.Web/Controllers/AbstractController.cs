@@ -34,11 +34,6 @@ namespace Snittlistan.Web.Controllers
         /// </summary>
         public TenantConfiguration TenantConfiguration { get; set; }
 
-        /// <summary>
-        /// Gets the website configuration.
-        /// </summary>
-        public WebsiteConfig WebsiteConfig => DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
-
         protected void SendTask<TTask>(TTask task) where TTask : class
         {
             DocumentSession.Store(BackgroundTask.Create(task, TenantConfiguration));
@@ -46,6 +41,9 @@ namespace Snittlistan.Web.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            // load website config to make sure it always migrates
+            DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+
             // make sure there's an admin user
             if (DocumentSession.Load<User>("Admin") != null) return;
 

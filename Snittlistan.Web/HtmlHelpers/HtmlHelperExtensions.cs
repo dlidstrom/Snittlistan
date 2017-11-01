@@ -3,10 +3,8 @@ using System.IO;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using Raven.Client;
 using Raven.Imports.Newtonsoft.Json;
 using Snittlistan.Web.Infrastructure;
-using Snittlistan.Web.Models;
 
 namespace Snittlistan.Web.HtmlHelpers
 {
@@ -96,12 +94,6 @@ namespace Snittlistan.Web.HtmlHelpers
         {
             var version = MvcApplication.GetAssemblyVersion();
             return new HtmlString(version);
-        }
-
-        public static WebsiteConfig GetWebsiteConfig(this HtmlHelper helper)
-        {
-            var documentSession = DependencyResolver.Current.GetService<IDocumentSession>();
-            return documentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
         }
 
         public static TenantConfiguration GetTenantConfiguration(this HtmlHelper helper)
