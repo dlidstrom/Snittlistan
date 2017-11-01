@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Raven.Imports.Newtonsoft.Json;
 
 namespace Snittlistan.Web.Models
 {
@@ -37,6 +38,7 @@ namespace Snittlistan.Web.Models
 
             public string Level { get; }
 
+            [JsonIgnore]
             public string FormattedForOption => $"{TeamName};{Level}";
         }
     }

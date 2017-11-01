@@ -12,7 +12,7 @@ namespace Snittlistan.Web.HtmlHelpers
         /// <returns>The HTML markup with an anchor link to BITS.</returns>
         public static string GenerateBitsUrl(this HtmlHelper html, int bitsMatchId)
         {
-            return string.Format("http://bits.swebowl.se/Matches/MatchFact.aspx?MatchId={0}", bitsMatchId);
+            return $"http://bits.swebowl.se/Matches/MatchFact.aspx?MatchId={bitsMatchId}";
         }
     }
 }
