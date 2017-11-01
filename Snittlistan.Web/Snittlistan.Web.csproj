@@ -219,6 +219,7 @@
     <Compile Include="Areas\V2\ViewModels\EditMedalsPostModel.cs" />
     <Compile Include="Areas\V2\ViewModels\EditMedalsViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\EliteMedalsViewModel.cs" />
+    <Compile Include="Areas\V2\ViewModels\FormViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\RosterCalendarEvent.cs" />
     <Compile Include="Controllers\AbstractApiController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\RegisterMatchController.cs" />
@@ -576,7 +577,7 @@
     <Content Include="Areas\V2\Views\MatchResultAdmin\EditorTemplates\Game4.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\Details4.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\DisplayTemplates\Result4.cshtml" />
-    <Content Include="Areas\V2\Views\MatchResult\Form.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\_Form.cshtml" />
     <Content Include="Areas\V2\Views\Roster\Absences.cshtml" />
     <Content Include="Areas\V2\Views\Roster\PlayerStatus.cshtml" />
     <Content Include="Areas\V2\Views\AdminTasks\AwardMedals.cshtml" />
@@ -592,6 +593,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Areas\V2\Views\Layout\NavPart.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResult\Form.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />

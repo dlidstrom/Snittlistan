@@ -109,7 +109,10 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 }
             }
 
-            return View(response.OrderByDescending(x => x.SeasonAverage).ThenBy(x => x.Name));
+            var viewModel = new FormViewModel(
+                season.Value,
+                response.OrderByDescending(x => x.SeasonAverage).ThenBy(x => x.Name).ToArray());
+            return View(viewModel);
         }
 
         public ActionResult EliteMedals(int? season)

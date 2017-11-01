@@ -42,7 +42,11 @@ namespace Snittlistan.Web.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             // load website config to make sure it always migrates
-            DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+            var websiteContent = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+            if (websiteContent == null)
+            {
+                DocumentSession.Store(new WebsiteConfig(new string[0], false));
+            }
 
             // make sure there's an admin user
             if (DocumentSession.Load<User>("Admin") != null) return;
