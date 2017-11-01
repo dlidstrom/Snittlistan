@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Snittlistan.Test.Properties;
 using Snittlistan.Web.Areas.V2.Domain;
 using Xunit;
@@ -12,7 +13,7 @@ namespace Snittlistan.Test
         {
             // Arrange
             var content = Resources.Id3048477;
-            var possibleTeams = new[] { "Fredrikshof F" };
+            var possibleTeams = new HashSet<string> { "Fredrikshof F" };
 
             // Act
             var header = BitsParser.ParseHeader(content, possibleTeams);
@@ -26,7 +27,7 @@ namespace Snittlistan.Test
         {
             // Arrange
             var content = Resources.Id3048477;
-            var possibleTeams = new[] { "Fredrikshof IF F" };
+            var possibleTeams = new HashSet<string> { "Fredrikshof IF F" };
 
             // Act
             var header = BitsParser.ParseHeader(content, possibleTeams);
@@ -40,7 +41,7 @@ namespace Snittlistan.Test
         {
             // Arrange
             var content = Resources.Id3048477;
-            var possibleTeams = new[] { "Fredrikshof IF F", "Fredrikshof F" };
+            var possibleTeams = new HashSet<string> { "Fredrikshof IF F", "Fredrikshof F" };
 
             // Act
             var header = BitsParser.ParseHeader(content, possibleTeams);
@@ -54,7 +55,7 @@ namespace Snittlistan.Test
         {
             // Arrange
             var content = Resources.Id3048477;
-            var possibleTeams = new[] { "Fredrikshof F", "Fredrikshof IF F" };
+            var possibleTeams = new HashSet<string> { "Fredrikshof F", "Fredrikshof IF F" };
 
             // Act
             var header = BitsParser.ParseHeader(content, possibleTeams);
@@ -68,7 +69,7 @@ namespace Snittlistan.Test
         {
             // Arrange
             var content = Resources.Id3048747;
-            var possibleTeams = new[] { "Fredrikshof F" };
+            var possibleTeams = new HashSet<string> { "Fredrikshof F" };
 
             // Act
             var header = BitsParser.ParseHeader(content, possibleTeams);
@@ -82,7 +83,7 @@ namespace Snittlistan.Test
         {
             // Arrange
             var content = Resources.Id3048747;
-            var possibleTeams = new[] { "Fredrikshof IF F" };
+            var possibleTeams = new HashSet<string> { "Fredrikshof IF F" };
 
             // Act
             var header = BitsParser.ParseHeader(content, possibleTeams);
@@ -96,7 +97,7 @@ namespace Snittlistan.Test
         {
             // Arrange
             var content = Resources.Id3048747;
-            var possibleTeams = new[] { "Fredrikshof IF F", "Fredrikshof F" };
+            var possibleTeams = new HashSet<string> { "Fredrikshof IF F", "Fredrikshof F" };
 
             // Act
             var header = BitsParser.ParseHeader(content, possibleTeams);
@@ -110,7 +111,7 @@ namespace Snittlistan.Test
         {
             // Arrange
             var content = Resources.Id3048747;
-            var possibleTeams = new[] { "Fredrikshof F", "Fredrikshof IF F" };
+            var possibleTeams = new HashSet<string> { "Fredrikshof F", "Fredrikshof IF F" };
 
             // Act
             var header = BitsParser.ParseHeader(content, possibleTeams);
@@ -124,7 +125,7 @@ namespace Snittlistan.Test
         {
             // Arrange
             var content = Resources.Id3048477;
-            var possibleTeams = new[] { "Fredrikshof IF F" };
+            var possibleTeams = new HashSet<string> { "Fredrikshof IF F" };
 
             // Act
             var header = BitsParser.ParseHeader(content, possibleTeams);

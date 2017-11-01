@@ -1,20 +1,43 @@
-﻿namespace Snittlistan.Web.Models
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Snittlistan.Web.Models
 {
     public class WebsiteConfig
     {
         public const string GlobalId = "WebsiteConfig";
 
-        public WebsiteConfig(string[] teamNames, bool hasV1)
+        public WebsiteConfig(TeamNameAndLevel[] teamNamesAndLevels, bool hasV1)
         {
             Id = GlobalId;
-            TeamNames = teamNames ?? new string[0];
+            TeamNamesAndLevels = teamNamesAndLevels ?? new TeamNameAndLevel[0];
             HasV1 = hasV1;
         }
 
         public string Id { get; }
 
-        public string[] TeamNames { get; }
+        public TeamNameAndLevel[] TeamNamesAndLevels { get; }
 
         public bool HasV1 { get; }
+
+        public HashSet<string> GetTeamNames()
+        {
+            return new HashSet<string>(TeamNamesAndLevels.Select(x => x.TeamName));
+        }
+
+        public class TeamNameAndLevel
+        {
+            public TeamNameAndLevel(string teamName, string level)
+            {
+                TeamName = teamName;
+                Level = level;
+            }
+
+            public string TeamName { get; }
+
+            public string Level { get; }
+
+            public string FormattedForOption => $"{TeamName};{Level}";
+        }
     }
 }

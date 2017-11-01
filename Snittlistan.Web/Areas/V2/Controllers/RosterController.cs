@@ -87,7 +87,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             {
                 var address = $"http://bits.swebowl.se/Matches/MatchFact.aspx?MatchId={vm.BitsMatchId}";
                 var content = client.DownloadString(address);
-                var header = BitsParser.ParseHeader(content, websiteConfig.TeamNames);
+                var header = BitsParser.ParseHeader(content, websiteConfig.GetTeamNames());
+                ViewBag.TeamNamesAndLevels = websiteConfig.TeamNamesAndLevels;
                 return View(
                     "Create", new CreateRosterViewModel
                     {
@@ -123,8 +124,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 vm.Season,
                 vm.Turn,
                 vm.BitsMatchId,
-                vm.Team,
-                vm.TeamLevel,
+                vm.Team.Split(';')[0],
+                vm.Team.Split(';')[1],
                 vm.Location,
                 vm.Opponent,
                 vm.Date,
@@ -138,6 +139,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             var roster = DocumentSession.Load<Roster>(id);
             if (roster == null) throw new HttpException(404, "Roster not found");
+            var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+            ViewBag.TeamNamesAndLevels = websiteConfig.TeamNamesAndLevels;
             return View(roster.MapTo<CreateRosterViewModel>());
         }
 
@@ -145,8 +148,12 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         [HttpPost]
         public ActionResult Edit(string id, CreateRosterViewModel vm)
         {
+            var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             if (!ModelState.IsValid)
+            {
+                ViewBag.TeamNamesAndLevels = websiteConfig.TeamNamesAndLevels;
                 return View(vm);
+            }
 
             var roster = DocumentSession.Load<Roster>(id);
             if (roster == null) throw new HttpException(404, "Roster not found");
@@ -154,8 +161,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             roster.Location = vm.Location;
             roster.Opponent = vm.Opponent;
             roster.Season = vm.Season;
-            roster.Team = vm.Team;
-            roster.TeamLevel = vm.TeamLevel;
+            roster.Team = vm.Team.Split(';')[0];
+            roster.TeamLevel = vm.Team.Split(';')[1];
             roster.Turn = vm.Turn;
             roster.BitsMatchId = vm.BitsMatchId;
             roster.IsFourPlayer = vm.IsFourPlayer;

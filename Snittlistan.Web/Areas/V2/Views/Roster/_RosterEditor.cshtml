@@ -1,4 +1,5 @@
-﻿@model CreateRosterViewModel
+﻿@using Snittlistan.Web.Models
+@model CreateRosterViewModel
 
 <div class="control-group">
     <label class="control-label" for="season">Säsong:</label>
@@ -48,56 +49,18 @@
 <div class="control-group">
     <label class="control-label" for="team">Lag:</label>
     <div class="controls">
-        <input type="text"
-               id="team"
-               name="team"
-               placeholder="Lag"
-               autofocus="autofocus"
-               autocorrect="off"
-               autocomplete="off"
-               spellcheck="false"
-               value="@Model.Team"
-               required
-               data-enabletypeahead="yes"
-               data-url="/search/teams" />
-    </div>
-</div>
-<div class="control-group">
-    <label class="control-label" for="teamLevel">Nivå:</label>
-    <div class="controls">
-        <select id="teamLevel" name="teamLevel">
-            <option
-                @if (Model.TeamLevel == "A")
-                {
-                    <text>selected="selected"</text>
-                }
+        <select id="team" name="team">
+            @foreach (WebsiteConfig.TeamNameAndLevel nameAndLevel in ViewBag.TeamNamesAndLevels)
+            {
+                <option value="@nameAndLevel.FormattedForOption"
+                    @if (nameAndLevel.TeamName == Model.Team)
+                    {
+                        <text>selected="selected"</text>
+                    }
                 >
-                A
-            </option>
-            <option
-                @if (Model.TeamLevel == "F")
-                {
-                    <text>selected="selected"</text>
-                }
-                >
-                F
-            </option>
-            <option
-                @if (Model.TeamLevel == "B")
-                {
-                    <text>selected="selected"</text>
-                }
-                >
-                B
-            </option>
-            <option
-                @if (Model.TeamLevel == "C")
-                {
-                    <text>selected="selected"</text>
-                }
-                >
-                C
-            </option>
+                    @nameAndLevel.TeamName
+                </option>
+            }
         </select>
     </div>
 </div>
