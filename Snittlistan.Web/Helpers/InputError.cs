@@ -7,8 +7,8 @@ namespace Snittlistan.Web.Helpers
     {
         public InputError(string field, string reason)
         {
-            if (field == null) throw new ArgumentNullException("field");
-            if (reason == null) throw new ArgumentNullException("reason");
+            if (field == null) throw new ArgumentNullException(nameof(field));
+            if (reason == null) throw new ArgumentNullException(nameof(reason));
             Field = field;
             Reason = reason;
         }
