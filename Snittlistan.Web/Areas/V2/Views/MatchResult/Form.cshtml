@@ -1,74 +1,14 @@
-﻿@model IEnumerable<PlayerFormViewModel>
+﻿@model FormViewModel
 
-@{
-    var maxTotalScore = Model.Max(x => x.TotalScore);
-    var maxAverageScore = Model.Max(x => x.ScoreAverage);
+@if (Model.PlayerForms.Length == 0)
+{
+    <div class="row">
+        <div class="span12">
+            <p>Inga resultat registrerade för säsong @Model.Season</p>
+        </div>
+    </div>
 }
-
-<div class="row">
-    <div class="span12">
-        <p class="lead">
-            <strong>Säsong</strong> innebär medel över säsongen.
-            <span class="badge badge-success">5</span> innebär medel över de senaste 5 matcherna.
-            <strong>Form</strong> är skillnaden mellan de två.
-        </p>
-    </div>
-</div>
-
-<div class="row">
-    <div class="span12">
-        <table class="table table-condensed table-bordered">
-            <tr>
-                <th rowspan="2">#</th>
-                <th rowspan="2">Namn</th>
-                <th>Säsong &#x25BC;</th>
-                <th rowspan="2">Banp</th>
-                <th rowspan="2">Form</th>
-            </tr>
-            <tr>
-                <th><span class="badge badge-success">5</span></th>
-            </tr>
-            @{
-                var index = 0;
-            }
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td rowspan="2">@(++index)</td>
-                    <td rowspan="2">@item.Name</td>
-                    <td>@string.Format("{0} ({1})", item.FormattedSeasonAverage(), item.TotalSeries)</td>
-                    <td rowspan="2">
-                        @if (item.TotalScore == maxTotalScore)
-                        {
-                            <strong>
-                                @item.TotalScore
-                            </strong>
-                        }
-                        else
-                        {
-                            <text>
-                                @item.TotalScore
-                            </text>
-                        }
-                        @if (Math.Abs(item.ScoreAverage - maxAverageScore) < 0.005)
-                         {
-                             <strong>
-                                 (@item.FormattedScoreAverage())
-                             </strong>
-                         }
-                         else
-                         {
-                            @:(@item.FormattedScoreAverage())
-                         }
-                    </td>
-                    <td rowspan="2" class="@item.Class()">
-                        @item.FormattedDiff()
-                    </td>
-                </tr>
-                <tr>
-                    <td>@item.FormattedLast5Average()</td>
-                </tr>
-            }
-        </table>
-    </div>
-</div>
+else
+{
+    @Html.Partial("_Form", Model.PlayerForms)
+}
