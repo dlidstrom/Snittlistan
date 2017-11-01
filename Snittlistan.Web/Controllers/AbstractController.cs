@@ -45,7 +45,7 @@ namespace Snittlistan.Web.Controllers
             var websiteContent = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             if (websiteContent == null)
             {
-                DocumentSession.Store(new WebsiteConfig(new string[0], false));
+                DocumentSession.Store(new WebsiteConfig(new WebsiteConfig.TeamNameAndLevel[0], false));
             }
 
             // make sure there's an admin user

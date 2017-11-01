@@ -22,7 +22,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
             Away = 2
         }
 
-        public static ParseHeaderResult ParseHeader(string content, string[] possibleTeams)
+        public static ParseHeaderResult ParseHeader(string content, HashSet<string> possibleTeams)
         {
             if (content == null) throw new ArgumentNullException(nameof(content));
             if (possibleTeams == null) throw new ArgumentNullException(nameof(possibleTeams));

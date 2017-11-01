@@ -42,7 +42,7 @@ namespace Snittlistan.Tool
                 IndexCreator.CreateIndexes(documentStore);
                 using (var documentSession = documentStore.OpenSession())
                 {
-                    documentSession.Store(new WebsiteConfig(new string[0], false));
+                    documentSession.Store(new WebsiteConfig(new WebsiteConfig.TeamNameAndLevel[0], false));
                     documentSession.SaveChanges();
                 }
             }
