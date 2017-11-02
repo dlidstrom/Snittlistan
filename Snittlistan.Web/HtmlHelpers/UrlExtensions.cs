@@ -18,8 +18,7 @@ namespace Snittlistan.Web.HtmlHelpers
         {
             var uri = helper.RequestContext.HttpContext.Request.Url;
             Debug.Assert(uri != null, "uri != null");
-            var scheme = uri.Scheme.Replace("http", "webcal");
-            string url = $"{scheme}://{uri.Host}/api/calendar";
+            var url = $"webcal://{uri.Host}/api/calendar";
             return url;
         }
     }
