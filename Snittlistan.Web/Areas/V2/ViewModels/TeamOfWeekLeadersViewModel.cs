@@ -36,7 +36,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             foreach (var turn in rankByTurn.Keys)
             {
                 var current = -1;
-                var rank = 0;
+                var rank = 1;
                 foreach (var playerScore in rankByTurn[turn].OrderByDescending(x => x.Pins))
                 {
                     if (playerScore.Pins != current)
@@ -52,12 +52,13 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             }
 
             Top9Total = bestOfBest.GroupBy(x => x)
-                .Select(x => new NameCount(x))
-                .OrderByDescending(x => x.Count)
-                .ThenBy(x => x.Name);
+                                  .Select(x => new NameCount(x))
+                                  .OrderByDescending(x => x.Count)
+                                  .ThenBy(x => x.Name)
+                                  .ToArray();
         }
 
-        public IEnumerable<NameCount> Top9Total { get; private set; }
+        public NameCount[] Top9Total { get; private set; }
 
         public class NameCount
         {
@@ -67,9 +68,9 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                 Count = grouping.Count();
             }
 
-            public string Name { get; private set; }
+            public string Name { get; }
 
-            public int Count { get; private set; }
+            public int Count { get; }
         }
     }
 }
