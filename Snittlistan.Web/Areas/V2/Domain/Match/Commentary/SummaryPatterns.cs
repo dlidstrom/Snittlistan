@@ -10,11 +10,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
         {
             Func<SeriesScores[], string> seriesFormatter = seriesScores =>
             {
-                var result = string.Format(
-                    "Serierna slutade {0}.",
-                    string.Join(
-                        ", ",
-                        seriesScores.Select(x => string.Format("{0} ({1}-{2})", x.FormattedDeltaResult, x.TeamPins, x.OpponentPins))));
+                var result = $"Serierna slutade {string.Join(", ", seriesScores.Select(x => $"{x.FormattedDeltaResult} ({x.TeamPins}-{x.OpponentPins})"))}.";
                 return result;
             };
 
@@ -30,9 +26,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                     {
                         var sentences = new List<string>
                         {
-                            string.Format(
-                                "Motståndarna hade inget att säga emot då resultatet blev {0}. Stark insats av laget där alltså alla spelare to 4 poäng!",
-                                seriesScores[3].FormattedResult)
+                            $"Motståndarna hade inget att säga emot då resultatet blev {seriesScores[3].FormattedResult}. Stark insats av laget där alltså alla spelare to 4 poäng!"
                         };
 
                         sentences.Add(seriesFormatter.Invoke(seriesScores));
@@ -49,9 +43,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                     {
                         var sentences = new List<string>
                         {
-                            string.Format(
-                                "Motståndarna blev överkörda med resultatet {0}.",
-                                seriesScores[3].FormattedResult),
+                            $"Motståndarna blev överkörda med resultatet {seriesScores[3].FormattedResult}.",
                             seriesFormatter.Invoke(seriesScores)
                         };
                         return string.Join(" ", sentences);
@@ -69,28 +61,34 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                         var lastLastLastSeries = seriesScores[seriesScores.Length-3];
                         var lastLastSeries = seriesScores[seriesScores.Length-2];
                         var lastSeries = seriesScores.Last();
-                        var sentences = new List<string>
+
+                        List<string> sentences;
+                        if (lastLastSeries.OpponentScoreTotal < 10
+                            && lastLastSeries.TeamScoreTotal >= 10)
                         {
-                            string.Format(
-                                "Matchen vanns med resultatet {0}.",
-                                seriesScores[3].FormattedResult)
-                        };
+                            sentences = new List<string>
+                            {
+                                $"Matchen vanns redan efter tre serier och slutade med resultatet {seriesScores[3].FormattedResult}."
+                            };
+                        }
+                        else
+                        {
+                            sentences = new List<string>
+                            {
+                                $"Matchen vanns med resultatet {seriesScores[3].FormattedResult}."
+                            };
+                        }
+
                         var greatSeries = seriesScores.FirstOrDefault(x => x.TeamScoreDelta == 5 && x.TeamScoreTotal <= 10);
                         if (greatSeries != null)
                         {
                             sentences.Add(
-                                string.Format(
-                                    "Grunden till vinsten lades i serie {0} då poängställningen var {1} efter {2}.",
-                                    greatSeries.SerieNumber,
-                                    greatSeries.FormattedResult,
-                                    greatSeries.FormattedDeltaResult));
+                                $"Grunden till vinsten lades i serie {greatSeries.SerieNumber} då poängställningen var {greatSeries.FormattedResult} efter {greatSeries.FormattedDeltaResult}.");
                         }
                         else if (lastLastLastSeries.OpponentScoreTotal > 5)
                         {
                             sentences.Add(
-                                string.Format(
-                                    "Laget stod för en stark upphämtning då matchen vändes i serie 2 när det stod {0}.",
-                                    lastLastLastSeries.FormattedResult));
+                                $"Laget stod för en stark upphämtning då matchen vändes i serie 2 när det stod {lastLastLastSeries.FormattedResult}.");
                         }
 
                         if (lastLastSeries.OpponentScoreTotal < 10
@@ -101,9 +99,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                             var nicknames = string.Join(
                                 " och ",
                                 winningPlayers.Select(x => players[x.PlayerId].Nickname));
-                            var sentence = string.Format(
-                                "{0} avgjorde matchen med en stark insats i sista serien.",
-                                nicknames);
+                            var sentence = $"{nicknames} avgjorde matchen med en stark insats i sista serien.";
                             sentences.Add(sentence);
                         }
 
@@ -127,9 +123,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                     {
                         var sentences = new List<string>
                         {
-                            string.Format(
-                                "Matchen slutade {0}.",
-                                seriesScores[3].FormattedResult)
+                            $"Matchen slutade {seriesScores[3].FormattedResult}."
                         };
 
                         var lossSeries = seriesScores.Take(3)
@@ -139,11 +133,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                                                                           && x.OpponentScoreTotal <= 10);
                         if (lossSeries != null)
                         {
-                            var sentence = string.Format(
-                                "Motståndarna lade grunden till vinsten genom att göra {0} i serie {1} vilket resulterade i poängställningen {2}.",
-                                lossSeries.FormattedInvertedDeltaResult,
-                                lossSeries.SerieNumber,
-                                lossSeries.FormattedResult);
+                            var sentence = $"Motståndarna lade grunden till vinsten genom att göra {lossSeries.FormattedInvertedDeltaResult} i serie {lossSeries.SerieNumber} vilket resulterade i poängställningen {lossSeries.FormattedResult}.";
                             sentences.Add(sentence);
                         }
 
@@ -166,9 +156,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                         if (lastLastLastSeries.OpponentScoreTotal >= 7)
                         {
                             sentences.Add(
-                                string.Format(
-                                    "Laget stod för en fin upphämtning då det stod {0} efter halva matchen.",
-                                    lastLastLastSeries.FormattedResult));
+                                $"Laget stod för en fin upphämtning då det stod {lastLastLastSeries.FormattedResult} efter halva matchen.");
                         }
 
                         if (lastLastSeries.OpponentScoreTotal < lastLastSeries.TeamScoreTotal)
@@ -176,9 +164,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                             if (lastLastSeries.OpponentScoreDelta >= 4)
                             {
                                 sentences.Add(
-                                    string.Format(
-                                        "Det stod {0} efter 3 serier men motståndarna ryckte i sista serien och laget fick nöja sig med oavgjort.",
-                                        lastLastSeries.FormattedResult));
+                                    $"Det stod {lastLastSeries.FormattedResult} efter 3 serier men motståndarna ryckte i sista serien och laget fick nöja sig med oavgjort.");
                             }
                             else
                             {
@@ -199,9 +185,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                         else
                         {
                             sentences.Add(
-                                string.Format(
-                                    "Matchen slutade oavgjort med ovanliga resultatet {0}.",
-                                    lastSeries.FormattedResult));
+                                $"Matchen slutade oavgjort med ovanliga resultatet {lastSeries.FormattedResult}.");
                         }
 
                         sentences.Add(seriesFormatter.Invoke(seriesScores));
@@ -214,9 +198,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                     MatchWon = MatchResultType.Win,
                     TeamScore = (teamScore, opponentScore, seriesScores) => true,
                     OpponentScore = (teamScore, opponentScore) => true,
-                    Commentary = seriesScores => string.Format(
-                        "Matchen vanns redan efter 3 serier med resultatet {0}.",
-                        seriesScores[2].FormattedResult)
+                    Commentary = seriesScores => $"Matchen vanns redan efter 3 serier med resultatet {seriesScores[2].FormattedResult}."
                 },
                 new SummaryPattern("all 1 series wins")
                 {

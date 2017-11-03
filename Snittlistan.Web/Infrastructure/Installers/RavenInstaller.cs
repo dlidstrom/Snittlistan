@@ -50,15 +50,25 @@ namespace Snittlistan.Web.Infrastructure.Installers
 
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            var tenantConfigurations = container.ResolveAll<TenantConfiguration>();
-            foreach (var tenantConfiguration in tenantConfigurations)
+            if (mode == DocumentStoreMode.InMemory)
             {
-                var documentStore = InitializeStore(CreateDocumentStore(tenantConfiguration.ConnectionStringName));
-                var documentStoreComponent = Component.For<IDocumentStore>()
-                                                      .Instance(documentStore)
-                                                      .Named($"DocumentStore-{tenantConfiguration.Name}")
-                                                      .LifestyleSingleton();
-                container.Register(documentStoreComponent);
+                container.Register(Component.For<IDocumentStore>().Instance(new EmbeddableDocumentStore
+                {
+                    RunInMemory = true
+                }.Initialize()));
+            }
+            else
+            {
+                var tenantConfigurations = container.ResolveAll<TenantConfiguration>();
+                foreach (var tenantConfiguration in tenantConfigurations)
+                {
+                    var documentStore = InitializeStore(CreateDocumentStore(tenantConfiguration.ConnectionStringName));
+                    var documentStoreComponent = Component.For<IDocumentStore>()
+                                                          .Instance(documentStore)
+                                                          .Named($"DocumentStore-{tenantConfiguration.Name}")
+                                                          .LifestyleSingleton();
+                    container.Register(documentStoreComponent);
+                }
             }
 
             container.Register(
@@ -73,11 +83,20 @@ namespace Snittlistan.Web.Infrastructure.Installers
             return attribute != null || property.Name == "Id";
         }
 
-        private static IDocumentSession GetDocumentSession(IKernel kernel)
+        private IDocumentSession GetDocumentSession(IKernel kernel)
         {
             var store = kernel.Resolve<IDocumentStore>();
-            var tenantConfiguration = kernel.Resolve<TenantConfiguration>();
-            var documentSession = store.OpenSession(tenantConfiguration.Database);
+            IDocumentSession documentSession;
+            if (mode == DocumentStoreMode.InMemory)
+            {
+                documentSession = store.OpenSession();
+            }
+            else
+            {
+                var tenantConfiguration = kernel.Resolve<TenantConfiguration>();
+                documentSession = store.OpenSession(tenantConfiguration.Database);
+            }
+
             documentSession.Advanced.UseOptimisticConcurrency = true;
             return documentSession;
         }
