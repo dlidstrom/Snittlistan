@@ -3,7 +3,6 @@ using System.Reflection;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
-using System.Web.Http.Dispatcher;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.MicroKernel.Registration;
@@ -14,6 +13,7 @@ using Raven.Client;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Attributes;
 using Snittlistan.Web.Infrastructure.AutoMapper;
+using Snittlistan.Web.Infrastructure.Indexes;
 using Snittlistan.Web.Infrastructure.Installers;
 using Snittlistan.Web.Infrastructure.IoC;
 using Snittlistan.Web.Models;
@@ -36,13 +36,14 @@ namespace Snittlistan.Web
 
         public static IWindsorContainer ChildContainer { get; private set; }
 
-        public static ApplicationMode Mode { get { return applicationMode; } }
+        public static ApplicationMode Mode => applicationMode;
 
         public static void Bootstrap(IWindsorContainer container, HttpConfiguration configuration)
         {
             Container = container;
             applicationMode = ApplicationMode.Test;
             Bootstrap(configuration);
+            IndexCreator.CreateIndexes(container.Resolve<IDocumentStore>());
         }
 
         public static void Shutdown()
@@ -176,7 +177,7 @@ namespace Snittlistan.Web
                     new RavenInstaller(),
                     new ServicesInstaller(),
                     new TaskRunnerInstaller(),
-                    EventStoreInstaller.FromAssembly(Assembly.GetExecutingAssembly()));
+                    EventStoreInstaller.FromAssembly(Assembly.GetExecutingAssembly(), DocumentStoreMode.Server));
             }
 
             if (ChildContainer == null)
@@ -193,9 +194,8 @@ namespace Snittlistan.Web
             }
 
             DependencyResolver.SetResolver(new WindsorDependencyResolver(Container));
-            configuration.Services.Replace(
-                typeof(IHttpControllerActivator),
-                new WindsorCompositionRoot(Container));
+            configuration.DependencyResolver =
+                new WindsorHttpDependencyResolver(Container.Kernel);
         }
     }
 }

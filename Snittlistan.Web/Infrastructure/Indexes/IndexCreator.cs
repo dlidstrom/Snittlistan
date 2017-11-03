@@ -41,6 +41,8 @@ namespace Snittlistan.Web.Infrastructure.Indexes
         {
             var indexesQuery = from type in Assembly.GetExecutingAssembly().GetTypes()
                                where type.IsSubclassOf(typeof(AbstractIndexCreationTask))
+                                     && type.Namespace != null
+                                     && type.Namespace.StartsWith("EventStore") == false
                                select type;
 
             var indexes = indexesQuery.ToArray();

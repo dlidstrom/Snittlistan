@@ -7,6 +7,7 @@ using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Raven.Client;
 using Snittlistan.Web.Infrastructure;
+using Snittlistan.Web.Infrastructure.Installers;
 
 // ReSharper disable once CheckNamespace
 namespace EventStoreLite.IoC
@@ -18,11 +19,13 @@ namespace EventStoreLite.IoC
     {
         private readonly IEnumerable<IEventHandler> handlers;
         private readonly IEnumerable<Type> handlerTypes;
+        private readonly DocumentStoreMode mode;
 
-        private EventStoreInstaller(IEnumerable<Type> handlerTypes)
+        private EventStoreInstaller(IEnumerable<Type> handlerTypes, DocumentStoreMode mode)
         {
             if (handlerTypes == null) throw new ArgumentNullException(nameof(handlerTypes));
             this.handlerTypes = handlerTypes;
+            this.mode = mode;
         }
 
         private EventStoreInstaller(IEnumerable<IEventHandler> handlers)
@@ -35,12 +38,13 @@ namespace EventStoreLite.IoC
         /// Installs event handlers from the specified assembly.
         /// </summary>
         /// <param name="assembly">Assembly with event handlers.</param>
+        /// <param name="mode">In memory or server mode.</param>
         /// <returns>Event store installer for Castle Windsor.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static EventStoreInstaller FromAssembly(Assembly assembly)
+        public static EventStoreInstaller FromAssembly(Assembly assembly, DocumentStoreMode mode)
         {
             if (assembly == null) throw new ArgumentNullException(nameof(assembly));
-            return new EventStoreInstaller(assembly.GetTypes());
+            return new EventStoreInstaller(assembly.GetTypes(), mode);
         }
 
         /// <summary>
@@ -52,7 +56,7 @@ namespace EventStoreLite.IoC
         public static EventStoreInstaller FromHandlerTypes(IEnumerable<Type> handlerTypes)
         {
             if (handlerTypes == null) throw new ArgumentNullException(nameof(handlerTypes));
-            return new EventStoreInstaller(handlerTypes);
+            return new EventStoreInstaller(handlerTypes, DocumentStoreMode.Server);
         }
 
         /// <summary>
@@ -74,15 +78,23 @@ namespace EventStoreLite.IoC
         /// <param name="store">Configuration store.</param>
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            var tenantConfigurations = container.ResolveAll<TenantConfiguration>();
-            foreach (var tenantConfiguration in tenantConfigurations)
+            if (mode == DocumentStoreMode.InMemory)
             {
-                var documentStore = container.Resolve<IDocumentStore>($"DocumentStore-{tenantConfiguration.Name}");
-                container.Register(
-                    Component.For<EventStore>()
-                             .UsingFactoryMethod(x => CreateEventStore(documentStore, container))
-                             .Named($"EventStore-{tenantConfiguration.Name}")
-                             .LifestyleSingleton());
+                var documentStore = container.Resolve<IDocumentStore>();
+                container.Register(Component.For<EventStore>().UsingFactoryMethod(x => CreateEventStore(documentStore, container)));
+            }
+            else
+            {
+                var tenantConfigurations = container.ResolveAll<TenantConfiguration>();
+                foreach (var tenantConfiguration in tenantConfigurations)
+                {
+                    var documentStore = container.Resolve<IDocumentStore>($"DocumentStore-{tenantConfiguration.Name}");
+                    container.Register(
+                        Component.For<EventStore>()
+                                 .UsingFactoryMethod(x => CreateEventStore(documentStore, container))
+                                 .Named($"EventStore-{tenantConfiguration.Name}")
+                                 .LifestyleSingleton());
+                }
             }
 
             if (handlerTypes != null)

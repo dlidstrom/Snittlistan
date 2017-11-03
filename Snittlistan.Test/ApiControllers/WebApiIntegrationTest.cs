@@ -31,7 +31,7 @@ namespace Snittlistan.Test.ApiControllers
                 new ControllerFactoryInstaller(),
                 new RavenInstaller(DocumentStoreMode.InMemory),
                 new HandlersInstaller(),
-                EventStoreInstaller.FromAssembly(typeof(MvcApplication).Assembly),
+                EventStoreInstaller.FromAssembly(typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),
                 new EventStoreSessionInstaller(LifestyleType.Scoped));
             OnSetUp(Container);
 

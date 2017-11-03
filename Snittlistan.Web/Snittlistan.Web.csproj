@@ -333,8 +333,9 @@
     <Compile Include="Infrastructure\Installers\EventStoreSessionInstaller.cs" />
     <Compile Include="Infrastructure\Installers\BitsClientInstaller.cs" />
     <Compile Include="Infrastructure\Installers\TaskRunnerInstaller.cs" />
-    <Compile Include="Infrastructure\IoC\WindsorCompositionRoot.cs" />
     <Compile Include="Infrastructure\IoC\HostBasedComponentSelector.cs" />
+    <Compile Include="Infrastructure\IoC\WindsorDependencyScope.cs" />
+    <Compile Include="Infrastructure\IoC\WindsorHttpDependencyResolver.cs" />
     <Compile Include="Infrastructure\IQuery.cs" />
     <Compile Include="Infrastructure\JetBrains\Annotations.cs" />
     <Compile Include="Infrastructure\OutlookAgentMessageHandler.cs" />
