@@ -6,10 +6,17 @@
 
 <div class="row">
     <div class="span8">
-        <h4>@ViewBag.Title</h4>
-        <form class="form-horizontal" action="@Url.Action("RegisterBitsVerify")">
+        <form class="form-horizontal" method="POST" action="@Url.Action("RegisterBits")">
             @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
-            @Html.HiddenFor(model => model.Season)
+            <fieldset>
+                <legend>
+                    @ViewBag.Title
+                </legend>
+                @Html.HiddenFor(model => model.Season)
+                <p>
+                    Manuella resultat bör läggas in i den ordningen de spelades. Detta för att matchreferaten som använder sig av formkurvor ska bli så rätt som möjligt.
+                </p>
+            </fieldset>
             <div class="control-group">
                 <label class="control-label" for="rosterid">Match:</label>
                 <div class="controls">
@@ -17,7 +24,7 @@
                 </div>
             </div>
             <div class="form-actions">
-                <button class="btn btn-primary btn-large" type="submit">Verifiera</button>
+                <button class="btn btn-primary btn-large" type="submit">Registrera</button>
                 @Html.ActionLink("Avbryt", "Index", "MatchResult", null, new { @class = "btn btn-large" })
             </div>
         </form>
