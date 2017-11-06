@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using EventStoreLite;
 using Raven.Client;
 using Snittlistan.Web.Infrastructure;
@@ -37,6 +38,12 @@ namespace Snittlistan.Web.Controllers
         protected void SendTask<TTask>(TTask task) where TTask : class
         {
             DocumentSession.Store(BackgroundTask.Create(task, TenantConfiguration));
+        }
+
+        protected void ExecuteCommand(ICommand command)
+        {
+            if (command == null) throw new ArgumentNullException(nameof(command));
+            command.Execute(DocumentSession, EventStoreSession);
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)

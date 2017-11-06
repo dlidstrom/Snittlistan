@@ -8,10 +8,14 @@
                 <i class="sprite-glyphicons_358_file_import"></i>
                 Från BITS
             </a>
-            <a class="pull-right" href="@Url.Action("Register", "MatchResultAdmin")">
-                <i class="sprite-glyphicons_030_pencil"></i>
-                Manuellt
-            </a>
+            @if (Request.IsAdmin(User))
+            {
+                <a class="pull-right" href="@Url.Action("Register", "MatchResultAdmin")">
+                    <i class="sprite-glyphicons_030_pencil"></i>
+                    Manuellt
+                </a>
+            }
+
             <div class="clearfix"></div>
         </div>
     </div>
