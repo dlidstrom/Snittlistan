@@ -8,12 +8,8 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public int SeasonStart { get; set; }
 
-        public int SeasonEnd
-        {
-            get
-            {
-                return SeasonStart + 1;
-            }
-        }
+        public int SeasonEnd => SeasonStart + 1;
+
+        public bool IsFiltered { get; set; }
     }
 }

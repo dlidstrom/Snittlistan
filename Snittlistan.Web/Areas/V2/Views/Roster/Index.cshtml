@@ -1,9 +1,27 @@
 @model InitialDataViewModel
 
-<a href="@Url.GetWebcalUrl()">
-    <i class="sprite-glyphicons_045_calendar"></i>
-    Lägg till i din kalender
-</a>
+<div class="row">
+    <div class="span6">
+        <a href="@Url.GetWebcalUrl()">
+            <i class="sprite-glyphicons_045_calendar"></i>
+            Lägg till i din kalender
+        </a>
+    </div>
+    @if (Model.IsFiltered)
+    {
+        <div class="span6">
+            <a class="pull-right" href="@Url.Action("Index", new
+                                        {
+                                            season = Model.SeasonStart
+                                        })">
+                <i class="sprite-glyphicons_027_search"></i>
+                Visa alla matcher
+            </a>
+        </div>
+    }
+</div>
+
+<hr/>
 
 @Html.Partial("_Register")
 
