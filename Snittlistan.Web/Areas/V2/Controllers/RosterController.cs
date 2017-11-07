@@ -33,25 +33,27 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var q = from roster in rosters
                     orderby roster.Turn
                     group roster by roster.Turn
-                        into g
-                        let lastDate = g.Max(x => x.Date)
-                        where selectAll || lastDate >= SystemTime.UtcNow.Date
-                        select new TurnViewModel
-                        {
-                            Turn = g.Key,
-                            StartDate = g.Min(x => x.Date),
-                            EndDate = lastDate,
-                            Rosters = g.Select(x => x.MapTo<RosterViewModel>())
-                                       .SortRosters()
-                                       .ToList()
-                        };
+                    into g
+                    let lastDate = g.Max(x => x.Date)
+                    where selectAll || lastDate >= SystemTime.UtcNow.Date
+                    select new TurnViewModel
+                    {
+                        Turn = g.Key,
+                        StartDate = g.Min(x => x.Date),
+                        EndDate = lastDate,
+                        Rosters = g.Select(x => x.MapTo<RosterViewModel>())
+                                   .SortRosters()
+                                   .ToList()
+                    };
             var turns = q.ToList();
             if (turns.Count <= 0) return View("Unscheduled");
 
+            var isFiltered = rosters.Count != turns.Sum(x => x.Rosters.Count);
             var vm = new InitialDataViewModel
             {
                 SeasonStart = season.Value,
-                Turns = turns
+                Turns = turns,
+                IsFiltered = isFiltered
             };
             return View(vm);
         }
