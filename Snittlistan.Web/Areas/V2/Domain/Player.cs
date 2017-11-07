@@ -6,8 +6,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
     {
         public Player(string name, string email, Status playerStatus, int personalNumber, string nickname)
         {
-            if (name == null) throw new ArgumentNullException("name");
-            if (email == null) throw new ArgumentNullException("email");
+            if (name == null) throw new ArgumentNullException(nameof(name));
+
             Name = name;
             Email = email;
             PlayerStatus = playerStatus;
@@ -36,13 +36,12 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         public void SetName(string name)
         {
-            if (name == null) throw new ArgumentNullException("name");
+            if (name == null) throw new ArgumentNullException(nameof(name));
             Name = name;
         }
 
         public void SetEmail(string email)
         {
-            if (email == null) throw new ArgumentNullException("email");
             Email = email;
         }
 
@@ -58,8 +57,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         public void SetNickname(string nickname)
         {
-            if (nickname == null) throw new ArgumentNullException("nickname");
-            Nickname = nickname;
+            Nickname = nickname ?? Name;
         }
     }
 }

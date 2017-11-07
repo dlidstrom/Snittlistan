@@ -567,13 +567,11 @@
     <Content Include="Areas\V2\Views\MatchResult\_ViewStart.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\Turns.cshtml" />
     <Content Include="Areas\V2\Views\MatchResultAdmin\RegisterBits.cshtml" />
-    <Content Include="Areas\V2\Views\MatchResultAdmin\RegisterBitsVerify.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\_BitsSerieEditor.cshtml" />
     <Content Include="Areas\V2\Views\MatchResultAdmin\EditorTemplates\Table.cshtml" />
     <Content Include="Areas\V2\Views\MatchResultAdmin\EditorTemplates\Serie.cshtml" />
     <Content Include="Areas\V2\Views\Roster\Unscheduled.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\_Turns.cshtml" />
-    <Content Include="Areas\V2\Views\MatchResultAdmin\RegisterBitsVerify4.cshtml" />
     <Content Include="Areas\V2\Views\MatchResultAdmin\EditorTemplates\Serie4.cshtml" />
     <Content Include="Areas\V2\Views\MatchResultAdmin\EditorTemplates\Game4.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\Details4.cshtml" />

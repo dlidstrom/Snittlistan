@@ -33,8 +33,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             if (!ModelState.IsValid) return View(vm);
 
-            Debug.Assert(vm.PersonalNumber != null, "vm.PersonalNumber != null");
-            var player = new Player(vm.Name, vm.Email, vm.Status, vm.PersonalNumber.Value, vm.Nickname);
+            var player = new Player(vm.Name, vm.Email, vm.Status, vm.PersonalNumber.GetValueOrDefault(), vm.Nickname);
             DocumentSession.Store(player);
             return RedirectToAction("Index");
         }
@@ -60,8 +59,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             player.SetName(vm.Name);
             player.SetEmail(vm.Email);
             player.SetStatus(vm.Status);
-            Debug.Assert(vm.PersonalNumber != null, "vm.PersonalNumber != null");
-            player.SetPersonalNumber(vm.PersonalNumber.Value);
+            player.SetPersonalNumber(vm.PersonalNumber.GetValueOrDefault());
             player.SetNickname(vm.Nickname);
 
             return RedirectToAction("Index");
