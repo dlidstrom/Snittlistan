@@ -12,7 +12,8 @@
                autocorrect="off"
                autocomplete="off"
                value="@Model.Name"
-               required />
+               required/>
+        <span class="help-block">Måste anges</span>
     </div>
 </div>
 <div class="control-group">
@@ -24,8 +25,7 @@
                placeholder="Smeknamn"
                autocorrect="off"
                autocomplete="off"
-               value="@Model.Nickname"
-               required />
+               value="@Model.Nickname" />
     </div>
 </div>
 <div class="control-group">
@@ -39,8 +39,7 @@
                autocomplete="off"
                pattern="\d*"
                title="Ange 6 siffror enligt ÅÅMMDD"
-               value="@(Model.PersonalNumber != null ? Model.PersonalNumber.Value.ToString() : string.Empty)"
-               required />
+               value="@(Model.PersonalNumber != null ? Model.PersonalNumber.Value.ToString() : string.Empty)" />
     </div>
 </div>
 <div class="control-group">
@@ -52,8 +51,7 @@
                placeholder=""
                autocorrect="off"
                autocomplete="off"
-               value="@Model.Email"
-               required />
+               value="@Model.Email" />
     </div>
 </div>
 <div class="control-group">

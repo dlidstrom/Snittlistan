@@ -9,7 +9,10 @@
         @if (Request.IsAuthenticated)
         {
             <td>
-                <a href="mailto:@player.Email">@player.Email</a>
+                @if (player.Email != null)
+                {
+                    <a href="mailto:@player.Email">@player.Email</a>
+                }
             </td>
             <td>
                 <a href="@Url.Action("Edit", new { id = player.Id.Substring(player.Id.LastIndexOf('-') + 1) })">
@@ -40,12 +43,12 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="mailto:@string.Join(",", Model.Where(x => x.Status != Player.Status.Inactive).Select(x => x.Email))">
+                        <a href="mailto:@string.Join(",", new HashSet<string>(Model.Where(x => x.Status != Player.Status.Inactive && x.Email != null).Select(x => x.Email)))">
                             Till alla (komma-separerade; iPhone/Android)
                         </a>
                     </li>
                     <li>
-                        <a href="mailto:@string.Join(";", Model.Where(x => x.Status != Player.Status.Inactive).Select(x => x.Email))">
+                        <a href="mailto:@string.Join(";", new HashSet<string>(Model.Where(x => x.Status != Player.Status.Inactive && x.Email != null).Select(x => x.Email)))">
                             Till alla (semikolon-separerade; Outlook)
                         </a>
                     </li>
