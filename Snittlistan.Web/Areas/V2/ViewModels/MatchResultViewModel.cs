@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Snittlistan.Web.Areas.V2.ReadModels;
 
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
@@ -7,19 +6,11 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
     {
         public MatchResultViewModel()
         {
-            Turns = new Dictionary<int, List<ResultHeaderReadModel>>();
+            Turns = new Dictionary<int, List<ResultHeaderViewModel>>();
         }
 
         public int SeasonStart { get; set; }
 
-        public int SeasonEnd
-        {
-            get
-            {
-                return SeasonStart + 1;
-            }
-        }
-
-        public Dictionary<int, List<ResultHeaderReadModel>> Turns { get; set; }
+        public Dictionary<int, List<ResultHeaderViewModel>> Turns { get; set; }
     }
 }

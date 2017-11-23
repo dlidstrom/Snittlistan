@@ -23,13 +23,16 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
             var headerReadModels = DocumentSession.Query<ResultHeaderReadModel, ResultHeaderIndex>()
                                                   .Where(x => x.Season == season)
-                                                  .ToList();
+                                                  .ToArray();
+            var rosters = DocumentSession.Load<Roster>(headerReadModels.Select(x => x.RosterId))
+                                         .ToDictionary(x => x.Id);
+
+            var headerViewModels = headerReadModels.Select(x => new ResultHeaderViewModel(x, rosters[x.RosterId]));
             var vm = new MatchResultViewModel
             {
                 SeasonStart = season.Value,
-                Turns = headerReadModels
-                    .GroupBy(x => x.Turn)
-                    .ToDictionary(x => x.Key, x => x.ToList())
+                Turns = headerViewModels.GroupBy(x => x.Turn)
+                                        .ToDictionary(x => x.Key, x => x.ToList())
             };
             return View(vm);
         }
@@ -40,13 +43,15 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var headerReadModel = DocumentSession.Load<ResultHeaderReadModel>(headerId);
             if (headerReadModel == null) throw new HttpException(404, "Match result not found");
 
+            var roster = DocumentSession.Load<Roster>(headerReadModel.RosterId);
+            var headerViewModel = new ResultHeaderViewModel(headerReadModel, roster);
             if (headerReadModel.IsFourPlayer)
             {
                 var matchId = ResultSeries4ReadModel.IdFromBitsMatchId(id);
                 var resultReadModel = DocumentSession.Load<ResultSeries4ReadModel>(matchId)
                     ?? new ResultSeries4ReadModel();
 
-                return View("Details4", new Result4ViewModel(headerReadModel, resultReadModel));
+                return View("Details4", new Result4ViewModel(headerViewModel, resultReadModel));
             }
             else
             {
@@ -54,7 +59,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 var resultReadModel = DocumentSession.Load<ResultSeriesReadModel>(matchId)
                     ?? new ResultSeriesReadModel();
 
-                return View(new ResultViewModel(headerReadModel, resultReadModel));
+                return View(new ResultViewModel(headerViewModel, resultReadModel));
             }
         }
 

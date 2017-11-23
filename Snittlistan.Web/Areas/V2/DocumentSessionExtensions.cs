@@ -14,6 +14,7 @@ namespace Snittlistan.Web.Areas.V2
                 .Where(x => x.Season == season)
                 .Where(x => x.Preliminary == false)
                 .Where(x => x.PlayerCount > 0)
+                .Where(x => x.BitsMatchId != 0)
                 .OrderBy(x => x.Date)
                 .AsProjection<RosterSearchTerms.Result>()
                 .ToList()
@@ -21,13 +22,7 @@ namespace Snittlistan.Web.Areas.V2
                 .Select(
                     x => new SelectListItem
                     {
-                        Text = string.Format(
-                            "{0}: {1} - {2} ({3} {4})",
-                            x.Turn,
-                            x.Team,
-                            x.Opponent,
-                            x.Location,
-                            x.Date.ToShortTimeString()),
+                        Text = $"{x.Turn}: {x.Team} - {x.Opponent} ({x.Location} {x.Date.ToShortTimeString()})",
                         Value = x.Id,
                         Selected = x.Id == rosterId
                     })

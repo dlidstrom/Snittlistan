@@ -15,7 +15,6 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             AggregateId = matchResult.AggregateId;
             TeamScore = matchResult.TeamScore;
             OpponentScore = matchResult.OpponentScore;
-            BitsMatchId = matchResult.BitsMatchId;
         }
 
         [HiddenInput]
