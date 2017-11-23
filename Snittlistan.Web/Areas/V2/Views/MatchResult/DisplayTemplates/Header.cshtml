@@ -1,4 +1,4 @@
-﻿@model Snittlistan.Web.Areas.V2.ReadModels.ResultHeaderReadModel
+﻿@model ResultHeaderViewModel
 
 <div class="well well-small">
     <dl class="dl-horizontal">
@@ -17,7 +17,7 @@
             </em>
         </dd>
         <dt>Resultat</dt>
-        <dd>@Model.TeamScore - @Model.OpponentScore</dd>
+        <dd>@Model.FormattedResult</dd>
         <dt>BITS</dt>
         <dd>
             <a href="@Html.GenerateBitsUrl(Model.BitsMatchId)" target="_blank">

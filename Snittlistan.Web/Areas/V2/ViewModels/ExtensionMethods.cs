@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Snittlistan.Web.Areas.V2.ReadModels;
 
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
@@ -19,7 +18,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             return rosters.OrderBy(r => TeamLevelSortOrder[r.TeamLevel]).ThenBy(r => r.Date);
         }
 
-        public static IEnumerable<ResultHeaderReadModel> SortResults(this IEnumerable<ResultHeaderReadModel> results)
+        public static IEnumerable<ResultHeaderViewModel> SortResults(this IEnumerable<ResultHeaderViewModel> results)
         {
             return results.OrderBy(r => TeamLevelSortOrder[r.TeamLevel.ToUpper()]).ThenBy(r => r.Date);
         }

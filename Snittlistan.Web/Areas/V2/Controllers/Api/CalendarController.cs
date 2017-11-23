@@ -22,9 +22,10 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             var rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
                                          .Where(r => r.Season == season)
                                          .ToArray();
+            var rosterDictionary = rosters.ToDictionary(x => x.Id);
             var resultIds = rosters.Select(x => ResultHeaderReadModel.IdFromBitsMatchId(x.BitsMatchId));
             var results = DocumentSession.Load<ResultHeaderReadModel>(resultIds);
-            var resultsDictionary = results.Where(x => x != null).ToDictionary(x => x.BitsMatchId);
+            var resultsDictionary = results.Where(x => x != null).ToDictionary(x => rosterDictionary[x.RosterId].BitsMatchId);
             var calendarEvents = new List<RosterCalendarEvent>();
             foreach (var roster in rosters)
             {

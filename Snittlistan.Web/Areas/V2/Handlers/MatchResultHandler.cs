@@ -23,7 +23,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
 
         public void Handle(MatchResultRegistered e, string aggregateId)
         {
-            DoRegister(aggregateId, e.RosterId, e.TeamScore, e.OpponentScore, e.BitsMatchId, false);
+            DoRegister(aggregateId, e.RosterId, e.TeamScore, e.OpponentScore);
         }
 
         public void Handle(MatchResultUpdated e, string aggregateId)
@@ -43,7 +43,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
 
         public void Handle(MatchResult4Registered e, string aggregateId)
         {
-            DoRegister(aggregateId, e.RosterId, e.TeamScore, e.OpponentScore, e.BitsMatchId, true);
+            DoRegister(aggregateId, e.RosterId, e.TeamScore, e.OpponentScore);
         }
 
         public void Handle(MatchResult4Updated e, string aggregateId)
@@ -107,24 +107,23 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             {
                 var oldResult = DocumentSession.Load<ResultHeaderReadModel>(id);
                 DocumentSession.Delete(oldResult);
-                var readModel = new ResultHeaderReadModel(
-                    roster, aggregateId, newTeamScore, newOpponentScore, newBitsMatchId, isFourPlayer);
+                var readModel = new ResultHeaderReadModel(roster, aggregateId, newTeamScore, newOpponentScore);
                 DocumentSession.Store(readModel);
             }
             else
             {
                 DocumentSession.Load<ResultHeaderReadModel>(id)
-                    .SetValues(roster, aggregateId, newTeamScore, newOpponentScore, newBitsMatchId, isFourPlayer);
+                    .SetValues(roster, aggregateId, newTeamScore, newOpponentScore);
             }
         }
 
-        private void DoRegister(string aggregateId, string rosterId, int teamScore, int opponentScore, int bitsMatchId, bool isFourPlayer)
+        private void DoRegister(string aggregateId, string rosterId, int teamScore, int opponentScore)
         {
             var roster = DocumentSession.Load<Roster>(rosterId);
             if (roster == null) throw new HttpException(404, "Roster not found");
 
             roster.MatchResultId = aggregateId;
-            var readModel = new ResultHeaderReadModel(roster, aggregateId, teamScore, opponentScore, bitsMatchId, isFourPlayer);
+            var readModel = new ResultHeaderReadModel(roster, aggregateId, teamScore, opponentScore);
             DocumentSession.Store(readModel);
         }
     }
