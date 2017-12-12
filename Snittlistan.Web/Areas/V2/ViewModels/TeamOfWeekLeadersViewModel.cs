@@ -1,20 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.ReadModels;
 
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     public class TeamOfWeekLeadersViewModel
     {
-        public TeamOfWeekLeadersViewModel(IEnumerable<TeamOfWeek> weeks)
+        public TeamOfWeekLeadersViewModel(TeamOfWeek[] weeks, Dictionary<string, Roster> rostersDictionary)
         {
             var rankByTurn = new Dictionary<int, List<PlayerScore>>();
             foreach (var week in weeks)
             {
                 List<PlayerScore> list;
-                if (rankByTurn.TryGetValue(week.Turn, out list) == false)
+                var turn = rostersDictionary[week.RosterId].Turn;
+                if (rankByTurn.TryGetValue(turn, out list) == false)
                 {
-                    rankByTurn[week.Turn] = week.PlayerScores.Values.ToList();
+                    rankByTurn[turn] = week.PlayerScores.Values.ToList();
                 }
                 else
                 {
@@ -32,26 +35,33 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                 }
             }
 
-            var bestOfBest = new List<string>();
-            foreach (var turn in rankByTurn.Keys)
+            var bestOfBest = new List<Tuple<string, int>>();
+            foreach (var turn in rankByTurn.Keys.OrderBy(x => x))
             {
-                var current = -1;
-                var rank = 1;
-                foreach (var playerScore in rankByTurn[turn].OrderByDescending(x => x.Pins))
+                var current = int.MaxValue;
+                var rank = 0;
+                var rankstep = 1;
+                var playerScores = rankByTurn[turn].OrderByDescending(x => x.Pins).ToArray();
+                foreach (var playerScore in playerScores)
                 {
                     if (playerScore.Pins != current)
                     {
-                        rank++;
-                        current = playerScore.Pins;
+                        rank += rankstep;
+                        rankstep = 1;
+                    }
+                    else
+                    {
+                        rankstep++;
                     }
 
                     if (rank > 9) break;
 
-                    bestOfBest.Add(playerScore.Name);
+                    current = playerScore.Pins;
+                    bestOfBest.Add(Tuple.Create(playerScore.Name, turn));
                 }
             }
 
-            Top9Total = bestOfBest.GroupBy(x => x)
+            Top9Total = bestOfBest.GroupBy(x => x.Item1)
                                   .Select(x => new NameCount(x))
                                   .OrderByDescending(x => x.Count)
                                   .ThenBy(x => x.Name)
@@ -62,15 +72,18 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public class NameCount
         {
-            public NameCount(IGrouping<string, string> grouping)
+            public NameCount(IGrouping<string, Tuple<string, int>> grouping)
             {
                 Name = grouping.Key;
                 Count = grouping.Count();
+                Turns = grouping.Select(x => x.Item2).ToArray();
             }
 
             public string Name { get; }
 
             public int Count { get; }
+
+            public int[] Turns { get; }
         }
     }
 }

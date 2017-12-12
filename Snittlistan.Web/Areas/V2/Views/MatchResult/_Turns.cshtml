@@ -41,7 +41,7 @@
                 }
             </table>
         </section>
-        @foreach (var week in Model.Weeks)
+        @foreach (var week in Model.Weeks.OrderByDescending(x => x.Turn))
         {
             <section id="@string.Format("turn-{0}", week.Turn)">
                 <h3>Omgång @week.Turn</h3>

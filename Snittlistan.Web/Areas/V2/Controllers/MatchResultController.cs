@@ -69,10 +69,10 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
 
             var weeks = DocumentSession.Query<TeamOfWeek, TeamOfWeekIndex>()
-                .Where(x => x.Season == season.Value)
-                .OrderByDescending(x => x.Turn)
-                .ToArray();
-            var viewModel = new TeamOfWeekViewModel(season.Value, weeks);
+                                       .Where(x => x.Season == season.Value)
+                                       .ToArray();
+            var rostersDictionary = DocumentSession.Load<Roster>(weeks.Select(x => x.RosterId)).ToDictionary(x => x.Id);
+            var viewModel = new TeamOfWeekViewModel(season.Value, weeks, rostersDictionary);
             return View(viewModel);
         }
 

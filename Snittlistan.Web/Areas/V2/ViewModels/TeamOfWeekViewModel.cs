@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.ReadModels;
 
 namespace Snittlistan.Web.Areas.V2.ViewModels
@@ -8,31 +9,34 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
     {
         public TeamOfWeekViewModel(
             int season,
-            TeamOfWeek[] teamOfWeek)
+            TeamOfWeek[] teamOfWeek,
+            Dictionary<string, Roster> rostersDictionary)
         {
-            Leaders = new TeamOfWeekLeadersViewModel(teamOfWeek);
+            Leaders = new TeamOfWeekLeadersViewModel(teamOfWeek, rostersDictionary);
             Season = season;
             Weeks = new List<Week>();
-            foreach (var turn in teamOfWeek.GroupBy(x => x.Turn))
+            foreach (var turn in teamOfWeek.GroupBy(x => rostersDictionary[x.RosterId].Turn))
             {
                 var q = from t in turn
                         from playerScore in t.PlayerScores
-                        group playerScore by new
+                        let item = new { playerScore, t.RosterId }
+                        group item by new
                         {
-                            playerScore.Key,
-                            playerScore.Value.PlayerId,
-                            playerScore.Value.Name
-                        } into g
-                        let maxValue = g.OrderByDescending(x => x.Value.Pins).FirstOrDefault()
-                        orderby maxValue.Value.Pins descending
-                        select new PlayerScore(g.Key.PlayerId, g.Key.Name, maxValue.Value.Team, maxValue.Value.TeamLevel)
-                        {
-                            Pins = maxValue.Value.Pins,
-                            Score = maxValue.Value.Score,
-                            Series = maxValue.Value.Series,
-                            Medals = g.SelectMany(x => x.Value.Medals).ToList()
-                        };
-                var week = new Week(turn.Key, q.ToList());
+                            PlayerId = item.playerScore.Key,
+                            item.playerScore.Value.Name
+                        }
+                        into g
+                        let maxValue = g.OrderByDescending(x => x.playerScore.Value.Pins).FirstOrDefault()
+                        orderby maxValue.playerScore.Value.Pins descending
+                        select new PlayerScoreViewModel(new PlayerScore(g.Key.PlayerId, g.Key.Name)
+                            {
+                                Pins = maxValue.playerScore.Value.Pins,
+                                Score = maxValue.playerScore.Value.Score,
+                                Series = maxValue.playerScore.Value.Series,
+                                Medals = g.SelectMany(x => x.playerScore.Value.Medals).ToList()
+                            },
+                            rostersDictionary[maxValue.RosterId]);
+                var week = new Week(turn.Key, q.ToArray());
                 Weeks.Add(week);
             }
         }
@@ -45,13 +49,13 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public class Week
         {
-            public Week(int turn, List<PlayerScore> playerScores)
+            public Week(int turn, PlayerScoreViewModel[] playerScores)
             {
                 Turn = turn;
                 Players = playerScores;
             }
 
-            public List<PlayerScore> Players { get; private set; }
+            public PlayerScoreViewModel[] Players { get; private set; }
 
             public int Top8
             {
