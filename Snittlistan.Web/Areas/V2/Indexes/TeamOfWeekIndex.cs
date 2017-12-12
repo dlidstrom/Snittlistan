@@ -11,8 +11,7 @@ namespace Snittlistan.Web.Areas.V2.Indexes
             Map = weeks => from week in weeks
                            select new
                            {
-                               week.Season,
-                               week.Turn
+                               week.Season
                            };
         }
     }

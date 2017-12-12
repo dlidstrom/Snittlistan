@@ -23,11 +23,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
         {
             // find team of week for this roster
             var roster = DocumentSession.Load<Roster>(e.RosterId);
-
-            // TODO: Is this really necessary?
-            var teamOfWeek = DocumentSession.Load<TeamOfWeek>(roster.Season);
-            if (teamOfWeek != null) return;
-            teamOfWeek = new TeamOfWeek(e.BitsMatchId, roster.Season, roster.Turn, roster.Team, roster.TeamLevel);
+            var teamOfWeek = new TeamOfWeek(e.BitsMatchId, roster.Season, roster.Id);
             DocumentSession.Store(teamOfWeek);
         }
 
@@ -87,11 +83,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
         {
             // find team of week for this roster
             var roster = DocumentSession.Load<Roster>(e.RosterId);
-
-            // TODO: Is this really necessary?
-            var teamOfWeek = DocumentSession.Load<TeamOfWeek>(roster.Season);
-            if (teamOfWeek != null) return;
-            teamOfWeek = new TeamOfWeek(e.BitsMatchId, roster.Season, roster.Turn, roster.Team, roster.TeamLevel);
+            var teamOfWeek = new TeamOfWeek(e.BitsMatchId, roster.Season, e.RosterId);
             DocumentSession.Store(teamOfWeek);
         }
 
