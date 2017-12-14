@@ -16,7 +16,7 @@ namespace Snittlistan.Tool
     {
         public static void Main(string[] args)
         {
-            if (args.Length != 1)
+            if (args.Length < 1)
             {
                 Usage();
                 return;
@@ -54,20 +54,39 @@ namespace Snittlistan.Tool
             }
             else if (args[0] == "/migrate")
             {
-                Console.Write("Enter connection string name: ");
-                var connectionStringName = Console.ReadLine();
-                var documentStore = new DocumentStore { ConnectionStringName = connectionStringName }.Initialize();
+                string connectionStringName;
+                if (args.Length == 1)
+                {
+                    Console.Write("Enter connection string name: ");
+                    connectionStringName = Console.ReadLine();
+                }
+                else
+                {
+                    connectionStringName = args[1];
+                }
+
+                var documentStore = new DocumentStore
+                {
+                    ConnectionStringName = connectionStringName
+                }.Initialize();
+
+                Console.WriteLine("Migrating docs");
                 var changed = 0;
                 var skip = 0;
                 while (true)
                 {
                     using (var documentSession = documentStore.OpenSession())
                     {
-                        var rosters = documentSession.Query<Roster, RosterSearchTerms>().Skip(skip).Take(10).ToArray();
+                        var rosters = documentSession.Query<Roster, RosterSearchTerms>()
+                                                     .Customize(x => x.WaitForNonStaleResultsAsOfNow())
+                                                     .Skip(skip)
+                                                     .Take(10)
+                                                     .ToArray();
                         if (rosters.Length == 0) break;
                         foreach (var roster in rosters)
                         {
                             var id = TeamOfWeek.IdFromBitsMatchId(roster.BitsMatchId);
+                            Console.WriteLine("Loading {0}", id);
                             var teamOfWeek = documentSession.Load<TeamOfWeek>(id);
                             if (teamOfWeek != null && teamOfWeek.RosterId == null)
                             {
@@ -81,7 +100,7 @@ namespace Snittlistan.Tool
                     }
                 }
 
-                Console.WriteLine("Changed {0} rosters", changed);
+                Console.WriteLine("Changed {0} team of weeks", changed);
             }
             else
             {
