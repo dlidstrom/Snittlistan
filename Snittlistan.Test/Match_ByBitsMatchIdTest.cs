@@ -1,11 +1,12 @@
-﻿using Snittlistan.Web.Helpers;
-using Xunit;
+﻿using NUnit.Framework;
+using Snittlistan.Web.Helpers;
 
 namespace Snittlistan.Test
 {
+    [TestFixture]
     public class Match_ByBitsMatchIdTest : DbTest
     {
-        [Fact]
+        [Test]
         public void ShouldFindBitsId()
         {
             // Arrange

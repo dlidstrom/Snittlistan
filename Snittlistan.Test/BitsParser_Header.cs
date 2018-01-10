@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using NUnit.Framework;
 using Snittlistan.Test.Properties;
 using Snittlistan.Web.Areas.V2.Domain;
-using Xunit;
 
 namespace Snittlistan.Test
 {
+    [TestFixture]
     public class BitsParser_Header
     {
-        [Fact]
+        [Test]
         public void ParsesTeamName1()
         {
             // Arrange
@@ -19,10 +20,10 @@ namespace Snittlistan.Test
             var header = BitsParser.ParseHeader(content, possibleTeams);
 
             // Assert
-            Assert.Equal("Fredrikshof F", header.Team);
+            Assert.That(header.Team, Is.EqualTo("Fredrikshof F"));
         }
 
-        [Fact]
+        [Test]
         public void ParsesTeamName2()
         {
             // Arrange
@@ -33,10 +34,10 @@ namespace Snittlistan.Test
             var header = BitsParser.ParseHeader(content, possibleTeams);
 
             // Assert
-            Assert.Equal("Fredrikshof IF F", header.Team);
+            Assert.That(header.Team, Is.EqualTo("Fredrikshof IF F"));
         }
 
-        [Fact]
+        [Test]
         public void ParsesTeamName3()
         {
             // Arrange
@@ -47,10 +48,10 @@ namespace Snittlistan.Test
             var header = BitsParser.ParseHeader(content, possibleTeams);
 
             // Assert
-            Assert.Equal("Fredrikshof IF F", header.Team);
+            Assert.That(header.Team, Is.EqualTo("Fredrikshof IF F"));
         }
 
-        [Fact]
+        [Test]
         public void ParsesTeamName4()
         {
             // Arrange
@@ -61,10 +62,10 @@ namespace Snittlistan.Test
             var header = BitsParser.ParseHeader(content, possibleTeams);
 
             // Assert
-            Assert.Equal("Fredrikshof IF F", header.Team);
+            Assert.That(header.Team, Is.EqualTo("Fredrikshof IF F"));
         }
 
-        [Fact]
+        [Test]
         public void ParsesTeamName5()
         {
             // Arrange
@@ -75,10 +76,10 @@ namespace Snittlistan.Test
             var header = BitsParser.ParseHeader(content, possibleTeams);
 
             // Assert
-            Assert.Equal("Fredrikshof F", header.Team);
+            Assert.That(header.Team, Is.EqualTo("Fredrikshof F"));
         }
 
-        [Fact]
+        [Test]
         public void ParsesTeamName6()
         {
             // Arrange
@@ -89,10 +90,10 @@ namespace Snittlistan.Test
             var header = BitsParser.ParseHeader(content, possibleTeams);
 
             // Assert
-            Assert.Equal("Fredrikshof IF F", header.Team);
+            Assert.That(header.Team, Is.EqualTo("Fredrikshof IF F"));
         }
 
-        [Fact]
+        [Test]
         public void ParsesTeamName7()
         {
             // Arrange
@@ -103,10 +104,10 @@ namespace Snittlistan.Test
             var header = BitsParser.ParseHeader(content, possibleTeams);
 
             // Assert
-            Assert.Equal("Fredrikshof F", header.Team);
+            Assert.That(header.Team, Is.EqualTo("Fredrikshof F"));
         }
 
-        [Fact]
+        [Test]
         public void ParsesTeamName8()
         {
             // Arrange
@@ -117,10 +118,10 @@ namespace Snittlistan.Test
             var header = BitsParser.ParseHeader(content, possibleTeams);
 
             // Assert
-            Assert.Equal("Fredrikshof IF F", header.Team);
+            Assert.That(header.Team, Is.EqualTo("Fredrikshof IF F"));
         }
 
-        [Fact]
+        [Test]
         public void ParsesDate()
         {
             // Arrange
@@ -131,7 +132,7 @@ namespace Snittlistan.Test
             var header = BitsParser.ParseHeader(content, possibleTeams);
 
             // Assert
-            Assert.Equal(header.Date, new DateTime(2013, 4, 20));
+            Assert.That(header.Date, Is.EqualTo(new DateTime(2013, 4, 20)));
         }
     }
 }

@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Web;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V1.Controllers;
 using Snittlistan.Web.Areas.V1.Models;
 using Snittlistan.Web.Areas.V1.ViewModels.Match;
-using Xunit;
 
 namespace Snittlistan.Test.Controllers
 {
+    [TestFixture]
     public class MatchController_EditDetails8x4 : DbTest
     {
-        [Fact]
+        [Test]
         public void CanEditDetails()
         {
             // Arrange
@@ -32,12 +33,12 @@ namespace Snittlistan.Test.Controllers
             // Assert
             result.AssertActionRedirect().ToAction("Details8x4").WithParameter("id", originalMatch.Id);
             var match = Session.Load<Match8x4>(originalMatch.Id);
-            Assert.Equal("NewPlace", match.Location);
-            Assert.Equal(now, match.Date);
-            Assert.Equal(2, match.BitsMatchId);
+            Assert.That(match.Location, Is.EqualTo("NewPlace"));
+            Assert.That(match.Date, Is.EqualTo(now));
+            Assert.That(match.BitsMatchId, Is.EqualTo(2));
         }
 
-        [Fact]
+        [Test]
         public void CannotEditNonExistingMatch()
         {
             var controller = new MatchController { DocumentSession = Session };
@@ -48,11 +49,11 @@ namespace Snittlistan.Test.Controllers
             }
             catch (HttpException ex)
             {
-                Assert.Equal(404, ex.GetHttpCode());
+                Assert.That(ex.GetHttpCode(), Is.EqualTo(404));
             }
         }
 
-        [Fact]
+        [Test]
         public void CannotPostNonExistingMatch()
         {
             var controller = new MatchController { DocumentSession = Session };
@@ -63,11 +64,11 @@ namespace Snittlistan.Test.Controllers
             }
             catch (HttpException ex)
             {
-                Assert.Equal(404, ex.GetHttpCode());
+                Assert.That(ex.GetHttpCode(), Is.EqualTo(404));
             }
         }
 
-        [Fact]
+        [Test]
         public void CorrectView()
         {
             // Arrange
@@ -82,7 +83,7 @@ namespace Snittlistan.Test.Controllers
             result.AssertViewRendered().ForView(string.Empty);
         }
 
-        [Fact]
+        [Test]
         public void WhenErrorReturnView()
         {
             // Arrange

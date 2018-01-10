@@ -2,15 +2,16 @@
 using System.Web.Mvc;
 using Castle.Windsor;
 using Moq;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V1.Controllers;
 using Snittlistan.Web.Areas.V1.ViewModels.Account;
 using Snittlistan.Web.DomainEvents;
 using Snittlistan.Web.Helpers;
 using Snittlistan.Web.Services;
-using Xunit;
 
 namespace Snittlistan.Test.Controllers
 {
+    [TestFixture]
     public class AccountController_Register : DbTest
     {
         private readonly IWindsorContainer oldContainer;
@@ -20,7 +21,7 @@ namespace Snittlistan.Test.Controllers
             oldContainer = DomainEvent.SetContainer(new WindsorContainer());
         }
 
-        [Fact]
+        [Test]
         public void ShouldInitializeNewUser()
         {
             NewUserCreatedEvent ev = null;
@@ -38,7 +39,7 @@ namespace Snittlistan.Test.Controllers
             Assert.NotNull(ev);
         }
 
-        [Fact]
+        [Test]
         public void ShouldCreateInitializedUser()
         {
             var controller = new AccountController(Mock.Of<IAuthenticationService>()) { DocumentSession = Session };
@@ -55,13 +56,13 @@ namespace Snittlistan.Test.Controllers
 
             var user = Session.FindUserByEmail("email");
             Assert.NotNull(user);
-            Assert.Equal("first name", user.FirstName);
-            Assert.Equal("last name", user.LastName);
-            Assert.Equal("email", user.Email);
+            Assert.That(user.FirstName, Is.EqualTo("first name"));
+            Assert.That(user.LastName, Is.EqualTo("last name"));
+            Assert.That(user.Email, Is.EqualTo("email"));
             Assert.False(user.IsActive);
         }
 
-        [Fact]
+        [Test]
         public void RegisterDoesNotLogin()
         {
             using (DomainEvent.Disable())
@@ -82,7 +83,7 @@ namespace Snittlistan.Test.Controllers
             }
         }
 
-        [Fact]
+        [Test]
         public void SuccessfulRegisterRedirectsToSuccessPage()
         {
             using (DomainEvent.Disable())
@@ -99,7 +100,7 @@ namespace Snittlistan.Test.Controllers
             }
         }
 
-        [Fact]
+        [Test]
         public void CannotRegisterSameEmailTwice()
         {
             // Arrange
@@ -113,7 +114,7 @@ namespace Snittlistan.Test.Controllers
             result.AssertViewRendered().ForView(string.Empty);
             var view = result as ViewResult;
             Assert.NotNull(view);
-            Assert.Equal(1, controller.ModelState.Count);
+            Assert.That(controller.ModelState, Has.Count.EqualTo(1));
             Assert.True(controller.ModelState.ContainsKey("Email"));
         }
 

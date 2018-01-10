@@ -20,24 +20,21 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         public EliteMedal GetExistingMedal(string playerId)
         {
-            EliteMedal existingMedal;
-            if (AwardedMedals.TryGetValue(playerId, out existingMedal) == false)
+            if (AwardedMedals.TryGetValue(playerId, out var existingMedal) == false)
                 existingMedal = EliteMedal.None;
             return existingMedal;
         }
 
         public Tuple<string, string> GetFormattedExistingMedal(string playerId)
         {
-            EliteMedal existingMedal;
-            if (AwardedMedals.TryGetValue(playerId, out existingMedal) == false)
+            if (AwardedMedals.TryGetValue(playerId, out var existingMedal) == false)
                 existingMedal = EliteMedal.None;
             return existingMedal.GetDescription();
         }
 
         public Tuple<string, string> GetNextMedal(string playerId)
         {
-            EliteMedal existingMedal;
-            if (AwardedMedals.TryGetValue(playerId, out existingMedal) == false)
+            if (AwardedMedals.TryGetValue(playerId, out var existingMedal) == false)
                 existingMedal = EliteMedal.None;
             var nextMedal = string.Empty;
             var text = string.Empty;
@@ -119,7 +116,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
             public Tuple<string, string> GetDescription()
             {
                 if (Value == EliteMedalValue.None) return Tuple.Create(string.Empty, "Saknar medalj");
-                return Tuple.Create(GetDescription(Value), string.Format("({0} - {1})", CapturedSeason, CapturedSeason + 1));
+                return Tuple.Create(GetDescription(Value), $"({CapturedSeason} - {CapturedSeason + 1})");
             }
 
             public static string GetDescription(Enum value)

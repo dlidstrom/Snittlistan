@@ -8,7 +8,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
     {
         public MatchSerie4(IReadOnlyList<MatchGame4> games)
         {
-            if (games == null) throw new ArgumentNullException("games");
+            if (games == null) throw new ArgumentNullException(nameof(games));
             if (games.Count != 4) throw new ArgumentException("games");
 
             var players = new HashSet<string>(games.AsEnumerable().Select(x => x.Player));

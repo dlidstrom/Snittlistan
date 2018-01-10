@@ -1,16 +1,17 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Windsor;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V1.Controllers;
 using Snittlistan.Web.Infrastructure.Installers;
 using Snittlistan.Web.Infrastructure.IoC;
-using Xunit;
 
 namespace Snittlistan.Test
 {
+    [TestFixture]
     public class ControllerFactoryTest
     {
-        [Fact]
+        [Test]
         public void CanCreateController()
         {
             var container = new WindsorContainer()

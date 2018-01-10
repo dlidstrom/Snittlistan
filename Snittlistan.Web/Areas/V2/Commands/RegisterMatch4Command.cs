@@ -16,10 +16,8 @@ namespace Snittlistan.Web.Areas.V2.Commands
 
         public RegisterMatch4Command(Roster roster, Parse4Result result)
         {
-            if (roster == null) throw new ArgumentNullException("roster");
-            if (result == null) throw new ArgumentNullException("result");
-            this.roster = roster;
-            this.result = result;
+            this.roster = roster ?? throw new ArgumentNullException(nameof(roster));
+            this.result = result ?? throw new ArgumentNullException(nameof(result));
         }
 
         public void Execute(IDocumentSession session, IEventStoreSession eventStoreSession)

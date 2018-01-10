@@ -7,10 +7,8 @@ namespace Snittlistan.Web.DomainEvents
     {
         public UserInvitedEvent(User user, string activationUri)
         {
-            if (user == null) throw new ArgumentNullException("user");
-            if (activationUri == null) throw new ArgumentNullException("activationUri");
-            User = user;
-            ActivationUri = activationUri;
+            User = user ?? throw new ArgumentNullException(nameof(user));
+            ActivationUri = activationUri ?? throw new ArgumentNullException(nameof(activationUri));
         }
 
         public User User { get; private set; }

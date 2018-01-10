@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V1.Controllers;
 using Snittlistan.Web.Areas.V1.Models;
 using Snittlistan.Web.Areas.V1.ViewModels;
 using Snittlistan.Web.Infrastructure.Indexes;
-using Xunit;
 
 namespace Snittlistan.Test.Controllers
 {
+    [TestFixture]
     public class HomeController_Player : DbTest
     {
-        [Fact]
+        [Test]
         public void Handles4x4Correctly()
         {
             // Arrange
@@ -75,19 +76,19 @@ namespace Snittlistan.Test.Controllers
             // Assert
             Assert.NotNull(result);
             Debug.Assert(result != null, "result != null");
-            Assert.Equal(4.5, result.Results.AverageStrikes);
-            Assert.Equal(2.5, result.Results.AverageMisses);
-            Assert.Equal(2, result.Results.GamesWithStats);
-            Assert.Equal(160, result.Results.BestGame);
-            Assert.Equal(4.5, result.Results.AverageStrikes);
-            Assert.Equal(2.5, result.Results.AverageMisses);
-            Assert.Equal(1.5, result.Results.AverageOnePinMisses);
-            Assert.Equal(2.5, result.Results.AverageSplits);
-            Assert.Equal(561.0 / 4, result.Results.AveragePins);
-            Assert.Equal(0.25, result.Results.AverageScore);
+            Assert.That(result.Results.AverageStrikes, Is.EqualTo(4.5));
+            Assert.That(result.Results.AverageMisses, Is.EqualTo(2.5));
+            Assert.That(result.Results.GamesWithStats, Is.EqualTo(2));
+            Assert.That(result.Results.BestGame, Is.EqualTo(160));
+            Assert.That(result.Results.AverageStrikes, Is.EqualTo(4.5));
+            Assert.That(result.Results.AverageMisses, Is.EqualTo(2.5));
+            Assert.That(result.Results.AverageOnePinMisses, Is.EqualTo(1.5));
+            Assert.That(result.Results.AverageSplits, Is.EqualTo(2.5));
+            Assert.That(result.Results.AveragePins, Is.EqualTo(561.0 / 4));
+            Assert.That(result.Results.AverageScore, Is.EqualTo(0.25));
         }
 
-        [Fact]
+        [Test]
         public void Handles8x4Correctly()
         {
             // Arrange
@@ -110,16 +111,16 @@ namespace Snittlistan.Test.Controllers
             // Assert
             Assert.NotNull(result);
             Debug.Assert(result != null, "result != null");
-            Assert.Equal(5.0, result.Results.AverageStrikes);
-            Assert.Equal(2.0, result.Results.AverageMisses);
-            Assert.Equal(1, result.Results.GamesWithStats);
-            Assert.Equal(223, result.Results.BestGame);
-            Assert.Equal(5.0, result.Results.AverageStrikes);
-            Assert.Equal(2.0, result.Results.AverageMisses);
-            Assert.Equal(1.0, result.Results.AverageOnePinMisses);
-            Assert.Equal(2.0, result.Results.AverageSplits);
-            Assert.Equal(845.0 / 4, result.Results.AveragePins);
-            Assert.Equal(0.75, result.Results.AverageScore);
+            Assert.That(result.Results.AverageStrikes, Is.EqualTo(5.0));
+            Assert.That(result.Results.AverageMisses, Is.EqualTo(2.0));
+            Assert.That(result.Results.GamesWithStats, Is.EqualTo(1));
+            Assert.That(result.Results.BestGame, Is.EqualTo(223));
+            Assert.That(result.Results.AverageStrikes, Is.EqualTo(5.0));
+            Assert.That(result.Results.AverageMisses, Is.EqualTo(2.0));
+            Assert.That(result.Results.AverageOnePinMisses, Is.EqualTo(1.0));
+            Assert.That(result.Results.AverageSplits, Is.EqualTo(2.0));
+            Assert.That(result.Results.AveragePins, Is.EqualTo(845.0 / 4));
+            Assert.That(result.Results.AverageScore, Is.EqualTo(0.75));
         }
     }
 }

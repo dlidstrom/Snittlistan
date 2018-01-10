@@ -9,16 +9,12 @@ namespace Snittlistan.Web.Infrastructure.Installers
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            container.Register(FindControllers().LifestyleTransient());
-        }
-
-        private static BasedOnDescriptor FindControllers()
-        {
-            return AllTypes
-                .FromThisAssembly()
-                .BasedOn<IController>()
-                .If(t => t.Name.EndsWith("Controller"))
-                .Configure(c => c.Named(c.Implementation.Name));
+            container.Register(
+                Classes
+                    .FromThisAssembly()
+                    .BasedOn<IController>()
+                    .If(t => t.Name.EndsWith("Controller"))
+                    .Configure(c => c.Named(c.Implementation.Name)).LifestyleTransient());
         }
     }
 }

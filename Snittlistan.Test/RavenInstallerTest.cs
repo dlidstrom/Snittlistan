@@ -1,10 +1,11 @@
 ﻿using Castle.Windsor;
+using NUnit.Framework;
 using Raven.Client;
 using Snittlistan.Web.Infrastructure.Installers;
-using Xunit;
 
 namespace Snittlistan.Test
 {
+    [TestFixture]
     public class RavenInstallerTest
     {
         private readonly IWindsorContainer container;
@@ -14,7 +15,7 @@ namespace Snittlistan.Test
             container = new WindsorContainer().Install(new RavenInstaller(DocumentStoreMode.InMemory));
         }
 
-        [Fact]
+        [Test]
         public void InstallsDocumentStore()
         {
             var store = container.Resolve<IDocumentStore>();

@@ -82,7 +82,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             var roster = DocumentSession.Load<Roster>(oldId);
             if (roster == null)
             {
-                var message = string.Format("Roster {0} not found", oldId);
+                var message = $"Roster {oldId} not found";
                 throw new ApplicationException(message);
             }
 
@@ -90,7 +90,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             var newRoster = DocumentSession.Load<Roster>(newId);
             if (newRoster == null)
             {
-                var message = string.Format("Roster {0} not found", newId);
+                var message = $"Roster {newId} not found";
                 throw new ApplicationException(message);
             }
 

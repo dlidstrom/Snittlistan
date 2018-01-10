@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V1.Models;
-using Xunit;
 
 namespace Snittlistan.Test
 {
@@ -33,16 +33,16 @@ namespace Snittlistan.Test
 
         public static void VerifyTeam(Team8x4 team)
         {
-            Assert.Equal("Fredrikshof IF", team.Name);
-            Assert.Equal(845, team.PinsForPlayer("Mikael Axelsson"));
-            Assert.Equal(814, team.PinsForPlayer("Hans Norbeck"));
-            Assert.Equal(799, team.PinsForPlayer("Lars Öberg"));
-            Assert.Equal(794, team.PinsForPlayer("Torbjörn Jensen"));
-            Assert.Equal(787, team.PinsForPlayer("Peter Sjöberg"));
-            Assert.Equal(743, team.PinsForPlayer("Kjell Jansson"));
-            Assert.Equal(735, team.PinsForPlayer("Christer Liedholm"));
-            Assert.Equal(540, team.PinsForPlayer("Kjell Persson"));
-            Assert.Equal(159, team.PinsForPlayer("Thomas Gurell"));
+            Assert.That(team.Name, Is.EqualTo("Fredrikshof IF"));
+            Assert.That(team.PinsForPlayer("Mikael Axelsson"), Is.EqualTo(845));
+            Assert.That(team.PinsForPlayer("Hans Norbeck"), Is.EqualTo(814));
+            Assert.That(team.PinsForPlayer("Lars Öberg"), Is.EqualTo(799));
+            Assert.That(team.PinsForPlayer("Torbjörn Jensen"), Is.EqualTo(794));
+            Assert.That(team.PinsForPlayer("Peter Sjöberg"), Is.EqualTo(787));
+            Assert.That(team.PinsForPlayer("Kjell Jansson"), Is.EqualTo(743));
+            Assert.That(team.PinsForPlayer("Christer Liedholm"), Is.EqualTo(735));
+            Assert.That(team.PinsForPlayer("Kjell Persson"), Is.EqualTo(540));
+            Assert.That(team.PinsForPlayer("Thomas Gurell"), Is.EqualTo(159));
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 4; j++)
@@ -50,52 +50,52 @@ namespace Snittlistan.Test
                     int result1 = Result8X4[(i * 4) + j][0];
                     int result2 = Result8X4[(i * 4) + j][1];
 
-                    Assert.Equal(result1, team.Series.ElementAt(i).Tables.ElementAt(j).Game1.Pins);
-                    Assert.Equal(result2, team.Series.ElementAt(i).Tables.ElementAt(j).Game2.Pins);
+                    Assert.That(team.Series.ElementAt(i).Tables.ElementAt(j).Game1.Pins, Is.EqualTo(result1));
+                    Assert.That(team.Series.ElementAt(i).Tables.ElementAt(j).Game2.Pins, Is.EqualTo(result2));
                 }
             }
 
-            Assert.Equal(4, team.Series.Count());
-            Assert.Equal(6216, team.Pins());
-            Assert.Equal(1598, team.PinsFor(1));
-            Assert.Equal(1573, team.PinsFor(2));
-            Assert.Equal(1505, team.PinsFor(3));
-            Assert.Equal(1540, team.PinsFor(4));
-            Assert.Equal(2, team.ScoreFor(1));
-            Assert.Equal(2, team.ScoreFor(2));
-            Assert.Equal(1, team.ScoreFor(3));
-            Assert.Equal(1, team.ScoreFor(4));
-            Assert.Equal(6, team.Score);
+            Assert.That(team.Series.Count(), Is.EqualTo(4));
+            Assert.That(team.Pins(), Is.EqualTo(6216));
+            Assert.That(team.PinsFor(1), Is.EqualTo(1598));
+            Assert.That(team.PinsFor(2), Is.EqualTo(1573));
+            Assert.That(team.PinsFor(3), Is.EqualTo(1505));
+            Assert.That(team.PinsFor(4), Is.EqualTo(1540));
+            Assert.That(team.ScoreFor(1), Is.EqualTo(2));
+            Assert.That(team.ScoreFor(2), Is.EqualTo(2));
+            Assert.That(team.ScoreFor(3), Is.EqualTo(1));
+            Assert.That(team.ScoreFor(4), Is.EqualTo(1));
+            Assert.That(team.Score, Is.EqualTo(6));
         }
 
         public static void VerifyTeam(Team4x4 team)
         {
-            Assert.Equal("Fredrikshof C", team.Name);
-            Assert.Equal(561, team.PinsForPlayer("Tomas Gustavsson"));
-            Assert.Equal(598, team.PinsForPlayer("Markus Norbeck"));
-            Assert.Equal(717, team.PinsForPlayer("Lars Norbeck"));
-            Assert.Equal(594, team.PinsForPlayer("Matz Classon"));
+            Assert.That(team.Name, Is.EqualTo("Fredrikshof C"));
+            Assert.That(team.PinsForPlayer("Tomas Gustavsson"), Is.EqualTo(561));
+            Assert.That(team.PinsForPlayer("Markus Norbeck"), Is.EqualTo(598));
+            Assert.That(team.PinsForPlayer("Lars Norbeck"), Is.EqualTo(717));
+            Assert.That(team.PinsForPlayer("Matz Classon"), Is.EqualTo(594));
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 4; j++)
                 {
                     int result = Result4X4[(i * 4) + j];
 
-                    Assert.Equal(result, team.Series.ElementAt(i).Games.ElementAt(j).Pins);
+                    Assert.That(team.Series.ElementAt(i).Games.ElementAt(j).Pins, Is.EqualTo(result));
                 }
             }
 
-            Assert.Equal(4, team.Series.Count());
-            Assert.Equal(2470, team.Pins());
-            Assert.Equal(623, team.PinsFor(1));
-            Assert.Equal(545, team.PinsFor(2));
-            Assert.Equal(689, team.PinsFor(3));
-            Assert.Equal(613, team.PinsFor(4));
-            Assert.Equal(1, team.ScoreFor(1));
-            Assert.Equal(1, team.ScoreFor(2));
-            Assert.Equal(2, team.ScoreFor(3));
-            Assert.Equal(2, team.ScoreFor(4));
-            Assert.Equal(6, team.Score);
+            Assert.That(team.Series.Count(), Is.EqualTo(4));
+            Assert.That(team.Pins(), Is.EqualTo(2470));
+            Assert.That(team.PinsFor(1), Is.EqualTo(623));
+            Assert.That(team.PinsFor(2), Is.EqualTo(545));
+            Assert.That(team.PinsFor(3), Is.EqualTo(689));
+            Assert.That(team.PinsFor(4), Is.EqualTo(613));
+            Assert.That(team.ScoreFor(1), Is.EqualTo(1));
+            Assert.That(team.ScoreFor(2), Is.EqualTo(1));
+            Assert.That(team.ScoreFor(3), Is.EqualTo(2));
+            Assert.That(team.ScoreFor(4), Is.EqualTo(2));
+            Assert.That(team.Score, Is.EqualTo(6));
         }
     }
 }

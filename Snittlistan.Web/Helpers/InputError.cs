@@ -7,10 +7,8 @@ namespace Snittlistan.Web.Helpers
     {
         public InputError(string field, string reason)
         {
-            if (field == null) throw new ArgumentNullException(nameof(field));
-            if (reason == null) throw new ArgumentNullException(nameof(reason));
-            Field = field;
-            Reason = reason;
+            Field = field ?? throw new ArgumentNullException(nameof(field));
+            Reason = reason ?? throw new ArgumentNullException(nameof(reason));
         }
 
         [JsonProperty(PropertyName = "field")]

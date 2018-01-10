@@ -1,25 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Areas.V2.ViewModels;
-using Xunit;
 
 namespace Snittlistan.Test
 {
+    [TestFixture]
     public class TeamOfWeekLeadersViewModelTest
     {
-        private readonly TeamOfWeekViewModel viewModel;
+        private TeamOfWeekViewModel viewModel;
 
-        public TeamOfWeekLeadersViewModelTest()
+        [SetUp]
+        public void SetUp()
         {
             // Arrange
             var player1 = new Player("Daniel", "e@d.com", Player.Status.Active, 0, null) { Id = "9876" };
             var player2 = new Player("Tomas", "s@d.com", Player.Status.Active, 0, null) { Id = "8765" };
-            var teamOfWeek1 = new TeamOfWeek(1234, 2012, null);
+            var teamOfWeek1 = new TeamOfWeek(1234, 2012, "roster-1");
             teamOfWeek1.AddResultForPlayer(player1, 1, 210);
             teamOfWeek1.AddResultForPlayer(player2, 1, 190);
-            var teamOfWeek2 = new TeamOfWeek(5432, 2012, null);
+            var teamOfWeek2 = new TeamOfWeek(5432, 2012, "roster-2");
             teamOfWeek2.AddResultForPlayer(player1, 0, 220);
             teamOfWeek2.AddResultForPlayer(player2, 1, 180);
 
@@ -31,40 +34,44 @@ namespace Snittlistan.Test
                     teamOfWeek1,
                     teamOfWeek2
                 },
-                new Dictionary<string, Roster>());
+                new Dictionary<string, Roster>
+                {
+                    { "roster-1", new Roster(2012, 10, 0, "Fredrikshof IF BK A", null, null, null, DateTime.MinValue, false) },
+                    { "roster-2", new Roster(2012, 10, 0, "Fredrikshof IF BK A", null, null, null, DateTime.MinValue, false) }
+                });
         }
 
-        [Fact]
+        [Test]
         public void GroupsByTurn()
         {
             // Assert
             var weeks = viewModel.Weeks;
-            Assert.Equal(1, weeks.Count);
+            Assert.That(weeks, Has.Count.EqualTo(1));
             var week = weeks[0];
-            Assert.Equal(10, week.Turn);
+            Assert.That(week.Turn, Is.EqualTo(10));
             var players = week.Players;
-            Assert.Equal(2, players.Length);
+            Assert.That(players, Has.Length.EqualTo(2));
             var playerScore1 = players[0];
-            Assert.Equal("Daniel", playerScore1.Name);
-            Assert.Equal(0, playerScore1.Score);
-            Assert.Equal(220, playerScore1.Pins);
-            Assert.Equal(1, playerScore1.Series);
+            Assert.That(playerScore1.Name, Is.EqualTo("Daniel"));
+            Assert.That(playerScore1.Score, Is.EqualTo(0));
+            Assert.That(playerScore1.Pins, Is.EqualTo(220));
+            Assert.That(playerScore1.Series, Is.EqualTo(1));
             var playerScore2 = players[1];
-            Assert.Equal("Tomas", playerScore2.Name);
-            Assert.Equal(1, playerScore2.Score);
-            Assert.Equal(190, playerScore2.Pins);
-            Assert.Equal(1, playerScore2.Series);
-            Assert.Equal(410, week.Top8);
+            Assert.That(playerScore2.Name, Is.EqualTo("Tomas"));
+            Assert.That(playerScore2.Score, Is.EqualTo(1));
+            Assert.That(playerScore2.Pins, Is.EqualTo(190));
+            Assert.That(playerScore2.Series, Is.EqualTo(1));
+            Assert.That(week.Top8, Is.EqualTo(410));
         }
 
-        [Fact]
+        [Test]
         public void CalculatesLeaders()
         {
             // Assert
             var top = viewModel.Leaders.Top9Total.ToList();
-            Assert.Equal(2, top.Count);
-            Assert.Equal(1, top[0].Count);
-            Assert.Equal(1, top[1].Count);
+            Assert.That(top, Has.Count.EqualTo(2));
+            Assert.That(top[0], Has.Count.EqualTo(1));
+            Assert.That(top[1], Has.Count.EqualTo(1));
         }
     }
 }

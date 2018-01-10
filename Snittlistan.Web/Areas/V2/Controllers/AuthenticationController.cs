@@ -14,8 +14,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         public AuthenticationController(IAuthenticationService authenticationService)
         {
-            if (authenticationService == null) throw new ArgumentNullException("authenticationService");
-            this.authenticationService = authenticationService;
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
         }
 
         public ActionResult LogOn()

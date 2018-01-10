@@ -1,12 +1,13 @@
-﻿using Snittlistan.Web.Areas.V2.Indexes;
+﻿using NUnit.Framework;
+using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.ViewModels;
-using Xunit;
 
 namespace Snittlistan.Test
 {
+    [TestFixture]
     public class PlayerStatusViewModelTest
     {
-        [Fact]
+        [Test]
         public void ComparesAbsences()
         {
             // Arrange
@@ -20,10 +21,10 @@ namespace Snittlistan.Test
             var result = comparer.Compare(left, right);
 
             // Assert
-            Assert.Equal(-1, result);
+            Assert.That(result, Is.EqualTo(-1));
         }
 
-        [Fact]
+        [Test]
         public void ComparesLeftAbsence()
         {
             // Arrange
@@ -36,10 +37,10 @@ namespace Snittlistan.Test
             var result = comparer.Compare(left, right);
 
             // Assert
-            Assert.Equal(1, result);
+            Assert.That(result, Is.EqualTo(1));
         }
 
-        [Fact]
+        [Test]
         public void ComparesRightAbsence()
         {
             // Arrange
@@ -52,10 +53,10 @@ namespace Snittlistan.Test
             var result = comparer.Compare(left, right);
 
             // Assert
-            Assert.Equal(-1, result);
+            Assert.That(result, Is.EqualTo(-1));
         }
 
-        [Fact]
+        [Test]
         public void ComparesSeasonAverageLess()
         {
             // Arrange
@@ -73,10 +74,10 @@ namespace Snittlistan.Test
             var result = comparer.Compare(left, right);
 
             // Assert
-            Assert.Equal(-1, result);
+            Assert.That(result, Is.EqualTo(-1));
         }
 
-        [Fact]
+        [Test]
         public void ComparesSeasonAverageGreater()
         {
             // Arrange
@@ -94,10 +95,10 @@ namespace Snittlistan.Test
             var result = comparer.Compare(left, right);
 
             // Assert
-            Assert.Equal(1, result);
+            Assert.That(result, Is.EqualTo(1));
         }
 
-        [Fact]
+        [Test]
         public void ComparesPlayerFormLess()
         {
             // Arrange
@@ -117,10 +118,10 @@ namespace Snittlistan.Test
             var result = comparer.Compare(left, right);
 
             // Assert
-            Assert.Equal(-1, result);
+            Assert.That(result, Is.EqualTo(-1));
         }
 
-        [Fact]
+        [Test]
         public void ComparesPlayerFormGreater()
         {
             // Arrange
@@ -140,10 +141,10 @@ namespace Snittlistan.Test
             var result = comparer.Compare(left, right);
 
             // Assert
-            Assert.Equal(1, result);
+            Assert.That(result, Is.EqualTo(1));
         }
 
-        [Fact]
+        [Test]
         public void ComparesSeasonAverageLeft()
         {
             // Arrange
@@ -158,10 +159,10 @@ namespace Snittlistan.Test
             var result = comparer.Compare(left, right);
 
             // Assert
-            Assert.Equal(1, result);
+            Assert.That(result, Is.EqualTo(1));
         }
 
-        [Fact]
+        [Test]
         public void ComparesSeasonAverageRight()
         {
             // Arrange
@@ -176,10 +177,10 @@ namespace Snittlistan.Test
             var result = comparer.Compare(left, right);
 
             // Assert
-            Assert.Equal(-1, result);
+            Assert.That(result, Is.EqualTo(-1));
         }
 
-        [Fact]
+        [Test]
         public void ComparesPlayerFormLeft()
         {
             // Arrange
@@ -194,10 +195,10 @@ namespace Snittlistan.Test
             var result = comparer.Compare(left, right);
 
             // Assert
-            Assert.Equal(1, result);
+            Assert.That(result, Is.EqualTo(1));
         }
 
-        [Fact]
+        [Test]
         public void ComparesPlayerFormRight()
         {
             // Arrange
@@ -212,10 +213,10 @@ namespace Snittlistan.Test
             var result = comparer.Compare(left, right);
 
             // Assert
-            Assert.Equal(-1, result);
+            Assert.That(result, Is.EqualTo(-1));
         }
 
-        [Fact]
+        [Test]
         public void ComparesAbsenceToForm()
         {
             // Arrange
@@ -228,10 +229,10 @@ namespace Snittlistan.Test
             var result = comparer.Compare(left, right);
 
             // Assert
-            Assert.Equal(1, result);
+            Assert.That(result, Is.EqualTo(1));
         }
 
-        [Fact]
+        [Test]
         public void ComparesFormToAbsence()
         {
             // Arrange
@@ -244,7 +245,7 @@ namespace Snittlistan.Test
             var result = comparer.Compare(left, right);
 
             // Assert
-            Assert.Equal(-1, result);
+            Assert.That(result, Is.EqualTo(-1));
         }
     }
 }

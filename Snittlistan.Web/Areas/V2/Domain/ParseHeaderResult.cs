@@ -6,13 +6,10 @@ namespace Snittlistan.Web.Areas.V2.Domain
     {
         public ParseHeaderResult(string team, string opponent, DateTime date, string location)
         {
-            if (team == null) throw new ArgumentNullException("team");
-            if (opponent == null) throw new ArgumentNullException("opponent");
-            if (location == null) throw new ArgumentNullException("location");
-            Team = team;
-            Opponent = opponent;
+            Team = team ?? throw new ArgumentNullException(nameof(team));
+            Opponent = opponent ?? throw new ArgumentNullException(nameof(opponent));
             Date = date;
-            Location = location;
+            Location = location ?? throw new ArgumentNullException(nameof(location));
         }
 
         public string Team { get; private set; }

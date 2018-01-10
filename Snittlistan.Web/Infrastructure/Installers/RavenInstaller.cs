@@ -77,10 +77,10 @@ namespace Snittlistan.Web.Infrastructure.Installers
                          .LifeStyle.Is(mode == DocumentStoreMode.InMemory ? LifestyleType.Scoped : LifestyleType.PerWebRequest));
         }
 
-        private static bool FindIdentityProperty(PropertyInfo property)
+        private static bool FindIdentityProperty(MemberInfo memberInfo)
         {
-            var attribute = Attribute.GetCustomAttribute(property, typeof(IdAttribute));
-            return attribute != null || property.Name == "Id";
+            var attribute = Attribute.GetCustomAttribute(memberInfo, typeof(IdAttribute));
+            return attribute != null || memberInfo.Name == "Id";
         }
 
         private IDocumentSession GetDocumentSession(IKernel kernel)
@@ -105,7 +105,9 @@ namespace Snittlistan.Web.Infrastructure.Installers
         {
             store.Initialize();
             store.Conventions.IdentityPartsSeparator = "-";
-            store.Conventions.DefaultQueryingConsistency = ConsistencyOptions.QueryYourWrites;
+#pragma warning disable 618
+            store.Conventions.DefaultQueryingConsistency = ConsistencyOptions.AlwaysWaitForNonStaleResultsAsOfLastWrite;
+#pragma warning restore 618
             store.Conventions.FindTypeTagName = type => type == typeof(Match8x4) ? "Matches" : DocumentConvention.DefaultTypeTagName(type);
             store.Conventions.FindIdentityProperty = FindIdentityProperty;
             store.Conventions.MaxNumberOfRequestsPerSession = 1024;

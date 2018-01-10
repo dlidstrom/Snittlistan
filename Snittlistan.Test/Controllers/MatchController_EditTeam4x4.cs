@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Web;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V1.Controllers;
 using Snittlistan.Web.Areas.V1.Models;
 using Snittlistan.Web.Areas.V1.ViewModels.Match;
 using Snittlistan.Web.Infrastructure.AutoMapper;
-using Xunit;
 
 namespace Snittlistan.Test.Controllers
 {
+    [TestFixture]
     public class MatchController_EditTeam4x4 : DbTest
     {
-        [Fact]
+        [Test]
         public void CanEditTeam()
         {
             // Arrange
@@ -34,7 +35,7 @@ namespace Snittlistan.Test.Controllers
             TestData.VerifyTeam(match.AwayTeam);
         }
 
-        [Fact]
+        [Test]
         public void CannotEditNonExistingMatch()
         {
             var controller = new MatchController { DocumentSession = Session };
@@ -45,11 +46,11 @@ namespace Snittlistan.Test.Controllers
             }
             catch (HttpException ex)
             {
-                Assert.Equal(404, ex.GetHttpCode());
+                Assert.That(ex.GetHttpCode(), Is.EqualTo(404));
             }
         }
 
-        [Fact]
+        [Test]
         public void CannotPostNonExistingMatch()
         {
             var controller = new MatchController { DocumentSession = Session };
@@ -60,11 +61,11 @@ namespace Snittlistan.Test.Controllers
             }
             catch (HttpException ex)
             {
-                Assert.Equal(404, ex.GetHttpCode());
+                Assert.That(ex.GetHttpCode(), Is.EqualTo(404));
             }
         }
 
-        [Fact]
+        [Test]
         public void CorrectView()
         {
             // Arrange

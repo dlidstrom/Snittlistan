@@ -1,12 +1,13 @@
 ﻿using System;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V2.Domain.Match;
-using Xunit;
 
 namespace Snittlistan.Test.Domain
 {
+    [TestFixture]
     public class MatchTableTest
     {
-        [Fact]
+        [Test]
         public void MustHaveDifferentPlayers()
         {
             // Arrange
@@ -15,10 +16,10 @@ namespace Snittlistan.Test.Domain
 
             // Act & Assert
             var ex = Assert.Throws<MatchException>(() => new MatchTable(1, game1, game2, 0));
-            Assert.Equal("Table must have different players", ex.Message);
+            Assert.That(ex.Message, Is.EqualTo("Table must have different players"));
         }
 
-        [Fact]
+        [Test]
         public void ValidScore()
         {
             // Arrange
@@ -30,7 +31,7 @@ namespace Snittlistan.Test.Domain
             Assert.DoesNotThrow(() => new MatchTable(2, game1, game2, 1));
         }
 
-        [Fact]
+        [Test]
         public void InvalidScore()
         {
             // Arrange

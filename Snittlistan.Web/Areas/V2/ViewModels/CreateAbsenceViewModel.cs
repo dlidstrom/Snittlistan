@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Raven.Abstractions;
+using Snittlistan.Web.Areas.V2.Domain;
 
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
@@ -11,6 +12,14 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         {
             From = To = SystemTime.UtcNow.Date;
             Comment = string.Empty;
+        }
+
+        public CreateAbsenceViewModel(Absence absence)
+        {
+            From = absence.From;
+            To = absence.To;
+            Player = absence.Player;
+            Comment = absence.Comment;
         }
 
         public DateTime From { get; set; }

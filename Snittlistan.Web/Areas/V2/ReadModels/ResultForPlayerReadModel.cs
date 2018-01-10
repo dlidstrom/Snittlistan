@@ -33,7 +33,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
         public static string GetId(string playerId, int bitsMatchId)
         {
-            return string.Format("ResultForPlayer-{0}-{1}", playerId, bitsMatchId);
+            return $"ResultForPlayer-{playerId}-{bitsMatchId}";
         }
 
         public void AddGame(MatchGame4 game)

@@ -1,12 +1,13 @@
 ﻿using Castle.Windsor;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V1.Models;
 using Snittlistan.Web.Areas.V1.ViewModels.Match;
 using Snittlistan.Web.Infrastructure.AutoMapper;
 using Snittlistan.Web.Infrastructure.Installers;
-using Xunit;
 
 namespace Snittlistan.Test
 {
+    [TestFixture]
     public class NameShortenerResolverTest
     {
         public NameShortenerResolverTest()
@@ -15,7 +16,7 @@ namespace Snittlistan.Test
                 .Configure(new WindsorContainer().Install(new AutoMapperInstaller()));
         }
 
-        [Fact]
+        [Test]
         public void SimpleCase()
         {
             // Arrange
@@ -25,10 +26,10 @@ namespace Snittlistan.Test
             var shortenedName = game.MapTo<Team8x4DetailsViewModel.Game>().Player;
 
             // Assert
-            Assert.Equal("D. Lidström", shortenedName);
+            Assert.That(shortenedName, Is.EqualTo("D. Lidström"));
         }
 
-        [Fact]
+        [Test]
         public void DoubleName()
         {
             // Arrange
@@ -38,10 +39,10 @@ namespace Snittlistan.Test
             var shortenedName = game.MapTo<Team8x4DetailsViewModel.Game>().Player;
 
             // Assert
-            Assert.Equal("K-E. Frick", shortenedName);
+            Assert.That(shortenedName, Is.EqualTo("K-E. Frick"));
         }
 
-        [Fact]
+        [Test]
         public void PlayerNull()
         {
             // Arrange
@@ -51,7 +52,7 @@ namespace Snittlistan.Test
             var shortenedName = game.MapTo<Team8x4DetailsViewModel.Game>().Player;
 
             // Assert
-            Assert.Empty(shortenedName);
+            Assert.That(shortenedName, Is.Empty);
         }
     }
 }

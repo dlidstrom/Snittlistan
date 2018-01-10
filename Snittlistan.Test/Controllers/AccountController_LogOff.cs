@@ -1,13 +1,14 @@
 ﻿using Moq;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V1.Controllers;
 using Snittlistan.Web.Services;
-using Xunit;
 
 namespace Snittlistan.Test.Controllers
 {
+    [TestFixture]
     public class AccountController_LogOff : DbTest
     {
-        [Fact]
+        [Test]
         public void ShouldSignOut()
         {
             var service = Mock.Of<IAuthenticationService>();

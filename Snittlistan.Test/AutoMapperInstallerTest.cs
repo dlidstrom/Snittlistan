@@ -2,11 +2,12 @@
 using AutoMapper;
 using Castle.Core.Internal;
 using Castle.Windsor;
+using NUnit.Framework;
 using Snittlistan.Web.Infrastructure.Installers;
-using Xunit;
 
 namespace Snittlistan.Test
 {
+    [TestFixture]
     public class AutoMapperInstallerTest
     {
         private readonly IWindsorContainer container;
@@ -17,30 +18,30 @@ namespace Snittlistan.Test
                 .Install(new AutoMapperInstaller());
         }
 
-        [Fact]
+        [Test]
         public void AllProfilesImplementProfile()
         {
             var allHandlers = InstallerTestHelper.GetAllHandlers(container);
             var profileHandlers = InstallerTestHelper.GetHandlersFor(typeof(Profile), container);
-            Assert.NotEmpty(allHandlers);
-            Assert.Equal(allHandlers, profileHandlers);
+            Assert.That(allHandlers, Is.Not.Empty);
+            Assert.That(profileHandlers, Is.EqualTo(allHandlers));
         }
 
-        [Fact]
+        [Test]
         public void AllProfilesAreRegistered()
         {
             var allProfiles = InstallerTestHelper.GetPublicClassesFromApplicationAssembly(c => c.Is<Profile>());
             var registeredProfiles = InstallerTestHelper.GetImplementationTypesFor(typeof(Profile), container);
-            Assert.Equal(allProfiles, registeredProfiles);
+            Assert.That(registeredProfiles, Is.EqualTo(allProfiles));
         }
 
-        [Fact]
+        [Test]
         public void AllProfilesExposeProfileAsService()
         {
             var profilesWithWrongService = InstallerTestHelper.GetHandlersFor(typeof(Profile), container)
                 .Where(c => !c.ComponentModel.Services.SequenceEqual(new[] { typeof(Profile) }))
                 .ToArray();
-            Assert.Empty(profilesWithWrongService);
+            Assert.That(profilesWithWrongService, Is.Empty);
         }
     }
 }

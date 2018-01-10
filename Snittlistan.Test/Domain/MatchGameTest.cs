@@ -1,19 +1,20 @@
 ﻿using System;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V2.Domain.Match;
-using Xunit;
 
 namespace Snittlistan.Test.Domain
 {
+    [TestFixture]
     public class MatchGameTest
     {
-        [Fact]
+        [Test]
         public void InvalidPins()
         {
             Assert.Throws<ArgumentException>(() => new MatchGame("player-1", -1, 0, 0));
             Assert.Throws<ArgumentException>(() => new MatchGame("player-1", 301, 0, 0));
         }
 
-        [Fact]
+        [Test]
         public void ValidPins()
         {
             Assert.DoesNotThrow(() => new MatchGame("player-1", 0, 0, 0));
@@ -21,14 +22,14 @@ namespace Snittlistan.Test.Domain
             Assert.DoesNotThrow(() => new MatchGame("player-1", 300, 0, 0));
         }
 
-        [Fact]
+        [Test]
         public void InvalidStrikes()
         {
             Assert.Throws<ArgumentException>(() => new MatchGame("player-1", 0, -1, 0));
             Assert.Throws<ArgumentException>(() => new MatchGame("player-1", 0, 13, 0));
         }
 
-        [Fact]
+        [Test]
         public void ValidStrikes()
         {
             Assert.DoesNotThrow(() => new MatchGame("player-1", 0, 0, 0));
@@ -36,7 +37,7 @@ namespace Snittlistan.Test.Domain
             Assert.DoesNotThrow(() => new MatchGame("player-1", 0, 12, 0));
         }
 
-        [Fact]
+        [Test]
         public void InvalidSpares()
         {
             Assert.Throws<ArgumentException>(() => new MatchGame("player-1", 0, 0, -1));
@@ -44,7 +45,7 @@ namespace Snittlistan.Test.Domain
             Assert.Throws<ArgumentException>(() => new MatchGame("player-1", 0, 10, 3));
         }
 
-        [Fact]
+        [Test]
         public void ValidSpares()
         {
             Assert.DoesNotThrow(() => new MatchGame("player-1", 0, 0, 0));

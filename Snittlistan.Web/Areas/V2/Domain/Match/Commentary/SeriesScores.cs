@@ -61,17 +61,17 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
 
         public string FormattedResult
         {
-            get { return string.Format("{0}-{1}", TeamScoreTotal, OpponentScoreTotal); }
+            get { return $"{TeamScoreTotal}-{OpponentScoreTotal}"; }
         }
 
         public string FormattedDeltaResult
         {
-            get { return string.Format("{0}-{1}", TeamScoreDelta, OpponentScoreDelta); }
+            get { return $"{TeamScoreDelta}-{OpponentScoreDelta}"; }
         }
 
         public string FormattedInvertedDeltaResult
         {
-            get { return string.Format("{0}-{1}", OpponentScoreDelta, TeamScoreDelta); }
+            get { return $"{OpponentScoreDelta}-{TeamScoreDelta}"; }
         }
 
         public class PlayerResult

@@ -1,13 +1,14 @@
 ﻿using System.Linq;
 using Castle.Core;
 using Castle.Windsor;
+using NUnit.Framework;
 using Snittlistan.Web.DomainEvents;
 using Snittlistan.Web.Handlers;
 using Snittlistan.Web.Infrastructure.Installers;
-using Xunit;
 
 namespace Snittlistan.Test
 {
+    [TestFixture]
     public class HandlersInstallerTest
     {
         private readonly IWindsorContainer container;
@@ -17,20 +18,20 @@ namespace Snittlistan.Test
             container = new WindsorContainer().Install(new HandlersInstaller());
         }
 
-        [Fact]
+        [Test]
         public void InstallsHandlerForNewUserCreatedEvent()
         {
             var handler = InstallerTestHelper.GetHandlersFor(typeof(IHandle<NewUserCreatedEvent>), container);
-            Assert.Equal(1, handler.Length);
+            Assert.That(handler.Length, Is.EqualTo(1));
         }
 
-        [Fact]
+        [Test]
         public void HandlersAreTransient()
         {
             var nonTransientControllers = InstallerTestHelper.GetHandlersFor(typeof(IHandle<>), container)
                 .Where(c => c.ComponentModel.LifestyleType != LifestyleType.Transient)
                 .ToArray();
-            Assert.Empty(nonTransientControllers);
+            Assert.That(nonTransientControllers, Is.Empty);
         }
     }
 }

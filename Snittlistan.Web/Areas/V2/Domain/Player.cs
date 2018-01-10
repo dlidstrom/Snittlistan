@@ -6,9 +6,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
     {
         public Player(string name, string email, Status playerStatus, int personalNumber, string nickname)
         {
-            if (name == null) throw new ArgumentNullException(nameof(name));
-
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             Email = email;
             PlayerStatus = playerStatus;
             PersonalNumber = personalNumber;
@@ -36,8 +34,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         public void SetName(string name)
         {
-            if (name == null) throw new ArgumentNullException(nameof(name));
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
         }
 
         public void SetEmail(string email)

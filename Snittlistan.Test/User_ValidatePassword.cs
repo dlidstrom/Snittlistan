@@ -1,13 +1,14 @@
-﻿using Snittlistan.Web.DomainEvents;
+﻿using NUnit.Framework;
+using Snittlistan.Web.DomainEvents;
 using Snittlistan.Web.Helpers;
 using Snittlistan.Web.Models;
-using Xunit;
 
 namespace Snittlistan.Test
 {
+    [TestFixture]
     public class User_ValidatePassword : DbTest
     {
-        [Fact]
+        [Test]
         public void StoredCorrectly()
         {
             var original = new User("F", "L", "e@d.com", "some pwd");
@@ -19,15 +20,15 @@ namespace Snittlistan.Test
             }
 
             var user = Session.FindUserByEmail("e@d.com");
-            Assert.Equal(original.ActivationKey, user.ActivationKey);
-            Assert.Equal(original.Email, user.Email);
-            Assert.Equal(original.FirstName, user.FirstName);
-            Assert.Equal(original.Id, user.Id);
-            Assert.Equal(original.IsActive, user.IsActive);
-            Assert.Equal(original.LastName, user.LastName);
+            Assert.That(user.ActivationKey, Is.EqualTo(original.ActivationKey));
+            Assert.That(user.Email, Is.EqualTo(original.Email));
+            Assert.That(user.FirstName, Is.EqualTo(original.FirstName));
+            Assert.That(user.Id, Is.EqualTo(original.Id));
+            Assert.That(user.IsActive, Is.EqualTo(original.IsActive));
+            Assert.That(user.LastName, Is.EqualTo(original.LastName));
         }
 
-        [Fact]
+        [Test]
         public void CanValidatePassword()
         {
             Session.Store(new User("F", "L", "e@d.com", "some pwd"));

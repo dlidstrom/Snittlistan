@@ -9,10 +9,8 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
     {
         public RegisterSerie(ResultSeriesReadModel.Serie serie, List<SelectListItem> players)
         {
-            if (serie == null) throw new ArgumentNullException("serie");
-            if (players == null) throw new ArgumentNullException("players");
-            Serie = serie;
-            Players = players;
+            Serie = serie ?? throw new ArgumentNullException(nameof(serie));
+            Players = players ?? throw new ArgumentNullException(nameof(players));
         }
 
         public ResultSeriesReadModel.Serie Serie { get; private set; }

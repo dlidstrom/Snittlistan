@@ -9,7 +9,6 @@ using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;
-using Snittlistan.Web.Infrastructure.AutoMapper;
 
 namespace Snittlistan.Web.Areas.V2.Controllers
 {
@@ -28,7 +27,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                                           .Where(x => x.To >= SystemTime.UtcNow.Date.AddDays(-1))
                                           .OrderBy(p => p.To)
                                           .ThenBy(p => p.PlayerName)
-                                          .AsProjection<AbsenceIndex.Result>()
+                                          .ProjectFromIndexFieldsInto<AbsenceIndex.Result>()
                                           .ToArray();
             return View(absences);
         }
@@ -60,7 +59,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var absence = DocumentSession.Load<Absence>(id);
             if (absence == null) throw new HttpException(404, "Absence not found");
             CreatePlayerSelectList(absence.Player);
-            return View(absence.MapTo<CreateAbsenceViewModel>());
+            return View(new CreateAbsenceViewModel(absence));
         }
 
         [HttpPost, Authorize]

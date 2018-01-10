@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V1.Controllers;
 using Snittlistan.Web.Areas.V1.Models;
 using Snittlistan.Web.Infrastructure.Indexes;
-using Xunit;
 
 namespace Snittlistan.Test.Controllers
 {
+    [TestFixture]
     public class MatchController_Index : DbTest
     {
-        [Fact]
+        [Test]
         public void ShouldViewIndex()
         {
             // Arrange
@@ -24,7 +25,7 @@ namespace Snittlistan.Test.Controllers
             result.AssertViewRendered().ForView(string.Empty);
         }
 
-        [Fact]
+        [Test]
         public void ShouldListMatches()
         {
             // Arrange
@@ -42,31 +43,31 @@ namespace Snittlistan.Test.Controllers
             Assert.NotNull(result);
             Debug.Assert(result != null, "result != null");
             var matches = result.ToArray();
-            Assert.Equal(3, matches.Length);
-            Assert.Equal("P3", matches[0].Location);
+            Assert.That(matches.Length, Is.EqualTo(3));
+            Assert.That(matches[0].Location, Is.EqualTo("P3"));
             Assert.NotNull(matches[0].HomeTeamName);
-            Assert.Equal("Home3", matches[0].HomeTeamName);
-            Assert.Equal(6, matches[0].HomeTeamScore);
+            Assert.That(matches[0].HomeTeamName, Is.EqualTo("Home3"));
+            Assert.That(matches[0].HomeTeamScore, Is.EqualTo(6));
             Assert.NotNull(matches[0].AwayTeamName);
-            Assert.Equal("Away3", matches[0].AwayTeamName);
-            Assert.Equal(14, matches[0].AwayTeamScore);
-            Assert.Equal("4x4", matches[0].Type);
-            Assert.Equal("P2", matches[1].Location);
+            Assert.That(matches[0].AwayTeamName, Is.EqualTo("Away3"));
+            Assert.That(matches[0].AwayTeamScore, Is.EqualTo(14));
+            Assert.That(matches[0].Type, Is.EqualTo("4x4"));
+            Assert.That(matches[1].Location, Is.EqualTo("P2"));
             Assert.NotNull(matches[1].HomeTeamName);
-            Assert.Equal("Home2", matches[1].HomeTeamName);
-            Assert.Equal(3, matches[1].HomeTeamScore);
+            Assert.That(matches[1].HomeTeamName, Is.EqualTo("Home2"));
+            Assert.That(matches[1].HomeTeamScore, Is.EqualTo(3));
             Assert.NotNull(matches[1].AwayTeamName);
-            Assert.Equal("Away2", matches[1].AwayTeamName);
-            Assert.Equal(4, matches[1].AwayTeamScore);
-            Assert.Equal("8x4", matches[1].Type);
-            Assert.Equal("P1", matches[2].Location);
+            Assert.That(matches[1].AwayTeamName, Is.EqualTo("Away2"));
+            Assert.That(matches[1].AwayTeamScore, Is.EqualTo(4));
+            Assert.That(matches[1].Type, Is.EqualTo("8x4"));
+            Assert.That(matches[2].Location, Is.EqualTo("P1"));
             Assert.NotNull(matches[2].HomeTeamName);
-            Assert.Equal("Home", matches[2].HomeTeamName);
-            Assert.Equal(1, matches[2].HomeTeamScore);
+            Assert.That(matches[2].HomeTeamName, Is.EqualTo("Home"));
+            Assert.That(matches[2].HomeTeamScore, Is.EqualTo(1));
             Assert.NotNull(matches[2].AwayTeamName);
-            Assert.Equal("Away", matches[2].AwayTeamName);
-            Assert.Equal(2, matches[2].AwayTeamScore);
-            Assert.Equal("8x4", matches[2].Type);
+            Assert.That(matches[2].AwayTeamName, Is.EqualTo("Away"));
+            Assert.That(matches[2].AwayTeamScore, Is.EqualTo(2));
+            Assert.That(matches[2].Type, Is.EqualTo("8x4"));
         }
     }
 }

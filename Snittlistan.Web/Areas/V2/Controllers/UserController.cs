@@ -21,8 +21,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         /// <param name="authenticationService">Authentication service.</param>
         public UserController(IAuthenticationService authenticationService)
         {
-            if (authenticationService == null) throw new ArgumentNullException("authenticationService");
-            this.authenticationService = authenticationService;
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
         }
 
         public ActionResult SetPassword(string id, string activationKey)

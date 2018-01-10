@@ -8,7 +8,7 @@ namespace Snittlistan.Web.Infrastructure.AutoMapper.Profiles
         protected override void Configure()
         {
             global::AutoMapper.Mapper.CreateMap<User, UserViewModel>()
-                .ForMember(vm => vm.Name, o => o.MapFrom(m => string.Format("{0} {1}", m.FirstName, m.LastName)));
+                .ForMember(vm => vm.Name, o => o.MapFrom(m => $"{m.FirstName} {m.LastName}"));
             global::AutoMapper.Mapper.CreateMap<User, EditUserViewModel>()
                 .ForMember(vm => vm.Password, o => o.Ignore());
         }

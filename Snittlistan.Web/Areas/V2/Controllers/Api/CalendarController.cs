@@ -30,8 +30,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             foreach (var roster in rosters)
             {
                 var players = DocumentSession.Load<Player>(roster.Players);
-                ResultHeaderReadModel resultHeaderReadModel;
-                resultsDictionary.TryGetValue(roster.BitsMatchId, out resultHeaderReadModel);
+                resultsDictionary.TryGetValue(roster.BitsMatchId, out var resultHeaderReadModel);
                 Player teamLeader = null;
                 if (roster.TeamLeader != null)
                 {

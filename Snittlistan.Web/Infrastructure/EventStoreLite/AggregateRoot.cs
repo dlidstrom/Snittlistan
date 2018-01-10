@@ -31,8 +31,7 @@ namespace EventStoreLite
 
         internal void SetId(string id)
         {
-            if (id == null) throw new ArgumentNullException(nameof(id));
-            Id = id;
+            Id = id ?? throw new ArgumentNullException(nameof(id));
         }
 
         internal void LoadFromHistory(IEnumerable<IDomainEvent> history)

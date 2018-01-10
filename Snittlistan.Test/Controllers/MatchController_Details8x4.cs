@@ -2,16 +2,17 @@
 using System.Diagnostics;
 using System.Web;
 using System.Web.Mvc;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V1.Controllers;
 using Snittlistan.Web.Areas.V1.Models;
 using Snittlistan.Web.Areas.V1.ViewModels.Match;
-using Xunit;
 
 namespace Snittlistan.Test.Controllers
 {
+    [TestFixture]
     public class MatchController_Details8x4 : DbTest
     {
-        [Fact]
+        [Test]
         public void ShouldViewMatch()
         {
             // Arrange
@@ -26,24 +27,24 @@ namespace Snittlistan.Test.Controllers
             Debug.Assert(view1 != null, "view1 != null");
             var model1 = view1.Model as Match8x4ViewModel;
             Debug.Assert(model1 != null, "model1 != null");
-            Assert.Equal(1, model1.Match.Id);
+            Assert.That(model1.Match.Id, Is.EqualTo(1));
 
             var view2 = controller.Details8x4(2) as ViewResult;
             Assert.NotNull(view2);
             Debug.Assert(view2 != null, "view2 != null");
             var model2 = view2.Model as Match8x4ViewModel;
             Debug.Assert(model2 != null, "model2 != null");
-            Assert.Equal(2, model2.Match.Id);
+            Assert.That(model2.Match.Id, Is.EqualTo(2));
 
             var view3 = controller.Details8x4(3) as ViewResult;
             Assert.NotNull(view3);
             Debug.Assert(view3 != null, "view3 != null");
             var model3 = view3.Model as Match8x4ViewModel;
             Debug.Assert(model3 != null, "model3 != null");
-            Assert.Equal(3, model3.Match.Id);
+            Assert.That(model3.Match.Id, Is.EqualTo(3));
         }
 
-        [Fact]
+        [Test]
         public void CannotViewNonExistingMatch()
         {
             var controller = new MatchController { DocumentSession = Session };
@@ -54,7 +55,7 @@ namespace Snittlistan.Test.Controllers
             }
             catch (HttpException ex)
             {
-                Assert.Equal(404, ex.GetHttpCode());
+                Assert.That(ex.GetHttpCode(), Is.EqualTo(404));
             }
         }
     }

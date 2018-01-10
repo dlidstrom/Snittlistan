@@ -94,7 +94,7 @@ namespace Snittlistan.Web.Areas.V1.Models
 
         public override string ToString()
         {
-            return string.Format("{0};{1}", Game1, Game2);
+            return $"{Game1};{Game2}";
         }
     }
 }

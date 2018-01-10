@@ -12,30 +12,30 @@ namespace Snittlistan.Web.Helpers
         public static User FindUserByEmail(this IDocumentSession sess, string email)
         {
             return sess.Query<User, User_ByEmail>()
-                .FirstOrDefault(u => u.Email == email);
+                       .FirstOrDefault(u => u.Email == email);
         }
 
         public static User FindUserByActivationKey(this IDocumentSession sess, string key)
         {
             return sess.Query<User>()
-                .FirstOrDefault(u => u.ActivationKey == key);
+                       .FirstOrDefault(u => u.ActivationKey == key);
         }
 
         public static bool BitsIdExists(this IDocumentSession sess, int id)
         {
             return sess.Query<Match_ByBitsMatchId.Result, Match_ByBitsMatchId>()
-                .AsProjection<Match_ByBitsMatchId.Result>()
-                .SingleOrDefault(m => m.BitsMatchId == id) != null;
+                       .ProjectFromIndexFieldsInto<Match_ByBitsMatchId.Result>()
+                       .SingleOrDefault(m => m.BitsMatchId == id) != null;
         }
 
         public static int LatestSeasonOrDefault(this IDocumentSession sess, int def)
         {
             return sess.Query<Roster, RosterSearchTerms>()
-                .OrderByDescending(s => s.Season)
-                .Select(r => r.Season)
-                .ToList()
-                .DefaultIfEmpty(def)
-                .First();
+                       .OrderByDescending(s => s.Season)
+                       .Select(r => r.Season)
+                       .ToList()
+                       .DefaultIfEmpty(def)
+                       .First();
         }
     }
 }

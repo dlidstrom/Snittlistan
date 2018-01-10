@@ -15,12 +15,12 @@ namespace Snittlistan.Web.Infrastructure
         {
             if (routes == null)
             {
-                throw new ArgumentNullException("routes");
+                throw new ArgumentNullException(nameof(routes));
             }
 
             if (url == null)
             {
-                throw new ArgumentNullException("url");
+                throw new ArgumentNullException(nameof(url));
             }
 
             Route route = new LowercaseRoute(url, new MvcRouteHandler())

@@ -28,6 +28,11 @@ namespace Snittlistan.Test
             Store = container.Resolve<IDocumentStore>();
             IndexCreator.CreateIndexes(Store);
             Session = Store.OpenSession();
+            OnSetUp();
+        }
+
+        protected virtual void OnSetUp()
+        {
         }
 
         protected IDocumentSession Session { get; private set; }

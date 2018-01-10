@@ -25,8 +25,7 @@ namespace EventStoreLite
 
         internal EventStore(IWindsorContainer container)
         {
-            if (container == null) throw new ArgumentNullException(nameof(container));
-            this.container = container;
+            this.container = container ?? throw new ArgumentNullException(nameof(container));
         }
 
         /// <summary>
@@ -143,8 +142,7 @@ namespace EventStoreLite
 
         internal EventStore SetReadModelTypes(IEnumerable<Type> types)
         {
-            if (types == null) throw new ArgumentNullException(nameof(types));
-            readModelTypes = types;
+            readModelTypes = types ?? throw new ArgumentNullException(nameof(types));
 
             return this;
         }

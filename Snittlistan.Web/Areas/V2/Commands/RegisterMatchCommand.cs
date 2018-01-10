@@ -18,10 +18,8 @@ namespace Snittlistan.Web.Areas.V2.Commands
 
         public RegisterMatchCommand(Roster roster, ParseResult result)
         {
-            if (roster == null) throw new ArgumentNullException(nameof(roster));
-            if (result == null) throw new ArgumentNullException(nameof(result));
-            this.roster = roster;
-            this.result = result;
+            this.roster = roster ?? throw new ArgumentNullException(nameof(roster));
+            this.result = result ?? throw new ArgumentNullException(nameof(result));
         }
 
         public void Execute(IDocumentSession session, IEventStoreSession eventStoreSession)

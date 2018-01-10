@@ -9,14 +9,12 @@ namespace Snittlistan.Web.Infrastructure.Installers
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            container.Register(FindProfiles().LifestyleSingleton().WithServiceFromInterface(typeof(Profile)));
-        }
-
-        private static BasedOnDescriptor FindProfiles()
-        {
-            return AllTypes
-                .FromThisAssembly()
-                .BasedOn<Profile>();
+            container.Register(
+                Classes
+                    .FromThisAssembly()
+                    .BasedOn<Profile>()
+                    .LifestyleSingleton()
+                    .WithServiceFromInterface(typeof(Profile)));
         }
     }
 }

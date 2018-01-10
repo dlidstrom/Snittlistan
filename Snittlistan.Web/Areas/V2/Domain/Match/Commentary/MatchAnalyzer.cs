@@ -157,8 +157,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
             var aboveLast20Players = new HashSet<string>();
             foreach (var playerPin in playerPins)
             {
-                ResultForPlayerIndex.Result resultForPlayer;
-                if (resultsForPlayer.TryGetValue(playerPin.PlayerId, out resultForPlayer))
+                if (resultsForPlayer.TryGetValue(playerPin.PlayerId, out var resultForPlayer))
                 {
                     var hasEnoughGames = resultForPlayer.Last5TotalSeries >= 16;
                     var last5Average = (double)resultForPlayer.Last5TotalPins / resultForPlayer.Last5TotalSeries;

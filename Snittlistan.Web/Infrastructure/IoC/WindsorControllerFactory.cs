@@ -23,9 +23,9 @@ namespace Snittlistan.Web.Infrastructure.IoC
         public override IController CreateController(RequestContext requestContext, string controllerName)
         {
             if (requestContext == null)
-                throw new ArgumentNullException("requestContext");
+                throw new ArgumentNullException(nameof(requestContext));
             if (controllerName == null)
-                throw new ArgumentNullException("controllerName");
+                throw new ArgumentNullException(nameof(controllerName));
 
             try
             {

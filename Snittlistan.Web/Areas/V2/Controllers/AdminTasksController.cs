@@ -11,7 +11,6 @@ using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Helpers;
-using Snittlistan.Web.Infrastructure.AutoMapper;
 using Snittlistan.Web.Infrastructure.Indexes;
 using Snittlistan.Web.Models;
 using Snittlistan.Web.Tasks;
@@ -33,7 +32,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             var users = DocumentSession.Query<User>()
                 .ToList()
-                .MapTo<UserViewModel>()
+                .Select(x => new UserViewModel(x))
                 .OrderByDescending(x => x.IsActive)
                 .ThenBy(x => x.Email)
                 .ToList();
@@ -67,7 +66,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var user = DocumentSession.Load<User>(id);
             if (user == null) throw new HttpException(404, "User not found");
 
-            return View(user.MapTo<UserViewModel>());
+            return View(new UserViewModel(user));
         }
 
         [HttpPost]
@@ -85,7 +84,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var user = DocumentSession.Load<User>(id);
             if (user == null) throw new HttpException(404, "User not found");
 
-            return View(user.MapTo<UserViewModel>());
+            return View(new UserViewModel(user));
         }
 
         [HttpPost]
@@ -113,8 +112,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         public ActionResult Raven()
         {
-            var databaseStatistics = DocumentStore.DatabaseCommands.GetStatistics();
-            return View(new DocumentStoreStatisticsViewModel(databaseStatistics));
+            return View();
         }
 
         public ActionResult ResetIndexes()

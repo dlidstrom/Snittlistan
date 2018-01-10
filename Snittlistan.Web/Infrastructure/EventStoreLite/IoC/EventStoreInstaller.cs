@@ -23,15 +23,13 @@ namespace EventStoreLite.IoC
 
         private EventStoreInstaller(IEnumerable<Type> handlerTypes, DocumentStoreMode mode)
         {
-            if (handlerTypes == null) throw new ArgumentNullException(nameof(handlerTypes));
-            this.handlerTypes = handlerTypes;
+            this.handlerTypes = handlerTypes ?? throw new ArgumentNullException(nameof(handlerTypes));
             this.mode = mode;
         }
 
         private EventStoreInstaller(IEnumerable<IEventHandler> handlers)
         {
-            if (handlers == null) throw new ArgumentNullException(nameof(handlers));
-            this.handlers = handlers;
+            this.handlers = handlers ?? throw new ArgumentNullException(nameof(handlers));
         }
 
         /// <summary>
