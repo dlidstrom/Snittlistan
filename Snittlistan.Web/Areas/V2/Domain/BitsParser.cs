@@ -12,8 +12,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         public BitsParser(Player[] players)
         {
-            if (players == null) throw new ArgumentNullException(nameof(players));
-            this.players = players;
+            this.players = players ?? throw new ArgumentNullException(nameof(players));
         }
 
         private enum Team

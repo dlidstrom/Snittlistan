@@ -50,7 +50,7 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
         public override void Initialize(string name, NameValueCollection config)
         {
             if (config == null)
-                throw new ArgumentNullException("config");
+                throw new ArgumentNullException(nameof(config));
 
             try
             {
@@ -60,12 +60,11 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
                 Logger.Debug(
                     "Beginning Initialize. Name={0}. Config={1}",
                     name,
-                    config.AllKeys.Aggregate(string.Empty, (aggregate, next) => string.Format("{0}{1}:{2}", aggregate, next, config[next])));
+                    config.AllKeys.Aggregate(string.Empty, (aggregate, next) => $"{aggregate}{next}:{config[next]}"));
 
                 base.Initialize(name, config);
 
-                int retries;
-                if (int.TryParse(config["retriesOnConcurrentConflicts"], out retries))
+                if (int.TryParse(config["retriesOnConcurrentConflicts"], out var retries))
                     retriesOnConcurrentConflicts = retries;
 
                 ApplicationName = ConfigurationManager.AppSettings["ApplicationName"];
@@ -193,7 +192,7 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
                             .SingleOrDefault(x => x.SessionId == id && x.ApplicationName == ApplicationName && x.Expires < DateTime.UtcNow);
 
                         if (sessionState != null)
-                            throw new InvalidOperationException(string.Format("Item aleady exist with SessionId={0} and ApplicationName={1}", id, lockId));
+                            throw new InvalidOperationException($"Item aleady exist with SessionId={id} and ApplicationName={lockId}");
 
                         sessionState = new SessionState(id, ApplicationName);
                         documentSession.Store(sessionState);

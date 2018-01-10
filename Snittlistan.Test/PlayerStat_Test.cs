@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V1.Models;
 using Snittlistan.Web.Infrastructure.Indexes;
-using Xunit;
 
 namespace Snittlistan.Test
 {
+    [TestFixture]
     public class PlayerStat_Test : DbTest
     {
-        [Fact]
+        [Test]
         public void VerifyIndex8x4()
         {
             // Arrange
@@ -25,23 +26,23 @@ namespace Snittlistan.Test
             // Assert
             Assert.NotNull(stats);
             Debug.Assert(stats != null, "stats != null");
-            Assert.Equal(4.0, stats.Series);
-            Assert.Equal(3.0, stats.Score);
-            Assert.Equal(845.0, stats.Pins);
-            Assert.Equal(223, stats.BestGame);
-            Assert.Equal(5.0, stats.Strikes);
-            Assert.Equal(2.0, stats.Misses);
-            Assert.Equal(1.0, stats.OnePinMisses);
-            Assert.Equal(2.0, stats.Splits);
-            Assert.Equal(211.25, stats.AveragePins);
-            Assert.Equal(5.0, stats.AverageStrikes);
-            Assert.Equal(2.0, stats.AverageMisses);
-            Assert.Equal(1.0, stats.AverageOnePinMisses);
-            Assert.Equal(2.0, stats.AverageSplits);
-            Assert.Equal(1, stats.CoveredAll);
+            Assert.That(stats.Series, Is.EqualTo(4.0));
+            Assert.That(stats.Score, Is.EqualTo(3.0));
+            Assert.That(stats.Pins, Is.EqualTo(845.0));
+            Assert.That(stats.BestGame, Is.EqualTo(223));
+            Assert.That(stats.Strikes, Is.EqualTo(5.0));
+            Assert.That(stats.Misses, Is.EqualTo(2.0));
+            Assert.That(stats.OnePinMisses, Is.EqualTo(1.0));
+            Assert.That(stats.Splits, Is.EqualTo(2.0));
+            Assert.That(stats.AveragePins, Is.EqualTo(211.25));
+            Assert.That(stats.AverageStrikes, Is.EqualTo(5.0));
+            Assert.That(stats.AverageMisses, Is.EqualTo(2.0));
+            Assert.That(stats.AverageOnePinMisses, Is.EqualTo(1.0));
+            Assert.That(stats.AverageSplits, Is.EqualTo(2.0));
+            Assert.That(stats.CoveredAll, Is.EqualTo(1));
         }
 
-        [Fact]
+        [Test]
         public void VerifyIndex4x4()
         {
             // Arrange
@@ -56,14 +57,14 @@ namespace Snittlistan.Test
             // Assert
             Assert.NotNull(stats);
             Debug.Assert(stats != null, "stats != null");
-            Assert.Equal(4.0, stats.Series);
-            Assert.Equal(4.0, stats.Score);
-            Assert.Equal(717.0, stats.Pins);
-            Assert.Equal(231, stats.BestGame);
-            Assert.Equal(179.25, stats.AveragePins);
+            Assert.That(stats.Series, Is.EqualTo(4.0));
+            Assert.That(stats.Score, Is.EqualTo(4.0));
+            Assert.That(stats.Pins, Is.EqualTo(717.0));
+            Assert.That(stats.BestGame, Is.EqualTo(231));
+            Assert.That(stats.AveragePins, Is.EqualTo(179.25));
         }
 
-        [Fact]
+        [Test]
         public void OnlyCountSeriesWithStats()
         {
             // Arrange
@@ -119,16 +120,16 @@ namespace Snittlistan.Test
             // Assert
             Assert.NotNull(stats);
             Debug.Assert(stats != null, "stats != null");
-            Assert.Equal(8.0, stats.Series);
-            Assert.Equal(2.0, stats.Score);
-            Assert.Equal(1122.0, stats.Pins);
-            Assert.Equal(160, stats.BestGame);
-            Assert.Equal(140.25, stats.AveragePins);
-            Assert.Equal(3.0, stats.AverageMisses);
-            Assert.Equal(5.0, stats.AverageStrikes);
-            Assert.Equal(1.0, stats.AverageOnePinMisses);
-            Assert.Equal(2.0, stats.AverageSplits);
-            Assert.Equal(1, stats.CoveredAll);
+            Assert.That(stats.Series, Is.EqualTo(8.0));
+            Assert.That(stats.Score, Is.EqualTo(2.0));
+            Assert.That(stats.Pins, Is.EqualTo(1122.0));
+            Assert.That(stats.BestGame, Is.EqualTo(160));
+            Assert.That(stats.AveragePins, Is.EqualTo(140.25));
+            Assert.That(stats.AverageMisses, Is.EqualTo(3.0));
+            Assert.That(stats.AverageStrikes, Is.EqualTo(5.0));
+            Assert.That(stats.AverageOnePinMisses, Is.EqualTo(1.0));
+            Assert.That(stats.AverageSplits, Is.EqualTo(2.0));
+            Assert.That(stats.CoveredAll, Is.EqualTo(1));
         }
     }
 }

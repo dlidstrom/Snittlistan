@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Web.Mvc;
 using System.Web.Routing;
+using NUnit.Framework;
 using Snittlistan.Web;
 using Snittlistan.Web.Areas.V1;
 using Snittlistan.Web.Areas.V2;
-using Xunit;
 
 namespace Snittlistan.Test
 {
+    [TestFixture]
     public class RoutesTest : IDisposable
     {
         public RoutesTest()
@@ -22,13 +23,13 @@ namespace Snittlistan.Test
             RouteTable.Routes.Clear();
         }
 
-        [Fact]
+        [Test]
         public void DefaultRoute()
         {
             RouteTable.Routes.Maps("GET", "~/", new { controller = "Roster", action = "Index" });
         }
 
-        [Fact]
+        [Test]
         public void LegacyRoutes()
         {
             RouteTable.Routes.Maps("GET", "~/v1", new { controller = "Home", action = "Index" });
@@ -39,20 +40,20 @@ namespace Snittlistan.Test
             RouteTable.Routes.Maps("GET", "~/Home/About", new { controller = "Home", action = "About" });
         }
 
-        [Fact]
+        [Test]
         public void SessionApiRoute()
         {
             RouteTable.Routes.Maps("POST", "~/api/session", new { controller = "SessionApi", action = "Session" });
             RouteTable.Routes.Maps("DELETE", "~/api/session", new { controller = "SessionApi", action = "Session" });
         }
 
-        [Fact]
+        [Test]
         public void TurnsApiRoute()
         {
             RouteTable.Routes.Maps("POST", "~/api/turns", new { controller = "TurnsApi", action = "Turns" });
         }
 
-        [Fact]
+        [Test]
         public void V2Route()
         {
             RouteTable.Routes.Maps("GET", "~/", new { controller = "Roster", action = "Index" });
@@ -67,7 +68,7 @@ namespace Snittlistan.Test
             RouteTable.Routes.Maps("GET", "~/Roster/Players/roster-1", new { controller = "Roster", action = "EditPlayers", id = "roster-1" });
         }
 
-        [Fact]
+        [Test]
         public void SearchRoute()
         {
             RouteTable.Routes.Maps("GET", "~/search/teams", new { controller = "SearchTerms", action = "Teams" });
@@ -75,13 +76,13 @@ namespace Snittlistan.Test
             RouteTable.Routes.Maps("GET", "~/search/locations", new { controller = "SearchTerms", action = "Locations" });
         }
 
-        [Fact]
+        [Test]
         public void LowerCaseRoutes()
         {
             RouteTable.Routes.Maps("GET", "~/v1/account/register", new { controller = "Account", action = "Register" });
         }
 
-        [Fact]
+        [Test]
         public void Shortcuts()
         {
             RouteTable.Routes.Maps("GET", "~/v1/register", new { controller = "Account", action = "Register" });
@@ -89,25 +90,25 @@ namespace Snittlistan.Test
             RouteTable.Routes.Maps("GET", "~/v1/about", new { controller = "Home", action = "About" });
         }
 
-        [Fact]
+        [Test]
         public void Verify()
         {
             RouteTable.Routes.Maps("GET", "~/v1/verify", new { controller = "Account", action = "Verify" });
         }
 
-        [Fact]
+        [Test]
         public void Welcome()
         {
             RouteTable.Routes.Maps("GET", "~/v1/welcome", new { controller = "Welcome", action = "Index" });
         }
 
-        [Fact]
+        [Test]
         public void Reset()
         {
             RouteTable.Routes.Maps("GET", "~/v1/reset", new { controller = "Welcome", action = "Reset" });
         }
 
-        [Fact]
+        [Test]
         public void ElmahRoute()
         {
             RouteTable.Routes.Maps("GET", "~/v1/admin/elmah", new { controller = "Elmah", action = "Index" });
@@ -115,7 +116,7 @@ namespace Snittlistan.Test
             RouteTable.Routes.Maps("GET", "~/v1/admin/elmah/stylesheet", new { controller = "Elmah", action = "Index" });
         }
 
-        [Fact]
+        [Test]
         public void RedirectRoutes()
         {
             RouteTable.Routes.Maps("GET", "~/Home/Player", new { controller = "Redirect", action = "Redirect" });
@@ -123,7 +124,7 @@ namespace Snittlistan.Test
             RouteTable.Routes.Maps("GET", "~/Account/Register", new { controller = "Redirect", action = "Redirect" });
         }
 
-        [Fact]
+        [Test]
         public void HackerRoutes()
         {
             RouteTable.Routes.Maps("GET", "~/apps/phpalbum/main.php", new { controller = "Hacker", action = "Index" });

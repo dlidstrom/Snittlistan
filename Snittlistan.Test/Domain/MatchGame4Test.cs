@@ -1,19 +1,20 @@
 ﻿using System;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V2.Domain.Match;
-using Xunit;
 
 namespace Snittlistan.Test.Domain
 {
+    [TestFixture]
     public class MatchGame4Test
     {
-        [Fact]
+        [Test]
         public void InvalidPins()
         {
             Assert.Throws<ArgumentException>(() => new MatchGame4("player-1", 0, -1));
             Assert.Throws<ArgumentException>(() => new MatchGame4("player-1", 0, 301));
         }
 
-        [Fact]
+        [Test]
         public void ValidPins()
         {
             Assert.DoesNotThrow(() => new MatchGame4("player-1", 0, 0));

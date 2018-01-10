@@ -35,7 +35,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
             string comment)
         {
             if (comment == null) comment = string.Empty;
-            if (comment.Length > 160) throw new ArgumentException("Comment can be at most 160 characters", "comment");
+            if (comment.Length > 160) throw new ArgumentException("Comment can be at most 160 characters", nameof(comment));
             return new Absence(from, to, player, comment);
         }
     }

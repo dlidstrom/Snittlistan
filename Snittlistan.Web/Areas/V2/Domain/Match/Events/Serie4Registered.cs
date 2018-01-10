@@ -7,8 +7,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
     {
         public Serie4Registered(MatchSerie4 matchSerie, int bitsMatchId)
         {
-            if (matchSerie == null) throw new ArgumentNullException("matchSerie");
-            MatchSerie = matchSerie;
+            MatchSerie = matchSerie ?? throw new ArgumentNullException(nameof(matchSerie));
             BitsMatchId = bitsMatchId;
         }
 

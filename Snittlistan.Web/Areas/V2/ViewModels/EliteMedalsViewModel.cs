@@ -43,7 +43,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public HtmlString FormatSeason()
         {
-            return new HtmlString(string.Format("{0} &minus; {1}", season, season + 1));
+            return new HtmlString($"{season} &minus; {season + 1}");
         }
 
         public class PlayerInfo

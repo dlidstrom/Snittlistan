@@ -93,8 +93,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             foreach (var player in players)
             {
                 var name = player.Name;
-                ResultForPlayerIndex.Result result;
-                if (seasonAverages.TryGetValue(player.Id, out result)
+                if (seasonAverages.TryGetValue(player.Id, out var result)
                     && result.TotalSeries > 0)
                 {
                     var playerForm = new PlayerFormViewModel(name)

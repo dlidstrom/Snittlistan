@@ -7,12 +7,9 @@ namespace Snittlistan.Web.Tasks
     {
         public EmailTask(string recipient, string subject, string content)
         {
-            if (recipient == null) throw new ArgumentNullException("recipient");
-            if (subject == null) throw new ArgumentNullException("subject");
-            if (content == null) throw new ArgumentNullException("content");
-            Recipient = recipient;
-            Subject = subject;
-            Content = content;
+            Recipient = recipient ?? throw new ArgumentNullException(nameof(recipient));
+            Subject = subject ?? throw new ArgumentNullException(nameof(subject));
+            Content = content ?? throw new ArgumentNullException(nameof(content));
         }
 
         public string Recipient { get; private set; }

@@ -11,12 +11,10 @@ namespace Snittlistan.Web.Areas.V2.Domain
             ResultSeriesReadModel.Serie[] series,
             ResultSeriesReadModel.Serie[] opponentSeries)
         {
-            if (series == null) throw new ArgumentNullException("series");
-            if (opponentSeries == null) throw new ArgumentNullException("opponentSeries");
             TeamScore = teamScore;
             OpponentScore = opponentScore;
-            Series = series;
-            OpponentSeries = opponentSeries;
+            Series = series ?? throw new ArgumentNullException(nameof(series));
+            OpponentSeries = opponentSeries ?? throw new ArgumentNullException(nameof(opponentSeries));
         }
 
         public int TeamScore { get; private set; }

@@ -13,9 +13,8 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             var rankByTurn = new Dictionary<int, List<PlayerScore>>();
             foreach (var week in weeks)
             {
-                List<PlayerScore> list;
                 var turn = rostersDictionary[week.RosterId].Turn;
-                if (rankByTurn.TryGetValue(turn, out list) == false)
+                if (rankByTurn.TryGetValue(turn, out var list) == false)
                 {
                     rankByTurn[turn] = week.PlayerScores.Values.ToList();
                 }

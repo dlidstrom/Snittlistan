@@ -14,8 +14,7 @@ namespace EventStoreLite
 
         public EventDispatcher(IWindsorContainer container)
         {
-            if (container == null) throw new ArgumentNullException(nameof(container));
-            this.container = container;
+            this.container = container ?? throw new ArgumentNullException(nameof(container));
         }
 
         public void Dispatch(IDomainEvent e, string aggregateId)

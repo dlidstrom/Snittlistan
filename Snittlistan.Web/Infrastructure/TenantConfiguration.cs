@@ -13,20 +13,13 @@ namespace Snittlistan.Web.Infrastructure
             string appleTouchIconSize,
             string webAppTitle)
         {
-            if (name == null) throw new ArgumentNullException(nameof(name));
-            if (database == null) throw new ArgumentNullException(nameof(database));
-            if (connectionStringName == null) throw new ArgumentNullException(nameof(connectionStringName));
-            if (favicon == null) throw new ArgumentNullException(nameof(favicon));
-            if (appleTouchIcon == null) throw new ArgumentNullException(nameof(appleTouchIcon));
-            if (appleTouchIconSize == null) throw new ArgumentNullException(nameof(appleTouchIconSize));
-            if (webAppTitle == null) throw new ArgumentNullException(nameof(webAppTitle));
-            Name = name;
-            Database = database;
-            ConnectionStringName = connectionStringName;
-            Favicon = favicon;
-            AppleTouchIcon = appleTouchIcon;
-            AppleTouchIconSize = appleTouchIconSize;
-            WebAppTitle = webAppTitle;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+            Database = database ?? throw new ArgumentNullException(nameof(database));
+            ConnectionStringName = connectionStringName ?? throw new ArgumentNullException(nameof(connectionStringName));
+            Favicon = favicon ?? throw new ArgumentNullException(nameof(favicon));
+            AppleTouchIcon = appleTouchIcon ?? throw new ArgumentNullException(nameof(appleTouchIcon));
+            AppleTouchIconSize = appleTouchIconSize ?? throw new ArgumentNullException(nameof(appleTouchIconSize));
+            WebAppTitle = webAppTitle ?? throw new ArgumentNullException(nameof(webAppTitle));
         }
 
         public string Name { get; }

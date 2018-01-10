@@ -357,7 +357,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     || from <= x.From && x.To <= to)
                 .OrderBy(p => p.To)
                 .ThenBy(p => p.PlayerName)
-                .AsProjection<AbsenceIndex.Result>()
+                .ProjectFromIndexFieldsInto<AbsenceIndex.Result>()
                 .ToArray()
                 .ToLookup(x => x.Player)
                 .ToDictionary(x => x.Key, x => x.ToList());
@@ -370,8 +370,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 var rosterViewModel = roster.MapTo<RosterViewModel>();
                 foreach (var player in roster.Players)
                 {
-                    List<RosterViewModel> rosterViewModels;
-                    if (rostersForPlayers.TryGetValue(player, out rosterViewModels) == false)
+                    if (rostersForPlayers.TryGetValue(player, out var rosterViewModels) == false)
                     {
                         rosterViewModels = new List<RosterViewModel>();
                         rostersForPlayers.Add(player, rosterViewModels);
@@ -390,8 +389,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             foreach (var player in players)
             {
                 PlayerFormViewModel playerForm;
-                ResultForPlayerIndex.Result resultForPlayer;
-                if (resultsForPlayer.TryGetValue(player.Id, out resultForPlayer)
+                if (resultsForPlayer.TryGetValue(player.Id, out var resultForPlayer)
                     && resultForPlayer.TotalSeries > 0)
                 {
                     playerForm = new PlayerFormViewModel(player.Name)
@@ -419,8 +417,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     activity.Teams.AddRange(rostersForPlayer);
                 }
 
-                List<AbsenceIndex.Result> playerAbsences;
-                if (absences.TryGetValue(player.Id, out playerAbsences))
+                if (absences.TryGetValue(player.Id, out var playerAbsences))
                 {
                     activity.Absences.AddRange(playerAbsences.OrderBy(x => x.From));
                 }

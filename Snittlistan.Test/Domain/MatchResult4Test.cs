@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
-using Xunit;
 
 namespace Snittlistan.Test.Domain
 {
+    [TestFixture]
     public class MatchResult4Test
     {
         private readonly Roster roster;
@@ -19,7 +20,7 @@ namespace Snittlistan.Test.Domain
             };
         }
 
-        [Fact]
+        [Test]
         public void CanRegister()
         {
             // Act
@@ -27,16 +28,16 @@ namespace Snittlistan.Test.Domain
 
             // Assert
             var uncommittedChanges = matchResult.GetUncommittedChanges();
-            Assert.Equal(1, uncommittedChanges.Length);
+            Assert.That(uncommittedChanges.Length, Is.EqualTo(1));
             var registered = uncommittedChanges[0] as MatchResult4Registered;
             Assert.NotNull(registered);
-            Assert.Equal("rosters-1", registered.RosterId);
-            Assert.Equal(9, registered.TeamScore);
-            Assert.Equal(11, registered.OpponentScore);
-            Assert.Equal(123, registered.BitsMatchId);
+            Assert.That(registered.RosterId, Is.EqualTo("rosters-1"));
+            Assert.That(registered.TeamScore, Is.EqualTo(9));
+            Assert.That(registered.OpponentScore, Is.EqualTo(11));
+            Assert.That(registered.BitsMatchId, Is.EqualTo(123));
         }
 
-        [Fact]
+        [Test]
         public void CanUpdate()
         {
             // Arrange
@@ -51,28 +52,28 @@ namespace Snittlistan.Test.Domain
 
             // Assert
             var uncommittedChanges = matchResult.GetUncommittedChanges();
-            Assert.Equal(3, uncommittedChanges.Length);
+            Assert.That(uncommittedChanges.Length, Is.EqualTo(3));
             var changed = uncommittedChanges[1] as Roster4Changed;
             Assert.NotNull(changed);
-            Assert.Equal("rosters-1", changed.OldId);
-            Assert.Equal("rosters-2", changed.NewId);
+            Assert.That(changed.OldId, Is.EqualTo("rosters-1"));
+            Assert.That(changed.NewId, Is.EqualTo("rosters-2"));
 
             var updated = uncommittedChanges[2] as MatchResult4Updated;
             Assert.NotNull(updated);
-            Assert.Equal("rosters-2", updated.NewRosterId);
-            Assert.Equal(11, updated.NewTeamScore);
-            Assert.Equal(9, updated.NewOpponentScore);
-            Assert.Equal(321, updated.NewBitsMatchId);
+            Assert.That(updated.NewRosterId, Is.EqualTo("rosters-2"));
+            Assert.That(updated.NewTeamScore, Is.EqualTo(11));
+            Assert.That(updated.NewOpponentScore, Is.EqualTo(9));
+            Assert.That(updated.NewBitsMatchId, Is.EqualTo(321));
         }
 
-        [Fact]
+        [Test]
         public void MustRegisterResultBeforeSeries()
         {
             // Arrange
             Assert.Throws<ArgumentNullException>(() => new MatchResult4(null, 9, 11, 123));
         }
 
-        [Fact]
+        [Test]
         public void RosterCannotHaveThreePlayers()
         {
             // Arrange
@@ -97,10 +98,10 @@ namespace Snittlistan.Test.Domain
 
             // Assert
             var ex = Assert.Throws<MatchException>(() => matchResult.RegisterSerie(matchSerie));
-            Assert.Equal("Roster must have 4 or 5 players when registering results", ex.Message);
+            Assert.That(ex.Message, Is.EqualTo("Roster must have 4 or 5 players when registering results"));
         }
 
-        [Fact]
+        [Test]
         public void RosterCanHaveFourPlayers()
         {
             // Arrange
@@ -125,10 +126,10 @@ namespace Snittlistan.Test.Domain
 
             // Assert
             Assert.DoesNotThrow(() => matchResult.RegisterSerie(matchSerie));
-            Assert.Equal(typeof(Serie4Registered), matchResult.GetUncommittedChanges()[1].GetType());
+            Assert.That(matchResult.GetUncommittedChanges()[1].GetType(), Is.EqualTo(typeof(Serie4Registered)));
         }
 
-        [Fact]
+        [Test]
         public void RosterCanHaveFivePlayers()
         {
             // Arrange
@@ -155,7 +156,7 @@ namespace Snittlistan.Test.Domain
             Assert.DoesNotThrow(() => matchResult.RegisterSerie(matchSerie));
         }
 
-        [Fact]
+        [Test]
         public void RosterCannotHaveSixPlayers()
         {
             // Arrange
@@ -180,10 +181,10 @@ namespace Snittlistan.Test.Domain
 
             // Assert
             var ex = Assert.Throws<MatchException>(() => matchResult.RegisterSerie(matchSerie));
-            Assert.Equal("Roster must have 4 or 5 players when registering results", ex.Message);
+            Assert.That(ex.Message, Is.EqualTo("Roster must have 4 or 5 players when registering results"));
         }
 
-        [Fact]
+        [Test]
         public void CanOnlyRegisterSeriesWithValidPlayer()
         {
             // Arrange
@@ -209,7 +210,7 @@ namespace Snittlistan.Test.Domain
             Assert.DoesNotThrow(() => matchResult.RegisterSerie(matchSerie));
         }
 
-        [Fact]
+        [Test]
         public void CanRegisterWithReserve()
         {
             // Arrange
@@ -235,7 +236,7 @@ namespace Snittlistan.Test.Domain
             Assert.DoesNotThrow(() => matchResult.RegisterSerie(matchSerie));
         }
 
-        [Fact]
+        [Test]
         public void CanNotRegisterInvalidPlayer()
         {
             // Arrange
@@ -259,10 +260,10 @@ namespace Snittlistan.Test.Domain
 
             // Assert
             var ex = Assert.Throws<MatchException>(() => matchResult.RegisterSerie(matchSerie));
-            Assert.Equal("Can only register players from roster", ex.Message);
+            Assert.That(ex.Message, Is.EqualTo("Can only register players from roster"));
         }
 
-        [Fact]
+        [Test]
         public void ValidScore()
         {
             Assert.DoesNotThrow(() => new MatchResult4(roster, 0, 0, 0));
@@ -271,7 +272,7 @@ namespace Snittlistan.Test.Domain
             Assert.DoesNotThrow(() => new MatchResult4(roster, 10, 10, 0));
         }
 
-        [Fact]
+        [Test]
         public void InvalidScore()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => new MatchResult4(roster, -1, 0, 0));
@@ -281,7 +282,7 @@ namespace Snittlistan.Test.Domain
             Assert.Throws<ArgumentException>(() => new MatchResult4(roster, 10, 11, 0));
         }
 
-        [Fact]
+        [Test]
         public void ValidUpdate()
         {
             var matchResult = new MatchResult4(roster, 0, 0, 0);
@@ -291,7 +292,7 @@ namespace Snittlistan.Test.Domain
             Assert.DoesNotThrow(() => matchResult.Update(roster, 10, 10, 0));
         }
 
-        [Fact]
+        [Test]
         public void InvalidUpdate()
         {
             var matchResult = new MatchResult4(roster, 0, 0, 0);
@@ -303,7 +304,7 @@ namespace Snittlistan.Test.Domain
             Assert.Throws<ArgumentException>(() => matchResult.Update(roster, 10, 11, 0));
         }
 
-        [Fact]
+        [Test]
         public void MedalFor4Score()
         {
             // Arrange
@@ -334,15 +335,15 @@ namespace Snittlistan.Test.Domain
 
             // Assert
             var changes = matchResult.GetUncommittedChanges();
-            Assert.Equal(6, changes.Length);
+            Assert.That(changes.Length, Is.EqualTo(6));
             var medal = changes[5] as AwardedMedal;
             Assert.NotNull(medal);
-            Assert.Equal("p2", medal.Player);
-            Assert.Equal(MedalType.TotalScore, medal.MedalType);
-            Assert.Equal(4, medal.Value);
+            Assert.That(medal.Player, Is.EqualTo("p2"));
+            Assert.That(medal.MedalType, Is.EqualTo(MedalType.TotalScore));
+            Assert.That(medal.Value, Is.EqualTo(4));
         }
 
-        [Fact]
+        [Test]
         public void MedalFor270OrMore()
         {
             // Arrange
@@ -368,20 +369,20 @@ namespace Snittlistan.Test.Domain
 
             // Assert
             var changes = matchResult.GetUncommittedChanges();
-            Assert.Equal(4, changes.Length);
+            Assert.That(changes.Length, Is.EqualTo(4));
             var medal1 = changes[2] as AwardedMedal;
             var medal2 = changes[3] as AwardedMedal;
             Assert.NotNull(medal1);
             Assert.NotNull(medal2);
-            Assert.Equal("p2", medal1.Player);
-            Assert.Equal(MedalType.PinsInSerie, medal1.MedalType);
-            Assert.Equal(270, medal1.Value);
-            Assert.Equal("p4", medal2.Player);
-            Assert.Equal(MedalType.PinsInSerie, medal2.MedalType);
-            Assert.Equal(300, medal2.Value);
+            Assert.That(medal1.Player, Is.EqualTo("p2"));
+            Assert.That(medal1.MedalType, Is.EqualTo(MedalType.PinsInSerie));
+            Assert.That(medal1.Value, Is.EqualTo(270));
+            Assert.That(medal2.Player, Is.EqualTo("p4"));
+            Assert.That(medal2.MedalType, Is.EqualTo(MedalType.PinsInSerie));
+            Assert.That(medal2.Value, Is.EqualTo(300));
         }
 
-        [Fact]
+        [Test]
         public void CannotAwardMedalsTwice()
         {
             // Arrange
@@ -403,7 +404,7 @@ namespace Snittlistan.Test.Domain
             Assert.Throws<ApplicationException>(() => matchResult.AwardMedals());
         }
 
-        [Fact]
+        [Test]
         public void OnlyAwardMedalsOnce()
         {
             // Arrange
@@ -434,20 +435,20 @@ namespace Snittlistan.Test.Domain
 
             // Assert
             var changes = matchResult.GetUncommittedChanges();
-            Assert.Equal(5, changes.Length);
+            Assert.That(changes.Length, Is.EqualTo(5));
             var medal1 = changes[2] as AwardedMedal;
             var medal2 = changes[3] as AwardedMedal;
             Assert.NotNull(medal1);
             Assert.NotNull(medal2);
-            Assert.Equal("p2", medal1.Player);
-            Assert.Equal(MedalType.PinsInSerie, medal1.MedalType);
-            Assert.Equal(270, medal1.Value);
-            Assert.Equal("p4", medal2.Player);
-            Assert.Equal(MedalType.PinsInSerie, medal2.MedalType);
-            Assert.Equal(300, medal2.Value);
+            Assert.That(medal1.Player, Is.EqualTo("p2"));
+            Assert.That(medal1.MedalType, Is.EqualTo(MedalType.PinsInSerie));
+            Assert.That(medal1.Value, Is.EqualTo(270));
+            Assert.That(medal2.Player, Is.EqualTo("p4"));
+            Assert.That(medal2.MedalType, Is.EqualTo(MedalType.PinsInSerie));
+            Assert.That(medal2.Value, Is.EqualTo(300));
         }
 
-        [Fact]
+        [Test]
         public void CanClearMedals()
         {
             // Arrange
@@ -467,13 +468,13 @@ namespace Snittlistan.Test.Domain
 
             // Assert
             var changes = matchResult.GetUncommittedChanges();
-            Assert.Equal(2, changes.Length);
+            Assert.That(changes.Length, Is.EqualTo(2));
             var domainEvent = changes[1];
             Assert.IsAssignableFrom<ClearMedals>(domainEvent);
-            Assert.Equal(((ClearMedals)domainEvent).BitsMatchId, 123);
+            Assert.That(123, Is.EqualTo(((ClearMedals)domainEvent).BitsMatchId));
         }
 
-        [Fact]
+        [Test]
         public void CanClearAndReAwardMedals()
         {
             // Arrange

@@ -16,7 +16,7 @@ namespace Snittlistan.Web.Areas.V2
                 .Where(x => x.PlayerCount > 0)
                 .Where(x => x.BitsMatchId != 0)
                 .OrderBy(x => x.Date)
-                .AsProjection<RosterSearchTerms.Result>()
+                .ProjectFromIndexFieldsInto<RosterSearchTerms.Result>()
                 .ToList()
                 .Where(x => x.MatchResultId == null || string.IsNullOrEmpty(rosterId) == false)
                 .Select(

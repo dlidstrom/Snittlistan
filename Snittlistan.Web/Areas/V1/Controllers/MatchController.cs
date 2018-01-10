@@ -23,7 +23,7 @@ namespace Snittlistan.Web.Areas.V1.Controllers
             var matches = DocumentSession.Query<Match_ByDate.Result, Match_ByDate>()
                 .Customize(x => x.WaitForNonStaleResultsAsOfNow())
                 .OrderByDescending(m => m.Date)
-                .AsProjection<Match_ByDate.Result>()
+                .ProjectFromIndexFieldsInto<Match_ByDate.Result>()
                 .ToList();
 
             return View(matches);

@@ -15,18 +15,11 @@ namespace Snittlistan.Web.Infrastructure.AutoMapper.Profiles
             var match = ForenameSurnameRegex.Match(shortenedName);
             if (match.Groups["Forename2"].Success)
             {
-                shortenedName = string.Format(
-                    "{0}-{1}. {2}",
-                    match.Groups["Forename1"].Value.Substring(0, 1),
-                    match.Groups["Forename2"].Value.Substring(1, 1),
-                    match.Groups["Surname"].Value);
+                shortenedName = $"{match.Groups["Forename1"].Value.Substring(0, 1)}-{match.Groups["Forename2"].Value.Substring(1, 1)}. {match.Groups["Surname"].Value}";
             }
             else
             {
-                shortenedName = string.Format(
-                    "{0}. {1}",
-                    match.Groups["Forename1"].Value.Substring(0, 1),
-                    match.Groups["Surname"].Value);
+                shortenedName = $"{match.Groups["Forename1"].Value.Substring(0, 1)}. {match.Groups["Surname"].Value}";
             }
 
             return shortenedName;

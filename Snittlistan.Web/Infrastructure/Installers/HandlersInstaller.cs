@@ -10,11 +10,12 @@ namespace Snittlistan.Web.Infrastructure.Installers
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(
-                AllTypes.FromThisAssembly()
-                .BasedOn(typeof(IHandle<>))
-                .WithServiceFromInterface(typeof(IHandle<>))
-                .If(Component.IsInNamespace("Snittlistan.Web.Handlers"))
-                .Configure(c => c.LifestyleTransient()));
+                Classes
+                    .FromThisAssembly()
+                    .BasedOn(typeof(IHandle<>))
+                    .WithServiceFromInterface(typeof(IHandle<>))
+                    .If(Component.IsInNamespace("Snittlistan.Web.Handlers"))
+                    .Configure(c => c.LifestyleTransient()));
         }
     }
 }

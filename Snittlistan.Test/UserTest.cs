@@ -1,11 +1,12 @@
 ﻿using System;
 using Castle.Windsor;
+using NUnit.Framework;
 using Snittlistan.Web.DomainEvents;
 using Snittlistan.Web.Models;
-using Xunit;
 
 namespace Snittlistan.Test
 {
+    [TestFixture]
     public class UserTest : IDisposable
     {
         private readonly IWindsorContainer oldContainer;
@@ -20,14 +21,14 @@ namespace Snittlistan.Test
             DomainEvent.SetContainer(oldContainer);
         }
 
-        [Fact]
+        [Test]
         public void ShouldNotBeActiveWhenCreated()
         {
             var user = new User("first name", "last name", "email", "password");
             Assert.False(user.IsActive);
         }
 
-        [Fact]
+        [Test]
         public void ShouldRaiseEventWhenCreated()
         {
             NewUserCreatedEvent createdEvent = null;
@@ -38,13 +39,13 @@ namespace Snittlistan.Test
             }
 
             Assert.NotNull(createdEvent);
-            Assert.Equal("first name", createdEvent.User.FirstName);
-            Assert.Equal("last name", createdEvent.User.LastName);
-            Assert.Equal("email", createdEvent.User.Email);
+            Assert.That(createdEvent.User.FirstName, Is.EqualTo("first name"));
+            Assert.That(createdEvent.User.LastName, Is.EqualTo("last name"));
+            Assert.That(createdEvent.User.Email, Is.EqualTo("email"));
             Assert.False(createdEvent.User.IsActive);
         }
 
-        [Fact]
+        [Test]
         public void CanActivate()
         {
             var user = new User("F", "L", "e@d.com", "pwd");

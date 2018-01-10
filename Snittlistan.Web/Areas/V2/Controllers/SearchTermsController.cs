@@ -14,7 +14,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var options = DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
                 .Where(t => t.Team.StartsWith(q))
                 .Distinct()
-                .AsProjection<RosterSearchTerms.Result>()
+                .ProjectFromIndexFieldsInto<RosterSearchTerms.Result>()
                 .OrderBy(t => t.Team)
                 .Select(t => t.Team)
                 .ToList();
@@ -27,7 +27,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var options = DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
                 .Where(t => t.Opponent.StartsWith(q))
                 .Distinct()
-                .AsProjection<RosterSearchTerms.Result>()
+                .ProjectFromIndexFieldsInto<RosterSearchTerms.Result>()
                 .OrderBy(t => t.Opponent)
                 .Select(t => t.Opponent)
                 .ToList();
@@ -40,7 +40,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var options = DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
                 .Where(t => t.Location.StartsWith(q))
                 .Distinct()
-                .AsProjection<RosterSearchTerms.Result>()
+                .ProjectFromIndexFieldsInto<RosterSearchTerms.Result>()
                 .OrderBy(t => t.Location)
                 .Select(t => t.Location)
                 .ToList();

@@ -118,7 +118,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
             public override string ToString()
             {
-                return string.Format("{0}{1}{2}{3}{4}{5}{6}", BitsMatchId, Date, Turn, SerieNumber, PlayerId, Score, Pins);
+                return $"{BitsMatchId}{Date}{Turn}{SerieNumber}{PlayerId}{Score}{Pins}";
             }
 
             public override bool Equals(object obj)

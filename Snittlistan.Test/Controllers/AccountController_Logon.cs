@@ -1,15 +1,16 @@
 ﻿using System;
 using Castle.Windsor;
 using Moq;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V1.Controllers;
 using Snittlistan.Web.Areas.V1.ViewModels.Account;
 using Snittlistan.Web.DomainEvents;
 using Snittlistan.Web.Models;
 using Snittlistan.Web.Services;
-using Xunit;
 
 namespace Snittlistan.Test.Controllers
 {
+    [TestFixture]
     public class AccountController_Logon : DbTest
     {
         private readonly IWindsorContainer oldContainer;
@@ -19,7 +20,7 @@ namespace Snittlistan.Test.Controllers
             oldContainer = DomainEvent.SetContainer(new WindsorContainer());
         }
 
-        [Fact]
+        [Test]
         public void LogonReturnsView()
         {
             // Arrange
@@ -32,7 +33,7 @@ namespace Snittlistan.Test.Controllers
             result.AssertViewRendered().ForView(string.Empty);
         }
 
-        [Fact]
+        [Test]
         public void UnknownUserCannotLogon()
         {
             var service = Mock.Of<IAuthenticationService>();
@@ -48,7 +49,7 @@ namespace Snittlistan.Test.Controllers
             Assert.False(cookieSet);
         }
 
-        [Fact]
+        [Test]
         public void ActiveUserCanLogon()
         {
             bool cookieSet = false;
@@ -63,7 +64,7 @@ namespace Snittlistan.Test.Controllers
             Assert.True(cookieSet);
         }
 
-        [Fact]
+        [Test]
         public void InactiveUserCannotLogon()
         {
             Session.Store(new User(firstName: "f", lastName: "l", email: "e@d.com", password: "pwd"));
@@ -91,7 +92,7 @@ namespace Snittlistan.Test.Controllers
             Assert.False(loggedOn);
         }
 
-        [Fact]
+        [Test]
         public void WrongPasswordRedisplaysForm()
         {
             var cookieSet = false;

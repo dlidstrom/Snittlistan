@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Raven.Abstractions.Smuggler;
 using Raven.Client.Document;
-using Raven.Client.Embedded;
-using Raven.Database.Smuggler;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.ReadModels;
@@ -22,22 +19,7 @@ namespace Snittlistan.Tool
                 return;
             }
 
-            if (args[0] == "/backup")
-            {
-                using (var documentStore = new EmbeddableDocumentStore
-                {
-                    DataDirectory = args[0]
-                })
-                {
-                    documentStore.Initialize();
-                    var dumper = new DataDumper(documentStore.DocumentDatabase, new SmugglerOptions());
-                    dumper.ExportData(new SmugglerOptions
-                    {
-                        BackupPath = args[1]
-                    });
-                }
-            }
-            else if (args[0] == "/initialize")
+            if (args[0] == "/initialize")
             {
                 Console.Write("Enter connection string name: ");
                 var connectionStringName = Console.ReadLine();

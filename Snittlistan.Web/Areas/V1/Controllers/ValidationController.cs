@@ -17,7 +17,7 @@ namespace Snittlistan.Web.Areas.V1.Controllers
         {
             var id = DocumentSession.Query<Match_ByBitsMatchId.Result, Match_ByBitsMatchId>()
                 .Customize(x => x.WaitForNonStaleResultsAsOfNow())
-                .AsProjection<Match_ByBitsMatchId.Result>()
+                .ProjectFromIndexFieldsInto<Match_ByBitsMatchId.Result>()
                 .SingleOrDefault(m => m.BitsMatchId == bitsMatchId);
 
             // true is valid

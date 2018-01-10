@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Linq;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V1.Controllers;
 using Snittlistan.Web.Areas.V1.Models;
 using Snittlistan.Web.Areas.V1.ViewModels.Match;
-using Xunit;
 
 namespace Snittlistan.Test.Controllers
 {
+    [TestFixture]
     public class MatchController_Register4x4 : DbTest
     {
-        [Fact]
+        [Test]
         public void ViewIsCreate()
         {
             // Arrange
@@ -45,18 +46,18 @@ namespace Snittlistan.Test.Controllers
 
             // Assert
             var match = Session.Query<Match4x4>().Single();
-            Assert.Equal("Somewhere", match.Location);
-            Assert.Equal(now, match.Date);
-            Assert.Equal("HomeTeam", match.HomeTeam.Name);
-            Assert.Equal(13, match.HomeTeam.Score);
+            Assert.That(match.Location, Is.EqualTo("Somewhere"));
+            Assert.That(match.Date, Is.EqualTo(now));
+            Assert.That(match.HomeTeam.Name, Is.EqualTo("HomeTeam"));
+            Assert.That(match.HomeTeam.Score, Is.EqualTo(13));
             var game = match.HomeTeam.Series.ElementAt(0).Games.ElementAt(0);
-            Assert.Equal(155, game.Pins);
-            Assert.Equal("Lennart Axelsson", game.Player);
-            Assert.Equal(1, game.Score);
-            Assert.Equal(6, match.AwayTeam.Score);
+            Assert.That(game.Pins, Is.EqualTo(155));
+            Assert.That(game.Player, Is.EqualTo("Lennart Axelsson"));
+            Assert.That(game.Score, Is.EqualTo(1));
+            Assert.That(match.AwayTeam.Score, Is.EqualTo(6));
         }
 
-        [Fact]
+        [Test]
         public void WhenErrorReturnView()
         {
             // Arrange

@@ -9,7 +9,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(
-                AllTypes
+                Classes
                     .FromThisAssembly()
                     .Where(Component.IsInNamespace("Snittlistan.Web.Services"))
                     .WithServiceDefaultInterfaces()

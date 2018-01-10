@@ -8,9 +8,8 @@ namespace Snittlistan.Test
     {
         public static T AssertResultIs<T>(this ActionResult result) where T : ActionResult
         {
-            T obj = result as T;
-            if (obj == null)
-                throw new Exception(string.Format("Expected result to be of type {0}. It is actually of type {1}.", (object)typeof(T).Name, (object)result.GetType().Name));
+            if (!(result is T obj))
+                throw new Exception($"Expected result to be of type {(object)typeof(T).Name}. It is actually of type {(object)result.GetType().Name}.");
             return obj;
         }
 
@@ -56,31 +55,31 @@ namespace Snittlistan.Test
         public static RedirectToRouteResult WithParameter(this RedirectToRouteResult result, string paramName, object value)
         {
             if (!result.RouteValues.ContainsKey(paramName))
-                throw new Exception(string.Format("Could not find a parameter named '{0}' in the result's Values collection.", paramName));
+                throw new Exception($"Could not find a parameter named '{paramName}' in the result's Values collection.");
             object obj = result.RouteValues[paramName];
             if (!obj.Equals(value))
-                throw new Exception(string.Format("When looking for a parameter named '{0}', expected '{1}' but was '{2}'.", paramName, value, obj));
+                throw new Exception($"When looking for a parameter named '{paramName}', expected '{value}' but was '{obj}'.");
             return result;
         }
 
         public static ViewResult ForView(this ViewResult result, string viewName)
         {
             if (result.ViewName != viewName)
-                throw new Exception(string.Format("Expected view name '{0}', actual was '{1}'", viewName, result.ViewName));
+                throw new Exception($"Expected view name '{viewName}', actual was '{result.ViewName}'");
             return result;
         }
 
         public static PartialViewResult ForView(this PartialViewResult result, string partialViewName)
         {
             if (result.ViewName != partialViewName)
-                throw new Exception(string.Format("Expected partial view name '{0}', actual was '{1}'", partialViewName, result.ViewName));
+                throw new Exception($"Expected partial view name '{partialViewName}', actual was '{result.ViewName}'");
             return result;
         }
 
         public static RedirectResult ToUrl(this RedirectResult result, string url)
         {
             if (result.Url != url)
-                throw new Exception(string.Format("Expected redirect to '{0}', actual was '{1}'", url, result.Url));
+                throw new Exception($"Expected redirect to '{url}', actual was '{result.Url}'");
             return result;
         }
 
@@ -89,9 +88,9 @@ namespace Snittlistan.Test
             object model = actionResult.ViewData.Model;
             Type type = typeof(TViewData);
             if (model == null)
-                throw new Exception(string.Format("Expected view data of type '{0}', actual was NULL", type.Name));
+                throw new Exception($"Expected view data of type '{type.Name}', actual was NULL");
             if (!(model is TViewData))
-                throw new Exception(string.Format("Expected view data of type '{0}', actual was '{1}'", typeof(TViewData).Name, model.GetType().Name));
+                throw new Exception($"Expected view data of type '{typeof(TViewData).Name}', actual was '{model.GetType().Name}'");
             return (TViewData)model;
         }
     }

@@ -2,15 +2,16 @@
 using System.Web.Mvc;
 using Castle.Windsor;
 using Moq;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V1.Controllers;
 using Snittlistan.Web.DomainEvents;
 using Snittlistan.Web.Helpers;
 using Snittlistan.Web.Models;
 using Snittlistan.Web.Services;
-using Xunit;
 
 namespace Snittlistan.Test.Controllers
 {
+    [TestFixture]
     public class AccountController_Verify : DbTest
     {
         private readonly IWindsorContainer oldContainer;
@@ -20,7 +21,7 @@ namespace Snittlistan.Test.Controllers
             oldContainer = DomainEvent.SetContainer(new WindsorContainer());
         }
 
-        [Fact]
+        [Test]
         public void UnknownIdFails()
         {
             var controller = new AccountController(Mock.Of<IAuthenticationService>()) { DocumentSession = Session };
@@ -28,7 +29,7 @@ namespace Snittlistan.Test.Controllers
             result.AssertActionRedirect().ToAction("Register");
         }
 
-        [Fact]
+        [Test]
         public void KnownUserIsActivatedAndShownSuccess()
         {
             var user = new User("F", "L", "e@d.com", "some pwd");
@@ -43,7 +44,7 @@ namespace Snittlistan.Test.Controllers
             Assert.True(storedUser.IsActive);
         }
 
-        [Fact]
+        [Test]
         public void ActivatedUserRedirectsToLogOn()
         {
             var user = CreateActivatedUser("F", "L", "e@d.com", "some pwd");

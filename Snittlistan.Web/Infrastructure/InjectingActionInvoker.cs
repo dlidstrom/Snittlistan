@@ -31,7 +31,7 @@ namespace Snittlistan.Web.Infrastructure
                     }
                     catch (Exception ex)
                     {
-                        var message = string.Format("Error setting property {0} on type {1}, See inner exception for more information.", property.Name, type.FullName);
+                        var message = $"Error setting property {property.Name} on type {type.FullName}, See inner exception for more information.";
                         throw new ComponentActivatorException(message, ex, null);
                     }
                 }

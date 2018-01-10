@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Linq;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V1.Controllers;
 using Snittlistan.Web.Areas.V1.Models;
 using Snittlistan.Web.Areas.V1.ViewModels.Match;
-using Xunit;
 
 namespace Snittlistan.Test.Controllers
 {
+    [TestFixture]
     public class MatchController_Register8x4 : DbTest
     {
-        [Fact]
+        [Test]
         public void ViewIsCreate()
         {
             // Arrange
@@ -37,15 +38,15 @@ namespace Snittlistan.Test.Controllers
 
             // Assert
             var match = Session.Query<Match8x4>().Single();
-            Assert.Equal("Somewhere", match.Location);
-            Assert.Equal(1, match.BitsMatchId);
-            Assert.Equal(now, match.Date);
-            Assert.Equal("HomeTeam", match.HomeTeam.Name);
-            Assert.Equal(13, match.HomeTeam.Score);
-            Assert.Equal(6, match.AwayTeam.Score);
+            Assert.That(match.Location, Is.EqualTo("Somewhere"));
+            Assert.That(match.BitsMatchId, Is.EqualTo(1));
+            Assert.That(match.Date, Is.EqualTo(now));
+            Assert.That(match.HomeTeam.Name, Is.EqualTo("HomeTeam"));
+            Assert.That(match.HomeTeam.Score, Is.EqualTo(13));
+            Assert.That(match.AwayTeam.Score, Is.EqualTo(6));
         }
 
-        [Fact]
+        [Test]
         public void WhenErrorReturnView()
         {
             // Arrange
@@ -59,7 +60,7 @@ namespace Snittlistan.Test.Controllers
             result.AssertViewRendered().ForView(string.Empty);
         }
 
-        [Fact]
+        [Test]
         public void CannotRegisterSameBitsIdTwice()
         {
             // Arrange

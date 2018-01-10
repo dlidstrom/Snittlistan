@@ -26,21 +26,16 @@ namespace EventStoreLite
 
         public EventStoreSession(IDocumentStore documentStore, IDocumentSession documentSession, EventDispatcher dispatcher)
         {
-            if (documentStore == null) throw new ArgumentNullException(nameof(documentStore));
-            if (documentSession == null) throw new ArgumentNullException(nameof(documentSession));
-            if (dispatcher == null) throw new ArgumentNullException(nameof(dispatcher));
-
-            this.documentStore = documentStore;
-            this.documentSession = documentSession;
-            this.dispatcher = dispatcher;
+            this.documentStore = documentStore ?? throw new ArgumentNullException(nameof(documentStore));
+            this.documentSession = documentSession ?? throw new ArgumentNullException(nameof(documentSession));
+            this.dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
         }
 
         public TAggregate Load<TAggregate>(string id) where TAggregate : AggregateRoot
         {
             if (id == null) throw new ArgumentNullException(nameof(id));
 
-            EventStreamAndAggregateRoot unitOfWorkInstance;
-            if (entitiesByKey.TryGetValue(id, out unitOfWorkInstance))
+            if (entitiesByKey.TryGetValue(id, out var unitOfWorkInstance))
                 return (TAggregate)unitOfWorkInstance.AggregateRoot;
             var stream = documentSession.Load<EventStream>(id);
             if (stream != null)

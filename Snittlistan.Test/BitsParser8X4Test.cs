@@ -1,11 +1,12 @@
 ﻿using System;
+using NUnit.Framework;
 using Snittlistan.Test.Properties;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.ReadModels;
-using Xunit;
 
 namespace Snittlistan.Test
 {
+    [TestFixture]
     public class BitsParser8X4Test
     {
         private readonly Player[] playersTeamA;
@@ -40,7 +41,7 @@ namespace Snittlistan.Test
             };
         }
 
-        [Fact]
+        [Test]
         public void CanFindName()
         {
             // Arrange
@@ -50,10 +51,10 @@ namespace Snittlistan.Test
             var result = new BitsParser(playersTeamA).Parse(Resources.Id3050651, Team);
 
             // Assert
-            Assert.Equal(7, result.TeamScore);
+            Assert.That(result.TeamScore, Is.EqualTo(7));
         }
 
-        [Fact]
+        [Test]
         public void CanParseAlternateHomeTeamName()
         {
             // Arrange
@@ -63,10 +64,10 @@ namespace Snittlistan.Test
             var result = new BitsParser(playersTeamA).Parse(Resources.Id3048746, Team);
 
             // Assert
-            Assert.Equal(11, result.TeamScore);
+            Assert.That(result.TeamScore, Is.EqualTo(11));
         }
 
-        [Fact]
+        [Test]
         public void CanParseAlternateAwayTeamName()
         {
             // Arrange
@@ -76,10 +77,10 @@ namespace Snittlistan.Test
             var result = new BitsParser(playersTeamA).Parse(Resources.Id3048747, Team);
 
             // Assert
-            Assert.Equal(10, result.TeamScore);
+            Assert.That(result.TeamScore, Is.EqualTo(10));
         }
 
-        [Fact]
+        [Test]
         public void CanParseAlternateAwayTeamNameWithIf()
         {
             // Arrange
@@ -89,10 +90,10 @@ namespace Snittlistan.Test
             var result = new BitsParser(playersTeamF).Parse(Resources.Id3048477, Team);
 
             // Assert
-            Assert.Equal(14, result.TeamScore);
+            Assert.That(result.TeamScore, Is.EqualTo(14));
         }
 
-        [Fact]
+        [Test]
         public void CanParseHomeTeam()
         {
             // Arrange
@@ -100,42 +101,42 @@ namespace Snittlistan.Test
 
             // Act
             var result = new BitsParser(playersTeamA).Parse(Resources.Id3048746, Team);
-            Assert.Equal(11, result.TeamScore);
-            Assert.Equal(9, result.OpponentScore);
+            Assert.That(result.TeamScore, Is.EqualTo(11));
+            Assert.That(result.OpponentScore, Is.EqualTo(9));
             var series = result.Series;
 
             // Assert
-            Assert.Equal(4, series.Length);
+            Assert.That(series.Length, Is.EqualTo(4));
             var serie1 = series[0];
-            Assert.Equal(4, serie1.Tables.Count);
+            Assert.That(serie1.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie1.Tables[0], Tuple.Create(1, "player-1", 202, "player-2", 219));
             VerifyTable(serie1.Tables[1], Tuple.Create(0, "player-3", 203, "player-4", 169));
             VerifyTable(serie1.Tables[2], Tuple.Create(1, "player-5", 206, "player-6", 195));
             VerifyTable(serie1.Tables[3], Tuple.Create(0, "player-7", 234, "player-8", 165));
 
             var serie2 = series[1];
-            Assert.Equal(4, serie2.Tables.Count);
+            Assert.That(serie2.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie2.Tables[0], Tuple.Create(1, "player-5", 205, "player-6", 212));
             VerifyTable(serie2.Tables[1], Tuple.Create(0, "player-7", 192, "player-8", 192));
             VerifyTable(serie2.Tables[2], Tuple.Create(1, "player-1", 212, "player-2", 237));
             VerifyTable(serie2.Tables[3], Tuple.Create(1, "player-3", 202, "player-4", 199));
 
             var serie3 = series[2];
-            Assert.Equal(4, serie3.Tables.Count);
+            Assert.That(serie3.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie3.Tables[0], Tuple.Create(0, "player-7", 206, "player-8", 204));
             VerifyTable(serie3.Tables[1], Tuple.Create(1, "player-5", 215, "player-6", 211));
             VerifyTable(serie3.Tables[2], Tuple.Create(0, "player-3", 184, "player-4", 172));
             VerifyTable(serie3.Tables[3], Tuple.Create(0, "player-1", 175, "player-2", 188));
 
             var serie4 = series[3];
-            Assert.Equal(4, serie4.Tables.Count);
+            Assert.That(serie4.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie4.Tables[0], Tuple.Create(0, "player-3", 213, "player-9", 173));
             VerifyTable(serie4.Tables[1], Tuple.Create(1, "player-1", 188, "player-2", 213));
             VerifyTable(serie4.Tables[2], Tuple.Create(1, "player-7", 194, "player-8", 255));
             VerifyTable(serie4.Tables[3], Tuple.Create(1, "player-5", 226, "player-6", 210));
         }
 
-        [Fact]
+        [Test]
         public void CanParseAwayTeam()
         {
             // Arrange
@@ -143,42 +144,42 @@ namespace Snittlistan.Test
 
             // Act
             var result = new BitsParser(playersTeamA).Parse(Resources.Id3048747, Team);
-            Assert.Equal(10, result.TeamScore);
-            Assert.Equal(9, result.OpponentScore);
+            Assert.That(result.TeamScore, Is.EqualTo(10));
+            Assert.That(result.OpponentScore, Is.EqualTo(9));
             var series = result.Series;
 
             // Assert
-            Assert.Equal(4, series.Length);
+            Assert.That(series.Length, Is.EqualTo(4));
             var serie1 = series[0];
-            Assert.Equal(4, serie1.Tables.Count);
+            Assert.That(serie1.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie1.Tables[0], Tuple.Create(1, "player-3", 202, "player-10", 204));
             VerifyTable(serie1.Tables[1], Tuple.Create(0, "player-1", 196, "player-2", 234));
             VerifyTable(serie1.Tables[2], Tuple.Create(1, "player-7", 205, "player-8", 247));
             VerifyTable(serie1.Tables[3], Tuple.Create(1, "player-5", 227, "player-6", 212));
 
             var serie2 = series[1];
-            Assert.Equal(4, serie2.Tables.Count);
+            Assert.That(serie2.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie2.Tables[0], Tuple.Create(0, "player-5", 182, "player-6", 213));
             VerifyTable(serie2.Tables[1], Tuple.Create(0, "player-7", 226, "player-8", 211));
             VerifyTable(serie2.Tables[2], Tuple.Create(1, "player-1", 218, "player-2", 269));
             VerifyTable(serie2.Tables[3], Tuple.Create(0, "player-3", 232, "player-10", 162));
 
             var serie3 = series[2];
-            Assert.Equal(4, serie3.Tables.Count);
+            Assert.That(serie3.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie3.Tables[0], Tuple.Create(0, "player-1", 200, "player-2", 212));
             VerifyTable(serie3.Tables[1], Tuple.Create(0, "player-3", 202, "player-10", 201));
             VerifyTable(serie3.Tables[2], Tuple.Create(0, "player-5", 202, "player-6", 187));
             VerifyTable(serie3.Tables[3], Tuple.Create(1, "player-7", 232, "player-8", 201));
 
             var serie4 = series[3];
-            Assert.Equal(4, serie4.Tables.Count);
+            Assert.That(serie4.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie4.Tables[0], Tuple.Create(1, "player-7", 217, "player-8", 203));
             VerifyTable(serie4.Tables[1], Tuple.Create(1, "player-5", 178, "player-6", 267));
             VerifyTable(serie4.Tables[2], Tuple.Create(0, "player-3", 180, "player-10", 229));
             VerifyTable(serie4.Tables[3], Tuple.Create(0, "player-1", 183, "player-2", 175));
         }
 
-        [Fact]
+        [Test]
         public void CanParseThreeSeries()
         {
             // Arrange
@@ -198,28 +199,28 @@ namespace Snittlistan.Test
 
             // Act
             var result = new BitsParser(players).Parse(Resources.Id3067035, Team);
-            Assert.Equal(10, result.TeamScore);
-            Assert.Equal(5, result.OpponentScore);
+            Assert.That(result.TeamScore, Is.EqualTo(10));
+            Assert.That(result.OpponentScore, Is.EqualTo(5));
             var series = result.Series;
 
             // Assert
-            Assert.Equal(3, series.Length);
+            Assert.That(series.Length, Is.EqualTo(3));
             var serie1 = series[0];
-            Assert.Equal(4, serie1.Tables.Count);
+            Assert.That(serie1.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie1.Tables[0], Tuple.Create(1, "player-1", 200, "player-2", 199));
             VerifyTable(serie1.Tables[1], Tuple.Create(1, "player-3", 160, "player-4", 257));
             VerifyTable(serie1.Tables[2], Tuple.Create(1, "player-5", 214, "player-6", 195));
             VerifyTable(serie1.Tables[3], Tuple.Create(1, "player-7", 175, "player-8", 241));
 
             var serie2 = series[1];
-            Assert.Equal(4, serie1.Tables.Count);
+            Assert.That(serie1.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie2.Tables[0], Tuple.Create(1, "player-7", 165, "player-8", 217));
             VerifyTable(serie2.Tables[1], Tuple.Create(0, "player-5", 180, "player-6", 158));
             VerifyTable(serie2.Tables[2], Tuple.Create(0, "player-3", 176, "player-4", 197));
             VerifyTable(serie2.Tables[3], Tuple.Create(1, "player-1", 145, "player-2", 161));
 
             var serie3 = series[2];
-            Assert.Equal(4, serie1.Tables.Count);
+            Assert.That(serie1.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie3.Tables[0], Tuple.Create(0, "player-3", 180, "player-4", 222));
             VerifyTable(serie3.Tables[1], Tuple.Create(1, "player-1", 159, "player-2", 277));
             VerifyTable(serie3.Tables[2], Tuple.Create(1, "player-7", 166, "player-8", 234));
@@ -228,13 +229,13 @@ namespace Snittlistan.Test
 
         private static void VerifyTable(ResultSeriesReadModel.Table table, Tuple<int, string, int, string, int> expected)
         {
-            Assert.Equal(expected.Item1, table.Score);
+            Assert.That(table.Score, Is.EqualTo(expected.Item1));
             Assert.NotNull(table.Game1);
             Assert.NotNull(table.Game2);
-            Assert.Equal(expected.Item2, table.Game1.Player);
-            Assert.Equal(expected.Item3, table.Game1.Pins);
-            Assert.Equal(expected.Item4, table.Game2.Player);
-            Assert.Equal(expected.Item5, table.Game2.Pins);
+            Assert.That(table.Game1.Player, Is.EqualTo(expected.Item2));
+            Assert.That(table.Game1.Pins, Is.EqualTo(expected.Item3));
+            Assert.That(table.Game2.Player, Is.EqualTo(expected.Item4));
+            Assert.That(table.Game2.Pins, Is.EqualTo(expected.Item5));
         }
     }
 }

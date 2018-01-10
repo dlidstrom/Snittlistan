@@ -9,8 +9,7 @@ namespace Snittlistan.Web.Infrastructure
         {
             var value = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
 
-            Guid guid;
-            if (value != null && Guid.TryParse(value.AttemptedValue, out guid))
+            if (value != null && Guid.TryParse(value.AttemptedValue, out var guid))
                 return guid;
 
             return Guid.Empty;

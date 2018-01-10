@@ -1,9 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Snittlistan.Web.Models;
 
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     public class UserViewModel
     {
+        public UserViewModel(User user)
+        {
+            Id = user.Id;
+            Name = $"{user.FirstName} {user.LastName}";
+            IsActive = user.IsActive;
+        }
+
         public string Id { get; set; }
 
         [Display(Name = "Namn")]

@@ -19,7 +19,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         public MatchResult4(Roster roster, int teamScore, int opponentScore, int bitsMatchId)
             : this()
         {
-            if (roster == null) throw new ArgumentNullException("roster");
+            if (roster == null) throw new ArgumentNullException(nameof(roster));
             if (roster.MatchResultId != null)
                 throw new ApplicationException("Roster already has result registered");
             VerifyScores(teamScore, opponentScore);
@@ -43,7 +43,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
         public void Update(Roster roster, int teamScore, int opponentScore, int bitsMatchId)
         {
-            if (roster == null) throw new ArgumentNullException("roster");
+            if (roster == null) throw new ArgumentNullException(nameof(roster));
             VerifyScores(teamScore, opponentScore);
 
             roster.MatchResultId = Id;
@@ -61,7 +61,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
         public void RegisterSerie(MatchSerie4 matchSerie)
         {
-            if (matchSerie == null) throw new ArgumentNullException("matchSerie");
+            if (matchSerie == null) throw new ArgumentNullException(nameof(matchSerie));
             if (rosterPlayers.Count != 4 && rosterPlayers.Count != 5)
                 throw new MatchException("Roster must have 4 or 5 players when registering results");
             VerifyPlayers(matchSerie);
@@ -91,12 +91,12 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         {
             if (teamScore < 0 || teamScore > 20)
             {
-                throw new ArgumentOutOfRangeException("teamScore", "Team score must be between 0 and 20");
+                throw new ArgumentOutOfRangeException(nameof(teamScore), "Team score must be between 0 and 20");
             }
 
             if (opponentScore < 0 || opponentScore > 20)
             {
-                throw new ArgumentOutOfRangeException("opponentScore", "Opponent score must be between 0 and 20");
+                throw new ArgumentOutOfRangeException(nameof(opponentScore), "Opponent score must be between 0 and 20");
             }
 
             if (teamScore + opponentScore > 20)

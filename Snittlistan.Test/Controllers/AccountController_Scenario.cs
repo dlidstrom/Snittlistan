@@ -1,15 +1,16 @@
 ﻿using System;
 using Castle.Windsor;
 using Moq;
+using NUnit.Framework;
 using Snittlistan.Web.Areas.V1.Controllers;
 using Snittlistan.Web.Areas.V1.ViewModels.Account;
 using Snittlistan.Web.DomainEvents;
 using Snittlistan.Web.Helpers;
 using Snittlistan.Web.Services;
-using Xunit;
 
 namespace Snittlistan.Test.Controllers
 {
+    [TestFixture]
     public class AccountController_Scenario : DbTest
     {
         private readonly IWindsorContainer oldContainer;
@@ -19,7 +20,7 @@ namespace Snittlistan.Test.Controllers
             oldContainer = DomainEvent.SetContainer(new WindsorContainer());
         }
 
-        [Fact]
+        [Test]
         public void CanLogOnAfterRegisteringAndVerifyingAccount()
         {
             // register

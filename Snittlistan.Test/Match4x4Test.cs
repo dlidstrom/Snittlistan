@@ -1,13 +1,14 @@
-﻿using Snittlistan.Web.Areas.V1.Models;
-using Xunit;
+﻿using NUnit.Framework;
+using Snittlistan.Web.Areas.V1.Models;
 
 namespace Snittlistan.Test
 {
+    [TestFixture]
     public class Match4x4Test : DbTest
     {
-        private readonly Match4x4 match;
+        private Match4x4 match;
 
-        public Match4x4Test()
+        protected override void OnSetUp()
         {
             match = DbSeed.Create4x4Match();
             Session.Store(match);
@@ -15,29 +16,29 @@ namespace Snittlistan.Test
             match = Session.Load<Match4x4>(match.Id);
         }
 
-        [Fact]
+        [Test]
         public void PinscoreForPlayer()
         {
-            Assert.Equal(717, match.HomeTeam.PinsForPlayer("Lars Norbeck"));
+            Assert.That(match.HomeTeam.PinsForPlayer("Lars Norbeck"), Is.EqualTo(717));
         }
 
-        [Fact]
+        [Test]
         public void VerifyValues()
         {
             TestData.VerifyTeam(match.HomeTeam);
         }
 
-        [Fact]
+        [Test]
         public void LaneScores()
         {
-            Assert.Equal(6, match.HomeTeam.Score);
+            Assert.That(match.HomeTeam.Score, Is.EqualTo(6));
         }
 
-        [Fact]
+        [Test]
         public void Teams()
         {
-            Assert.Equal("Fredrikshof C", match.HomeTeam.Name);
-            Assert.Equal("Librex", match.AwayTeam.Name);
+            Assert.That(match.HomeTeam.Name, Is.EqualTo("Fredrikshof C"));
+            Assert.That(match.AwayTeam.Name, Is.EqualTo("Librex"));
         }
     }
 }

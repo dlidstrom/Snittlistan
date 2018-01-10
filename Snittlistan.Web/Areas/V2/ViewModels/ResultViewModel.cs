@@ -7,10 +7,8 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
     {
         public ResultViewModel(ResultHeaderViewModel headerViewModel, ResultSeriesReadModel resultReadModel)
         {
-            if (headerViewModel == null) throw new ArgumentNullException(nameof(headerViewModel));
-            if (resultReadModel == null) throw new ArgumentNullException(nameof(resultReadModel));
-            HeaderViewModel = headerViewModel;
-            ResultReadModel = resultReadModel;
+            HeaderViewModel = headerViewModel ?? throw new ArgumentNullException(nameof(headerViewModel));
+            ResultReadModel = resultReadModel ?? throw new ArgumentNullException(nameof(resultReadModel));
         }
 
         public ResultHeaderViewModel HeaderViewModel { get; private set; }

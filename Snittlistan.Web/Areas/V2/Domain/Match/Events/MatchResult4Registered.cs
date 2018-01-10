@@ -13,13 +13,8 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
             int opponentScore,
             int bitsMatchId)
         {
-            if (rosterId == null)
-                throw new ArgumentNullException("rosterId");
-            if (rosterPlayers == null)
-                throw new ArgumentNullException("rosterPlayers");
-
-            RosterId = rosterId;
-            RosterPlayers = rosterPlayers;
+            RosterId = rosterId ?? throw new ArgumentNullException(nameof(rosterId));
+            RosterPlayers = rosterPlayers ?? throw new ArgumentNullException(nameof(rosterPlayers));
             TeamScore = teamScore;
             OpponentScore = opponentScore;
             BitsMatchId = bitsMatchId;

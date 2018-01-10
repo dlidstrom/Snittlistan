@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Routing;
 using Moq;
-using Xunit;
+using NUnit.Framework;
 
 namespace Snittlistan.Test
 {
@@ -22,14 +22,14 @@ namespace Snittlistan.Test
                     property.Value.ToString(),
                     routeData.Values[property.Name].ToString(),
                     StringComparison.OrdinalIgnoreCase);
-                var message = string.Format("Expected '{0}', not '{1}' for '{2}'.", property.Value, routeData.Values[property.Name], property.Name);
+                var message = $"Expected '{property.Value}', not '{routeData.Values[property.Name]}' for '{property.Name}'.";
                 Assert.True(equal, message);
             }
         }
 
         public static void DoNotMap(this RouteCollection routes, string httpVerb, string url)
         {
-            Assert.Equal(null, RetrieveRouteData(routes, httpVerb, url));
+            Assert.That(RetrieveRouteData(routes, httpVerb, url), Is.Null);
         }
 
         private static RouteData RetrieveRouteData(RouteCollection routes, string httpVerb, string url)
