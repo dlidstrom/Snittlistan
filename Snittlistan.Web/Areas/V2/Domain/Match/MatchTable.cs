@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Raven.Imports.Newtonsoft.Json;
 
 namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
@@ -19,13 +20,21 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             Game2 = game2;
         }
 
-        // @TODO From constructor
-        public int TableNumber { get; set; }
+        [JsonConstructor]
+        private MatchTable(int tableNumber, int score, MatchGame game1, MatchGame game2)
+        {
+            TableNumber = tableNumber;
+            Score = score;
+            Game1 = game1;
+            Game2 = game2;
+        }
 
-        public MatchGame Game1 { get; private set; }
+        public int TableNumber { get; }
 
-        public MatchGame Game2 { get; private set; }
+        public int Score { get; }
 
-        public int Score { get; private set; }
+        public MatchGame Game1 { get; }
+
+        public MatchGame Game2 { get; }
     }
 }

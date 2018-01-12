@@ -12,10 +12,10 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
             RosterId = rosterId ?? throw new ArgumentNullException(nameof(rosterId));
         }
 
-        public MatchSerie MatchSerie { get; private set; }
+        public MatchSerie MatchSerie { get; }
 
-        public int BitsMatchId { get; private set; }
+        public int BitsMatchId { get; }
 
-        public string RosterId { get; private set; }
+        public string RosterId { get; }
     }
 }

@@ -21,10 +21,16 @@ namespace Snittlistan.Web.Areas.V2.Handlers
 
         public void Handle(MatchResultRegistered e, string aggregateId)
         {
-            // find team of week for this roster
             var roster = DocumentSession.Load<Roster>(e.RosterId);
-            var teamOfWeek = new TeamOfWeek(e.BitsMatchId, roster.Season, roster.Id);
-            DocumentSession.Store(teamOfWeek);
+            var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId);
+            var teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
+            if (teamOfWeek == null)
+            {
+                teamOfWeek = new TeamOfWeek(e.BitsMatchId, roster.Season, roster.Id);
+                DocumentSession.Store(teamOfWeek);
+            }
+
+            teamOfWeek.Reset();
         }
 
         public void Handle(SerieRegistered e, string aggregateId)
@@ -81,10 +87,16 @@ namespace Snittlistan.Web.Areas.V2.Handlers
 
         public void Handle(MatchResult4Registered e, string aggregateId)
         {
-            // find team of week for this roster
             var roster = DocumentSession.Load<Roster>(e.RosterId);
-            var teamOfWeek = new TeamOfWeek(e.BitsMatchId, roster.Season, e.RosterId);
-            DocumentSession.Store(teamOfWeek);
+            var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId);
+            var teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
+            if (teamOfWeek == null)
+            {
+                teamOfWeek = new TeamOfWeek(e.BitsMatchId, roster.Season, roster.Id);
+                DocumentSession.Store(teamOfWeek);
+            }
+
+            teamOfWeek.Reset();
         }
 
         public void Handle(Serie4Registered e, string aggregateId)

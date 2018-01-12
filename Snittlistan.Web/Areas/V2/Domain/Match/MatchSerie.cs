@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Raven.Imports.Newtonsoft.Json;
 
 namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
     public class MatchSerie
     {
-        // necessary for json.net
-        private MatchSerie()
-        {
-        }
-
         public MatchSerie(int serieNumber, IReadOnlyList<MatchTable> tables)
         {
             if (tables == null) throw new ArgumentNullException(nameof(tables));
@@ -44,32 +40,36 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             Table4 = tables[3];
         }
 
-        public int SerieNumber { get; private set; }
-
-        public MatchTable Table1 { get; private set; }
-
-        public MatchTable Table2 { get; private set; }
-
-        public MatchTable Table3 { get; private set; }
-
-        public MatchTable Table4 { get; private set; }
-
-        public int TeamTotal
+        [JsonConstructor]
+        private MatchSerie(int serieNumber, MatchTable table1, MatchTable table2, MatchTable table3, MatchTable table4)
         {
-            get
-            {
-                return new[]
-                {
-                    Table1.Game1.Pins,
-                    Table1.Game2.Pins,
-                    Table2.Game1.Pins,
-                    Table2.Game2.Pins,
-                    Table3.Game1.Pins,
-                    Table3.Game2.Pins,
-                    Table4.Game1.Pins,
-                    Table4.Game2.Pins,
-                }.Sum();
-            }
+            SerieNumber = serieNumber;
+            Table1 = table1;
+            Table2 = table2;
+            Table3 = table3;
+            Table4 = table4;
         }
+
+        public int SerieNumber { get; }
+
+        public MatchTable Table1 { get; }
+
+        public MatchTable Table2 { get; }
+
+        public MatchTable Table3 { get; }
+
+        public MatchTable Table4 { get; }
+
+        public int TeamTotal => new[]
+        {
+            Table1.Game1.Pins,
+            Table1.Game2.Pins,
+            Table2.Game1.Pins,
+            Table2.Game2.Pins,
+            Table3.Game1.Pins,
+            Table3.Game2.Pins,
+            Table4.Game1.Pins,
+            Table4.Game2.Pins,
+        }.Sum();
     }
 }

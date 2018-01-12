@@ -26,10 +26,10 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                     {
                         var sentences = new List<string>
                         {
-                            $"Motståndarna hade inget att säga emot då resultatet blev {seriesScores[3].FormattedResult}. Stark insats av laget där alltså alla spelare to 4 poäng!"
+                            $"Motståndarna hade inget att säga emot då resultatet blev {seriesScores[3].FormattedResult}. Stark insats av laget där alltså alla spelare to 4 poäng!",
+                            seriesFormatter.Invoke(seriesScores)
                         };
 
-                        sentences.Add(seriesFormatter.Invoke(seriesScores));
                         return string.Join(" ", sentences);
                     }
                 },

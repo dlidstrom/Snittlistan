@@ -61,5 +61,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public string MatchResultId { get; set; }
 
         public string TeamLeader { get; set; }
+
+        public bool IsVerified { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snittlistan.Web", "Snittlistan.Web\Snittlistan.Web.csproj", "{B2001F9E-431F-429C-9A90-956F89CC5169}"
 EndProject
@@ -15,6 +15,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5876D2
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snittlistan.Tool", "Snittlistan.Tool\Snittlistan.Tool.csproj", "{A86DFE9D-1C04-49FD-9CAD-708EC7CEE418}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snittlistan.Queue", "Snittlistan.Queue\Snittlistan.Queue.csproj", "{18A532FA-9C94-4FF2-ACF8-B267F127606D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snittlistan.Queue.ConsoleHost", "Snittlistan.Queue.ConsoleHost\Snittlistan.Queue.ConsoleHost.csproj", "{A72DD623-31D7-41BF-801C-815182D4C017}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snittlistan.Queue.WindowsServiceHost", "Snittlistan.Queue.WindowsServiceHost\Snittlistan.Queue.WindowsServiceHost.csproj", "{89AC04F5-990D-4E33-A23B-C7E7C90E6E43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,8 +40,23 @@ Global
 		{A86DFE9D-1C04-49FD-9CAD-708EC7CEE418}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A86DFE9D-1C04-49FD-9CAD-708EC7CEE418}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A86DFE9D-1C04-49FD-9CAD-708EC7CEE418}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18A532FA-9C94-4FF2-ACF8-B267F127606D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18A532FA-9C94-4FF2-ACF8-B267F127606D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18A532FA-9C94-4FF2-ACF8-B267F127606D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18A532FA-9C94-4FF2-ACF8-B267F127606D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A72DD623-31D7-41BF-801C-815182D4C017}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A72DD623-31D7-41BF-801C-815182D4C017}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A72DD623-31D7-41BF-801C-815182D4C017}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A72DD623-31D7-41BF-801C-815182D4C017}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89AC04F5-990D-4E33-A23B-C7E7C90E6E43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89AC04F5-990D-4E33-A23B-C7E7C90E6E43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89AC04F5-990D-4E33-A23B-C7E7C90E6E43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89AC04F5-990D-4E33-A23B-C7E7C90E6E43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DD11F32D-910C-44C0-BB8F-0A74F5715981}
 	EndGlobalSection
 EndGlobal

@@ -12,11 +12,9 @@ namespace Snittlistan.Web.Areas.V2.Handlers
         IEventHandler<MatchResultRegistered>,
         IEventHandler<MatchResultUpdated>,
         IEventHandler<RosterChanged>,
-        IEventHandler<MatchResultDeleted>,
         IEventHandler<MatchResult4Registered>,
         IEventHandler<MatchResult4Updated>,
         IEventHandler<Roster4Changed>,
-        IEventHandler<MatchResult4Deleted>,
         IEventHandler<MatchCommentaryEvent>
     {
         public IDocumentSession DocumentSession { get; set; }
@@ -28,17 +26,12 @@ namespace Snittlistan.Web.Areas.V2.Handlers
 
         public void Handle(MatchResultUpdated e, string aggregateId)
         {
-            DoUpdated(aggregateId, e.NewRosterId, e.OldBitsMatchId, e.NewBitsMatchId, e.NewTeamScore, e.NewOpponentScore, false);
+            DoUpdated(aggregateId, e.NewRosterId, e.OldBitsMatchId, e.NewBitsMatchId, e.NewTeamScore, e.NewOpponentScore);
         }
 
         public void Handle(RosterChanged e, string aggregateId)
         {
             DoChanged(aggregateId, e.OldId, e.NewId);
-        }
-
-        public void Handle(MatchResultDeleted e, string aggregateId)
-        {
-            DoDeleted(e.RosterId, e.BitsMatchId);
         }
 
         public void Handle(MatchResult4Registered e, string aggregateId)
@@ -48,7 +41,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
 
         public void Handle(MatchResult4Updated e, string aggregateId)
         {
-            DoUpdated(aggregateId, e.NewRosterId, e.OldBitsMatchId, e.NewBitsMatchId, e.NewTeamScore, e.NewOpponentScore, true);
+            DoUpdated(aggregateId, e.NewRosterId, e.OldBitsMatchId, e.NewBitsMatchId, e.NewTeamScore, e.NewOpponentScore);
         }
 
         public void Handle(Roster4Changed e, string aggregateId)
@@ -56,25 +49,11 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             DoChanged(aggregateId, e.OldId, e.NewId);
         }
 
-        public void Handle(MatchResult4Deleted e, string aggregateId)
-        {
-            DoDeleted(e.RosterId, e.BitsMatchId);
-        }
-
         public void Handle(MatchCommentaryEvent e, string aggregateId)
         {
             var id = ResultHeaderReadModel.IdFromBitsMatchId(e.BitsMatchId);
             var results = DocumentSession.Load<ResultHeaderReadModel>(id);
             results.SetMatchCommentary(e.SummaryText, e.BodyText);
-        }
-
-        private void DoDeleted(string rosterId, int bitsMatchId)
-        {
-            var roster = DocumentSession.Load<Roster>(rosterId);
-            if (roster == null) throw new HttpException(404, "Roster not found");
-            roster.MatchResultId = null;
-            var result = DocumentSession.Load<ResultHeaderReadModel>(ResultHeaderReadModel.IdFromBitsMatchId(bitsMatchId));
-            DocumentSession.Delete(result);
         }
 
         private void DoChanged(string aggregateId, string oldId, string newId)
@@ -97,7 +76,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             newRoster.MatchResultId = aggregateId;
         }
 
-        private void DoUpdated(string aggregateId, string newRosterId, int oldBitsMatchId, int newBitsMatchId, int newTeamScore, int newOpponentScore, bool isFourPlayer)
+        private void DoUpdated(string aggregateId, string newRosterId, int oldBitsMatchId, int newBitsMatchId, int newTeamScore, int newOpponentScore)
         {
             var roster = DocumentSession.Load<Roster>(newRosterId);
             if (roster == null) throw new HttpException(404, "Roster not found");
@@ -123,8 +102,18 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             if (roster == null) throw new HttpException(404, "Roster not found");
 
             roster.MatchResultId = aggregateId;
-            var readModel = new ResultHeaderReadModel(roster, aggregateId, teamScore, opponentScore);
-            DocumentSession.Store(readModel);
+            var id = ResultHeaderReadModel.IdFromBitsMatchId(roster.BitsMatchId);
+
+            var readModel = DocumentSession.Load<ResultHeaderReadModel>(id);
+            if (readModel == null)
+            {
+                readModel = new ResultHeaderReadModel(roster, aggregateId, teamScore, opponentScore);
+                DocumentSession.Store(readModel);
+            }
+            else
+            {
+                readModel.SetValues(roster, aggregateId, teamScore, opponentScore);
+            }
         }
     }
 }

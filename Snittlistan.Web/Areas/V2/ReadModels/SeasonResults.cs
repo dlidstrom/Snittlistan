@@ -52,6 +52,30 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             }
         }
 
+        public void Add(int bitsMatchId, DateTime date, int turn, MatchSerie4 matchSerie)
+        {
+            var games = new[]
+            {
+                (tableNumber: 1, game: matchSerie.Game1),
+                (tableNumber: 2, game: matchSerie.Game2),
+                (tableNumber: 3, game: matchSerie.Game3),
+                (tableNumber: 4, game: matchSerie.Game4)
+            };
+            foreach (var (tableNumber, game) in games)
+            {
+                var playerResult = new PlayerResult(
+                    bitsMatchId,
+                    date,
+                    turn,
+                    matchSerie.SerieNumber,
+                    tableNumber,
+                    game.Player,
+                    game.Score,
+                    game.Pins);
+                PlayerResults.Add(playerResult);
+            }
+        }
+
         public HashSet<Tuple<PlayerResult, bool>> GetTopThreeResults(string playerId, EliteMedals.EliteMedal.EliteMedalValue existingMedal)
         {
             var query =
@@ -80,6 +104,11 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             return topThreeResults;
         }
 
+        public void RemoveWhere(int bitsMatchId)
+        {
+            PlayerResults.RemoveWhere(x => x.BitsMatchId == bitsMatchId);
+        }
+
         [DebuggerDisplay("BitsMatchId={BitsMatchId} Date={Date} Turn={Turn} SerieNumber={SerieNumber} TableNumber={TableNumber} PlayerId={PlayerId} Score={Score} Pins={Pins}")]
         public class PlayerResult
         {
@@ -95,30 +124,32 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
                 Pins = pins;
             }
 
-            public int BitsMatchId { get; private set; }
+            public int BitsMatchId { get; }
 
-            public DateTime Date { get; private set; }
+            public DateTime Date { get; }
 
-            public int Turn { get; private set; }
+            public int Turn { get; }
 
-            public int SerieNumber { get; private set; }
+            public int SerieNumber { get; }
 
-            public int TableNumber { get; private set; }
+            public int TableNumber { get; }
 
-            public string PlayerId { get; private set; }
+            public string PlayerId { get; }
 
-            public int Score { get; private set; }
+            public int Score { get; }
 
-            public int Pins { get; private set; }
+            public int Pins { get; }
 
             public override int GetHashCode()
             {
-                return ToString().GetHashCode();
-            }
-
-            public override string ToString()
-            {
-                return $"{BitsMatchId}{Date}{Turn}{SerieNumber}{PlayerId}{Score}{Pins}";
+                unchecked
+                {
+                    var hashCode = BitsMatchId;
+                    hashCode = (hashCode * 397) ^ SerieNumber;
+                    hashCode = (hashCode * 397) ^ TableNumber;
+                    hashCode = (hashCode * 397) ^ (PlayerId != null ? PlayerId.GetHashCode() : 0);
+                    return hashCode;
+                }
             }
 
             public override bool Equals(object obj)
@@ -128,12 +159,11 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
             public bool Equals(PlayerResult playerResult)
             {
-                var @equals = playerResult != null
-                              && playerResult.PlayerId == PlayerId
-                              && playerResult.Date == Date
-                              && playerResult.BitsMatchId == BitsMatchId
-                              && playerResult.SerieNumber == SerieNumber;
-                return @equals;
+                var eq = playerResult.BitsMatchId == BitsMatchId
+                    && playerResult.SerieNumber == SerieNumber
+                    && playerResult.TableNumber == TableNumber
+                    && string.Equals(playerResult.PlayerId, PlayerId);
+                return eq;
             }
         }
     }

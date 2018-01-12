@@ -38,35 +38,6 @@ namespace Snittlistan.Test.Domain
         }
 
         [Test]
-        public void CanUpdate()
-        {
-            // Arrange
-            var matchResult = new MatchResult4(roster, 9, 11, 123);
-            var newRoster = new Roster(2012, 10, 1, "X", "A", "Y", "Z", new DateTime(2012, 1, 1), false)
-            {
-                Id = "rosters-2"
-            };
-
-            // Act
-            matchResult.Update(newRoster, 11, 9, 321);
-
-            // Assert
-            var uncommittedChanges = matchResult.GetUncommittedChanges();
-            Assert.That(uncommittedChanges.Length, Is.EqualTo(3));
-            var changed = uncommittedChanges[1] as Roster4Changed;
-            Assert.NotNull(changed);
-            Assert.That(changed.OldId, Is.EqualTo("rosters-1"));
-            Assert.That(changed.NewId, Is.EqualTo("rosters-2"));
-
-            var updated = uncommittedChanges[2] as MatchResult4Updated;
-            Assert.NotNull(updated);
-            Assert.That(updated.NewRosterId, Is.EqualTo("rosters-2"));
-            Assert.That(updated.NewTeamScore, Is.EqualTo(11));
-            Assert.That(updated.NewOpponentScore, Is.EqualTo(9));
-            Assert.That(updated.NewBitsMatchId, Is.EqualTo(321));
-        }
-
-        [Test]
         public void MustRegisterResultBeforeSeries()
         {
             // Arrange
@@ -90,6 +61,7 @@ namespace Snittlistan.Test.Domain
 
             // Act
             var matchSerie = new MatchSerie4(
+                1,
                 new List<MatchGame4>
                 {
                     new MatchGame4("p1", 0, 0), new MatchGame4("p2", 0, 0),
@@ -118,6 +90,7 @@ namespace Snittlistan.Test.Domain
 
             // Act
             var matchSerie = new MatchSerie4(
+                1,
                 new List<MatchGame4>
                 {
                     new MatchGame4("p1", 0, 0), new MatchGame4("p2", 0, 0),
@@ -146,6 +119,7 @@ namespace Snittlistan.Test.Domain
 
             // Act
             var matchSerie = new MatchSerie4(
+                1,
                 new List<MatchGame4>
                 {
                     new MatchGame4("p1", 0, 0), new MatchGame4("p2", 0, 0),
@@ -173,6 +147,7 @@ namespace Snittlistan.Test.Domain
 
             // Act
             var matchSerie = new MatchSerie4(
+                1,
                 new List<MatchGame4>
                 {
                     new MatchGame4("p1", 0, 0), new MatchGame4("p2", 0, 0),
@@ -200,6 +175,7 @@ namespace Snittlistan.Test.Domain
 
             // Act
             var matchSerie = new MatchSerie4(
+                1,
                 new List<MatchGame4>
                 {
                     new MatchGame4("p1", 0, 0), new MatchGame4("p2", 0, 0),
@@ -226,6 +202,7 @@ namespace Snittlistan.Test.Domain
 
             // Act
             var matchSerie = new MatchSerie4(
+                1,
                 new List<MatchGame4>
                 {
                     new MatchGame4("p1", 0, 0), new MatchGame4("p2", 0, 0),
@@ -252,6 +229,7 @@ namespace Snittlistan.Test.Domain
 
             // Act
             var matchSerie = new MatchSerie4(
+                1,
                 new List<MatchGame4>
                 {
                     new MatchGame4("p1", 0, 0), new MatchGame4("p2", 0, 0),
@@ -283,28 +261,6 @@ namespace Snittlistan.Test.Domain
         }
 
         [Test]
-        public void ValidUpdate()
-        {
-            var matchResult = new MatchResult4(roster, 0, 0, 0);
-            Assert.DoesNotThrow(() => matchResult.Update(roster, 0, 0, 0));
-            Assert.DoesNotThrow(() => matchResult.Update(roster, 0, 20, 0));
-            Assert.DoesNotThrow(() => matchResult.Update(roster, 20, 0, 0));
-            Assert.DoesNotThrow(() => matchResult.Update(roster, 10, 10, 0));
-        }
-
-        [Test]
-        public void InvalidUpdate()
-        {
-            var matchResult = new MatchResult4(roster, 0, 0, 0);
-            Assert.Throws<ArgumentNullException>(() => matchResult.Update(null, 0, 0, 0));
-            Assert.Throws<ArgumentOutOfRangeException>(() => matchResult.Update(roster, -1, 0, 0));
-            Assert.Throws<ArgumentOutOfRangeException>(() => matchResult.Update(roster, 21, 0, 0));
-            Assert.Throws<ArgumentOutOfRangeException>(() => matchResult.Update(roster, 0, -1, 0));
-            Assert.Throws<ArgumentOutOfRangeException>(() => matchResult.Update(roster, 0, 21, 0));
-            Assert.Throws<ArgumentException>(() => matchResult.Update(roster, 10, 11, 0));
-        }
-
-        [Test]
         public void MedalFor4Score()
         {
             // Arrange
@@ -323,6 +279,7 @@ namespace Snittlistan.Test.Domain
             for (var i = 0; i < 4; i++)
             {
                 var matchSerie = new MatchSerie4(
+                    i + 1,
                     new List<MatchGame4>
                     {
                         new MatchGame4("p1", 0, 0),
@@ -360,6 +317,7 @@ namespace Snittlistan.Test.Domain
 
             // Act
             var matchSerie = new MatchSerie4(
+                1,
                 new List<MatchGame4>
                 {
                     new MatchGame4("p1", 0, 269), new MatchGame4("p2", 0, 270),
@@ -421,17 +379,23 @@ namespace Snittlistan.Test.Domain
 
             // Act
             matchResult.RegisterSerie(new MatchSerie4(
-                                          new List<MatchGame4>
-                                          {
-                                              new MatchGame4("p1", 0, 269), new MatchGame4("p2", 0, 270),
-                                              new MatchGame4("p3", 0, 0), new MatchGame4("p4", 0, 300)
-                                          }));
+                1,
+                new List<MatchGame4>
+                {
+                    new MatchGame4("p1", 0, 269),
+                    new MatchGame4("p2", 0, 270),
+                    new MatchGame4("p3", 0, 0),
+                    new MatchGame4("p4", 0, 300)
+                }));
             matchResult.RegisterSerie(new MatchSerie4(
-                                          new List<MatchGame4>
-                                          {
-                                              new MatchGame4("p1", 0, 169), new MatchGame4("p2", 0, 170),
-                                              new MatchGame4("p3", 0, 0), new MatchGame4("p4", 0, 200)
-                                          }));
+                2,
+                new List<MatchGame4>
+                {
+                    new MatchGame4("p1", 0, 169),
+                    new MatchGame4("p2", 0, 170),
+                    new MatchGame4("p3", 0, 0),
+                    new MatchGame4("p4", 0, 200)
+                }));
 
             // Assert
             var changes = matchResult.GetUncommittedChanges();

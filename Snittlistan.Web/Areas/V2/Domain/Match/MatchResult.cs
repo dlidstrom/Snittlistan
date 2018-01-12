@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using EventStoreLite;
 using JetBrains.Annotations;
+using Newtonsoft.Json;
+using Raven.Abstractions;
 using Snittlistan.Web.Areas.V2.Domain.Match.Commentary;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
 using Snittlistan.Web.Areas.V2.Indexes;
@@ -13,7 +15,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
     public class MatchResult : AggregateRoot
     {
-        private readonly Dictionary<string, List<PinsAndScoreResult>> playerPins;
+        private Dictionary<string, List<PinsAndScoreResult>> playerPins;
         private HashSet<string> rosterPlayers;
         private bool medalsAwarded;
 
@@ -58,9 +60,47 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             ApplyChange(matchResultUpdated);
         }
 
-        public void Delete()
+        public bool Update(
+            Roster roster,
+            int teamScore,
+            int opponentScore,
+            MatchSerie[] matchSeries,
+            ResultSeriesReadModel.Serie[] opponentSeries,
+            Player[] players,
+            Dictionary<string, ResultForPlayerIndex.Result> resultsForPlayer)
         {
-            ApplyChange(new MatchResultDeleted(RosterId, BitsMatchId));
+            // check if anything has changed
+            var potentiallyNewPlayerPins = new SortedDictionary<string, List<PinsAndScoreResult>>();
+            foreach (var matchSerie in matchSeries)
+            {
+                foreach (var matchTable in new[] { matchSerie.Table1, matchSerie.Table2, matchSerie.Table3, matchSerie.Table4 })
+                {
+                    foreach (var game in new[] { matchTable.Game1, matchTable.Game2 })
+                    {
+                        if (potentiallyNewPlayerPins.TryGetValue(game.Player, out var list) == false)
+                        {
+                            list = new List<PinsAndScoreResult>();
+                            potentiallyNewPlayerPins.Add(game.Player, list);
+                        }
+
+                        list.Add(new PinsAndScoreResult(game.Pins, matchTable.Score, matchSerie.SerieNumber));
+                    }
+                }
+            }
+
+            var oldResult = JsonConvert.SerializeObject(
+                new SortedDictionary<string, List<PinsAndScoreResult>>(playerPins),
+                Formatting.Indented);
+            var newResult = JsonConvert.SerializeObject(potentiallyNewPlayerPins, Formatting.Indented);
+            var pinsOrPlayersDiffer = oldResult != newResult;
+            var scoresDiffer = (teamScore, opponentScore).CompareTo((TeamScore, OpponentScore)) != 0;
+            if (pinsOrPlayersDiffer || scoresDiffer)
+            {
+                ApplyChange(new MatchResultRegistered(roster.Id, roster.Players, teamScore, opponentScore, roster.BitsMatchId));
+                RegisterSeries(matchSeries, opponentSeries, players, resultsForPlayer);
+            }
+
+            return roster.Date.AddDays(5) < SystemTime.UtcNow;
         }
 
         public void RegisterSeries(
@@ -223,6 +263,8 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             TeamScore = e.TeamScore;
             OpponentScore = e.OpponentScore;
             BitsMatchId = e.BitsMatchId;
+            playerPins = new Dictionary<string, List<PinsAndScoreResult>>();
+            registeredSeries = 0;
             rosterPlayers = new HashSet<string>(e.RosterPlayers);
         }
 
@@ -277,6 +319,11 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
         [UsedImplicitly]
         private void Apply(MatchCommentaryEvent e)
+        {
+        }
+
+        [UsedImplicitly]
+        private void Apply(AwardedMedal e)
         {
         }
     }

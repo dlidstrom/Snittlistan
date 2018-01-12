@@ -1,98 +1,79 @@
 ﻿using System;
+using System.Configuration;
 using System.Linq;
-using Raven.Client.Document;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.Indexes;
-using Snittlistan.Web.Areas.V2.ReadModels;
-using Snittlistan.Web.Infrastructure.Indexes;
-using Snittlistan.Web.Models;
+using System.Reflection;
+using Castle.MicroKernel.Registration;
+using Castle.Windsor;
+using log4net;
+using log4net.Config;
+using Snittlistan.Queue;
+using Snittlistan.Tool.Tasks;
 
 namespace Snittlistan.Tool
 {
     public static class Program
     {
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public static void Main(string[] args)
         {
-            if (args.Length < 1)
+            XmlConfigurator.Configure();
+            Log.Info("Starting");
+            try
             {
-                Usage();
-                return;
+                Run(args);
             }
-
-            if (args[0] == "/initialize")
+            finally
             {
-                Console.Write("Enter connection string name: ");
-                var connectionStringName = Console.ReadLine();
-                var documentStore = new DocumentStore { ConnectionStringName = connectionStringName }.Initialize();
-                IndexCreator.CreateIndexes(documentStore);
-                using (var documentSession = documentStore.OpenSession())
-                {
-                    if (documentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId) == null)
-                    {
-                        documentSession.Store(new WebsiteConfig(new WebsiteConfig.TeamNameAndLevel[0], false));
-                        documentSession.SaveChanges();
-                    }
-                }
-            }
-            else if (args[0] == "/migrate")
-            {
-                string connectionStringName;
-                if (args.Length == 1)
-                {
-                    Console.Write("Enter connection string name: ");
-                    connectionStringName = Console.ReadLine();
-                }
-                else
-                {
-                    connectionStringName = args[1];
-                }
-
-                var documentStore = new DocumentStore
-                {
-                    ConnectionStringName = connectionStringName
-                }.Initialize();
-
-                Console.WriteLine("Migrating docs");
-                var changed = 0;
-                var skip = 0;
-                while (true)
-                {
-                    using (var documentSession = documentStore.OpenSession())
-                    {
-                        var rosters = documentSession.Query<Roster, RosterSearchTerms>()
-                                                     .Customize(x => x.WaitForNonStaleResultsAsOfNow())
-                                                     .Skip(skip)
-                                                     .Take(10)
-                                                     .ToArray();
-                        if (rosters.Length == 0) break;
-                        foreach (var roster in rosters)
-                        {
-                            var id = TeamOfWeek.IdFromBitsMatchId(roster.BitsMatchId);
-                            Console.WriteLine("Loading {0}", id);
-                            var teamOfWeek = documentSession.Load<TeamOfWeek>(id);
-                            if (teamOfWeek != null && teamOfWeek.RosterId == null)
-                            {
-                                teamOfWeek.RosterId = roster.Id;
-                                changed++;
-                            }
-                        }
-
-                        documentSession.SaveChanges();
-                        skip += rosters.Length;
-                    }
-                }
-
-                Console.WriteLine("Changed {0} team of weeks", changed);
-            }
-            else
-            {
-                Usage();
+                Log.Info("Done");
             }
         }
 
-        private static void Usage()
+        private static void Run(string[] args)
         {
-            Console.WriteLine("{0} /backup|/initialize|/migrate", AppDomain.CurrentDomain.FriendlyName);
+
+            IWindsorContainer container = new WindsorContainer();
+            container.Register(
+                Classes.FromThisAssembly()
+                       .BasedOn<ICommandLineTask>()
+                       .Configure(x => x.LifeStyle.Transient.Named(x.Implementation.Name))
+                       .WithServiceFromInterface(typeof(ICommandLineTask)));
+
+            if (args.Length < 1)
+            {
+                Usage(container);
+                return;
+            }
+
+            try
+            {
+                MsmqGateway.Initialize(ConfigurationManager.AppSettings["TaskQueue"]);
+                var task = container.Resolve<ICommandLineTask>(args[0]);
+                task.Run(args);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.GetType().ToString(), e);
+            }
+        }
+
+        private static void Usage(IWindsorContainer container)
+        {
+            Console.WriteLine($"Usage: {AppDomain.CurrentDomain.FriendlyName} <task>");
+            Console.WriteLine();
+            Console.WriteLine("Available tasks:");
+            var names = container.Kernel
+                                 .GetAssignableHandlers(typeof(ICommandLineTask))
+                                 .Select(x => x.ComponentModel.ComponentName.Name)
+                                 .OrderBy(x => x)
+                                 .ToArray();
+            foreach (var name in names)
+            {
+                Console.WriteLine("{0,20}", name);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("To get help, use: " + AppDomain.CurrentDomain.FriendlyName + " help <task>");
         }
     }
 }

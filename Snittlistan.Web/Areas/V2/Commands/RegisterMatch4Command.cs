@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using EventStoreLite;
 using Raven.Client;
 using Snittlistan.Web.Areas.V2.Domain;
@@ -27,26 +25,9 @@ namespace Snittlistan.Web.Areas.V2.Commands
                 result.TeamScore,
                 result.OpponentScore,
                 roster.BitsMatchId);
-            var series = new[]
-            {
-                result.Series.ElementAtOrDefault(0),
-                result.Series.ElementAtOrDefault(1),
-                result.Series.ElementAtOrDefault(2),
-                result.Series.ElementAtOrDefault(3)
-            };
-            foreach (var serie in series.Where(x => x != null))
-            {
-                var games = new List<MatchGame4>();
-                for (var i = 0; i < 4; i++)
-                {
-                    var game = serie.Games[i];
-                    var matchGame = new MatchGame4(game.Player, game.Score, game.Pins);
-                    games.Add(matchGame);
-                }
 
-                matchResult.RegisterSerie(new MatchSerie4(games));
-            }
-
+            var matchSeries = result.CreateMatchSeries();
+            matchResult.RegisterSeries(matchSeries);
             eventStoreSession.Store(matchResult);
         }
     }

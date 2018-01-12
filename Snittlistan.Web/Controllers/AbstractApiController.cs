@@ -30,6 +30,7 @@ namespace Snittlistan.Web.Controllers
         /// </summary>
         public EventStore EventStore { get; set; }
 
+        [NonAction]
         public void SaveChanges()
         {
             // this commits the document session

@@ -10,11 +10,12 @@ using Snittlistan.Web.Areas.V2.ReadModels;
 namespace Snittlistan.Web.Areas.V2.Handlers
 {
     public class ResultSeriesHandler :
+        IEventHandler<MatchResultRegistered>,
         IEventHandler<SerieRegistered>
     {
         public IDocumentSession DocumentSession { get; set; }
 
-        public void Handle(SerieRegistered e, string aggregateId)
+        public void Handle(MatchResultRegistered e, string aggregateId)
         {
             var id = ResultSeriesReadModel.IdFromBitsMatchId(e.BitsMatchId);
             var results = DocumentSession.Load<ResultSeriesReadModel>(id);
@@ -23,6 +24,14 @@ namespace Snittlistan.Web.Areas.V2.Handlers
                 results = new ResultSeriesReadModel { Id = id };
                 DocumentSession.Store(results);
             }
+
+            results.Clear();
+        }
+
+        public void Handle(SerieRegistered e, string aggregateId)
+        {
+            var id = ResultSeriesReadModel.IdFromBitsMatchId(e.BitsMatchId);
+            var results = DocumentSession.Load<ResultSeriesReadModel>(id);
 
             var matchSerie = e.MatchSerie;
             var playerIds = new HashSet<string>

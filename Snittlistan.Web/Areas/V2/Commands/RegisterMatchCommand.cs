@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using EventStoreLite;
 using Raven.Client;
@@ -29,44 +28,16 @@ namespace Snittlistan.Web.Areas.V2.Commands
                 result.TeamScore,
                 result.OpponentScore,
                 roster.BitsMatchId);
-            var series = new[]
-            {
-                result.Series.ElementAtOrDefault(0),
-                result.Series.ElementAtOrDefault(1),
-                result.Series.ElementAtOrDefault(2),
-                result.Series.ElementAtOrDefault(3)
-            };
             var players = session.Load<Player>(roster.Players);
 
-            var matchSeries = new List<MatchSerie>();
-            var serieNumber = 1;
-            foreach (var serie in series.Where(x => x != null))
-            {
-                var tables = new List<MatchTable>();
-                for (var i = 0; i < 4; i++)
-                {
-                    var game1 = new MatchGame(
-                        serie.Tables[i].Game1.Player,
-                        serie.Tables[i].Game1.Pins,
-                        serie.Tables[i].Game1.Strikes,
-                        serie.Tables[i].Game1.Spares);
-                    var game2 = new MatchGame(
-                        serie.Tables[i].Game2.Player,
-                        serie.Tables[i].Game2.Pins,
-                        serie.Tables[i].Game2.Strikes,
-                        serie.Tables[i].Game2.Spares);
-                    tables.Add(new MatchTable(i + 1, game1, game2, serie.Tables[i].Score));
-                }
-
-                matchSeries.Add(new MatchSerie(serieNumber++, tables));
-            }
+            var matchSeries = result.CreateMatchSeries();
 
             var resultsForPlayer = session.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
                                           .Where(x => x.Season == roster.Season)
                                           .ToArray()
                                           .ToDictionary(x => x.PlayerId);
             matchResult.RegisterSeries(
-                matchSeries.ToArray(),
+                matchSeries,
                 result.OpponentSeries,
                 players,
                 resultsForPlayer);
