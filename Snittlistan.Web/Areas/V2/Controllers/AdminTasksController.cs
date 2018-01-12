@@ -1,13 +1,9 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using EventStoreLite;
-using Snittlistan.Web.Areas.V2.Domain.Match;
-using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.Migration;
-using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Helpers;
@@ -175,80 +171,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             SendTask(new EmailTask(vm.Recipient, vm.Subject, vm.Content));
 
             return RedirectToAction("Index");
-        }
-
-        public ActionResult AwardMedals()
-        {
-            return View();
-        }
-
-        [HttpPost, ActionName("AwardMedals")]
-        public ActionResult AwardMedalsConfirmed()
-        {
-            var query = DocumentSession.Query<AggregateIdReadModel, AggregateIdIndex>();
-            var current = 0;
-            while (true)
-            {
-                var results = query.Skip(current)
-                    .Take(10)
-                    .ToArray();
-                if (results.Length == 0) break;
-                foreach (var result in results)
-                {
-                    if (result.Type == typeof(MatchResult))
-                    {
-                        var matchResult = EventStoreSession.Load<MatchResult>(result.AggregateId);
-                        matchResult.ClearMedals();
-                        matchResult.AwardMedals();
-                    }
-                    else if (result.Type == typeof(MatchResult4))
-                    {
-                        var matchResult4 = EventStoreSession.Load<MatchResult4>(result.AggregateId);
-                        matchResult4.ClearMedals();
-                        matchResult4.AwardMedals();
-                    }
-                }
-
-                current += results.Length;
-            }
-
-            return RedirectToAction("Index");
-        }
-
-        public ActionResult AwardScores()
-        {
-            return View();
-        }
-
-        [HttpPost, ActionName("AwardScores")]
-        public ActionResult AwardScoresConfirmed()
-        {
-            ForEachMatchResult(x => x.AwardScores());
-
-            return RedirectToAction("Index");
-        }
-
-        private void ForEachMatchResult(Action<MatchResult> action)
-        {
-            var query = DocumentSession.Query<AggregateIdReadModel, AggregateIdIndex>();
-            var current = 0;
-            while (true)
-            {
-                var results = query.Skip(current)
-                    .Take(30)
-                    .ToArray();
-                if (results.Length == 0) break;
-                foreach (var result in results)
-                {
-                    if (result.Type == typeof(MatchResult))
-                    {
-                        var matchResult = EventStoreSession.Load<MatchResult>(result.AggregateId);
-                        action.Invoke(matchResult);
-                    }
-                }
-
-                current += results.Length;
-            }
         }
     }
 }

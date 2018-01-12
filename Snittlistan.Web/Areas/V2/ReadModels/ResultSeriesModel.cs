@@ -16,9 +16,9 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
         public List<Serie> Series { get; private set; }
 
-        public static string IdFromBitsMatchId(int id)
+        public static string IdFromBitsMatchId(int bitsMatchId)
         {
-            return "Series-" + id;
+            return $"Series-{bitsMatchId}";
         }
 
         public KeyValuePair<string, List<PlayerGame>[]>[] SortedPlayers()
@@ -83,6 +83,11 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             var total = Series.SelectMany(s => s.Tables)
                 .Sum(t => t.Game1.Pins + t.Game2.Pins);
             return total.ToString(CultureInfo.InvariantCulture);
+        }
+
+        public void Clear()
+        {
+            Series = new List<Serie>();
         }
 
         public class Serie

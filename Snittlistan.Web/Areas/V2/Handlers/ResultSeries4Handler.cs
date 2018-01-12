@@ -9,11 +9,13 @@ using Snittlistan.Web.Areas.V2.ReadModels;
 
 namespace Snittlistan.Web.Areas.V2.Handlers
 {
-    public class ResultSeries4Handler : IEventHandler<Serie4Registered>
+    public class ResultSeries4Handler :
+        IEventHandler<MatchResult4Registered>,
+        IEventHandler<Serie4Registered>
     {
         public IDocumentSession DocumentSession { get; set; }
 
-        public void Handle(Serie4Registered e, string aggregateId)
+        public void Handle(MatchResult4Registered e, string aggregateId)
         {
             var id = ResultSeries4ReadModel.IdFromBitsMatchId(e.BitsMatchId);
             var results = DocumentSession.Load<ResultSeries4ReadModel>(id);
@@ -22,6 +24,14 @@ namespace Snittlistan.Web.Areas.V2.Handlers
                 results = new ResultSeries4ReadModel { Id = id };
                 DocumentSession.Store(results);
             }
+
+            results.Clear();
+        }
+
+        public void Handle(Serie4Registered e, string aggregateId)
+        {
+            var id = ResultSeries4ReadModel.IdFromBitsMatchId(e.BitsMatchId);
+            var results = DocumentSession.Load<ResultSeries4ReadModel>(id);
 
             var matchSerie = e.MatchSerie;
             var playerIds = new[]
@@ -51,7 +61,8 @@ namespace Snittlistan.Web.Areas.V2.Handlers
         }
 
         private static ResultSeries4ReadModel.Game CreateGame(
-            IReadOnlyDictionary<string, Player> players, MatchGame4 matchGame)
+            IReadOnlyDictionary<string, Player> players,
+            MatchGame4 matchGame)
         {
             var game = new ResultSeries4ReadModel.Game
             {

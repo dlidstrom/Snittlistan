@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EventStoreLite;
 using JetBrains.Annotations;
+using Raven.Abstractions;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
 
 namespace Snittlistan.Web.Areas.V2.Domain.Match
@@ -41,22 +42,17 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
         private int TeamScore { get; set; }
 
-        public void Update(Roster roster, int teamScore, int opponentScore, int bitsMatchId)
+        public bool Update(
+            Roster roster,
+            int teamScore,
+            int opponentScore,
+            int bitsMatchId,
+            MatchSerie4[] matchSeries)
         {
-            if (roster == null) throw new ArgumentNullException(nameof(roster));
-            VerifyScores(teamScore, opponentScore);
-
-            roster.MatchResultId = Id;
-
-            if (roster.Id != RosterId)
-                ApplyChange(new Roster4Changed(RosterId, roster.Id));
-            var matchResultUpdated = new MatchResult4Updated(roster.Id, roster.Players, teamScore, opponentScore, bitsMatchId, RosterId, TeamScore, OpponentScore, BitsMatchId);
-            ApplyChange(matchResultUpdated);
-        }
-
-        public void Delete()
-        {
-            ApplyChange(new MatchResult4Deleted(RosterId, BitsMatchId));
+            ApplyChange(
+                new MatchResult4Registered(roster.Id, roster.Players, teamScore, opponentScore, bitsMatchId));
+            RegisterSeries(matchSeries);
+            return roster.Date.AddDays(5) < SystemTime.UtcNow;
         }
 
         public void RegisterSerie(MatchSerie4 matchSerie)
@@ -66,8 +62,21 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                 throw new MatchException("Roster must have 4 or 5 players when registering results");
             VerifyPlayers(matchSerie);
 
-            ApplyChange(new Serie4Registered(matchSerie, BitsMatchId));
+            ApplyChange(new Serie4Registered(matchSerie, BitsMatchId, RosterId));
             DoAwardMedals(registeredSeries);
+        }
+
+        public void RegisterSeries(MatchSerie4[] matchSeries)
+        {
+            if (rosterPlayers.Count != 4 && rosterPlayers.Count != 5)
+                throw new MatchException("Roster must have 4 or 5 players when registering results");
+            foreach (var matchSerie in matchSeries)
+            {
+                VerifyPlayers(matchSerie);
+
+                ApplyChange(new Serie4Registered(matchSerie, BitsMatchId, RosterId));
+                DoAwardMedals(registeredSeries);
+            }
         }
 
         public void AwardMedals()
@@ -110,9 +119,8 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             foreach (var key in playerPins.Keys)
             {
                 var pinsResult = playerPins[key].SingleOrDefault(x => x.SerieNumber == serie);
-                if (pinsResult == null) continue;
 
-                if (pinsResult.Pins >= 270)
+                if (pinsResult?.Pins >= 270)
                 {
                     var medal = new AwardedMedal(
                         BitsMatchId,
@@ -206,6 +214,11 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         private void Apply(ClearMedals e)
         {
             medalsAwarded = false;
+        }
+
+        [UsedImplicitly]
+        private void Apply(AwardedMedal e)
+        {
         }
     }
 }

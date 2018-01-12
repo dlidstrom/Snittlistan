@@ -20,12 +20,12 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             Spares = spares;
         }
 
-        public string Player { get; private set; }
+        public string Player { get; }
 
-        public int Pins { get; private set; }
+        public int Pins { get; }
 
-        public int Strikes { get; private set; }
+        public int Strikes { get; }
 
-        public int Spares { get; private set; }
+        public int Spares { get; }
     }
 }

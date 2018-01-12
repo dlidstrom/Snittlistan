@@ -54,5 +54,12 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         {
             TotalScore = totalScore;
         }
+
+        public void Clear()
+        {
+            TotalSeries = 0;
+            TotalPins = 0;
+            TotalScore = 0;
+        }
     }
 }

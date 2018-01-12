@@ -57,5 +57,10 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
                 PlayerScores[key].ClearMedals();
             }
         }
+
+        public void Reset()
+        {
+            PlayerScores = new Dictionary<string, PlayerScore>();
+        }
     }
 }

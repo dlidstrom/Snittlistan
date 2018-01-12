@@ -1,8 +1,11 @@
-﻿using EventStoreLite;
+﻿using System.Collections.Generic;
+using System.Linq;
+using EventStoreLite;
 using Raven.Client;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
+using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.ReadModels;
 
 namespace Snittlistan.Web.Areas.V2.Handlers
@@ -16,12 +19,31 @@ namespace Snittlistan.Web.Areas.V2.Handlers
     {
         public IDocumentSession DocumentSession { get; set; }
 
-        public void Handle(Serie4Registered e, string aggregateId)
+        public void Handle(MatchResultRegistered e, string aggregateId)
         {
-            foreach (var game in new[] { e.MatchSerie.Game1, e.MatchSerie.Game2, e.MatchSerie.Game3, e.MatchSerie.Game4 })
+            // need to delete some entries
+            var players = DocumentSession.Query<Player, PlayerSearch>().ToArray();
+            var keep = new HashSet<string>(e.RosterPlayers);
+            var playerIds = players.Where(x => keep.Contains(x.Id) == false).Select(x => x.Id).ToArray();
+            var idsToDelete = playerIds.Select(x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId)).ToArray();
+            var docsToDelete = DocumentSession.Load<ResultForPlayerReadModel>(idsToDelete);
+            foreach (var doc in docsToDelete.Where(x => x != null))
             {
-                var id = ResultForPlayerReadModel.GetId(game.Player, e.BitsMatchId);
-                DocumentSession.Load<ResultForPlayerReadModel>(id).AddGame(game);
+                DocumentSession.Delete(doc);
+            }
+
+            var roster = DocumentSession.Load<Roster>(e.RosterId);
+            foreach (var playerId in e.RosterPlayers)
+            {
+                var id = ResultForPlayerReadModel.GetId(playerId, e.BitsMatchId);
+                var model = DocumentSession.Load<ResultForPlayerReadModel>(id);
+                if (model == null)
+                {
+                    model = new ResultForPlayerReadModel(roster.Season, playerId, e.BitsMatchId, roster.Date);
+                    DocumentSession.Store(model);
+                }
+
+                model.Clear();
             }
         }
 
@@ -37,23 +59,40 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             }
         }
 
-        public void Handle(MatchResultRegistered e, string aggregateId)
+        public void Handle(MatchResult4Registered e, string aggregateId)
         {
-            var roster = DocumentSession.Load<Roster>(e.RosterId);
-            foreach (var player in e.RosterPlayers)
+            // need to delete some entries
+            var players = DocumentSession.Query<Player, PlayerSearch>().ToArray();
+            var keep = new HashSet<string>(e.RosterPlayers);
+            var playerIds = players.Where(x => keep.Contains(x.Id) == false).Select(x => x.Id).ToArray();
+            var idsToDelete = playerIds.Select(x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId)).ToArray();
+            var docsToDelete = DocumentSession.Load<ResultForPlayerReadModel>(idsToDelete);
+            foreach (var doc in docsToDelete.Where(x => x != null))
             {
-                var model = new ResultForPlayerReadModel(roster.Season, player, e.BitsMatchId, roster.Date);
-                DocumentSession.Store(model);
+                DocumentSession.Delete(doc);
+            }
+
+            var roster = DocumentSession.Load<Roster>(e.RosterId);
+            foreach (var playerId in e.RosterPlayers)
+            {
+                var id = ResultForPlayerReadModel.GetId(playerId, e.BitsMatchId);
+                var model = DocumentSession.Load<ResultForPlayerReadModel>(id);
+                if (model == null)
+                {
+                    model = new ResultForPlayerReadModel(roster.Season, playerId, e.BitsMatchId, roster.Date);
+                    DocumentSession.Store(model);
+                }
+
+                model.Clear();
             }
         }
 
-        public void Handle(MatchResult4Registered e, string aggregateId)
+        public void Handle(Serie4Registered e, string aggregateId)
         {
-            var roster = DocumentSession.Load<Roster>(e.RosterId);
-            foreach (var player in e.RosterPlayers)
+            foreach (var game in new[] { e.MatchSerie.Game1, e.MatchSerie.Game2, e.MatchSerie.Game3, e.MatchSerie.Game4 })
             {
-                var model = new ResultForPlayerReadModel(roster.Season, player, e.BitsMatchId, roster.Date);
-                DocumentSession.Store(model);
+                var id = ResultForPlayerReadModel.GetId(game.Player, e.BitsMatchId);
+                DocumentSession.Load<ResultForPlayerReadModel>(id).AddGame(game);
             }
         }
 

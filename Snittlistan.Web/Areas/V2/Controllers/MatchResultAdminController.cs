@@ -90,29 +90,10 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return RedirectToAction("Index", "MatchResult");
         }
 
-        public ActionResult Delete(string id)
-        {
-            if (EventStoreSession.Load<MatchResult>(id) == null)
-                throw new HttpException(404, "MatchResult not found");
-            return View();
-        }
-
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(string id)
-        {
-            var matchResult = EventStoreSession.Load<MatchResult>(id);
-            if (matchResult == null)
-                throw new HttpException(404, "MatchResult not found");
-            matchResult.Delete();
-
-            return RedirectToAction("Index", "MatchResult");
-        }
-
         public ActionResult RegisterSerie(string aggregateId, string rosterId, int bitsMatchId)
         {
-            var roster = DocumentSession
-                .Include<Roster>(r => r.Players)
-                .Load<Roster>(rosterId);
+            var roster = DocumentSession.Include<Roster>(r => r.Players)
+                                        .Load<Roster>(rosterId);
             if (roster == null) throw new HttpException(404, "Roster not found");
             var registerSerie = new RegisterSerie(
                 new ResultSeriesReadModel.Serie(),
