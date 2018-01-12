@@ -1,4 +1,5 @@
 ﻿using System.ServiceProcess;
+using log4net.Config;
 
 namespace Snittlistan.Queue.WindowsServiceHost
 {
@@ -9,6 +10,7 @@ namespace Snittlistan.Queue.WindowsServiceHost
         /// </summary>
         static void Main()
         {
+            XmlConfigurator.Configure();
             var servicesToRun = new ServiceBase[]
             {
                 new QueueService()
