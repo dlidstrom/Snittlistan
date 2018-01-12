@@ -5,7 +5,6 @@ using System.Linq;
 using System.Web.Http;
 using Elmah;
 using Newtonsoft.Json;
-using NLog;
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Commands;
 using Snittlistan.Web.Areas.V2.Domain;
@@ -14,13 +13,11 @@ using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.Queries;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Infrastructure;
-using ApplicationException = System.ApplicationException;
 
 namespace Snittlistan.Web.Areas.V2.Controllers.Api
 {
     public class TaskController : AbstractApiController
     {
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private readonly IBitsClient bitsClient;
 
         public TaskController(IBitsClient bitsClient)
@@ -112,7 +109,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                 {
                     ErrorSignal
                         .FromCurrentContext()
-                        .Raise(new ApplicationException($"Unable to auto register match {pendingMatch.Id} ({pendingMatch.BitsMatchId})", e));
+                        .Raise(new Exception($"Unable to auto register match {pendingMatch.Id} ({pendingMatch.BitsMatchId})", e));
                 }
             }
 

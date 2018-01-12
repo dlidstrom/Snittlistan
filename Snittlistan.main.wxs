@@ -3,10 +3,11 @@
 
   <!-- unique identifier for this package, DO NOT CHANGE! -->
   <?define UpgradeCode="{a2cb3a4e-9c6a-4a9b-ae08-55842492db9d}"?>
+  <?define ProductName="Snittlistan"?>
 
   <Product Id="*"
            UpgradeCode="$(var.UpgradeCode)"
-           Name="Snittlistan"
+           Name="$(var.ProductName)"
            Manufacturer="Daniel Lidstrom AB"
            Language="1033"
            Version="$(var.Version)">
@@ -24,31 +25,23 @@
     <MajorUpgrade DowngradeErrorMessage="A later version of this product is already installed. Setup will now exit." />
     <Property Id="ALLUSERS" Value="1" />
     <PropertyRef Id="NETFRAMEWORK40FULLINSTALLROOTDIR" />
-    <PropertyRef Id="WIX_IS_NETFRAMEWORK_452_OR_LATER_INSTALLED" />
-    <Condition Message="This application requires .NET Framework 4.5.2 (or later version). Please install the .NET Framework then run this installer again.">
-      Installed OR WIX_IS_NETFRAMEWORK_452_OR_LATER_INSTALLED
-    </Condition>
+
+    <!-- will break when supported by WiX -->
+    <Property Id="WIX_IS_NETFRAMEWORK_47_OR_LATER_INSTALLED" Value="0" />
+    <PropertyRef Id="NETFRAMEWORK45" />
+    <Condition Message="[ProductName] Requires .NET Framework 4.7 or later to be installed"><![CDATA[Installed OR (NETFRAMEWORK45 AND NETFRAMEWORK45 >= "#460805")]]></Condition>
+
     <Condition Message="ADMINISTRATOR_PASSWORD variable must be set in the command line">
       Installed OR ADMINISTRATOR_PASSWORD
     </Condition>
 
-    <?include iis.wxi?>
+    <?include conditions.wxi?>
 
-    <CustomAction Id="LetsEncrypt_Cmd"
-                  Property="LetsEncryptTask"
+    <CustomAction Id="VerifyMatches_Cmd"
+                  Property="VerifyMatches_Task"
                   Execute="immediate"
-                  Value="&quot;[LetsEncrypt]letsencrypt.exe&quot; --emailaddress dlidstrom@gmail.com --usedefaulttaskuser --accepttos --manualhost snittlistan.se --norenewaltask --webroot &quot;C:\Program Files\Snittlistan&quot;" />
-    <CustomAction Id="LetsEncryptTask"
-                  BinaryKey="WixCA"
-                  DllEntry="CAQuietExec"
-                  Return="check"
-                  Execute="deferred"
-                  Impersonate="no" />
-    <CustomAction Id="LetsEncrypt_RenewTask_Cmd"
-                  Property="LetsEncrypt_RenewTask_CreateTask"
-                  Execute="immediate"
-                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU Administrator /RP [ADMINISTRATOR_PASSWORD] /SC DAILY /TN LetsEncryptRenewSnittlistan /ST 03:00 /TR &quot;\&quot;[#letsencrypt_exe_file]\&quot; --renew --baseuri \&quot;https://acme-v01.api.letsencrypt.org/\&quot;&quot;" />
-    <CustomAction Id="LetsEncrypt_RenewTask_CreateTask"
+                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU Administrator /RP [ADMINISTRATOR_PASSWORD] /SC DAILY /TN VerifyMatches /ST 12:00 /TR &quot;\&quot;[#Snittlistan.Tool.exe]\&quot; verifymatches&quot;" />
+    <CustomAction Id="VerifyMatches_Task"
                   BinaryKey="WixCA"
                   DllEntry="CAQuietExec"
                   Return="check"
@@ -58,62 +51,109 @@
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFiles64Folder" Name="PFiles">
         <Directory Id="INSTALLDIR" Name="Snittlistan">
-          <Component Id="Snittlistan.Web.config" Guid="*" Win64="yes">
-            <File Id="Snittlistan.Web.config"
-                  KeyPath="yes"
-                  Source="$(var.Snittlistan_App)\Web.config" />
-          </Component>
-          <Directory Id="LetsEncrypt" Name="letsencrypt-win-simple.V1.9.4">
-            <Component Id="letsencrypt_exe" Guid="*" Win64="yes">
-              <File Id="letsencrypt_exe_file" KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.4\letsencrypt.exe" />
+          <Directory Id="SnittlistanWebDir" Name="Snittlistan.Web">
+            <Component Id="Snittlistan.Web.config" Guid="*" Win64="yes">
+              <File Id="Snittlistan.Web.config"
+                    KeyPath="yes"
+                    Source="$(var.Snittlistan_App)\Web.config" />
             </Component>
-            <Component Id="letsencrypt_exe_config" Guid="*" Win64="yes">
-              <File KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.4\letsencrypt.exe.config" />
-            </Component>
-            <Directory Id="letsencrypt_x86" Name="x86">
-              <Component Id="libeay32_dll_x86" Guid="*" Win64="yes">
-                <File Id="libeay32_dll_x86" KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.4\x86\libeay32.dll" />
-              </Component>
-              <Component Id="ssleay32_dll_x86" Guid="*" Win64="yes">
-                <File Id="ssleay32_dll_x86" KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.4\x86\ssleay32.dll" />
+            <Directory Id="SnittlistanWeb_AppData" Name="App_Data">
+              <Component Id="SnittlistanWeb_AppData" Guid="{3ddc6c33-9655-455a-bfb2-709023091c3c}"
+                         SharedDllRefCount="no" KeyPath="no" NeverOverwrite="no" Permanent="no" Transitive="no"
+                         Win64="yes" Location="either">
+                <CreateFolder>
+                  <util:PermissionEx GenericAll="yes"
+                                     CreateFile="yes"
+                                     ChangePermission="yes"
+                                     Delete="yes"
+                                     DeleteChild="yes"
+                                     User="IIS_IUSRS" />
+                </CreateFolder>
               </Component>
             </Directory>
-            <Directory Id="letsencrypt_x64" Name="x64">
-              <Component Id="libeay32_dll_64" Guid="*" Win64="yes">
-                <File Id="libeay32_dll_64" KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.4\x64\libeay32.dll" />
-              </Component>
-              <Component Id="ssleay32_dll_64" Guid="*" Win64="yes">
-                <File Id="ssleay32_dll_64" KeyPath="yes" Source="Tools\letsencrypt-win-simple.V1.9.4\x64\ssleay32.dll" />
+            <Directory Id="SnittlistanWeb_Logs" Name="Logs">
+              <Component Id="SnittlistanWeb_Logs" Guid="{07655794-20ae-4272-89f9-96adcec0eb2a}"
+                         SharedDllRefCount="no" KeyPath="no" NeverOverwrite="no" Permanent="no" Transitive="no"
+                         Win64="yes" Location="either">
+                <CreateFolder>
+                  <util:PermissionEx GenericAll="yes"
+                                     CreateFile="yes"
+                                     ChangePermission="yes"
+                                     Delete="yes"
+                                     DeleteChild="yes"
+                                     User="IIS_IUSRS" />
+                </CreateFolder>
               </Component>
             </Directory>
           </Directory>
-          <Directory Id="Snittlistan_AppData" Name="App_Data">
-            <Component Id="Snittlistan_AppData" Guid="{3ddc6c33-9655-455a-bfb2-709023091c3c}"
-                       SharedDllRefCount="no" KeyPath="no" NeverOverwrite="no" Permanent="no" Transitive="no"
-                       Win64="yes" Location="either">
-              <CreateFolder>
-                <util:PermissionEx GenericAll="yes"
-                                   CreateFile="yes"
-                                   ChangePermission="yes"
-                                   Delete="yes"
-                                   DeleteChild="yes"
-                                   User="IIS_IUSRS" />
-              </CreateFolder>
+          <Directory Id="SnittlistanToolDir" Name="Snittlistan.Tool">
+            <Component Id="Snittlistan.Tool.exe" Guid="*" Win64="yes">
+              <File KeyPath="yes"
+                    Source="$(var.Snittlistan_App)\Snittlistan.Tool.exe" />
             </Component>
+            <Component Id="Snittlistan.Tool.exe.config" Guid="*" Win64="yes">
+              <File KeyPath="yes"
+                    Source="$(var.Snittlistan_App)\Snittlistan.Tool.exe.config" />
+            </Component>
+            <Directory Id="SnittlistanTool_Logs" Name="Logs">
+              <Component Id="SnittlistanTool_Logs" Guid="{02c5f40d-0a22-4b54-a54e-654ae4d003d7}"
+                         SharedDllRefCount="no" KeyPath="no" NeverOverwrite="no" Permanent="no" Transitive="no"
+                         Win64="yes" Location="either">
+                <CreateFolder>
+                  <util:PermissionEx GenericAll="yes"
+                                     CreateFile="yes"
+                                     ChangePermission="yes"
+                                     Delete="yes"
+                                     DeleteChild="yes"
+                                     User="Users" />
+                </CreateFolder>
+              </Component>
+            </Directory>
           </Directory>
-          <Directory Id="Snittlistan_Logs" Name="Logs">
-            <Component Id="Snittlistan_Logs" Guid="{07655794-20ae-4272-89f9-96adcec0eb2a}"
-                       SharedDllRefCount="no" KeyPath="no" NeverOverwrite="no" Permanent="no" Transitive="no"
-                       Win64="yes" Location="either">
-              <CreateFolder>
-                <util:PermissionEx GenericAll="yes"
-                                   CreateFile="yes"
-                                   ChangePermission="yes"
-                                   Delete="yes"
-                                   DeleteChild="yes"
-                                   User="IIS_IUSRS" />
-              </CreateFolder>
+          <Directory Id="SnittlistanQueueDir" Name="Snittlistan.Queue">
+            <Component Id="Snittlistan.Queue.WindowsServiceHost.exe" Guid="*" Win64="yes">
+              <File KeyPath="yes"
+                    Source="$(var.Snittlistan_App)\Snittlistan.Queue.WindowsServiceHost.exe" />
+              <ServiceInstall Id="Snittlistan.Queue.WindowsServiceHost.exe"
+                              Name="Snittlistan.Queue.WindowsServiceHost.exe"
+                              DisplayName="Snittlistan Queue Service"
+                              ErrorControl="normal"
+                              Start="auto"
+                              Type="ownProcess"
+                              Account="Administrator"
+                              Password="[ADMINISTRATOR_PASSWORD]"
+                              Vital="yes">
+                <ServiceDependency Id="MSMQ" />
+                <util:ServiceConfig FirstFailureActionType="restart"
+                                    SecondFailureActionType="restart"
+                                    ThirdFailureActionType="restart"
+                                    RestartServiceDelayInSeconds="300"
+                                    ResetPeriodInDays="1" />
+              </ServiceInstall>
+              <ServiceControl Id="HM.GAM.ImportService.WindowsServiceHost.exe"
+                              Name="HM.GAM.ImportService.WindowsServiceHost.exe"
+                              Start="install"
+                              Stop="both"
+                              Remove="uninstall"/>
             </Component>
+            <Component Id="Snittlistan.Queue.WindowsServiceHost.exe.config" Guid="*" Win64="yes">
+              <File KeyPath="yes"
+                    Source="$(var.Snittlistan_App)\Snittlistan.Queue.WindowsServiceHost.exe.config" />
+            </Component>
+            <Directory Id="SnittlistanQueue_Logs" Name="Logs">
+              <Component Id="SnittlistanQueue_Logs" Guid="{fe829ea1-9510-4cf7-ba10-34230be033bc}"
+                         SharedDllRefCount="no" KeyPath="no" NeverOverwrite="no" Permanent="no" Transitive="no"
+                         Win64="yes" Location="either">
+                <CreateFolder>
+                  <util:PermissionEx GenericAll="yes"
+                                     CreateFile="yes"
+                                     ChangePermission="yes"
+                                     Delete="yes"
+                                     DeleteChild="yes"
+                                     User="Users" />
+                </CreateFolder>
+              </Component>
+            </Directory>
           </Directory>
         </Directory>
       </Directory>
@@ -128,9 +168,9 @@
                         RecycleMinutes="1440"
                         IdleTimeout="1440" />
       </Component>
-      <Component Id="Snittlistan" Guid="{0c289e8a-e4de-4f0f-b585-5d42b44126ea}">
+      <Component Id="SnittlistanWebSite" Guid="{0c289e8a-e4de-4f0f-b585-5d42b44126ea}">
         <!-- Creates the Snittlistan web site -->
-        <iis:WebSite Id="SnittlistanWebSite" Description="Snittlistan" Directory="INSTALLDIR">
+        <iis:WebSite Id="SnittlistanWebSite" Description="Snittlistan" Directory="SnittlistanWebDir">
           <iis:WebAddress Id="Binding1" Port="443" Header="snittlistan.se" Secure="yes" />
           <iis:WebAddress Id="Binding2" Port="443" Header="www.snittlistan.se" Secure="yes" />
           <iis:WebAddress Id="Binding3" Port="80" Header="snittlistan.se" />
@@ -143,28 +183,28 @@
       </Component>
     </Directory>
     <InstallExecuteSequence>
-      <!-- add task on install -->
-      <!--<Custom Action="LetsEncrypt_Cmd" Before="InstallFinalize">NOT Installed</Custom>
-      <Custom Action="LetsEncryptTask" After="LetsEncrypt_Cmd">NOT Installed</Custom>-->
-      <Custom Action="LetsEncrypt_RenewTask_Cmd" Before="InstallFinalize">NOT Installed</Custom>
-      <Custom Action="LetsEncrypt_RenewTask_CreateTask" After="LetsEncrypt_RenewTask_Cmd">NOT Installed</Custom>
+      <!-- add tasks on install -->
+      <Custom Action="VerifyMatches_Cmd" Before="InstallFinalize">NOT Installed</Custom>
+      <Custom Action="VerifyMatches_Task" After="VerifyMatches_Cmd">NOT Installed</Custom>
     </InstallExecuteSequence>
 
     <Feature Id="Service" Level="1">
       <ComponentRef Id="Snittlistan.Web.config" />
-      <ComponentRef Id="Snittlistan_AppData" />
-      <ComponentRef Id="Snittlistan_Logs" />
+      <ComponentRef Id="SnittlistanWeb_AppData" />
+      <ComponentRef Id="SnittlistanWeb_Logs" />
+      <ComponentRef Id="Snittlistan.Tool.exe" />
+      <ComponentRef Id="Snittlistan.Tool.exe.config" />
+      <ComponentRef Id="SnittlistanTool_Logs" />
+      <ComponentRef Id="Snittlistan.Queue.WindowsServiceHost.exe" />
+      <ComponentRef Id="Snittlistan.Queue.WindowsServiceHost.exe.config" />
+      <ComponentRef Id="SnittlistanQueue_Logs" />
       <ComponentRef Id="AppPool" />
-      <ComponentRef Id="Snittlistan" />
-      <ComponentRef Id="letsencrypt_exe" />
-      <ComponentRef Id="letsencrypt_exe_config" />
-      <ComponentRef Id="libeay32_dll_x86" />
-      <ComponentRef Id="ssleay32_dll_x86" />
-      <ComponentRef Id="libeay32_dll_64" />
-      <ComponentRef Id="ssleay32_dll_64" />
+      <ComponentRef Id="SnittlistanWebSite" />
     </Feature>
     <Feature Id="Libraries" Level="1">
-      <ComponentGroupRef Id="Snittlistan" />
+      <ComponentGroupRef Id="SnittlistanWebLib" />
+      <ComponentGroupRef Id="SnittlistanToolLib" />
+      <ComponentGroupRef Id="SnittlistanQueueLib" />
     </Feature>
   </Product>
 </Wix>

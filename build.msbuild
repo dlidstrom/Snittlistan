@@ -17,7 +17,9 @@
   <Import Project="Tools\MSBuild.Community.Tasks.v1.5.0.235\MSBuild.Community.Tasks.Targets" />
 
   <ItemGroup>
-    <SolutionFile Include="Snittlistan.sln" />
+    <SnittlistanWebProject Include="Snittlistan.Web\Snittlistan.Web.csproj" />
+    <SnittlistanToolProject Include="Snittlistan.Tool\Snittlistan.Tool.csproj" />
+    <SnittlistanQueueProject Include="Snittlistan.Queue.WindowsServiceHost\Snittlistan.Queue.WindowsServiceHost.csproj" />
     <AssemblyVersionFiles Include="**\Properties\AssemblyInfo.cs" />
   </ItemGroup>
 
@@ -62,21 +64,34 @@
   <!-- Build the application -->
   <Target Name="Build" DependsOnTargets="AssemblyVersion">
     <!-- web projects -->
-    <MSBuild Projects="@(SolutionFile)" Properties="Configuration=Release;UseWPP_CopyWebApplication=True;PipelineDependsOnBuild=False;OutDir=$(OutputDirectory)" />
+    <MSBuild Projects="@(SnittlistanWebProject)" Properties="Configuration=Release;UseWPP_CopyWebApplication=True;PipelineDependsOnBuild=False;OutDir=$(OutputDirectory)\SnittlistanWeb" />
+    <MSBuild Projects="@(SnittlistanToolProject)" Properties="Configuration=Release;OutDir=$(OutputDirectory)\SnittlistanTool" />
+    <MSBuild Projects="@(SnittlistanQueueProject)" Properties="Configuration=Release;OutDir=$(OutputDirectory)\SnittlistanQueue" />
   </Target>
 
   <!-- Preparations for WiX -->
   <Target Name="WixPrepare">
-    <!-- Copy configuration files in order to perform variable substitutions with WiX -->
-    <Copy SourceFiles="$(OutputDirectory)\_PublishedWebsites\Snittlistan.Web\Web.config"
+    <!-- Move files that are handled in main -->
+    <Move SourceFiles="$(OutputDirectory)\SnittlistanWeb\_PublishedWebsites\Snittlistan.Web\Web.config"
+          DestinationFolder="$(OutputDirectory)\app\Snittlistan" />
+    <Move SourceFiles="$(OutputDirectory)\SnittlistanTool\Snittlistan.Tool.exe"
+          DestinationFolder="$(OutputDirectory)\app\Snittlistan" />
+    <Move SourceFiles="$(OutputDirectory)\SnittlistanTool\Snittlistan.Tool.exe.config"
+          DestinationFolder="$(OutputDirectory)\app\Snittlistan" />
+    <Move SourceFiles="$(OutputDirectory)\SnittlistanQueue\Snittlistan.Queue.WindowsServiceHost.exe"
+          DestinationFolder="$(OutputDirectory)\app\Snittlistan" />
+    <Move SourceFiles="$(OutputDirectory)\SnittlistanQueue\Snittlistan.Queue.WindowsServiceHost.exe.config"
           DestinationFolder="$(OutputDirectory)\app\Snittlistan" />
 
     <!-- Copy everything except configuration files -->
     <ItemGroup>
-      <Snittlistan_Libraries Include="$(OutputDirectory)\_PublishedWebsites\Snittlistan.Web\**\*.*"
-                             Exclude="$(OutputDirectory)\_PublishedWebsites\Snittlistan.Web\Web.config" />
+      <SnittlistanWeb_Libraries Include="$(OutputDirectory)\SnittlistanWeb\_PublishedWebsites\Snittlistan.Web\**\*.*" />
+      <SnittlistanTool_Libraries Include="$(OutputDirectory)\SnittlistanTool\*.*" />
+      <SnittlistanQueue_Libraries Include="$(OutputDirectory)\SnittlistanQueue\*.*" />
     </ItemGroup>
-    <Copy SourceFiles="@(Snittlistan_Libraries)" DestinationFolder="$(OutputDirectory)\lib\Snittlistan.Web\%(RecursiveDir)" />
+    <Copy SourceFiles="@(SnittlistanWeb_Libraries)" DestinationFolder="$(OutputDirectory)\lib\Snittlistan.Web\%(RecursiveDir)" />
+    <Copy SourceFiles="@(SnittlistanTool_Libraries)" DestinationFolder="$(OutputDirectory)\lib\Snittlistan.Tool\%(RecursiveDir)" />
+    <Copy SourceFiles="@(SnittlistanQueue_Libraries)" DestinationFolder="$(OutputDirectory)\lib\Snittlistan.Queue\%(RecursiveDir)" />
   </Target>
 
   <Target Name="Cop">
@@ -88,17 +103,56 @@
     <HeatDirectory SuppressCom="true"
                    SuppressRegistry="true"
                    Directory="$(OutputDirectory)\lib\Snittlistan.Web"
-                   OutputFile="$(OutputDirectory)\tmp\Snittlistan.lib.wxs"
+                   OutputFile="$(OutputDirectory)\tmp\Snittlistan.Web.lib.wxs"
                    ToolPath="Tools\wix311-binaries"
-                   ComponentGroupName="Snittlistan"
+                   ComponentGroupName="SnittlistanWebLib"
                    AutogenerateGuids="true"
                    SuppressUniqueIds="true"
                    SuppressFragments="true"
-                   PreprocessorVariable="var.Snittlistan_Lib"
+                   PreprocessorVariable="var.SnittlistanWeb_Lib"
                    SuppressRootDirectory="true"
-                   DirectoryRefId="INSTALLDIR" />
-    <XslTransformation XmlInputPaths="$(OutputDirectory)\tmp\Snittlistan.lib.wxs"
-                       OutputPaths="$(OutputDirectory)\tmp\Snittlistan.lib.transformed.wxs"
+                   DirectoryRefId="SnittlistanWebDir" />
+    <XslTransformation XmlInputPaths="$(OutputDirectory)\tmp\Snittlistan.Web.lib.wxs"
+                       OutputPaths="$(OutputDirectory)\tmp\Snittlistan.Web.lib.transformed.wxs"
+                       XslInputPath="project_prefix.xsl" />
+    <XslTransformation XmlInputPaths="$(OutputDirectory)\tmp\Snittlistan.Web.lib.transformed.wxs"
+                       OutputPaths="$(OutputDirectory)\tmp\Snittlistan.Web.lib.transformed64.wxs"
+                       XslInputPath="Build\add_64bit.xsl" />
+    <HeatDirectory SuppressCom="true"
+                   SuppressRegistry="true"
+                   Directory="$(OutputDirectory)\lib\Snittlistan.Tool"
+                   OutputFile="$(OutputDirectory)\tmp\Snittlistan.Tool.lib.wxs"
+                   ToolPath="Tools\wix311-binaries"
+                   ComponentGroupName="SnittlistanToolLib"
+                   AutogenerateGuids="true"
+                   SuppressUniqueIds="true"
+                   SuppressFragments="true"
+                   PreprocessorVariable="var.SnittlistanTool_Lib"
+                   SuppressRootDirectory="true"
+                   DirectoryRefId="SnittlistanToolDir" />
+    <XslTransformation XmlInputPaths="$(OutputDirectory)\tmp\Snittlistan.Tool.lib.wxs"
+                       OutputPaths="$(OutputDirectory)\tmp\Snittlistan.Tool.lib.transformed.wxs"
+                       XslInputPath="project_prefix.xsl" />
+    <XslTransformation XmlInputPaths="$(OutputDirectory)\tmp\Snittlistan.Tool.lib.transformed.wxs"
+                       OutputPaths="$(OutputDirectory)\tmp\Snittlistan.Tool.lib.transformed64.wxs"
+                       XslInputPath="Build\add_64bit.xsl" />
+    <HeatDirectory SuppressCom="true"
+                   SuppressRegistry="true"
+                   Directory="$(OutputDirectory)\lib\Snittlistan.Queue"
+                   OutputFile="$(OutputDirectory)\tmp\Snittlistan.Queue.lib.wxs"
+                   ToolPath="Tools\wix311-binaries"
+                   ComponentGroupName="SnittlistanQueueLib"
+                   AutogenerateGuids="true"
+                   SuppressUniqueIds="true"
+                   SuppressFragments="true"
+                   PreprocessorVariable="var.SnittlistanQueue_Lib"
+                   SuppressRootDirectory="true"
+                   DirectoryRefId="SnittlistanQueueDir" />
+    <XslTransformation XmlInputPaths="$(OutputDirectory)\tmp\Snittlistan.Queue.lib.wxs"
+                       OutputPaths="$(OutputDirectory)\tmp\Snittlistan.Queue.lib.transformed.wxs"
+                       XslInputPath="project_prefix.xsl" />
+    <XslTransformation XmlInputPaths="$(OutputDirectory)\tmp\Snittlistan.Queue.lib.transformed.wxs"
+                       OutputPaths="$(OutputDirectory)\tmp\Snittlistan.Queue.lib.transformed64.wxs"
                        XslInputPath="Build\add_64bit.xsl" />
   </Target>
 
@@ -106,12 +160,14 @@
     <!-- Reference wix files to include -->
     <ItemGroup>
       <WixSources Include="Snittlistan.main.wxs" />
-      <WixSources Include="$(OutputDirectory)\tmp\Snittlistan.lib.transformed.wxs" />
+      <WixSources Include="$(OutputDirectory)\tmp\Snittlistan.Web.lib.transformed64.wxs" />
+      <WixSources Include="$(OutputDirectory)\tmp\Snittlistan.Tool.lib.transformed64.wxs" />
+      <WixSources Include="$(OutputDirectory)\tmp\Snittlistan.Queue.lib.transformed64.wxs" />
     </ItemGroup>
     <Candle OutputFile="$(OutputDirectory)\tmp\"
             SourceFiles="%(WixSources.FullPath)"
             ToolPath="Tools\wix311-binaries"
-            DefineConstants="Snittlistan_App=$(OutputDirectory)\app\Snittlistan;Snittlistan_Lib=$(OutputDirectory)\lib\Snittlistan.Web;Version=$(Version)"
+            DefineConstants="Snittlistan_App=$(OutputDirectory)\app\Snittlistan;SnittlistanWeb_Lib=$(OutputDirectory)\lib\Snittlistan.Web;SnittlistanTool_Lib=$(OutputDirectory)\lib\Snittlistan.Tool;SnittlistanQueue_Lib=$(OutputDirectory)\lib\Snittlistan.Queue;Version=$(Version)"
             Extensions="Tools\wix311-binaries\WixUtilExtension.dll;Tools\wix311-binaries\WiXNetFxExtension.dll;Tools\wix311-binaries\WixIIsExtension.dll" />
   </Target>
 
