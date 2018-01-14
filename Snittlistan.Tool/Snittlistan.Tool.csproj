@@ -92,13 +92,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Tasks\CommandLineTask.cs" />
-    <Compile Include="Tasks\Help.cs" />
+    <Compile Include="Tasks\HelpCommandLineTask.cs" />
     <Compile Include="Tasks\ICommandLineTask.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tasks\Initialize.cs" />
-    <Compile Include="Tasks\RegisterMatch.cs" />
-    <Compile Include="Tasks\VerifyMatches.cs" />
+    <Compile Include="Tasks\InitializeCommandLineTask.cs" />
+    <Compile Include="Tasks\RegisterMatchCommandLineTask.cs" />
+    <Compile Include="Tasks\VerifyMatchesCommandLineTask.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\packages\RavenDB.Database.3.5.4\tools\Raven.Studio.Html5.zip">
@@ -114,10 +114,6 @@
     <ProjectReference Include="..\Snittlistan.Queue\Snittlistan.Queue.csproj">
       <Project>{18A532FA-9C94-4FF2-ACF8-B267F127606D}</Project>
       <Name>Snittlistan.Queue</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Snittlistan.Web\Snittlistan.Web.csproj">
-      <Project>{B2001F9E-431F-429C-9A90-956F89CC5169}</Project>
-      <Name>Snittlistan.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -10,7 +10,6 @@ namespace Snittlistan.Queue
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private static MessageQueue messageQueue;
-        private static MessageQueueTransaction transaction;
 
         public static void Initialize(string path)
         {
@@ -20,27 +19,32 @@ namespace Snittlistan.Queue
             };
         }
 
-        public static void BeginTransaction()
+        public static MsmqTransactionScope AutoCommitScope()
         {
             if (messageQueue == null) throw new Exception("Initialize MsmqGateway");
-            transaction = new MessageQueueTransaction();
-            transaction.Begin();
+            return new MsmqTransactionScope();
         }
 
-        public static void PublishMessage(MessageEnvelope envelope)
+        public class MsmqTransactionScope : IDisposable
         {
-            if (messageQueue == null) throw new Exception("Initialize MsmqGateway");
-            if (transaction == null) throw new Exception("BeginTransaction first");
+            private readonly MessageQueueTransaction transaction = new MessageQueueTransaction();
 
-            Log.InfoFormat("Sending {0}", envelope);
-            messageQueue.Send(envelope, transaction);
-        }
+            public MsmqTransactionScope()
+            {
+                transaction.Begin();
+            }
 
-        public static void CommitTransaction()
-        {
-            transaction.Commit();
-            transaction.Dispose();
-            transaction = null;
+            public void PublishMessage(MessageEnvelope envelope)
+            {
+                Log.InfoFormat("Sending {0}", envelope);
+                messageQueue.Send(envelope, transaction);
+            }
+
+            public void Dispose()
+            {
+                transaction.Commit();
+                transaction.Dispose();
+            }
         }
     }
 }

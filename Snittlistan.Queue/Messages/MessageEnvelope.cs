@@ -11,7 +11,7 @@ namespace Snittlistan.Queue.Messages
             TypeNameHandling = TypeNameHandling.All
         };
 
-        public MessageEnvelope(object payload, Uri uri)
+        public MessageEnvelope(IMessage payload, Uri uri)
         {
             Payload = JsonConvert.SerializeObject(payload, serializerSettings);
             Uri = uri;

@@ -30,8 +30,7 @@ namespace Snittlistan.Web.Infrastructure.IoC
             try
             {
                 var controller = kernel.Resolve<IController>(controllerName + "Controller");
-                var controllerWithInvoker = controller as Controller;
-                if (controllerWithInvoker != null)
+                if (controller is Controller controllerWithInvoker)
                     controllerWithInvoker.ActionInvoker = new ActionInvokerWrapper(controllerWithInvoker.ActionInvoker);
                 return controller;
             }

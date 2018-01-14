@@ -5,6 +5,9 @@ using System.Linq;
 using System.Web.Http;
 using Elmah;
 using Newtonsoft.Json;
+using NLog;
+using Raven.Abstractions;
+using Snittlistan.Queue;
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Commands;
 using Snittlistan.Web.Areas.V2.Domain;
@@ -12,12 +15,18 @@ using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.Queries;
 using Snittlistan.Web.Controllers;
+using Snittlistan.Web.Helpers;
 using Snittlistan.Web.Infrastructure;
+using Snittlistan.Web.Infrastructure.Attributes;
+using Snittlistan.Web.Infrastructure.Indexes;
 
 namespace Snittlistan.Web.Areas.V2.Controllers.Api
 {
+    [OnlyLocalAllowed]
     public class TaskController : AbstractApiController
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         private readonly IBitsClient bitsClient;
 
         public TaskController(IBitsClient bitsClient)
@@ -127,6 +136,48 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                 return Ok(result);
 
             return Ok("No matches to register");
+        }
+
+        private IHttpActionResult Handle(InitializeIndexesMessage message)
+        {
+            IndexCreator.CreateIndexes(DocumentStore);
+
+            return Ok();
+        }
+
+        private IHttpActionResult Handle(VerifyMatchesMessage message)
+        {
+            var season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+            var rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
+                                         .Where(x => x.Season == season)
+                                         .ToArray();
+            using (var scope = MsmqGateway.AutoCommitScope())
+            {
+                foreach (var roster in rosters)
+                {
+                    if (roster.IsVerified)
+                    {
+                        Log.Info($"Skipping {roster.BitsMatchId} because it is already verified.");
+                    }
+                    else if (roster.BitsMatchId == 0)
+                    {
+                        Log.Info($"Skipping {roster.Team}-{roster.Opponent} (turn={roster.Turn}) because it has no BitsMatchId.");
+                    }
+                    else if (roster.MatchResultId == null)
+                    {
+                        Log.Info($"Skipping {roster.BitsMatchId} because it has no result yet.");
+                    }
+                    else
+                    {
+                        Log.Info($"Need to verify {roster.BitsMatchId}");
+                        var verifyMatchMessage = new VerifyMatchMessage(roster.BitsMatchId, roster.Id);
+                        var envelope = new MessageEnvelope(message, new Uri(Url.Link("DefaultApi", new { controller = "Task" })));
+                        scope.PublishMessage(envelope);
+                    }
+                }
+            }
+
+            return Ok();
         }
 
         public class TaskRequest
