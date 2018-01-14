@@ -58,12 +58,14 @@
     <Compile Include="Counter.cs" />
     <Compile Include="JsonMessageFormatter.cs" />
     <Compile Include="LoggingHandler.cs" />
+    <Compile Include="Messages\InitializeMessage.cs" />
     <Compile Include="Messages\MessageEnvelope.cs" />
     <Compile Include="MessageQueueListenerBase.cs" />
     <Compile Include="MessageQueueProcessorSettings.cs" />
     <Compile Include="Config\MessagingConfigSection.cs" />
     <Compile Include="Messages\RegisterMatchesMessage.cs" />
     <Compile Include="Messages\TaskRequest.cs" />
+    <Compile Include="Messages\VerifyMatchesMessage.cs" />
     <Compile Include="MsmqGateway.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskQueueListener.cs" />

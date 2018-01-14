@@ -34,10 +34,7 @@ namespace Snittlistan.Web.Infrastructure.Attributes
 
         private static bool IsFiltered(ExceptionContext context)
         {
-            var config = context.HttpContext.GetSection("elmah/errorFilter")
-                         as ErrorFilterConfiguration;
-
-            if (config == null)
+            if (!(context.HttpContext.GetSection("elmah/errorFilter") is ErrorFilterConfiguration config))
                 return false;
 
             var testContext = new ErrorFilterModule.AssertionHelperContext(

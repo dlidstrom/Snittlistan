@@ -55,8 +55,7 @@ namespace Snittlistan.Web.Infrastructure
                 writer.WriteLine("VERSION:2.0");
                 writer.WriteLine("X-PUBLISHED-TTL:PT1H");
                 writer.WriteLine("X-WR-CALNAME:Snittlistan");
-                var rosters = value as IEnumerable<RosterCalendarEvent>;
-                if (rosters != null)
+                if (value is IEnumerable<RosterCalendarEvent> rosters)
                 {
                     foreach (var roster in rosters)
                     {
@@ -65,8 +64,7 @@ namespace Snittlistan.Web.Infrastructure
                 }
                 else
                 {
-                    var roster = value as RosterCalendarEvent;
-                    if (roster == null)
+                    if (!(value is RosterCalendarEvent roster))
                     {
                         throw new InvalidOperationException("Cannot serialize type");
                     }

@@ -7,8 +7,7 @@ namespace Snittlistan.Web.Infrastructure.Attributes
     {
         public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
         {
-            var controller = actionExecutedContext.ActionContext.ControllerContext.Controller as AbstractApiController;
-            if (controller == null || actionExecutedContext.Exception != null)
+            if (!(actionExecutedContext.ActionContext.ControllerContext.Controller is AbstractApiController controller) || actionExecutedContext.Exception != null)
                 return;
 
             controller.SaveChanges();

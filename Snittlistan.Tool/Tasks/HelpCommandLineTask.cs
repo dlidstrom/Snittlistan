@@ -3,11 +3,11 @@
     using System;
     using Castle.MicroKernel;
 
-    public class Help : ICommandLineTask
+    public class HelpCommandLineTask : ICommandLineTask
     {
         private readonly IKernel kernel;
 
-        public Help(IKernel kernel)
+        public HelpCommandLineTask(IKernel kernel)
         {
             this.kernel = kernel;
         }

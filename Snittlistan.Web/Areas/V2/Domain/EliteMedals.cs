@@ -127,8 +127,10 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
                 var field = type.GetField(name);
                 if (field == null) return value.ToString();
-                var attr = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
-                return attr != null ? attr.Description : value.ToString();
+                var description = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) is DescriptionAttribute attr
+                    ? attr.Description
+                    : value.ToString();
+                return description;
             }
         }
     }
