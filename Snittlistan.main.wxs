@@ -47,6 +47,16 @@
                   Return="check"
                   Execute="deferred"
                   Impersonate="no" />
+    <CustomAction Id="RegisterMatch_Cmd"
+                  Property="RegisterMatch_Task"
+                  Execute="immediate"
+                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU Administrator /RP [ADMINISTRATOR_PASSWORD] /SC MINUTE /MO 5 /TN RegisterMatch /ST 12:00 /ET 20:00 /TR &quot;\&quot;[#Snittlistan.Tool.exe]\&quot; registermatch&quot;" />
+    <CustomAction Id="RegisterMatch_Task"
+                  BinaryKey="WixCA"
+                  DllEntry="CAQuietExec"
+                  Return="check"
+                  Execute="deferred"
+                  Impersonate="no" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFiles64Folder" Name="PFiles">
@@ -186,6 +196,8 @@
       <!-- add tasks on install -->
       <Custom Action="VerifyMatches_Cmd" Before="InstallFinalize">NOT Installed</Custom>
       <Custom Action="VerifyMatches_Task" After="VerifyMatches_Cmd">NOT Installed</Custom>
+      <Custom Action="RegisterMatch_Cmd" Before="InstallFinalize">NOT Installed</Custom>
+      <Custom Action="RegisterMatch_Task" After="RegisterMatch_Cmd">NOT Installed</Custom>
     </InstallExecuteSequence>
 
     <Feature Id="Service" Level="1">
