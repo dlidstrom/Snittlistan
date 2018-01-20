@@ -48,14 +48,18 @@ namespace Snittlistan.Web.Infrastructure.Installers
             this.mode = mode;
         }
 
-        public void Install(IWindsorContainer container, IConfigurationStore store)
+        public void Install(IWindsorContainer container, IConfigurationStore configurationStore)
         {
             if (mode == DocumentStoreMode.InMemory)
             {
-                container.Register(Component.For<IDocumentStore>().Instance(new EmbeddableDocumentStore
+                var store = new EmbeddableDocumentStore
                 {
                     RunInMemory = true
-                }.Initialize()));
+                };
+                container.Register(Component.For<IDocumentStore>().Instance(store.Initialize()));
+#pragma warning disable 618
+                store.Conventions.DefaultQueryingConsistency = ConsistencyOptions.AlwaysWaitForNonStaleResultsAsOfLastWrite;
+#pragma warning restore 618
             }
             else
             {

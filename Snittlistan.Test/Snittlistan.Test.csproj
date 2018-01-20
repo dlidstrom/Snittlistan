@@ -93,7 +93,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiControllers\RegisterMatch_Get.cs" />
+    <Compile Include="ApiControllers\Task_Post_RegisterMatch.cs" />
     <Compile Include="ApiControllers\WebApiIntegrationTest.cs" />
     <Compile Include="BackgroundTasks\Serialization.cs" />
     <Compile Include="BitsParser4x4Test.cs" />
@@ -163,6 +163,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Snittlistan.Queue\Snittlistan.Queue.csproj">
+      <Project>{18A532FA-9C94-4FF2-ACF8-B267F127606D}</Project>
+      <Name>Snittlistan.Queue</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Snittlistan.Web\Snittlistan.Web.csproj">
       <Project>{B2001F9E-431F-429C-9A90-956F89CC5169}</Project>
       <Name>Snittlistan.Web</Name>

@@ -117,6 +117,19 @@ namespace Snittlistan.Test
             VerifyGame(serie4.Games[3], Tuple.Create(0, "player-6", 167));
         }
 
+        [Test]
+        public void DoesNotParseUnfinishedGame()
+        {
+            // Arrange
+            const string Team = "Värtans IK B";
+
+            // Act
+            var result = new BitsParser(awayPlayers).Parse4(Resources.Id3148481, Team);
+
+            // Assert
+            Assert.That(result, Is.Null);
+        }
+
         private static void VerifyGame(ResultSeries4ReadModel.Game game, Tuple<int, string, int> expected)
         {
             Assert.That(expected.Item1, Is.EqualTo(game.Score));

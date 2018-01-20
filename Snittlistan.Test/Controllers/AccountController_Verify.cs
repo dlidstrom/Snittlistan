@@ -14,9 +14,9 @@ namespace Snittlistan.Test.Controllers
     [TestFixture]
     public class AccountController_Verify : DbTest
     {
-        private readonly IWindsorContainer oldContainer;
+        private IWindsorContainer oldContainer;
 
-        public AccountController_Verify()
+        protected override void OnSetUp()
         {
             oldContainer = DomainEvent.SetContainer(new WindsorContainer());
         }

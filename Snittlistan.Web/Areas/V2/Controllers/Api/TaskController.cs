@@ -103,18 +103,21 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                     if (pendingMatch.IsFourPlayer)
                     {
                         var parse4Result = parser.Parse4(content, pendingMatch.Team);
-                        var query = from game in parse4Result.Series.First().Games
-                                    select game.Player;
-                        var playerIds = query.ToArray();
-                        var playerIdsWithoutReserve = new HashSet<string>(playerIds);
-                        var restQuery = from serie in parse4Result.Series
-                                        from game in serie.Games
-                                        where playerIdsWithoutReserve.Contains(game.Player) == false
+                        if (parse4Result != null)
+                        {
+                            var query = from game in parse4Result.Series.First().Games
                                         select game.Player;
-                        var allPlayerIds = playerIds.Concat(
-                            new HashSet<string>(restQuery).Where(x => playerIdsWithoutReserve.Contains(x) == false)).ToList();
-                        pendingMatch.Players = allPlayerIds;
-                        ExecuteCommand(new RegisterMatch4Command(pendingMatch, parse4Result));
+                            var playerIds = query.ToArray();
+                            var playerIdsWithoutReserve = new HashSet<string>(playerIds);
+                            var restQuery = from serie in parse4Result.Series
+                                            from game in serie.Games
+                                            where playerIdsWithoutReserve.Contains(game.Player) == false
+                                            select game.Player;
+                            var allPlayerIds = playerIds.Concat(
+                                new HashSet<string>(restQuery).Where(x => playerIdsWithoutReserve.Contains(x) == false)).ToList();
+                            pendingMatch.Players = allPlayerIds;
+                            ExecuteCommand(new RegisterMatch4Command(pendingMatch, parse4Result));
+                        }
                     }
                     else
                     {

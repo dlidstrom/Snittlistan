@@ -9,6 +9,7 @@ using EventStoreLite.IoC;
 using NUnit.Framework;
 using Raven.Client;
 using Snittlistan.Web;
+using Snittlistan.Web.Infrastructure.Attributes;
 using Snittlistan.Web.Infrastructure.Installers;
 using Snittlistan.Web.Infrastructure.IoC;
 
@@ -37,6 +38,7 @@ namespace Snittlistan.Test.ApiControllers
 
             MvcApplication.Bootstrap(Container, configuration);
             Client = new HttpClient(new HttpServer(configuration));
+            OnlyLocalAllowedAttribute.SkipValidation = true;
 
             Act();
         }

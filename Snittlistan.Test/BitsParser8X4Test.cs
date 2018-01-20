@@ -227,6 +227,19 @@ namespace Snittlistan.Test
             VerifyTable(serie3.Tables[3], Tuple.Create(0, "player-5", 143, "player-6", 171));
         }
 
+        [Test]
+        public void DoesNotParseUnfinishedGame()
+        {
+            // Arrange
+            const string Team = "Fredrikshof IF BK";
+
+            // Act
+            var result = new BitsParser(playersTeamA).Parse(Resources.Id3152235, Team);
+
+            // Assert
+            Assert.That(result, Is.Null);
+        }
+
         private static void VerifyTable(ResultSeriesReadModel.Table table, Tuple<int, string, int, string, int> expected)
         {
             Assert.That(table.Score, Is.EqualTo(expected.Item1));

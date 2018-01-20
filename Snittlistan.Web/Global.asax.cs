@@ -4,6 +4,8 @@ using System.Reflection;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
+using System.Web.Http.Controllers;
+using System.Web.Http.Dispatcher;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.MicroKernel.Registration;
@@ -200,6 +202,12 @@ namespace Snittlistan.Web
             DependencyResolver.SetResolver(new WindsorDependencyResolver(Container));
             configuration.DependencyResolver =
                 new WindsorHttpDependencyResolver(Container.Kernel);
+            configuration.Services.Replace(
+                typeof(IHttpControllerSelector),
+                new HttpNotFoundAwareDefaultHttpControllerSelector(configuration));
+            configuration.Services.Replace(
+                typeof(IHttpActionSelector),
+                new HttpNotFoundAwareControllerActionSelector());
         }
     }
 }

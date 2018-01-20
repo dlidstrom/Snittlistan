@@ -56,18 +56,6 @@ namespace Snittlistan.Test
         }
 
         [Test]
-        public void AllAndOnlyControllersLiveInControllersNamespace()
-        {
-            var allControllers = InstallerTestHelper.GetPublicClassesFromApplicationAssembly(c => c.Namespace.Contains("Controllers"));
-            var registeredControllers = InstallerTestHelper.GetImplementationTypesFor(typeof(IController), container);
-            var registeredApiControllers = InstallerTestHelper.GetImplementationTypesFor(typeof(IHttpController), container);
-            var actual = registeredControllers.Concat(registeredApiControllers)
-                                              .OrderBy(x => x.Name)
-                                              .ToArray();
-            Assert.That(actual, Is.EqualTo(allControllers));
-        }
-
-        [Test]
         public void AllControllersAreTransient()
         {
             var nonTransientControllers = InstallerTestHelper.GetAssignableHandlers(typeof(IController), container)

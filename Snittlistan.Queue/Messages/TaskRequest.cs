@@ -4,7 +4,7 @@ namespace Snittlistan.Queue.Messages
 {
     public class TaskRequest
     {
-        private static readonly JsonSerializerSettings serializerSettings = new JsonSerializerSettings
+        private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
         {
             Formatting = Formatting.Indented,
             TypeNameHandling = TypeNameHandling.All
@@ -12,7 +12,7 @@ namespace Snittlistan.Queue.Messages
 
         public TaskRequest(MessageEnvelope envelope)
         {
-            TaskJson = JsonConvert.SerializeObject(envelope.Payload, serializerSettings);
+            TaskJson = JsonConvert.SerializeObject(envelope.Payload, SerializerSettings);
         }
 
         public string TaskJson { get; }
