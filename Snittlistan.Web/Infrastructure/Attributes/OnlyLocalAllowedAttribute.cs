@@ -7,9 +7,12 @@ namespace Snittlistan.Web.Infrastructure.Attributes
 {
     public class OnlyLocalAllowedAttribute : ActionFilterAttribute
     {
+        // ReSharper disable once UnassignedField.Global
+        public static bool SkipValidation;
+
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
-            if (actionContext.Request.IsLocal() == false)
+            if (SkipValidation == false && actionContext.Request.IsLocal() == false)
             {
                 actionContext.Response = new HttpResponseMessage(HttpStatusCode.NotFound);
             }

@@ -20,7 +20,9 @@ namespace Snittlistan.Test
         [SetUp]
         public void SetUp()
         {
-            var container = new WindsorContainer().Install(new RavenInstaller(DocumentStoreMode.InMemory), new AutoMapperInstaller());
+            var container = new WindsorContainer().Install(
+                new RavenInstaller(DocumentStoreMode.InMemory),
+                new AutoMapperInstaller());
 
             // configure AutoMapper too
             AutoMapperConfiguration.Configure(container);

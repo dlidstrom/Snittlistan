@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using EventStoreLite;
 using Raven.Client;
 using Snittlistan.Web.Areas.V2.Domain;
@@ -21,9 +22,11 @@ namespace Snittlistan.Web.Areas.V2.Handlers
         {
             // need to delete some entries
             var modelsToDelete = DocumentSession.Load<ResultForPlayerReadModel>(e.PreviousPlayerIds.Select(x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId)));
+            var toKeep = new HashSet<string>(e.RosterPlayers.Select(x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId)));
             foreach (var modelToDelete in modelsToDelete)
             {
-                DocumentSession.Delete(modelToDelete);
+                if (toKeep.Contains(modelToDelete.Id) == false)
+                    DocumentSession.Delete(modelToDelete);
             }
 
             var roster = DocumentSession.Load<Roster>(e.RosterId);
@@ -57,9 +60,11 @@ namespace Snittlistan.Web.Areas.V2.Handlers
         {
             // need to delete some entries
             var modelsToDelete = DocumentSession.Load<ResultForPlayerReadModel>(e.PreviousPlayerIds.Select(x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId)));
+            var toKeep = new HashSet<string>(e.RosterPlayers.Select(x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId)));
             foreach (var modelToDelete in modelsToDelete)
             {
-                DocumentSession.Delete(modelToDelete);
+                if (toKeep.Contains(modelToDelete.Id) == false)
+                    DocumentSession.Delete(modelToDelete);
             }
 
             var roster = DocumentSession.Load<Roster>(e.RosterId);

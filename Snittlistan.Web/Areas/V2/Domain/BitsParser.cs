@@ -92,9 +92,16 @@ namespace Snittlistan.Web.Areas.V2.Domain
         {
             var document = new HtmlDocument();
             document.LoadHtml(content);
+            var documentNode = document.DocumentNode;
+
+            // make sure match is finished
+            var finishedNode = documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelFinished']");
+            if (finishedNode != null)
+            {
+                return null;
+            }
 
             // find which team we should import
-            var documentNode = document.DocumentNode;
             var homeTeamLabel =
                 documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelHomeTeam']");
             var awayTeamLabel =
@@ -125,9 +132,16 @@ namespace Snittlistan.Web.Areas.V2.Domain
         {
             var document = new HtmlDocument();
             document.LoadHtml(content);
+            var documentNode = document.DocumentNode;
+
+            // make sure match is finished
+            var finishedNode = documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelFinished']");
+            if (finishedNode != null)
+            {
+                return null;
+            }
 
             // find which team we should import
-            var documentNode = document.DocumentNode;
             var homeTeamLabel =
                 documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelHomeTeam']");
             var awayTeamLabel =

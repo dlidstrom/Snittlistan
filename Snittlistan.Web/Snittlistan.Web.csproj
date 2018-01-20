@@ -183,6 +183,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="Areas\V2\Controllers\Api\ApiErrorController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\TaskController.cs" />
     <Compile Include="Areas\V2\Queries\GetActivePlayersQuery.cs" />
     <Compile Include="Areas\V2\Queries\GetPendingMatchesQuery.cs" />
@@ -307,6 +308,7 @@
     <Compile Include="Infrastructure\EventStoreLite\IoC\EventStoreInstaller.cs" />
     <Compile Include="Infrastructure\EventStoreLite\IReadModel.cs" />
     <Compile Include="Infrastructure\EventStoreLite\ObjectReferenceEqualityComparer.cs" />
+    <Compile Include="Infrastructure\HttpNotFoundAwareDefaultHttpControllerSelector.cs" />
     <Compile Include="Infrastructure\IBitsClient.cs" />
     <Compile Include="Infrastructure\ICalFormatter.cs" />
     <Compile Include="Infrastructure\ICommand.cs" />
@@ -320,6 +322,7 @@
     <Compile Include="Infrastructure\IoC\HostBasedComponentSelector.cs" />
     <Compile Include="Infrastructure\IoC\WindsorDependencyScope.cs" />
     <Compile Include="Infrastructure\IoC\WindsorHttpDependencyResolver.cs" />
+    <Compile Include="Infrastructure\HttpNotFoundAwareControllerActionSelector.cs" />
     <Compile Include="Infrastructure\IQuery.cs" />
     <Compile Include="Infrastructure\JetBrains\Annotations.cs" />
     <Compile Include="Infrastructure\OutlookAgentMessageHandler.cs" />

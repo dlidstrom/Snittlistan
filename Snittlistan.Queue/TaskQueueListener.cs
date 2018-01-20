@@ -7,7 +7,7 @@ namespace Snittlistan.Queue
 {
     public class TaskQueueListener : MessageQueueListenerBase
     {
-        private static readonly JsonSerializerSettings serializerSettings = new JsonSerializerSettings
+        private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
         {
             TypeNameHandling = TypeNameHandling.All
         };
@@ -24,7 +24,7 @@ namespace Snittlistan.Queue
 
         protected override void DoHandle(string contents)
         {
-            var envelope = JsonConvert.DeserializeObject<MessageEnvelope>(contents, serializerSettings);
+            var envelope = JsonConvert.DeserializeObject<MessageEnvelope>(contents, SerializerSettings);
             var request = new TaskRequest(envelope);
             var result = client.PostAsJsonAsync(
                 envelope.Uri,
