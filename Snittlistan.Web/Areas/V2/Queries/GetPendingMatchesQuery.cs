@@ -14,10 +14,10 @@ namespace Snittlistan.Web.Areas.V2.Queries
         {
             var results = session.Query<RosterSearchTerms.Result, RosterSearchTerms>()
                                  .Where(x => x.Preliminary == false)
-                                 .Where(x => x.PlayerCount > 0)
                                  .Where(x => x.Date < DateTime.Now)
                                  .Where(x => x.BitsMatchId != 0)
                                  .Where(x => x.MatchResultId == null)
+                                 .OrderBy(x => x.Date)
                                  .ProjectFromIndexFieldsInto<RosterSearchTerms.Result>()
                                  .ToArray();
 

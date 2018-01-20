@@ -92,24 +92,50 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
         private IHttpActionResult Handle(RegisterMatchesMessage message)
         {
             var pendingMatches = ExecuteQuery(new GetPendingMatchesQuery());
-
+            var players = ExecuteQuery(new GetActivePlayersQuery());
             var registeredMatches = new List<Roster>();
             foreach (var pendingMatch in pendingMatches)
             {
                 try
                 {
-                    var players = ExecuteQuery(new GetPlayersQuery(pendingMatch));
                     var parser = new BitsParser(players);
                     var content = bitsClient.DownloadMatchResult(pendingMatch.BitsMatchId);
                     if (pendingMatch.IsFourPlayer)
                     {
                         var parse4Result = parser.Parse4(content, pendingMatch.Team);
+                        var query = from game in parse4Result.Series.First().Games
+                                    select game.Player;
+                        var playerIds = query.ToArray();
+                        var playerIdsWithoutReserve = new HashSet<string>(playerIds);
+                        var restQuery = from serie in parse4Result.Series
+                                        from game in serie.Games
+                                        where playerIdsWithoutReserve.Contains(game.Player) == false
+                                        select game.Player;
+                        var allPlayerIds = playerIds.Concat(
+                            new HashSet<string>(restQuery).Where(x => playerIdsWithoutReserve.Contains(x) == false)).ToList();
+                        pendingMatch.Players = allPlayerIds;
                         ExecuteCommand(new RegisterMatch4Command(pendingMatch, parse4Result));
                     }
                     else
                     {
                         var parseResult = parser.Parse(content, pendingMatch.Team);
-                        ExecuteCommand(new RegisterMatchCommand(pendingMatch, parseResult));
+                        if (parseResult != null)
+                        {
+                            var query = from table in parseResult.Series.First().Tables
+                                        from game in new[] { table.Game1, table.Game2 }
+                                        select game.Player;
+                            var playerIds = query.ToArray();
+                            var playerIdsWithoutReserve = new HashSet<string>(playerIds);
+                            var restQuery = from serie in parseResult.Series
+                                            from table in serie.Tables
+                                            from game in new[] { table.Game1, table.Game2 }
+                                            where playerIdsWithoutReserve.Contains(game.Player) == false
+                                            select game.Player;
+                            var allPlayerIds = playerIds.Concat(
+                                new HashSet<string>(restQuery).Where(x => playerIdsWithoutReserve.Contains(x) == false)).ToList();
+                            pendingMatch.Players = allPlayerIds;
+                            ExecuteCommand(new RegisterMatchCommand(pendingMatch, parseResult));
+                        }
                     }
 
                     registeredMatches.Add(pendingMatch);
@@ -171,7 +197,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                     {
                         Log.Info($"Need to verify {roster.BitsMatchId}");
                         var verifyMatchMessage = new VerifyMatchMessage(roster.BitsMatchId, roster.Id);
-                        var envelope = new MessageEnvelope(message, new Uri(Url.Link("DefaultApi", new { controller = "Task" })));
+                        var envelope = new MessageEnvelope(verifyMatchMessage, new Uri(Url.Link("DefaultApi", new { controller = "Task" })));
                         scope.PublishMessage(envelope);
                     }
                 }

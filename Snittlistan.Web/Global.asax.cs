@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Reflection;
 using System.Web;
 using System.Web.Hosting;
@@ -10,6 +11,7 @@ using Castle.Windsor;
 using EventStoreLite.IoC;
 using NLog;
 using Raven.Client;
+using Snittlistan.Queue;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Attributes;
 using Snittlistan.Web.Infrastructure.AutoMapper;
@@ -115,6 +117,8 @@ namespace Snittlistan.Web
             AutoMapperConfiguration.Configure(Container);
 
             Emails.Initialize(HostingEnvironment.MapPath("~/Views/Emails"));
+
+            MsmqGateway.Initialize(ConfigurationManager.AppSettings["TaskQueue"]);
         }
 
         private static void RegisterGlobalFilters(GlobalFilterCollection filters)

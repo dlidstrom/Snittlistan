@@ -91,12 +91,21 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             var oldResult = JsonConvert.SerializeObject(
                 new SortedDictionary<string, List<PinsAndScoreResult>>(playerPins),
                 Formatting.Indented);
-            var newResult = JsonConvert.SerializeObject(potentiallyNewPlayerPins, Formatting.Indented);
+            var newResult = JsonConvert.SerializeObject(
+                potentiallyNewPlayerPins,
+                Formatting.Indented);
             var pinsOrPlayersDiffer = oldResult != newResult;
             var scoresDiffer = (teamScore, opponentScore).CompareTo((TeamScore, OpponentScore)) != 0;
             if (pinsOrPlayersDiffer || scoresDiffer)
             {
-                ApplyChange(new MatchResultRegistered(roster.Id, roster.Players, teamScore, opponentScore, roster.BitsMatchId));
+                var @event = new MatchResultRegistered(
+                    roster.Id,
+                    roster.Players,
+                    teamScore,
+                    opponentScore,
+                    roster.BitsMatchId,
+                    playerPins.Keys.AsEnumerable().ToArray());
+                ApplyChange(@event);
                 RegisterSeries(matchSeries, opponentSeries, players, resultsForPlayer);
             }
 

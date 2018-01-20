@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EventStoreLite;
 using JetBrains.Annotations;
+using Newtonsoft.Json;
 using Raven.Abstractions;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
 
@@ -49,9 +50,43 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             int bitsMatchId,
             MatchSerie4[] matchSeries)
         {
-            ApplyChange(
-                new MatchResult4Registered(roster.Id, roster.Players, teamScore, opponentScore, bitsMatchId));
-            RegisterSeries(matchSeries);
+            // check if anything has changed
+            var potentiallyNewPlayerPins = new SortedDictionary<string, List<PinsAndScoreResult>>();
+            foreach (var matchSerie in matchSeries)
+            {
+                foreach (var matchGame in new[] { matchSerie.Game1, matchSerie.Game2, matchSerie.Game3, matchSerie.Game4 })
+                {
+                    if (potentiallyNewPlayerPins.TryGetValue(matchGame.Player, out var list) == false)
+                    {
+                        list = new List<PinsAndScoreResult>();
+                        potentiallyNewPlayerPins.Add(matchGame.Player, list);
+                    }
+
+                    list.Add(new PinsAndScoreResult(matchGame.Pins, matchGame.Score, matchSerie.SerieNumber));
+                }
+            }
+
+            var oldResult = JsonConvert.SerializeObject(
+                new SortedDictionary<string, List<PinsAndScoreResult>>(playerPins),
+                Formatting.Indented);
+            var newResult = JsonConvert.SerializeObject(
+                potentiallyNewPlayerPins,
+                Formatting.Indented);
+            var pinsOrPlayersDiffer = oldResult != newResult;
+            var scoresDiffer = (teamScore, opponentScore).CompareTo((TeamScore, OpponentScore)) != 0;
+            if (pinsOrPlayersDiffer || scoresDiffer)
+            {
+                var @event = new MatchResult4Registered(
+                    roster.Id,
+                    roster.Players,
+                    teamScore,
+                    opponentScore,
+                    bitsMatchId,
+                    playerPins.Keys.AsEnumerable().ToArray());
+                ApplyChange(@event);
+                RegisterSeries(matchSeries);
+            }
+
             return roster.Date.AddDays(5) < SystemTime.UtcNow;
         }
 
