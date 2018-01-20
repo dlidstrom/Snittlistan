@@ -18,3 +18,7 @@
     1: Snittlistan
     6: [http-01] Self-host verification files (port 80 will be unavailable during validation)
 * Lägg till webbplatsövervakning i site24x7 med en timmes intervall.
+
+# Uppdatera certifikaten
+* Kör LEWS från C:\Users\Administrator\Downloads\letsencrypt-win-simple.v1.9.7.0-beta10
+    A: Renew all
