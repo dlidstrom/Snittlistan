@@ -5,24 +5,18 @@ namespace Snittlistan.Queue.Messages
 {
     public class MessageEnvelope
     {
-        private readonly JsonSerializerSettings serializerSettings = new JsonSerializerSettings
+        public MessageEnvelope(object payload, Uri uri)
         {
-            Formatting = Formatting.Indented,
-            TypeNameHandling = TypeNameHandling.All
-        };
-
-        public MessageEnvelope(IMessage payload, Uri uri)
-        {
-            Payload = JsonConvert.SerializeObject(payload, serializerSettings);
+            Payload = payload;
             Uri = uri;
         }
 
-        public string Payload { get; }
+        public object Payload { get; }
         public Uri Uri { get; }
 
         public override string ToString()
         {
-            return $"{Uri}: {JsonConvert.DeserializeObject(Payload)}";
+            return $"{Uri}: {JsonConvert.SerializeObject(Payload)}";
         }
     }
 }

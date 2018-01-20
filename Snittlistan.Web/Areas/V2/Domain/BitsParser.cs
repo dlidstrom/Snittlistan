@@ -163,8 +163,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
             var numberOfSeries = tableRows.Count - 2;
             if (numberOfSeries < 1 || numberOfSeries > 4)
             {
-                var message = $"Found {numberOfSeries} number of series. Expected 1, 2, 3, or 4.";
-                throw new ApplicationException(message);
+                return null;
             }
 
             var teamSeries = ExtractSeriesForTeam(team, numberOfSeries, tableNode, s => GetPlayerId(s).Id);

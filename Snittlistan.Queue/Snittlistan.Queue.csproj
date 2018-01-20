@@ -58,7 +58,7 @@
     <Compile Include="Counter.cs" />
     <Compile Include="JsonMessageFormatter.cs" />
     <Compile Include="LoggingHandler.cs" />
-    <Compile Include="Messages\InitializeMessage.cs" />
+    <Compile Include="Messages\InitializeIndexesMessage.cs" />
     <Compile Include="Messages\MessageEnvelope.cs" />
     <Compile Include="MessageQueueListenerBase.cs" />
     <Compile Include="MessageQueueProcessorSettings.cs" />

@@ -1,10 +1,18 @@
-﻿namespace Snittlistan.Queue.Messages
+﻿using Newtonsoft.Json;
+
+namespace Snittlistan.Queue.Messages
 {
     public class TaskRequest
     {
-        public TaskRequest(string taskJson)
+        private static readonly JsonSerializerSettings serializerSettings = new JsonSerializerSettings
         {
-            TaskJson = taskJson;
+            Formatting = Formatting.Indented,
+            TypeNameHandling = TypeNameHandling.All
+        };
+
+        public TaskRequest(MessageEnvelope envelope)
+        {
+            TaskJson = JsonConvert.SerializeObject(envelope.Payload, serializerSettings);
         }
 
         public string TaskJson { get; }

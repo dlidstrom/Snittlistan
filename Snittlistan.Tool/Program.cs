@@ -36,7 +36,7 @@ namespace Snittlistan.Tool
             container.Register(
                 Classes.FromThisAssembly()
                        .BasedOn<ICommandLineTask>()
-                       .Configure(x => x.LifeStyle.Transient.Named(x.Implementation.Name))
+                       .Configure(x => x.LifeStyle.Transient.Named(x.Implementation.Name.Replace("CommandLineTask", string.Empty)))
                        .WithServiceFromInterface(typeof(ICommandLineTask)));
 
             if (args.Length < 1)
@@ -69,7 +69,7 @@ namespace Snittlistan.Tool
                                  .ToArray();
             foreach (var name in names)
             {
-                Console.WriteLine("{0,20}", name);
+                Console.WriteLine("{0,30}", name);
             }
 
             Console.WriteLine();

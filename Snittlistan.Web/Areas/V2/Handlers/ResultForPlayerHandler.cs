@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using EventStoreLite;
 using Raven.Client;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
-using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.ReadModels;
 
 namespace Snittlistan.Web.Areas.V2.Handlers
@@ -22,14 +20,10 @@ namespace Snittlistan.Web.Areas.V2.Handlers
         public void Handle(MatchResultRegistered e, string aggregateId)
         {
             // need to delete some entries
-            var players = DocumentSession.Query<Player, PlayerSearch>().ToArray();
-            var keep = new HashSet<string>(e.RosterPlayers);
-            var playerIds = players.Where(x => keep.Contains(x.Id) == false).Select(x => x.Id).ToArray();
-            var idsToDelete = playerIds.Select(x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId)).ToArray();
-            var docsToDelete = DocumentSession.Load<ResultForPlayerReadModel>(idsToDelete);
-            foreach (var doc in docsToDelete.Where(x => x != null))
+            var modelsToDelete = DocumentSession.Load<ResultForPlayerReadModel>(e.PreviousPlayerIds.Select(x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId)));
+            foreach (var modelToDelete in modelsToDelete)
             {
-                DocumentSession.Delete(doc);
+                DocumentSession.Delete(modelToDelete);
             }
 
             var roster = DocumentSession.Load<Roster>(e.RosterId);
@@ -62,14 +56,10 @@ namespace Snittlistan.Web.Areas.V2.Handlers
         public void Handle(MatchResult4Registered e, string aggregateId)
         {
             // need to delete some entries
-            var players = DocumentSession.Query<Player, PlayerSearch>().ToArray();
-            var keep = new HashSet<string>(e.RosterPlayers);
-            var playerIds = players.Where(x => keep.Contains(x.Id) == false).Select(x => x.Id).ToArray();
-            var idsToDelete = playerIds.Select(x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId)).ToArray();
-            var docsToDelete = DocumentSession.Load<ResultForPlayerReadModel>(idsToDelete);
-            foreach (var doc in docsToDelete.Where(x => x != null))
+            var modelsToDelete = DocumentSession.Load<ResultForPlayerReadModel>(e.PreviousPlayerIds.Select(x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId)));
+            foreach (var modelToDelete in modelsToDelete)
             {
-                DocumentSession.Delete(doc);
+                DocumentSession.Delete(modelToDelete);
             }
 
             var roster = DocumentSession.Load<Roster>(e.RosterId);
