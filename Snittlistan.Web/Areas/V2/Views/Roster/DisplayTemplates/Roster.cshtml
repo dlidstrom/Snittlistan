@@ -40,11 +40,9 @@
             <dd>
                 @if (string.IsNullOrWhiteSpace(Model.OilPattern.Url) == false)
                 {
-                    <a href="@Url.Action("OilPattern", new
-                             {
-                                 id = Model.Id
-                             })">
+                    <a href="@Model.OilPattern.Url">
                         @Model.OilPattern.Name
+                        <i class="icon-share-alt"></i>
                     </a>
                 }
                 else
