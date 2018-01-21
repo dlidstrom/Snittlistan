@@ -24,11 +24,12 @@ namespace Snittlistan.Web.Areas.V2.Indexes
                                  roster.MatchResultId,
                                  roster.Preliminary,
                                  PlayerCount = roster.Players.Count,
-                                 roster.OilPattern
+                                 OilPatternName = roster.OilPattern.Name
                              };
 
             Store(x => x.Id, FieldStorage.Yes);
             Store(x => x.PlayerCount, FieldStorage.Yes);
+            Store(x => x.OilPatternName, FieldStorage.Yes);
         }
 
         public class Result
@@ -55,7 +56,7 @@ namespace Snittlistan.Web.Areas.V2.Indexes
 
             public int PlayerCount { get; set; }
 
-            public string OilPattern { get; set; }
+            public string OilPatternName { get; set; }
         }
     }
 }

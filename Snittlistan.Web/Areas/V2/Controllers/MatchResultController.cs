@@ -178,7 +178,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             var roster = DocumentSession.Load<Roster>(id);
             ViewBag.Url = CustomHtmlHelpers.GenerateBitsUrl(roster.BitsMatchId);
-            return View("_BitsIframe");
+            return View();
         }
     }
 }
