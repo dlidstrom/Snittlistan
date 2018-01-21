@@ -140,7 +140,7 @@
                               ErrorControl="normal"
                               Start="auto"
                               Type="ownProcess"
-                              Account="Administrator"
+                              Account="Snittlistan\Administrator"
                               Password="[ADMINISTRATOR_PASSWORD]"
                               Vital="yes">
                 <ServiceDependency Id="MSMQ" />
