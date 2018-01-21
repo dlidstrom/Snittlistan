@@ -16,7 +16,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
             string location,
             string opponent,
             DateTime date,
-            bool isFourPlayer)
+            bool isFourPlayer,
+            OilPatternInformation oilPattern)
         {
             Season = season;
             Turn = turn;
@@ -27,6 +28,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
             Opponent = opponent;
             Date = date;
             IsFourPlayer = isFourPlayer;
+            OilPattern = oilPattern ?? new OilPatternInformation(string.Empty, string.Empty);
             Players = new List<string>();
         }
 
@@ -53,6 +55,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public DateTime Date { get; set; }
 
         public bool IsFourPlayer { get; set; }
+
+        public OilPatternInformation OilPattern { get; set; }
 
         public bool Preliminary { get; set; }
 

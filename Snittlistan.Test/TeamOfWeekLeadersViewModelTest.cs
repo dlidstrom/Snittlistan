@@ -36,8 +36,8 @@ namespace Snittlistan.Test
                 },
                 new Dictionary<string, Roster>
                 {
-                    { "roster-1", new Roster(2012, 10, 0, "Fredrikshof IF BK A", null, null, null, DateTime.MinValue, false) },
-                    { "roster-2", new Roster(2012, 10, 0, "Fredrikshof IF BK A", null, null, null, DateTime.MinValue, false) }
+                    { "roster-1", new Roster(2012, 10, 0, "Fredrikshof IF BK A", null, null, null, DateTime.MinValue, false, OilPatternInformation.Empty) },
+                    { "roster-2", new Roster(2012, 10, 0, "Fredrikshof IF BK A", null, null, null, DateTime.MinValue, false, OilPatternInformation.Empty) }
                 });
         }
 

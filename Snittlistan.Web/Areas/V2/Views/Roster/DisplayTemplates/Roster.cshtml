@@ -34,6 +34,26 @@
         <dd>@Model.Location</dd>
         <dt>motstånd</dt>
         <dd>@Model.Opponent</dd>
+        @if (string.IsNullOrWhiteSpace(Model.OilPattern.Name) == false)
+        {
+            <dt>Oljeprofil</dt>
+            <dd>
+                @if (string.IsNullOrWhiteSpace(Model.OilPattern.Url) == false)
+                {
+                    <a href="@Url.Action("OilPattern", new
+                             {
+                                 rosterId = Model.Id
+                             })">
+                        @Model.OilPattern.Name
+                    </a>
+                }
+                else
+                {
+                    @Model.OilPattern.Name
+                }
+            </dd>
+        }
+
         <dt>när</dt>
         <dd>
             <em>

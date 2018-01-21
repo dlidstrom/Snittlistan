@@ -92,7 +92,17 @@ namespace Snittlistan.Test.ApiControllers
                     session.Store(player);
                 }
 
-                var roster = new Roster(2012, 1, 3048746, "Fredrikshof IF", "A", "Bowl-O-Rama", "Högdalen BK", new DateTime(2013, 4, 27), false)
+                var roster = new Roster(
+                    2012,
+                    1,
+                    3048746,
+                    "Fredrikshof IF",
+                    "A",
+                    "Bowl-O-Rama",
+                    "Högdalen BK",
+                    new DateTime(2013, 4, 27),
+                    false,
+                    OilPatternInformation.Empty)
                 {
                     Players = players.Select(x => x.Id).ToList()
                 };

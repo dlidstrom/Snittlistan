@@ -55,6 +55,15 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                                 .Select(x => DocumentSession.Load<Player>(x))
                                 .ToArray();
             var parser = new BitsParser(players);
+            var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+            var header = BitsParser.ParseHeader(result, websiteConfig.GetTeamNames());
+
+            // chance to update roster values
+            roster.OilPattern = header.OilPattern;
+            roster.Date = header.Date;
+            if (roster.MatchResultId == null) return Ok();
+
+            // update match result values
             if (roster.IsFourPlayer)
             {
                 var matchResult = EventStoreSession.Load<MatchResult4>(roster.MatchResultId);
@@ -183,26 +192,27 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             var rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
                                          .Where(x => x.Season == season)
                                          .ToArray();
+            var toVerify = new List<VerifyMatchMessage>();
             foreach (var roster in rosters)
             {
+                if (roster.BitsMatchId == 0)
+                {
+                    continue;
+                }
+
                 if (roster.IsVerified)
                 {
                     Log.Info($"Skipping {roster.BitsMatchId} because it is already verified.");
                 }
-                else if (roster.BitsMatchId == 0)
-                {
-                    Log.Info($"Skipping {roster.Team}-{roster.Opponent} (turn={roster.Turn}) because it has no BitsMatchId.");
-                }
-                else if (roster.MatchResultId == null)
-                {
-                    Log.Info($"Skipping {roster.BitsMatchId} because it has no result yet.");
-                }
                 else
                 {
-                    Log.Info($"Need to verify {roster.BitsMatchId}");
-                    var verifyMatchMessage = new VerifyMatchMessage(roster.BitsMatchId, roster.Id);
-                    PublishMessage(verifyMatchMessage);
+                    toVerify.Add(new VerifyMatchMessage(roster.BitsMatchId, roster.Id));
                 }
+            }
+
+            foreach (var verifyMatchMessage in toVerify)
+            {
+                PublishMessage(verifyMatchMessage);
             }
 
             return Ok();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using HtmlAgilityPack;
 using Snittlistan.Web.Areas.V2.ReadModels;
 
@@ -39,43 +40,82 @@ namespace Snittlistan.Web.Areas.V2.Domain
             var dateText = dateNode.InnerText;
             var locationNode = documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelHallName']");
             var locationText = locationNode.InnerText;
+            var oilPatternNode = documentNode.SelectSingleNode("//td[@id='MainContentPlaceHolder_MatchInfo_LabelMatchOilPatternName']//a");
+            string oilPatternText;
+            string oilPatternUrl;
+            if (oilPatternNode != null)
+            {
+                oilPatternText = oilPatternNode.InnerText;
+                var matches = Regex.Match(oilPatternNode.OuterHtml, @"\.\./(?<url>OilPattern\.aspx\?OilPatternId=\d+)");
+                oilPatternUrl = $"http://bits.swebowl.se/{matches.Groups["url"].Value}";
+            }
+            else
+            {
+                oilPatternText = string.Empty;
+                oilPatternUrl = string.Empty;
+            }
 
             var homeTeamNameSplit = homeTeamName.Split();
             string homeTeam = null;
             foreach (var possibleTeam in possibleTeams)
             {
+                // perfect match
                 var equals = possibleTeam.Equals(homeTeamName, StringComparison.InvariantCultureIgnoreCase);
                 if (equals)
                 {
                     homeTeam = possibleTeam;
                     break;
                 }
+            }
 
-                var contains = possibleTeam.IndexOf(homeTeamNameSplit.First(), StringComparison.InvariantCultureIgnoreCase);
-                if (contains >= 0)
+            if (homeTeam == null)
+            {
+                foreach (var possibleTeam in possibleTeams)
                 {
-                    homeTeam = possibleTeam;
+                    // best match
+                    var contains = possibleTeam.IndexOf(homeTeamNameSplit.First(), StringComparison.InvariantCultureIgnoreCase);
+                    if (contains >= 0)
+                    {
+                        homeTeam = possibleTeam;
+                    }
                 }
             }
 
+            var oilPatternInformation = new OilPatternInformation(oilPatternText, oilPatternUrl);
             if (homeTeam != null)
-                return new ParseHeaderResult(homeTeam, awayTeamName, DateTime.Parse(dateText), locationText);
+            {
+                var result = new ParseHeaderResult(
+                    homeTeam,
+                    awayTeamName,
+                    DateTime.Parse(dateText),
+                    locationText,
+                    oilPatternInformation);
+                return result;
+            }
 
             var awayTeamNameSplit = awayTeamName.Split();
             string awayTeam = null;
             foreach (var possibleTeam in possibleTeams)
             {
+                // perfect match
                 var equals = possibleTeam.Equals(awayTeamName, StringComparison.InvariantCultureIgnoreCase);
                 if (equals)
                 {
                     awayTeam = possibleTeam;
                     break;
                 }
+            }
 
-                var contains = possibleTeam.IndexOf(awayTeamNameSplit.First(), StringComparison.InvariantCultureIgnoreCase);
-                if (contains >= 0)
+            if (awayTeam == null)
+            {
+                foreach (var possibleTeam in possibleTeams)
                 {
-                    awayTeam = possibleTeam;
+                    // best match
+                    var contains = possibleTeam.IndexOf(awayTeamNameSplit.First(), StringComparison.InvariantCultureIgnoreCase);
+                    if (contains >= 0)
+                    {
+                        awayTeam = possibleTeam;
+                    }
                 }
             }
 
@@ -85,7 +125,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 throw new ApplicationException(message);
             }
 
-            return new ParseHeaderResult(awayTeam, homeTeamName, DateTime.Parse(dateText), locationText);
+            return new ParseHeaderResult(awayTeam, homeTeamName, DateTime.Parse(dateText), locationText, oilPatternInformation);
         }
 
         public ParseResult Parse(string content, string team)

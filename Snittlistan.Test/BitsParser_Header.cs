@@ -134,5 +134,19 @@ namespace Snittlistan.Test
             // Assert
             Assert.That(header.Date, Is.EqualTo(new DateTime(2013, 4, 20)));
         }
+
+        [Test]
+        public void ParsesOilPattern()
+        {
+            // Arrange
+            var content = Resources.Id3152235;
+            var possibleTeams = new HashSet<string> { "Fredrikshof IF BK F" };
+
+            // Act
+            var header = BitsParser.ParseHeader(content, possibleTeams);
+
+            // Assert
+            Assert.That(header.OilPattern, Is.EqualTo("ABT#2"));
+        }
     }
 }

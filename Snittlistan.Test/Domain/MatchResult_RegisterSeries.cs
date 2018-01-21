@@ -57,7 +57,7 @@ namespace Snittlistan.Test.Domain
                     Id = "p8"
                 },
             };
-            roster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false)
+            roster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
             {
                 Id = "rosters-1",
                 Players = players.Select(x => x.Id).ToList()

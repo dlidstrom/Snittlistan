@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Raven.Abstractions;
@@ -11,13 +10,20 @@ using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Helpers;
-using Snittlistan.Web.Infrastructure.AutoMapper;
+using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Models;
 
 namespace Snittlistan.Web.Areas.V2.Controllers
 {
     public class RosterController : AbstractController
     {
+        private readonly IBitsClient bitsClient;
+
+        public RosterController(IBitsClient bitsClient)
+        {
+            this.bitsClient = bitsClient;
+        }
+
         public ActionResult Index(int? season)
         {
             var selectAll = true;
@@ -41,7 +47,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                         Turn = g.Key,
                         StartDate = g.Min(x => x.Date),
                         EndDate = lastDate,
-                        Rosters = g.Select(x => x.MapTo<RosterViewModel>())
+                        Rosters = g.Select(x => new RosterViewModel(x, Tuple.Create(string.Empty, string.Empty), new List<Tuple<string, string>>()))
                                    .SortRosters()
                                    .ToList()
                     };
@@ -84,31 +90,30 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
             var season = DocumentSession.LatestSeasonOrDefault(DateTime.Now.Year);
             var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
-
-            using (var client = new WebClient())
-            {
-                var address = $"http://bits.swebowl.se/Matches/MatchFact.aspx?MatchId={vm.BitsMatchId}";
-                var content = client.DownloadString(address);
-                var header = BitsParser.ParseHeader(content, websiteConfig.GetTeamNames());
-                ViewBag.TeamNamesAndLevels = websiteConfig.TeamNamesAndLevels;
-                return View(
-                    "Create", new CreateRosterViewModel
-                    {
-                        Season = season,
-                        Turn = 1,
-                        BitsMatchId = vm.BitsMatchId,
-                        Team = header.Team,
-                        IsFourPlayer = false,
-                        Opponent = header.Opponent,
-                        Date = header.Date,
-                        Location = header.Location
-                    });
-            }
+            var content = bitsClient.DownloadMatchResult(vm.BitsMatchId);
+            var header = BitsParser.ParseHeader(content, websiteConfig.GetTeamNames());
+            ViewBag.TeamNamesAndLevels = websiteConfig.TeamNamesAndLevels;
+            return View(
+                "Create", new CreateRosterViewModel
+                {
+                    Season = season,
+                    Turn = 1,
+                    BitsMatchId = vm.BitsMatchId,
+                    Team = header.Team,
+                    IsFourPlayer = false,
+                    Opponent = header.Opponent,
+                    Date = header.Date,
+                    Location = header.Location,
+                    OilPatternName = header.OilPattern.Name,
+                    OilPatternUrl = header.OilPattern.Url
+                });
         }
 
         [Authorize]
         public ActionResult Create()
         {
+            var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+            ViewBag.TeamNamesAndLevels = websiteConfig.TeamNamesAndLevels;
             var vm = new CreateRosterViewModel
                 {
                     Season = DocumentSession.LatestSeasonOrDefault(DateTime.Now.Year)
@@ -131,7 +136,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 vm.Location,
                 vm.Opponent,
                 vm.Date,
-                vm.IsFourPlayer);
+                vm.IsFourPlayer,
+                new OilPatternInformation(vm.OilPatternName, vm.OilPatternUrl));
             DocumentSession.Store(roster);
             return RedirectToAction("Index");
         }
@@ -143,7 +149,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             if (roster == null) throw new HttpException(404, "Roster not found");
             var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             ViewBag.TeamNamesAndLevels = websiteConfig.TeamNamesAndLevels;
-            return View(roster.MapTo<CreateRosterViewModel>());
+            return View(new CreateRosterViewModel(roster));
         }
 
         [Authorize]
@@ -169,6 +175,10 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             roster.BitsMatchId = vm.BitsMatchId;
             roster.IsFourPlayer = vm.IsFourPlayer;
             roster.Date = vm.Date;
+            if (vm.BitsMatchId == 0)
+            {
+                roster.OilPattern = new OilPatternInformation(vm.OilPatternName, string.Empty);
+            }
 
             return RedirectToAction("Index");
         }
@@ -179,7 +189,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var roster = DocumentSession.Load<Roster>(id);
             if (roster == null)
                 throw new HttpException(404, "Roster not found");
-            return View(roster.MapTo<RosterViewModel>());
+            return View(new RosterViewModel(roster, Tuple.Create(string.Empty, string.Empty), new List<Tuple<string, string>>()));
         }
 
         [HttpPost]
@@ -367,7 +377,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var rostersForPlayers = new Dictionary<string, List<RosterViewModel>>();
             foreach (var roster in rosters)
             {
-                var rosterViewModel = roster.MapTo<RosterViewModel>();
+                var rosterViewModel = new RosterViewModel(roster, Tuple.Create(string.Empty, string.Empty), new List<Tuple<string, string>>());
                 foreach (var player in roster.Players)
                 {
                     if (rostersForPlayers.TryGetValue(player, out var rosterViewModels) == false)
@@ -434,19 +444,28 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         private RosterViewModel LoadRoster(Roster roster)
         {
-            var vm = roster.MapTo<RosterViewModel>();
+            var players = new List<Tuple<string, string>>();
             foreach (var player in roster.Players.Where(p => p != null).Select(playerId => DocumentSession.Load<Player>(playerId)))
             {
-                vm.Players.Add(Tuple.Create(player.Id, player.Name));
+                players.Add(Tuple.Create(player.Id, player.Name));
             }
 
+            Tuple<string, string> teamLeaderTuple = null;
             if (roster.TeamLeader != null)
             {
                 var teamLeader = DocumentSession.Load<Player>(roster.TeamLeader);
-                vm.TeamLeader = Tuple.Create(teamLeader.Id, teamLeader.Name);
+                teamLeaderTuple = Tuple.Create(teamLeader.Id, teamLeader.Name);
             }
 
+            var vm = new RosterViewModel(roster, teamLeaderTuple, players);
             return vm;
+        }
+
+        public ActionResult OilPattern(string rosterId)
+        {
+            var roster = DocumentSession.Load<Roster>(rosterId);
+            ViewBag.Url = roster.OilPattern.Url;
+            return View();
         }
     }
 }

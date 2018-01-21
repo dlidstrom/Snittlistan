@@ -13,6 +13,8 @@ namespace Snittlistan.Tool.Tasks
                 {
                     scope.PublishMessage(new MessageEnvelope(new RegisterMatchesMessage(), tuple.Item2));
                 }
+
+                scope.Commit();
             }
         }
 

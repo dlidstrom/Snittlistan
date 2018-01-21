@@ -1,7 +1,4 @@
-﻿using System;
-using System.Configuration;
-using System.Linq;
-using Snittlistan.Queue;
+﻿using Snittlistan.Queue;
 using Snittlistan.Queue.Messages;
 
 namespace Snittlistan.Tool.Tasks
@@ -10,23 +7,18 @@ namespace Snittlistan.Tool.Tasks
     {
         public void Run(string[] args)
         {
-            var apiUrl = args[1];
             using (var scope = MsmqGateway.AutoCommitScope())
             {
-                var envelope = new MessageEnvelope(
-                    new InitializeIndexesMessage(),
-                    new Uri(ConfigurationManager.AppSettings[apiUrl]));
-                scope.PublishMessage(envelope);
+                foreach (var url in CommandLineTaskHelper.AllApiUrls())
+                {
+                    var envelope = new MessageEnvelope(new InitializeIndexesMessage(), url);
+                    scope.PublishMessage(envelope);
+                }
+
+                scope.Commit();
             }
         }
 
-        public string HelpText
-        {
-            get
-            {
-                var helpText = $"Initializes indexes and migrates WebsiteConfig. Specify api url. Available api urls:\n{string.Join(Environment.NewLine, CommandLineTaskHelper.AllApiUrls().Select(x => x.ToString()))}";
-                return helpText;
-            }
-        }
+        public string HelpText => "Initializes indexes and migrates WebsiteConfig for all sites.";
     }
 }
