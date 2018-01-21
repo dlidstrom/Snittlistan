@@ -50,7 +50,7 @@
     <CustomAction Id="RegisterMatch_Cmd"
                   Property="RegisterMatch_Task"
                   Execute="immediate"
-                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU Administrator /RP [ADMINISTRATOR_PASSWORD] /SC MINUTE /MO 5 /TN RegisterMatch /ST 12:00 /ET 20:00 /TR &quot;\&quot;[#Snittlistan.Tool.exe]\&quot; registermatch&quot;" />
+                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU Administrator /RP [ADMINISTRATOR_PASSWORD] /SC MINUTE /MO 15 /TN RegisterMatch /TR &quot;\&quot;[#Snittlistan.Tool.exe]\&quot; registermatch&quot;" />
     <CustomAction Id="RegisterMatch_Task"
                   BinaryKey="WixCA"
                   DllEntry="CAQuietExec"
