@@ -20,8 +20,9 @@
         <dd>@Model.FormattedResult</dd>
         <dt>BITS</dt>
         <dd>
-            <a href="@Url.Action("BitsMatchResult", new { id = Model.RosterId })">
+            <a href="@Html.GenerateBitsUrl(Model.BitsMatchId)">
                 Matchfakta
+                <i class="icon-share-alt"></i>
             </a>
         </dd>
     </dl>
