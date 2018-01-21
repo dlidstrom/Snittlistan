@@ -110,7 +110,7 @@ namespace Snittlistan.Test.Domain
             var parseResult = bitsParser.Parse(content, "Fredrikshof");
             var rosterPlayerIds = new HashSet<string>(
                 parseResult.Series.SelectMany(x => x.Tables.SelectMany(y => new[] { y.Game1.Player, y.Game2.Player })));
-            var roster = new Roster(2017, 1, testCase.BitsMatchId, "Fredrikshof", "A", string.Empty, string.Empty, DateTime.Now, false)
+            var roster = new Roster(2017, 1, testCase.BitsMatchId, "Fredrikshof", "A", string.Empty, string.Empty, DateTime.Now, false, OilPatternInformation.Empty)
             {
                 Id = "rosters-1",
                 Players = rosterPlayerIds.ToList()

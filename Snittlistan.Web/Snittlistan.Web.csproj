@@ -185,6 +185,7 @@
     <Compile Include="ApplicationMode.cs" />
     <Compile Include="Areas\V2\Controllers\Api\ApiErrorController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\TaskController.cs" />
+    <Compile Include="Areas\V2\Domain\OilPatternInformation.cs" />
     <Compile Include="Areas\V2\Queries\GetActivePlayersQuery.cs" />
     <Compile Include="Areas\V2\Queries\GetPendingMatchesQuery.cs" />
     <Compile Include="Areas\V2\Queries\GetPlayersQuery.cs" />
@@ -388,7 +389,6 @@
     <Compile Include="Infrastructure\AutoMapper\Profiles\PlayerResolver.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\Team4x4ViewModelConverter.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\Team8x4ViewModelConverter.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Profiles\RosterProfile.cs" />
     <Compile Include="Infrastructure\AutoMapper\Profiles\UserProfile.cs" />
     <Compile Include="Infrastructure\CassetteBundleConfiguration.cs" />
     <Compile Include="Infrastructure\GuidBinder.cs" />
@@ -555,10 +555,10 @@
     <Content Include="Areas\V2\Views\Layout\NavPart.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\Form.cshtml" />
     <Content Include="Areas\V2\Views\AdminTasks\Raven.cshtml" />
-    <Content Include="..\packages\RavenDB.Database.3.5.4\tools\Raven.Studio.Html5.zip">
+    <None Include="..\packages\RavenDB.Database.3.5.4\tools\Raven.Studio.Html5.zip">
       <Link>Raven.Studio.Html5.zip</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
+    <Content Include="Areas\V2\Views\Roster\OilPattern.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />

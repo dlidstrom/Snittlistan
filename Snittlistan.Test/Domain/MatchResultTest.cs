@@ -14,7 +14,7 @@ namespace Snittlistan.Test.Domain
 
         public MatchResultTest()
         {
-            roster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false)
+            roster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
             {
                 Id = "rosters-1"
             };
@@ -42,10 +42,10 @@ namespace Snittlistan.Test.Domain
         {
             // Arrange
             var matchResult = new MatchResult(roster, 9, 11, 123);
-            var newRoster = new Roster(2012, 10, 1, "X", "A", "Y", "Z", new DateTime(2012, 1, 1), false)
-                                {
-                                    Id = "rosters-2"
-                                };
+            var newRoster = new Roster(2012, 10, 1, "X", "A", "Y", "Z", new DateTime(2012, 1, 1), false, OilPatternInformation.Empty)
+            {
+                Id = "rosters-2"
+            };
 
             // Act
             matchResult.Update(newRoster, 11, 9, 321);
@@ -77,7 +77,7 @@ namespace Snittlistan.Test.Domain
         public void RosterCannotHaveSevenPlayers()
         {
             // Arrange
-            var invalidRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false)
+            var invalidRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -106,7 +106,7 @@ namespace Snittlistan.Test.Domain
         public void RosterCanHaveEightPlayers()
         {
             // Arrange
-            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false)
+            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -138,7 +138,7 @@ namespace Snittlistan.Test.Domain
         public void RosterCanHaveNinePlayers()
         {
             // Arrange
-            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false)
+            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -167,7 +167,7 @@ namespace Snittlistan.Test.Domain
         public void RosterCanHaveTenPlayers()
         {
             // Arrange
-            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false)
+            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -196,7 +196,7 @@ namespace Snittlistan.Test.Domain
         public void RosterCannotHaveElevenPlayers()
         {
             // Arrange
-            var invalidRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false)
+            var invalidRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -225,7 +225,7 @@ namespace Snittlistan.Test.Domain
         public void CanOnlyRegisterSeriesWithValidPlayer()
         {
             // Arrange
-            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false)
+            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -252,7 +252,7 @@ namespace Snittlistan.Test.Domain
         public void CanRegisterWithReserve1()
         {
             // Arrange
-            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false)
+            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -279,7 +279,7 @@ namespace Snittlistan.Test.Domain
         public void CanRegisterWithReserve1AndReserve2()
         {
             // Arrange
-            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false)
+            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -306,7 +306,7 @@ namespace Snittlistan.Test.Domain
         public void CanNotRegisterInvalidPlayer()
         {
             // Arrange
-            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false)
+            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -375,7 +375,7 @@ namespace Snittlistan.Test.Domain
         public void MedalFor4Score()
         {
             // Arrange
-            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false)
+            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -418,7 +418,7 @@ namespace Snittlistan.Test.Domain
         public void MedalFor270OrMore()
         {
             // Arrange
-            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false)
+            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -458,7 +458,7 @@ namespace Snittlistan.Test.Domain
         public void OnlyAwardMedalsOnce()
         {
             // Arrange
-            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false)
+            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -504,7 +504,7 @@ namespace Snittlistan.Test.Domain
         public void CannotAwardMedalsTwice()
         {
             // Arrange
-            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false)
+            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -526,7 +526,7 @@ namespace Snittlistan.Test.Domain
         public void CanClearMedals()
         {
             // Arrange
-            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false)
+            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
             {
                 Id = "rosters-1",
                 Players = new List<string>
@@ -552,7 +552,7 @@ namespace Snittlistan.Test.Domain
         public void CanClearAndReAwardMedals()
         {
             // Arrange
-            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false)
+            var validRoster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
             {
                 Id = "rosters-1",
                 Players = new List<string>

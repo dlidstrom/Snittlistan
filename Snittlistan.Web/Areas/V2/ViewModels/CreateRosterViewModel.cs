@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using Raven.Abstractions;
+using Snittlistan.Web.Areas.V2.Domain;
 
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
@@ -12,6 +13,20 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             Location = string.Empty;
             Opponent = string.Empty;
             Date = SystemTime.UtcNow.ToLocalTime().Date.AddHours(10);
+        }
+
+        public CreateRosterViewModel(Roster roster)
+        {
+            Season = roster.Season;
+            Turn = roster.Turn;
+            BitsMatchId = roster.BitsMatchId;
+            Team = roster.Team;
+            Location = roster.Location;
+            Opponent = roster.Opponent;
+            Date = roster.Date;
+            IsFourPlayer = roster.IsFourPlayer;
+            OilPatternName = roster.OilPattern.Name;
+            OilPatternUrl = roster.OilPattern.Url;
         }
 
         [Required]
@@ -36,5 +51,9 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         public DateTime Date { get; set; }
 
         public bool IsFourPlayer { get; set; }
+
+        public string OilPatternName { get; set; }
+
+        public string OilPatternUrl { get; set; }
     }
 }

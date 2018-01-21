@@ -43,6 +43,7 @@
                title="Ange match id"
                pattern="\d*"
                required="required"
+               readonly="readonly"
                value="@Model.BitsMatchId" />
     </div>
 </div>
@@ -53,11 +54,7 @@
             @foreach (WebsiteConfig.TeamNameAndLevel nameAndLevel in ViewBag.TeamNamesAndLevels)
             {
                 <option value="@nameAndLevel.FormattedForOption"
-                    @if (nameAndLevel.TeamName == Model.Team)
-                    {
-                        <text>selected="selected"</text>
-                    }
-                >
+                        @if (nameAndLevel.TeamName == Model.Team) { <text> selected="selected" </text>  }>
                     @nameAndLevel.TeamName
                 </option>
             }
@@ -111,5 +108,25 @@
                required
                data-enabletypeahead="yes"
                data-url="/search/locations" />
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="oilPatternName">Oljeprofil:</label>
+    <div class="controls">
+        <input type="text"
+               id="oilPatternName"
+               name="oilPatternName"
+               placeholder="Oljeprofil"
+               autocorrect="off"
+               autocomplete="off"
+               spellcheck="false"
+               @if (Model.BitsMatchId != 0)
+               {
+                   <text>readonly="readonly"</text>
+               }
+               value="@Model.OilPatternName"
+               data-enabletypeahead="yes"
+               data-url="/search/oilpattern" />
+        @Html.HiddenFor(x => x.OilPatternUrl)
     </div>
 </div>
