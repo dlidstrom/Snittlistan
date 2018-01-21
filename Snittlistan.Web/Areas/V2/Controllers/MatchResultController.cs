@@ -11,6 +11,7 @@ using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Helpers;
+using Snittlistan.Web.HtmlHelpers;
 
 namespace Snittlistan.Web.Areas.V2.Controllers
 {
@@ -171,6 +172,13 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             Debug.Assert(postModel.EliteMedal != null, "postModel.EliteMedal != null");
             eliteMedals.AwardMedal("players-" + id, postModel.EliteMedal.Value, postModel.CapturedSeason);
             return RedirectToAction("EliteMedals");
+        }
+
+        public ActionResult BitsMatchResult(string id)
+        {
+            var roster = DocumentSession.Load<Roster>(id);
+            ViewBag.Url = CustomHtmlHelpers.GenerateBitsUrl(roster.BitsMatchId);
+            return View("_BitsIframe");
         }
     }
 }

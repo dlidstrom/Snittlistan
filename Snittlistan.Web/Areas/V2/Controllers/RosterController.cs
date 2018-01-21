@@ -461,11 +461,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return vm;
         }
 
-        public ActionResult OilPattern(string rosterId)
+        public ActionResult OilPattern(string id)
         {
-            var roster = DocumentSession.Load<Roster>(rosterId);
+            var roster = DocumentSession.Load<Roster>(id);
             ViewBag.Url = roster.OilPattern.Url;
-            return View();
+            return View("_BitsIframe");
         }
     }
 }

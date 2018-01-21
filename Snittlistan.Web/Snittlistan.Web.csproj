@@ -558,7 +558,7 @@
     <None Include="..\packages\RavenDB.Database.3.5.4\tools\Raven.Studio.Html5.zip">
       <Link>Raven.Studio.Html5.zip</Link>
     </None>
-    <Content Include="Areas\V2\Views\Roster\OilPattern.cshtml" />
+    <Content Include="Areas\V2\Views\Shared\_BitsIframe.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
