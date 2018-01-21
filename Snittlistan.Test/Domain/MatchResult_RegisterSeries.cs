@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.ReadModels;
-using Snittlistan.Web.DomainEvents;
 
 namespace Snittlistan.Test.Domain
 {
@@ -86,70 +86,68 @@ namespace Snittlistan.Test.Domain
                         new MatchTable(4, new MatchGame("p7", 200, 0, 0), new MatchGame("p8", 0, 0, 0), 0),
                     })
             };
-
-            using (DomainEvent.TestWith(e => ev = (MatchRegisteredEvent)e))
+            var opponentSeries = new[]
             {
-                var opponentSeries = new[]
+                new ResultSeriesReadModel.Serie
                 {
-                    new ResultSeriesReadModel.Serie
+                    Tables = new List<ResultSeriesReadModel.Table>
                     {
-                        Tables = new List<ResultSeriesReadModel.Table>
+                        new ResultSeriesReadModel.Table
                         {
-                            new ResultSeriesReadModel.Table
-                            {
-                                Game1 = new ResultSeriesReadModel.Game(),
-                                Game2 = new ResultSeriesReadModel.Game()
-                            },
-                            new ResultSeriesReadModel.Table
-                            {
-                                Game1 = new ResultSeriesReadModel.Game(),
-                                Game2 = new ResultSeriesReadModel.Game()
-                            },
-                            new ResultSeriesReadModel.Table
-                            {
-                                Game1 = new ResultSeriesReadModel.Game(),
-                                Game2 = new ResultSeriesReadModel.Game()
-                            },
-                            new ResultSeriesReadModel.Table
-                            {
-                                Game1 = new ResultSeriesReadModel.Game(),
-                                Game2 = new ResultSeriesReadModel.Game()
-                            }
-                        }
-                    },
-                    new ResultSeriesReadModel.Serie
-                    {
-                        Tables = new List<ResultSeriesReadModel.Table>
+                            Game1 = new ResultSeriesReadModel.Game(),
+                            Game2 = new ResultSeriesReadModel.Game()
+                        },
+                        new ResultSeriesReadModel.Table
                         {
-                            new ResultSeriesReadModel.Table
-                            {
-                                Game1 = new ResultSeriesReadModel.Game(),
-                                Game2 = new ResultSeriesReadModel.Game()
-                            },
-                            new ResultSeriesReadModel.Table
-                            {
-                                Game1 = new ResultSeriesReadModel.Game(),
-                                Game2 = new ResultSeriesReadModel.Game()
-                            },
-                            new ResultSeriesReadModel.Table
-                            {
-                                Game1 = new ResultSeriesReadModel.Game(),
-                                Game2 = new ResultSeriesReadModel.Game()
-                            },
-                            new ResultSeriesReadModel.Table
-                            {
-                                Game1 = new ResultSeriesReadModel.Game(),
-                                Game2 = new ResultSeriesReadModel.Game()
-                            }
+                            Game1 = new ResultSeriesReadModel.Game(),
+                            Game2 = new ResultSeriesReadModel.Game()
+                        },
+                        new ResultSeriesReadModel.Table
+                        {
+                            Game1 = new ResultSeriesReadModel.Game(),
+                            Game2 = new ResultSeriesReadModel.Game()
+                        },
+                        new ResultSeriesReadModel.Table
+                        {
+                            Game1 = new ResultSeriesReadModel.Game(),
+                            Game2 = new ResultSeriesReadModel.Game()
                         }
                     }
-                };
-                matchResult.RegisterSeries(
-                    series,
-                    opponentSeries,
-                    players,
-                    new Dictionary<string, ResultForPlayerIndex.Result>());
-            }
+                },
+                new ResultSeriesReadModel.Serie
+                {
+                    Tables = new List<ResultSeriesReadModel.Table>
+                    {
+                        new ResultSeriesReadModel.Table
+                        {
+                            Game1 = new ResultSeriesReadModel.Game(),
+                            Game2 = new ResultSeriesReadModel.Game()
+                        },
+                        new ResultSeriesReadModel.Table
+                        {
+                            Game1 = new ResultSeriesReadModel.Game(),
+                            Game2 = new ResultSeriesReadModel.Game()
+                        },
+                        new ResultSeriesReadModel.Table
+                        {
+                            Game1 = new ResultSeriesReadModel.Game(),
+                            Game2 = new ResultSeriesReadModel.Game()
+                        },
+                        new ResultSeriesReadModel.Table
+                        {
+                            Game1 = new ResultSeriesReadModel.Game(),
+                            Game2 = new ResultSeriesReadModel.Game()
+                        }
+                    }
+                }
+            };
+
+            matchResult.RegisterSeries(
+                e => ev = (MatchRegisteredEvent)e,
+                series,
+                opponentSeries,
+                players,
+                new Dictionary<string, ResultForPlayerIndex.Result>());
         }
 
         [Test]

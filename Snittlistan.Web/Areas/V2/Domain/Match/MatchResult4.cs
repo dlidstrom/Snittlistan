@@ -5,6 +5,7 @@ using EventStoreLite;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Raven.Abstractions;
+using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
 
 namespace Snittlistan.Web.Areas.V2.Domain.Match
@@ -44,6 +45,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         private int TeamScore { get; set; }
 
         public bool Update(
+            Action<object> publish,
             Roster roster,
             int teamScore,
             int opponentScore,
@@ -84,7 +86,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                     bitsMatchId,
                     playerPins.Keys.AsEnumerable().ToArray());
                 ApplyChange(@event);
-                RegisterSeries(matchSeries);
+                RegisterSeries(publish, matchSeries);
             }
 
             return roster.Date.AddDays(5) < SystemTime.UtcNow;
@@ -101,7 +103,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             DoAwardMedals(registeredSeries);
         }
 
-        public void RegisterSeries(MatchSerie4[] matchSeries)
+        public void RegisterSeries(Action<object> publish, MatchSerie4[] matchSeries)
         {
             if (rosterPlayers.Count != 4 && rosterPlayers.Count != 5)
                 throw new MatchException("Roster must have 4 or 5 players when registering results");
@@ -112,6 +114,8 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                 ApplyChange(new Serie4Registered(matchSerie, BitsMatchId, RosterId));
                 DoAwardMedals(registeredSeries);
             }
+
+            publish.Invoke(new MatchRegisteredEvent(RosterId, TeamScore, OpponentScore));
         }
 
         public void AwardMedals()

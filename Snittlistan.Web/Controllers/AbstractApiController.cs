@@ -2,6 +2,8 @@
 using System.Web.Http;
 using EventStoreLite;
 using Raven.Client;
+using Snittlistan.Queue;
+using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Attributes;
 
@@ -30,9 +32,16 @@ namespace Snittlistan.Web.Controllers
         /// </summary>
         public EventStore EventStore { get; set; }
 
+        /// <summary>
+        /// Gets the msmq transaction.
+        /// </summary>
+        public IMsmqTransaction MsmqTransaction { get; set; }
+
         [NonAction]
         public void SaveChanges()
         {
+            MsmqTransaction.Commit();
+
             // this commits the document session
             EventStoreSession.SaveChanges();
         }
@@ -46,7 +55,15 @@ namespace Snittlistan.Web.Controllers
         protected void ExecuteCommand(ICommand command)
         {
             if (command == null) throw new ArgumentNullException(nameof(command));
-            command.Execute(DocumentSession, EventStoreSession);
+            command.Execute(DocumentSession, EventStoreSession, PublishMessage);
+        }
+
+        protected void PublishMessage<TPayload>(TPayload payload)
+        {
+            var uriString = Url.Link("DefaultApi", new { controller = "Task" });
+            var uri = new Uri(uriString);
+            var envelope = new MessageEnvelope(payload, uri);
+            MsmqTransaction.PublishMessage(envelope);
         }
     }
 }

@@ -7,18 +7,19 @@ using Elmah;
 using Newtonsoft.Json;
 using NLog;
 using Raven.Abstractions;
-using Snittlistan.Queue;
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Commands;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.Queries;
+using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Helpers;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Attributes;
 using Snittlistan.Web.Infrastructure.Indexes;
+using Snittlistan.Web.Models;
 
 namespace Snittlistan.Web.Areas.V2.Controllers.Api
 {
@@ -59,6 +60,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                 var matchResult = EventStoreSession.Load<MatchResult4>(roster.MatchResultId);
                 var parseResult = parser.Parse4(result, roster.Team);
                 var isVerified = matchResult.Update(
+                    PublishMessage,
                     roster,
                     parseResult.TeamScore,
                     parseResult.OpponentScore,
@@ -76,6 +78,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                                                       .ToDictionary(x => x.PlayerId);
                 var matchSeries = parseResult.CreateMatchSeries();
                 var isVerified = matchResult.Update(
+                    PublishMessage,
                     roster,
                     parseResult.TeamScore,
                     parseResult.OpponentScore,
@@ -180,31 +183,76 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             var rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
                                          .Where(x => x.Season == season)
                                          .ToArray();
-            using (var scope = MsmqGateway.AutoCommitScope())
+            foreach (var roster in rosters)
             {
-                foreach (var roster in rosters)
+                if (roster.IsVerified)
                 {
-                    if (roster.IsVerified)
-                    {
-                        Log.Info($"Skipping {roster.BitsMatchId} because it is already verified.");
-                    }
-                    else if (roster.BitsMatchId == 0)
-                    {
-                        Log.Info($"Skipping {roster.Team}-{roster.Opponent} (turn={roster.Turn}) because it has no BitsMatchId.");
-                    }
-                    else if (roster.MatchResultId == null)
-                    {
-                        Log.Info($"Skipping {roster.BitsMatchId} because it has no result yet.");
-                    }
-                    else
-                    {
-                        Log.Info($"Need to verify {roster.BitsMatchId}");
-                        var verifyMatchMessage = new VerifyMatchMessage(roster.BitsMatchId, roster.Id);
-                        var envelope = new MessageEnvelope(verifyMatchMessage, new Uri(Url.Link("DefaultApi", new { controller = "Task" })));
-                        scope.PublishMessage(envelope);
-                    }
+                    Log.Info($"Skipping {roster.BitsMatchId} because it is already verified.");
+                }
+                else if (roster.BitsMatchId == 0)
+                {
+                    Log.Info($"Skipping {roster.Team}-{roster.Opponent} (turn={roster.Turn}) because it has no BitsMatchId.");
+                }
+                else if (roster.MatchResultId == null)
+                {
+                    Log.Info($"Skipping {roster.BitsMatchId} because it has no result yet.");
+                }
+                else
+                {
+                    Log.Info($"Need to verify {roster.BitsMatchId}");
+                    var verifyMatchMessage = new VerifyMatchMessage(roster.BitsMatchId, roster.Id);
+                    PublishMessage(verifyMatchMessage);
                 }
             }
+
+            return Ok();
+        }
+
+        private IHttpActionResult Handle(NewUserCreatedEvent @event)
+        {
+            var recipient = @event.Email;
+            const string Subject = "Välkommen till Snittlistan!";
+            var activationKey = @event.ActivationKey;
+            var id = @event.UserId;
+
+            Emails.UserRegistered(recipient, Subject, id, activationKey);
+
+            return Ok();
+        }
+
+        private IHttpActionResult Handle(UserInvitedEvent @event)
+        {
+            var recipient = @event.Email;
+            const string Subject = "Välkommen till Snittlistan!";
+            var activationUri = @event.ActivationUri;
+
+            Emails.InviteUser(recipient, Subject, activationUri);
+
+            return Ok();
+        }
+
+        private IHttpActionResult Handle(EmailTask task)
+        {
+            Emails.SendMail(task.Recipient, task.Subject, task.Content);
+
+            return Ok();
+        }
+
+        private IHttpActionResult Handle(MatchRegisteredEvent @event)
+        {
+            var roster = DocumentSession.Load<Roster>(@event.RosterId);
+            if (roster.IsFourPlayer) return Ok();
+            var resultSeriesReadModelId = ResultSeriesReadModel.IdFromBitsMatchId(roster.BitsMatchId);
+            var resultSeriesReadModel = DocumentSession.Load<ResultSeriesReadModel>(resultSeriesReadModelId);
+            var resultHeaderReadModelId = ResultHeaderReadModel.IdFromBitsMatchId(roster.BitsMatchId);
+            var resultHeaderReadModel = DocumentSession.Load<ResultHeaderReadModel>(resultHeaderReadModelId);
+            Emails.MatchRegistered(
+                roster.Team,
+                roster.Opponent,
+                @event.Score,
+                @event.OpponentScore,
+                resultSeriesReadModel,
+                resultHeaderReadModel);
 
             return Ok();
         }

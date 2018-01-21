@@ -216,20 +216,22 @@ namespace Snittlistan.Web.Areas.V2.Domain
                     var scoreNode = tableNode.SelectSingleNode(
                         $"//span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{serieNumber}Table{tableNumber}Order{1 + (int)team}Total']");
                     var score = int.Parse(scoreNode.InnerText);
-                    var res1 = int.Parse(res1Node.InnerText);
-                    var res2 = int.Parse(res2Node.InnerText);
+                    int.TryParse(res1Node.InnerText, out var res1);
+                    int.TryParse(res2Node.InnerText, out var res2);
+                    var playerForGame1 = getPlayerId(name1.InnerText);
+                    var playerForGame2 = getPlayerId(name2.InnerText);
                     var table = new ResultSeriesReadModel.Table
                     {
                         Score = score,
                         Game1 = new ResultSeriesReadModel.Game
                         {
                             Pins = res1,
-                            Player = getPlayerId(name1.InnerText)
+                            Player = playerForGame1
                         },
                         Game2 = new ResultSeriesReadModel.Game
                         {
                             Pins = res2,
-                            Player = getPlayerId(name2.InnerText)
+                            Player = playerForGame2
                         }
                     };
                     tables.Add(table);

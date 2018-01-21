@@ -11,7 +11,6 @@ using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
 using Snittlistan.Web.Areas.V2.ReadModels;
-using Snittlistan.Web.DomainEvents;
 using Snittlistan.Web.Infrastructure;
 
 namespace Snittlistan.Test.Domain
@@ -151,17 +150,15 @@ namespace Snittlistan.Test.Domain
 
             // Act
             MatchResult matchResult = null;
-            using (DomainEvent.Disable())
+            Transact(session =>
             {
-                Transact(session =>
-                {
-                    var eventStoreSession = Mock.Of<IEventStoreSession>();
-                    Mock.Get(eventStoreSession)
-                        .Setup(x => x.Store(It.IsAny<AggregateRoot>()))
-                        .Callback((AggregateRoot ar) => matchResult = (MatchResult)ar);
-                    command.Execute(session, eventStoreSession);
-                });
-            }
+                var eventStoreSession = Mock.Of<IEventStoreSession>();
+                Mock.Get(eventStoreSession)
+                    .Setup(x => x.Store(It.IsAny<AggregateRoot>()))
+                    .Callback((AggregateRoot ar) => matchResult = (MatchResult)ar);
+                command.Execute(session, eventStoreSession, o => { });
+            });
+
             return matchResult;
         }
 

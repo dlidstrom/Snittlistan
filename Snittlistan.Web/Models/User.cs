@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web.Mvc;
 using Raven.Imports.Newtonsoft.Json;
-using Snittlistan.Web.DomainEvents;
+using Snittlistan.Queue.Messages;
 
 namespace Snittlistan.Web.Models
 {
@@ -156,10 +156,10 @@ namespace Snittlistan.Web.Models
         /// <summary>
         /// Initializes a new user. Must be done for new users.
         /// </summary>
-        public void Initialize()
+        public void Initialize(Action<object> publish)
         {
             ActivationKey = Guid.NewGuid().ToString();
-            DomainEvent.Raise(new NewUserCreatedEvent { User = this });
+            publish.Invoke(new NewUserCreatedEvent(Email, ActivationKey, Id));
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace Snittlistan.Web.Models
         /// <summary>
         /// Activates a user and sends an invite email. This allows them to log on.
         /// </summary>
-        public void ActivateWithEmail(UrlHelper urlHelper, string urlScheme)
+        public void ActivateWithEmail(Action<object> publish, UrlHelper urlHelper, string urlScheme)
         {
             IsActive = true;
             ActivationKey = Guid.NewGuid().ToString();
@@ -185,7 +185,7 @@ namespace Snittlistan.Web.Models
             },
             urlScheme);
             Debug.Assert(activationUri != null, "activationUri != null");
-            DomainEvent.Raise(new UserInvitedEvent(this, activationUri));
+            publish.Invoke(new UserInvitedEvent(activationUri, Email));
         }
 
         /// <summary>

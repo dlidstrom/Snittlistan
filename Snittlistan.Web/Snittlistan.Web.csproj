@@ -200,7 +200,6 @@
     <Compile Include="Areas\V2\Domain\Match\Commentary\SummaryPatterns.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\MatchCommentaryEvent.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\ScoreAwarded.cs" />
-    <Compile Include="Areas\V2\Domain\Match\MatchRegisteredEvent.cs" />
     <Compile Include="Areas\V2\Handlers\SeasonResultsHandler.cs" />
     <Compile Include="Areas\V2\Migration\IEventMigratorWithResults.cs" />
     <Compile Include="Areas\V2\ReadModels\SeasonResults.cs" />
@@ -278,16 +277,10 @@
     <Compile Include="Areas\V2\ViewModels\TeamOfWeekLeadersViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\TeamOfWeekViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\VerifyBitsViewModel.cs" />
-    <Compile Include="Handlers\HandleBase.cs" />
-    <Compile Include="Handlers\MatchRegistered.cs" />
     <Compile Include="HtmlHelpers\UrlExtensions.cs" />
     <Compile Include="Infrastructure\Attributes\OnlyLocalAllowedAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\SaveChangesAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\UnhandledExceptionFilter.cs" />
-    <Compile Include="Infrastructure\BackgroundTasks\BackgroundTask.cs" />
-    <Compile Include="Infrastructure\BackgroundTasks\BackgroundTaskHandler.cs" />
-    <Compile Include="Infrastructure\BackgroundTasks\IBackgroundTaskHandler.cs" />
-    <Compile Include="Infrastructure\BackgroundTasks\TaskRunner.cs" />
     <Compile Include="Infrastructure\BitsClient.cs" />
     <Compile Include="Infrastructure\EventStoreLite\AggregateRoot.cs" />
     <Compile Include="Infrastructure\EventStoreLite\Event.cs" />
@@ -312,13 +305,11 @@
     <Compile Include="Infrastructure\IBitsClient.cs" />
     <Compile Include="Infrastructure\ICalFormatter.cs" />
     <Compile Include="Infrastructure\ICommand.cs" />
-    <Compile Include="Infrastructure\Indexes\BackgroundTasksIndex.cs" />
     <Compile Include="Infrastructure\Installers\ApiControllerInstaller.cs" />
-    <Compile Include="Infrastructure\Installers\BackgroundTaskHandlersInstaller.cs" />
     <Compile Include="Infrastructure\Installers\EventMigratorInstaller.cs" />
     <Compile Include="Infrastructure\Installers\EventStoreSessionInstaller.cs" />
     <Compile Include="Infrastructure\Installers\BitsClientInstaller.cs" />
-    <Compile Include="Infrastructure\Installers\TaskRunnerInstaller.cs" />
+    <Compile Include="Infrastructure\Installers\MsmqInstaller.cs" />
     <Compile Include="Infrastructure\IoC\HostBasedComponentSelector.cs" />
     <Compile Include="Infrastructure\IoC\WindsorDependencyScope.cs" />
     <Compile Include="Infrastructure\IoC\WindsorHttpDependencyResolver.cs" />
@@ -329,10 +320,6 @@
     <Compile Include="Infrastructure\TenantConfiguration.cs" />
     <Compile Include="Models\Emails.cs" />
     <Compile Include="Models\WebsiteConfig.cs" />
-    <Compile Include="Tasks\EmailTask.cs" />
-    <Compile Include="Tasks\EmailTaskHandler.cs" />
-    <Compile Include="Tasks\MatchRegisteredTask.cs" />
-    <Compile Include="Tasks\MatchRegisteredTaskHandler.cs" />
     <Compile Include="ViewModels\UserInvitedViewModel.cs" />
     <Compile Include="Areas\V2\Controllers\UserController.cs" />
     <Compile Include="Areas\V2\ViewModels\CreateUserViewModel.cs" />
@@ -362,8 +349,6 @@
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="Areas\V1\Controllers\AccountController.cs" />
     <Compile Include="Areas\V2\ViewModels\LogOnViewModel.cs" />
-    <Compile Include="DomainEvents\UserInvitedEvent.cs" />
-    <Compile Include="Handlers\UserInvited.cs" />
     <Compile Include="HtmlHelpers\RequestExtensions.cs" />
     <Compile Include="Areas\V2\Indexes\PlayerSearch.cs" />
     <Compile Include="Areas\V2\Indexes\RosterSearchTerms.cs" />
@@ -382,15 +367,9 @@
     <Compile Include="Areas\V2\Controllers\SessionApiController.cs" />
     <Compile Include="Areas\V1\Controllers\ValidationController.cs" />
     <Compile Include="Areas\V1\Controllers\WelcomeController.cs" />
-    <Compile Include="DomainEvents\DomainEvent.cs" />
-    <Compile Include="DomainEvents\DomainEventReset.cs" />
-    <Compile Include="DomainEvents\IDomainEvent.cs" />
-    <Compile Include="DomainEvents\NewUserCreatedEvent.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Handlers\IHandle.cs" />
-    <Compile Include="Handlers\UserRegistered.cs" />
     <Compile Include="Helpers\DocumentSessionExtensions.cs" />
     <Compile Include="Helpers\InputError.cs" />
     <Compile Include="HtmlHelpers\CssType.cs" />
@@ -427,7 +406,6 @@
     <Compile Include="Infrastructure\Installers\AutoMapperInstaller.cs" />
     <Compile Include="Infrastructure\Installers\ControllerInstaller.cs" />
     <Compile Include="Infrastructure\Installers\DocumentStoreMode.cs" />
-    <Compile Include="Infrastructure\Installers\HandlersInstaller.cs" />
     <Compile Include="Infrastructure\Installers\RavenInstaller.cs" />
     <Compile Include="Infrastructure\Installers\ServicesInstaller.cs" />
     <Compile Include="Infrastructure\IoC\ControllerFactoryInstaller.cs" />

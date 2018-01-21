@@ -1,10 +1,8 @@
 ﻿using System;
-using Castle.Windsor;
 using Moq;
 using NUnit.Framework;
 using Snittlistan.Web.Areas.V1.Controllers;
 using Snittlistan.Web.Areas.V1.ViewModels.Account;
-using Snittlistan.Web.DomainEvents;
 using Snittlistan.Web.Helpers;
 using Snittlistan.Web.Services;
 
@@ -13,13 +11,6 @@ namespace Snittlistan.Test.Controllers
     [TestFixture]
     public class AccountController_Scenario : DbTest
     {
-        private IWindsorContainer oldContainer;
-
-        protected override void OnSetUp()
-        {
-            oldContainer = DomainEvent.SetContainer(new WindsorContainer());
-        }
-
         [Test]
         public void CanLogOnAfterRegisteringAndVerifyingAccount()
         {
@@ -33,8 +24,12 @@ namespace Snittlistan.Test.Controllers
                     Password = "some pwd"
                 };
 
-            var controller1 = new AccountController(Mock.Of<IAuthenticationService>()) { DocumentSession = Session };
-            using (DomainEvent.Disable()) controller1.Register(model);
+            var controller1 = new AccountController(Mock.Of<IAuthenticationService>())
+            {
+                DocumentSession = Session,
+                PublishMessage = o => { }
+            };
+            controller1.Register(model);
 
             // normally done by infrastructure (special action filter)
             Session.SaveChanges();
@@ -68,11 +63,6 @@ namespace Snittlistan.Test.Controllers
                 string.Empty);
 
             Assert.True(loggedOn);
-        }
-
-        protected override void OnTearDown()
-        {
-            DomainEvent.SetContainer(oldContainer);
         }
     }
 }

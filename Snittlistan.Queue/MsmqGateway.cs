@@ -25,7 +25,7 @@ namespace Snittlistan.Queue
             return new MsmqTransactionScope();
         }
 
-        public class MsmqTransactionScope : IDisposable
+        public class MsmqTransactionScope : IMsmqTransaction, IDisposable
         {
             private readonly MessageQueueTransaction transaction = new MessageQueueTransaction();
 
@@ -40,9 +40,13 @@ namespace Snittlistan.Queue
                 messageQueue.Send(envelope, transaction);
             }
 
-            public void Dispose()
+            public void Commit()
             {
                 transaction.Commit();
+            }
+
+            public void Dispose()
+            {
                 transaction.Dispose();
             }
         }

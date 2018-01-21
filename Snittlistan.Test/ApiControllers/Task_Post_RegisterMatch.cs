@@ -10,7 +10,6 @@ using Snittlistan.Queue.Messages;
 using Snittlistan.Test.Properties;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.ReadModels;
-using Snittlistan.Web.DomainEvents;
 using Snittlistan.Web.Infrastructure;
 
 namespace Snittlistan.Test.ApiControllers
@@ -62,12 +61,9 @@ namespace Snittlistan.Test.ApiControllers
         protected override void Act()
         {
             // Act
-            using (DomainEvent.Disable())
-            {
-                var request = new TaskRequest(new MessageEnvelope(new RegisterMatchesMessage(), new Uri("http://temp.uri/")));
-                responseMessage = Client.PostAsJsonAsync("http://temp.uri/api/task", request).Result;
-                responseMessage.EnsureSuccessStatusCode();
-            }
+            var request = new TaskRequest(new MessageEnvelope(new RegisterMatchesMessage(), new Uri("http://temp.uri/")));
+            responseMessage = Client.PostAsJsonAsync("http://temp.uri/api/task", request).Result;
+            responseMessage.EnsureSuccessStatusCode();
 
             httpContent = responseMessage.Content;
             content = httpContent.ReadAsStringAsync().Result;
