@@ -34,6 +34,17 @@ namespace Snittlistan.Web.Areas.V1
                 url: "Account/LogOn",
                 defaults: new { controller = "Account", action = "LogOn" });
 
+            // legacy route
+            context.MapRoute(
+                name: "LegacyMatch-route",
+                url: "Match/Details/{id}",
+                defaults: new
+                {
+                    controller = "Match",
+                    action = "LegacyRedirect",
+                    id = UrlParameter.Optional
+                });
+
             context.MapRoute(
                 name: "WelcomeController-Reset",
                 url: "v1/{action}",

@@ -366,5 +366,10 @@ namespace Snittlistan.Web.Areas.V1.Controllers
         {
             return RedirectToActionPermanent("Index");
         }
+
+        public ActionResult LegacyRedirect()
+        {
+            return RedirectToActionPermanent("Index");
+        }
     }
 }
