@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using EventStoreLite;
+using Raven.Imports.Newtonsoft.Json;
 
 namespace Snittlistan.Web.Areas.V2.ReadModels
 {
@@ -10,6 +11,12 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         public ResultSeriesReadModel()
         {
             Series = new List<Serie>();
+        }
+
+        [JsonConstructor]
+        private ResultSeriesReadModel(List<Serie> series)
+        {
+            Series = series;
         }
 
         public string Id { get; set; }
@@ -102,6 +109,12 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
                                          };
             }
 
+            [JsonConstructor]
+            private Serie(List<Table> tables)
+            {
+                Tables = tables;
+            }
+
             public List<Table> Tables { get; set; }
 
             public int TeamTotal
@@ -116,6 +129,14 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             {
                 Game1 = new Game();
                 Game2 = new Game();
+            }
+
+            [JsonConstructor]
+            private Table(int score, Game game1, Game game2)
+            {
+                Score = score;
+                Game1 = game1;
+                Game2 = game2;
             }
 
             public int Score { get; set; }
@@ -151,13 +172,13 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
                 Spares = game.Spares;
             }
 
-            public int Score { get; private set; }
+            public int Score { get; }
 
-            public int Pins { get; private set; }
+            public int Pins { get; }
 
-            public int Strikes { get; private set; }
+            public int Strikes { get; }
 
-            public int Spares { get; private set; }
+            public int Spares { get; }
         }
     }
 }

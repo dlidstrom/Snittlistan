@@ -51,11 +51,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         public JsonResult OilPattern(string q)
         {
             var options = DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
-                                         .Where(t => t.OilPattern.StartsWith(q))
+                                         .Where(t => t.OilPatternName.StartsWith(q))
                                          .Distinct()
                                          .ProjectFromIndexFieldsInto<RosterSearchTerms.Result>()
-                                         .OrderBy(t => t.OilPattern)
-                                         .Select(t => t.OilPattern)
+                                         .OrderBy(t => t.OilPatternName)
+                                         .Select(t => t.OilPatternName)
                                          .ToList();
 
             return Json(new { options }, JsonRequestBehavior.AllowGet);
