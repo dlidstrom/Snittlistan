@@ -174,15 +174,13 @@ namespace Snittlistan.Web
                 Container.Install(
                     new ApiControllerInstaller(),
                     new AutoMapperInstaller(),
-                    new BackgroundTaskHandlersInstaller(),
                     new BitsClientInstaller(),
                     new ControllerInstaller(),
                     new EventMigratorInstaller(),
                     new EventStoreSessionInstaller(),
-                    new HandlersInstaller(),
                     new RavenInstaller(),
                     new ServicesInstaller(),
-                    new TaskRunnerInstaller(),
+                    new MsmqInstaller(),
                     EventStoreInstaller.FromAssembly(Assembly.GetExecutingAssembly(), DocumentStoreMode.Server));
             }
 

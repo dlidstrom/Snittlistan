@@ -5,11 +5,11 @@ using EventStoreLite;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Raven.Abstractions;
+using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Domain.Match.Commentary;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.ReadModels;
-using Snittlistan.Web.DomainEvents;
 
 namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
@@ -61,6 +61,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         }
 
         public bool Update(
+            Action<object> publish,
             Roster roster,
             int teamScore,
             int opponentScore,
@@ -106,13 +107,14 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                     roster.BitsMatchId,
                     playerPins.Keys.AsEnumerable().ToArray());
                 ApplyChange(@event);
-                RegisterSeries(matchSeries, opponentSeries, players, resultsForPlayer);
+                RegisterSeries(publish, matchSeries, opponentSeries, players, resultsForPlayer);
             }
 
             return roster.Date.AddDays(5) < SystemTime.UtcNow;
         }
 
         public void RegisterSeries(
+            Action<object> publish,
             MatchSerie[] matchSeries,
             ResultSeriesReadModel.Serie[] opponentSeries,
             Player[] players,
@@ -138,7 +140,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                 players.ToDictionary(x => x.Id),
                 resultsForPlayer);
             ApplyChange(matchCommentaryEvent);
-            DomainEvent.Raise(new MatchRegisteredEvent(RosterId, TeamScore, OpponentScore));
+            publish.Invoke(new MatchRegisteredEvent(RosterId, TeamScore, OpponentScore));
         }
 
         public void RegisterSerie(MatchTable[] matchTables)

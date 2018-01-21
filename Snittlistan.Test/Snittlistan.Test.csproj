@@ -95,7 +95,6 @@
   <ItemGroup>
     <Compile Include="ApiControllers\Task_Post_RegisterMatch.cs" />
     <Compile Include="ApiControllers\WebApiIntegrationTest.cs" />
-    <Compile Include="BackgroundTasks\Serialization.cs" />
     <Compile Include="BitsParser4x4Test.cs" />
     <Compile Include="BitsParser_Header.cs" />
     <Compile Include="Domain\MatchResult_MatchCommentary.cs" />
@@ -121,7 +120,6 @@
     <Compile Include="Domain\MatchResultTest.cs" />
     <Compile Include="Domain\MatchSerieTest.cs" />
     <Compile Include="Domain\MatchTableTest.cs" />
-    <Compile Include="HandlersInstallerTest.cs" />
     <Compile Include="Controllers\HomeController_Player.cs" />
     <Compile Include="InstallerTestHelper.cs" />
     <Compile Include="Match4x4Test.cs" />

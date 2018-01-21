@@ -1,15 +1,24 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Web.Mvc;
 using EventStoreLite;
 using Raven.Client;
+using Snittlistan.Queue;
+using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Infrastructure;
-using Snittlistan.Web.Infrastructure.BackgroundTasks;
 using Snittlistan.Web.Models;
 
 namespace Snittlistan.Web.Controllers
 {
     public abstract class AbstractController : Controller
     {
+        public Action<object> PublishMessage;
+
+        protected AbstractController()
+        {
+            PublishMessage = DefaultPublishMessage;
+        }
+
         /// <summary>
         /// Gets the document store.
         /// </summary>
@@ -35,15 +44,25 @@ namespace Snittlistan.Web.Controllers
         /// </summary>
         public TenantConfiguration TenantConfiguration { get; set; }
 
-        protected void SendTask<TTask>(TTask task) where TTask : class
-        {
-            DocumentSession.Store(BackgroundTask.Create(task, TenantConfiguration));
-        }
+        /// <summary>
+        /// Gets the msmq transaction.
+        /// </summary>
+        public IMsmqTransaction MsmqTransaction { get; set; }
 
         protected void ExecuteCommand(ICommand command)
         {
             if (command == null) throw new ArgumentNullException(nameof(command));
-            command.Execute(DocumentSession, EventStoreSession);
+            command.Execute(DocumentSession, EventStoreSession, PublishMessage);
+        }
+
+        protected void DefaultPublishMessage<TPayload>(TPayload payload)
+        {
+            var routeUrl = Url.HttpRouteUrl("DefaultApi", new { controller = "Task" });
+            Debug.Assert(Request.Url != null, "Request.Url != null");
+            var uriString = $"{Request.Url.Scheme}://{Request.Url.Host}:{Request.Url.Port}{routeUrl}";
+            var uri = new Uri(uriString);
+            var envelope = new MessageEnvelope(payload, uri);
+            MsmqTransaction.PublishMessage(envelope);
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -66,6 +85,8 @@ namespace Snittlistan.Web.Controllers
         protected override void OnActionExecuted(ActionExecutedContext filterContext)
         {
             if (filterContext.IsChildAction || filterContext.Exception != null) return;
+
+            MsmqTransaction.Commit();
 
             // this commits the document session
             EventStoreSession.SaveChanges();

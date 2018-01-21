@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using Snittlistan.Web.DomainEvents;
 using Snittlistan.Web.Helpers;
 using Snittlistan.Web.Models;
 
@@ -12,12 +11,9 @@ namespace Snittlistan.Test
         public void StoredCorrectly()
         {
             var original = new User("F", "L", "e@d.com", "some pwd");
-            using (DomainEvent.Disable())
-            {
-                original.Activate();
-                Session.Store(original);
-                Session.SaveChanges();
-            }
+            original.Activate();
+            Session.Store(original);
+            Session.SaveChanges();
 
             var user = Session.FindUserByEmail("e@d.com");
             Assert.That(user.ActivationKey, Is.EqualTo(original.ActivationKey));

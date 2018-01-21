@@ -4,10 +4,13 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Castle.Core;
+using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using EventStoreLite.IoC;
+using Moq;
 using NUnit.Framework;
 using Raven.Client;
+using Snittlistan.Queue;
 using Snittlistan.Web;
 using Snittlistan.Web.Infrastructure.Attributes;
 using Snittlistan.Web.Infrastructure.Installers;
@@ -31,9 +34,9 @@ namespace Snittlistan.Test.ApiControllers
                 new ApiControllerInstaller(),
                 new ControllerFactoryInstaller(),
                 new RavenInstaller(DocumentStoreMode.InMemory),
-                new HandlersInstaller(),
                 EventStoreInstaller.FromAssembly(typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),
                 new EventStoreSessionInstaller(LifestyleType.Scoped));
+            Container.Register(Component.For<IMsmqTransaction>().Instance(Mock.Of<IMsmqTransaction>()));
             OnSetUp(Container);
 
             MvcApplication.Bootstrap(Container, configuration);

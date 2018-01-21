@@ -3,13 +3,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using EventStoreLite;
+using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Migration;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Helpers;
 using Snittlistan.Web.Infrastructure.Indexes;
 using Snittlistan.Web.Models;
-using Snittlistan.Web.Tasks;
 
 namespace Snittlistan.Web.Areas.V2.Controllers
 {
@@ -95,7 +95,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 if (invite.GetValueOrDefault())
                 {
                     Debug.Assert(Request.Url != null, "Request.Url != null");
-                    user.ActivateWithEmail(Url, Request.Url.Scheme);
+                    user.ActivateWithEmail(PublishMessage, Url, Request.Url.Scheme);
                 }
                 else
                 {
@@ -168,7 +168,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             if (!ModelState.IsValid) return View(vm);
 
-            SendTask(new EmailTask(vm.Recipient, vm.Subject, vm.Content));
+            PublishMessage(new EmailTask(vm.Recipient, vm.Subject, vm.Content));
 
             return RedirectToAction("Index");
         }

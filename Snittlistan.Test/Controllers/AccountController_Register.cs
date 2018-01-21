@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Web.Mvc;
-using Castle.Windsor;
 using Moq;
 using NUnit.Framework;
+using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V1.Controllers;
 using Snittlistan.Web.Areas.V1.ViewModels.Account;
-using Snittlistan.Web.DomainEvents;
 using Snittlistan.Web.Helpers;
 using Snittlistan.Web.Services;
 
@@ -14,27 +13,21 @@ namespace Snittlistan.Test.Controllers
     [TestFixture]
     public class AccountController_Register : DbTest
     {
-        private IWindsorContainer oldContainer;
-
-        protected override void OnSetUp()
-        {
-            oldContainer = DomainEvent.SetContainer(new WindsorContainer());
-        }
-
         [Test]
         public void ShouldInitializeNewUser()
         {
             NewUserCreatedEvent ev = null;
-            using (DomainEvent.TestWith(e => ev = (NewUserCreatedEvent)e))
+            var controller = new AccountController(Mock.Of<IAuthenticationService>())
             {
-                var controller = new AccountController(Mock.Of<IAuthenticationService>()) { DocumentSession = Session };
-                controller.Register(new RegisterViewModel
-                {
-                    FirstName = "first name",
-                    LastName = "last name",
-                    Email = "email",
-                });
-            }
+                DocumentSession = Session,
+                PublishMessage = o => ev = (NewUserCreatedEvent)o
+            };
+            controller.Register(new RegisterViewModel
+            {
+                FirstName = "first name",
+                LastName = "last name",
+                Email = "email",
+            });
 
             Assert.NotNull(ev);
         }
@@ -42,14 +35,17 @@ namespace Snittlistan.Test.Controllers
         [Test]
         public void ShouldCreateInitializedUser()
         {
-            var controller = new AccountController(Mock.Of<IAuthenticationService>()) { DocumentSession = Session };
-            using (DomainEvent.Disable())
-                controller.Register(new RegisterViewModel
-                {
-                    FirstName = "first name",
-                    LastName = "last name",
-                    Email = "email",
-                });
+            var controller = new AccountController(Mock.Of<IAuthenticationService>())
+            {
+                DocumentSession = Session,
+                PublishMessage = o => { }
+            };
+            controller.Register(new RegisterViewModel
+            {
+                FirstName = "first name",
+                LastName = "last name",
+                Email = "email",
+            });
 
             // normally done by infrastructure (special action filter)
             Session.SaveChanges();
@@ -65,39 +61,41 @@ namespace Snittlistan.Test.Controllers
         [Test]
         public void RegisterDoesNotLogin()
         {
-            using (DomainEvent.Disable())
-            {
-                var authService = Mock.Of<IAuthenticationService>();
+            var authService = Mock.Of<IAuthenticationService>();
 
-                // assert through mock object
-                Mock.Get(authService)
-                    .Setup(s => s.SetAuthCookie(It.IsAny<string>(), It.IsAny<bool>()))
-                    .Throws(new Exception("Register should not set authorization cookie"));
-                var controller = new AccountController(authService) { DocumentSession = Session };
-                controller.Register(new RegisterViewModel
-                    {
-                        FirstName = "f",
-                        LastName = "l",
-                        Email = "email"
-                    });
-            }
+            // assert through mock object
+            Mock.Get(authService)
+                .Setup(s => s.SetAuthCookie(It.IsAny<string>(), It.IsAny<bool>()))
+                .Throws(new Exception("Register should not set authorization cookie"));
+            var controller = new AccountController(authService)
+            {
+                DocumentSession = Session,
+                PublishMessage = o => { }
+            };
+            controller.Register(new RegisterViewModel
+            {
+                FirstName = "f",
+                LastName = "l",
+                Email = "email"
+            });
         }
 
         [Test]
         public void SuccessfulRegisterRedirectsToSuccessPage()
         {
-            using (DomainEvent.Disable())
+            var controller = new AccountController(Mock.Of<IAuthenticationService>())
             {
-                var controller = new AccountController(Mock.Of<IAuthenticationService>()) { DocumentSession = Session };
-                var result = controller.Register(new RegisterViewModel
-                {
-                    FirstName = "f",
-                    LastName = "l",
-                    Email = "email"
-                });
+                DocumentSession = Session,
+                PublishMessage = o => { }
+            };
+            var result = controller.Register(new RegisterViewModel
+            {
+                FirstName = "f",
+                LastName = "l",
+                Email = "email"
+            });
 
-                result.AssertActionRedirect().ToAction("RegisterSuccess");
-            }
+            result.AssertActionRedirect().ToAction("RegisterSuccess");
         }
 
         [Test]
@@ -116,11 +114,6 @@ namespace Snittlistan.Test.Controllers
             Assert.NotNull(view);
             Assert.That(controller.ModelState, Has.Count.EqualTo(1));
             Assert.True(controller.ModelState.ContainsKey("Email"));
-        }
-
-        protected override void OnTearDown()
-        {
-            DomainEvent.SetContainer(oldContainer);
         }
     }
 }

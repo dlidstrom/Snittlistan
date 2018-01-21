@@ -1,10 +1,8 @@
 ﻿using System;
-using Castle.Windsor;
 using Moq;
 using NUnit.Framework;
 using Snittlistan.Web.Areas.V1.Controllers;
 using Snittlistan.Web.Areas.V1.ViewModels.Account;
-using Snittlistan.Web.DomainEvents;
 using Snittlistan.Web.Models;
 using Snittlistan.Web.Services;
 
@@ -13,13 +11,6 @@ namespace Snittlistan.Test.Controllers
     [TestFixture]
     public class AccountController_Logon : DbTest
     {
-        private readonly IWindsorContainer oldContainer;
-
-        public AccountController_Logon()
-        {
-            oldContainer = DomainEvent.SetContainer(new WindsorContainer());
-        }
-
         [Test]
         public void LogonReturnsView()
         {
@@ -105,11 +96,6 @@ namespace Snittlistan.Test.Controllers
             Assert.True(controller.ModelState.ContainsKey("Password"));
             Assert.False(cookieSet);
             result.AssertViewRendered().ForView(string.Empty);
-        }
-
-        protected override void OnTearDown()
-        {
-            DomainEvent.SetContainer(oldContainer);
         }
 
         private AccountController SetupPasswordTest(Action cookieSetAction)

@@ -18,7 +18,7 @@ namespace Snittlistan.Web.Areas.V2.Commands
             this.result = result ?? throw new ArgumentNullException(nameof(result));
         }
 
-        public void Execute(IDocumentSession session, IEventStoreSession eventStoreSession)
+        public void Execute(IDocumentSession session, IEventStoreSession eventStoreSession, Action<object> publish)
         {
             var matchResult = new MatchResult4(
                 roster,
@@ -27,7 +27,7 @@ namespace Snittlistan.Web.Areas.V2.Commands
                 roster.BitsMatchId);
 
             var matchSeries = result.CreateMatchSeries();
-            matchResult.RegisterSeries(matchSeries);
+            matchResult.RegisterSeries(publish, matchSeries);
             eventStoreSession.Store(matchResult);
         }
     }

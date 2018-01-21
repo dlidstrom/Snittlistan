@@ -115,7 +115,7 @@ namespace Snittlistan.Web.Areas.V1.Controllers
                 return View(model);
 
             var newUser = new User(model.FirstName, model.LastName, model.Email, model.Password);
-            newUser.Initialize();
+            newUser.Initialize(PublishMessage);
             DocumentSession.Store(newUser);
 
             return RedirectToAction("RegisterSuccess");

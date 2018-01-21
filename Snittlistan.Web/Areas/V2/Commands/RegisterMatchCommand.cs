@@ -21,7 +21,7 @@ namespace Snittlistan.Web.Areas.V2.Commands
             this.result = result ?? throw new ArgumentNullException(nameof(result));
         }
 
-        public void Execute(IDocumentSession session, IEventStoreSession eventStoreSession)
+        public void Execute(IDocumentSession session, IEventStoreSession eventStoreSession, Action<object> publish)
         {
             var matchResult = new MatchResult(
                 roster,
@@ -37,6 +37,7 @@ namespace Snittlistan.Web.Areas.V2.Commands
                                           .ToArray()
                                           .ToDictionary(x => x.PlayerId);
             matchResult.RegisterSeries(
+                publish,
                 matchSeries,
                 result.OpponentSeries,
                 players,
