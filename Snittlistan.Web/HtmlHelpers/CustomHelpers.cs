@@ -12,6 +12,11 @@ namespace Snittlistan.Web.HtmlHelpers
         /// <returns>The HTML markup with an anchor link to BITS.</returns>
         public static string GenerateBitsUrl(this HtmlHelper html, int bitsMatchId)
         {
+            return GenerateBitsUrl(bitsMatchId);
+        }
+
+        public static string GenerateBitsUrl(int bitsMatchId)
+        {
             return $"http://bits.swebowl.se/Matches/MatchFact.aspx?MatchId={bitsMatchId}";
         }
     }

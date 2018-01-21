@@ -1,5 +1,6 @@
 using System.Net;
 using NLog;
+using Snittlistan.Web.HtmlHelpers;
 
 namespace Snittlistan.Web.Infrastructure
 {
@@ -11,7 +12,7 @@ namespace Snittlistan.Web.Infrastructure
         {
             using (var client = new WebClient())
             {
-                var address = $"http://bits.swebowl.se/Matches/MatchFact.aspx?MatchId={bitsMatchId}";
+                var address = CustomHtmlHelpers.GenerateBitsUrl(bitsMatchId);
                 Log.Info("Downloading {0}", address);
                 var content = client.DownloadString(address);
                 Log.Info("Match {0} raw content: {1}", bitsMatchId, content);
