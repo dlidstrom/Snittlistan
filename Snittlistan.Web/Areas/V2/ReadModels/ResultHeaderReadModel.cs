@@ -61,6 +61,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             RosterId = roster.Id;
             TeamScore = teamScore;
             OpponentScore = opponentScore;
+            IsFourPlayer = roster.IsFourPlayer;
         }
 
         public void SetMatchCommentary(string matchCommentary, string[] bodyText)

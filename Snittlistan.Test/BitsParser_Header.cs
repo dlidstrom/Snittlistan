@@ -149,5 +149,20 @@ namespace Snittlistan.Test
             Assert.That(header.OilPattern.Name, Is.EqualTo("ABT#2"));
             Assert.That(header.OilPattern.Url, Is.EqualTo("http://bits.swebowl.se/OilPattern.aspx?OilPatternId=61"));
         }
+
+        [Test]
+        public void ParsesTeamsCorrectly()
+        {
+            // Arrange
+            var content = BitsGateway.GetMatch(3148486);
+            var possibleTeams = new HashSet<string> { "Värtans IK B" };
+
+            // Act
+            var header = BitsParser.ParseHeader(content, possibleTeams);
+
+            // Assert
+            Assert.That(header.Team, Is.EqualTo("Värtans IK B"));
+            Assert.That(header.Opponent, Is.EqualTo("IK Makkabi"));
+        }
     }
 }

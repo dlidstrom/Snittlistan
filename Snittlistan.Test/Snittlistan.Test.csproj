@@ -95,6 +95,7 @@
   <ItemGroup>
     <Compile Include="ApiControllers\Task_Post_RegisterMatch.cs" />
     <Compile Include="ApiControllers\WebApiIntegrationTest.cs" />
+    <Compile Include="BitsGateway.cs" />
     <Compile Include="BitsParser4x4Test.cs" />
     <Compile Include="BitsParser_Header.cs" />
     <Compile Include="Domain\MatchResult_MatchCommentary.cs" />
