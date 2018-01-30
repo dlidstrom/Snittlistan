@@ -42,7 +42,15 @@ namespace Snittlistan.Queue
 
             public void Commit()
             {
-                transaction.Commit();
+                try
+                {
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Abort();
+                    throw;
+                }
             }
 
             public void Dispose()
