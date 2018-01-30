@@ -40,10 +40,6 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
         public int TeamScore { get; private set; }
 
-        public int Turn { get; private set; }
-
-        public bool IsFourPlayer { get; private set; }
-
         public string MatchCommentary { get; private set; }
 
         public string[] BodyText { get; private set; }
@@ -56,12 +52,10 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         public void SetValues(Roster roster, string aggregateId, int teamScore, int opponentScore)
         {
             Season = roster.Season;
-            Turn = roster.Turn;
             AggregateId = aggregateId;
             RosterId = roster.Id;
             TeamScore = teamScore;
             OpponentScore = opponentScore;
-            IsFourPlayer = roster.IsFourPlayer;
         }
 
         public void SetMatchCommentary(string matchCommentary, string[] bodyText)
