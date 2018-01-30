@@ -46,7 +46,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
             var roster = DocumentSession.Load<Roster>(headerReadModel.RosterId);
             var headerViewModel = new ResultHeaderViewModel(headerReadModel, roster);
-            if (headerReadModel.IsFourPlayer)
+            if (roster.IsFourPlayer)
             {
                 var matchId = ResultSeries4ReadModel.IdFromBitsMatchId(id);
                 var resultReadModel = DocumentSession.Load<ResultSeries4ReadModel>(matchId)
