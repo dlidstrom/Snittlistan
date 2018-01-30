@@ -74,7 +74,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 {
                     // best match
                     var contains = possibleTeam.IndexOf(homeTeamNameSplit.First(), StringComparison.InvariantCultureIgnoreCase);
-                    if (contains >= 0)
+                    if (contains == 0)
                     {
                         homeTeam = possibleTeam;
                     }
@@ -112,7 +112,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 {
                     // best match
                     var contains = possibleTeam.IndexOf(awayTeamNameSplit.First(), StringComparison.InvariantCultureIgnoreCase);
-                    if (contains >= 0)
+                    if (contains == 0)
                     {
                         awayTeam = possibleTeam;
                     }

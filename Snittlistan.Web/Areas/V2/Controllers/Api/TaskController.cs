@@ -47,7 +47,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
 
         private IHttpActionResult Handle(VerifyMatchMessage message)
         {
-            var result = bitsClient.DownloadMatchResult(message.BitsMatchId);
             var roster = DocumentSession.Include<Roster>(x => x.Players)
                                         .Load<Roster>(message.RosterId);
             if (roster.IsVerified) return Ok();
@@ -56,11 +55,14 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                                 .ToArray();
             var parser = new BitsParser(players);
             var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+            var result = bitsClient.DownloadMatchResult(roster.BitsMatchId);
             var header = BitsParser.ParseHeader(result, websiteConfig.GetTeamNames());
 
             // chance to update roster values
             roster.OilPattern = header.OilPattern;
             roster.Date = header.Date;
+            roster.Opponent = header.Opponent;
+            roster.Location = header.Location;
             if (roster.MatchResultId == null) return Ok();
 
             // update match result values

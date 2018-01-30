@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using EventStoreLite;
 using Moq;
@@ -92,21 +91,7 @@ namespace Snittlistan.Test.Domain
             });
             var bitsParser = new BitsParser(players);
 
-            string content;
-            var directoryName = Directory.GetCurrentDirectory();
-            var path = Path.Combine(
-                directoryName,
-                $"BitsMatch-{testCase.BitsMatchId}.html");
-            try
-            {
-                content = File.ReadAllText(path);
-            }
-            catch (Exception)
-            {
-                content = bitsClient.DownloadMatchResult(testCase.BitsMatchId);
-                File.WriteAllText(path, content);
-            }
-
+            var content = BitsGateway.GetMatch(testCase.BitsMatchId);
             var parseResult = bitsParser.Parse(content, "Fredrikshof");
             var rosterPlayerIds = new HashSet<string>(
                 parseResult.Series.SelectMany(x => x.Tables.SelectMany(y => new[] { y.Game1.Player, y.Game2.Player })));
