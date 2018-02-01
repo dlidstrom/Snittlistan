@@ -1,8 +1,20 @@
+// Usage: phantomjs getMatches.js 'Fredrikshof IF BK' 'Fredrikshof IF BK F' my-file
+
 "use strict";
 
 // require
+var sys = require('system');
 var webpage = require('webpage');
 var fs = require('fs');
+
+if (sys.args.length != 4) {
+    console.log('Usage:', sys.args[0], 'TeamGeneralName TeamSpecificName output-file')
+    phantom.exit();
+}
+
+var teamGeneralName = sys.args[1];
+var teamSpecificName = sys.args[2];
+var outputFile = sys.args[3];
 
 // start
 var page = webpage.create();
@@ -48,12 +60,11 @@ var steps = [
         click('ButtonMatches');
     },
     function() {
-        // här är man tvungen att söka efter lagets namn => konfiguration alltså
-        console.log('searching for Fredrikshof IF BK');
-        page.evaluate(function() {
+        console.log('searching for', teamGeneralName);
+        page.evaluate(function(teamGeneralName) {
             var textboxSearchClub = document.getElementById('MainContentPlaceHolder_Standings1_TextBoxSearchClub');
-            textboxSearchClub.value = "Fredrikshof IF BK";
-        });
+            textboxSearchClub.value = teamGeneralName;
+        }, teamGeneralName);
         click('MainContentPlaceHolder_Standings1_ButtonSearchClub');
     },
     function() {
@@ -80,7 +91,7 @@ var steps = [
         page.render('page.png');
     },
     function() {
-        page.evaluate(function() {
+        var team = page.evaluate(function() {
             // time to extract contents
 
             // direct link to page
@@ -93,30 +104,15 @@ var steps = [
             var team = {
                 standingsLink: standingsLink
             };
-            console.log(JSON.stringify(team, null, 2));
-            return team;
-        }, function(team) {
-            fs.write("page.json", JSON.stringify(team, null, 2));
+            var teamJson = JSON.stringify(team, null, 2);
+            console.log(teamJson);
+            return teamJson;
         });
+
+        fs.write("team.json", team);
+        fs.write("page.html", page.content);
     }
 ];
-
-// page.open("http://bits.swebowl.se/", function(status) {
-//     if (status === "success") {
-//         page.evaluate(function() {
-//             console.log($("span.version").text());
-//             try {
-//                 //fs.write("file.txt", "Hello World", 'a');
-//                 //fs.write("file.txt", "Hello World", 'a');
-//             } catch (e) {
-//                 //console.log(e);
-//             }
-//         });
-//         phantom.exit(0);
-//     } else {
-//         phantom.exit(1);
-//     }
-// });
 
 var interval = setInterval(function() {
     if (!loadInProgress && typeof steps[testindex] == "function") {
