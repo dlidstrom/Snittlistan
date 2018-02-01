@@ -68,11 +68,6 @@ var steps = [
                     console.log('found team');
                     var sel = document.getElementById('MainContentPlaceHolder_Standings1_DropDownListTeams');
                     sel.selectedIndex = i;
-                    // var event = new UIEvent("change", {
-                    //     "view": window,
-                    //     "bubbles": true,
-                    //     "cancelable": true
-                    // });
                     var event = document.createEvent("UIEvents");
                     event.initUIEvent("change", true, true);
                     sel.dispatchEvent(event);
@@ -82,7 +77,27 @@ var steps = [
         });
     },
     function() {
-        page.render('AnswerPage.png');
+        page.render('page.png');
+    },
+    function() {
+        page.evaluate(function() {
+            // time to extract contents
+
+            // direct link to page
+            var directLinkElement = document.getElementById('MainContentPlaceHolder_Standings1_LabelDirectLink');
+
+            // table standings
+            var tableStandingsRowElements = document.querySelectorAll('#MainContentPlaceHolder_Standings1_TableStandings tr');
+
+            var standingsLink = directLinkElement ? directLinkElement.textContent : '';
+            var team = {
+                standingsLink: standingsLink
+            };
+            console.log(JSON.stringify(team, null, 2));
+            return team;
+        }, function(team) {
+            fs.write("page.json", JSON.stringify(team, null, 2));
+        });
     }
 ];
 
