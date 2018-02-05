@@ -128,6 +128,16 @@ namespace Snittlistan.Web.Areas.V2.Domain
             return new ParseHeaderResult(awayTeam, homeTeamName, DateTime.Parse(dateText), locationText, oilPatternInformation);
         }
 
+        public static ParseMatchSchemeResult ParseMatchScheme(string content)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static ParseStandingsResult ParseStandings(string content)
+        {
+            return null;
+        }
+
         public ParseResult Parse(string content, string team)
         {
             var document = new HtmlDocument();
