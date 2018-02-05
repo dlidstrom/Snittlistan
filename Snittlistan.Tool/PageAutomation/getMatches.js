@@ -15,7 +15,7 @@ if (sys.args.length != 5) {
 var teamGeneralName = sys.args[1];
 var teamSpecificName = sys.args[2];
 var standingsFile = sys.args[3];
-var matchSchemeFile = sys.args[3];
+var matchSchemeFile = sys.args[4];
 
 console.log(teamGeneralName, teamSpecificName, standingsFile, matchSchemeFile);
 
@@ -91,9 +91,11 @@ var steps = [
         }, teamSpecificName);
     },
     function() {
+        console.log('writing standings.png');
         page.render('standings.png');
     },
     function() {
+        console.log('writing', standingsFile);
         fs.write(standingsFile, page.content);
     },
     function() {
@@ -101,9 +103,11 @@ var steps = [
         click('MainContentPlaceHolder_Standings1_HyperLinkDivision');
     },
     function() {
+        console.log('writing matchScheme.png');
         page.render('matchScheme.png');
     },
     function() {
+        console.log('writing', matchSchemeFile);
         fs.write(matchSchemeFile, page.content);
     }
 ];
