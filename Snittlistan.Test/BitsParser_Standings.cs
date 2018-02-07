@@ -37,136 +37,373 @@ namespace Snittlistan.Test
                             Group = null,
                             Name = "Fredrikshof IF BK B",
                             Matches = 14,
-                            Win = 10,
-                            Draw = 0,
+                            Win = 9,
+                            Draw = 1,
                             Loss = 4,
-                            Total = "168 - 111",
-                            Diff = 57,
-                            Points = 20,
+                            Total = "162 - 116",
+                            Diff = 46,
+                            Points = 19,
                             DividerSolid = true
                         },
                         new ParseMatchSchemeResult.StandingsItem
                         {
                             Group = null,
-                            Name = "BajenFans BF B",
-                            Matches = 14,
-                            Win = 10,
-                            Draw = 0,
-                            Loss = 4,
-                            Total = "168 - 111",
-                            Diff = 57,
-                            Points = 20,
+                            Name = "Matteus-Pojkarna BK B",
+                            Matches = 13,
+                            Win = 8,
+                            Draw = 2,
+                            Loss = 3,
+                            Total = "142 - 117",
+                            Diff = 25,
+                            Points = 18,
                             DividerSolid = false
                         },
                         new ParseMatchSchemeResult.StandingsItem
                         {
                             Group = null,
-                            Name = "BajenFans BF B",
+                            Name = "Djurgårdens IF C",
                             Matches = 14,
-                            Win = 10,
-                            Draw = 0,
-                            Loss = 4,
-                            Total = "168 - 111",
-                            Diff = 57,
-                            Points = 20,
+                            Win = 8,
+                            Draw = 1,
+                            Loss = 5,
+                            Total = "160 - 117",
+                            Diff = 43,
+                            Points = 17,
                             DividerSolid = false
                         },
                         new ParseMatchSchemeResult.StandingsItem
                         {
                             Group = null,
-                            Name = "BajenFans BF B",
-                            Matches = 14,
-                            Win = 10,
-                            Draw = 0,
-                            Loss = 4,
-                            Total = "168 - 111",
-                            Diff = 57,
-                            Points = 20,
+                            Name = "BK Runan B",
+                            Matches = 13,
+                            Win = 6,
+                            Draw = 1,
+                            Loss = 6,
+                            Total = "127 - 129",
+                            Diff = -2,
+                            Points = 13,
                             DividerSolid = false
                         },
                         new ParseMatchSchemeResult.StandingsItem
                         {
                             Group = null,
-                            Name = "BajenFans BF B",
+                            Name = "KK Strike",
                             Matches = 14,
-                            Win = 10,
-                            Draw = 0,
-                            Loss = 4,
-                            Total = "168 - 111",
-                            Diff = 57,
-                            Points = 20,
+                            Win = 6,
+                            Draw = 1,
+                            Loss = 7,
+                            Total = "126 - 151",
+                            Diff = -25,
+                            Points = 13,
                             DividerSolid = false
                         },
                         new ParseMatchSchemeResult.StandingsItem
                         {
                             Group = null,
-                            Name = "BajenFans BF B",
-                            Matches = 14,
-                            Win = 10,
-                            Draw = 0,
-                            Loss = 4,
-                            Total = "168 - 111",
-                            Diff = 57,
-                            Points = 20,
+                            Name = "BK Scott",
+                            Matches = 12,
+                            Win = 5,
+                            Draw = 1,
+                            Loss = 6,
+                            Total = "113 - 126",
+                            Diff = -13,
+                            Points = 11,
                             DividerSolid = false
                         },
                         new ParseMatchSchemeResult.StandingsItem
                         {
                             Group = null,
-                            Name = "BajenFans BF B",
+                            Name = "AIK DB",
                             Matches = 14,
-                            Win = 10,
-                            Draw = 0,
-                            Loss = 4,
-                            Total = "168 - 111",
-                            Diff = 57,
-                            Points = 20,
+                            Win = 4,
+                            Draw = 3,
+                            Loss = 7,
+                            Total = "122 - 158",
+                            Diff = -36,
+                            Points = 11,
                             DividerSolid = false
                         },
                         new ParseMatchSchemeResult.StandingsItem
                         {
                             Group = null,
                             Name = "DN/Expressen B",
-                            Matches = 14,
-                            Win = 10,
-                            Draw = 0,
-                            Loss = 4,
-                            Total = "168 - 111",
-                            Diff = 57,
-                            Points = 20,
+                            Matches = 13,
+                            Win = 4,
+                            Draw = 2,
+                            Loss = 7,
+                            Total = "120 - 137",
+                            Diff = -17,
+                            Points = 10,
                             DividerSolid = true
                         },
                         new ParseMatchSchemeResult.StandingsItem
                         {
                             Group = null,
-                            Name = "BajenFans BF B",
+                            Name = "Jakobsbergs BS",
                             Matches = 14,
-                            Win = 10,
-                            Draw = 0,
-                            Loss = 4,
-                            Total = "168 - 111",
-                            Diff = 57,
-                            Points = 20,
+                            Win = 4,
+                            Draw = 2,
+                            Loss = 8,
+                            Total = "125 - 154",
+                            Diff = -29,
+                            Points = 10,
                             DividerSolid = false
                         },
                         new ParseMatchSchemeResult.StandingsItem
                         {
                             Group = null,
-                            Name = "BajenFans BF B",
-                            Matches = 14,
-                            Win = 10,
+                            Name = "BK Mercur",
+                            Matches = 13,
+                            Win = 3,
                             Draw = 0,
-                            Loss = 4,
-                            Total = "168 - 111",
-                            Diff = 57,
-                            Points = 20,
+                            Loss = 10,
+                            Total = "105 - 154",
+                            Diff = -49,
+                            Points = 6,
                             DividerSolid = false
                         }
                     });
 
                 yield return new TestCaseData(
                     "Snittlistan.Test.BitsResult.VärtansIK-standings.html",
-                    "http://bits.swebowl.se/Matches/Standings.aspx?DivisionId=9&amp;SeasonId=2017&amp;LeagueId=1&amp;LevelId=3");
+                    "http://bits.swebowl.se/Matches/Standings.aspx?DivisionId=9&amp;SeasonId=2017&amp;LeagueId=1&amp;LevelId=3",
+                    new[]
+                    {
+                        new ParseMatchSchemeResult.StandingsItem
+                        {
+                            Group = "Grupp A",
+                            Name = "Sandvikens AIK",
+                            Matches = 14,
+                            Win = 10,
+                            Draw = 3,
+                            Loss = 1,
+                            Total = "179 - 100",
+                            Diff = 79,
+                            Points = 23,
+                            DividerSolid = false
+                        },
+                        new ParseMatchSchemeResult.StandingsItem
+                        {
+                            Group = "Grupp A",
+                            Name = "Uppsala BC 90",
+                            Matches = 14,
+                            Win = 9,
+                            Draw = 0,
+                            Loss = 5,
+                            Total = "165 - 111",
+                            Diff = 54,
+                            Points = 18,
+                            DividerSolid = true
+                        },
+                        new ParseMatchSchemeResult.StandingsItem
+                        {
+                            Group = "Grupp A",
+                            Name = "Turebergs IF",
+                            Matches = 15,
+                            Win = 7,
+                            Draw = 1,
+                            Loss = 7,
+                            Total = "135 - 163",
+                            Diff = -28,
+                            Points = 15,
+                            DividerSolid = true
+                        },
+                        new ParseMatchSchemeResult.StandingsItem
+                        {
+                            Group = "Grupp A",
+                            Name = "Värtans IK",
+                            Matches = 14,
+                            Win = 5,
+                            Draw = 2,
+                            Loss = 7,
+                            Total = "126 - 153",
+                            Diff = -27,
+                            Points = 12,
+                            DividerSolid = false
+                        },
+                        new ParseMatchSchemeResult.StandingsItem
+                        {
+                            Group = "Grupp A",
+                            Name = "Sollentuna BwK",
+                            Matches = 15,
+                            Win = 4,
+                            Draw = 0,
+                            Loss = 11,
+                            Total = "134 - 163",
+                            Diff = -29,
+                            Points = 8,
+                            DividerSolid = true
+                        },
+                        new ParseMatchSchemeResult.StandingsItem
+                        {
+                            Group = "Grupp A",
+                            Name = "Bålsta BC",
+                            Matches = 14,
+                            Win = 4,
+                            Draw = 0,
+                            Loss = 10,
+                            Total = "112 - 167",
+                            Diff = -55,
+                            Points = 8,
+                            DividerSolid = false
+                        },
+                        new ParseMatchSchemeResult.StandingsItem
+                        {
+                            Group = "Grupp B",
+                            Name = "Gävle KK",
+                            Matches = 14,
+                            Win = 9,
+                            Draw = 2,
+                            Loss = 3,
+                            Total = "175 - 104",
+                            Diff = 71,
+                            Points = 20,
+                            DividerSolid = false
+                        },
+                        new ParseMatchSchemeResult.StandingsItem
+                        {
+                            Group = "Grupp B",
+                            Name = "Domnarvets BS",
+                            Matches = 15,
+                            Win = 8,
+                            Draw = 1,
+                            Loss = 6,
+                            Total = "146 - 152",
+                            Diff = -6,
+                            Points = 17,
+                            DividerSolid = true
+                        },
+                        new ParseMatchSchemeResult.StandingsItem
+                        {
+                            Group = "Grupp B",
+                            Name = "BK Klossen",
+                            Matches = 14,
+                            Win = 8,
+                            Draw = 0,
+                            Loss = 6,
+                            Total = "160 - 117",
+                            Diff = 43,
+                            Points = 16,
+                            DividerSolid = true
+                        },
+                        new ParseMatchSchemeResult.StandingsItem
+                        {
+                            Group = "Grupp B",
+                            Name = "BK Rättvik",
+                            Matches = 14,
+                            Win = 7,
+                            Draw = 0,
+                            Loss = 7,
+                            Total = "151 - 129",
+                            Diff = 22,
+                            Points = 14,
+                            DividerSolid = false
+                        },
+                        new ParseMatchSchemeResult.StandingsItem
+                        {
+                            Group = "Grupp B",
+                            Name = "BK Enjoy",
+                            Matches = 14,
+                            Win = 3,
+                            Draw = 1,
+                            Loss = 10,
+                            Total = "104 - 175",
+                            Diff = -71,
+                            Points = 7,
+                            DividerSolid = true
+                        },
+                        new ParseMatchSchemeResult.StandingsItem
+                        {
+                            Group = "Grupp B",
+                            Name = "Falu BK",
+                            Matches = 13,
+                            Win = 0,
+                            Draw = 0,
+                            Loss = 13,
+                            Total = "60 - 200",
+                            Diff = -140,
+                            Points = 0,
+                            DividerSolid = false
+                        },
+                        new ParseMatchSchemeResult.StandingsItem
+                        {
+                            Group = "Grupp C",
+                            Name = "BK Taifun",
+                            Matches = 15,
+                            Win = 10,
+                            Draw = 2,
+                            Loss = 3,
+                            Total = "173 - 125",
+                            Diff = 48,
+                            Points = 22,
+                            DividerSolid = false
+                        },
+                        new ParseMatchSchemeResult.StandingsItem
+                        {
+                            Group = "Grupp C",
+                            Name = "BK Trol",
+                            Matches = 14,
+                            Win = 8,
+                            Draw = 0,
+                            Loss = 6,
+                            Total = "157 - 121",
+                            Diff = 36,
+                            Points = 16,
+                            DividerSolid = true
+                        },
+                        new ParseMatchSchemeResult.StandingsItem
+                        {
+                            Group = "Grupp C",
+                            Name = "Hammarby IF",
+                            Matches = 14,
+                            Win = 7,
+                            Draw = 2,
+                            Loss = 5,
+                            Total = "150 - 127",
+                            Diff = 23,
+                            Points = 16,
+                            DividerSolid = true
+                        },
+                        new ParseMatchSchemeResult.StandingsItem
+                        {
+                            Group = "Grupp C",
+                            Name = "Wåxnäs BC",
+                            Matches = 15,
+                            Win = 7,
+                            Draw = 2,
+                            Loss = 6,
+                            Total = "146 - 152",
+                            Diff = -6,
+                            Points = 16,
+                            DividerSolid = false
+                        },
+                        new ParseMatchSchemeResult.StandingsItem
+                        {
+                            Group = "Grupp C",
+                            Name = "BK Glam F1",
+                            Matches = 13,
+                            Win = 7,
+                            Draw = 1,
+                            Loss = 5,
+                            Total = "134 - 124",
+                            Diff = 10,
+                            Points = 15,
+                            DividerSolid = true
+                        },
+                        new ParseMatchSchemeResult.StandingsItem
+                        {
+                            Group = "Grupp C",
+                            Name = "BK Kasi",
+                            Matches = 13,
+                            Win = 4,
+                            Draw = 3,
+                            Loss = 6,
+                            Total = "117 - 141",
+                            Diff = -24,
+                            Points = 11,
+                            DividerSolid = false
+                        }
+                    });
             }
         }
 
