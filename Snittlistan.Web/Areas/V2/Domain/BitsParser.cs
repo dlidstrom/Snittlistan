@@ -130,7 +130,47 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         public static ParseMatchSchemeResult ParseMatchScheme(string content)
         {
-            throw new NotImplementedException();
+            var document = new HtmlDocument();
+            document.LoadHtml(content);
+            var documentNode = document.DocumentNode;
+            var directLinkNode = documentNode.SelectSingleNode("//span[@id=\"MainContentPlaceHolder_Standings1_LabelDirectLink\"]");
+
+            // table
+            var currentRow = 0;
+            var standings = new List<ParseMatchSchemeResult.StandingsItem>();
+            while (true)
+            {
+                var trNode = documentNode.SelectSingleNode(
+                    $"//tr[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_TabelRowDivider_{currentRow}\"]");
+                if (trNode == null) break;
+
+                var nameNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsTeamName_{currentRow}\"]");
+                var matchesNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsMatches_{currentRow}\"]");
+                var winNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsWin_{currentRow}\"]");
+                var drawNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsDraw_{currentRow}\"]");
+                var lossNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsLoss_{currentRow}\"]");
+                var totalNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsTotal_{currentRow}\"]");
+                var diffNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsDiff_{currentRow}\"]");
+                var pointsNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsPoints_{currentRow}\"]");
+                standings.Add(new ParseMatchSchemeResult.StandingsItem
+                {
+                    Name = nameNode.InnerText.Trim(),
+                    Matches = int.Parse(matchesNode.InnerText),
+                    Win = int.Parse(winNode.InnerText),
+                    Draw = int.Parse(drawNode.InnerText),
+                    Loss = int.Parse(lossNode.InnerText),
+                    Total = totalNode.InnerText,
+                    Diff = int.Parse(diffNode.InnerText),
+                    Points = int.Parse(pointsNode.InnerText)
+                });
+
+                currentRow++;
+            }
+
+            var result = new ParseMatchSchemeResult(
+                directLinkNode.InnerText,
+                standings.ToArray());
+            return result;
         }
 
         public static ParseStandingsResult ParseStandings(string content)
