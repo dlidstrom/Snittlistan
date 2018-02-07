@@ -138,6 +138,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
             // table
             var currentRow = 0;
             var standings = new List<ParseMatchSchemeResult.StandingsItem>();
+            var currentGroup = (string)null;
             while (true)
             {
                 var trNode = documentNode.SelectSingleNode(
@@ -145,24 +146,40 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 if (trNode == null) break;
 
                 var nameNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsTeamName_{currentRow}\"]");
-                var matchesNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsMatches_{currentRow}\"]");
-                var winNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsWin_{currentRow}\"]");
-                var drawNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsDraw_{currentRow}\"]");
-                var lossNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsLoss_{currentRow}\"]");
-                var totalNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsTotal_{currentRow}\"]");
-                var diffNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsDiff_{currentRow}\"]");
-                var pointsNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsPoints_{currentRow}\"]");
-                standings.Add(new ParseMatchSchemeResult.StandingsItem
+                if (nameNode.HasClass("GroupText"))
                 {
-                    Name = nameNode.InnerText.Trim(),
-                    Matches = int.Parse(matchesNode.InnerText),
-                    Win = int.Parse(winNode.InnerText),
-                    Draw = int.Parse(drawNode.InnerText),
-                    Loss = int.Parse(lossNode.InnerText),
-                    Total = totalNode.InnerText,
-                    Diff = int.Parse(diffNode.InnerText),
-                    Points = int.Parse(pointsNode.InnerText)
-                });
+                    currentGroup = nameNode.InnerText;
+                }
+                else
+                {
+                    var matchesNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsMatches_{currentRow}\"]");
+                    var winNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsWin_{currentRow}\"]");
+                    var drawNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsDraw_{currentRow}\"]");
+                    var lossNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsLoss_{currentRow}\"]");
+                    var totalNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsTotal_{currentRow}\"]");
+                    var diffNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsDiff_{currentRow}\"]");
+                    var pointsNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsPoints_{currentRow}\"]");
+                    var dividerSolid = trNode.HasClass("DividerSolid");
+                    var matches = int.Parse(matchesNode.InnerText);
+                    var win = int.Parse(winNode.InnerText);
+                    var draw = int.Parse(drawNode.InnerText);
+                    var loss = int.Parse(lossNode.InnerText);
+                    var diff = int.Parse(diffNode.InnerText);
+                    var points = int.Parse(pointsNode.InnerText);
+                    standings.Add(new ParseMatchSchemeResult.StandingsItem
+                    {
+                        Group = currentGroup,
+                        Name = nameNode.InnerText.Trim(),
+                        Matches = matches,
+                        Win = win,
+                        Draw = draw,
+                        Loss = loss,
+                        Total = totalNode.InnerText,
+                        Diff = diff,
+                        Points = points,
+                        DividerSolid = dividerSolid
+                    });
+                }
 
                 currentRow++;
             }
