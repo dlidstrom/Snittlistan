@@ -19,7 +19,7 @@ namespace Snittlistan.Test
                     "http://bits.swebowl.se/Matches/Standings.aspx?DivisionId=84&amp;SeasonId=2017&amp;LeagueId=10&amp;LevelId=8",
                     new []
                     {
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = null,
                             Name = "BajenFans BF B",
@@ -32,7 +32,7 @@ namespace Snittlistan.Test
                             Points = 20,
                             DividerSolid = false
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = null,
                             Name = "Fredrikshof IF BK B",
@@ -45,7 +45,7 @@ namespace Snittlistan.Test
                             Points = 19,
                             DividerSolid = true
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = null,
                             Name = "Matteus-Pojkarna BK B",
@@ -58,7 +58,7 @@ namespace Snittlistan.Test
                             Points = 18,
                             DividerSolid = false
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = null,
                             Name = "Djurgårdens IF C",
@@ -71,7 +71,7 @@ namespace Snittlistan.Test
                             Points = 17,
                             DividerSolid = false
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = null,
                             Name = "BK Runan B",
@@ -84,7 +84,7 @@ namespace Snittlistan.Test
                             Points = 13,
                             DividerSolid = false
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = null,
                             Name = "KK Strike",
@@ -97,7 +97,7 @@ namespace Snittlistan.Test
                             Points = 13,
                             DividerSolid = false
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = null,
                             Name = "BK Scott",
@@ -110,7 +110,7 @@ namespace Snittlistan.Test
                             Points = 11,
                             DividerSolid = false
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = null,
                             Name = "AIK DB",
@@ -123,7 +123,7 @@ namespace Snittlistan.Test
                             Points = 11,
                             DividerSolid = false
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = null,
                             Name = "DN/Expressen B",
@@ -136,7 +136,7 @@ namespace Snittlistan.Test
                             Points = 10,
                             DividerSolid = true
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = null,
                             Name = "Jakobsbergs BS",
@@ -149,7 +149,7 @@ namespace Snittlistan.Test
                             Points = 10,
                             DividerSolid = false
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = null,
                             Name = "BK Mercur",
@@ -169,7 +169,7 @@ namespace Snittlistan.Test
                     "http://bits.swebowl.se/Matches/Standings.aspx?DivisionId=9&amp;SeasonId=2017&amp;LeagueId=1&amp;LevelId=3",
                     new[]
                     {
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = "Grupp A",
                             Name = "Sandvikens AIK",
@@ -182,7 +182,7 @@ namespace Snittlistan.Test
                             Points = 23,
                             DividerSolid = false
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = "Grupp A",
                             Name = "Uppsala BC 90",
@@ -195,7 +195,7 @@ namespace Snittlistan.Test
                             Points = 18,
                             DividerSolid = true
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = "Grupp A",
                             Name = "Turebergs IF",
@@ -208,7 +208,7 @@ namespace Snittlistan.Test
                             Points = 15,
                             DividerSolid = true
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = "Grupp A",
                             Name = "Värtans IK",
@@ -221,7 +221,7 @@ namespace Snittlistan.Test
                             Points = 12,
                             DividerSolid = false
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = "Grupp A",
                             Name = "Sollentuna BwK",
@@ -234,7 +234,7 @@ namespace Snittlistan.Test
                             Points = 8,
                             DividerSolid = true
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = "Grupp A",
                             Name = "Bålsta BC",
@@ -247,7 +247,7 @@ namespace Snittlistan.Test
                             Points = 8,
                             DividerSolid = false
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = "Grupp B",
                             Name = "Gävle KK",
@@ -260,7 +260,7 @@ namespace Snittlistan.Test
                             Points = 20,
                             DividerSolid = false
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = "Grupp B",
                             Name = "Domnarvets BS",
@@ -273,7 +273,7 @@ namespace Snittlistan.Test
                             Points = 17,
                             DividerSolid = true
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = "Grupp B",
                             Name = "BK Klossen",
@@ -286,7 +286,7 @@ namespace Snittlistan.Test
                             Points = 16,
                             DividerSolid = true
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = "Grupp B",
                             Name = "BK Rättvik",
@@ -299,7 +299,7 @@ namespace Snittlistan.Test
                             Points = 14,
                             DividerSolid = false
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = "Grupp B",
                             Name = "BK Enjoy",
@@ -312,7 +312,7 @@ namespace Snittlistan.Test
                             Points = 7,
                             DividerSolid = true
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = "Grupp B",
                             Name = "Falu BK",
@@ -325,7 +325,7 @@ namespace Snittlistan.Test
                             Points = 0,
                             DividerSolid = false
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = "Grupp C",
                             Name = "BK Taifun",
@@ -338,7 +338,7 @@ namespace Snittlistan.Test
                             Points = 22,
                             DividerSolid = false
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = "Grupp C",
                             Name = "BK Trol",
@@ -351,7 +351,7 @@ namespace Snittlistan.Test
                             Points = 16,
                             DividerSolid = true
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = "Grupp C",
                             Name = "Hammarby IF",
@@ -364,7 +364,7 @@ namespace Snittlistan.Test
                             Points = 16,
                             DividerSolid = true
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = "Grupp C",
                             Name = "Wåxnäs BC",
@@ -377,7 +377,7 @@ namespace Snittlistan.Test
                             Points = 16,
                             DividerSolid = false
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = "Grupp C",
                             Name = "BK Glam F1",
@@ -390,7 +390,7 @@ namespace Snittlistan.Test
                             Points = 15,
                             DividerSolid = true
                         },
-                        new ParseMatchSchemeResult.StandingsItem
+                        new ParseStandingsResult.StandingsItem
                         {
                             Group = "Grupp C",
                             Name = "BK Kasi",
@@ -407,11 +407,11 @@ namespace Snittlistan.Test
             }
         }
 
-        [Test, TestCaseSource(nameof(TestCases))]
-        public void DirectLink(string resourceName, string expectedDirectLink, ParseMatchSchemeResult.StandingsItem[] expectedItems)
+        [TestCaseSource(nameof(TestCases))]
+        public void ParsesStandings(string resourceName, string expectedDirectLink, ParseStandingsResult.StandingsItem[] expectedItems)
         {
             // Act
-            ParseMatchSchemeResult matchScheme;
+            ParseStandingsResult standings;
             var assembly = Assembly.GetExecutingAssembly();
             using (var stream = assembly.GetManifestResourceStream(resourceName))
             {
@@ -419,16 +419,16 @@ namespace Snittlistan.Test
                 using (var reader = new StreamReader(stream))
                 {
                     var content = reader.ReadToEnd();
-                    matchScheme = BitsParser.ParseMatchScheme(content);
+                    standings = BitsParser.ParseStandings(content);
                 }
             }
 
             // Assert
-            Assert.That(matchScheme.DirectLink, Is.EqualTo(expectedDirectLink), "DirectLink");
-            Assert.That(matchScheme.Items, Has.Length.EqualTo(expectedItems.Length));
-            for (var i = 0; i < matchScheme.Items.Length; i++)
+            Assert.That(standings.DirectLink, Is.EqualTo(expectedDirectLink), "DirectLink");
+            Assert.That(standings.Items, Has.Length.EqualTo(expectedItems.Length));
+            for (var i = 0; i < standings.Items.Length; i++)
             {
-                var item = matchScheme.Items[i];
+                var item = standings.Items[i];
                 var expectedItem = expectedItems[i];
                 Assert.That(item.Group, Is.EqualTo(expectedItem.Group), $"Item {i} Group");
                 Assert.That(item.Name, Is.EqualTo(expectedItem.Name), $"Item {i} Name");

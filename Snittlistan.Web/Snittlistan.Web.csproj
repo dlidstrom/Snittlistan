@@ -186,8 +186,8 @@
     <Compile Include="Areas\V2\Controllers\Api\ApiErrorController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\TaskController.cs" />
     <Compile Include="Areas\V2\Domain\OilPatternInformation.cs" />
-    <Compile Include="Areas\V2\Domain\ParseMatchSchemeResult.cs" />
     <Compile Include="Areas\V2\Domain\ParseStandingsResult.cs" />
+    <Compile Include="Areas\V2\Domain\ParseMatchSchemeResult.cs" />
     <Compile Include="Areas\V2\Queries\GetActivePlayersQuery.cs" />
     <Compile Include="Areas\V2\Queries\GetPendingMatchesQuery.cs" />
     <Compile Include="Areas\V2\Queries\GetPlayersQuery.cs" />

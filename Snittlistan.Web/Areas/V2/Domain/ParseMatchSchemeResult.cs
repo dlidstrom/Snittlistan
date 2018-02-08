@@ -1,34 +1,27 @@
-﻿namespace Snittlistan.Web.Areas.V2.Domain
+﻿using System;
+
+namespace Snittlistan.Web.Areas.V2.Domain
 {
     public class ParseMatchSchemeResult
     {
-        public ParseMatchSchemeResult(string directLink, StandingsItem[] items)
+        public ParseMatchSchemeResult(MatchItem[] matches)
         {
-            DirectLink = directLink;
-            Items = items;
+            Matches = matches;
         }
 
-        public string DirectLink { get; }
+        public MatchItem[] Matches { get; }
 
-        public StandingsItem[] Items { get; }
-
-        public class StandingsItem
+        public class MatchItem
         {
-            public string Group { get; set; }
-            public string Name { get; set; }
-            public int Matches { get; set; }
-            public int Win { get; set; }
-            public int Draw { get; set; }
-            public int Loss { get; set; }
-            public string Total { get; set; }
-            public int Diff { get; set; }
-            public int Points { get; set; }
-            public bool DividerSolid { get; set; }
-
-            public override string ToString()
-            {
-                return $"{nameof(Group)}: {Group}, {nameof(Name)}: {Name}, {nameof(Matches)}: {Matches}, {nameof(Win)}: {Win}, {nameof(Draw)}: {Draw}, {nameof(Loss)}: {Loss}, {nameof(Total)}: {Total}, {nameof(Diff)}: {Diff}, {nameof(Points)}: {Points}, {nameof(DividerSolid)}: {DividerSolid}";
-            }
+            public int Turn { get; set; }
+            public DateTime Date { get; set; }
+            public int BitsMatchId { get; set; }
+            public string Teams { get; set; }
+            public string MatchResult { get; set; }
+            public string OilPatternName { get; set; }
+            public int OilPatternId { get; set; }
+            public string Location { get; set; }
+            public string LocationUrl { get; set; }
         }
     }
 }

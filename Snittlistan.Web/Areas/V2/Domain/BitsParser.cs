@@ -128,7 +128,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
             return new ParseHeaderResult(awayTeam, homeTeamName, DateTime.Parse(dateText), locationText, oilPatternInformation);
         }
 
-        public static ParseMatchSchemeResult ParseMatchScheme(string content)
+        public static ParseStandingsResult ParseStandings(string content)
         {
             var document = new HtmlDocument();
             document.LoadHtml(content);
@@ -137,7 +137,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
             // table
             var currentRow = 0;
-            var standings = new List<ParseMatchSchemeResult.StandingsItem>();
+            var standings = new List<ParseStandingsResult.StandingsItem>();
             var currentGroup = (string)null;
             while (true)
             {
@@ -166,7 +166,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
                     var loss = int.Parse(lossNode.InnerText);
                     var diff = int.Parse(diffNode.InnerText);
                     var points = int.Parse(pointsNode.InnerText);
-                    standings.Add(new ParseMatchSchemeResult.StandingsItem
+                    standings.Add(new ParseStandingsResult.StandingsItem
                     {
                         Group = currentGroup,
                         Name = nameNode.InnerText.Trim(),
@@ -184,15 +184,68 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 currentRow++;
             }
 
-            var result = new ParseMatchSchemeResult(
+            var result = new ParseStandingsResult(
                 directLinkNode.InnerText,
                 standings.ToArray());
             return result;
         }
 
-        public static ParseStandingsResult ParseStandings(string content)
+        public static ParseMatchSchemeResult ParseMatchScheme(string content)
         {
-            return null;
+            //
+            var document = new HtmlDocument();
+            document.LoadHtml(content);
+            var documentNode = document.DocumentNode;
+            var tableNode = documentNode.SelectSingleNode("//div[@id=\"MainContentPlaceHolder_MatchScheme1_PanelStandings\"]/table");
+
+            var currentRow = 0;
+            var matches = new List<ParseMatchSchemeResult.MatchItem>();
+            while (true)
+            {
+                var matchFactNode = tableNode.SelectSingleNode($"//a[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HyperLinkMatchFakta_{currentRow}\"]");
+                if (matchFactNode == null) break;
+                if (string.IsNullOrWhiteSpace(matchFactNode.InnerText) == false)
+                {
+                    var turnNode = tableNode.SelectSingleNode($"//input[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HiddenRoundFormatted_{currentRow}\"]");
+                    var matchTimeNode = tableNode.SelectSingleNode($"//input[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HiddenFieldMatchTime_{currentRow}\"]");
+                    var matchDateNode = tableNode.SelectSingleNode($"//input[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HiddenFieldMatchDate_{currentRow}\"]");
+                    var matchIdNode = tableNode.SelectSingleNode($"//input[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HiddenFieldMatchId_{currentRow}\"]");
+                    var teamsNode = tableNode.SelectSingleNode($"//a[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HyperLinkMatchFakta_{currentRow}\"]");
+                    var resultNode = tableNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_LabelMatchResult_{currentRow}\"]");
+                    var oilPatternNameNode = tableNode.SelectSingleNode($"//a[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_LabelMatchOilPattern_{currentRow}\"]");
+                    var oilPatternIdNode = tableNode.SelectSingleNode($"//input[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HiddenOilPatternId_{currentRow}\"]");
+                    var locationNode = tableNode.SelectSingleNode($"//a[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HyperLinkHall_{currentRow}\"]");
+
+                    var turn = int.Parse(turnNode.Attributes["value"].Value.Replace("Omgång ", string.Empty));
+                    var formattedTime = Regex.Replace(
+                        matchTimeNode.Attributes["value"].Value,
+                        @"(?<hour>\d\d)(?<minute>\d\d)",
+                        @"${hour}:${minute}");
+                    var formattedDate = Regex.Replace(
+                        matchDateNode.Attributes["value"].Value,
+                        @"(?<date>\d{4}-\d\d-\d\d) 00:00:00",
+                        @"${date}");
+                    var date = DateTime.Parse($"{formattedDate}T{formattedTime}");
+                    var bitsMatchId = int.Parse(matchIdNode.Attributes["value"].Value);
+                    var oilPatternId = int.Parse(oilPatternIdNode.Attributes["value"].Value);
+                    matches.Add(new ParseMatchSchemeResult.MatchItem
+                    {
+                        Turn = turn,
+                        Date = date,
+                        BitsMatchId = bitsMatchId,
+                        Teams = teamsNode.InnerText,
+                        MatchResult = resultNode.InnerText,
+                        OilPatternName = oilPatternNameNode.InnerText,
+                        OilPatternId = oilPatternId,
+                        Location = locationNode.InnerText,
+                        LocationUrl = locationNode.Attributes["href"].Value
+                    });
+                }
+
+                currentRow++;
+            }
+
+            return new ParseMatchSchemeResult(matches.ToArray());
         }
 
         public ParseResult Parse(string content, string team)
