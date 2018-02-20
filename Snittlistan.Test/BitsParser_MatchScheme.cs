@@ -3102,7 +3102,7 @@ namespace Snittlistan.Test
                             Date = new DateTime(2018, 2, 18, 10, 0, 0),
                             BitsMatchId = 3152108,
                             Teams = "Bålsta BC - BK Trol",
-                            MatchResult = "10 - 10",
+                            MatchResult = "9 - 11",
                             OilPatternName = "41-42",
                             OilPatternId = 46,
                             Location = "Bålsta Bowlingcenter",
@@ -3746,15 +3746,15 @@ namespace Snittlistan.Test
             {
                 var item = matchScheme.Matches[i];
                 var expectedItem = expectedItems[i];
-                Assert.That(item.Turn, Is.EqualTo(expectedItem.Turn), $"Item {i} Turn");
-                Assert.That(item.Date, Is.EqualTo(expectedItem.Date), $"Item {i} Date");
-                Assert.That(item.BitsMatchId, Is.EqualTo(expectedItem.BitsMatchId), $"Item {i} BitsMatchId");
-                Assert.That(item.Teams, Is.EqualTo(expectedItem.Teams), $"Item {i} Teams");
-                Assert.That(item.MatchResult, Is.EqualTo(expectedItem.MatchResult), $"Item {i} MatchResult");
-                Assert.That(item.OilPatternName, Is.EqualTo(expectedItem.OilPatternName), $"Item {i} OilPatternName");
-                Assert.That(item.OilPatternId, Is.EqualTo(expectedItem.OilPatternId), $"Item {i} OilPatternId");
-                Assert.That(item.Location, Is.EqualTo(expectedItem.Location), $"Item {i} Location");
-                Assert.That(item.LocationUrl, Is.EqualTo(expectedItem.LocationUrl), $"Item {i} LocationUrl");
+                Assert.That(item.Turn, Is.EqualTo(expectedItem.Turn), $"Item {item.RowFromHtml} {item.Teams} Turn");
+                Assert.That(item.Date, Is.EqualTo(expectedItem.Date), $"Item {item.RowFromHtml}: {item.Teams} Date");
+                Assert.That(item.BitsMatchId, Is.EqualTo(expectedItem.BitsMatchId), $"Item {item.RowFromHtml}: {item.Teams} BitsMatchId");
+                Assert.That(item.Teams, Is.EqualTo(expectedItem.Teams), $"Item {item.RowFromHtml}: {item.Teams} Teams");
+                Assert.That(item.MatchResult, Is.EqualTo(expectedItem.MatchResult), $"Item {item.RowFromHtml}: {item.Teams} MatchResult");
+                Assert.That(item.OilPatternName, Is.EqualTo(expectedItem.OilPatternName), $"Item {item.RowFromHtml}: {item.Teams} OilPatternName");
+                Assert.That(item.OilPatternId, Is.EqualTo(expectedItem.OilPatternId), $"Item {item.RowFromHtml}: {item.Teams} OilPatternId");
+                Assert.That(item.Location, Is.EqualTo(expectedItem.Location), $"Item {item.RowFromHtml}: {item.Teams} Location");
+                Assert.That(item.LocationUrl, Is.EqualTo(expectedItem.LocationUrl), $"Item {item.RowFromHtml}: {item.Teams} LocationUrl");
             }
         }
     }

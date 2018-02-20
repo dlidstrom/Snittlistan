@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Web;
 using HtmlAgilityPack;
 using Snittlistan.Web.Areas.V2.ReadModels;
 
@@ -204,10 +205,12 @@ namespace Snittlistan.Web.Areas.V2.Domain
             {
                 var matchFactNode = tableNode.SelectSingleNode($"//a[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HyperLinkMatchFakta_{currentRow}\"]");
                 if (matchFactNode == null) break;
-                if (string.IsNullOrWhiteSpace(matchFactNode.InnerText) == false)
+                var matchDayNode = tableNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_LblMatchDayFormatted_{currentRow}\"]");
+                var isTurnRow = matchDayNode.InnerText.IndexOf("Omgång", StringComparison.Ordinal) >= 0;
+                if (isTurnRow == false)
                 {
                     var turnNode = tableNode.SelectSingleNode($"//input[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HiddenRoundFormatted_{currentRow}\"]");
-                    var matchTimeNode = tableNode.SelectSingleNode($"//input[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HiddenFieldMatchTime_{currentRow}\"]");
+                    var matchTimeNode = tableNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_LblMatchTimeFormatted_{currentRow}\"]");
                     var matchDateNode = tableNode.SelectSingleNode($"//input[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HiddenFieldMatchDate_{currentRow}\"]");
                     var matchIdNode = tableNode.SelectSingleNode($"//input[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HiddenFieldMatchId_{currentRow}\"]");
                     var teamsNode = tableNode.SelectSingleNode($"//a[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HyperLinkMatchFakta_{currentRow}\"]");
@@ -217,19 +220,18 @@ namespace Snittlistan.Web.Areas.V2.Domain
                     var locationNode = tableNode.SelectSingleNode($"//a[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HyperLinkHall_{currentRow}\"]");
 
                     var turn = int.Parse(turnNode.Attributes["value"].Value.Replace("Omgång ", string.Empty));
-                    var formattedTime = Regex.Replace(
-                        matchTimeNode.Attributes["value"].Value,
-                        @"(?<hour>\d\d)(?<minute>\d\d)",
-                        @"${hour}:${minute}");
                     var formattedDate = Regex.Replace(
                         matchDateNode.Attributes["value"].Value,
                         @"(?<date>\d{4}-\d\d-\d\d) 00:00:00",
                         @"${date}");
-                    var date = DateTime.Parse($"{formattedDate}T{formattedTime}");
+                    var date = DateTime.Parse($"{formattedDate}T{matchTimeNode.InnerText}");
                     var bitsMatchId = int.Parse(matchIdNode.Attributes["value"].Value);
                     var oilPatternId = int.Parse(oilPatternIdNode.Attributes["value"].Value);
+                    var locationUrl = HttpUtility.HtmlDecode($"http://bits.swebowl.se/Matches/{locationNode.Attributes["href"].Value}");
+                    var location = HttpUtility.HtmlDecode(locationNode.InnerText);
                     matches.Add(new ParseMatchSchemeResult.MatchItem
                     {
+                        RowFromHtml = currentRow,
                         Turn = turn,
                         Date = date,
                         BitsMatchId = bitsMatchId,
@@ -237,8 +239,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
                         MatchResult = resultNode.InnerText,
                         OilPatternName = oilPatternNameNode.InnerText,
                         OilPatternId = oilPatternId,
-                        Location = locationNode.InnerText,
-                        LocationUrl = locationNode.Attributes["href"].Value
+                        Location = location,
+                        LocationUrl = locationUrl
                     });
                 }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using Snittlistan.Web.HtmlHelpers;
 
 namespace Snittlistan.Web.Areas.V2.Domain
 {
@@ -13,9 +14,11 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         public class MatchItem
         {
+            public int RowFromHtml { get; set; }
             public int Turn { get; set; }
             public DateTime Date { get; set; }
             public int BitsMatchId { get; set; }
+            public string MatchFactUrl => CustomHtmlHelpers.GenerateBitsUrl(BitsMatchId);
             public string Teams { get; set; }
             public string MatchResult { get; set; }
             public string OilPatternName { get; set; }
