@@ -225,6 +225,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
                         @"(?<date>\d{4}-\d\d-\d\d) 00:00:00",
                         @"${date}");
                     var date = DateTime.Parse($"{formattedDate}T{matchTimeNode.InnerText}");
+                    var dateChanged = matchTimeNode.Attributes["style"].Value.IndexOf("color:Red", StringComparison.OrdinalIgnoreCase) >= 0;
                     var bitsMatchId = int.Parse(matchIdNode.Attributes["value"].Value);
                     var oilPatternId = int.Parse(oilPatternIdNode.Attributes["value"].Value);
                     var locationUrl = HttpUtility.HtmlDecode($"http://bits.swebowl.se/Matches/{locationNode.Attributes["href"].Value}");
@@ -234,6 +235,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
                         RowFromHtml = currentRow,
                         Turn = turn,
                         Date = date,
+                        DateChanged = dateChanged,
                         BitsMatchId = bitsMatchId,
                         Teams = teamsNode.InnerText,
                         MatchResult = resultNode.InnerText,

@@ -17,6 +17,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
             public int RowFromHtml { get; set; }
             public int Turn { get; set; }
             public DateTime Date { get; set; }
+            public bool DateChanged { get; set; }
             public int BitsMatchId { get; set; }
             public string MatchFactUrl => CustomHtmlHelpers.GenerateBitsUrl(BitsMatchId);
             public string Teams { get; set; }
