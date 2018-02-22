@@ -1,4 +1,4 @@
-// Usage: phantomjs getMatches.js 'Fredrikshof IF BK' 'Fredrikshof IF BK F' my-file
+// Usage: phantomjs getMatches.js 'Fredrikshof IF BK' 'Fredrikshof IF BK F' standings-file match-scheme-file
 
 "use strict";
 

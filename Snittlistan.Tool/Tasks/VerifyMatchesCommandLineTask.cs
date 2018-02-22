@@ -1,8 +1,8 @@
-﻿using Snittlistan.Queue;
-using Snittlistan.Queue.Messages;
-
-namespace Snittlistan.Tool.Tasks
+﻿namespace Snittlistan.Tool.Tasks
 {
+    using Queue;
+    using Queue.Messages;
+
     public class VerifyMatchesCommandLineTask : ICommandLineTask
     {
         public void Run(string[] args)
