@@ -1,0 +1,57 @@
+http://bits.swebowl.se/Matches/MatchScheme.aspx?DivisionId=8&SeasonId=2017&LeagueId=1&LevelId=3
+http://bits.swebowl.se/Matches/Standings.aspx?DivisionId=8&SeasonId=2017&LeagueId=1&LevelId=3
+
+MatchScheme-8-2017-1-3
+Standings-8-2017-1-3
+
+* Spara tabellen och spelschemat i SnittlistanMaster-databasen.
+* Hämta senaste tabellen, senaste spelschemat regelbundet från Bits.
+    - Varje timme, gå igenom alla tabeller och spelscheman från Bits.
+    - Vi kan inte polla länkarna eftersom dom slutar gälla efter sommaren.
+    - Måste alltså polla lagnamnen. Det betyder att dokumenten måste innehålla
+      lagnamnen så att man kan se om dokumentet är uppdaterat för laget redan.
+    - Hämta lagnamnen från alla klubbar i Snittlistan. Gör en begäran för att uppdatera
+      genom att spara i SnittlistanMaster. Begäran ska sparas så här:
+      MatchTablesUpdate-8-2017-1-3. Hur får vi fram det? Genom att ladda standings genom
+      att söka upp med lagnamnet.
+    - 
+* AIK A heter bara AIK i tabellen. Spelar det någon roll? Tror inte det om vi kan
+  spara division, season, league och level i Snittlistan-AIK. Alternativt sparar
+  man vad laget heter i Bits. Dvs vad laget heter i tabellen.
+
+# Förfarande
+
+## Tool
+
+* Gå igenom alla api url's och köa på ett meddelande som ser ut så här:
+class StartMatchTableUpdate
+
+- alt -
+Steg 1.
+Kolla om det finns begäran kvar. Isåfall avbryt.
+Läs upp alla lagnamn från alla instanser. Blanda och skapa nya begäran för alla.
+
+- sen -
+
+Tool pollar begäran. Köar upp ett uppdateringsmeddelande för varje begäran.
+Queue hanterar meddelandena och ser till att Bits inte pollas för ofta.
+Om det är för ofta, kasta meddelandet. Annars hämta resultatet och uppdatera master.
+Här kan Tool ha lagt upp fler kömeddelanden. Isåfall kastas dom ifall resultatet
+har uppdaterats inom acceptabelt intervall. När resultatet har uppdaterats av Queue
+så markeras begäran som klar.
+Tool börjar om när alla begäran är klara (tillbaka på steg 1).
+
+## Queue
+Skickar meddelandet till rätt instans.
+
+## Web
+Tar emot meddelandet och sparar ett dokument (för varje lag) som ser ut så här:
+class MatchTableUpdate { Team = AIK, Date = 2017-02-27 7:00, Done = false }
+
+Nästa instans tar emot meddelandet också och skapar en ny:
+class MatchTableUpdate { Team = Stureby BK F1, Date = 2017-02-27 7:00, Done = false }
+
+## Tool
+
+Pollar MatchTableUpdate (Done = false) och läser upp alla såna. Läser upp vilka
+bits dokument som ska uppdateras.
