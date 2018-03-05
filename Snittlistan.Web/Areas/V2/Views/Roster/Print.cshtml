@@ -1,19 +1,24 @@
 ﻿@model ViewTurnViewModel
 
-<hr/>
-@foreach (var roster in Model.Rosters)
-{
-    <div class="row">
-        <div class="span8">
-            @Html.DisplayFor(model => roster, "Roster", new { hideControls = true })
-            @Html.DisplayFor(model => roster, "Players", new { hideControls = true })
-        </div>
-    </div>
+@{
+    Layout = "~/Areas/V2/Views/Shared/_BareLayout.cshtml";
 }
 
-<div class="row">
-    <div class="span8">
-        <h4>Anmäld frånvaro</h4>
+<div class="container">
+    @foreach (var roster in Model.Rosters)
+    {
+        <div class="row" style="page-break-after: always;">
+            <div class="span12">
+                @Html.DisplayFor(model => roster, "Roster", new { hideControls = true })
+                @Html.DisplayFor(model => roster, "Players", new { hideControls = true })
+            </div>
+        </div>
+    }
+
+    <div class="row">
+        <div class="span8">
+            <h4>Anmäld frånvaro</h4>
+        </div>
     </div>
+    @Html.Action("AbsenceTable", "Absence", new { hideControls = true })
 </div>
-@Html.Action("AbsenceTable", "Absence", new { hideControls = true })

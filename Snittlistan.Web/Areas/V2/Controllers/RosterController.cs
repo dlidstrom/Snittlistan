@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using Raven.Abstractions;
 using Raven.Client;
+using Rotativa;
+using Rotativa.Options;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.ViewModels;
@@ -254,7 +256,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 Season = season,
                 Rosters = list
             };
-            return View(viewTurnViewModel);
+
+            return new ViewAsPdf(viewTurnViewModel)
+            {
+                PageSize = Size.A4
+            };
         }
 
         [Authorize]
