@@ -1,0 +1,140 @@
+﻿@model RosterViewModel
+@{
+    var hideControls = Convert.ToBoolean(ViewData["hideControls"]);
+}
+
+<div class="card editable">
+    @if (Request.IsAuthenticated && hideControls == false)
+    {
+        <a href="@Url.Action("EditPlayers", new { Model.Id })" class="edit-right">
+            <i class="sprite-glyphicons_151_edit"></i>
+        </a>
+    }
+    @if (Model.Preliminary && User.Identity.IsAuthenticated)
+    {
+        <div class="alert alert-info">
+            <strong>Preliminär</strong> Gömd för vanliga användare
+        </div>
+    }
+    @if (Model.Preliminary && User.Identity.IsAuthenticated == false)
+    {
+        @* Hide preliminaries for regular users *@
+        Model.Players.Clear();
+    }
+    @if (Model.IsFourPlayer)
+    {
+        <table class="table table-condensed">
+            <tr>
+                <th></th>
+                <th>Namn</th>
+            </tr>
+            @for (var i = 0; i < 4; i++)
+            {
+                <tr>
+                    <td class="table-id">@(i + 1)</td>
+                    <td>
+                        @{
+                            var player = Model.Players.ElementAtOrDefault(i);
+                        }
+                        @if (player != null)
+                        {
+                            @player.Item2
+                        }
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td class="table-id">R</td>
+                <td>
+                    @{
+                        var reserve = Model.Players.ElementAtOrDefault(4);
+                    }
+                    @if (reserve != null)
+                    {
+                        @reserve.Item2
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td class="table-id-medium">
+                    Lagledare
+                </td>
+                <td>
+                    @if (Model.TeamLeader != null)
+                    {
+                        @Model.TeamLeader.Item2
+                    }
+                </td>
+            </tr>
+        </table>
+    }
+    else
+    {
+        <table class="table table-sm">
+            <tr>
+                <th>Bord</th>
+                <th>Namn</th>
+            </tr>
+            @for (var i = 0; i < 4; i++)
+            {
+                <tr>
+                    <td class="table-id" rowspan="2">@(i + 1)</td>
+                    <td>
+                        @{
+                            var first = Model.Players.ElementAtOrDefault(2*i);
+                        }
+                        @if (first != null)
+                        {
+                            @first.Item2
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @{
+                            var second = Model.Players.ElementAtOrDefault(2*i + 1);
+                        }
+                        @if (second != null)
+                        {
+                            @second.Item2
+                        }
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td class="table-id" rowspan="2">R</td>
+                <td>
+                    @{
+                        var reserve1 = Model.Players.ElementAtOrDefault(8);
+                    }
+                    @if (reserve1 != null)
+                    {
+                        @reserve1.Item2
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @{
+                        var reserve2 = Model.Players.ElementAtOrDefault(9);
+                    }
+                    @if (reserve2 != null)
+                    {
+                        @reserve2.Item2
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td class="table-id-medium">
+                    Lagledare
+                </td>
+                <td>
+                    @if (Model.TeamLeader != null)
+                    {
+                        @Model.TeamLeader.Item2
+                    }
+                </td>
+            </tr>
+        </table>
+    }
+</div>

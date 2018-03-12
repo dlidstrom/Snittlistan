@@ -1,0 +1,64 @@
+﻿@model RosterViewModel
+@{
+    var hideControls = Convert.ToBoolean(ViewData["hideControls"]);
+}
+
+<div class="card editable">
+    @if (Request.IsAuthenticated && hideControls == false)
+    {
+        @*<div class="dropdown edit-left">
+            <button class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">
+                <i class="sprite-glyphicons_019_cogwheel"></i>
+                <b class="caret"></b>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="@Url.Action("Edit", new { Model.Id })">
+                        <i class="sprite-glyphicons_151_edit"></i>
+                        Redigera
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Delete", new { Model.Id })">
+                        <i class="sprite-glyphicons_016_bin"></i>
+                        Ta bort
+                    </a>
+                </li>
+            </ul>
+        </div>*@
+    }
+    <dl class="row">
+        <dt>lag</dt>
+        <dd style="color: red;">@Content.TeamLabel(Model.TeamLevel, Model.Team)</dd>
+        <dt>plats</dt>
+        <dd>@Model.Location</dd>
+        <dt>motstånd</dt>
+        <dd>@Model.Opponent</dd>
+        @if (string.IsNullOrWhiteSpace(Model.OilPattern.Name) == false)
+        {
+            <dt>oljeprofil</dt>
+            <dd>
+                @if (string.IsNullOrWhiteSpace(Model.OilPattern.Url) == false)
+                {
+                    <a href="@Model.OilPattern.Url">
+                        @Model.OilPattern.Name
+                        <i class="icon-share-alt"></i>
+                    </a>
+                }
+                else
+                {
+                    @Model.OilPattern.Name
+                }
+            </dd>
+        }
+
+        <dt>när</dt>
+        <dd>
+            <em>
+                <time datetime="@Model.Date.ToString("s")">
+                    @Model.Date.ToString("dddd d MMMM HH:mm")
+                </time>
+            </em>
+        </dd>
+    </dl>
+</div>

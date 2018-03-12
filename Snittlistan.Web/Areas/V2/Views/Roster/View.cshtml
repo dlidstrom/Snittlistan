@@ -5,10 +5,16 @@
         <h4 class="pull-left">Omgång @Model.Turn</h4>
         @if (Request.IsAuthenticated)
         {
-            <a class="pull-right" href="@Url.Action("Print", new { season = Model.Season, turn = Model.Turn })">
-                <i class="sprite-glyphicons_015_print"></i>
-                Utskrift
-            </a>
+            <div class="pull-right">
+                <a  href="@Url.Action("Print", new { season = Model.Season, turn = Model.Turn })" style="margin-right: 1rem;">
+                    <i class="sprite-glyphicons_015_print"></i>
+                    Utskrift
+                </a>
+                <a  href="@Url.Action("Print", new { season = Model.Season, turn = Model.Turn, pdf = true })">
+                    <i class="sprite-glyphicons_015_print"></i>
+                    Pdf
+                </a>
+            </div>
         }
         <div class="clearfix"></div>
     </div>

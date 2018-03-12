@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Raven.Abstractions;
@@ -239,7 +240,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         }
 
         [Authorize]
-        public ActionResult Print(int season, int turn)
+        public ActionResult Print(int season, int turn, string pdf)
         {
             var rostersForTurn = DocumentSession.Query<Roster, RosterSearchTerms>()
                                                 .Include(roster => roster.Players)
@@ -257,10 +258,27 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 Rosters = list
             };
 
-            return new ViewAsPdf(viewTurnViewModel)
+            if (Convert.ToBoolean(pdf))
             {
-                PageSize = Size.A4
-            };
+                var filename = $"Omgång-{season}-{turn}";
+                var customSwitchesBuilder = new StringBuilder();
+                customSwitchesBuilder.Append($"--footer-left \"Filnamn: {filename}\"");
+                customSwitchesBuilder.Append(" --footer-right \"Sida [page] av [toPage]\"");
+                customSwitchesBuilder.Append(" --footer-font-size \"8\"");
+                customSwitchesBuilder.Append(" --footer-line");
+                customSwitchesBuilder.Append(" --footer-spacing \"3\"");
+                customSwitchesBuilder.Append($" --header-left \"{TenantConfiguration.WebAppTitle}\"");
+                customSwitchesBuilder.Append($" --header-center \"Omgång {turn}\"");
+                customSwitchesBuilder.Append($" --header-right \"{DateTime.Now.Date.ToShortDateString()}\"");
+                customSwitchesBuilder.Append(" --header-line");
+                var customSwitches = customSwitchesBuilder.ToString();
+                return new ViewAsPdf(viewTurnViewModel)
+                {
+                    PageSize = Size.A4,
+                    CustomSwitches = customSwitches
+                };}
+
+            return View(viewTurnViewModel);
         }
 
         [Authorize]

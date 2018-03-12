@@ -353,6 +353,8 @@
     <Content Include="Content\css\images\hofvet.png" />
     <Content Include="Content\css\images\vartansik.ico" />
     <Content Include="Content\css\images\vartansik.png" />
+    <Content Include="Content\css\print.css" />
+    <Content Include="Content\external\bootstrap4\bootstrap.css" />
     <Content Include="Content\external\waypoints\waypoints-0.0.1.min.js" />
     <Content Include="Content\js\helpers\typeahead.js" />
     <Compile Include="Controllers\AbstractController.cs" />
@@ -570,6 +572,9 @@
     <Content Include="Areas\V2\Views\MatchResult\BitsMatchResult.cshtml" />
     <Content Include="App_Browsers\qt.browser" />
     <Content Include="Areas\V2\Views\Shared\_BareLayout.cshtml" />
+    <Content Include="Areas\V2\Views\Shared\_BareLayout2.cshtml" />
+    <Content Include="Areas\V2\Views\Roster\DisplayTemplates\Players2.cshtml" />
+    <Content Include="Areas\V2\Views\Roster\DisplayTemplates\Roster2.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
