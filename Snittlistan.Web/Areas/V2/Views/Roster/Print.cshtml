@@ -1,24 +1,61 @@
 ﻿@model ViewTurnViewModel
-
 @{
-    Layout = "~/Areas/V2/Views/Shared/_BareLayout.cshtml";
-}
+    Layout = null;
+}<!DOCTYPE html>
+<head>
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/print.css")" />
+    <style>
+        body {
+            padding-top: 1cm;
+        }
 
-<div class="container">
-    @foreach (var roster in Model.Rosters)
-    {
-        <div class="row" style="page-break-after: always;">
+        div.row {
+            padding-top: 0.5cm;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Omgång @Model.Turn</h1>
+        @{
+            var start = 0;
+            while (true)
+            {
+                var rosters = Model.Rosters.Skip(start).Take(2).ToArray();
+                if (rosters.Length == 0)
+                {
+                    break;
+                }
+
+                <div class="row" style="page-break-after: always;">
+                    @foreach (var roster in rosters)
+                    {
+                        <div style="width: 45%; float: left; margin-right: 0.5cm;">
+                            @Html.DisplayFor(model => roster, "Roster", new
+                            {
+                                hideControls = true
+                            })
+                            @Html.DisplayFor(model => roster, "Players", new
+                            {
+                                hideControls = true
+                            })
+                        </div>
+                    }
+                </div>
+
+                start += rosters.Length;
+            }
+        }
+
+        <div class="row">
             <div class="span12">
-                @Html.DisplayFor(model => roster, "Roster", new { hideControls = true })
-                @Html.DisplayFor(model => roster, "Players", new { hideControls = true })
+                <h2>Anmäld frånvaro</h2>
             </div>
         </div>
-    }
-
-    <div class="row">
-        <div class="span8">
-            <h4>Anmäld frånvaro</h4>
-        </div>
+        @Html.Action("AbsenceTable", "Absence", new
+        {
+            hideControls = true
+        })
     </div>
-    @Html.Action("AbsenceTable", "Absence", new { hideControls = true })
-</div>
+</body>
