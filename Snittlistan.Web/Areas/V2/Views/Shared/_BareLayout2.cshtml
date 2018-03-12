@@ -1,0 +1,54 @@
+﻿@using Snittlistan.Web
+@{
+    ViewBag.Title = "Snittlistan";
+    Bundles.Reference("Content/css/main.less");
+    Bundles.Reference("Content/external/waypoints/waypoints-0.0.1.min.js");
+    var tenantConfiguration = Html.GetTenantConfiguration();
+}<!DOCTYPE html>
+<html lang="se">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="initial-scale=1.0,width=device-width" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+        <meta name="apple-mobile-web-app-title" content="@tenantConfiguration.WebAppTitle"/>
+        <meta name="google-site-verification" content="g8KwkjfVGgtu5zxYGhIEfJS4JGVkCMS1YMdp5WNOOpU"/>
+        <link rel="icon" href="@Url.ContentCacheBreak(string.Format("~/Content/css/images/{0}", tenantConfiguration.Favicon))" />
+        <link rel="apple-touch-icon" sizes="@tenantConfiguration.AppleTouchIconSize" href="@Url.ContentCacheBreak(string.Format("~/Content/css/images/{0}", tenantConfiguration.AppleTouchIcon))" />
+        <title>@ViewBag.Title</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        @Bundles.RenderStylesheets()
+        @Content.GoogleAnalytics()
+    </head>
+    <body ng-app>
+        @RenderBody()
+        @* Use content delivery networks *@
+        @if (Html.ApplicationMode() == ApplicationMode.Debug)
+        {
+            @Content.External("jquery/jquery.js", Url)
+            @Content.External("bootstrap/js/bootstrap.js", Url)
+        }
+        else
+        {
+            @Content.Script(ScriptType.JQuery)
+            <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+        }
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular.min.js"></script>
+        @* local scripts *@
+        @Bundles.RenderScripts()
+        @RenderSection("scripts", false)
+        <script>
+            $(function () {
+                window.Waypoints.debug(true).intercept('a');
+                $('[data-auth-menu-toggle]').on('click', function() {
+                    setTimeout(function() {
+                        $('[data-nav-collapse]').css({
+                            height: 'auto'
+                        });
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>
