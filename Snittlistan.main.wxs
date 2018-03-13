@@ -13,7 +13,7 @@
            Version="$(var.Version)">
     <Package Id="*"
              Description="Snittlistan installer"
-             InstallerVersion="300"
+             InstallerVersion="500"
              Languages="1033"
              Compressed="yes"
              SummaryCodepage="1252"
@@ -59,6 +59,7 @@
                   Impersonate="no" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
+      <Merge Id="VCRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\Microsoft_VC140_CRT_x86.msm" DiskId="1" Language="0" />
       <Directory Id="ProgramFiles64Folder" Name="PFiles">
         <Directory Id="INSTALLDIR" Name="Snittlistan">
           <Directory Id="SnittlistanWebDir" Name="Snittlistan.Web">
@@ -237,6 +238,9 @@
       <ComponentGroupRef Id="SnittlistanWebLib" />
       <ComponentGroupRef Id="SnittlistanToolLib" />
       <ComponentGroupRef Id="SnittlistanQueueLib" />
+    </Feature>
+    <Feature Id="VCRedist" Title="Visual C++ 14.0 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
+      <MergeRef Id="VCRedist" />
     </Feature>
   </Product>
 </Wix>
