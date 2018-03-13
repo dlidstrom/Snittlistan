@@ -179,7 +179,8 @@
     <Light ObjectFiles="@(WixObjects)"
            OutputFile="$(OutputDirectory)\Snittlistan.msi"
            ToolPath="Tools/wix311-binaries"
-           Extensions="Tools/wix311-binaries/WixUtilExtension.dll;Tools/wix311-binaries/WiXNetFxExtension.dll;Tools\wix311-binaries\WixIIsExtension.dll" />
+           Extensions="Tools/wix311-binaries/WixUtilExtension.dll;Tools/wix311-binaries/WiXNetFxExtension.dll;Tools\wix311-binaries\WixIIsExtension.dll"
+           SuppressSpecificWarnings="1076" />
     <MakeDir Directories="$(InstallDirectory)\$(Version)" />
     <ItemGroup>
       <InstallFiles Include="$(OutputDirectory)\Snittlistan.msi" />
