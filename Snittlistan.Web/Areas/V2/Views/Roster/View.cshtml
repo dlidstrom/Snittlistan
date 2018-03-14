@@ -2,18 +2,46 @@
 
 <div class="row">
     <div class="span12">
-        <h4 class="pull-left">Omgång @Model.Turn</h4>
+        <h1 class="pull-left">Omgång @Model.Turn</h1>
         @if (Request.IsAuthenticated)
         {
             <div class="pull-right">
-                <a  href="@Url.Action("Print", new { season = Model.Season, turn = Model.Turn })" style="margin-right: 1rem;">
-                    <i class="sprite-glyphicons_015_print"></i>
-                    Utskrift
-                </a>
-                <a  href="@Url.Action("Print", new { season = Model.Season, turn = Model.Turn, pdf = true })">
-                    <i class="sprite-glyphicons_015_print"></i>
-                    Pdf
-                </a>
+                @using (Html.BeginForm(
+                    "Print",
+                    "Roster",
+                    new { Model.Season, Model.Turn },
+                    FormMethod.Post,
+                    new { id = "printForm" }))
+                {
+                    <div class="print-options-container">
+                        <div class="print-option">
+                            <label for="ExcludePast">
+                                @Html.CheckBox("ExcludePast", true) Utan passerade matcher
+                            </label>
+                        </div>
+                        <div class="print-option">
+                            <label for="ExcludePreliminary">
+                                @Html.CheckBox("ExcludePreliminary", true) Utan preliminära matcher
+                            </label>
+                        </div>
+                        <div class="print-option">
+                            <label for="WithAbsence">
+                                @Html.CheckBox("WithAbsence", true) Med frånvaro
+                            </label>
+                        </div>
+                        <div class="print-option">
+                            <label for="Pdf">
+                                @Html.CheckBox("Pdf", false) Skapa pdf
+                            </label>
+                        </div>
+                    </div>
+                    <div class="print-links-container">
+                        <button class="btn btn-secondary btn-small" type="submit">
+                            <i class="sprite-glyphicons_015_print"></i>
+                            Utskrift
+                        </button>
+                    </div>
+                }
             </div>
         }
         <div class="clearfix"></div>
@@ -22,7 +50,7 @@
 
 @{
     var start = 0;
-    var rosters = Model.Rosters.Skip(start).Take(3).ToList();
+    var rosters = Model.RosterViewModels.Skip(start).Take(3).ToList();
 }
 @while (rosters.Count > 0)
 {
@@ -37,7 +65,7 @@
     </div>
 
     start += 3;
-    rosters = Model.Rosters.Skip(start).Take(3).ToList();
+    rosters = Model.RosterViewModels.Skip(start).Take(3).ToList();
 }
 @if (Request.IsAuthenticated)
 {

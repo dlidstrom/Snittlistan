@@ -226,41 +226,49 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                                                 .Where(roster => roster.Turn == turn)
                                                 .Where(roster => roster.Season == season)
                                                 .ToArray();
-            var list = rostersForTurn.Select(LoadRoster)
-                                     .SortRosters()
-                                     .ToArray();
+            var rosterViewModels = rostersForTurn.Select(LoadRoster)
+                                                 .SortRosters()
+                                                 .ToArray();
 
-            var viewTurnViewModel = new ViewTurnViewModel
-            {
-                Turn = turn.Value,
-                Season = season,
-                Rosters = list
-            };
+            var viewTurnViewModel = new ViewTurnViewModel(
+                turn.Value,
+                season,
+                rosterViewModels,
+                true,
+                TenantConfiguration.AppleTouchIcon);
             return View(viewTurnViewModel);
         }
 
-        [Authorize]
-        public ActionResult Print(int season, int turn, string pdf)
+        [Authorize, HttpPost]
+        public ActionResult Print(
+            int season,
+            int turn,
+            bool pdf,
+            bool excludePast,
+            bool withAbsence,
+            bool excludePreliminary)
         {
             var rostersForTurn = DocumentSession.Query<Roster, RosterSearchTerms>()
                                                 .Include(roster => roster.Players)
-                                                .Where(roster => roster.Turn == turn)
-                                                .Where(roster => roster.Season == season)
+                                                .Where(roster => roster.Turn == turn && roster.Season == season)
+                                                .ToArray()
+                                                .Where(roster => (roster.Preliminary == false || excludePreliminary == false)
+                                                                 && (roster.Date.Date >= SystemTime.UtcNow || excludePast == false))
                                                 .ToArray();
-            var list = rostersForTurn.Select(LoadRoster)
-                                     .SortRosters()
-                                     .ToArray();
+            var rosterViewModels = rostersForTurn.Select(LoadRoster)
+                                                 .SortRosters()
+                                                 .ToArray();
 
-            var viewTurnViewModel = new ViewTurnViewModel
-            {
-                Turn = turn,
-                Season = season,
-                Rosters = list
-            };
+            var viewTurnViewModel = new ViewTurnViewModel(
+                turn,
+                season,
+                rosterViewModels,
+                withAbsence,
+                TenantConfiguration.AppleTouchIcon);
 
-            if (Convert.ToBoolean(pdf))
+            if (pdf)
             {
-                var filename = $"Omgång-{season}-{turn}";
+                var filename = $"Omgång-{season}-{turn}.pdf";
                 var customSwitchesBuilder = new StringBuilder();
                 customSwitchesBuilder.Append($"--footer-left \"Filnamn: {filename}\"");
                 customSwitchesBuilder.Append(" --footer-right \"Sida [page] av [toPage]\"");
@@ -275,6 +283,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 return new ViewAsPdf(viewTurnViewModel)
                 {
                     PageSize = Size.A4,
+                    FileName = filename,
                     CustomSwitches = customSwitches
                 };}
 
