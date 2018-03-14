@@ -2,12 +2,28 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     public class ViewTurnViewModel
     {
-        public int Turn { get; set; }
+        public ViewTurnViewModel(
+            int turn,
+            int season,
+            RosterViewModel[] rosterViewModels,
+            bool withAbsence,
+            string headerImagePath)
+        {
+            Turn = turn;
+            Season = season;
+            RosterViewModels = rosterViewModels;
+            WithAbsence = withAbsence;
+            HeaderImagePath = headerImagePath;
+        }
 
-        public int Season { get; set; }
+        public int Turn { get; }
 
-        public RosterViewModel[] Rosters { get; set; }
+        public int Season { get; }
 
-        public PlayerViewModel[] AvailablePlayers { get; set; }
+        public RosterViewModel[] RosterViewModels { get; }
+
+        public bool WithAbsence { get; }
+
+        public string HeaderImagePath { get; }
     }
 }

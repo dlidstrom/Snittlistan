@@ -2,12 +2,38 @@
 @{
     Layout = null;
 }<!DOCTYPE html>
+<html>
 <head>
     <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="@Url.Content("~/Content/css/print.css")" />
     <style>
         body {
             padding-top: 1cm;
+        }
+
+        header {
+            position: relative;
+            height: 2cm;
+        }
+
+        img.header-image-left {
+            height: 100%;
+            position: absolute;
+            left: 0;
+        }
+
+        h1.top-title {
+            position: absolute;
+            left: 50%;
+            -ms-transform: translateX(-50%);
+            -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+        }
+
+        img.header-image-right {
+            height: 100%;
+            position: absolute;
+            right: 0;
         }
 
         div.row {
@@ -17,21 +43,35 @@
 </head>
 <body>
     <div class="container">
-        <h1>Omgång @Model.Turn</h1>
+        <div class="row">
+            <header>
+                <img class="header-image-left" src="~/Content/css/images/@Model.HeaderImagePath" />
+                <h1 class="top-title">Omgång @Model.Turn</h1>
+                <img class="header-image-right " src="~/Content/css/images/@Model.HeaderImagePath" />
+            </header>
+        </div>
         @{
             var start = 0;
             while (true)
             {
-                var rosters = Model.Rosters.Skip(start).Take(2).ToArray();
+                var rosters = Model.RosterViewModels.Skip(start).Take(2).ToArray();
                 if (rosters.Length == 0)
                 {
                     break;
                 }
 
                 <div class="row" style="page-break-after: always;">
-                    @foreach (var roster in rosters)
+                    @{
+                        var style = new[]
+                        {
+                            "width: 45%; float: left; margin-right: 0.5cm;",
+                            "width: 45%; float: right;"
+                        };
+                    }
+                    @for (var i = 0; i < rosters.Length; i++)
                     {
-                        <div style="width: 45%; float: left; margin-right: 0.5cm;">
+                        var roster = rosters[i];
+                        <div style="@style[i]">
                             @Html.DisplayFor(model => roster, "Roster", new
                             {
                                 hideControls = true
@@ -48,14 +88,19 @@
             }
         }
 
-        <div class="row">
-            <div class="span12">
-                <h2>Anmäld frånvaro</h2>
-            </div>
-        </div>
-        @Html.Action("AbsenceTable", "Absence", new
+        @if (Model.WithAbsence)
         {
-            hideControls = true
-        })
+            <div class="row">
+                <div class="span12">
+                    <h2>Anmäld frånvaro</h2>
+                </div>
+            </div>
+            @Html.Action("AbsenceTable", "Absence", new
+            {
+                hideControls = true
+            })
+        }
     </div>
+
 </body>
+</html>
