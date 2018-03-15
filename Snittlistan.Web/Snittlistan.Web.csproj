@@ -375,7 +375,6 @@
     <Compile Include="Areas\V1\Controllers\MatchController.cs" />
     <Compile Include="Areas\V1\Controllers\NotFoundController.cs" />
     <Compile Include="Areas\V1\Controllers\SearchController.cs" />
-    <Compile Include="Areas\V2\Controllers\SessionApiController.cs" />
     <Compile Include="Areas\V1\Controllers\ValidationController.cs" />
     <Compile Include="Areas\V1\Controllers\WelcomeController.cs" />
     <Compile Include="Global.asax.cs">
