@@ -207,8 +207,14 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult View(int season, int? turn)
+        public ActionResult View(int? season, int? turn, bool? print)
         {
+            if (season.HasValue == false)
+            {
+                // find out current season
+                season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+            }
+
             if (turn.HasValue == false)
             {
                 // find out next turn
@@ -223,19 +229,26 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
             var rostersForTurn = DocumentSession.Query<Roster, RosterSearchTerms>()
                                                 .Include(roster => roster.Players)
-                                                .Where(roster => roster.Turn == turn)
-                                                .Where(roster => roster.Season == season)
+                                                .Where(roster => roster.Turn == turn && roster.Season == season)
                                                 .ToArray();
             var rosterViewModels = rostersForTurn.Select(LoadRoster)
                                                  .SortRosters()
                                                  .ToArray();
 
+            if (rosterViewModels.Length <= 0) return View("Unscheduled");
+
             var viewTurnViewModel = new ViewTurnViewModel(
                 turn.Value,
-                season,
+                season.Value,
                 rosterViewModels,
                 true,
                 TenantConfiguration.AppleTouchIcon);
+
+            if (print.GetValueOrDefault())
+            {
+                return View("Print", viewTurnViewModel);
+            }
+
             return View(viewTurnViewModel);
         }
 
@@ -285,7 +298,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     PageSize = Size.A4,
                     FileName = filename,
                     CustomSwitches = customSwitches
-                };}
+                };
+            }
 
             return View(viewTurnViewModel);
         }
