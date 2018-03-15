@@ -9,9 +9,6 @@ namespace Snittlistan.Web.Areas.V2
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
-            context.MapRoute("SessionApi-route", "api/session", new { controller = "SessionApi", action = "Session" });
-            context.MapRoute("TurnsApi-route", "api/turns", new { controller = "TurnsApi", action = "Turns" });
-
             // root routes
             context.MapRoute(
                 "V2_root",
