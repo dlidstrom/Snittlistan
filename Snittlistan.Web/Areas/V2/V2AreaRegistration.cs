@@ -109,16 +109,13 @@ namespace Snittlistan.Web.Areas.V2
             // view roster
             context.MapRoute(
                 "ViewRoster",
-                "Roster/{season}/{turn}",
+                "RosterView/{season}/{turn}",
                 new
                 {
                     controller = "Roster",
                     action = "View",
+                    season = UrlParameter.Optional,
                     turn = UrlParameter.Optional
-                },
-                new
-                {
-                    season = @"\d+"
                 });
         }
     }
