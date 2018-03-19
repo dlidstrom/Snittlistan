@@ -8,5 +8,14 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             return RedirectToActionPermanent("Index", "Roster");
         }
+
+        public ActionResult RedirectNewView(int? season, int? turn)
+        {
+            return RedirectToActionPermanent("View", "Roster", new
+            {
+                season,
+                turn
+            });
+        }
     }
 }

@@ -1,24 +1,26 @@
-﻿using System;
-using System.Web.Mvc;
-using System.Web.Routing;
-using NUnit.Framework;
-using Snittlistan.Web;
-using Snittlistan.Web.Areas.V1;
-using Snittlistan.Web.Areas.V2;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using System;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+    using NUnit.Framework;
+    using Web;
+    using Web.Areas.V1;
+    using Web.Areas.V2;
+
     [TestFixture]
-    public class RoutesTest : IDisposable
+    public class RoutesTest
     {
-        public RoutesTest()
+        [SetUp]
+        public void SetUp()
         {
             new RouteConfig(RouteTable.Routes).Configure();
             RegisterArea<V1AreaRegistration>(RouteTable.Routes, null);
             RegisterArea<V2AreaRegistration>(RouteTable.Routes, null);
         }
 
-        public void Dispose()
+        [TearDown]
+        public void TearDown()
         {
             RouteTable.Routes.Clear();
         }
@@ -41,30 +43,13 @@ namespace Snittlistan.Test
         }
 
         [Test]
-        public void SessionApiRoute()
-        {
-            RouteTable.Routes.Maps("POST", "~/api/session", new { controller = "SessionApi", action = "Session" });
-            RouteTable.Routes.Maps("DELETE", "~/api/session", new { controller = "SessionApi", action = "Session" });
-        }
-
-        [Test]
-        public void TurnsApiRoute()
-        {
-            RouteTable.Routes.Maps("POST", "~/api/turns", new { controller = "TurnsApi", action = "Turns" });
-        }
-
-        [Test]
         public void V2Route()
         {
             RouteTable.Routes.Maps("GET", "~/", new { controller = "Roster", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/results", new { controller = "App", action = "Results" });
-            RouteTable.Routes.Maps("GET", "~/players", new { controller = "App", action = "Players" });
-            RouteTable.Routes.Maps("GET", "~/Roster", new { controller = "Roster", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/Roster/Create", new { controller = "Roster", action = "Create" });
             RouteTable.Routes.Maps("GET", "~/Roster/Edit/roster-1", new { controller = "Roster", action = "Edit", id = "roster-1" });
             RouteTable.Routes.Maps("GET", "~/Roster/Delete/roster-1", new { controller = "Roster", action = "Delete", id = "roster-1" });
-            RouteTable.Routes.Maps("GET", "~/Roster/2012", new { controller = "Roster", action = "View", season = 2012, turn = (int?)null });
-            RouteTable.Routes.Maps("GET", "~/Roster/2012/12", new { controller = "Roster", action = "View", season = 2012, turn = (int?)12 });
+            RouteTable.Routes.Maps("GET", "~/RosterView/2012", new { controller = "Roster", action = "View", season = 2012, turn = (int?)null });
             RouteTable.Routes.Maps("GET", "~/Roster/Players/roster-1", new { controller = "Roster", action = "EditPlayers", id = "roster-1" });
         }
 
@@ -122,6 +107,8 @@ namespace Snittlistan.Test
             RouteTable.Routes.Maps("GET", "~/Home/Player", new { controller = "Redirect", action = "Redirect" });
             RouteTable.Routes.Maps("GET", "~/register", new { controller = "Redirect", action = "Redirect" });
             RouteTable.Routes.Maps("GET", "~/Account/Register", new { controller = "Redirect", action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/Roster/2012", new { controller = "Redirect", action = "RedirectNewView", season = 2012, turn = (int?)null });
+            RouteTable.Routes.Maps("GET", "~/Roster/2012/12", new { controller = "Redirect", action = "RedirectNewView", season = 2012, turn = (int?)12 });
         }
 
         [Test]
