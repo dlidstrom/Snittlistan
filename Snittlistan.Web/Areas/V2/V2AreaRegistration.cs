@@ -1,21 +1,13 @@
-﻿using System.Web.Http;
-using System.Web.Mvc;
-
-namespace Snittlistan.Web.Areas.V2
+﻿namespace Snittlistan.Web.Areas.V2
 {
+    using System.Web.Mvc;
+
     public class V2AreaRegistration : AreaRegistration
     {
         public override string AreaName => "V2";
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
-            // root routes
-            context.MapRoute(
-                "V2_root",
-                "{action}/{id}",
-                new { controller = "App", id = RouteParameter.Optional },
-                new { action = "^players$|^results$" });
-
             context.MapRoute(
                 name: "Redirects1",
                 url: "Home/Player/{*rest}",
@@ -33,13 +25,38 @@ namespace Snittlistan.Web.Areas.V2
                 url: "Match",
                 defaults: new { controller = "Redirect", action = "Redirect" });
             context.MapRoute(
-                name: "RegisterRedirect",
+                name: "Redirects5",
                 url: "register",
                 defaults: new { controller = "Redirect", action = "Redirect" });
             context.MapRoute(
-                name: "Redirects5",
+                name: "Redirects6",
                 url: "Account/Register",
                 defaults: new { controller = "Redirect", action = "Redirect" });
+            context.MapRoute(
+                name: "Redirects7",
+                url: "Roster/{season}",
+                defaults: new
+                {
+                    controller = "Redirect",
+                    action = "RedirectNewView"
+                },
+                constraints: new
+                {
+                    season = @"\d+"
+                });
+            context.MapRoute(
+                name: "Redirects8",
+                url: "Roster/{season}/{turn}",
+                defaults: new
+                {
+                    controller = "Redirect",
+                    action = "RedirectNewView"
+                },
+                constraints: new
+                {
+                    season = @"\d+",
+                    turn = @"\d+"
+                });
 
             context.MapRoute(
                 name: "SearchTerms-Route",
@@ -58,7 +75,7 @@ namespace Snittlistan.Web.Areas.V2
             context.MapRoute(
                 "V2_default",
                 "{controller}/{action}/{id}",
-                new { controller = "Roster", action = "Index", id = RouteParameter.Optional });
+                new { controller = "Roster", action = "Index", id = UrlParameter.Optional });
         }
 
         private static void RosterRoutes(AreaRegistrationContext context)
