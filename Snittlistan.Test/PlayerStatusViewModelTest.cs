@@ -4,6 +4,9 @@ using Snittlistan.Web.Areas.V2.ViewModels;
 
 namespace Snittlistan.Test
 {
+    using System;
+    using Web.Areas.V2.Domain;
+
     [TestFixture]
     public class PlayerStatusViewModelTest
     {
@@ -11,26 +14,10 @@ namespace Snittlistan.Test
         public void ComparesAbsences()
         {
             // Arrange
-            var left = new PlayerStatusViewModel("A", null);
-            left.Absences.Add(new AbsenceIndex.Result());
-            var right = new PlayerStatusViewModel("B", null);
-            right.Absences.Add(new AbsenceIndex.Result());
-            var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
-
-            // Act
-            var result = comparer.Compare(left, right);
-
-            // Assert
-            Assert.That(result, Is.EqualTo(-1));
-        }
-
-        [Test]
-        public void ComparesLeftAbsence()
-        {
-            // Arrange
-            var left = new PlayerStatusViewModel("A", null);
-            left.Absences.Add(new AbsenceIndex.Result());
-            var right = new PlayerStatusViewModel("B", null);
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            left.AddAbsence(new AbsenceIndex.Result());
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            right.AddAbsence(new AbsenceIndex.Result());
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
@@ -41,12 +28,20 @@ namespace Snittlistan.Test
         }
 
         [Test]
-        public void ComparesRightAbsence()
+        public void ComparesLeftAbsence()
         {
             // Arrange
-            var left = new PlayerStatusViewModel("A", null);
-            var right = new PlayerStatusViewModel("B", null);
-            right.Absences.Add(new AbsenceIndex.Result());
+            var left = new PlayerStatusViewModel(
+                new Player("A", "e@d.com", Player.Status.Active, 0, null),
+                null,
+                new DateTime(2018, 1, 1),
+                new DateTime(2018, 1, 1));
+            left.AddAbsence(new AbsenceIndex.Result
+            {
+                From = new DateTime(2018, 1, 1),
+                To = new DateTime(2018, 1, 1)
+            });
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), null, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
@@ -54,41 +49,57 @@ namespace Snittlistan.Test
 
             // Assert
             Assert.That(result, Is.EqualTo(-1));
+        }
+
+        [Test]
+        public void ComparesRightAbsence()
+        {
+            // Arrange
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            right.AddAbsence(new AbsenceIndex.Result());
+            var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
+
+            // Act
+            var result = comparer.Compare(left, right);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(1));
         }
 
         [Test]
         public void ComparesSeasonAverageLess()
         {
             // Arrange
-            var left = new PlayerStatusViewModel("A", new PlayerFormViewModel("A")
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A")
             {
                 SeasonAverage = 190
-            });
-            var right = new PlayerStatusViewModel("B", new PlayerFormViewModel("B")
+            }, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B")
             {
                 SeasonAverage = 195
-            });
+            }, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
             var result = comparer.Compare(left, right);
 
             // Assert
-            Assert.That(result, Is.EqualTo(-1));
+            Assert.That(result, Is.EqualTo(1));
         }
 
         [Test]
         public void ComparesSeasonAverageGreater()
         {
             // Arrange
-            var left = new PlayerStatusViewModel("A", new PlayerFormViewModel("A")
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A")
             {
                 SeasonAverage = 197
-            });
-            var right = new PlayerStatusViewModel("B", new PlayerFormViewModel("B")
+            }, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B")
             {
                 SeasonAverage = 195
-            });
+            }, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
@@ -102,39 +113,39 @@ namespace Snittlistan.Test
         public void ComparesPlayerFormLess()
         {
             // Arrange
-            var left = new PlayerStatusViewModel("A", new PlayerFormViewModel("A")
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A")
             {
                 SeasonAverage = 190,
                 Last5Average = 190
-            });
-            var right = new PlayerStatusViewModel("B", new PlayerFormViewModel("B")
+            }, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B")
             {
                 SeasonAverage = 190,
                 Last5Average = 195
-            });
+            }, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.PlayerForm);
 
             // Act
             var result = comparer.Compare(left, right);
 
             // Assert
-            Assert.That(result, Is.EqualTo(-1));
+            Assert.That(result, Is.EqualTo(1));
         }
 
         [Test]
         public void ComparesPlayerFormGreater()
         {
             // Arrange
-            var left = new PlayerStatusViewModel("A", new PlayerFormViewModel("A")
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A")
             {
                 SeasonAverage = 190,
                 Last5Average = 197
-            });
-            var right = new PlayerStatusViewModel("B", new PlayerFormViewModel("B")
+            }, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B")
             {
                 SeasonAverage = 190,
                 Last5Average = 195
-            });
+            }, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.PlayerForm);
 
             // Act
@@ -148,11 +159,12 @@ namespace Snittlistan.Test
         public void ComparesSeasonAverageLeft()
         {
             // Arrange
-            var left = new PlayerStatusViewModel("A", new PlayerFormViewModel("A")
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A")
             {
-                SeasonAverage = 190
-            });
-            var right = new PlayerStatusViewModel("B", null);
+                SeasonAverage = 190,
+                HasResult = true
+            }, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
@@ -166,11 +178,12 @@ namespace Snittlistan.Test
         public void ComparesSeasonAverageRight()
         {
             // Arrange
-            var left = new PlayerStatusViewModel("A", null);
-            var right = new PlayerStatusViewModel("B", new PlayerFormViewModel("B")
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B")
             {
-                SeasonAverage = 195
-            });
+                SeasonAverage = 195,
+                HasResult = true
+            }, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
@@ -184,11 +197,12 @@ namespace Snittlistan.Test
         public void ComparesPlayerFormLeft()
         {
             // Arrange
-            var left = new PlayerStatusViewModel("A", new PlayerFormViewModel("A")
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A")
             {
-                Last5Average = 190
-            });
-            var right = new PlayerStatusViewModel("B", null);
+                Last5Average = 190,
+                HasResult = true
+            }, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.PlayerForm);
 
             // Act
@@ -202,11 +216,12 @@ namespace Snittlistan.Test
         public void ComparesPlayerFormRight()
         {
             // Arrange
-            var left = new PlayerStatusViewModel("A", null);
-            var right = new PlayerStatusViewModel("B", new PlayerFormViewModel("B")
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B")
             {
-                Last5Average = 195
-            });
+                Last5Average = 195,
+                HasResult = true
+            }, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.PlayerForm);
 
             // Act
@@ -220,9 +235,41 @@ namespace Snittlistan.Test
         public void ComparesAbsenceToForm()
         {
             // Arrange
-            var left = new PlayerStatusViewModel("A", null);
-            left.Absences.Add(new AbsenceIndex.Result());
-            var right = new PlayerStatusViewModel("B", new PlayerFormViewModel("B"));
+            var left = new PlayerStatusViewModel(
+                new Player("A", "e@d.com", Player.Status.Active, 0, null),
+                null,
+                new DateTime(2018, 1, 1),
+                new DateTime(2018, 1, 1));
+            left.AddAbsence(new AbsenceIndex.Result
+            {
+                From = new DateTime(2018, 1, 1),
+                To = new DateTime(2018, 1, 1)
+            });
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
+
+            // Act
+            var result = comparer.Compare(left, right);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(-1));
+        }
+
+        [Test]
+        public void ComparesFormToAbsence()
+        {
+            // Arrange
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var right = new PlayerStatusViewModel(
+                new Player("B", "e@d.com", Player.Status.Active, 0, null),
+                null,
+                new DateTime(2018, 1, 1),
+                new DateTime(2018, 1, 1));
+            right.AddAbsence(new AbsenceIndex.Result
+            {
+                From = new DateTime(2018, 1, 1),
+                To = new DateTime(2018, 1, 1)
+            });
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
@@ -233,19 +280,71 @@ namespace Snittlistan.Test
         }
 
         [Test]
-        public void ComparesFormToAbsence()
+        public void ComparesPartialAbsenceToForm()
         {
             // Arrange
-            var left = new PlayerStatusViewModel("A", new PlayerFormViewModel("A"));
-            var right = new PlayerStatusViewModel("B", null);
-            right.Absences.Add(new AbsenceIndex.Result());
-            var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
+            var left = new PlayerStatusViewModel(
+                new Player("A", "e@d.com", Player.Status.Active, 0, null),
+                new PlayerFormViewModel("A")
+                {
+                    Last5Average = 190
+                },
+                new DateTime(2018, 1, 1),
+                new DateTime(2018, 1, 2));
+            var right = new PlayerStatusViewModel(
+                new Player("B", "e@d.com", Player.Status.Active, 0, null),
+                new PlayerFormViewModel("B")
+                {
+                    Last5Average = 180
+                }, 
+                new DateTime(2018, 1, 1),
+                new DateTime(2018, 1, 2));
+            left.AddAbsence(new AbsenceIndex.Result
+            {
+                From = new DateTime(2018, 1, 1),
+                To = new DateTime(2018, 1, 1)
+            });
+            var comparer = new PlayerStatusViewModel.Comparer(CompareMode.PlayerForm);
 
             // Act
             var result = comparer.Compare(left, right);
 
             // Assert
-            Assert.That(result, Is.EqualTo(-1));
+            Assert.That(result, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void ComparesFormToPartialAbsence()
+        {
+            // Arrange
+            var left = new PlayerStatusViewModel(
+                new Player("A", "e@d.com", Player.Status.Active, 0, null),
+                new PlayerFormViewModel("A")
+                {
+                    Last5Average = 180
+                },
+                new DateTime(2018, 1, 1),
+                new DateTime(2018, 1, 2));
+            var right = new PlayerStatusViewModel(
+                new Player("B", "e@d.com", Player.Status.Active, 0, null),
+                new PlayerFormViewModel("B")
+                {
+                    Last5Average = 190
+                }, 
+                new DateTime(2018, 1, 1),
+                new DateTime(2018, 1, 2));
+            right.AddAbsence(new AbsenceIndex.Result
+            {
+                From = new DateTime(2018, 1, 1),
+                To = new DateTime(2018, 1, 1)
+            });
+            var comparer = new PlayerStatusViewModel.Comparer(CompareMode.PlayerForm);
+
+            // Act
+            var result = comparer.Compare(left, right);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(1));
         }
     }
 }
