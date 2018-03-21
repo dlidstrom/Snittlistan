@@ -281,7 +281,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
             if (pdf)
             {
-                var filename = $"Omgång-{season}-{turn}.pdf";
+                var filename = $"Uttagningar-{season}-{turn}.pdf";
                 var customSwitchesBuilder = new StringBuilder();
                 customSwitchesBuilder.Append($"--footer-left \"Filnamn: {filename}\"");
                 customSwitchesBuilder.Append(" --footer-right \"Sida [page] av [toPage]\"");
@@ -412,8 +412,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     || x.From <= from && from <= x.To
                     || x.From <= to && to <= x.To
                     || from <= x.From && x.To <= to)
-                .OrderBy(p => p.To)
-                .ThenBy(p => p.PlayerName)
                 .ProjectFromIndexFieldsInto<AbsenceIndex.Result>()
                 .ToArray()
                 .ToLookup(x => x.Player)
@@ -424,7 +422,10 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var rostersForPlayers = new Dictionary<string, List<RosterViewModel>>();
             foreach (var roster in rosters)
             {
-                var rosterViewModel = new RosterViewModel(roster, Tuple.Create(string.Empty, string.Empty), new List<Tuple<string, string>>());
+                var rosterViewModel = new RosterViewModel(
+                    roster,
+                    Tuple.Create(string.Empty, string.Empty),
+                    new List<Tuple<string, string>>());
                 foreach (var player in roster.Players)
                 {
                     if (rostersForPlayers.TryGetValue(player, out var rosterViewModels) == false)
@@ -466,7 +467,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     continue;
                 }
 
-                var activity = new PlayerStatusViewModel(player.Name, playerForm);
+                var activity = new PlayerStatusViewModel(player, playerForm, from, to);
 
                 if (rostersForPlayers.ContainsKey(player.Id))
                 {
@@ -476,16 +477,14 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
                 if (absences.TryGetValue(player.Id, out var playerAbsences))
                 {
-                    activity.Absences.AddRange(playerAbsences.OrderBy(x => x.From));
+                    activity.AddAbsences(playerAbsences.OrderBy(x => x.From));
                 }
 
                 activities.Add(activity);
             }
 
-            var activitiesWithNoAbsence = activities.Where(x => x.Absences.Count == 0);
-            var activitiesWithAbsence = activities.Where(x => x.Absences.Count > 0);
-            var vm = activitiesWithNoAbsence.OrderByDescending(x => x, new PlayerStatusViewModel.Comparer(CompareMode.PlayerForm))
-                .Concat(activitiesWithAbsence.OrderBy(x => x.Absences.Min(y => y.To)).ThenBy(x => x.Name));
+            var vm = activities.OrderByDescending(x => x, new PlayerStatusViewModel.Comparer(CompareMode.PlayerForm))
+                               .ToArray();
             return PartialView(vm);
         }
 
