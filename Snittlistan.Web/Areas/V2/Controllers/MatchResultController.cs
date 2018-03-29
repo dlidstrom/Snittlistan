@@ -144,7 +144,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 DocumentSession.Store(seasonResults);
             }
 
-            return View(new EliteMedalsViewModel(season.Value, playersDict, eliteMedals, seasonResults));
+            var viewModel = new EliteMedalsViewModel(season.Value, playersDict, eliteMedals, seasonResults);
+            return View(viewModel);
         }
 
         [Authorize]
