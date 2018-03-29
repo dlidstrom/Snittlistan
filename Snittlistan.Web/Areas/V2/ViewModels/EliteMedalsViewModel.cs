@@ -39,7 +39,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             Players = players.ToArray();
         }
 
-        public PlayerInfo[] Players { get; private set; }
+        public PlayerInfo[] Players { get; }
 
         public HtmlString FormatSeason()
         {
@@ -69,15 +69,15 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                 this.formattedNextMedal = formattedNextMedal;
             }
 
-            public string PlayerId { get; private set; }
+            public string PlayerId { get; }
 
-            public string Name { get; private set; }
+            public string Name { get; }
 
-            public int PersonalNumber { get; private set; }
+            public int PersonalNumber { get; }
 
-            public EliteMedals.EliteMedal.EliteMedalValue ExistingMedal { get; private set; }
+            public EliteMedals.EliteMedal.EliteMedalValue ExistingMedal { get; }
 
-            public HashSet<Tuple<SeasonResults.PlayerResult, bool>> TopThreeResults { get; private set; }
+            public HashSet<Tuple<SeasonResults.PlayerResult, bool>> TopThreeResults { get; }
 
             public Tuple<string, string> FormattedExistingMedal()
             {
