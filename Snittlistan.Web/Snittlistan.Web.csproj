@@ -191,6 +191,7 @@
     <Compile Include="Areas\V2\Controllers\Api\ApiErrorController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\QueryController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\TaskController.cs" />
+    <Compile Include="Areas\V2\Controllers\EliteMedalsPrintController.cs" />
     <Compile Include="Areas\V2\Domain\OilPatternInformation.cs" />
     <Compile Include="Areas\V2\Domain\ParseStandingsResult.cs" />
     <Compile Include="Areas\V2\Domain\ParseMatchSchemeResult.cs" />
@@ -348,6 +349,7 @@
     <Compile Include="Areas\V2\ViewModels\CreateRosterViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\PlayerViewModel.cs" />
     <Content Include="Content\css\glyphicons.css" />
+    <Content Include="Content\css\images\endast svarta prickarna.tif" />
     <Content Include="Content\css\images\glyphicons-free.png" />
     <Content Include="Content\css\images\hofvet.ico" />
     <Content Include="Content\css\images\hofvet.png" />
@@ -564,9 +566,6 @@
     <Content Include="Areas\V2\Views\Layout\NavPart.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\Form.cshtml" />
     <Content Include="Areas\V2\Views\AdminTasks\Raven.cshtml" />
-    <None Include="..\packages\RavenDB.Database.3.5.4\tools\Raven.Studio.Html5.zip">
-      <Link>Raven.Studio.Html5.zip</Link>
-    </None>
     <Content Include="Areas\V2\Views\Shared\_BitsIframe.cshtml" />
     <Content Include="Areas\V2\Views\MatchResult\BitsMatchResult.cshtml" />
     <Content Include="App_Browsers\qt.browser" />
@@ -574,6 +573,8 @@
     <Content Include="Areas\V2\Views\Shared\_BareLayout2.cshtml" />
     <Content Include="Areas\V2\Views\Roster\DisplayTemplates\Players2.cshtml" />
     <Content Include="Areas\V2\Views\Roster\DisplayTemplates\Roster2.cshtml" />
+    <Content Include="Areas\V2\Views\EliteMedalsPrint\GeneratePdf.cshtml" />
+    <Content Include="Content\css\images\image1.pdf" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
