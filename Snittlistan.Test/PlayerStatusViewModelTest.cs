@@ -1,11 +1,10 @@
-﻿using NUnit.Framework;
-using Snittlistan.Web.Areas.V2.Indexes;
-using Snittlistan.Web.Areas.V2.ViewModels;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
     using System;
+    using NUnit.Framework;
     using Web.Areas.V2.Domain;
+    using Web.Areas.V2.Indexes;
+    using Web.Areas.V2.ViewModels;
 
     [TestFixture]
     public class PlayerStatusViewModelTest

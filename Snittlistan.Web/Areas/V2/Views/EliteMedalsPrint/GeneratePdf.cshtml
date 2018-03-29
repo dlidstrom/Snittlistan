@@ -1,0 +1,399 @@
+﻿@model Snittlistan.Web.Areas.V2.Controllers.EliteMedalsPrintController.EliteMedalsPrintViewModel
+@{
+    Layout = null;
+}<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/print.css")" />
+    <style>
+        body {
+            width: 29cm;
+            font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+        }
+
+        .image-container {
+            padding: 2cm 0 5cm 0;
+            position: relative;
+        }
+
+        .dots {
+            width: 4cm;
+            position: absolute;
+            left: 50%;
+            -ms-transform: translateX(-50%);
+            -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+        }
+
+        .title-container {
+            position: relative;
+            padding-bottom: 4cm;
+        }
+
+        .title-container h1, h2 {
+            position: absolute;
+            left: 50%;
+            -ms-transform: translateX(-50%);
+            -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+        }
+
+        .title-container h1 {
+        }
+
+        .title-container h2 {
+            top: 2cm;
+        }
+
+        .top-container {
+        }
+
+        .row {
+            margin-top: 0.5cm;
+            width: 20cm;
+        }
+
+        .row:after {
+            clear: both;
+        }
+
+        .field-legend {
+            font-size: 0.8rem;
+        }
+
+        .name-container {
+            border-bottom: 1px solid;
+        }
+
+        .name-field {
+            width: 100%;
+            display: block;
+        }
+
+        .name-header {
+            border: 1px solid;
+        }
+
+        .persnr-container {
+            width: 33%;
+            display: inline-block;
+        }
+
+        .persnr-field {
+            display: block;
+            border-bottom: 1px solid;
+        }
+
+        .innehar-container {
+            width: 33%;
+            display: inline-block;
+        }
+
+        .innehar-field {
+            display: block;
+            border-bottom: 1px solid;
+        }
+
+        .nr-container {
+            width: 32%;
+            display: inline-block;
+        }
+
+        .nr-field {
+            display: block;
+            border-bottom: 1px solid;
+        }
+
+        .text-container {
+            width: 51%;
+            display: inline-block;
+        }
+
+        .value-container {
+            width: 47%;
+            display: inline-block;
+        }
+
+        .value-field {
+            display: block;
+            border-bottom: 1px solid;
+        }
+
+        .table-container {
+            margin-top: 2cm;
+            margin-left: 3cm;
+        }
+
+        table {
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            font-weight: normal;
+            font-size: 0.8rem;
+        }
+
+        td {
+            border: 1px solid;
+            height: 1cm;
+        }
+
+        td.cell-date {
+            width: 3cm;
+        }
+
+        td.cell-competition {
+            width: 6cm;
+        }
+
+        td.cell-series {
+            width: 3cm;
+        }
+
+        td.cell-result {
+            width: 3cm;
+        }
+
+        .bottom-container {
+            margin-top: 1cm;
+        }
+
+        .place-container {
+            margin-left: 5cm;
+            width: 30%;
+            display: inline-block;
+        }
+
+        .place-field {
+            display: block;
+            border-bottom: 1px solid;
+        }
+
+        .date-container {
+            margin-left: 0.5cm;
+            width: 30%;
+            display: inline-block;
+        }
+
+        .date-field {
+            display: block;
+            border-bottom: 1px solid;
+        }
+
+        .team-container {
+            margin-left: 3cm;
+            width: 30%;
+            display: inline-block;
+        }
+
+        .team-field {
+            display: block;
+            border-bottom: 1px solid;
+        }
+
+        .accept-container {
+            margin-left: 1cm;
+            width: 40%;
+            display: inline-block;
+        }
+
+        .accept-field {
+            display: block;
+            border-bottom: 1px solid;
+        }
+
+        .accept-place-container {
+            width: 30%;
+            display: inline-block;
+        }
+
+        .accept-place-field {
+            display: block;
+            border-bottom: 1px solid;
+        }
+
+        .accept-date-container {
+            width: 30%;
+            display: inline-block;
+        }
+
+        .accept-date-field {
+            display: block;
+            border-bottom: 1px solid;
+        }
+
+        .district-container {
+            width: 30%;
+            display: inline-block;
+        }
+
+        .district-field {
+            display: block;
+            border-bottom: 1px solid;
+        }
+
+        .controllant-container {
+            width: 30%;
+            display: inline-block;
+        }
+
+        .controllant-field {
+            display: block;
+            border-bottom: 1px solid;
+        }
+    </style>
+</head>
+<body>
+    <div class="image-container">
+        <img class="dots" src="@Url.Content("~/Content/css/images/endast svarta prickarna.tif")" />
+    </div>
+    <div class="title-container">
+        <h1>TILL SVENSKA BOWLINGFÖRBUNDET</h1>
+        <h2>ELITMÄRKE</h2>
+    </div>
+    <div class="top-container">
+        <div class="row">
+            <div class="name-container">
+                <span class="name-field">Thomas Gurell</span>
+                <span class="field-legend">NAMN</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="persnr-container">
+                <span class="persnr-field">640515</span>
+                <span class="field-legend">PERSNR</span>
+            </div>
+            <div class="innehar-container">
+                <span class="innehar-field">Guld 2</span>
+                <span class="field-legend">INNEHAR ELITMÄRKE</span>
+            </div>
+            <div class="nr-container">
+                <span class="nr-field"></span>
+                <span class="field-legend">NR</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="text-container">
+                <span>Har vid tävlingar enligt nedanstående specifikation uppnått Resultat som berättigar honom/henne till elitmärke i:</span>
+            </div>
+            <div class="value-container">
+                <span class="value-field">Guld 3</span>
+                <span class="field-legend">VALÖR</span>
+            </div>
+        </div>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Datum</th>
+                <th>Tävling</th>
+                <th>Antal serier</th>
+                <th>Poäng</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="cell-date">
+                    2017-01-14
+                </td>
+                <td class="cell-competition">
+                    Omgång 11
+                </td>
+                <td class="cell-series">
+                    4
+                </td>
+                <td class="cell-result">
+                    934
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    2017-03-04
+                </td>
+                <td>
+                    Omgång 16
+                </td>
+                <td>
+                    4
+                </td>
+                <td>
+                    892
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    2017-04-22
+                </td>
+                <td>
+                    Omgång 20
+                </td>
+                <td>
+                    4
+                </td>
+                <td>
+                    896
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="bottom-container">
+        <div class="row">
+            <div class="place-container">
+                <span class="place-field">Stockholm</span>
+                <span class="field-legend">Ort</span>
+            </div>
+            <div class="date-container">
+                <span class="date-field">2017-05-29</span>
+                <span class="field-legend">Datum</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="team-container">
+                <span class="team-field">Fredrikshof IF BK</span>
+                <span class="field-legend">Förening</span>
+            </div>
+            <div class="accept-container">
+                <span class="accept-field">Daniel Lidström</span>
+                <span class="field-legend">Godkännes Ordf./Kassör/Sekr.</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="text-container">
+                <span>Riktigheten av ovanstående uppgifter bestyrkes</span>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="accept-place-container">
+                <span class="accept-place-field"></span>
+                <span class="field-legend">Ort</span>
+            </div>
+            <div class="accept-date-container">
+                <span class="accept-date-field"></span>
+                <span class="field-legend">Datum</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="district-container">
+                <span class="district-field"></span>
+                <span class="field-legend">DISTRIKTFÖRBUND</span>
+            </div>
+            <div class="controllant-container">
+                <span class="controllant-field"></span>
+                <span class="field-legend">KONTROLLANT</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

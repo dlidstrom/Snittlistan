@@ -138,6 +138,36 @@
     </div>
 </div>
 
+@if (Request.IsAuthenticated)
+{
+    <div class="row">
+        <div class="span12">
+            @using (Html.BeginForm("GeneratePdf", "EliteMedalsPrint", FormMethod.Post, new
+            {
+                @class = "well well-small"
+            }))
+            {
+                @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
+                <p>
+                    Ansökan ska skickas till <a href="mailto:kansliet@stbf.se">Stockholms Bowlingförbund</a>.
+                    Tänk på att det tar 4-5 veckor innan medaljerna är klara.
+                    Ett tips är att ansöka direkt när sista matchen för säsongen är spelad!
+                </p>
+                <div class="control-group">
+                    <label class="control-label" for="name">
+                        Ange namn på den som godkänner ansökningarna (ordf./kassör/sekr.):
+                        <input type="text" name="name" id="name" maxlength="40" required />
+                    </label>
+                </div>
+                <button class="btn btn-secondary btn-small" type="submit">
+                    <i class="sprite-glyphicons_015_print"></i>
+                    Skapa ansökningar
+                </button>
+            }
+        </div>
+    </div>
+}
+
 <div class="row">
     <div class="span12">
         @{
