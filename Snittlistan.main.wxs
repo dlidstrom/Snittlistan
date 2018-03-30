@@ -71,7 +71,7 @@
                             Action="setValue"
                             File="[SnittlistanWebDir]Web.config"
                             ElementPath="/configuration/appSettings/add[\[]@key='ElitemedalsTemplateFilename'[\]]/@value"
-                            Value="[#elitmarke_ifyllbar1_pdf]" />
+                            Value="[SnittlistanWebDir]elitmarke-ifyllbar1.pdf" />
             </Component>
             <Component Id="elitmarke_ifyllbar1_pdf" Guid="*" Win64="yes">
               <File KeyPath="yes" Source="elitmarke-ifyllbar1.pdf" />
