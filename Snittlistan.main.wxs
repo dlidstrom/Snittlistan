@@ -70,7 +70,7 @@
               <util:XmlFile Id="TemplateFilenameSetting"
                             Action="setValue"
                             File="[SnittlistanWebDir]Web.config"
-                            ElementPath="/configuration/appSettings/add[\[]@key='EliteMedalsTemplateFilename'[\]]/@value"
+                            ElementPath="/configuration/appSettings/add[\[]@key='ElitemedalsTemplateFilename'[\]]/@value"
                             Value="[#elitmarke_ifyllbar1_pdf]" />
             </Component>
             <Component Id="elitmarke_ifyllbar1_pdf" Guid="*" Win64="yes">
