@@ -144,7 +144,8 @@ namespace Snittlistan.Web
                         "hofvet.ico",
                         "hofvet.png",
                         "76x76",
-                        "Hofvet"),
+                        "Hofvet",
+                        "Fredrikshof IF BK"),
                     new TenantConfiguration(
                         "snittlistan.se",
                         "Snittlistan",
@@ -152,7 +153,8 @@ namespace Snittlistan.Web
                         "hofvet.ico",
                         "hofvet.png",
                         "76x76",
-                        "Hofvet"),
+                        "Hofvet",
+                        "Fredrikshof IF BK"),
                     new TenantConfiguration(
                         "vartansik.snittlistan.se",
                         "Snittlistan-vartansik",
@@ -160,6 +162,7 @@ namespace Snittlistan.Web
                         "vartansik.ico",
                         "vartansik.png",
                         "180x180",
+                        "Värtans IK",
                         "Värtans IK")
                 };
                 foreach (var tenantConfiguration in tenantConfigurations)

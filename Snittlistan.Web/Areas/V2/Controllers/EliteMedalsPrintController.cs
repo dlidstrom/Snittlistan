@@ -11,6 +11,8 @@
     using Domain;
     using Helpers;
     using Indexes;
+    using Infrastructure;
+    using Infrastructure.Attributes;
     using PdfSharp.Pdf;
     using PdfSharp.Pdf.IO;
     using Raven.Abstractions;
@@ -22,6 +24,7 @@
     public class EliteMedalsPrintController : AbstractController
     {
         [HttpPost]
+        [SetTempModelState]
         public ActionResult GeneratePdf(PostModel postModel)
         {
             // find out current season
@@ -45,7 +48,7 @@
 
             var templateFilename = ConfigurationManager.AppSettings["ElitemedalsTemplateFilename"];
             var stream = new MemoryStream();
-            var archiveFileName = $"Elitmedaljer_{TenantConfiguration.TeamName}-{season}-{season + 1}.zip";
+            var archiveFileName = $"Elitmedaljer_{TenantConfiguration.FullTeamName}_{season}-{season + 1}.zip";
             using (var zip = new ZipArchive(stream, ZipArchiveMode.Create, true))
             {
                 var playersThatHaveMedalsToAchieve =
@@ -61,7 +64,12 @@
                         player.FormattedExistingMedal(),
                         player.FormattedNextMedal(),
                         player.TopThreeResults);
-                    CreateFileEntry(zip, templateFilename, playerMedalInfo);
+                    CreateFileEntry(
+                        zip,
+                        templateFilename,
+                        playerMedalInfo,
+                        TenantConfiguration,
+                        postModel);
                 }
             }
 
@@ -69,7 +77,12 @@
             return File(stream, "application/zip", archiveFileName);
         }
 
-        private static void CreateFileEntry(ZipArchive zip, string templateFilename, PlayerMedalInfo playerMedalInfo)
+        private static void CreateFileEntry(
+            ZipArchive zip,
+            string templateFilename,
+            PlayerMedalInfo playerMedalInfo,
+            TenantConfiguration tenantConfiguration,
+            PostModel postModel)
         {
             var top3ValidResults = playerMedalInfo.PlayerTopThreeResults
                                                   .Where(x => x.Item2)
@@ -120,20 +133,20 @@
                 //document.AcroForm.Fields["10"].Value = new PdfString("Tävling eller omgång fjärde matchen");
                 //document.AcroForm.Fields["11"].Value = new PdfString("Antal serier fjärde matchen");
                 //document.AcroForm.Fields["12"].Value = new PdfString("Poäng fjärde matchen");
-                document.AcroForm.Fields["Text10"].Value = new PdfString("Ort");
-                document.AcroForm.Fields["Text11"].Value = new PdfString("Datum");
-                document.AcroForm.Fields["Text12"].Value = new PdfString("Förening");
-                document.AcroForm.Fields["Text14"].Value = new PdfString("OrtBestyrkes");
-                document.AcroForm.Fields["Text15"].Value = new PdfString("DatumBestyrkes");
-                document.AcroForm.Fields["Text16"].Value = new PdfString("Distriktförbund");
+                document.AcroForm.Fields["Text10"].Value = new PdfString(postModel.Location);
+                document.AcroForm.Fields["Text11"].Value = new PdfString(DateTime.Now.Date.ToString("yyyy-MM-dd"));
+                document.AcroForm.Fields["Text12"].Value = new PdfString(tenantConfiguration.FullTeamName);
+                //document.AcroForm.Fields["Text14"].Value = new PdfString("OrtBestyrkes");
+                //document.AcroForm.Fields["Text15"].Value = new PdfString("DatumBestyrkes");
+                //document.AcroForm.Fields["Text16"].Value = new PdfString("Distriktförbund");
                 document.Save(entryStream);
             }
         }
 
         public class PostModel
         {
-            [Required]
-            public string Name { get; set; }
+            [Required, MaxLength(40)]
+            public string Location { get; set; }
         }
 
         private class PlayerMedalInfo

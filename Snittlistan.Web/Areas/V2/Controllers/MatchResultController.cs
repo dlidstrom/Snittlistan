@@ -1,20 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Raven.Abstractions;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.Indexes;
-using Snittlistan.Web.Areas.V2.ReadModels;
-using Snittlistan.Web.Areas.V2.ViewModels;
-using Snittlistan.Web.Controllers;
-using Snittlistan.Web.Helpers;
-using Snittlistan.Web.HtmlHelpers;
-
-namespace Snittlistan.Web.Areas.V2.Controllers
+﻿namespace Snittlistan.Web.Areas.V2.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Mvc;
+    using Domain;
+    using Helpers;
+    using HtmlHelpers;
+    using Indexes;
+    using Infrastructure.Attributes;
+    using Raven.Abstractions;
+    using ReadModels;
+    using ViewModels;
+    using Web.Controllers;
+
     public class MatchResultController : AbstractController
     {
         public ActionResult Index(int? season)
@@ -120,6 +121,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return View(viewModel);
         }
 
+        [RestoreModelStateFromTempData]
         public ActionResult EliteMedals(int? season)
         {
             if (season.HasValue == false)
