@@ -56,6 +56,7 @@
                              .Where(x => x.ExistingMedal != EliteMedals.EliteMedal.EliteMedalValue.Gold5)
                              .OrderBy(x => x.Name)
                              .ToArray();
+                var listOfMissingPersonalNumbers = new List<string>();
                 foreach (var player in playersThatHaveMedalsToAchieve)
                 {
                     var playerMedalInfo = new PlayerMedalInfo(
@@ -64,12 +65,26 @@
                         player.FormattedExistingMedal(),
                         player.FormattedNextMedal(),
                         player.TopThreeResults);
-                    CreateFileEntry(
+                    var result = CreateFileEntry(
                         zip,
                         templateFilename,
                         playerMedalInfo,
                         TenantConfiguration,
                         postModel);
+                    if (result == CreateFileEntryResult.MissingPersonalNumber)
+                    {
+                        listOfMissingPersonalNumbers.Add(player.Name);
+                    }
+                }
+
+                if (listOfMissingPersonalNumbers.Any())
+                {
+                    foreach (var playerName in listOfMissingPersonalNumbers)
+                    {
+                        ModelState.AddModelError(playerName, "Ange först personnumret i fliken Medlemmar.");
+                    }
+
+                    return RedirectToAction("EliteMedals", "MatchResult");
                 }
             }
 
@@ -77,7 +92,14 @@
             return File(stream, "application/zip", archiveFileName);
         }
 
-        private static void CreateFileEntry(
+        enum CreateFileEntryResult
+        {
+            NotAchievedThreeResults,
+            MissingPersonalNumber,
+            CreatedDocument
+        }
+
+        private static CreateFileEntryResult CreateFileEntry(
             ZipArchive zip,
             string templateFilename,
             PlayerMedalInfo playerMedalInfo,
@@ -90,7 +112,15 @@
                                                   .OrderBy(x => x.Key.Turn)
                                                   .ThenBy(x => x.Key.Date)
                                                   .ToArray();
-            if (top3ValidResults.Length < 3) return;
+            if (top3ValidResults.Length < 3)
+            {
+                return CreateFileEntryResult.NotAchievedThreeResults;
+            }
+
+            if (playerMedalInfo.PlayerPersonalNumber == 0)
+            {
+                return CreateFileEntryResult.MissingPersonalNumber;
+            }
 
             var entry = zip.CreateEntry($"{playerMedalInfo.PlayerName}.pdf", CompressionLevel.Fastest);
             using (var entryStream = entry.Open())
@@ -141,6 +171,8 @@
                 //document.AcroForm.Fields["Text16"].Value = new PdfString("Distriktförbund");
                 document.Save(entryStream);
             }
+
+            return CreateFileEntryResult.CreatedDocument;
         }
 
         public class PostModel
