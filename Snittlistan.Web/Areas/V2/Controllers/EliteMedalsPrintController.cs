@@ -81,7 +81,7 @@
                 {
                     foreach (var playerName in listOfMissingPersonalNumbers)
                     {
-                        ModelState.AddModelError(playerName, "Ange först personnumret i fliken Medlemmar.");
+                        ModelState.AddModelError(playerName, $"{playerName} saknar personnummer i fliken Medlemmar.");
                     }
 
                     return RedirectToAction("EliteMedals", "MatchResult");
