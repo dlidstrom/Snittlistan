@@ -147,6 +147,7 @@
                 @class = "well well-small"
             }))
             {
+                ViewData["message"] = "Det gick inte att skapa ansökningarna.";
                 @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
                 <p>
                     Ansökan ska skickas till <a href="mailto:kansliet@stbf.se">Stockholms Bowlingförbund</a>.
@@ -154,9 +155,9 @@
                     Ett tips är att ansöka direkt när sista matchen för säsongen är spelad!
                 </p>
                 <div class="control-group">
-                    <label class="control-label" for="name">
-                        Ange namn på den som godkänner ansökningarna (ordf./kassör/sekr.):
-                        <input type="text" name="name" id="name" maxlength="40" required />
+                    <label class="control-label" for="location">
+                        Ange Din ort:
+                        <input type="text" name="location" id="location" maxlength="40" required />
                     </label>
                 </div>
                 <button class="btn btn-secondary btn-small" type="submit">

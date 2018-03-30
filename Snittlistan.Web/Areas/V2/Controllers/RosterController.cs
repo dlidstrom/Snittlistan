@@ -288,7 +288,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 customSwitchesBuilder.Append(" --footer-font-size \"8\"");
                 customSwitchesBuilder.Append(" --footer-line");
                 customSwitchesBuilder.Append(" --footer-spacing \"3\"");
-                customSwitchesBuilder.Append($" --header-left \"{TenantConfiguration.TeamName}\"");
+                customSwitchesBuilder.Append($" --header-left \"{TenantConfiguration.FullTeamName}\"");
                 customSwitchesBuilder.Append($" --header-center \"Omgång {turn}\"");
                 customSwitchesBuilder.Append($" --header-right \"{DateTime.Now.Date.ToShortDateString()}\"");
                 customSwitchesBuilder.Append(" --header-line");

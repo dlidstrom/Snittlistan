@@ -296,7 +296,9 @@
     <Compile Include="Areas\V2\ViewModels\TeamOfWeekViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\VerifyBitsViewModel.cs" />
     <Compile Include="HtmlHelpers\UrlExtensions.cs" />
+    <Compile Include="Infrastructure\Attributes\SetTempModelStateAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\OnlyLocalAllowedAttribute.cs" />
+    <Compile Include="Infrastructure\Attributes\RestoreModelStateFromTempDataAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\SaveChangesAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\UnhandledExceptionFilter.cs" />
     <Compile Include="Infrastructure\BitsClient.cs" />
