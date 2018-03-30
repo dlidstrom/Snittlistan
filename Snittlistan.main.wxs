@@ -67,6 +67,14 @@
               <File Id="Snittlistan.Web.config"
                     KeyPath="yes"
                     Source="$(var.Snittlistan_App)\Web.config" />
+              <util:XmlFile Id="TemplateFilenameSetting"
+                            Action="setValue"
+                            File="[SnittlistanWebDir]Snittlistan.Web.config"
+                            ElementPath="/configuration/appSettings/add[\[]@key='EliteMedalsTemplateFilename'[\]]/@value"
+                            Value="[#elitmarke_ifyllbar1_pdf]" />
+            </Component>
+            <Component Id="elitmarke_ifyllbar1_pdf" Guid="*" Win64="yes">
+              <File KeyPath="yes" Source="elitmarke-ifyllbar1.pdf" />
             </Component>
             <Directory Id="SnittlistanWeb_AppData" Name="App_Data">
               <Component Id="SnittlistanWeb_AppData" Guid="{3ddc6c33-9655-455a-bfb2-709023091c3c}"
@@ -223,6 +231,7 @@
 
     <Feature Id="Service" Level="1">
       <ComponentRef Id="Snittlistan.Web.config" />
+      <ComponentRef Id="elitmarke_ifyllbar1_pdf" />
       <ComponentRef Id="SnittlistanWeb_AppData" />
       <ComponentRef Id="SnittlistanWeb_Logs" />
       <ComponentRef Id="Snittlistan.Tool.exe" />
