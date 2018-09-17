@@ -47,12 +47,10 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
 
         private IHttpActionResult Handle(VerifyMatchMessage message)
         {
-            var roster = DocumentSession.Include<Roster>(x => x.Players)
-                                        .Load<Roster>(message.RosterId);
+            var roster = DocumentSession.Load<Roster>(message.RosterId);
             if (roster.IsVerified) return Ok();
-            var players = roster.Players
-                                .Select(x => DocumentSession.Load<Player>(x))
-                                .ToArray();
+            var players = DocumentSession.Query<Player, PlayerSearch>()
+                                         .ToArray();
             var parser = new BitsParser(players);
             var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             var result = bitsClient.DownloadMatchResult(roster.BitsMatchId);
@@ -70,6 +68,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             {
                 var matchResult = EventStoreSession.Load<MatchResult4>(roster.MatchResultId);
                 var parseResult = parser.Parse4(result, roster.Team);
+                roster.Players = GetPlayerIds(parseResult);
                 var isVerified = matchResult.Update(
                     PublishMessage,
                     roster,
@@ -83,6 +82,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             {
                 var matchResult = EventStoreSession.Load<MatchResult>(roster.MatchResultId);
                 var parseResult = parser.Parse(result, roster.Team);
+                roster.Players = GetPlayerIds(parseResult);
                 var resultsForPlayer = DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
                                                       .Where(x => x.Season == roster.Season)
                                                       .ToArray()
@@ -119,16 +119,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                         var parse4Result = parser.Parse4(content, pendingMatch.Team);
                         if (parse4Result != null)
                         {
-                            var query = from game in parse4Result.Series.First().Games
-                                        select game.Player;
-                            var playerIds = query.ToArray();
-                            var playerIdsWithoutReserve = new HashSet<string>(playerIds);
-                            var restQuery = from serie in parse4Result.Series
-                                            from game in serie.Games
-                                            where playerIdsWithoutReserve.Contains(game.Player) == false
-                                            select game.Player;
-                            var allPlayerIds = playerIds.Concat(
-                                new HashSet<string>(restQuery).Where(x => playerIdsWithoutReserve.Contains(x) == false)).ToList();
+                            var allPlayerIds = GetPlayerIds(parse4Result);
                             pendingMatch.Players = allPlayerIds;
                             ExecuteCommand(new RegisterMatch4Command(pendingMatch, parse4Result));
                         }
@@ -138,18 +129,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                         var parseResult = parser.Parse(content, pendingMatch.Team);
                         if (parseResult != null)
                         {
-                            var query = from table in parseResult.Series.First().Tables
-                                        from game in new[] { table.Game1, table.Game2 }
-                                        select game.Player;
-                            var playerIds = query.ToArray();
-                            var playerIdsWithoutReserve = new HashSet<string>(playerIds);
-                            var restQuery = from serie in parseResult.Series
-                                            from table in serie.Tables
-                                            from game in new[] { table.Game1, table.Game2 }
-                                            where playerIdsWithoutReserve.Contains(game.Player) == false
-                                            select game.Player;
-                            var allPlayerIds = playerIds.Concat(
-                                new HashSet<string>(restQuery).Where(x => playerIdsWithoutReserve.Contains(x) == false)).ToList();
+                            var allPlayerIds = GetPlayerIds(parseResult);
                             pendingMatch.Players = allPlayerIds;
                             ExecuteCommand(new RegisterMatchCommand(pendingMatch, parseResult));
                         }
@@ -179,6 +159,38 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                 return Ok(result);
 
             return Ok("No matches to register");
+        }
+
+        private static List<string> GetPlayerIds(Parse4Result parse4Result)
+        {
+            var query = from game in parse4Result.Series.First().Games
+                        select game.Player;
+            var playerIds = query.ToArray();
+            var playerIdsWithoutReserve = new HashSet<string>(playerIds);
+            var restQuery = from serie in parse4Result.Series
+                            from game in serie.Games
+                            where playerIdsWithoutReserve.Contains(game.Player) == false
+                            select game.Player;
+            var allPlayerIds = playerIds.Concat(
+                new HashSet<string>(restQuery).Where(x => playerIdsWithoutReserve.Contains(x) == false)).ToList();
+            return allPlayerIds;
+        }
+
+        private static List<string> GetPlayerIds(ParseResult parseResult)
+        {
+            var query = from table in parseResult.Series.First().Tables
+                        from game in new[] { table.Game1, table.Game2 }
+                        select game.Player;
+            var playerIds = query.ToArray();
+            var playerIdsWithoutReserve = new HashSet<string>(playerIds);
+            var restQuery = from serie in parseResult.Series
+                            from table in serie.Tables
+                            from game in new[] { table.Game1, table.Game2 }
+                            where playerIdsWithoutReserve.Contains(game.Player) == false
+                            select game.Player;
+            var allPlayerIds = playerIds.Concat(
+                new HashSet<string>(restQuery).Where(x => playerIdsWithoutReserve.Contains(x) == false)).ToList();
+            return allPlayerIds;
         }
 
         private IHttpActionResult Handle(InitializeIndexesMessage message)
