@@ -6,7 +6,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     public class RosterCalendarEvent
     {
-        const string TextLineFeed = @"\" + "n";
+        private const string TextLineFeed = @"\" + "n";
 
         public RosterCalendarEvent(Roster roster, Player[] players, Player teamLeader, ResultHeaderReadModel resultHeaderReadModel)
         {
@@ -31,30 +31,29 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         private void GetPlayersDescription(Roster roster, Player[] players, Player teamLeader)
         {
-            if (roster.Preliminary == false)
+            if (roster.Preliminary) return;
+
+            if (players.Length >= 8)
             {
-                if (players.Length >= 8)
+                Description = "1 " + players[0].Nickname + " " + players[1].Nickname
+                              + TextLineFeed + "2 " + players[2].Nickname + " " + players[3].Nickname
+                              + TextLineFeed + "3 " + players[4].Nickname + " " + players[5].Nickname
+                              + TextLineFeed + "4 " + players[6].Nickname + " " + players[7].Nickname;
+                if (players.Length >= 9)
                 {
-                    Description = "1 " + players[0].Nickname + " " + players[1].Nickname
-                                  + TextLineFeed + "2 " + players[2].Nickname + " " + players[3].Nickname
-                                  + TextLineFeed + "3 " + players[4].Nickname + " " + players[5].Nickname
-                                  + TextLineFeed + "4 " + players[6].Nickname + " " + players[7].Nickname;
-                    if (players.Length >= 9)
+                    Description += TextLineFeed + "R " + players[8].Nickname;
+                    if (players.Length >= 10)
                     {
-                        Description += TextLineFeed + "R " + players[8].Nickname;
-                        if (players.Length >= 10)
-                        {
-                            Description += TextLineFeed + "R " + players[9].Nickname;
-                        }
+                        Description += TextLineFeed + "R " + players[9].Nickname;
                     }
                 }
-                else if (players.Length == 4)
-                {
-                    Description = "1 " + players[0].Nickname
-                                  + TextLineFeed + "2 " + players[1].Nickname
-                                  + TextLineFeed + "3 " + players[2].Nickname
-                                  + TextLineFeed + "4 " + players[3].Nickname;
-                }
+            }
+            else if (players.Length == 4)
+            {
+                Description = "1 " + players[0].Nickname
+                                   + TextLineFeed + "2 " + players[1].Nickname
+                                   + TextLineFeed + "3 " + players[2].Nickname
+                                   + TextLineFeed + "4 " + players[3].Nickname;
             }
 
             if (teamLeader != null)
