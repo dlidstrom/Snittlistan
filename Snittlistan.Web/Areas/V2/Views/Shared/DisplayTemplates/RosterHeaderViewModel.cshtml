@@ -1,0 +1,36 @@
+﻿@model RosterHeaderViewModel
+
+<dl class="dl-horizontal">
+<dt>lag</dt>
+<dd>@Content.TeamLabel(Model.TeamLevel, Model.Team)</dd>
+    <dt>plats</dt>
+    <dd>@Model.Location</dd>
+    <dt>motstånd</dt>
+    <dd>@Model.Opponent</dd>
+    @if (string.IsNullOrWhiteSpace(Model.OilPattern.Name) == false)
+    {
+        <dt>oljeprofil</dt>
+        <dd>
+            @if (string.IsNullOrWhiteSpace(Model.OilPattern.Url) == false)
+            {
+                <a href="@Model.OilPattern.Url">
+                    @Model.OilPattern.Name
+                    <i class="icon-share-alt"></i>
+                </a>
+            }
+            else
+            {
+                @Model.OilPattern.Name
+            }
+        </dd>
+    }
+
+    <dt>när</dt>
+    <dd>
+        <em>
+            <time datetime="@Model.Date.ToString("s")">
+                @Model.Date.ToString("dddd d MMMM HH:mm")
+            </time>
+        </em>
+    </dd>
+</dl>

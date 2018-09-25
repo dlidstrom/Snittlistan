@@ -5,8 +5,6 @@
         <td>Namn</td>
         <td>Banpoäng</td>
         <td>Poäng</td>
-        <td>X</td>
-        <td>/</td>
     </tr>
     @for (var i = 0; i < Model.Serie.Tables.Count; i++)
     {
@@ -43,32 +41,6 @@
                         max = "300"
                     })
             </td>
-            <td>
-                @Html.TextBoxFor(
-                    m => m.Serie.Tables[i].Game1.Strikes,
-                    new
-                    {
-                        @class = "span1",
-                        required = "required",
-                        type = "number",
-                        pattern = @"\d*",
-                        min = "0",
-                        max = "12"
-                    })
-            </td>
-            <td>
-                @Html.TextBoxFor(
-                    m => m.Serie.Tables[i].Game1.Spares,
-                    new
-                    {
-                        @class = "span1",
-                        required = "required",
-                        type = "number",
-                        pattern = @"\d*",
-                        min = "0",
-                        max = "10"
-                    })
-            </td>
         </tr>
         <tr>
             <td>
@@ -88,32 +60,6 @@
                         pattern = @"\d*",
                         min = "0",
                         max = "300"
-                    })
-            </td>
-            <td>
-                @Html.TextBoxFor(
-                    m => m.Serie.Tables[i].Game2.Strikes,
-                    new
-                    {
-                        @class = "span1",
-                        required = "required",
-                        type = "number",
-                        pattern = @"\d*",
-                        min = "0",
-                        max = "12"
-                    })
-            </td>
-            <td>
-                @Html.TextBoxFor(
-                    m => m.Serie.Tables[i].Game2.Spares,
-                    new
-                    {
-                        @class = "span1",
-                        required = "required",
-                        type = "number",
-                        pattern = @"\d*",
-                        min = "0",
-                        max = "10"
                     })
             </td>
         </tr>

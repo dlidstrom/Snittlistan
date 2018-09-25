@@ -1,0 +1,104 @@
+﻿@model Snittlistan.Web.Areas.V2.Controllers.MatchResultAdminController.RegisterMatchViewModel
+
+<div class="control-group">
+    <label class="control-label" for="teamScore">Lagpoäng:</label>
+    <div class="controls">
+        <input id="teamScore"
+               name="teamScore"
+               type="text"
+               pattern="\d*"
+               min="0"
+               max="20"
+               value="@Model.TeamScore"
+               required="required" />
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="opponentScore">Motståndarpoäng:</label>
+    <div class="controls">
+        <input id="opponentScore"
+               name="opponentScore"
+               type="text"
+               pattern="\d*"
+               min="0"
+               max="20"
+               value="@Model.OpponentScore"
+               required="required" />
+    </div>
+</div>
+@for (var i = 0; i < Model.Series.Length; i++)
+{
+    <div class="row">
+        <div class="span8">
+            <table class="table table-condensed table-bordered table-striped">
+                <tr>
+                    <td>Namn</td>
+                    <td>Banpoäng</td>
+                    <td>Poäng</td>
+                </tr>
+                <tr>
+                    <td colspan="3">Serie @(i + 1)</td>
+                </tr>
+                @for (var j = 0; j < Model.Series[i].Serie.Tables.Count; j++)
+                {
+                    <tr>
+                        <td rowspan="2">
+                            @Html.TextBoxFor(
+                                m => m.Series[i].Serie.Tables[j].Score,
+                                new
+                                {
+                                    required = "required",
+                                    type = "number",
+                                    pattern = @"\d*",
+                                    min = "0",
+                                    max = "1"
+                                })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DropDownListFor(
+                                m => m.Series[i].Serie.Tables[j].Game1.Player,
+                                Model.PlayerListItems,
+                                "Välj spelare")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(
+                                m => m.Series[i].Serie.Tables[j].Game1.Pins,
+                                new
+                                {
+                                    @class = "span1",
+                                    required = "required",
+                                    type = "number",
+                                    pattern = @"\d*",
+                                    min = "0",
+                                    max = "300"
+                                })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DropDownListFor(
+                                m => m.Series[i].Serie.Tables[j].Game2.Player,
+                                Model.PlayerListItems,
+                                "Välj spelare")
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(
+                                m => m.Series[i].Serie.Tables[j].Game2.Pins,
+                                new
+                                {
+                                    @class = "span1",
+                                    required = "required",
+                                    type = "number",
+                                    pattern = @"\d*",
+                                    min = "0",
+                                    max = "300"
+                                })
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+}

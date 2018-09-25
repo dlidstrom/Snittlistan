@@ -1,11 +1,5 @@
-﻿@model RegisterResult
+﻿@model Snittlistan.Web.Areas.V2.Controllers.MatchResultAdminController.RegisterResult
 
-<div class="control-group">
-    <label class="control-label" for="rosterid">Match:</label>
-    <div class="controls">
-        @Html.DropDownList("rosterid", "Välj match")
-    </div>
-</div>
 <div class="control-group">
     <label class="control-label" for="teamScore">Lagpoäng:</label>
     <div class="controls">
@@ -32,14 +26,11 @@
                required="required" />
     </div>
 </div>
-<div class="control-group">
-    <label class="control-label" for="bitsMatchId">BITS Match Id:</label>
-    <div class="controls">
-        <input id="bitsMatchId"
-               name="bitsMatchId"
-               type="text"
-               pattern="\d*"
-               value="@Model.BitsMatchId"
-               required="required" />
+@foreach (var x in Model.Series)
+{
+    <div class="row">
+        <div class="span8">
+            @Html.Partial("_SerieEditor", x)
+        </div>
     </div>
-</div>
+}

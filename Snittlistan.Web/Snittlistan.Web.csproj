@@ -226,8 +226,10 @@
     <Compile Include="Areas\V2\ViewModels\EliteMedalsViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\FormViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\PlayerScoreViewModel.cs" />
+    <Compile Include="Areas\V2\ViewModels\RegisterSerie4.cs" />
     <Compile Include="Areas\V2\ViewModels\ResultHeaderViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\RosterCalendarEvent.cs" />
+    <Compile Include="Areas\V2\ViewModels\RosterHeaderViewModel.cs" />
     <Compile Include="Controllers\AbstractApiController.cs" />
     <Compile Include="Areas\V2\Controllers\MatchResultAdminController.cs" />
     <Compile Include="Areas\V2\DocumentSessionExtensions.cs" />
@@ -265,7 +267,7 @@
     <Compile Include="Areas\V2\ReadModels\PlayerScore.cs" />
     <Compile Include="Areas\V2\ReadModels\ResultForPlayerReadModel.cs" />
     <Compile Include="Areas\V2\ReadModels\ResultSeries4ReadModel.cs" />
-    <Compile Include="Areas\V2\ReadModels\ResultSeriesModel.cs" />
+    <Compile Include="Areas\V2\ReadModels\ResultSeriesReadModel.cs" />
     <Compile Include="Areas\V2\ReadModels\ResultHeaderReadModel.cs" />
     <Compile Include="Areas\V2\ReadModels\TeamOfWeek.cs" />
     <Compile Include="Areas\V2\ViewModels\EditMatchResult.cs" />
@@ -280,7 +282,6 @@
     <Compile Include="Areas\V2\ViewModels\RegisterSerie.cs" />
     <Compile Include="Areas\V2\ViewModels\Result4ViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\ResultViewModel.cs" />
-    <Compile Include="Areas\V2\ViewModels\RegisterResult.cs" />
     <Compile Include="Areas\V2\ViewModels\MatchResultViewModel.cs" />
     <Compile Include="Areas\V2\Controllers\MatchResultController.cs" />
     <Compile Include="Areas\V2\Indexes\AbsenceIndex.cs" />
@@ -581,9 +582,12 @@
     <Content Include="App_Browsers\qt.browser" />
     <Content Include="Areas\V2\Views\Shared\_BareLayout.cshtml" />
     <Content Include="Areas\V2\Views\Shared\_BareLayout2.cshtml" />
-    <Content Include="Areas\V2\Views\Roster\DisplayTemplates\Players2.cshtml" />
-    <Content Include="Areas\V2\Views\Roster\DisplayTemplates\Roster2.cshtml" />
     <Content Include="Content\css\images\image1.pdf" />
+    <Content Include="Areas\V2\Views\MatchResultAdmin\_Serie4Editor.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResultAdmin\RegisterMatchEditor.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResultAdmin\RegisterMatch4Editor.cshtml" />
+    <Content Include="Areas\V2\Views\Shared\DisplayTemplates\RosterHeaderViewModel.cshtml" />
+    <Content Include="Areas\V2\Views\MatchResultAdmin\EditorTemplates\Match4PostModel.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />

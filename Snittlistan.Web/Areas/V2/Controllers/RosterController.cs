@@ -231,7 +231,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                                                 .Include(roster => roster.Players)
                                                 .Where(roster => roster.Turn == turn && roster.Season == season)
                                                 .ToArray();
-            var rosterViewModels = rostersForTurn.Select(LoadRoster)
+            var rosterViewModels = rostersForTurn.Select(DocumentSession.LoadRosterViewModel)
                                                  .SortRosters()
                                                  .ToArray();
 
@@ -268,7 +268,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                                                 .Where(roster => (roster.Preliminary == false || excludePreliminary == false)
                                                                  && (roster.Date.Date >= SystemTime.UtcNow || excludePast == false))
                                                 .ToArray();
-            var rosterViewModels = rostersForTurn.Select(LoadRoster)
+            var rosterViewModels = rostersForTurn.Select(DocumentSession.LoadRosterViewModel)
                                                  .SortRosters()
                                                  .ToArray();
 
@@ -305,11 +305,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         }
 
         [Authorize]
-        public ActionResult EditPlayers(string id)
+        public ActionResult EditPlayers(string rosterId)
         {
             var roster = DocumentSession
                 .Include<Roster>(r => r.Players)
-                .Load<Roster>(id);
+                .Load<Roster>(rosterId);
             if (roster == null)
                 throw new HttpException(404, "Roster not found");
 
@@ -320,9 +320,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
             var vm = new EditRosterPlayersViewModel
             {
-                Id = id,
-                Roster = LoadRoster(roster),
-                Preliminary = roster.Preliminary,
+                RosterViewModel = DocumentSession.LoadRosterViewModel(roster),
                 AvailablePlayers = availablePlayers.Select(x => new PlayerViewModel(x)).ToArray()
             };
             return View(vm);
@@ -330,10 +328,10 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult EditPlayers(string id, RosterPlayersViewModel vm)
+        public ActionResult EditPlayers(string rosterId, RosterPlayersViewModel vm)
         {
-            if (ModelState.IsValid == false) return EditPlayers(id);
-            var roster = DocumentSession.Load<Roster>(id);
+            if (ModelState.IsValid == false) return EditPlayers(rosterId);
+            var roster = DocumentSession.Load<Roster>(rosterId);
             if (roster == null) throw new HttpException(404, "Roster not found");
             if (roster.IsFourPlayer)
             {
@@ -486,25 +484,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             var vm = activities.OrderByDescending(x => x, new PlayerStatusViewModel.Comparer(CompareMode.PlayerForm))
                                .ToArray();
             return PartialView(vm);
-        }
-
-        private RosterViewModel LoadRoster(Roster roster)
-        {
-            var players = new List<Tuple<string, string>>();
-            foreach (var player in roster.Players.Where(p => p != null).Select(playerId => DocumentSession.Load<Player>(playerId)))
-            {
-                players.Add(Tuple.Create(player.Id, player.Name));
-            }
-
-            Tuple<string, string> teamLeaderTuple = null;
-            if (roster.TeamLeader != null)
-            {
-                var teamLeader = DocumentSession.Load<Player>(roster.TeamLeader);
-                teamLeaderTuple = Tuple.Create(teamLeader.Id, teamLeader.Name);
-            }
-
-            var vm = new RosterViewModel(roster, teamLeaderTuple, players);
-            return vm;
         }
 
         public ActionResult OilPattern(string id)

@@ -105,10 +105,13 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             }
 
             [JsonConstructor]
-            private Serie(List<Game> games)
+            private Serie(int score, List<Game> games)
             {
+                Score = score;
                 Games = games;
             }
+
+            public int Score { get; set; }
 
             public List<Game> Games { get; set; }
         }
