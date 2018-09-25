@@ -1,6 +1,6 @@
+using Snittlistan.Web.Areas.V2.Domain;
 using System;
 using System.Collections.Generic;
-using Snittlistan.Web.Areas.V2.Domain;
 
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
@@ -15,41 +15,27 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         {
             TeamLeader = teamLeader;
             Players = players;
-            Id = roster.Id;
             Season = roster.Season;
             Turn = roster.Turn;
-            Team = roster.Team;
-            TeamLevel = roster.TeamLevel;
-            Location = roster.Location;
-            Opponent = roster.Opponent;
-            OilPattern = roster.OilPattern;
-            Date = roster.Date;
             IsFourPlayer = roster.IsFourPlayer;
-            Time = roster.Date.ToShortTimeString();
             Preliminary = roster.Preliminary;
+            Header = new RosterHeaderViewModel(
+                roster.Id,
+                roster.Team,
+                roster.TeamLevel,
+                roster.Location,
+                roster.Opponent,
+                roster.Date,
+                roster.OilPattern);
         }
 
-        public string Id { get; set; }
+        public RosterHeaderViewModel Header { get; set; }
 
         public int Season { get; set; }
 
         public int Turn { get; set; }
 
-        public string Team { get; set; }
-
-        public string TeamLevel { get; set; }
-
-        public string Location { get; set; }
-
-        public string Opponent { get; set; }
-
-        public OilPatternInformation OilPattern { get; set; }
-
-        public DateTime Date { get; set; }
-
         public bool IsFourPlayer { get; set; }
-
-        public string Time { get; set; }
 
         public bool Preliminary { get; set; }
 

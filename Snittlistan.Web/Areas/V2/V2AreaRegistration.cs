@@ -63,11 +63,20 @@
                 url: "Search/{action}",
                 defaults: new { controller = "SearchTerms" });
 
-            // register match result
+            // register match result TODO is this needed now?
             context.MapRoute(
                 "RegisterMatchResult",
                 "MatchResult/Register/{season}",
                 new { controller = "MatchResult", action = "Register" });
+
+            context.MapRoute(
+                "RegisterMatchEditor",
+                "MatchResultAdmin/RegisterMatchEditor/{rosterId}",
+                new
+                {
+                    controller = "MatchResultAdmin",
+                    action = "RegisterMatchEditor"
+                });
 
             RosterRoutes(context);
 

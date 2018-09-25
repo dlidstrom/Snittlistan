@@ -1,20 +1,22 @@
-﻿ using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Raven.Abstractions;
- using Snittlistan.Web.Areas.V2.Commands;
- using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.Domain.Match;
-using Snittlistan.Web.Areas.V2.ReadModels;
-using Snittlistan.Web.Areas.V2.ViewModels;
-using Snittlistan.Web.Controllers;
-using Snittlistan.Web.Helpers;
-using Snittlistan.Web.Infrastructure;
-
-namespace Snittlistan.Web.Areas.V2.Controllers
+﻿namespace Snittlistan.Web.Areas.V2.Controllers
 {
+    using Indexes;
+    using Raven.Abstractions;
+    using Snittlistan.Web.Areas.V2.Commands;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.Domain.Match;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+    using Snittlistan.Web.Areas.V2.ViewModels;
+    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Helpers;
+    using Snittlistan.Web.Infrastructure;
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Mvc;
+
     [Authorize]
     public class MatchResultAdminController : AbstractController
     {
@@ -31,10 +33,87 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
 
             ViewBag.rosterid = DocumentSession.CreateRosterSelectList(season.Value);
-            return View(new RegisterResult());
+            return View();
         }
 
-        [HttpPost, ActionName("Register")]
+        [HttpPost]
+        [ActionName("Register")]
+        public ActionResult Register_RosterSelected(string rosterId)
+        {
+            var roster = DocumentSession.Load<Roster>(rosterId);
+            if (roster == null)
+                throw new HttpException(404, "Roster not found");
+            return RedirectToAction("RegisterMatchEditor", new { rosterId  });
+        }
+
+        public ActionResult RegisterMatchEditor(string rosterId)
+        {
+            var roster = DocumentSession.Load<Roster>(rosterId);
+            if (roster == null)
+                throw new HttpException(404, "Roster not found");
+            if (roster.MatchResultId != null)
+                throw new HttpException(500, "Roster already registered");
+
+            var availablePlayers = DocumentSession.Query<Player, PlayerSearch>()
+                                                  .OrderBy(x => x.Name)
+                                                  .Where(p => p.PlayerStatus == Player.Status.Active)
+                                                  .ToList();
+            var playerListItems = availablePlayers.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.Id
+            }).ToArray();
+            if (roster.IsFourPlayer)
+            {
+                var viewModel = new RegisterMatch4ViewModel(
+                    DocumentSession.LoadRosterViewModel(roster),
+                    playerListItems,
+                    RegisterMatch4ViewModel.PostModel.ForCreate());
+                return View(
+                    "RegisterMatch4Editor",
+                    viewModel);
+            }
+
+            return View("RegisterMatchEditor", new RegisterMatchViewModel(playerListItems));
+        }
+
+        [HttpPost]
+        [ActionName("RegisterMatchEditor")]
+        public ActionResult RegisterMatchEditorStore(string rosterId, RegisterMatch4ViewModel viewModel)
+        {
+            var roster = DocumentSession.Load<Roster>(rosterId);
+            if (roster == null)
+                throw new HttpException(404, "Roster not found");
+            if (ModelState.IsValid == false)
+            {
+                var availablePlayers = DocumentSession.Query<Player, PlayerSearch>()
+                                                      .OrderBy(x => x.Name)
+                                                      .Where(p => p.PlayerStatus == Player.Status.Active)
+                                                      .ToList();
+                var playerListItems = availablePlayers.Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Id
+                }).ToArray();
+                if (roster.IsFourPlayer)
+                {
+                    viewModel.RosterViewModel = DocumentSession.LoadRosterViewModel(roster);
+                    viewModel.PlayerListItems = playerListItems;
+                    return View(
+                        "RegisterMatch4Editor",
+                        viewModel);
+                }
+            }
+
+            return RedirectToAction(
+                "RegisterMatchEditor",
+                new
+                {
+                    rosterId
+                });
+            //return RedirectToAction("Details", "MatchResult", new { id = ResultHeaderReadModel.IdFromBitsMatchId(roster.BitsMatchId) });
+        }
+
         public ActionResult RegisterConfirmed(int? season, RegisterResult vm)
         {
             if (ModelState.IsValid == false) return Register(season);
@@ -146,7 +225,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             if (season.HasValue == false)
                 season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
 
-            ViewBag.rosterid = DocumentSession.CreateRosterSelectList(season.Value);
+            ViewBag.rosterid = DocumentSession.CreateBitsRosterSelectList(season.Value);
             return View(new RegisterBitsVerifyModel { Season = season.Value });
         }
 
@@ -155,7 +234,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             if (ModelState.IsValid == false)
             {
-                ViewBag.rosterid = DocumentSession.CreateRosterSelectList(model.Season);
+                ViewBag.rosterid = DocumentSession.CreateBitsRosterSelectList(model.Season);
                 return View("RegisterBits", model);
             }
 
@@ -181,6 +260,200 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             }
 
             return RedirectToAction("Index", "MatchResult");
+        }
+
+        public class RegisterMatch4ViewModel
+        {
+            public RegisterMatch4ViewModel()
+            {
+            }
+
+            public RegisterMatch4ViewModel(
+                RosterViewModel rosterViewModel,
+                SelectListItem[] playerListItems,
+                PostModel postModel)
+            {
+                RosterViewModel = rosterViewModel;
+                PlayerListItems = playerListItems;
+                Model = postModel;
+            }
+
+            public RosterViewModel RosterViewModel { get; set; }
+
+            public SelectListItem[] PlayerListItems { get; set; }
+
+            public PostModel Model { get; set; }
+
+            public class PostModel : IValidatableObject
+            {
+                public PostModel()
+                {
+                }
+
+                public PostModel(PlayerGames[] players)
+                {
+                    Players = players;
+                }
+
+                [Required]
+                [Range(0, 20)]
+                [Display(Name = "Lagpoäng")]
+                public int? TeamScore { get; set; }
+
+                [Required]
+                [Range(0, 20)]
+                [Display(Name = "Motståndarpoäng")]
+                public int? OpponentScore { get; set; }
+
+                public PlayerGames[] Players { get; set; }
+
+                public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+                {
+                    if (TeamScore.GetValueOrDefault() + OpponentScore.GetValueOrDefault() > 20)
+                    {
+                        yield return new ValidationResult("Summan av lagpoängen kan inte överstiga 20.");
+                    }
+                    for (var i = 0; i < 4; i++)
+                    {
+                        if (Players.Count(x => x.Games[i].Pins.HasValue) != 4)
+                        {
+                            yield return new ValidationResult($"Ange 4 resultat i serie {i + 1}");
+                        }
+                    }
+                }
+
+                public static PostModel ForCreate()
+                {
+                    return new PostModel(
+                        new[]
+                        {
+                            new PlayerGames(new PlayerGame[4]),
+                            new PlayerGames(new PlayerGame[4]),
+                            new PlayerGames(new PlayerGame[4]),
+                            new PlayerGames(new PlayerGame[4]),
+                            new PlayerGames(new PlayerGame[4])
+                        });
+                }
+            }
+        }
+
+        public class RegisterMatchViewModel
+        {
+            public RegisterMatchViewModel(SelectListItem[] playerListItems)
+            {
+                Series = new RegisterSerie[4];
+                PlayerListItems = playerListItems;
+            }
+
+            public RegisterMatchViewModel(
+                int teamScore,
+                int opponentScore,
+                RegisterSerie[] series,
+                SelectListItem[] playerListItems)
+            {
+                TeamScore = teamScore;
+                OpponentScore = opponentScore;
+                Series = series;
+                PlayerListItems = playerListItems;
+            }
+
+            [Range(0, 20)]
+            public int TeamScore { get; }
+
+            [Range(0, 20)]
+            public int OpponentScore { get; }
+
+            public RegisterSerie[] Series { get; }
+
+            public SelectListItem[] PlayerListItems { get; }
+        }
+
+        public class PlayerGame
+        {
+            public bool Score { get; set; }
+
+            [Range(0, 300)]
+            public int? Pins { get; set; }
+        }
+
+        public class PlayerGames
+        {
+            public PlayerGames()
+            {
+            }
+
+            public PlayerGames(PlayerGame[] games)
+            {
+                Games = games;
+            }
+
+            public string PlayerId { get; set; }
+
+            public PlayerGame[] Games { get; set; }
+        }
+
+        public class Register4Result
+        {
+            public Register4Result()
+            {
+                Series = new RegisterSerie4[4];
+            }
+
+            public Register4Result(ResultHeaderReadModel matchResult)
+            {
+                AggregateId = matchResult.AggregateId;
+                TeamScore = matchResult.TeamScore;
+                OpponentScore = matchResult.OpponentScore;
+            }
+
+            [HiddenInput]
+            public string AggregateId { get; set; }
+
+            [Required]
+            public string RosterId { get; set; }
+
+            [Range(0, 20), Required]
+            public int? TeamScore { get; set; }
+
+            [Range(0, 20), Required]
+            public int? OpponentScore { get; set; }
+
+            [Required]
+            public int? BitsMatchId { get; set; }
+
+            public RegisterSerie4[] Series { get; set; }
+        }
+
+        public class RegisterResult
+        {
+            public RegisterResult()
+            {
+                Series = new RegisterSerie[4];
+            }
+
+            public RegisterResult(ResultHeaderReadModel matchResult)
+            {
+                AggregateId = matchResult.AggregateId;
+                TeamScore = matchResult.TeamScore;
+                OpponentScore = matchResult.OpponentScore;
+            }
+
+            [HiddenInput]
+            public string AggregateId { get; set; }
+
+            [Required]
+            public string RosterId { get; set; }
+
+            [Range(0, 20), Required]
+            public int? TeamScore { get; set; }
+
+            [Range(0, 20), Required]
+            public int? OpponentScore { get; set; }
+
+            [Required]
+            public int? BitsMatchId { get; set; }
+
+            public RegisterSerie[] Series { get; set; }
         }
     }
 }

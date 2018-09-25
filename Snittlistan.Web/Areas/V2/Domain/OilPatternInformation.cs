@@ -2,7 +2,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
 {
     public class OilPatternInformation
     {
-        public static OilPatternInformation Empty = new OilPatternInformation(string.Empty, string.Empty);
+        public static readonly OilPatternInformation Empty =
+            new OilPatternInformation(string.Empty, string.Empty);
 
         public OilPatternInformation(string name, string url)
         {
@@ -10,7 +11,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
             Url = url;
         }
 
-        public string Name { get; }
-        public string Url { get; }
+        public string Name { get; private set; }
+
+        public string Url { get; private set; }
     }
 }

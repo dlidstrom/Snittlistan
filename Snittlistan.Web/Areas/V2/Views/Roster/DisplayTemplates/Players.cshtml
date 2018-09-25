@@ -6,7 +6,7 @@
 <div class="well well-small editable">
     @if (Request.IsAuthenticated && hideControls == false)
     {
-        <a href="@Url.Action("EditPlayers", new { Model.Id })" class="edit-right">
+        <a href="@Url.Action("EditPlayers", new { Model.Header.RosterId })" class="edit-right">
             <i class="sprite-glyphicons_151_edit"></i>
         </a>
     }

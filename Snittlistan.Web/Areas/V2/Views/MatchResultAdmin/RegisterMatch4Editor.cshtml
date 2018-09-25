@@ -1,0 +1,13 @@
+﻿@model Snittlistan.Web.Areas.V2.Controllers.MatchResultAdminController.RegisterMatch4ViewModel
+<div class="well well-small">
+    @Html.DisplayFor(x => x.RosterViewModel.Header)
+</div>
+@using (Html.BeginForm("RegisterMatchEditor", "MatchResultAdmin", FormMethod.Post))
+{
+    @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
+    @Html.EditorFor(x => x.Model, "Match4PostModel", new { Model.PlayerListItems })
+    <div class="form-actions">
+        <button class="btn btn-primary btn-large" type="submit">Registrera</button>
+        @Html.ActionLink("Avbryt", "Index", "MatchResult", null, new { @class = "btn btn-large" })
+    </div>
+}

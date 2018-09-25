@@ -30,7 +30,7 @@
 
                         @foreach (var team in activity.Teams.SortRosters())
                         {
-                            @Content.TeamLabel(team.TeamLevel, team.Team)
+                            @Content.TeamLabel(team.Header.TeamLevel, team.Header.Team)
                         }
                     </td>
                     <td>
