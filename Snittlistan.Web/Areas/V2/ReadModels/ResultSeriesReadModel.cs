@@ -23,9 +23,11 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
         public List<Serie> Series { get; private set; }
 
-        public static string IdFromBitsMatchId(int bitsMatchId)
+        public static string IdFromBitsMatchId(int bitsMatchId, string rosterId)
         {
-            return $"Series-{bitsMatchId}";
+            if (bitsMatchId != 0)
+                return $"Series-{bitsMatchId}";
+            return $"Series-R{rosterId.Substring(8)}";
         }
 
         public KeyValuePair<string, List<PlayerGame>[]>[] SortedPlayers()

@@ -2,7 +2,7 @@
 <div class="well well-small">
     @Html.DisplayFor(x => x.RosterViewModel.Header)
 </div>
-@using (Html.BeginForm("RegisterMatchEditor", "MatchResultAdmin", FormMethod.Post))
+@using (Html.BeginForm("RegisterMatch4Editor", "MatchResultAdmin", FormMethod.Post))
 {
     @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
     @Html.EditorFor(x => x.Model, "Match4PostModel", new { Model.PlayerListItems })

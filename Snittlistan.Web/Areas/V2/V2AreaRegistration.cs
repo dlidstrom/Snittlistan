@@ -71,11 +71,11 @@
 
             context.MapRoute(
                 "RegisterMatchEditor",
-                "MatchResultAdmin/RegisterMatchEditor/{rosterId}",
+                "MatchResultAdmin/RegisterMatch4Editor/{rosterId}",
                 new
                 {
                     controller = "MatchResultAdmin",
-                    action = "RegisterMatchEditor"
+                    action = "RegisterMatch4Editor"
                 });
 
             RosterRoutes(context);

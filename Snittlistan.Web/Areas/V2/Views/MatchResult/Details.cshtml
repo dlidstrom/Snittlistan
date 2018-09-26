@@ -3,21 +3,6 @@
 <div class="row">
     <div class="span4">
         @Html.DisplayFor(model => Model.HeaderViewModel, "Header")
-        @if (Model.ResultReadModel.Series.Count != 4)
-        {
-            <a href="@Url.Action(
-                "RegisterSerie",
-                "MatchResultAdmin",
-                new
-                {
-                    Model.HeaderViewModel.AggregateId,
-                    Model.HeaderViewModel.RosterId,
-                    Model.HeaderViewModel.BitsMatchId
-                })">
-                <i class="sprite-glyphicons_030_pencil"></i>
-                Registrera serie
-            </a>
-        }
     </div>
 </div>
 <div class="row">

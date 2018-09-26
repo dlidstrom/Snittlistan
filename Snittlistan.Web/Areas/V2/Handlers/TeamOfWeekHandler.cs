@@ -22,7 +22,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
         public void Handle(MatchResultRegistered e, string aggregateId)
         {
             var roster = DocumentSession.Load<Roster>(e.RosterId);
-            var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId);
+            var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
             var teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
             if (teamOfWeek == null)
             {
@@ -35,7 +35,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
 
         public void Handle(SerieRegistered e, string aggregateId)
         {
-            var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId);
+            var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
             var teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
             var matchSerie = e.MatchSerie;
             var playerIds = new[]
@@ -88,7 +88,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
         public void Handle(MatchResult4Registered e, string aggregateId)
         {
             var roster = DocumentSession.Load<Roster>(e.RosterId);
-            var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId);
+            var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
             var teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
             if (teamOfWeek == null)
             {
@@ -101,7 +101,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
 
         public void Handle(Serie4Registered e, string aggregateId)
         {
-            var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId);
+            var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
             var teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
             var matchSerie = e.MatchSerie;
             var playerIds = new[]
@@ -134,14 +134,14 @@ namespace Snittlistan.Web.Areas.V2.Handlers
 
         public void Handle(AwardedMedal e, string aggregateId)
         {
-            var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId);
+            var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
             var teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
             teamOfWeek.AddMedal(new AwardedMedalReadModel(e.Player, e.MedalType, e.Value));
         }
 
         public void Handle(ClearMedals e, string aggregateId)
         {
-            var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId);
+            var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
             var teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
             teamOfWeek.ClearMedals();
         }

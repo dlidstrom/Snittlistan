@@ -10,7 +10,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         public TeamOfWeek(int bitsMatchId, int season, string rosterId)
         {
             PlayerScores = new Dictionary<string, PlayerScore>();
-            Id = IdFromBitsMatchId(bitsMatchId);
+            Id = IdFromBitsMatchId(bitsMatchId, rosterId);
             Season = season;
             RosterId = rosterId;
         }
@@ -24,9 +24,11 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         // todo make private set
         public string RosterId { get; set; }
 
-        public static string IdFromBitsMatchId(int bitsMatchId)
+        public static string IdFromBitsMatchId(int bitsMatchId, string rosterId)
         {
-            return "TeamOfWeek-" + bitsMatchId;
+            if (bitsMatchId != 0)
+                return "TeamOfWeek-" + bitsMatchId;
+            return $"TeamOfWeek-R{rosterId.Substring(8)}";
         }
 
         public void AddResultForPlayer(Player player, int score, int pins)

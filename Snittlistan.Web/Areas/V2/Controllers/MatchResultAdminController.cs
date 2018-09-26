@@ -4,7 +4,6 @@
     using Raven.Abstractions;
     using Snittlistan.Web.Areas.V2.Commands;
     using Snittlistan.Web.Areas.V2.Domain;
-    using Snittlistan.Web.Areas.V2.Domain.Match;
     using Snittlistan.Web.Areas.V2.ReadModels;
     using Snittlistan.Web.Areas.V2.ViewModels;
     using Snittlistan.Web.Controllers;
@@ -13,6 +12,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Diagnostics;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
@@ -43,10 +43,12 @@
             var roster = DocumentSession.Load<Roster>(rosterId);
             if (roster == null)
                 throw new HttpException(404, "Roster not found");
-            return RedirectToAction("RegisterMatchEditor", new { rosterId  });
+            if (roster.IsFourPlayer)
+                return RedirectToAction("RegisterMatch4Editor", new { rosterId });
+            return RedirectToAction("Index", "MatchResult");
         }
 
-        public ActionResult RegisterMatchEditor(string rosterId)
+        public ActionResult RegisterMatch4Editor(string rosterId)
         {
             var roster = DocumentSession.Load<Roster>(rosterId);
             if (roster == null)
@@ -63,22 +65,16 @@
                 Text = x.Name,
                 Value = x.Id
             }).ToArray();
-            if (roster.IsFourPlayer)
-            {
-                var viewModel = new RegisterMatch4ViewModel(
+
+            var viewModel = new RegisterMatch4ViewModel(
                     DocumentSession.LoadRosterViewModel(roster),
                     playerListItems,
                     RegisterMatch4ViewModel.PostModel.ForCreate());
-                return View(
-                    "RegisterMatch4Editor",
-                    viewModel);
-            }
-
-            return View("RegisterMatchEditor", new RegisterMatchViewModel(playerListItems));
+            return View(viewModel);
         }
 
         [HttpPost]
-        [ActionName("RegisterMatchEditor")]
+        [ActionName("RegisterMatch4Editor")]
         public ActionResult RegisterMatchEditorStore(string rosterId, RegisterMatch4ViewModel viewModel)
         {
             var roster = DocumentSession.Load<Roster>(rosterId);
@@ -95,172 +91,231 @@
                     Text = x.Name,
                     Value = x.Id
                 }).ToArray();
-                if (roster.IsFourPlayer)
-                {
-                    viewModel.RosterViewModel = DocumentSession.LoadRosterViewModel(roster);
-                    viewModel.PlayerListItems = playerListItems;
-                    return View(
-                        "RegisterMatch4Editor",
-                        viewModel);
-                }
+                viewModel.RosterViewModel = DocumentSession.LoadRosterViewModel(roster);
+                viewModel.PlayerListItems = playerListItems;
+                return View(
+                    "RegisterMatch4Editor",
+                    viewModel);
             }
 
-            return RedirectToAction(
-                "RegisterMatchEditor",
-                new
-                {
-                    rosterId
-                });
-            //return RedirectToAction("Details", "MatchResult", new { id = ResultHeaderReadModel.IdFromBitsMatchId(roster.BitsMatchId) });
-        }
+            var movement = new[,]
+            {
+                { 1, 2, 3, 4 },
+                { 3, 4, 1, 2 },
+                { 4, 3, 2, 1 },
+                { 2, 1, 4, 3 }
+            };
+            var series = new List<ResultSeries4ReadModel.Serie>();
 
-        public ActionResult RegisterConfirmed(int? season, RegisterResult vm)
-        {
-            if (ModelState.IsValid == false) return Register(season);
-
-            var roster = DocumentSession.Load<Roster>(vm.RosterId);
-            if (roster == null)
-                throw new HttpException(404, "Roster not found");
-
-            var matchResult = new MatchResult(
-                roster,
-                vm.TeamScore.GetValueOrDefault(),
-                vm.OpponentScore.GetValueOrDefault(),
-                vm.BitsMatchId.GetValueOrDefault());
-            EventStoreSession.Store(matchResult);
-
-            return RedirectToAction(
-                "RegisterSerie",
-                new
-                {
-                    aggregateId = matchResult.Id,
-                    vm.RosterId,
-                    vm.BitsMatchId
-                });
-        }
-
-        public ActionResult EditResult(int id)
-        {
-            var matchId = ResultHeaderReadModel.IdFromBitsMatchId(id);
-            var matchResult = DocumentSession.Load<ResultHeaderReadModel>(matchId);
-            if (matchResult == null) throw new HttpException(404, "Match result not found");
-
-            ViewBag.rosterid = DocumentSession.CreateRosterSelectList(matchResult.Season, matchResult.RosterId);
-
-            ViewBag.Title = "Redigera matchresultat";
-            return View("Register", new RegisterResult(matchResult));
-        }
-
-        [HttpPost]
-        public ActionResult EditResult(int id, RegisterResult registerResult)
-        {
-            if (registerResult == null) throw new ArgumentNullException(nameof(registerResult));
-            if (!ModelState.IsValid) return EditResult(id);
-
-            var matchResult = EventStoreSession.Load<MatchResult>(registerResult.AggregateId);
-            if (matchResult == null) throw new HttpException(404, "Match result not found");
-
-            matchResult.Update(
-                DocumentSession.Load<Roster>(registerResult.RosterId),
-                registerResult.TeamScore.GetValueOrDefault(),
-                registerResult.OpponentScore.GetValueOrDefault(),
-                registerResult.BitsMatchId.GetValueOrDefault());
-
-            return RedirectToAction("Index", "MatchResult");
-        }
-
-        public ActionResult RegisterSerie(string aggregateId, string rosterId, int bitsMatchId)
-        {
-            var roster = DocumentSession.Include<Roster>(r => r.Players)
-                                        .Load<Roster>(rosterId);
-            if (roster == null) throw new HttpException(404, "Roster not found");
-            var registerSerie = new RegisterSerie(
-                new ResultSeriesReadModel.Serie(),
-                roster.Players.Select(
-                    x => new SelectListItem
-                    {
-                        Text = DocumentSession.Load<Player>(x).Name,
-                        Value = x
-                    })
-                    .ToList());
-            return View(registerSerie);
-        }
-
-        [HttpPost]
-        public ActionResult RegisterSerie(
-            string aggregateId,
-            int bitsMatchId,
-            ResultSeriesReadModel.Serie serie)
-        {
-            var matchResult = EventStoreSession.Load<MatchResult>(aggregateId);
-            if (matchResult == null) throw new HttpException(404, "Match result not found");
-            var tables = new List<MatchTable>();
+            // keep track of who is the reserve
+            var currentReserve = 4;
+            var subs = new[] { 0, 1, 2, 3, 4 };
             for (var i = 0; i < 4; i++)
             {
-                var game1 = new MatchGame(
-                    serie.Tables[i].Game1.Player,
-                    serie.Tables[i].Game1.Pins,
-                    serie.Tables[i].Game1.Strikes,
-                    serie.Tables[i].Game1.Spares);
-                var game2 = new MatchGame(
-                    serie.Tables[i].Game2.Player,
-                    serie.Tables[i].Game2.Pins,
-                    serie.Tables[i].Game2.Strikes,
-                    serie.Tables[i].Game2.Spares);
-                tables.Add(new MatchTable(i + 1, game1, game2, serie.Tables[i].Score));
+                var serie = new ResultSeries4ReadModel.Serie();
+                serie.Games.Clear();
+                var games = new List<PlayerGames>();
+                for (var j = 0; j < viewModel.Model.Players.Length; j++)
+                {
+                    if (games.Count == 4) break;
+
+                    if (viewModel.Model.Players[j].Games[i].Pins.HasValue == false
+                        && currentReserve != j)
+                    {
+                        var temp = subs[j];
+                        subs[Array.IndexOf(subs, j)] = currentReserve;
+                        subs[4] = temp;
+                        currentReserve = j;
+                    }
+                }
+
+                games.AddRange(subs.Take(4).Select(sub => viewModel.Model.Players[sub]));
+
+                var leftPos = movement[i, 0] - 1;
+                var centerLeftPos = movement[i, 1] - 1;
+                var centerRightPos = movement[i, 2] - 1;
+                var rightPos = movement[i, 3] - 1;
+                foreach (var pos in new[] { leftPos, centerLeftPos, centerRightPos, rightPos })
+                {
+                    Debug.Assert(games[pos].Games[i].Pins != null, $"games[{pos}].Games[{i}].Pins != null");
+                    var game = new ResultSeries4ReadModel.Game
+                    {
+                        Player = games[pos].PlayerId,
+                        Score = games[pos].Games[i].Score ? 1 : 0,
+                        Pins = games[pos].Games[i].Pins.Value,
+                    };
+                    serie.Games.Add(game);
+                }
+
+                series.Add(serie);
             }
 
-            matchResult.RegisterSerie(tables.ToArray());
+            roster.Players = viewModel.Model.Players.Select(x => x.PlayerId).ToList();
+            Debug.Assert(viewModel.Model.TeamScore != null, "viewModel.Model.TeamScore != null");
+            Debug.Assert(viewModel.Model.OpponentScore != null, "viewModel.Model.OpponentScore != null");
+            var parse4Result = new Parse4Result(
+                viewModel.Model.TeamScore.Value,
+                viewModel.Model.OpponentScore.Value,
+                series.ToArray());
+            ExecuteCommand(new RegisterMatch4Command(roster, parse4Result));
+
             return RedirectToAction(
                 "Details",
                 "MatchResult",
                 new
                 {
-                    id = bitsMatchId
+                    Id = roster.BitsMatchId,
+                    RosterId = roster.Id
                 });
         }
 
-        public ActionResult RegisterBits(int? season)
-        {
-            if (season.HasValue == false)
-                season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+        //public ActionResult RegisterConfirmed(int? season, RegisterResult vm)
+        //{
+        //    if (ModelState.IsValid == false) return Register(season);
 
-            ViewBag.rosterid = DocumentSession.CreateBitsRosterSelectList(season.Value);
-            return View(new RegisterBitsVerifyModel { Season = season.Value });
-        }
+        //    var roster = DocumentSession.Load<Roster>(vm.RosterId);
+        //    if (roster == null)
+        //        throw new HttpException(404, "Roster not found");
 
-        [HttpPost]
-        public ActionResult RegisterBits(RegisterBitsVerifyModel model)
-        {
-            if (ModelState.IsValid == false)
-            {
-                ViewBag.rosterid = DocumentSession.CreateBitsRosterSelectList(model.Season);
-                return View("RegisterBits", model);
-            }
+        //    var matchResult = new MatchResult(
+        //        roster,
+        //        vm.TeamScore.GetValueOrDefault(),
+        //        vm.OpponentScore.GetValueOrDefault(),
+        //        vm.BitsMatchId.GetValueOrDefault());
+        //    EventStoreSession.Store(matchResult);
 
-            var roster = DocumentSession.Include<Roster>(r => r.Players)
-                                        .Load<Roster>(model.RosterId);
-            if (roster == null)
-                throw new HttpException(404, "Roster not found");
+        //    return RedirectToAction(
+        //        "RegisterSerie",
+        //        new
+        //        {
+        //            aggregateId = matchResult.Id,
+        //            vm.RosterId,
+        //            vm.BitsMatchId
+        //        });
+        //}
 
-            var players = roster.Players
-                                .Select(x => DocumentSession.Load<Player>(x))
-                                .ToArray();
-            var parser = new BitsParser(players);
-            var content = bitsClient.DownloadMatchResult(roster.BitsMatchId);
-            if (roster.IsFourPlayer)
-            {
-                var parse4Result = parser.Parse4(content, roster.Team);
-                ExecuteCommand(new RegisterMatch4Command(roster, parse4Result));
-            }
-            else
-            {
-                var parseResult = parser.Parse(content, roster.Team);
-                ExecuteCommand(new RegisterMatchCommand(roster, parseResult));
-            }
+        //public ActionResult EditResult(int id)
+        //{
+        //    var matchId = ResultHeaderReadModel.IdFromBitsMatchId(id);
+        //    var matchResult = DocumentSession.Load<ResultHeaderReadModel>(matchId);
+        //    if (matchResult == null) throw new HttpException(404, "Match result not found");
 
-            return RedirectToAction("Index", "MatchResult");
-        }
+        //    ViewBag.rosterid = DocumentSession.CreateRosterSelectList(matchResult.Season, matchResult.RosterId);
+
+        //    ViewBag.Title = "Redigera matchresultat";
+        //    return View("Register", new RegisterResult(matchResult));
+        //}
+
+        //[HttpPost]
+        //public ActionResult EditResult(int id, RegisterResult registerResult)
+        //{
+        //    if (registerResult == null) throw new ArgumentNullException(nameof(registerResult));
+        //    if (!ModelState.IsValid) return EditResult(id);
+
+        //    var matchResult = EventStoreSession.Load<MatchResult>(registerResult.AggregateId);
+        //    if (matchResult == null) throw new HttpException(404, "Match result not found");
+
+        //    matchResult.Update(
+        //        DocumentSession.Load<Roster>(registerResult.RosterId),
+        //        registerResult.TeamScore.GetValueOrDefault(),
+        //        registerResult.OpponentScore.GetValueOrDefault(),
+        //        registerResult.BitsMatchId.GetValueOrDefault());
+
+        //    return RedirectToAction("Index", "MatchResult");
+        //}
+
+        //public ActionResult RegisterSerie(string aggregateId, string rosterId, int bitsMatchId)
+        //{
+        //    var roster = DocumentSession.Include<Roster>(r => r.Players)
+        //                                .Load<Roster>(rosterId);
+        //    if (roster == null) throw new HttpException(404, "Roster not found");
+        //    var registerSerie = new RegisterSerie(
+        //        new ResultSeriesReadModel.Serie(),
+        //        roster.Players.Select(
+        //            x => new SelectListItem
+        //            {
+        //                Text = DocumentSession.Load<Player>(x).Name,
+        //                Value = x
+        //            })
+        //            .ToList());
+        //    return View(registerSerie);
+        //}
+
+        //[HttpPost]
+        //public ActionResult RegisterSerie(
+        //    string aggregateId,
+        //    int bitsMatchId,
+        //    ResultSeriesReadModel.Serie serie)
+        //{
+        //    var matchResult = EventStoreSession.Load<MatchResult>(aggregateId);
+        //    if (matchResult == null) throw new HttpException(404, "Match result not found");
+        //    var tables = new List<MatchTable>();
+        //    for (var i = 0; i < 4; i++)
+        //    {
+        //        var game1 = new MatchGame(
+        //            serie.Tables[i].Game1.Player,
+        //            serie.Tables[i].Game1.Pins,
+        //            serie.Tables[i].Game1.Strikes,
+        //            serie.Tables[i].Game1.Spares);
+        //        var game2 = new MatchGame(
+        //            serie.Tables[i].Game2.Player,
+        //            serie.Tables[i].Game2.Pins,
+        //            serie.Tables[i].Game2.Strikes,
+        //            serie.Tables[i].Game2.Spares);
+        //        tables.Add(new MatchTable(i + 1, game1, game2, serie.Tables[i].Score));
+        //    }
+
+        //    matchResult.RegisterSerie(tables.ToArray());
+        //    return RedirectToAction(
+        //        "Details",
+        //        "MatchResult",
+        //        new
+        //        {
+        //            id = bitsMatchId
+        //        });
+        //}
+
+        //public ActionResult RegisterBits(int? season)
+        //{
+        //    if (season.HasValue == false)
+        //        season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+
+        //    ViewBag.rosterid = DocumentSession.CreateBitsRosterSelectList(season.Value);
+        //    return View(new RegisterBitsVerifyModel { Season = season.Value });
+        //}
+
+        //[HttpPost]
+        //public ActionResult RegisterBits(RegisterBitsVerifyModel model)
+        //{
+        //    if (ModelState.IsValid == false)
+        //    {
+        //        ViewBag.rosterid = DocumentSession.CreateBitsRosterSelectList(model.Season);
+        //        return View("RegisterBits", model);
+        //    }
+
+        //    var roster = DocumentSession.Include<Roster>(r => r.Players)
+        //                                .Load<Roster>(model.RosterId);
+        //    if (roster == null)
+        //        throw new HttpException(404, "Roster not found");
+
+        //    var players = roster.Players
+        //                        .Select(x => DocumentSession.Load<Player>(x))
+        //                        .ToArray();
+        //    var parser = new BitsParser(players);
+        //    var content = bitsClient.DownloadMatchResult(roster.BitsMatchId);
+        //    if (roster.IsFourPlayer)
+        //    {
+        //        var parse4Result = parser.Parse4(content, roster.Team);
+        //        ExecuteCommand(new RegisterMatch4Command(roster, parse4Result));
+        //    }
+        //    else
+        //    {
+        //        var parseResult = parser.Parse(content, roster.Team);
+        //        ExecuteCommand(new RegisterMatchCommand(roster, parseResult));
+        //    }
+
+        //    return RedirectToAction("Index", "MatchResult");
+        //}
 
         public class RegisterMatch4ViewModel
         {
@@ -313,12 +368,23 @@
                     {
                         yield return new ValidationResult("Summan av lagpoängen kan inte överstiga 20.");
                     }
+
                     for (var i = 0; i < 4; i++)
                     {
                         if (Players.Count(x => x.Games[i].Pins.HasValue) != 4)
                         {
                             yield return new ValidationResult($"Ange 4 resultat i serie {i + 1}");
                         }
+                    }
+
+                    if (Players[4].Games[0].Pins.HasValue)
+                    {
+                        yield return new ValidationResult("Reserven spelar inte i första serien.");
+                    }
+
+                    if (Players.Any(x => x.Games.Any(y => y.Pins.HasValue == false && y.Score)))
+                    {
+                        yield return new ValidationResult("Reserven kan inte vinna en serie.");
                     }
                 }
 

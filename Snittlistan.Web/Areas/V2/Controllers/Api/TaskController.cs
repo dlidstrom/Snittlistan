@@ -266,9 +266,9 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
         {
             var roster = DocumentSession.Load<Roster>(@event.RosterId);
             if (roster.IsFourPlayer) return Ok();
-            var resultSeriesReadModelId = ResultSeriesReadModel.IdFromBitsMatchId(roster.BitsMatchId);
+            var resultSeriesReadModelId = ResultSeriesReadModel.IdFromBitsMatchId(roster.BitsMatchId, roster.Id);
             var resultSeriesReadModel = DocumentSession.Load<ResultSeriesReadModel>(resultSeriesReadModelId);
-            var resultHeaderReadModelId = ResultHeaderReadModel.IdFromBitsMatchId(roster.BitsMatchId);
+            var resultHeaderReadModelId = ResultHeaderReadModel.IdFromBitsMatchId(roster.BitsMatchId, roster.Id);
             var resultHeaderReadModel = DocumentSession.Load<ResultHeaderReadModel>(resultHeaderReadModelId);
             Emails.MatchRegistered(
                 roster.Team,

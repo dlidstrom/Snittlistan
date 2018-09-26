@@ -47,19 +47,6 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
         private int TeamScore { get; set; }
 
-        public void Update(Roster roster, int teamScore, int opponentScore, int bitsMatchId)
-        {
-            if (roster == null) throw new ArgumentNullException(nameof(roster));
-            VerifyScores(teamScore, opponentScore);
-
-            roster.MatchResultId = Id;
-
-            if (roster.Id != RosterId)
-                ApplyChange(new RosterChanged(RosterId, roster.Id));
-            var matchResultUpdated = new MatchResultUpdated(roster.Id, roster.Players, teamScore, opponentScore, bitsMatchId, RosterId, TeamScore, OpponentScore, BitsMatchId);
-            ApplyChange(matchResultUpdated);
-        }
-
         public bool Update(
             Action<object> publish,
             Roster roster,
@@ -169,7 +156,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
         public void ClearMedals()
         {
-            ApplyChange(new ClearMedals(BitsMatchId));
+            ApplyChange(new ClearMedals(BitsMatchId, RosterId));
         }
 
         public void AwardScores()
@@ -181,7 +168,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                 dict[key] = totalScore;
             }
 
-            ApplyChange(new ScoreAwarded(dict, BitsMatchId));
+            ApplyChange(new ScoreAwarded(dict, BitsMatchId, RosterId));
         }
 
         private static void VerifyScores(int teamScore, int opponentScore)
@@ -210,6 +197,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                     if (pinsResult.Pins < 270) continue;
                     var medal = new AwardedMedal(
                         BitsMatchId,
+                        RosterId,
                         key,
                         MedalType.PinsInSerie,
                         pinsResult.Pins);
@@ -226,6 +214,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                     if (score != 4) continue;
                     var medal = new AwardedMedal(
                         BitsMatchId,
+                        RosterId,
                         key,
                         MedalType.TotalScore,
                         4);
@@ -263,7 +252,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             var commentaryAnalyzer = new MatchAnalyzer(matchSeries, opponentSeries, players);
             var summaryText = commentaryAnalyzer.GetSummaryText();
             var bodyText = commentaryAnalyzer.GetBodyText(resultsForPlayer);
-            return new MatchCommentaryEvent(BitsMatchId, summaryText, bodyText);
+            return new MatchCommentaryEvent(BitsMatchId, RosterId, summaryText, bodyText);
         }
 
         // events
@@ -276,16 +265,6 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             BitsMatchId = e.BitsMatchId;
             playerPins = new Dictionary<string, List<PinsAndScoreResult>>();
             registeredSeries = 0;
-            rosterPlayers = new HashSet<string>(e.RosterPlayers);
-        }
-
-        [UsedImplicitly]
-        private void Apply(MatchResultUpdated e)
-        {
-            RosterId = e.NewRosterId;
-            TeamScore = e.NewTeamScore;
-            OpponentScore = e.NewOpponentScore;
-            BitsMatchId = e.NewBitsMatchId;
             rosterPlayers = new HashSet<string>(e.RosterPlayers);
         }
 
