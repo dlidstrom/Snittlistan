@@ -17,7 +17,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
 
         public void Handle(MatchResultRegistered e, string aggregateId)
         {
-            var id = ResultSeriesReadModel.IdFromBitsMatchId(e.BitsMatchId);
+            var id = ResultSeriesReadModel.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
             var results = DocumentSession.Load<ResultSeriesReadModel>(id);
             if (results == null)
             {
@@ -30,7 +30,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
 
         public void Handle(SerieRegistered e, string aggregateId)
         {
-            var id = ResultSeriesReadModel.IdFromBitsMatchId(e.BitsMatchId);
+            var id = ResultSeriesReadModel.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
             var results = DocumentSession.Load<ResultSeriesReadModel>(id);
 
             var matchSerie = e.MatchSerie;

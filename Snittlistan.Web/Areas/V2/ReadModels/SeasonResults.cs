@@ -25,12 +25,13 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             return "SeasonResults-" + season;
         }
 
-        public void Add(int bitsMatchId, DateTime date, int turn, MatchSerie matchSerie)
+        public void Add(int bitsMatchId, string rosterId, DateTime date, int turn, MatchSerie matchSerie)
         {
             foreach (var matchTable in new[] { matchSerie.Table1, matchSerie.Table2, matchSerie.Table3, matchSerie.Table4 })
             {
                 var firstPlayerResult = new PlayerResult(
                     bitsMatchId,
+                    rosterId,
                     date,
                     turn,
                     matchSerie.SerieNumber,
@@ -41,6 +42,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
                 PlayerResults.Add(firstPlayerResult);
                 var secondPlayerResult = new PlayerResult(
                     bitsMatchId,
+                    rosterId,
                     date,
                     turn,
                     matchSerie.SerieNumber,
@@ -52,7 +54,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             }
         }
 
-        public void Add(int bitsMatchId, DateTime date, int turn, MatchSerie4 matchSerie)
+        public void Add(int bitsMatchId, string rosterId, DateTime date, int turn, MatchSerie4 matchSerie)
         {
             var games = new[]
             {
@@ -65,6 +67,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             {
                 var playerResult = new PlayerResult(
                     bitsMatchId,
+                    rosterId,
                     date,
                     turn,
                     matchSerie.SerieNumber,
@@ -112,9 +115,10 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         [DebuggerDisplay("BitsMatchId={BitsMatchId} Date={Date} Turn={Turn} SerieNumber={SerieNumber} TableNumber={TableNumber} PlayerId={PlayerId} Score={Score} Pins={Pins}")]
         public class PlayerResult
         {
-            public PlayerResult(int bitsMatchId, DateTime date, int turn, int serieNumber, int tableNumber, string playerId, int score, int pins)
+            public PlayerResult(int bitsMatchId, string rosterId, DateTime date, int turn, int serieNumber, int tableNumber, string playerId, int score, int pins)
             {
                 BitsMatchId = bitsMatchId;
+                RosterId = rosterId;
                 Date = date;
                 Turn = turn;
                 SerieNumber = serieNumber;
@@ -125,6 +129,8 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             }
 
             public int BitsMatchId { get; }
+
+            public string RosterId { get; }
 
             public DateTime Date { get; }
 
@@ -145,6 +151,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
                 unchecked
                 {
                     var hashCode = BitsMatchId;
+                    hashCode = (hashCode * 397) ^ (RosterId != null ? RosterId.GetHashCode() : 0);
                     hashCode = (hashCode * 397) ^ SerieNumber;
                     hashCode = (hashCode * 397) ^ TableNumber;
                     hashCode = (hashCode * 397) ^ (PlayerId != null ? PlayerId.GetHashCode() : 0);

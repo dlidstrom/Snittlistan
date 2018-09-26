@@ -39,9 +39,9 @@
             return View(vm);
         }
 
-        public ActionResult Details(int id)
+        public ActionResult Details(int id, string rosterId)
         {
-            var headerId = ResultHeaderReadModel.IdFromBitsMatchId(id);
+            var headerId = ResultHeaderReadModel.IdFromBitsMatchId(id, rosterId);
             var headerReadModel = DocumentSession.Load<ResultHeaderReadModel>(headerId);
             if (headerReadModel == null) throw new HttpException(404, "Match result not found");
 
@@ -49,7 +49,7 @@
             var headerViewModel = new ResultHeaderViewModel(headerReadModel, roster);
             if (roster.IsFourPlayer)
             {
-                var matchId = ResultSeries4ReadModel.IdFromBitsMatchId(id);
+                var matchId = ResultSeries4ReadModel.IdFromBitsMatchId(id, rosterId);
                 var resultReadModel = DocumentSession.Load<ResultSeries4ReadModel>(matchId)
                     ?? new ResultSeries4ReadModel();
 
@@ -57,7 +57,7 @@
             }
             else
             {
-                var matchId = ResultSeriesReadModel.IdFromBitsMatchId(id);
+                var matchId = ResultSeriesReadModel.IdFromBitsMatchId(id, rosterId);
                 var resultReadModel = DocumentSession.Load<ResultSeriesReadModel>(matchId)
                     ?? new ResultSeriesReadModel();
 

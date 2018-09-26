@@ -10,7 +10,6 @@ using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
 using Snittlistan.Web.Areas.V2.ReadModels;
-using Snittlistan.Web.Infrastructure;
 
 namespace Snittlistan.Test.Domain
 {
@@ -44,7 +43,6 @@ namespace Snittlistan.Test.Domain
         private MatchResult Act(TestCase testCase)
         {
             // Arrange
-            var bitsClient = new BitsClient();
             var players = new[]
             {
                 new Player("Alf Kindblom", "e@d.com", Player.Status.Active, -1, "Affe"),
@@ -117,9 +115,9 @@ namespace Snittlistan.Test.Domain
                 };
                 foreach (var playerId in playerResults.Keys)
                 {
-                    for (var bitsMatchId = 0; bitsMatchId < 5; bitsMatchId++)
+                    for (var bitsMatchId = 10; bitsMatchId < 15; bitsMatchId++)
                     {
-                        var resultForPlayer = new ResultForPlayerReadModel(2017, playerId, bitsMatchId, DateTime.Now);
+                        var resultForPlayer = new ResultForPlayerReadModel(2017, playerId, bitsMatchId, null, DateTime.Now);
                         foreach (var playerResult in playerResults[playerId])
                         {
                             resultForPlayer.AddGame(1, new MatchGame(playerId, playerResult, 0, 0));

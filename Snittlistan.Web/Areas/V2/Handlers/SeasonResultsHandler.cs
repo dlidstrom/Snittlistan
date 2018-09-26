@@ -49,7 +49,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             {
                 var id = SeasonResults.GetId(roster.Season);
                 var seasonResults = DocumentSession.Load<SeasonResults>(id);
-                seasonResults.Add(roster.BitsMatchId, roster.Date, roster.Turn, e.MatchSerie);
+                seasonResults.Add(roster.BitsMatchId, roster.Id, roster.Date, roster.Turn, e.MatchSerie);
             }
         }
 
@@ -60,7 +60,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             {
                 var id = SeasonResults.GetId(roster.Season);
                 var seasonResults = DocumentSession.Load<SeasonResults>(id);
-                seasonResults.Add(roster.BitsMatchId, roster.Date, roster.Turn, e.MatchSerie);
+                seasonResults.Add(roster.BitsMatchId, roster.Id, roster.Date, roster.Turn, e.MatchSerie);
             }
         }
     }

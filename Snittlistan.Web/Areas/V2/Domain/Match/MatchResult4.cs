@@ -132,7 +132,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
         public void ClearMedals()
         {
-            ApplyChange(new ClearMedals(BitsMatchId));
+            ApplyChange(new ClearMedals(BitsMatchId, RosterId));
         }
 
         private static void VerifyScores(int teamScore, int opponentScore)
@@ -163,6 +163,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                 {
                     var medal = new AwardedMedal(
                         BitsMatchId,
+                        RosterId,
                         key,
                         MedalType.PinsInSerie,
                         pinsResult.Pins);
@@ -179,6 +180,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                     if (score != 4) continue;
                     var medal = new AwardedMedal(
                         BitsMatchId,
+                        RosterId,
                         key,
                         MedalType.TotalScore,
                         4);
@@ -211,16 +213,6 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             TeamScore = e.TeamScore;
             OpponentScore = e.OpponentScore;
             BitsMatchId = e.BitsMatchId;
-            rosterPlayers = new HashSet<string>(e.RosterPlayers);
-        }
-
-        [UsedImplicitly]
-        private void Apply(MatchResult4Updated e)
-        {
-            RosterId = e.NewRosterId;
-            TeamScore = e.NewTeamScore;
-            OpponentScore = e.NewOpponentScore;
-            BitsMatchId = e.NewBitsMatchId;
             rosterPlayers = new HashSet<string>(e.RosterPlayers);
         }
 
