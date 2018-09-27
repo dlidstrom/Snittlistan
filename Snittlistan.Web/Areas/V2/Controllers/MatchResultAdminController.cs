@@ -24,7 +24,8 @@
             if (season.HasValue == false)
                 season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
 
-            ViewBag.rosterid = DocumentSession.CreateRosterSelectList(season.Value);
+            // only support for 4-player as of now
+            ViewBag.rosterid = DocumentSession.CreateRosterSelectList(season.Value, pred: x => x.IsFourPlayer);
             return View();
         }
 
@@ -151,8 +152,9 @@
             var parse4Result = new Parse4Result(
                 viewModel.Model.TeamScore.Value,
                 viewModel.Model.OpponentScore.Value,
+                roster.Turn,
                 series.ToArray());
-            ExecuteCommand(new RegisterMatch4Command(roster, parse4Result));
+            ExecuteCommand(new RegisterMatch4Command(roster, parse4Result, viewModel.Model.Commentary));
 
             return RedirectToAction(
                 "Details",
@@ -197,6 +199,10 @@
                     Players = players;
                 }
 
+                [MaxLength(1024)]
+                [Display(Name = "Matchreferat")]
+                public string Commentary { get; set; }
+
                 [Required]
                 [Range(0, 20)]
                 [Display(Name = "Lagpoäng")]
@@ -232,6 +238,11 @@
                     if (Players.Any(x => x.Games.Any(y => y.Pins.HasValue == false && y.Score)))
                     {
                         yield return new ValidationResult("Reserven kan inte vinna en serie.");
+                    }
+
+                    if (Players.Any(x => x.PlayerId == null && x.Games.Any(y => y.Pins.HasValue)))
+                    {
+                        yield return new ValidationResult("Ange spelaren som ska ha resultat.");
                     }
                 }
 

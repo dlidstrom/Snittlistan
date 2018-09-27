@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Snittlistan.Test.Properties;
 using Snittlistan.Web.Areas.V2.Domain;
 
 namespace Snittlistan.Test
@@ -9,160 +8,64 @@ namespace Snittlistan.Test
     [TestFixture]
     public class BitsParser_Header
     {
-        [Test]
-        public void ParsesTeamName1()
+        [TestCaseSource(nameof(TestCases))]
+        public void TestParseHeader(
+            int bitsMatchId,
+            HashSet<string> possibleTeams,
+            DateTime date,
+            string team,
+            string opponent,
+            int turn,
+            string oilPatternName,
+            string oilPatternUrl)
         {
             // Arrange
-            var content = Resources.Id3048477;
-            var possibleTeams = new HashSet<string> { "Fredrikshof F" };
+            var content = BitsGateway.GetMatch(bitsMatchId);
 
             // Act
             var header = BitsParser.ParseHeader(content, possibleTeams);
 
             // Assert
-            Assert.That(header.Team, Is.EqualTo("Fredrikshof F"));
+            Assert.That(header.Date, Is.EqualTo(date));
+            Assert.That(header.Team, Is.EqualTo(team));
+            Assert.That(header.Opponent, Is.EqualTo(opponent));
+            Assert.That(header.Turn, Is.EqualTo(turn));
+            Assert.That(header.OilPattern.Name, Is.EqualTo(oilPatternName));
+            Assert.That(header.OilPattern.Url, Is.EqualTo(oilPatternUrl));
         }
 
-        [Test]
-        public void ParsesTeamName2()
+        private static IEnumerable<TestCaseData> TestCases
         {
-            // Arrange
-            var content = Resources.Id3048477;
-            var possibleTeams = new HashSet<string> { "Fredrikshof IF F" };
-
-            // Act
-            var header = BitsParser.ParseHeader(content, possibleTeams);
-
-            // Assert
-            Assert.That(header.Team, Is.EqualTo("Fredrikshof IF F"));
-        }
-
-        [Test]
-        public void ParsesTeamName3()
-        {
-            // Arrange
-            var content = Resources.Id3048477;
-            var possibleTeams = new HashSet<string> { "Fredrikshof IF F", "Fredrikshof F" };
-
-            // Act
-            var header = BitsParser.ParseHeader(content, possibleTeams);
-
-            // Assert
-            Assert.That(header.Team, Is.EqualTo("Fredrikshof IF F"));
-        }
-
-        [Test]
-        public void ParsesTeamName4()
-        {
-            // Arrange
-            var content = Resources.Id3048477;
-            var possibleTeams = new HashSet<string> { "Fredrikshof F", "Fredrikshof IF F" };
-
-            // Act
-            var header = BitsParser.ParseHeader(content, possibleTeams);
-
-            // Assert
-            Assert.That(header.Team, Is.EqualTo("Fredrikshof IF F"));
-        }
-
-        [Test]
-        public void ParsesTeamName5()
-        {
-            // Arrange
-            var content = Resources.Id3048747;
-            var possibleTeams = new HashSet<string> { "Fredrikshof F" };
-
-            // Act
-            var header = BitsParser.ParseHeader(content, possibleTeams);
-
-            // Assert
-            Assert.That(header.Team, Is.EqualTo("Fredrikshof F"));
-        }
-
-        [Test]
-        public void ParsesTeamName6()
-        {
-            // Arrange
-            var content = Resources.Id3048747;
-            var possibleTeams = new HashSet<string> { "Fredrikshof IF F" };
-
-            // Act
-            var header = BitsParser.ParseHeader(content, possibleTeams);
-
-            // Assert
-            Assert.That(header.Team, Is.EqualTo("Fredrikshof IF F"));
-        }
-
-        [Test]
-        public void ParsesTeamName7()
-        {
-            // Arrange
-            var content = Resources.Id3048747;
-            var possibleTeams = new HashSet<string> { "Fredrikshof IF F", "Fredrikshof F" };
-
-            // Act
-            var header = BitsParser.ParseHeader(content, possibleTeams);
-
-            // Assert
-            Assert.That(header.Team, Is.EqualTo("Fredrikshof F"));
-        }
-
-        [Test]
-        public void ParsesTeamName8()
-        {
-            // Arrange
-            var content = Resources.Id3048747;
-            var possibleTeams = new HashSet<string> { "Fredrikshof F", "Fredrikshof IF F" };
-
-            // Act
-            var header = BitsParser.ParseHeader(content, possibleTeams);
-
-            // Assert
-            Assert.That(header.Team, Is.EqualTo("Fredrikshof IF F"));
-        }
-
-        [Test]
-        public void ParsesDate()
-        {
-            // Arrange
-            var content = Resources.Id3048477;
-            var possibleTeams = new HashSet<string> { "Fredrikshof IF F" };
-
-            // Act
-            var header = BitsParser.ParseHeader(content, possibleTeams);
-
-            // Assert
-            Assert.That(header.Date, Is.EqualTo(new DateTime(2013, 4, 20)));
-        }
-
-        [Test]
-        public void ParsesOilPattern()
-        {
-            // Arrange
-            var content = Resources.Id3152235;
-            var possibleTeams = new HashSet<string> { "Fredrikshof IF BK F" };
-
-            // Act
-            var header = BitsParser.ParseHeader(content, possibleTeams);
-
-            // Assert
-            Assert.That(header.OilPattern.Name, Is.EqualTo("ABT#2"));
-            Assert.That(header.OilPattern.Url, Is.EqualTo("http://bits.swebowl.se/OilPattern.aspx?OilPatternId=61"));
-        }
-
-        [Test]
-        public void ParsesTeamsCorrectly()
-        {
-            // Arrange
-            var content = BitsGateway.GetMatch(3148486);
-            var possibleTeams = new HashSet<string> { "Värtans IK B" };
-
-            // Act
-            var header = BitsParser.ParseHeader(content, possibleTeams);
-
-            // Assert
-            Assert.That(header.Team, Is.EqualTo("Värtans IK B"));
-            Assert.That(header.Opponent, Is.EqualTo("IK Makkabi"));
+            get
+            {
+                yield return new TestCaseData(
+                    3148486,
+                    new HashSet<string> { "Värtans IK B" },
+                    new DateTime(2018, 1, 21, 16, 20, 0),
+                    "Värtans IK B",
+                    "IK Makkabi",
+                    13,
+                    "High Street",
+                    "http://bits.swebowl.se/OilPattern.aspx?OilPatternId=51");
+                yield return new TestCaseData(
+                    3152235,
+                    new HashSet<string> { "Fredrikshof IF BK F" },
+                    new DateTime(2017, 10, 28, 12, 20, 0),
+                    "Fredrikshof IF BK F",
+                    "BajenFans BF",
+                    8,
+                    "ABT#2",
+                    "http://bits.swebowl.se/OilPattern.aspx?OilPatternId=61");
+                yield return new TestCaseData(
+                    3048477,
+                    new HashSet<string> { "Fredrikshof IF F" },
+                    new DateTime(2013, 4, 20),
+                    "Fredrikshof IF F",
+                    "BwK Ankaret F",
+                    22,
+                    string.Empty,
+                    string.Empty);
+            }
         }
     }
 }

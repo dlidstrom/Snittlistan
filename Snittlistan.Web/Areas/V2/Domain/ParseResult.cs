@@ -11,11 +11,13 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public ParseResult(
             int teamScore,
             int opponentScore,
+            int turn,
             ResultSeriesReadModel.Serie[] series,
             ResultSeriesReadModel.Serie[] opponentSeries)
         {
             TeamScore = teamScore;
             OpponentScore = opponentScore;
+            Turn = turn;
             Series = series ?? throw new ArgumentNullException(nameof(series));
             OpponentSeries = opponentSeries ?? throw new ArgumentNullException(nameof(opponentSeries));
         }
@@ -23,6 +25,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public int TeamScore { get; }
 
         public int OpponentScore { get; }
+
+        public int Turn { get; }
 
         public ResultSeriesReadModel.Serie[] Series { get; }
 

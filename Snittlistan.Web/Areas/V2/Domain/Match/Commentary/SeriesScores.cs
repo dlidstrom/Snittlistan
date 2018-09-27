@@ -49,45 +49,20 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                 .ToArray();
         }
 
-        public int TeamScoreTotal { get; private set; }
-        public int TeamScoreDelta { get; private set; }
-        public int OpponentScoreTotal { get; private set; }
-        public int OpponentScoreDelta { get; private set; }
-        public int SerieNumber { get; private set; }
-        public int TeamPins { get; private set; }
-        public int OpponentPins { get; private set; }
-        public MatchResultType MatchResult { get; private set; }
-        public PlayerResult[] PlayerResults { get; private set; }
+        public int TeamScoreTotal { get; }
+        public int TeamScoreDelta { get; }
+        public int OpponentScoreTotal { get; }
+        public int OpponentScoreDelta { get; }
+        public int SerieNumber { get; }
+        public int TeamPins { get; }
+        public int OpponentPins { get; }
+        public MatchResultType MatchResult { get; }
+        public PlayerResult[] PlayerResults { get; }
 
-        public string FormattedResult
-        {
-            get { return $"{TeamScoreTotal}-{OpponentScoreTotal}"; }
-        }
+        public string FormattedResult => $"{TeamScoreTotal}-{OpponentScoreTotal}";
 
-        public string FormattedDeltaResult
-        {
-            get { return $"{TeamScoreDelta}-{OpponentScoreDelta}"; }
-        }
+        public string FormattedDeltaResult => $"{TeamScoreDelta}-{OpponentScoreDelta}";
 
-        public string FormattedInvertedDeltaResult
-        {
-            get { return $"{OpponentScoreDelta}-{TeamScoreDelta}"; }
-        }
-
-        public class PlayerResult
-        {
-            public PlayerResult(string playerId, int pins, int score)
-            {
-                PlayerId = playerId;
-                Pins = pins;
-                Score = score;
-            }
-
-            public string PlayerId { get; private set; }
-
-            public int Pins { get; private set; }
-
-            public int Score { get; private set; }
-        }
+        public string FormattedInvertedDeltaResult => $"{OpponentScoreDelta}-{TeamScoreDelta}";
     }
 }

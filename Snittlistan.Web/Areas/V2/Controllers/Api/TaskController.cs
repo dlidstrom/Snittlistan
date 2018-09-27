@@ -75,7 +75,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                     parseResult.TeamScore,
                     parseResult.OpponentScore,
                     roster.BitsMatchId,
-                    parseResult.CreateMatchSeries());
+                    parseResult.CreateMatchSeries(),
+                    players);
                 roster.IsVerified = isVerified;
             }
             else

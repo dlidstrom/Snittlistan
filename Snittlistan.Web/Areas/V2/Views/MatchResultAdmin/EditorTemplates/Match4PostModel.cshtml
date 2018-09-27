@@ -3,40 +3,82 @@
     var playerListItems = (SelectListItem[])ViewData["playerListItems"];
 }
 
-<div class="control-group">
-    @Html.LabelFor(x => x.TeamScore, new { @class = "control-label" })
-    <div class="controls">
-        @Html.TextBoxFor(
-            x => x.TeamScore,
-            new
-            {
-                @class = "span1",
-                type = "number",
-                pattern = @"\d*",
-                min = "0",
-                max = "20",
-                required = "required"
-            })
+<div class="row">
+    <div class="span2">
+        <div class="control-group">
+            <div class="controls">
+                @Html.LabelFor(
+                    x => x.TeamScore,
+                    new
+                    {
+                        @class = "control-label"
+                    })
+                @Html.TextBoxFor(
+                    x => x.TeamScore,
+                    new
+                    {
+                        @class = "span1",
+                        type = "number",
+                        pattern = @"\d*",
+                        min = "0",
+                        max = "20",
+                        required = "required",
+                        title = "0-20 poäng",
+                        placeholder = "0-20"
+                    })
+            </div>
+        </div>
     </div>
-</div>
-<div class="control-group">
-    @Html.LabelFor(x => x.OpponentScore, new { @class = "control-label" })
-    <div class="controls">
-        @Html.TextBoxFor(
-            x => x.OpponentScore,
-            new
-            {
-                @class = "span1",
-                type = "number",
-                pattern = @"\d*",
-                min = "0",
-                max = "20",
-                required = "required"
-            })
+    <div class="span2">
+        <div class="control-group">
+            <div class="controls">
+                @Html.LabelFor(
+                    x => x.OpponentScore,
+                    new
+                    {
+                        @class = "control-label"
+                    })
+                @Html.TextBoxFor(
+                    x => x.OpponentScore,
+                    new
+                    {
+                        @class = "span1",
+                        type = "number",
+                        pattern = @"\d*",
+                        min = "0",
+                        max = "20",
+                        required = "required",
+                        title = "0-20 poäng",
+                        placeholder = "0-20"
+                    })
+            </div>
+        </div>
+    </div>
+    <div class="span8">
+        <div class="control-group">
+            <div class="controls">
+                @Html.LabelFor(
+                    x => x.Commentary,
+                    new
+                    {
+                        @class = "control-label"
+                    })
+                @Html.TextAreaFor(
+                    x => x.Commentary,
+                    new
+                    {
+                        @class = "span8",
+                        rows = "4",
+                        type = "text",
+                        maxlength = "1024",
+                        placeholder = "Matchreferat"
+                    })
+            </div>
+        </div>
     </div>
 </div>
 <div class="row">
-    <div class="span8">
+    <div class="span12">
         <p>För varje serie, ange om spelaren vann serien.</p>
         <table class="table table-condensed table-bordered table-striped">
             <tr>
