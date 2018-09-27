@@ -41,6 +41,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
             var dateText = dateNode.InnerText;
             var locationNode = documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelHallName']");
             var locationText = locationNode.InnerText;
+            var turnNode = documentNode.SelectSingleNode("//td[@id='MainContentPlaceHolder_MatchInfo_LabelRound']");
+            var turn = int.Parse(turnNode.InnerText.Replace("Omgång ", string.Empty));
             var oilPatternNode = documentNode.SelectSingleNode("//td[@id='MainContentPlaceHolder_MatchInfo_LabelMatchOilPatternName']//a");
             string oilPatternText;
             string oilPatternUrl;
@@ -88,6 +90,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 var result = new ParseHeaderResult(
                     homeTeam,
                     awayTeamName,
+                    turn,
                     DateTime.Parse(dateText),
                     locationText,
                     oilPatternInformation);
@@ -126,7 +129,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 throw new ApplicationException(message);
             }
 
-            return new ParseHeaderResult(awayTeam, homeTeamName, DateTime.Parse(dateText), locationText, oilPatternInformation);
+            return new ParseHeaderResult(awayTeam, homeTeamName, turn, DateTime.Parse(dateText), locationText, oilPatternInformation);
         }
 
         public static ParseStandingsResult ParseStandings(string content)
@@ -353,7 +356,10 @@ namespace Snittlistan.Web.Areas.V2.Domain
             var awayScoreNode = documentNode.SelectSingleNode($"//span[@id='MainContentPlaceHolder_MatchHead1_LblSumPoints{away}']");
             var awayScore = int.Parse(awayScoreNode.InnerText);
 
-            return new ParseResult(teamScore, awayScore, teamSeries, opponentSeries);
+            var turnNode = documentNode.SelectSingleNode("//td[@id='MainContentPlaceHolder_MatchInfo_LabelRound']");
+            var turn = int.Parse(turnNode.InnerText.Replace("Omgång ", string.Empty));
+
+            return new ParseResult(teamScore, awayScore, turn, teamSeries, opponentSeries);
         }
 
         private ResultSeriesReadModel.Serie[] ExtractSeriesForTeam(
@@ -450,7 +456,10 @@ namespace Snittlistan.Web.Areas.V2.Domain
             var awayScoreNode = documentNode.SelectSingleNode($"//span[@id='MainContentPlaceHolder_MatchHead1_LblSumPoints{away}']");
             var awayScore = int.Parse(awayScoreNode.InnerText);
 
-            return new Parse4Result(teamScore, awayScore, series.ToArray());
+            var turnNode = documentNode.SelectSingleNode("//td[@id='MainContentPlaceHolder_MatchInfo_LabelRound']");
+            var turn = int.Parse(turnNode.InnerText.Replace("Omgång ", string.Empty));
+
+            return new Parse4Result(teamScore, awayScore, turn, series.ToArray());
         }
 
         private Player GetPlayerId(string name)

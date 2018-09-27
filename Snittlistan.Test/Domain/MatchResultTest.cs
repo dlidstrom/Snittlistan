@@ -38,35 +38,6 @@ namespace Snittlistan.Test.Domain
         }
 
         [Test]
-        public void CanUpdate()
-        {
-            // Arrange
-            var matchResult = new MatchResult(roster, 9, 11, 123);
-            var newRoster = new Roster(2012, 10, 1, "X", "A", "Y", "Z", new DateTime(2012, 1, 1), false, OilPatternInformation.Empty)
-            {
-                Id = "rosters-2"
-            };
-
-            // Act
-            matchResult.Update(newRoster, 11, 9, 321);
-
-            // Assert
-            var uncommittedChanges = matchResult.GetUncommittedChanges();
-            Assert.That(uncommittedChanges.Length, Is.EqualTo(3));
-            var changed = uncommittedChanges[1] as RosterChanged;
-            Assert.NotNull(changed);
-            Assert.That(changed.OldId, Is.EqualTo("rosters-1"));
-            Assert.That(changed.NewId, Is.EqualTo("rosters-2"));
-
-            var updated = uncommittedChanges[2] as MatchResultUpdated;
-            Assert.NotNull(updated);
-            Assert.That(updated.NewRosterId, Is.EqualTo("rosters-2"));
-            Assert.That(updated.NewTeamScore, Is.EqualTo(11));
-            Assert.That(updated.NewOpponentScore, Is.EqualTo(9));
-            Assert.That(updated.NewBitsMatchId, Is.EqualTo(321));
-        }
-
-        [Test]
         public void MustRegisterResultBeforeSeries()
         {
             // Arrange
@@ -347,28 +318,6 @@ namespace Snittlistan.Test.Domain
             Assert.Throws<ArgumentOutOfRangeException>(() => new MatchResult(roster, 0, -1, 0));
             Assert.Throws<ArgumentOutOfRangeException>(() => new MatchResult(roster, 0, 21, 0));
             Assert.Throws<ArgumentException>(() => new MatchResult(roster, 10, 11, 0));
-        }
-
-        [Test]
-        public void ValidUpdate()
-        {
-            var matchResult = new MatchResult(roster, 0, 0, 0);
-            Assert.DoesNotThrow(() => matchResult.Update(roster, 0, 0, 0));
-            Assert.DoesNotThrow(() => matchResult.Update(roster, 0, 20, 0));
-            Assert.DoesNotThrow(() => matchResult.Update(roster, 20, 0, 0));
-            Assert.DoesNotThrow(() => matchResult.Update(roster, 10, 10, 0));
-        }
-
-        [Test]
-        public void InvalidUpdate()
-        {
-            var matchResult = new MatchResult(roster, 0, 0, 0);
-            Assert.Throws<ArgumentNullException>(() => matchResult.Update(null, 0, 0, 0));
-            Assert.Throws<ArgumentOutOfRangeException>(() => matchResult.Update(roster, -1, 0, 0));
-            Assert.Throws<ArgumentOutOfRangeException>(() => matchResult.Update(roster, 21, 0, 0));
-            Assert.Throws<ArgumentOutOfRangeException>(() => matchResult.Update(roster, 0, -1, 0));
-            Assert.Throws<ArgumentOutOfRangeException>(() => matchResult.Update(roster, 0, 21, 0));
-            Assert.Throws<ArgumentException>(() => matchResult.Update(roster, 10, 11, 0));
         }
 
         [Test]

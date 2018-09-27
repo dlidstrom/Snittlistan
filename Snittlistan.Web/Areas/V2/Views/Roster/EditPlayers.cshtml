@@ -1,9 +1,9 @@
 ﻿@model EditRosterPlayersViewModel
 
-<h4>Omgång @Model.Roster.Turn</h4>
+<h4>Omgång @Model.RosterViewModel.Turn</h4>
 <div class="row">
     <div class="span6">
-        @Html.DisplayFor(model => model.Roster, "Roster", new { hideControls = true })
+        @Html.DisplayFor(model => model.RosterViewModel, "Roster", new { hideControls = true })
     </div>
 </div>
 <div class="row">
@@ -11,13 +11,13 @@
         @using (Html.BeginForm(
             "EditPlayers",
             "Roster",
-            new { id = Model.Id },
+            new { Model.RosterViewModel.Header.RosterId },
             FormMethod.Post,
             new { @class = "form-horizontal"}))
         {
-            @Html.Hidden("IsFourPlayer", Model.Roster.IsFourPlayer)
+            @Html.Hidden("IsFourPlayer", Model.RosterViewModel.IsFourPlayer)
             @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
-            if (Model.Roster.IsFourPlayer)
+            if (Model.RosterViewModel.IsFourPlayer)
             {
                 <table class="table table-condensed">
                     <tr>
@@ -33,7 +33,7 @@
                                     <option value="">Välj spelare</option>
                                     @foreach (var player in Model.AvailablePlayers)
                                     {
-                                        var elementAtOrDefault = Model.Roster.Players.ElementAtOrDefault(i);
+                                        var elementAtOrDefault = Model.RosterViewModel.Players.ElementAtOrDefault(i);
                                         if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
                                         {
                                             <option value="@player.Id" selected="selected">@player.Name</option>
@@ -54,7 +54,7 @@
                                 <option value="">Välj reserv</option>
                                 @foreach (var player in Model.AvailablePlayers)
                                 {
-                                    var elementAtOrDefault = Model.Roster.Players.ElementAtOrDefault(4);
+                                    var elementAtOrDefault = Model.RosterViewModel.Players.ElementAtOrDefault(4);
                                     if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
                                     {
                                         <option value="@player.Id" selected="selected">@player.Name</option>
@@ -74,7 +74,7 @@
                                 <option value="">Välj lagledare</option>
                                 @foreach (var player in Model.AvailablePlayers)
                                 {
-                                    if (Model.Roster.TeamLeader != null && player.Id == Model.Roster.TeamLeader.Item1)
+                                    if (Model.RosterViewModel.TeamLeader != null && player.Id == Model.RosterViewModel.TeamLeader.Item1)
                                     {
                                         <option value="@player.Id" selected="selected">@player.Name</option>
                                     }
@@ -104,7 +104,7 @@
                                     <option value="">Välj spelare</option>
                                     @foreach (var player in Model.AvailablePlayers)
                                     {
-                                        var elementAtOrDefault = Model.Roster.Players.ElementAtOrDefault(2 * i);
+                                        var elementAtOrDefault = Model.RosterViewModel.Players.ElementAtOrDefault(2 * i);
                                         if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
                                         {
                                             <option value="@player.Id" selected="selected">@player.Name</option>
@@ -123,7 +123,7 @@
                                     <option value="">Välj spelare</option>
                                     @foreach (var player in Model.AvailablePlayers)
                                     {
-                                        var elementAtOrDefault = Model.Roster.Players.ElementAtOrDefault(2 * i + 1);
+                                        var elementAtOrDefault = Model.RosterViewModel.Players.ElementAtOrDefault(2 * i + 1);
                                         if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
                                         {
                                             <option value="@player.Id" selected="selected">@player.Name</option>
@@ -144,7 +144,7 @@
                                 <option value="">Välj reserv 1</option>
                                 @foreach (var player in Model.AvailablePlayers)
                                 {
-                                    var elementAtOrDefault = Model.Roster.Players.ElementAtOrDefault(8);
+                                    var elementAtOrDefault = Model.RosterViewModel.Players.ElementAtOrDefault(8);
                                     if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
                                     {
                                         <option value="@player.Id" selected="selected">@player.Name</option>
@@ -163,7 +163,7 @@
                                 <option value="">Välj reserv 2</option>
                                 @foreach (var player in Model.AvailablePlayers)
                                 {
-                                    var elementAtOrDefault = Model.Roster.Players.ElementAtOrDefault(9);
+                                    var elementAtOrDefault = Model.RosterViewModel.Players.ElementAtOrDefault(9);
                                     if (elementAtOrDefault != null && player.Id == elementAtOrDefault.Item1)
                                     {
                                         <option value="@player.Id" selected="selected">@player.Name</option>
@@ -183,7 +183,7 @@
                                 <option value="">Välj lagledare</option>
                                 @foreach (var player in Model.AvailablePlayers)
                                 {
-                                    if (Model.Roster.TeamLeader != null && player.Id == Model.Roster.TeamLeader.Item1)
+                                    if (Model.RosterViewModel.TeamLeader != null && player.Id == Model.RosterViewModel.TeamLeader.Item1)
                                     {
                                         <option value="@player.Id" selected="selected">@player.Name</option>
                                     }
@@ -200,13 +200,13 @@
             <div class="control-group">
                 <div class="controls">
                     <label class="checkbox">
-                        @Html.EditorFor(model => model.Preliminary) Preliminär (visas inte)
+                        @Html.EditorFor(model => model.RosterViewModel.Preliminary) Preliminär (visas inte)
                     </label>
                 </div>
             </div>
             <div class="form-actions">
                 <button class="btn btn-primary btn-large" type="submit">Spara</button>
-                @Html.ActionLink("Avbryt", "View", new { season = Model.Roster.Season, turn = Model.Roster.Turn }, new { @class = "btn btn-large" })
+                @Html.ActionLink("Avbryt", "View", new { season = Model.RosterViewModel.Season, turn = Model.RosterViewModel.Turn }, new { @class = "btn btn-large" })
             </div>
         }
     </div>
@@ -215,7 +215,7 @@
 {
     @Html.Action("PlayerStatus", new
     {
-        turn = Model.Roster.Turn,
-        season = Model.Roster.Season
+        turn = Model.RosterViewModel.Turn,
+        season = Model.RosterViewModel.Season
     })
 }

@@ -6,12 +6,17 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 {
     public class ResultForPlayerReadModel : IReadModel
     {
-        public ResultForPlayerReadModel(int season, string playerId, int bitsMatchId, DateTime date)
+        public ResultForPlayerReadModel(
+            int season,
+            string playerId,
+            int bitsMatchId,
+            string rosterId,
+            DateTime date)
         {
             Season = season;
             PlayerId = playerId;
             BitsMatchId = bitsMatchId;
-            Id = GetId(playerId, bitsMatchId);
+            Id = GetId(playerId, bitsMatchId, rosterId);
             Date = date;
         }
 
@@ -31,9 +36,11 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
         public int TotalSeries { get; private set; }
 
-        public static string GetId(string playerId, int bitsMatchId)
+        public static string GetId(string playerId, int bitsMatchId, string rosterId)
         {
-            return $"ResultForPlayer-{playerId}-{bitsMatchId}";
+            if (bitsMatchId != 0)
+                return $"ResultForPlayer-{playerId}-{bitsMatchId}";
+            return $"ResultForPlayer-{playerId}-R{rosterId.Substring(8)}";
         }
 
         public void AddGame(MatchGame4 game)

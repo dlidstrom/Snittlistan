@@ -4,7 +4,7 @@
 }
 
 <div class="well well-small editable">
-    @if (Request.IsAuthenticated && hideControls == false)
+    @if (Request.IsAuthenticated && hideControls == false && Model.Header.MatchResultId == null)
     {
         <div class="dropdown edit-left">
             <button class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">
@@ -13,13 +13,13 @@
             </button>
             <ul class="dropdown-menu">
                 <li>
-                    <a href="@Url.Action("Edit", new { Model.Id })">
+                    <a href="@Url.Action("Edit", new { id = Model.Header.RosterId })">
                         <i class="sprite-glyphicons_151_edit"></i>
                         Redigera
                     </a>
                 </li>
                 <li>
-                    <a href="@Url.Action("Delete", new { Model.Id })">
+                    <a href="@Url.Action("Delete", new { id = Model.Header.RosterId })">
                         <i class="sprite-glyphicons_016_bin"></i>
                         Ta bort
                     </a>
@@ -27,38 +27,5 @@
             </ul>
         </div>
     }
-    <dl class="dl-horizontal">
-        <dt>lag</dt>
-        <dd>@Content.TeamLabel(Model.TeamLevel, Model.Team)</dd>
-        <dt>plats</dt>
-        <dd>@Model.Location</dd>
-        <dt>motstånd</dt>
-        <dd>@Model.Opponent</dd>
-        @if (string.IsNullOrWhiteSpace(Model.OilPattern.Name) == false)
-        {
-            <dt>oljeprofil</dt>
-            <dd>
-                @if (string.IsNullOrWhiteSpace(Model.OilPattern.Url) == false)
-                {
-                    <a href="@Model.OilPattern.Url">
-                        @Model.OilPattern.Name
-                        <i class="icon-share-alt"></i>
-                    </a>
-                }
-                else
-                {
-                    @Model.OilPattern.Name
-                }
-            </dd>
-        }
-
-        <dt>när</dt>
-        <dd>
-            <em>
-                <time datetime="@Model.Date.ToString("s")">
-                    @Model.Date.ToString("dddd d MMMM HH:mm")
-                </time>
-            </em>
-        </dd>
-    </dl>
+    @Html.DisplayFor(x => x.Header)
 </div>
