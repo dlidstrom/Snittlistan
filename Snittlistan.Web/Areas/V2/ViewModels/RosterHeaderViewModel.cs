@@ -16,7 +16,8 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             string location,
             string opponent,
             DateTime date,
-            OilPatternInformation oilPattern)
+            OilPatternInformation oilPattern,
+            string matchResultId)
         {
             RosterId = rosterId;
             Team = team;
@@ -25,6 +26,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             Opponent = opponent;
             Date = date;
             OilPattern = oilPattern;
+            MatchResultId = matchResultId;
         }
 
         public string RosterId { get; set; }
@@ -40,5 +42,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         public DateTime Date { get; set; }
 
         public OilPatternInformation OilPattern { get; set; }
+
+        public string MatchResultId { get; set; }
     }
 }

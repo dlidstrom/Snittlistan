@@ -1,4 +1,8 @@
-﻿<div class="row">
+﻿@model InitialDataViewModel
+
+@Html.DisplayFor(model => model, "IndexHeader")
+
+<div class="row">
     <div class="span12">
         <h4>Inga matcher tills vidare</h4>
         <p>Under tiden kan du titta på @Html.ActionLink("tidigare resultat", "Index", "MatchResult").</p>
