@@ -26,7 +26,8 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                 roster.Location,
                 roster.Opponent,
                 roster.Date,
-                roster.OilPattern);
+                roster.OilPattern,
+                roster.MatchResultId);
         }
 
         public RosterHeaderViewModel Header { get; set; }

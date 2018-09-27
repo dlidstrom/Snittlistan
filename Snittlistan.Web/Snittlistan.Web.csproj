@@ -574,6 +574,7 @@
     <Content Include="Areas\V2\Views\MatchResultAdmin\RegisterMatch4Editor.cshtml" />
     <Content Include="Areas\V2\Views\Shared\DisplayTemplates\RosterHeaderViewModel.cshtml" />
     <Content Include="Areas\V2\Views\MatchResultAdmin\EditorTemplates\Match4PostModel.cshtml" />
+    <Content Include="Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />

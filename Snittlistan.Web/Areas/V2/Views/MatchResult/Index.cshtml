@@ -4,11 +4,7 @@
 {
     <div class="row">
         <div class="span6 admin">
-            @*<a class="pull-left" href="@Url.Action("RegisterBits", "MatchResultAdmin")">
-                <i class="sprite-glyphicons_358_file_import"></i>
-                Från BITS
-            </a>*@
-            @if (Request.IsAdmin(User))
+            @if (Request.IsAuthenticated)
             {
                 <a href="@Url.Action("Register", "MatchResultAdmin")">
                     <i class="sprite-glyphicons_030_pencil"></i>
@@ -20,6 +16,7 @@
         </div>
     </div>
 }
+
 @foreach (var turn in Model.Turns.Keys.OrderByDescending(x => x))
 {
     var minDate = Model.Turns[turn].Select(x => x.Date)
@@ -36,7 +33,6 @@
         {
             <div class="span4">
                 <div class="well-small">
-
                     <dl>
                         <dt>
                             Lag
@@ -56,7 +52,8 @@
                         <dd>
                             <a href="@Url.Action("Details", new
                                      {
-                                         id = result.BitsMatchId
+                                         id = result.BitsMatchId,
+                                         result.RosterId
                                      })">
                                 @result.FormattedResult
                             </a>
