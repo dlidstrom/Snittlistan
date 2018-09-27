@@ -10,6 +10,8 @@ using Snittlistan.Web.Areas.V2.Domain.Match.Events;
 
 namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
+    using Commentary;
+
     public class MatchResult4 : AggregateRoot
     {
         private readonly Dictionary<string, List<PinsAndScoreResult>> playerPins;
@@ -50,7 +52,8 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             int teamScore,
             int opponentScore,
             int bitsMatchId,
-            MatchSerie4[] matchSeries)
+            MatchSerie4[] matchSeries,
+            Player[] players)
         {
             // check if anything has changed
             var potentiallyNewPlayerPins = new SortedDictionary<string, List<PinsAndScoreResult>>();
@@ -86,7 +89,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                     bitsMatchId,
                     playerPins.Keys.AsEnumerable().ToArray());
                 ApplyChange(@event);
-                RegisterSeries(publish, matchSeries);
+                RegisterSeries(publish, matchSeries, players, null);
             }
 
             return roster.Date.AddDays(5) < SystemTime.UtcNow;
@@ -103,7 +106,11 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             DoAwardMedals(registeredSeries);
         }
 
-        public void RegisterSeries(Action<object> publish, MatchSerie4[] matchSeries)
+        public void RegisterSeries(
+            Action<object> publish,
+            MatchSerie4[] matchSeries,
+            Player[] players,
+            string summaryText)
         {
             if (rosterPlayers.Count != 4 && rosterPlayers.Count != 5)
                 throw new MatchException("Roster must have 4 or 5 players when registering results");
@@ -113,6 +120,17 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
                 ApplyChange(new Serie4Registered(matchSerie, BitsMatchId, RosterId));
                 DoAwardMedals(registeredSeries);
+            }
+
+            var analyzer = new Match4Analyzer(matchSeries, players.ToDictionary(x => x.Id));
+            var bodyText = analyzer.GetBodyText();
+            if (string.IsNullOrWhiteSpace(summaryText))
+            {
+                ApplyChange(new MatchCommentaryEvent(BitsMatchId, RosterId, bodyText, new string[0]));
+            }
+            else
+            {
+                ApplyChange(new MatchCommentaryEvent(BitsMatchId, RosterId, summaryText, new[] { bodyText }));
             }
 
             publish.Invoke(new MatchRegisteredEvent(RosterId, TeamScore, OpponentScore));
@@ -249,6 +267,11 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
         [UsedImplicitly]
         private void Apply(AwardedMedal e)
+        {
+        }
+
+        [UsedImplicitly]
+        private void Apply(MatchCommentaryEvent e)
         {
         }
     }

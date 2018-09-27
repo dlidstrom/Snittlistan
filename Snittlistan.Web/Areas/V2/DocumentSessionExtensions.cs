@@ -15,17 +15,19 @@
         public static SelectListItem[] CreateBitsRosterSelectList(
             this IDocumentSession session,
             int season,
-            string rosterId = "")
+            string rosterId = "",
+            Func<Roster, bool> pred = null)
         {
-            return GetRosterSelectList(session, season, rosterId, true);
+            return GetRosterSelectList(session, season, rosterId, true, pred ?? (x => true));
         }
 
         public static SelectListItem[] CreateRosterSelectList(
             this IDocumentSession session,
             int season,
-            string rosterId = "")
+            string rosterId = "",
+            Func<Roster, bool> pred = null)
         {
-            return GetRosterSelectList(session, season, rosterId, false);
+            return GetRosterSelectList(session, season, rosterId, false, pred ?? (x => true));
         }
 
         public static RosterViewModel LoadRosterViewModel(
@@ -53,7 +55,8 @@
             IDocumentSession session,
             int season,
             string rosterId,
-            bool bits)
+            bool bits,
+            Func<Roster, bool> pred)
         {
             var query = session.Query<Roster, RosterSearchTerms>()
                                .Where(x => x.Season == season)
@@ -71,6 +74,7 @@
             var rosterSelectList = query.OrderBy(x => x.Date)
                                         .ToList()
                                         .Where(x => x.MatchResultId == null || string.IsNullOrEmpty(rosterId) == false)
+                                        .Where(pred)
                                         .Select(
                                             x => new SelectListItem
                                             {

@@ -200,6 +200,10 @@
     <Compile Include="Areas\V2\Controllers\Api\QueryController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\TaskController.cs" />
     <Compile Include="Areas\V2\Controllers\EliteMedalsPrintController.cs" />
+    <Compile Include="Areas\V2\Domain\Match\Commentary\Match4Analyzer.cs" />
+    <Compile Include="Areas\V2\Domain\Match\Commentary\PlayerPin.cs" />
+    <Compile Include="Areas\V2\Domain\Match\Commentary\PlayerResult.cs" />
+    <Compile Include="Areas\V2\Domain\Match\Commentary\Series4Scores.cs" />
     <Compile Include="Areas\V2\Domain\OilPatternInformation.cs" />
     <Compile Include="Areas\V2\Domain\ParseStandingsResult.cs" />
     <Compile Include="Areas\V2\Domain\ParseMatchSchemeResult.cs" />

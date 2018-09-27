@@ -259,27 +259,5 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
 
             return seriesScores.ToArray();
         }
-
-        private class PlayerPin
-        {
-            public PlayerPin(string playerId, double average, int score, int pins, int seriesPlayed)
-            {
-                PlayerId = playerId;
-                Average = average;
-                Score = score;
-                Pins = pins;
-                SeriesPlayed = seriesPlayed;
-            }
-
-            public string PlayerId { get; private set; }
-
-            public double Average { get; private set; }
-
-            public int Score { get; private set; }
-
-            public int Pins { get; private set; }
-
-            public int SeriesPlayed { get; private set; }
-        }
     }
 }

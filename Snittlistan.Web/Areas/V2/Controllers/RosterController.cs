@@ -100,7 +100,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 "Create", new CreateRosterViewModel
                 {
                     Season = season,
-                    Turn = 1,
+                    Turn = header.Turn,
                     BitsMatchId = vm.BitsMatchId,
                     Team = header.Team,
                     IsFourPlayer = false,

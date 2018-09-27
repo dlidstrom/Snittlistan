@@ -1,6 +1,5 @@
 ﻿using System;
 using NUnit.Framework;
-using Snittlistan.Test.Properties;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.ReadModels;
 
@@ -31,7 +30,7 @@ namespace Snittlistan.Test
             {
                 new Player("Kjell Persson", "e@d.com", Player.Status.Active, 0, null) { Id = "player-1" },
                 new Player("Lars Öberg", "e@d.com", Player.Status.Active, 0, null) { Id = "player-2" },
-                new Player("Tomas Gustavsson", "e@d.com", Player.Status.Active, 0, null) { Id = "player-3" },
+                new Player("Tomas Vikbro", "e@d.com", Player.Status.Active, 0, null) { Id = "player-3" },
                 new Player("Thomas Wallgren", "e@d.com", Player.Status.Active, 0, null) { Id = "player-4" },
                 new Player("Bengt Solvander", "e@d.com", Player.Status.Active, 0, null) { Id = "player-5" },
                 new Player("Lars Magnusson", "e@d.com", Player.Status.Active, 0, null) { Id = "player-6" },
@@ -48,7 +47,7 @@ namespace Snittlistan.Test
             const string Team = "Fredrikshof A";
 
             // Act
-            var result = new BitsParser(playersTeamA).Parse(Resources.Id3050651, Team);
+            var result = new BitsParser(playersTeamA).Parse(BitsGateway.GetMatch(3050651), Team);
 
             // Assert
             Assert.That(result.TeamScore, Is.EqualTo(7));
@@ -61,7 +60,7 @@ namespace Snittlistan.Test
             const string Team = "Fredrikshof A";
 
             // Act
-            var result = new BitsParser(playersTeamA).Parse(Resources.Id3048746, Team);
+            var result = new BitsParser(playersTeamA).Parse(BitsGateway.GetMatch(3048746), Team);
 
             // Assert
             Assert.That(result.TeamScore, Is.EqualTo(11));
@@ -74,7 +73,7 @@ namespace Snittlistan.Test
             const string Team = "Fredrikshof A";
 
             // Act
-            var result = new BitsParser(playersTeamA).Parse(Resources.Id3048747, Team);
+            var result = new BitsParser(playersTeamA).Parse(BitsGateway.GetMatch(3048747), Team);
 
             // Assert
             Assert.That(result.TeamScore, Is.EqualTo(10));
@@ -87,7 +86,7 @@ namespace Snittlistan.Test
             const string Team = "Fredrikshof F";
 
             // Act
-            var result = new BitsParser(playersTeamF).Parse(Resources.Id3048477, Team);
+            var result = new BitsParser(playersTeamF).Parse(BitsGateway.GetMatch(3048477), Team);
 
             // Assert
             Assert.That(result.TeamScore, Is.EqualTo(14));
@@ -100,7 +99,7 @@ namespace Snittlistan.Test
             const string Team = "Fredrikshof IF";
 
             // Act
-            var result = new BitsParser(playersTeamA).Parse(Resources.Id3048746, Team);
+            var result = new BitsParser(playersTeamA).Parse(BitsGateway.GetMatch(3048746), Team);
             Assert.That(result.TeamScore, Is.EqualTo(11));
             Assert.That(result.OpponentScore, Is.EqualTo(9));
             var series = result.Series;
@@ -143,7 +142,7 @@ namespace Snittlistan.Test
             const string Team = "Fredrikshof IF";
 
             // Act
-            var result = new BitsParser(playersTeamA).Parse(Resources.Id3048747, Team);
+            var result = new BitsParser(playersTeamA).Parse(BitsGateway.GetMatch(3048747), Team);
             Assert.That(result.TeamScore, Is.EqualTo(10));
             Assert.That(result.OpponentScore, Is.EqualTo(9));
             var series = result.Series;
@@ -198,9 +197,10 @@ namespace Snittlistan.Test
             };
 
             // Act
-            var result = new BitsParser(players).Parse(Resources.Id3067035, Team);
+            var result = new BitsParser(players).Parse(BitsGateway.GetMatch(3067035), Team);
             Assert.That(result.TeamScore, Is.EqualTo(10));
             Assert.That(result.OpponentScore, Is.EqualTo(5));
+            Assert.That(result.Turn, Is.EqualTo(24));
             var series = result.Series;
 
             // Assert
@@ -234,7 +234,7 @@ namespace Snittlistan.Test
             const string Team = "Fredrikshof IF BK";
 
             // Act
-            var result = new BitsParser(playersTeamA).Parse(Resources.Id3152235, Team);
+            var result = new BitsParser(playersTeamA).Parse(BitsGateway.GetMatch(0), Team);
 
             // Assert
             Assert.That(result, Is.Null);

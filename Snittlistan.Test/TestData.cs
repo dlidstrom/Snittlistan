@@ -71,7 +71,7 @@ namespace Snittlistan.Test
         public static void VerifyTeam(Team4x4 team)
         {
             Assert.That(team.Name, Is.EqualTo("Fredrikshof C"));
-            Assert.That(team.PinsForPlayer("Tomas Gustavsson"), Is.EqualTo(561));
+            Assert.That(team.PinsForPlayer("Tomas Vikbro"), Is.EqualTo(561));
             Assert.That(team.PinsForPlayer("Markus Norbeck"), Is.EqualTo(598));
             Assert.That(team.PinsForPlayer("Lars Norbeck"), Is.EqualTo(717));
             Assert.That(team.PinsForPlayer("Matz Classon"), Is.EqualTo(594));
