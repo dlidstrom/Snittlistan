@@ -7,7 +7,6 @@ using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Snittlistan.Queue.Messages;
-using Snittlistan.Test.Properties;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Infrastructure;
@@ -109,7 +108,7 @@ namespace Snittlistan.Test.ApiControllers
                 session.Store(roster);
             });
 
-            var bitsClient = Mock.Of<IBitsClient>(x => x.DownloadMatchResult(3048746) == Resources.Id3048746);
+            var bitsClient = Mock.Of<IBitsClient>(x => x.DownloadMatchResult(3048746) == BitsGateway.GetMatch(3048746));
             container.Register(Component.For<IBitsClient>().Instance(bitsClient));
         }
     }

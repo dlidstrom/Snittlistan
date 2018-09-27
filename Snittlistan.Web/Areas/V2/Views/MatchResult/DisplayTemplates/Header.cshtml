@@ -18,12 +18,15 @@
         </dd>
         <dt>resultat</dt>
         <dd>@Model.FormattedResult</dd>
-        <dt>BITS</dt>
-        <dd>
-            <a href="@Html.GenerateBitsUrl(Model.BitsMatchId)">
-                Matchfakta
-                <i class="icon-share-alt"></i>
-            </a>
-        </dd>
+        @if (Model.BitsMatchId != 0)
+        {
+            <dt>BITS</dt>
+            <dd>
+                <a href="@Html.GenerateBitsUrl(Model.BitsMatchId)">
+                    Matchfakta
+                    <i class="icon-share-alt"></i>
+                </a>
+            </dd>
+        }
     </dl>
 </div>

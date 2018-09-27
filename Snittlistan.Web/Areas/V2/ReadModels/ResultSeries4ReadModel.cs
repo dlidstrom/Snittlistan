@@ -23,9 +23,11 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
         public List<Serie> Series { get; private set; }
 
-        public static string IdFromBitsMatchId(int bitsMatchId)
+        public static string IdFromBitsMatchId(int bitsMatchId, string rosterId)
         {
-            return $"ResultSeries4-{bitsMatchId}";
+            if (bitsMatchId != 0)
+                return $"ResultSeries4-{bitsMatchId}";
+            return $"ResultSeries4-R{rosterId.Substring(8)}";
         }
 
         public IEnumerable<KeyValuePair<string, List<PlayerGame>>> SortedPlayers()
@@ -105,10 +107,13 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             }
 
             [JsonConstructor]
-            private Serie(List<Game> games)
+            private Serie(int score, List<Game> games)
             {
+                Score = score;
                 Games = games;
             }
+
+            public int Score { get; set; }
 
             public List<Game> Games { get; set; }
         }

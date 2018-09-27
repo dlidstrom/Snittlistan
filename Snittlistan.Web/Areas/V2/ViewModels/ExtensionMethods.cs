@@ -15,7 +15,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public static IEnumerable<RosterViewModel> SortRosters(this IEnumerable<RosterViewModel> rosters)
         {
-            return rosters.OrderBy(r => TeamLevelSortOrder[r.TeamLevel]).ThenBy(r => r.Date);
+            return rosters.OrderBy(r => TeamLevelSortOrder[r.Header.TeamLevel]).ThenBy(r => r.Header.Date);
         }
 
         public static IEnumerable<ResultHeaderViewModel> SortResults(this IEnumerable<ResultHeaderViewModel> results)

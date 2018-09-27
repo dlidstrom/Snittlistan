@@ -12,7 +12,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             int teamScore,
             int opponentScore)
         {
-            Id = IdFromBitsMatchId(roster.BitsMatchId);
+            Id = IdFromBitsMatchId(roster.BitsMatchId, roster.Id);
             SetValues(roster, aggregateId, teamScore, opponentScore);
             MatchCommentary = string.Empty;
             BodyText = new string[0];
@@ -44,9 +44,11 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
         public string[] BodyText { get; private set; }
 
-        public static string IdFromBitsMatchId(int bitsMatchId)
+        public static string IdFromBitsMatchId(int bitsMatchId, string rosterId)
         {
-            return "ResultHeader-" + bitsMatchId;
+            if (bitsMatchId != 0)
+                return "ResultHeader-" + bitsMatchId;
+            return $"ResultHeader-R{rosterId.Substring(8)}";
         }
 
         public void SetValues(Roster roster, string aggregateId, int teamScore, int opponentScore)

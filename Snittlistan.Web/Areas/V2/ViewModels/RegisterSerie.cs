@@ -5,6 +5,7 @@ using Snittlistan.Web.Areas.V2.ReadModels;
 
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
+    // TODO Delete
     public class RegisterSerie
     {
         public RegisterSerie(ResultSeriesReadModel.Serie serie, List<SelectListItem> players)

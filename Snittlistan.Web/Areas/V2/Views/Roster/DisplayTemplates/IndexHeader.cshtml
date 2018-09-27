@@ -1,0 +1,28 @@
+﻿@model InitialDataViewModel
+
+<div class="row">
+    <div class="span12 index-top-links">
+        @if (Model.IsFiltered)
+        {
+            <div class="show-all-matches-container">
+                <a href="@Url.Action("Index", new
+                         {
+                             season = Model.SeasonStart
+                         })">
+                    <i class="sprite-glyphicons_027_search"></i>
+                    <span class="link-text">Visa alla matcher</span>
+                    <small>Tidigare matcher är filtrerade</small>
+                </a>
+            </div>
+        }
+
+        <div class="add-calendar-container">
+            <a href="@Url.GetWebcalUrl()">
+                <i class="sprite-glyphicons_045_calendar"></i>
+                Lägg till i din kalender
+            </a>
+        </div>
+    </div>
+</div>
+
+<hr />
