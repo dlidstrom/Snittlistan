@@ -143,6 +143,7 @@
             RouteTable.Routes.Maps("GET", "~/phpalbum/main.php?cmd=setquality&var1=1%27.passthru%28%27id%27%29.%27;", new { controller = "Hacker", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/phpAlbum/main.php", new { controller = "Hacker", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/phpAlbum/main.php?cmd=setquality&var1=1%27.passthru%28%27id%27%29.%27;", new { controller = "Hacker", action = "Index" });
+            RouteTable.Routes.Maps("GET", "~/phpmyadmin", new { controller = "Hacker", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/scgi-bin/awstats.pl", new { controller = "Hacker", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/scgi-bin/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/scgi-bin/awstats/awstats.pl", new { controller = "Hacker", action = "Index" });
