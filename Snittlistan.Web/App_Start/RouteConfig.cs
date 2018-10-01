@@ -24,7 +24,7 @@ namespace Snittlistan.Web
                 name: "Hacker-Routes",
                 url: "{*php}",
                 defaults: new { controller = "Hacker", action = "Index" },
-                constraints: new { php = @".*php.*|catalog|^s?cgi(\-bin)?.*|^scripts.*|^(aw)?stats.*|^shop.*" });
+                constraints: new { php = @"status|.*php.*|catalog|^s?cgi(\-bin)?.*|^scripts.*|^(aw)?stats.*|^shop.*" });
         }
     }
 }

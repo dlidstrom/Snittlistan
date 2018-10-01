@@ -160,6 +160,7 @@
             RouteTable.Routes.Maps("GET", "~/stat/awstatstotals.php?sort=%7b%24%7bpassthru%28chr(105)%2echr(100)%29%7d%7d%7b%24%7bexit%28%29%7d%7d", new { controller = "Hacker", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/stats/awstats.pl", new { controller = "Hacker", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/stats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
+            RouteTable.Routes.Maps("GET", "~/status", new { controller = "Hacker", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/shop", new { controller = "Hacker", action = "Index" });
         }
 
