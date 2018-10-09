@@ -245,7 +245,16 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                                                  .SortRosters()
                                                  .ToArray();
 
-            if (rosterViewModels.Length <= 0) return View("Unscheduled");
+            if (rosterViewModels.Length <= 0)
+            {
+                var vm = new InitialDataViewModel
+                {
+                    SeasonStart = season.Value,
+                    Turns = new List<TurnViewModel>(),
+                    IsFiltered = true
+                };
+                return View("Unscheduled", vm);
+            }
 
             var viewTurnViewModel = new ViewTurnViewModel(
                 turn.Value,
