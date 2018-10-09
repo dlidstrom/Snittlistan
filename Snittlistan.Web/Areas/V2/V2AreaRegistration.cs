@@ -57,6 +57,10 @@
                     season = @"\d+",
                     turn = @"\d+"
                 });
+            context.MapRoute(
+                name: "Redirects9",
+                url: "MatchResultAdmin/RegisterSerie",
+                defaults: new { controller = "Redirect", action = "Redirect" });
 
             context.MapRoute(
                 name: "SearchTerms-Route",

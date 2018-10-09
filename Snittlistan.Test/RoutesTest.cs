@@ -109,6 +109,7 @@
             RouteTable.Routes.Maps("GET", "~/Account/Register", new { controller = "Redirect", action = "Redirect" });
             RouteTable.Routes.Maps("GET", "~/Roster/2012", new { controller = "Redirect", action = "RedirectNewView", season = 2012, turn = (int?)null });
             RouteTable.Routes.Maps("GET", "~/Roster/2012/12", new { controller = "Redirect", action = "RedirectNewView", season = 2012, turn = (int?)12 });
+            RouteTable.Routes.Maps("GET", "~/MatchResultAdmin/RegisterSerie", new { controller = "Redirect", Action = "Redirect" });
         }
 
         [Test]
