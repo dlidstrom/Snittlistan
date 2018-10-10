@@ -7,13 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snittlistan.Web", "Snittlis
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snittlistan.Test", "Snittlistan.Test\Snittlistan.Test.csproj", "{3E8167CB-E28A-40D7-A1DF-0BAE1E1E2AC6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5876D2AB-F3CA-41A6-B3D0-12D459FE905E}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snittlistan.Tool", "Snittlistan.Tool\Snittlistan.Tool.csproj", "{A86DFE9D-1C04-49FD-9CAD-708EC7CEE418}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snittlistan.Queue", "Snittlistan.Queue\Snittlistan.Queue.csproj", "{18A532FA-9C94-4FF2-ACF8-B267F127606D}"
