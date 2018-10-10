@@ -61,6 +61,10 @@
                 name: "Redirects9",
                 url: "MatchResultAdmin/RegisterSerie",
                 defaults: new { controller = "Redirect", action = "Redirect" });
+            context.MapRoute(
+                name: "Redirects10",
+                url: "App/LogOn2",
+                defaults: new { controller = "Redirect", action = "Redirect" });
 
             context.MapRoute(
                 name: "SearchTerms-Route",

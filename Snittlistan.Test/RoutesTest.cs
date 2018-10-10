@@ -110,6 +110,7 @@
             RouteTable.Routes.Maps("GET", "~/Roster/2012", new { controller = "Redirect", action = "RedirectNewView", season = 2012, turn = (int?)null });
             RouteTable.Routes.Maps("GET", "~/Roster/2012/12", new { controller = "Redirect", action = "RedirectNewView", season = 2012, turn = (int?)12 });
             RouteTable.Routes.Maps("GET", "~/MatchResultAdmin/RegisterSerie", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/App/LogOn2", new { controller = "Redirect", Action = "Redirect" });
         }
 
         [Test]
@@ -128,6 +129,7 @@
             RouteTable.Routes.Maps("GET", "~/awstatstotals/awstatstotals.php", new { controller = "Hacker", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/awstatstotals/awstatstotals.php?sort=%7b%24%7bpassthru%28chr(105)%2echr(100)%29%7d%7d%7b%24%7bexit%28%29%7d%7d", new { controller = "Hacker", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/catalog", new { controller = "Hacker", action = "Index" });
+            RouteTable.Routes.Maps("GET", "~/cpanel", new { controller = "Hacker", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/cgi-bin/awstats.pl", new { controller = "Hacker", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/cgi-bin/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/cgi-bin/awstats/awstats.pl", new { controller = "Hacker", action = "Index" });
