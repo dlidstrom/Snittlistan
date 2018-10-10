@@ -10,9 +10,15 @@ namespace Snittlistan.Test
         {
             var bitsClient = new BitsClient();
             string content;
-            var directoryName = Directory.GetCurrentDirectory();
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var outputDirectory = Path.Combine(currentDirectory, "bits");
+            if (Directory.Exists(outputDirectory) == false)
+            {
+                Directory.CreateDirectory(outputDirectory);
+            }
+
             var path = Path.Combine(
-                directoryName,
+                outputDirectory,
                 $"BitsMatch-{bitsMatchId}.html");
             try
             {
