@@ -22,15 +22,15 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             var rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
                                          .Where(r => r.Season == season)
                                          .ToArray();
-            var rosterDictionary = rosters.ToDictionary(x => x.Id);
             var resultIds = rosters.Select(x => ResultHeaderReadModel.IdFromBitsMatchId(x.BitsMatchId, x.Id));
             var results = DocumentSession.Load<ResultHeaderReadModel>(resultIds);
-            var resultsDictionary = results.Where(x => x != null).ToDictionary(x => rosterDictionary[x.RosterId].BitsMatchId);
+            var resultsDictionary = results.Where(x => x != null)
+                                           .ToDictionary(x => x.Id);
             var calendarEvents = new List<RosterCalendarEvent>();
             foreach (var roster in rosters)
             {
                 var players = DocumentSession.Load<Player>(roster.Players);
-                resultsDictionary.TryGetValue(roster.BitsMatchId, out var resultHeaderReadModel);
+                resultsDictionary.TryGetValue(ResultHeaderReadModel.IdFromBitsMatchId(roster.BitsMatchId, roster.Id), out var resultHeaderReadModel);
                 Player teamLeader = null;
                 if (roster.TeamLeader != null)
                 {
