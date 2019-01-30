@@ -159,7 +159,8 @@
             var viewModel = new EditMedalsViewModel(
                 player.Name,
                 eliteMedal.Value,
-                eliteMedal.CapturedSeason.GetValueOrDefault());
+                eliteMedal.CapturedSeason.GetValueOrDefault(),
+                DocumentSession.LatestSeasonOrDefault(DateTime.Now.Year));
             return View(viewModel);
         }
 

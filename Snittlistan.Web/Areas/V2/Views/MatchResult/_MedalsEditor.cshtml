@@ -34,6 +34,9 @@
                pattern="\d*"
                title="Ange säsong, t.ex. @DateTime.Now.Year"
                required />
-        <span class="help-block">Ange säsongen då medaljen uppnåddes. Skriv första delen av säsongen, t.ex. <strong>2016</strong>&minus;2017.</span>
+        <span class="help-block">
+            Ange säsongen då medaljen uppnåddes. Skriv första delen av säsongen, t.ex. <strong>@Model.CurrentSeason</strong>&minus;@(Model.CurrentSeason + 1).
+            Vanligtvis är det redan rätt ifyllt.
+        </span>
     </div>
 </div>
