@@ -1,0 +1,33 @@
+﻿@model Snittlistan.Web.Areas.V2.Controllers.AuthenticationController.EmailViewModel
+@{
+    ViewBag.Title = "Logga in";
+}
+<div class="row">
+    <div class="span6">
+        <h3>@ViewBag.Title</h3>
+        <p>Ange först din e-postadress.</p>
+        @using (Html.BeginForm("LogOnEmail", "Authentication", FormMethod.Post, new { @class = "form-horizontal"}))
+        {
+            @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary", new { message = "Det gick inte att logga in."})
+            <div class="control-group">
+                <label class="control-label" for="email">E-postadress:</label>
+                <div class="controls">
+                    <!-- TODO Gör nedanstående med en helper -->
+                    <input id="email"
+                           type="email"
+                           name="email"
+                           placeholder="E-postadress"
+                           autofocus="autofocus"
+                           autocapitalization="off"
+                           required="required"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button class="btn btn-primary btn-large" type="submit">Logga in</button>
+                    <a class="btn btn-large" href="@Url.Action("Index", "Roster")">Avbryt</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
