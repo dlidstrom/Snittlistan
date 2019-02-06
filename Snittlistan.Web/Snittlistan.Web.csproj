@@ -372,7 +372,6 @@
     <Content Include="Content\js\helpers\typeahead.js" />
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="Areas\V1\Controllers\AccountController.cs" />
-    <Compile Include="Areas\V2\ViewModels\LogOnViewModel.cs" />
     <Compile Include="HtmlHelpers\RequestExtensions.cs" />
     <Compile Include="Areas\V2\Indexes\PlayerSearch.cs" />
     <Compile Include="Areas\V2\Indexes\RosterSearchTerms.cs" />
@@ -579,6 +578,8 @@
     <Content Include="Areas\V2\Views\Shared\DisplayTemplates\RosterHeaderViewModel.cshtml" />
     <Content Include="Areas\V2\Views\MatchResultAdmin\EditorTemplates\Match4PostModel.cshtml" />
     <Content Include="Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml" />
+    <Content Include="Areas\V2\Views\Authentication\LogOnPassword.cshtml" />
+    <Content Include="Areas\V2\Views\Authentication\EmailSent.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
@@ -617,7 +618,7 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Areas\V2\Views\Roster\Index.cshtml" />
-    <Content Include="Areas\V2\Views\Authentication\LogOn.cshtml" />
+    <Content Include="Areas\V2\Views\Authentication\LogOnEmail.cshtml" />
     <Content Include="Areas\V2\Views\Roster\Create.cshtml" />
     <Content Include="Areas\V2\Views\Roster\Delete.cshtml" />
     <Content Include="Areas\V2\Views\Roster\DisplayTemplates\Roster.cshtml" />
