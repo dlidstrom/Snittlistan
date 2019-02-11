@@ -158,7 +158,6 @@
                                     ThirdFailureActionType="restart"
                                     RestartServiceDelayInSeconds="300"
                                     ResetPeriodInDays="1" />
-                <ServiceConfig DelayedAutoStart="yes" OnInstall="yes" />
               </ServiceInstall>
               <ServiceControl Id="Snittlistan.Queue.WindowsServiceHost.exe"
                               Name="Snittlistan.Queue.WindowsServiceHost.exe"
