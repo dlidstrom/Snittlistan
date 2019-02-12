@@ -10,7 +10,7 @@
             <tr>
                 <th>Namn</th>
                 <th></th>
-                @if (Request.IsAuthenticated && hideControls == false)
+                @if (User.IsInRole(WebsiteRoles.Absence.EditAll) && hideControls == false)
                 {
                     <th></th>
                     <th></th>
@@ -27,7 +27,7 @@
                         @Html.FormatDateSpan(absence.From, absence.To)
                     </td>
 
-                    @if (Request.IsAuthenticated && hideControls == false)
+                    @if (User.IsInRole(WebsiteRoles.Absence.EditAll) && hideControls == false)
                     {
                         <td class="center" rowspan="@rowspan">
                             <a href="@Url.Action("Edit", new { id = absence.Id.Substring(absence.Id.LastIndexOf('-') + 1) })">

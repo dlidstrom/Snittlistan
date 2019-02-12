@@ -1,16 +1,13 @@
 ﻿@model MatchResultViewModel
 
-@if (Request.IsAuthenticated)
+@if (User.IsInRole(WebsiteRoles.MatchResult.AddManualResult))
 {
     <div class="row">
         <div class="span6 admin">
-            @if (Request.IsAuthenticated)
-            {
-                <a href="@Url.Action("Register", "MatchResultAdmin")">
-                    <i class="sprite-glyphicons_030_pencil"></i>
-                    Manuellt
-                </a>
-            }
+            <a href="@Url.Action("Register", "MatchResultAdmin")">
+                <i class="sprite-glyphicons_030_pencil"></i>
+                Manuellt
+            </a>
 
             <div class="clearfix"></div>
         </div>

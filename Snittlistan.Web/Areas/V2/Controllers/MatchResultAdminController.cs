@@ -16,7 +16,7 @@
     using System.Web;
     using System.Web.Mvc;
 
-    [Authorize]
+    [Authorize(Roles = WebsiteRoles.MatchResult.AddManualResult)]
     public class MatchResultAdminController : AbstractController
     {
         public ActionResult Register(int? season)
@@ -314,38 +314,6 @@
             public string PlayerId { get; set; }
 
             public PlayerGame[] Games { get; set; }
-        }
-
-        public class Register4Result
-        {
-            public Register4Result()
-            {
-                Series = new RegisterSerie4[4];
-            }
-
-            public Register4Result(ResultHeaderReadModel matchResult)
-            {
-                AggregateId = matchResult.AggregateId;
-                TeamScore = matchResult.TeamScore;
-                OpponentScore = matchResult.OpponentScore;
-            }
-
-            [HiddenInput]
-            public string AggregateId { get; set; }
-
-            [Required]
-            public string RosterId { get; set; }
-
-            [Range(0, 20), Required]
-            public int? TeamScore { get; set; }
-
-            [Range(0, 20), Required]
-            public int? OpponentScore { get; set; }
-
-            [Required]
-            public int? BitsMatchId { get; set; }
-
-            public RegisterSerie4[] Series { get; set; }
         }
 
         public class RegisterResult

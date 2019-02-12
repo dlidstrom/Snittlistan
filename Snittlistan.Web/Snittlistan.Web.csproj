@@ -227,6 +227,7 @@
     <Compile Include="Areas\V2\Handlers\SeasonResultsHandler.cs" />
     <Compile Include="Areas\V2\Migration\IEventMigratorWithResults.cs" />
     <Compile Include="Areas\V2\ReadModels\SeasonResults.cs" />
+    <Compile Include="Areas\V2\WebsiteRoles.cs" />
     <Compile Include="Areas\V2\ViewModels\EditMedalsPostModel.cs" />
     <Compile Include="Areas\V2\ViewModels\EditMedalsViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\EliteMedalsViewModel.cs" />
@@ -305,6 +306,7 @@
     <Compile Include="Infrastructure\Attributes\SaveChangesAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\UnhandledExceptionFilter.cs" />
     <Compile Include="Infrastructure\BitsClient.cs" />
+    <Compile Include="Infrastructure\CustomPrincipal.cs" />
     <Compile Include="Infrastructure\EventStoreLite\AggregateRoot.cs" />
     <Compile Include="Infrastructure\EventStoreLite\Event.cs" />
     <Compile Include="Infrastructure\EventStoreLite\EventDispatcher.cs" />
@@ -479,7 +481,6 @@
     <Compile Include="Areas\V1\ViewModels\Match\Team8x4DetailsViewModel.cs" />
     <Compile Include="Areas\V1\ViewModels\Match\Team8x4ViewModel.cs" />
     <Compile Include="Areas\V1\ViewModels\PlayerMatchesViewModel.cs" />
-    <Compile Include="Areas\V2\ViewModels\SessionViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\TurnViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -593,16 +594,6 @@
     <Content Include="Content\js\v2-buttons.min.js" />
     <Content Include="Content\js\v2-buttons.uglify.js" />
     <Content Include="Content\SpecRunner.html" />
-    <Content Include="Content\templates\header-template.html" />
-    <Content Include="Content\templates\login-modal-template.html" />
-    <Content Include="Content\templates\modal-template.html" />
-    <Content Include="Content\templates\player-list-template.html" />
-    <Content Include="Content\templates\player-template.html" />
-    <Content Include="Content\templates\roster-template.html" />
-    <Content Include="Content\templates\turn-admin-template.html" />
-    <Content Include="Content\templates\turn-new-template.html" />
-    <Content Include="Content\templates\turn-template.html" />
-    <Content Include="Content\templates\turns-template.html" />
     <Content Include="Global.asax" />
     <Content Include="robots.txt" />
     <Content Include="Rotativa\help-wkhtmltoimage.txt" />

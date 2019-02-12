@@ -6,7 +6,7 @@
     <tr>
         <td>@player.Name (@player.Nickname)</td>
         <td>@player.StatusText</td>
-        @if (Request.IsAuthenticated)
+        @if (User.IsInRole(WebsiteRoles.Player.ShowEmailAddresses))
         {
             <td>
                 @if (player.Email != null)
@@ -14,6 +14,9 @@
                     <a href="mailto:@player.Email">@player.Email</a>
                 }
             </td>
+        }
+        @if (User.IsInRole(WebsiteRoles.Player.EditPlayer))
+        {
             <td>
                 <a href="@Url.Action("Edit", new { id = player.Id.Substring(player.Id.LastIndexOf('-') + 1) })">
                     <i class="sprite-glyphicons_151_edit"></i>
@@ -30,12 +33,15 @@
 </div>
 <div class="row">
     <div class="span8">
-        @if (Request.IsAuthenticated)
+        @if (User.IsInRole(WebsiteRoles.Player.EditPlayer))
         {
             <a class="pull-left" href="@Url.Action("Create")">
                 <i class="sprite-glyphicons_006_user_add"></i>
                 Lägg till spelare
             </a>
+        }
+        @if (User.IsInRole(WebsiteRoles.Player.SendEmailToAll))
+        {
             <div class="btn-group pull-right">
                 <button type="button" class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown">
                     Skicka e-post
@@ -64,7 +70,7 @@
             <tr>
                 <th>Namn</th>
                 <th>Status</th>
-                @if (Request.IsAuthenticated)
+                @if (User.IsInRole(WebsiteRoles.Player.ShowEmailAddresses))
                 {
                     <th>E-postadress</th>
                     <th></th>
@@ -81,7 +87,7 @@
                 @ShowPlayer(player)
             }
 
-            @if (Request.IsAuthenticated)
+            @if (User.IsInRole(WebsiteRoles.Player.ShowInactive))
             {
                 foreach (var player in Model.Where(x => x.Status == Player.Status.Inactive))
                 {
