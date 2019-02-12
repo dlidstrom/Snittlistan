@@ -20,14 +20,14 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return View(vm);
         }
 
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Player.EditPlayer)]
         public ActionResult Create()
         {
             return View(new CreatePlayerViewModel());
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Player.EditPlayer)]
         public ActionResult Create(CreatePlayerViewModel vm)
         {
             // prevent duplicates
@@ -44,7 +44,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Player.EditPlayer)]
         public ActionResult Edit(int id)
         {
             var player = DocumentSession.Load<Player>(id);
@@ -52,7 +52,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return View(new CreatePlayerViewModel(player));
         }
 
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Player.EditPlayer)]
         [HttpPost]
         public ActionResult Edit(int id, CreatePlayerViewModel vm)
         {
@@ -78,7 +78,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Player.EditPlayer)]
         public ActionResult Delete(int id)
         {
             var player = DocumentSession.Load<Player>(id);
@@ -88,7 +88,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Player.EditPlayer)]
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {

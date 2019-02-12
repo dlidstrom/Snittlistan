@@ -18,9 +18,12 @@
 
         public DateTimeOffset CreatedDate { get; private set; }
 
-        public void Activate(Action<string> action)
+        public string Payload { get; private set; }
+
+        public void Activate(Action<string> action, string payload)
         {
             OneTimeKey = Guid.NewGuid().ToString();
+            Payload = payload;
             action.Invoke(OneTimeKey);
         }
 

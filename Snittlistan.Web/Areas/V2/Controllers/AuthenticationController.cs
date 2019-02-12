@@ -22,6 +22,11 @@
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
         }
 
+        public ActionResult LogOn()
+        {
+            return RedirectToActionPermanent("LogOnEmail");
+        }
+
         public ActionResult LogOnEmail()
         {
             return View();
@@ -58,20 +63,21 @@
                     var player = players[0];
                     var token = new OneTimeToken();
                     Debug.Assert(Request.Url != null, "Request.Url != null");
-                    token.Activate(oneTimeKey =>
-                    {
-                        var activationUri =
-                            Url.Action(
-                                "OneTimeTokenLogOn",
-                                "Authentication",
-                                new
-                                {
-                                    playerId = player.Id,
-                                    oneTimeKey
-                                },
-                                Request.Url.Scheme);
-                        PublishMessage(new OneTimeKeyEvent(player.Email, activationUri));
-                    });
+                    token.Activate(
+                        oneTimeKey =>
+                        {
+                            var activationUri =
+                                Url.Action(
+                                    "OneTimeTokenLogOn",
+                                    "Authentication",
+                                    new
+                                    {
+                                        oneTimeKey
+                                    },
+                                    Request.Url.Scheme);
+                            PublishMessage(new OneTimeKeyEvent(player.Email, activationUri));
+                        },
+                        player.Id);
                     DocumentSession.Store(token);
                     return View("EmailSent");
                 }
@@ -134,13 +140,13 @@
             return RedirectToAction("Index", "Roster");
         }
 
-        public ActionResult OneTimeTokenLogOn(string playerId, string oneTimeKey)
+        public ActionResult OneTimeTokenLogOn(string oneTimeKey)
         {
-            if (DocumentSession.Load<Player>(playerId) == null)
-                throw new HttpException(404, "Player not found");
             var oneTimeToken = DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>().Single(x => x.OneTimeKey == oneTimeKey);
+            if (DocumentSession.Load<Player>(oneTimeToken.Payload) == null)
+                throw new HttpException(404, "Player not found");
             oneTimeToken.ApplyToken(
-                () => authenticationService.SetAuthCookie(playerId, true));
+                () => authenticationService.SetAuthCookie(oneTimeToken.Payload, true));
             return RedirectToAction("Index", "Roster");
         }
 

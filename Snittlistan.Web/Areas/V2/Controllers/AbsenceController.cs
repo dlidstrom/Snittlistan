@@ -13,6 +13,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 {
     public class AbsenceController : AbstractController
     {
+        [Authorize(Roles = WebsiteRoles.Absence.View)]
         public ActionResult Index()
         {
             return View();
@@ -37,31 +38,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return View(new CreateAbsenceViewModel());
         }
 
-        [Authorize, HttpPost]
-        public ActionResult Create(CreateAbsenceViewModel vm)
-        {
-            if (ModelState.IsValid == false)
-            {
-                ViewBag.Player = DocumentSession.CreatePlayerSelectList();
-                return View(vm);
-            }
-
-            var absence = Absence.Create(vm.From, vm.To, vm.Player, vm.Comment);
-            DocumentSession.Store(absence);
-
-            return RedirectToAction("Index");
-        }
-
-        [Authorize]
-        public ActionResult Edit(int id)
-        {
-            var absence = DocumentSession.Load<Absence>(id);
-            if (absence == null) throw new HttpException(404, "Absence not found");
-            ViewBag.Player = DocumentSession.CreatePlayerSelectList(absence.Player);
-            return View(new CreateAbsenceViewModel(absence));
-        }
-
-        [HttpPost, Authorize]
+        [HttpPost]
+        [Authorize(Roles = WebsiteRoles.Absence.EditAll)]
         public ActionResult Edit(int id, CreateAbsenceViewModel vm)
         {
             if (ModelState.IsValid == false)
@@ -78,7 +56,32 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Absence.EditAll)]
+        [HttpPost]
+        public ActionResult Create(CreateAbsenceViewModel vm)
+        {
+            if (ModelState.IsValid == false)
+            {
+                ViewBag.Player = DocumentSession.CreatePlayerSelectList();
+                return View(vm);
+            }
+
+            var absence = Absence.Create(vm.From, vm.To, vm.Player, vm.Comment);
+            DocumentSession.Store(absence);
+
+            return RedirectToAction("Index");
+        }
+
+        [Authorize(Roles = WebsiteRoles.Absence.EditAll)]
+        public ActionResult Edit(int id)
+        {
+            var absence = DocumentSession.Load<Absence>(id);
+            if (absence == null) throw new HttpException(404, "Absence not found");
+            ViewBag.Player = DocumentSession.CreatePlayerSelectList(absence.Player);
+            return View(new CreateAbsenceViewModel(absence));
+        }
+
+        [Authorize(Roles = WebsiteRoles.Absence.EditAll)]
         public ActionResult Delete(int id)
         {
             var absence = DocumentSession.Include<Absence>(x => x.Player).Load<Absence>(id);
@@ -87,7 +90,9 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return View(new AbsenceViewModel(absence, player));
         }
 
-        [HttpPost, Authorize, ActionName("Delete")]
+        [HttpPost]
+        [Authorize(Roles = WebsiteRoles.Absence.EditAll)]
+        [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
             var absence = DocumentSession.Load<Absence>(id);

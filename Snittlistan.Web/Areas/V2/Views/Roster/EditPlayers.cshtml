@@ -211,11 +211,8 @@
         }
     </div>
 </div>
-@if (Request.IsAuthenticated)
+@Html.Action("PlayerStatus", new
 {
-    @Html.Action("PlayerStatus", new
-    {
-        turn = Model.RosterViewModel.Turn,
-        season = Model.RosterViewModel.Season
-    })
-}
+    turn = Model.RosterViewModel.Turn,
+    season = Model.RosterViewModel.Season
+})

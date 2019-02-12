@@ -217,6 +217,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         public ActionResult View(int? season, int? turn, bool? print)
         {
             if (season.HasValue == false)

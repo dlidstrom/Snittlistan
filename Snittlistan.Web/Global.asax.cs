@@ -1,29 +1,34 @@
-﻿using System;
-using System.Configuration;
-using System.Reflection;
-using System.Web;
-using System.Web.Hosting;
-using System.Web.Http;
-using System.Web.Http.Controllers;
-using System.Web.Http.Dispatcher;
-using System.Web.Mvc;
-using System.Web.Routing;
-using Castle.MicroKernel.Registration;
-using Castle.Windsor;
-using EventStoreLite.IoC;
-using NLog;
-using Raven.Client;
-using Snittlistan.Queue;
-using Snittlistan.Web.Infrastructure;
-using Snittlistan.Web.Infrastructure.Attributes;
-using Snittlistan.Web.Infrastructure.AutoMapper;
-using Snittlistan.Web.Infrastructure.Indexes;
-using Snittlistan.Web.Infrastructure.Installers;
-using Snittlistan.Web.Infrastructure.IoC;
-using Snittlistan.Web.Models;
-
-namespace Snittlistan.Web
+﻿namespace Snittlistan.Web
 {
+    using System;
+    using System.Configuration;
+    using System.Linq;
+    using System.Reflection;
+    using System.Web;
+    using System.Web.Hosting;
+    using System.Web.Http;
+    using System.Web.Http.Controllers;
+    using System.Web.Http.Dispatcher;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+    using System.Web.Security;
+    using Areas.V2;
+    using Areas.V2.Domain;
+    using Castle.MicroKernel.Registration;
+    using Castle.Windsor;
+    using EventStoreLite.IoC;
+    using Helpers;
+    using NLog;
+    using Raven.Client;
+    using Snittlistan.Queue;
+    using Snittlistan.Web.Infrastructure;
+    using Snittlistan.Web.Infrastructure.Attributes;
+    using Snittlistan.Web.Infrastructure.AutoMapper;
+    using Snittlistan.Web.Infrastructure.Indexes;
+    using Snittlistan.Web.Infrastructure.Installers;
+    using Snittlistan.Web.Infrastructure.IoC;
+    using Snittlistan.Web.Models;
+
     public class MvcApplication : HttpApplication
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
@@ -99,6 +104,53 @@ namespace Snittlistan.Web
             }
         }
 
+        protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
+        {
+            var authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
+            if (authCookie != null)
+            {
+                var authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                if (authTicket == null) return;
+
+                var session = Container.Resolve<IDocumentSession>();
+
+                // try the player first
+                var player = session.Load<Player>(authTicket.Name);
+                if (player != null)
+                {
+                    HttpContext.Current.User =
+                        new CustomPrincipal(
+                            player.Name,
+                            WebsiteRoles.PlayerGroup().Select(x => x.Name).ToArray());
+                    return;
+                }
+
+                // try the user now
+                var user = session.FindUserByEmail(authTicket.Name);
+                if (user != null)
+                {
+                    if (user.Id == "Admin")
+                    {
+                        HttpContext.Current.User =
+                            new CustomPrincipal(
+                                user.Email,
+                                WebsiteRoles.AdminGroup().Select(x => x.Name).ToArray());
+                    }
+                    else
+                    {
+                        HttpContext.Current.User =
+                            new CustomPrincipal(
+                                user.Email,
+                                WebsiteRoles.UserGroup().Select(x => x.Name).ToArray());
+                    }
+
+                    return;
+                }
+
+                Log.Error("Unable to load profile information using {0}", authTicket.Name);
+            }
+        }
+
         private static void Bootstrap(HttpConfiguration configuration)
         {
             RegisterGlobalFilters(GlobalFilters.Filters);
@@ -121,6 +173,8 @@ namespace Snittlistan.Web
             Emails.Initialize(HostingEnvironment.MapPath("~/Views/Emails"));
 
             MsmqGateway.Initialize(ConfigurationManager.AppSettings["TaskQueue"]);
+
+            WebsiteRoles.Initialize();
         }
 
         private static void RegisterGlobalFilters(GlobalFilterCollection filters)
