@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Snittlistan.Queue.Messages
+﻿namespace Snittlistan.Queue.Messages
 {
+    using System;
+
     public class UserInvitedEvent
     {
         public UserInvitedEvent(string activationUri, string email)

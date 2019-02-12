@@ -1,16 +1,28 @@
-﻿using System;
-using System.Configuration;
-using System.Text;
-using System.Web.Mvc;
-using JetBrains.Annotations;
-using Postal;
-using Snittlistan.Web.Areas.V2.ReadModels;
-
-namespace Snittlistan.Web.Models
+﻿namespace Snittlistan.Web.Models
 {
+    using System;
+    using System.Configuration;
+    using System.Text;
+    using System.Web.Mvc;
+    using JetBrains.Annotations;
+    using Postal;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+
     public static class Emails
     {
         private static EmailService service;
+
+        public static void SendLoginLink(string recipient, string subject, string activationUri)
+        {
+            Send(
+                "LoginLink",
+                recipient,
+                subject,
+                o =>
+                {
+                    o.ActivationUri = activationUri;
+                });
+        }
 
         public static void InviteUser(string recipient, string subject, string activationUri)
         {
@@ -89,7 +101,7 @@ namespace Snittlistan.Web.Models
             dynamic email = new Email(view);
             email.To = recipient;
             email.From = ConfigurationManager.AppSettings["OwnerEmail"];
-            email.Subject = $"=?utf-8?B?{Convert.ToBase64String(Encoding.UTF8.GetBytes(subject))}?=";
+            email.Subject = $"=?UTF-8?B?{Convert.ToBase64String(Encoding.UTF8.GetBytes(subject))}?=";
 
             // add moderators
             var moderatorEmails = string.Join(", ", ConfigurationManager.AppSettings["OwnerEmail"].Split(';'));
