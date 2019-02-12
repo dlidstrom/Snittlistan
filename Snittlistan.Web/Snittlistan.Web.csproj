@@ -205,8 +205,10 @@
     <Compile Include="Areas\V2\Domain\Match\Commentary\PlayerResult.cs" />
     <Compile Include="Areas\V2\Domain\Match\Commentary\Series4Scores.cs" />
     <Compile Include="Areas\V2\Domain\OilPatternInformation.cs" />
+    <Compile Include="Areas\V2\Domain\OneTimeToken.cs" />
     <Compile Include="Areas\V2\Domain\ParseStandingsResult.cs" />
     <Compile Include="Areas\V2\Domain\ParseMatchSchemeResult.cs" />
+    <Compile Include="Areas\V2\Indexes\OneTimeTokenIndex.cs" />
     <Compile Include="Areas\V2\Queries\GetActivePlayersQuery.cs" />
     <Compile Include="Areas\V2\Queries\GetPendingMatchesQuery.cs" />
     <Compile Include="Areas\V2\Queries\GetPlayersQuery.cs" />
@@ -635,6 +637,7 @@
     <Content Include="Views\Emails\Mail.cshtml" />
     <Content Include="Views\Emails\Web.config" />
     <Content Include="Views\Emails\_ViewStart.cshtml" />
+    <Content Include="Views\Emails\LoginLink.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

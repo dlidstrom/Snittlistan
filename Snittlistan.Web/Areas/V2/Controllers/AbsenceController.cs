@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Raven.Abstractions;
@@ -34,7 +33,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         public ActionResult Create()
         {
-            CreatePlayerSelectList();
+            ViewBag.Player = DocumentSession.CreatePlayerSelectList();
             return View(new CreateAbsenceViewModel());
         }
 
@@ -43,7 +42,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             if (ModelState.IsValid == false)
             {
-                CreatePlayerSelectList();
+                ViewBag.Player = DocumentSession.CreatePlayerSelectList();
                 return View(vm);
             }
 
@@ -58,7 +57,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             var absence = DocumentSession.Load<Absence>(id);
             if (absence == null) throw new HttpException(404, "Absence not found");
-            CreatePlayerSelectList(absence.Player);
+            ViewBag.Player = DocumentSession.CreatePlayerSelectList(absence.Player);
             return View(new CreateAbsenceViewModel(absence));
         }
 
@@ -67,7 +66,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             if (ModelState.IsValid == false)
             {
-                CreatePlayerSelectList();
+                ViewBag.Player = DocumentSession.CreatePlayerSelectList();
                 return View(vm);
             }
 
@@ -95,31 +94,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             if (absence == null) throw new HttpException(404, "Absence not found");
             DocumentSession.Delete(absence);
             return RedirectToAction("Index");
-        }
-
-        private void CreatePlayerSelectList(string player = "")
-        {
-            var playerList = new List<SelectListItem>
-            {
-                new SelectListItem
-                {
-                    Text = "Välj medlem",
-                    Value = string.Empty
-                }
-            };
-            var players = DocumentSession.Query<Player, PlayerSearch>()
-                                         .Where(x => x.PlayerStatus == Player.Status.Active)
-                                         .OrderBy(x => x.Name)
-                                         .ToList()
-                                         .Select(x => new SelectListItem
-                                         {
-                                             Text = x.Name,
-                                             Value = x.Id,
-                                             Selected = x.Id == player
-                                         })
-                                         .ToArray();
-            playerList.AddRange(players);
-            ViewBag.Player = playerList;
         }
     }
 }
