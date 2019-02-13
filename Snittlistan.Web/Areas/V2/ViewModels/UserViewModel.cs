@@ -9,6 +9,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         {
             Id = user.Id;
             Name = $"{user.FirstName} {user.LastName}";
+            Email = user.Email;
             IsActive = user.IsActive;
         }
 

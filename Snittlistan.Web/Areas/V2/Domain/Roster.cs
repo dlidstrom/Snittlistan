@@ -3,9 +3,14 @@ using System.Collections.Generic;
 
 namespace Snittlistan.Web.Areas.V2.Domain
 {
+    using System.Linq;
+    using Raven.Abstractions;
+
     public class Roster
     {
         private string teamLevel;
+        private List<string> acceptedPlayers;
+        private List<string> players;
 
         public Roster(
             int season,
@@ -60,12 +65,35 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         public bool Preliminary { get; set; }
 
-        public List<string> Players { get; set; }
+        public List<string> Players
+        {
+            get => players;
+            set
+            {
+                players = value;
+                AcceptedPlayers.RemoveAll(x => players.Contains(x) == false);
+            }
+        }
 
         public string MatchResultId { get; set; }
 
         public string TeamLeader { get; set; }
 
         public bool IsVerified { get; set; }
+
+        public List<string> AcceptedPlayers
+        {
+            get { return acceptedPlayers ?? new List<string>(); }
+            set { acceptedPlayers = value; }
+        }
+
+        public void Accept(string playerId)
+        {
+            if (playerId == null) throw new ArgumentNullException(nameof(playerId));
+            if (Preliminary) throw new Exception("Can not accept when preliminary");
+            if (SystemTime.UtcNow > Date.ToUniversalTime()) throw new Exception("Can not accept passed games");
+            if (Players.Contains(playerId) == false) throw new Exception("Can only accept players on the roster");
+            AcceptedPlayers = new HashSet<string>(AcceptedPlayers.Concat(new[] { playerId })).ToList();
+        }
     }
 }

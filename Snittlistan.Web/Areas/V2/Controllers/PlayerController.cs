@@ -20,16 +20,23 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return View(vm);
         }
 
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Player.EditPlayer)]
         public ActionResult Create()
         {
             return View(new CreatePlayerViewModel());
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Player.EditPlayer)]
         public ActionResult Create(CreatePlayerViewModel vm)
         {
+            // prevent duplicates
+            var isDuplicate = DocumentSession.Query<Player, PlayerSearch>().Any(x => x.Name == vm.Name);
+            if (isDuplicate)
+            {
+                ModelState.AddModelError("namn", "Namnet är redan registrerat");
+            }
+
             if (!ModelState.IsValid) return View(vm);
 
             var player = new Player(vm.Name, vm.Email, vm.Status, vm.PersonalNumber.GetValueOrDefault(), vm.Nickname);
@@ -37,7 +44,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Player.EditPlayer)]
         public ActionResult Edit(int id)
         {
             var player = DocumentSession.Load<Player>(id);
@@ -45,15 +52,22 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return View(new CreatePlayerViewModel(player));
         }
 
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Player.EditPlayer)]
         [HttpPost]
         public ActionResult Edit(int id, CreatePlayerViewModel vm)
         {
-            if (!ModelState.IsValid)
-                return View(vm);
-
             var player = DocumentSession.Load<Player>(id);
             if (player == null) throw new HttpException(404, "Player not found");
+
+            // prevent duplicates
+            var duplicates = DocumentSession.Query<Player, PlayerSearch>().Where(x => x.Name == vm.Name).ToArray();
+            if (duplicates.Any(x => x.Id != player.Id))
+            {
+                ModelState.AddModelError("namn", "Namnet är redan registrerat");
+            }
+
+            if (!ModelState.IsValid)
+                return View(vm);
 
             player.SetName(vm.Name);
             player.SetEmail(vm.Email);
@@ -64,7 +78,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Player.EditPlayer)]
         public ActionResult Delete(int id)
         {
             var player = DocumentSession.Load<Player>(id);
@@ -74,7 +88,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Player.EditPlayer)]
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {

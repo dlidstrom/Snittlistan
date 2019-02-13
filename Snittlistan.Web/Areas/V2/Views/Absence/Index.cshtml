@@ -3,7 +3,7 @@
 <div class="row">
     <div class="span8">
         <h4 class="pull-left">Anmäld frånvaro</h4>
-        @if (Request.IsAuthenticated)
+        @if (User.IsInRole(WebsiteRoles.Absence.EditAll))
         {
             <a class="pull-right" href="@Url.Action("Create")">
                 <i class="sprite-glyphicons_006_user_add"></i>
