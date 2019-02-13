@@ -49,6 +49,8 @@ namespace Snittlistan.Web.Controllers
         /// </summary>
         public IMsmqTransaction MsmqTransaction { get; set; }
 
+        protected new CustomPrincipal User => HttpContext.User as CustomPrincipal;
+
         protected void ExecuteCommand(ICommand command)
         {
             if (command == null) throw new ArgumentNullException(nameof(command));

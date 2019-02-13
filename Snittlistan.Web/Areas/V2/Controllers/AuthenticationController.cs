@@ -24,16 +24,11 @@
 
         public ActionResult LogOn()
         {
-            return RedirectToActionPermanent("LogOnEmail");
-        }
-
-        public ActionResult LogOnEmail()
-        {
             return View();
         }
 
         [HttpPost]
-        public ActionResult LogOnEmail(EmailViewModel vm, string returnUrl)
+        public ActionResult LogOn(EmailViewModel vm, string returnUrl)
         {
             // find the user in question
             var user = DocumentSession.FindUserByEmail(vm.Email);

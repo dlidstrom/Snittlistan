@@ -150,7 +150,7 @@
             return View(viewModel);
         }
 
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.EliteMedals.EditMedals)]
         public ActionResult EditMedals(int id)
         {
             var player = DocumentSession.Load<Player>(id);
@@ -164,7 +164,9 @@
             return View(viewModel);
         }
 
-        [HttpPost, Authorize, ActionName("EditMedals")]
+        [HttpPost]
+        [Authorize(Roles = WebsiteRoles.EliteMedals.EditMedals)]
+        [ActionName("EditMedals")]
         public ActionResult EditMedalsPost(int id, EditMedalsPostModel postModel)
         {
             if (ModelState.IsValid == false)

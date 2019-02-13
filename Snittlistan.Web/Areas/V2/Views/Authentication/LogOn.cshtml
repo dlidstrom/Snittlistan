@@ -7,7 +7,7 @@
         <h3>@ViewBag.Title</h3>
         @if (ViewBag.PlayerId != null)
         {
-             using (Html.BeginForm("LogOnEmail", "Authentication", FormMethod.Post, new
+             using (Html.BeginForm("LogOn", "Authentication", FormMethod.Post, new
              {
                  @class = "form-horizontal"
              }))
@@ -40,7 +40,7 @@
         else
         {
             <p>Ange först din e-postadress.</p>
-             using (Html.BeginForm("LogOnEmail", "Authentication", FormMethod.Post, new
+             using (Html.BeginForm("LogOn", "Authentication", FormMethod.Post, new
              {
                  @class = "form-horizontal"
              }))

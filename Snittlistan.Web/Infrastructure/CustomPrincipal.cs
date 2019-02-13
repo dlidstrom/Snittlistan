@@ -7,10 +7,10 @@
     {
         private readonly string[] roles;
 
-        public CustomPrincipal(string name, string[] roles)
+        public CustomPrincipal(string playerId, string name, string[] roles)
         {
             this.roles = roles;
-            Identity = new GenericIdentity(name);
+            CustomIdentity = new CustomIdentity(playerId, name);
         }
 
         public bool IsInRole(string role)
@@ -18,6 +18,8 @@
             return roles.Contains(role);
         }
 
-        public IIdentity Identity { get; }
+        public IIdentity Identity => CustomIdentity;
+
+        public CustomIdentity CustomIdentity { get; }
     }
 }
