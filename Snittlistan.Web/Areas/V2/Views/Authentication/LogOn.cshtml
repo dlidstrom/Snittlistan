@@ -1,44 +1,73 @@
-﻿@model LogOnViewModel
+﻿@model Snittlistan.Web.Areas.V2.Controllers.AuthenticationController.EmailViewModel
 @{
     ViewBag.Title = "Logga in";
 }
 <div class="row">
     <div class="span6">
         <h3>@ViewBag.Title</h3>
-        <p>Logga in genom att ange din e-postadress och ditt lösenord.</p>
-        @using (Html.BeginForm("LogOn", "Authentication", FormMethod.Post, new { @class = "form-horizontal"}))
+        @if (ViewBag.PlayerId != null)
         {
-            @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary", new { message = "Det gick inte att logga in."})
-            <div class="control-group">
-                <label class="control-label" for="email">E-postadress:</label>
-                <div class="controls">
-                    <input type="email"
-                           name="email"
-                           placeholder="E-postadress"
-                           autofocus="autofocus"
-                           autocapitalization="off"
-                           required="required" />
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="password">Lösenord:</label>
-                <div class="controls">
-                    <input type="password" name="password" placeholder="Lösenord" required="required" />
-                </div>
-            </div>
-            <div class="control-group">
-                <div class="controls">
-                    <label class="checkbox">
-                        @Html.EditorFor(model => model.RememberMe) Kom ihåg mig
-                    </label>
-                </div>
-            </div>
-            <div class="control-group">
-                <div class="controls">
-                    <button class="btn btn-primary btn-large" type="submit">Logga in</button>
-                    <a class="btn btn-large" href="@Url.Action("Index", "Roster")">Avbryt</a>
-                </div>
-            </div>
+             using (Html.BeginForm("LogOn", "Authentication", FormMethod.Post, new
+             {
+                 @class = "form-horizontal"
+             }))
+             {
+                 @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary", new
+                 {
+                     message = "Det gick inte att logga in."
+                 })
+                 <div class="control-group">
+                     <label class="control-label" for="playerId">Spelare:</label>
+                     <div class="controls">
+                         @Html.DropDownList("PlayerId", null, new
+                         {
+                             required = "required",
+                             id = "playerId"
+                         })
+                         <span class="help-block">
+                             E-postadressen används för flera spelare. Välj den du vill logga in som.
+                         </span>
+                     </div>
+                 </div>
+                 <div class="control-group">
+                     <div class="controls">
+                         <button class="btn btn-primary btn-large" type="submit">Logga in</button>
+                         <a class="btn btn-large" href="@Url.Action("Index", "Roster")">Avbryt</a>
+                     </div>
+                 </div>
+             }
+        }
+        else
+        {
+            <p>Ange först din e-postadress.</p>
+             using (Html.BeginForm("LogOn", "Authentication", FormMethod.Post, new
+             {
+                 @class = "form-horizontal"
+             }))
+             {
+                 @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary", new
+                 {
+                     message = "Det gick inte att logga in."
+                 })
+                 <div class="control-group">
+                     @Html.LabelFor(x => x.Email, new { @class = "control-label" })
+                     <div class="controls">
+                         @Html.EditorFor(
+                             x => x.Email,
+                             new
+                             {
+                                 autofocus = "autofocus",
+                                 autocapitalization = "off"
+                             })
+                     </div>
+                 </div>
+                 <div class="control-group">
+                     <div class="controls">
+                         <button class="btn btn-primary btn-large" type="submit">Logga in</button>
+                         <a class="btn btn-large" href="@Url.Action("Index", "Roster")">Avbryt</a>
+                     </div>
+                 </div>
+             }
         }
     </div>
 </div>

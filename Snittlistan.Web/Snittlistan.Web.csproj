@@ -196,17 +196,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="Areas\V2\Controllers\AdminRosterAcceptController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\ApiErrorController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\QueryController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\TaskController.cs" />
     <Compile Include="Areas\V2\Controllers\EliteMedalsPrintController.cs" />
+    <Compile Include="Areas\V2\Controllers\RosterAcceptController.cs" />
     <Compile Include="Areas\V2\Domain\Match\Commentary\Match4Analyzer.cs" />
     <Compile Include="Areas\V2\Domain\Match\Commentary\PlayerPin.cs" />
     <Compile Include="Areas\V2\Domain\Match\Commentary\PlayerResult.cs" />
     <Compile Include="Areas\V2\Domain\Match\Commentary\Series4Scores.cs" />
     <Compile Include="Areas\V2\Domain\OilPatternInformation.cs" />
+    <Compile Include="Areas\V2\Domain\OneTimeToken.cs" />
     <Compile Include="Areas\V2\Domain\ParseStandingsResult.cs" />
     <Compile Include="Areas\V2\Domain\ParseMatchSchemeResult.cs" />
+    <Compile Include="Areas\V2\Indexes\OneTimeTokenIndex.cs" />
     <Compile Include="Areas\V2\Queries\GetActivePlayersQuery.cs" />
     <Compile Include="Areas\V2\Queries\GetPendingMatchesQuery.cs" />
     <Compile Include="Areas\V2\Queries\GetPlayersQuery.cs" />
@@ -225,6 +229,7 @@
     <Compile Include="Areas\V2\Handlers\SeasonResultsHandler.cs" />
     <Compile Include="Areas\V2\Migration\IEventMigratorWithResults.cs" />
     <Compile Include="Areas\V2\ReadModels\SeasonResults.cs" />
+    <Compile Include="Areas\V2\WebsiteRoles.cs" />
     <Compile Include="Areas\V2\ViewModels\EditMedalsPostModel.cs" />
     <Compile Include="Areas\V2\ViewModels\EditMedalsViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\EliteMedalsViewModel.cs" />
@@ -302,7 +307,10 @@
     <Compile Include="Infrastructure\Attributes\RestoreModelStateFromTempDataAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\SaveChangesAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\UnhandledExceptionFilter.cs" />
+    <Compile Include="Infrastructure\BaseViewPage.cs" />
     <Compile Include="Infrastructure\BitsClient.cs" />
+    <Compile Include="Infrastructure\CustomIdentity.cs" />
+    <Compile Include="Infrastructure\CustomPrincipal.cs" />
     <Compile Include="Infrastructure\EventStoreLite\AggregateRoot.cs" />
     <Compile Include="Infrastructure\EventStoreLite\Event.cs" />
     <Compile Include="Infrastructure\EventStoreLite\EventDispatcher.cs" />
@@ -372,7 +380,6 @@
     <Content Include="Content\js\helpers\typeahead.js" />
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="Areas\V1\Controllers\AccountController.cs" />
-    <Compile Include="Areas\V2\ViewModels\LogOnViewModel.cs" />
     <Compile Include="HtmlHelpers\RequestExtensions.cs" />
     <Compile Include="Areas\V2\Indexes\PlayerSearch.cs" />
     <Compile Include="Areas\V2\Indexes\RosterSearchTerms.cs" />
@@ -478,7 +485,6 @@
     <Compile Include="Areas\V1\ViewModels\Match\Team8x4DetailsViewModel.cs" />
     <Compile Include="Areas\V1\ViewModels\Match\Team8x4ViewModel.cs" />
     <Compile Include="Areas\V1\ViewModels\PlayerMatchesViewModel.cs" />
-    <Compile Include="Areas\V2\ViewModels\SessionViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\TurnViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -579,6 +585,9 @@
     <Content Include="Areas\V2\Views\Shared\DisplayTemplates\RosterHeaderViewModel.cshtml" />
     <Content Include="Areas\V2\Views\MatchResultAdmin\EditorTemplates\Match4PostModel.cshtml" />
     <Content Include="Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml" />
+    <Content Include="Areas\V2\Views\Authentication\LogOnPassword.cshtml" />
+    <Content Include="Areas\V2\Views\Authentication\EmailSent.cshtml" />
+    <Content Include="Areas\V2\Views\AdminRosterAccept\AcceptPlayer.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
@@ -590,16 +599,6 @@
     <Content Include="Content\js\v2-buttons.min.js" />
     <Content Include="Content\js\v2-buttons.uglify.js" />
     <Content Include="Content\SpecRunner.html" />
-    <Content Include="Content\templates\header-template.html" />
-    <Content Include="Content\templates\login-modal-template.html" />
-    <Content Include="Content\templates\modal-template.html" />
-    <Content Include="Content\templates\player-list-template.html" />
-    <Content Include="Content\templates\player-template.html" />
-    <Content Include="Content\templates\roster-template.html" />
-    <Content Include="Content\templates\turn-admin-template.html" />
-    <Content Include="Content\templates\turn-new-template.html" />
-    <Content Include="Content\templates\turn-template.html" />
-    <Content Include="Content\templates\turns-template.html" />
     <Content Include="Global.asax" />
     <Content Include="robots.txt" />
     <Content Include="Rotativa\help-wkhtmltoimage.txt" />
@@ -634,6 +633,7 @@
     <Content Include="Views\Emails\Mail.cshtml" />
     <Content Include="Views\Emails\Web.config" />
     <Content Include="Views\Emails\_ViewStart.cshtml" />
+    <Content Include="Views\Emails\LoginLink.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

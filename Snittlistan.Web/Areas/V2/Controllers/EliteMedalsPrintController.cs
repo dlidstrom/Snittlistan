@@ -20,7 +20,7 @@
     using ViewModels;
     using Web.Controllers;
 
-    [Authorize]
+    [Authorize(Roles = WebsiteRoles.EliteMedals.GenerateReport)]
     public class EliteMedalsPrintController : AbstractController
     {
         [HttpPost]

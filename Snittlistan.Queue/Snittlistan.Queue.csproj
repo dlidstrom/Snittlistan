@@ -67,6 +67,7 @@
     <Compile Include="MessageQueueProcessorSettings.cs" />
     <Compile Include="Config\MessagingConfigSection.cs" />
     <Compile Include="Messages\NewUserCreatedEvent.cs" />
+    <Compile Include="Messages\OneTimeKeyEvent.cs" />
     <Compile Include="Messages\RegisterMatchesMessage.cs" />
     <Compile Include="Messages\TaskRequest.cs" />
     <Compile Include="Messages\UserInvitedEvent.cs" />

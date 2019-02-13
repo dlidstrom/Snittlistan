@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web.Http;
-using Elmah;
-using Newtonsoft.Json;
-using NLog;
-using Raven.Abstractions;
-using Snittlistan.Queue.Messages;
-using Snittlistan.Web.Areas.V2.Commands;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.Domain.Match;
-using Snittlistan.Web.Areas.V2.Indexes;
-using Snittlistan.Web.Areas.V2.Queries;
-using Snittlistan.Web.Areas.V2.ReadModels;
-using Snittlistan.Web.Controllers;
-using Snittlistan.Web.Helpers;
-using Snittlistan.Web.Infrastructure;
-using Snittlistan.Web.Infrastructure.Attributes;
-using Snittlistan.Web.Infrastructure.Indexes;
-using Snittlistan.Web.Models;
-
-namespace Snittlistan.Web.Areas.V2.Controllers.Api
+﻿namespace Snittlistan.Web.Areas.V2.Controllers.Api
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
+    using System.Web.Http;
+    using Elmah;
+    using Newtonsoft.Json;
+    using NLog;
+    using Raven.Abstractions;
+    using Snittlistan.Queue.Messages;
+    using Snittlistan.Web.Areas.V2.Commands;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.Domain.Match;
+    using Snittlistan.Web.Areas.V2.Indexes;
+    using Snittlistan.Web.Areas.V2.Queries;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Helpers;
+    using Snittlistan.Web.Infrastructure;
+    using Snittlistan.Web.Infrastructure.Attributes;
+    using Snittlistan.Web.Infrastructure.Indexes;
+    using Snittlistan.Web.Models;
+
     [OnlyLocalAllowed]
     public class TaskController : AbstractApiController
     {
@@ -43,6 +43,13 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                 new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
             var result = Handle(task);
             return result;
+        }
+
+        private IHttpActionResult Handle(OneTimeKeyEvent @event)
+        {
+            const string Subject = "Logga in på Snittlistan";
+            Emails.SendLoginLink(@event.Email, Subject, @event.ActivationUri);
+            return Ok();
         }
 
         private IHttpActionResult Handle(VerifyMatchMessage message)

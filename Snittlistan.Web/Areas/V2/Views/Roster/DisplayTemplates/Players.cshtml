@@ -1,32 +1,77 @@
-﻿@model RosterViewModel
+﻿@using Raven.Abstractions
+@model RosterViewModel
 @{
     var hideControls = Convert.ToBoolean(ViewData["hideControls"]);
 }
 
 <div class="well well-small editable">
-    @if (Request.IsAuthenticated && hideControls == false)
+    @if (User.IsInRole(WebsiteRoles.Roster.EditPlayers) && hideControls == false)
     {
         <a href="@Url.Action("EditPlayers", new { Model.Header.RosterId })" class="edit-right">
             <i class="sprite-glyphicons_151_edit"></i>
         </a>
     }
-    @if (Model.Preliminary && User.Identity.IsAuthenticated)
+    @if (Model.Preliminary && User.IsInRole(WebsiteRoles.Roster.ViewPreliminary))
     {
         <div class="alert alert-info">
             <strong>Preliminär</strong> Gömd för vanliga användare
         </div>
     }
-    @if (Model.Preliminary && User.Identity.IsAuthenticated == false)
+    @if (Model.Preliminary && User.IsInRole(WebsiteRoles.Roster.ViewPreliminary) == false)
     {
         @* Hide preliminaries for regular users *@
         Model.Players.Clear();
+        Model.TeamLeader = null;
+    }
+    @if (Model.Preliminary == false
+         && Model.Header.Date.ToUniversalTime() > SystemTime.UtcNow
+         && hideControls == false)
+    {
+        if (User.CustomIdentity.PlayerId != null
+            && Model.Players.Exists(x => x.Item1 == User.CustomIdentity.PlayerId)
+            && Model.Players.Find(x => x.Item1 == User.CustomIdentity.PlayerId).Item3 == false)
+        {
+            using (Html.BeginForm(
+                "Accept",
+                "RosterAccept",
+                new
+                {
+                    Model.Header.RosterId,
+                    User.CustomIdentity.PlayerId,
+                    Model.Season,
+                    Model.Turn
+                }))
+            {
+                <button class="btn btn-success btn-small" type="submit">
+                    &#10004;
+                    Jag kommer
+                </button>
+            }
+        }
+        else if (Model.Players.Any() && Model.Players.Any(x => x.Item3 == false))
+        {
+            @Html.ActionLink(
+                "Ange spelare deltar",
+                "AcceptPlayer",
+                "AdminRosterAccept",
+                new
+                {
+                    Model.Header.RosterId,
+                    Model.Season,
+                    Model.Turn
+                },
+                new
+                {
+                    @class = "btn btn-success btn-small"
+                })
+        }
     }
     @if (Model.IsFourPlayer)
     {
         <table class="table table-condensed">
             <tr>
                 <th></th>
-                <th>Namn</th>
+                <th colspan="2">Namn</th>
             </tr>
             @for (var i = 0; i < 4; i++)
             {
@@ -39,6 +84,12 @@
                         @if (player != null)
                         {
                             @player.Item2
+                        }
+                    </td>
+                    <td>
+                        @if (player != null && player.Item3)
+                        {
+                            <span class="label label-success">&#10004;</span>
                         }
                     </td>
                 </tr>
@@ -54,6 +105,12 @@
                         @reserve.Item2
                     }
                 </td>
+                <td>
+                    @if (reserve != null && reserve.Item3)
+                    {
+                        <span class="label label-success">&#10004;</span>
+                    }
+                </td>
             </tr>
             <tr>
                 <td class="table-id-medium">
@@ -65,6 +122,12 @@
                         @Model.TeamLeader.Item2
                     }
                 </td>
+                <td>
+                    @if (Model.TeamLeader != null && Model.TeamLeader.Item3)
+                    {
+                        <span class="label label-success">&#10004;</span>
+                    }
+                </td>
             </tr>
         </table>
     }
@@ -73,7 +136,7 @@
         <table class="table table-condensed">
             <tr>
                 <th>Bord</th>
-                <th>Namn</th>
+                <th colspan="2">Namn</th>
             </tr>
             @for (var i = 0; i < 4; i++)
             {
@@ -81,22 +144,34 @@
                     <td class="table-id" rowspan="2">@(i + 1)</td>
                     <td>
                         @{
-                            var first = Model.Players.ElementAtOrDefault(2*i);
+                            var first = Model.Players.ElementAtOrDefault(2 * i);
                         }
                         @if (first != null)
                         {
                             @first.Item2
                         }
                     </td>
+                    <td>
+                        @if (first != null && first.Item3)
+                        {
+                            <span class="label label-success">&#10004;</span>
+                        }
+                    </td>
                 </tr>
                 <tr>
                     <td>
                         @{
-                            var second = Model.Players.ElementAtOrDefault(2*i + 1);
+                            var second = Model.Players.ElementAtOrDefault(2 * i + 1);
                         }
                         @if (second != null)
                         {
                             @second.Item2
+                        }
+                    </td>
+                    <td>
+                        @if (second != null && second.Item3)
+                        {
+                            <span class="label label-success">&#10004;</span>
                         }
                     </td>
                 </tr>
@@ -112,6 +187,12 @@
                         @reserve1.Item2
                     }
                 </td>
+                <td>
+                    @if (reserve1 != null && reserve1.Item3)
+                    {
+                        <span class="label label-success">&#10004;</span>
+                    }
+                </td>
             </tr>
             <tr>
                 <td>
@@ -123,6 +204,12 @@
                         @reserve2.Item2
                     }
                 </td>
+                <td>
+                    @if (reserve2 != null && reserve2.Item3)
+                    {
+                        <span class="label label-success">&#10004;</span>
+                    }
+                </td>
             </tr>
             <tr>
                 <td class="table-id-medium">
@@ -132,6 +219,12 @@
                     @if (Model.TeamLeader != null)
                     {
                         @Model.TeamLeader.Item2
+                    }
+                </td>
+                <td>
+                    @if (Model.TeamLeader != null && Model.TeamLeader.Item3)
+                    {
+                        <span class="label label-success">&#10004;</span>
                     }
                 </td>
             </tr>

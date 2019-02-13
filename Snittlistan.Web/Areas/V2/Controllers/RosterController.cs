@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
-using System.Web.Mvc;
-using Raven.Abstractions;
-using Raven.Client;
-using Rotativa;
-using Rotativa.Options;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.Indexes;
-using Snittlistan.Web.Areas.V2.ViewModels;
-using Snittlistan.Web.Controllers;
-using Snittlistan.Web.Helpers;
-using Snittlistan.Web.Infrastructure;
-using Snittlistan.Web.Models;
-
-namespace Snittlistan.Web.Areas.V2.Controllers
+﻿namespace Snittlistan.Web.Areas.V2.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Web;
+    using System.Web.Mvc;
+    using Raven.Abstractions;
+    using Raven.Client;
+    using Rotativa;
+    using Rotativa.Options;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.Indexes;
+    using Snittlistan.Web.Areas.V2.ViewModels;
+    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Helpers;
+    using Snittlistan.Web.Infrastructure;
+    using Snittlistan.Web.Models;
+
     public class RosterController : AbstractController
     {
         private readonly IBitsClient bitsClient;
@@ -50,7 +50,10 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                         Turn = g.Key,
                         StartDate = g.Min(x => x.Date),
                         EndDate = lastDate,
-                        Rosters = g.Select(x => new RosterViewModel(x, Tuple.Create(string.Empty, string.Empty), new List<Tuple<string, string>>()))
+                        Rosters = g.Select(x => new RosterViewModel(
+                                       x,
+                                       Tuple.Create(string.Empty, string.Empty, false),
+                                       new List<Tuple<string, string, bool>>()))
                                    .SortRosters()
                                    .ToList()
                     };
@@ -72,13 +75,13 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Roster.AddFromBits)]
         public ActionResult CreateBits()
         {
             return View();
         }
 
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Roster.AddFromBits)]
         [HttpPost]
         public ActionResult CreateBitsVerify(VerifyBitsViewModel vm)
         {
@@ -112,7 +115,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 });
         }
 
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Roster.AddManual)]
         public ActionResult Create()
         {
             var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
@@ -125,7 +128,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Roster.AddManual)]
         public ActionResult Create(CreateRosterViewModel vm)
         {
             if (!ModelState.IsValid) return View(vm);
@@ -145,7 +148,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Roster.EditRoster)]
         public ActionResult Edit(string id)
         {
             var roster = DocumentSession.Load<Roster>(id);
@@ -158,7 +161,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return View(new CreateRosterViewModel(roster));
         }
 
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Roster.EditRoster)]
         [HttpPost]
         public ActionResult Edit(string id, CreateRosterViewModel vm)
         {
@@ -192,7 +195,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Roster.EditRoster)]
         public ActionResult Delete(string id)
         {
             var roster = DocumentSession.Load<Roster>(id);
@@ -200,11 +203,14 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 throw new HttpException(404, "Roster not found");
             if (roster.MatchResultId != null)
                 throw new HttpException(400, "Can not delete registered rosters");
-            return View(new RosterViewModel(roster, Tuple.Create(string.Empty, string.Empty), new List<Tuple<string, string>>()));
+            return View(new RosterViewModel(
+                roster,
+                Tuple.Create(string.Empty, string.Empty, false),
+                new List<Tuple<string, string, bool>>()));
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Roster.EditRoster)]
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(string id)
         {
@@ -217,6 +223,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         public ActionResult View(int? season, int? turn, bool? print)
         {
             if (season.HasValue == false)
@@ -271,7 +278,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return View(viewTurnViewModel);
         }
 
-        [Authorize, HttpPost]
+        [Authorize(Roles = WebsiteRoles.Roster.EditRoster)]
+        [HttpPost]
         public ActionResult Print(
             int season,
             int turn,
@@ -323,7 +331,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return View(viewTurnViewModel);
         }
 
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Roster.EditPlayers)]
         public ActionResult EditPlayers(string rosterId)
         {
             var roster = DocumentSession
@@ -346,7 +354,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = WebsiteRoles.Roster.EditPlayers)]
         public ActionResult EditPlayers(string rosterId, RosterPlayersViewModel vm)
         {
             if (ModelState.IsValid == false) return EditPlayers(rosterId);
@@ -441,8 +449,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             {
                 var rosterViewModel = new RosterViewModel(
                     roster,
-                    Tuple.Create(string.Empty, string.Empty),
-                    new List<Tuple<string, string>>());
+                    Tuple.Create(string.Empty, string.Empty, false),
+                    new List<Tuple<string, string, bool>>());
                 foreach (var player in roster.Players)
                 {
                     if (rostersForPlayers.TryGetValue(player, out var rosterViewModels) == false)
