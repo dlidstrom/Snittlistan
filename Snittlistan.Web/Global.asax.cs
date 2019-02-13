@@ -120,6 +120,7 @@
                 {
                     HttpContext.Current.User =
                         new CustomPrincipal(
+                            player.Id,
                             player.Name,
                             WebsiteRoles.PlayerGroup().Select(x => x.Name).ToArray());
                     return;
@@ -133,6 +134,7 @@
                     {
                         HttpContext.Current.User =
                             new CustomPrincipal(
+                                null,
                                 user.Email,
                                 WebsiteRoles.AdminGroup().Select(x => x.Name).ToArray());
                     }
@@ -140,6 +142,7 @@
                     {
                         HttpContext.Current.User =
                             new CustomPrincipal(
+                                null,
                                 user.Email,
                                 WebsiteRoles.UserGroup().Select(x => x.Name).ToArray());
                     }

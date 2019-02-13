@@ -8,10 +8,13 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
     {
         public RosterViewModel()
         {
-            Players = new List<Tuple<string, string>>();
+            Players = new List<Tuple<string, string, bool>>();
         }
 
-        public RosterViewModel(Roster roster, Tuple<string, string> teamLeader, List<Tuple<string, string>> players)
+        public RosterViewModel(
+            Roster roster,
+            Tuple<string, string, bool> teamLeader,
+            List<Tuple<string, string, bool>> players)
         {
             TeamLeader = teamLeader;
             Players = players;
@@ -40,8 +43,8 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public bool Preliminary { get; set; }
 
-        public List<Tuple<string, string>> Players { get; set; }
+        public List<Tuple<string, string, bool>> Players { get; set; }
 
-        public Tuple<string, string> TeamLeader { get; set; }
+        public Tuple<string, string, bool> TeamLeader { get; set; }
     }
 }

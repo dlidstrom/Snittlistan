@@ -1,8 +1,8 @@
-﻿using System.Web.Mvc;
-using Snittlistan.Web.Models;
-
-namespace Snittlistan.Web.Controllers
+﻿namespace Snittlistan.Web.Controllers
 {
+    using System.Web.Mvc;
+    using Snittlistan.Web.Models;
+
     [Authorize]
     public abstract class AdminController : AbstractController
     {

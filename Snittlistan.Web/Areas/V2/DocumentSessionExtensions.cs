@@ -25,17 +25,22 @@
             this IDocumentSession session,
             Roster roster)
         {
-            var players = new List<Tuple<string, string>>();
+            var accepted = new HashSet<string>(roster.AcceptedPlayers);
+            var players = new List<Tuple<string, string, bool>>();
             foreach (var player in roster.Players.Where(p => p != null).Select(session.Load<Player>))
             {
-                players.Add(Tuple.Create(player.Id, player.Name));
+                players.Add(Tuple.Create(player.Id, player.Name, accepted.Contains(player.Id)));
             }
 
-            Tuple<string, string> teamLeaderTuple = null;
+            Tuple<string, string, bool> teamLeaderTuple = null;
             if (roster.TeamLeader != null)
             {
                 var teamLeader = session.Load<Player>(roster.TeamLeader);
-                teamLeaderTuple = Tuple.Create(teamLeader.Id, teamLeader.Name);
+                teamLeaderTuple =
+                    Tuple.Create(
+                        teamLeader.Id,
+                        teamLeader.Name,
+                        accepted.Contains(teamLeader.Id));
             }
 
             var vm = new RosterViewModel(roster, teamLeaderTuple, players);
