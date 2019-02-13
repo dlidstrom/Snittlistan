@@ -24,7 +24,8 @@
         Model.TeamLeader = null;
     }
     @if (Model.Preliminary == false
-         && Model.Header.Date.ToUniversalTime() > SystemTime.UtcNow)
+         && Model.Header.Date.ToUniversalTime() > SystemTime.UtcNow
+         && hideControls == false)
     {
         if (User.CustomIdentity.PlayerId != null
             && Model.Players.Exists(x => x.Item1 == User.CustomIdentity.PlayerId)
