@@ -37,10 +37,8 @@
             var showInactiveRole =
                 new WebsiteRole(Player.ShowInactive, RoleLevel.User);
 
-            var addFromBitsRole =
-                new WebsiteRole(Roster.AddFromBits, RoleLevel.User);
-            var addManualRole =
-                new WebsiteRole(Roster.AddManual, RoleLevel.User);
+            var addRosterRole =
+                new WebsiteRole(Roster.AddRoster, RoleLevel.User);
             var editPlayersRole =
                 new WebsiteRole(Roster.EditPlayers, RoleLevel.User);
             var viewPreliminaryRole =
@@ -81,9 +79,7 @@
 
         public static class Roster
         {
-            public const string AddFromBits = "Roster.AddFromBits";
-
-            public const string AddManual = "Roster.AddManual";
+            public const string AddRoster = "Roster.AddRoster";
 
             public const string EditPlayers = "Roster.EditPlayers";
 

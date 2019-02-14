@@ -2,7 +2,6 @@
 {
     using System.Linq;
     using System.Security.Principal;
-    using System.Web;
 
     public class CustomPrincipal : IPrincipal
     {
@@ -16,7 +15,7 @@
 
         public bool IsInRole(string role)
         {
-            return HttpContext.Current.Request.IsAuthenticated && roles.Contains(role);
+            return roles.Contains(role);
         }
 
         public IIdentity Identity => CustomIdentity;

@@ -75,13 +75,13 @@
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = WebsiteRoles.Roster.AddFromBits)]
+        [Authorize(Roles = WebsiteRoles.Roster.AddRoster)]
         public ActionResult CreateBits()
         {
             return View();
         }
 
-        [Authorize(Roles = WebsiteRoles.Roster.AddFromBits)]
+        [Authorize(Roles = WebsiteRoles.Roster.AddRoster)]
         [HttpPost]
         public ActionResult CreateBitsVerify(VerifyBitsViewModel vm)
         {
@@ -115,7 +115,7 @@
                 });
         }
 
-        [Authorize(Roles = WebsiteRoles.Roster.AddManual)]
+        [Authorize(Roles = WebsiteRoles.Roster.AddRoster)]
         public ActionResult Create()
         {
             var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
@@ -128,7 +128,7 @@
         }
 
         [HttpPost]
-        [Authorize(Roles = WebsiteRoles.Roster.AddManual)]
+        [Authorize(Roles = WebsiteRoles.Roster.AddRoster)]
         public ActionResult Create(CreateRosterViewModel vm)
         {
             if (!ModelState.IsValid) return View(vm);
