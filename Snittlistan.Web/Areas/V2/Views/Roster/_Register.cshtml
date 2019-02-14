@@ -1,4 +1,4 @@
-﻿@if (Request.IsAuthenticated && (User.IsInRole(WebsiteRoles.Roster.AddFromBits) || User.IsInRole(WebsiteRoles.Roster.AddManual)))
+﻿@if (User.IsInRole(WebsiteRoles.Roster.AddFromBits) || User.IsInRole(WebsiteRoles.Roster.AddManual))
 {
     <div class="row">
         <div class="span6 admin">
