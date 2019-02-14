@@ -1,6 +1,7 @@
 ﻿@using Snittlistan.Web.Areas.V2.Domain
 @model CreatePlayerViewModel
 
+@* TODO Use html helpers here *@
 <div class="control-group">
     <label class="control-label" for="name">Namn:</label>
     <div class="controls">
@@ -12,8 +13,21 @@
                autocorrect="off"
                autocomplete="off"
                value="@Model.Name"
-               required/>
+               required />
         <span class="help-block">Måste anges</span>
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="email">E-postadress:</label>
+    <div class="controls">
+        <input type="email"
+               name="email"
+               id="email"
+               placeholder=""
+               autocorrect="off"
+               autocomplete="off"
+               value="@Model.Email" />
+        <span class="help-block">Måste anges då det möjliggör inloggning</span>
     </div>
 </div>
 <div class="control-group">
@@ -43,43 +57,19 @@
     </div>
 </div>
 <div class="control-group">
-    <label class="control-label" for="email">E-postadress:</label>
-    <div class="controls">
-        <input type="email"
-               name="email"
-               id="email"
-               placeholder=""
-               autocorrect="off"
-               autocomplete="off"
-               value="@Model.Email" />
-    </div>
-</div>
-<div class="control-group">
     <label class="control-label" for="status">Status:</label>
     <div class="controls">
         <select name="status" id="status">
             <option value="Active"
-                @if (Model.Status == Player.Status.Active)
-                {
-                    <text>selected="selected"</text>
-                }
-                >
+                    @if (Model.Status == Player.Status.Active) { <text> selected="selected" </text>  }>
                 Aktiv
             </option>
             <option value="Supporter"
-                @if (Model.Status == Player.Status.Supporter)
-                {
-                    <text>selected="selected"</text>
-                }
-                >
+                    @if (Model.Status == Player.Status.Supporter) { <text> selected="selected" </text>  }>
                 Supporter
             </option>
             <option value="Inactive"
-                @if (Model.Status == Player.Status.Inactive)
-                {
-                    <text>selected="selected"</text>
-                }
-                >
+                    @if (Model.Status == Player.Status.Inactive) { <text> selected="selected" </text>  }>
                 Inaktiv
             </option>
         </select>

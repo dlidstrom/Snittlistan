@@ -27,6 +27,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public string Nickname { get; set; }
 
+        [Required]
         public string Email { get; set; }
 
         [Required]
