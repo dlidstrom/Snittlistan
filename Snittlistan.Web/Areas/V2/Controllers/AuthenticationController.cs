@@ -2,6 +2,7 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Configuration;
     using System.Diagnostics;
     using System.Linq;
     using System.Web;
@@ -138,10 +139,24 @@
         public ActionResult OneTimeTokenLogOn(string oneTimeKey)
         {
             var oneTimeToken = DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>().Single(x => x.OneTimeKey == oneTimeKey);
-            if (DocumentSession.Load<Player>(oneTimeToken.Payload) == null)
+            var player = DocumentSession.Load<Player>(oneTimeToken.Payload);
+            if (player == null)
                 throw new HttpException(404, "Player not found");
             oneTimeToken.ApplyToken(
                 () => authenticationService.SetAuthCookie(oneTimeToken.Payload, true));
+            try
+            {
+                PublishMessage(
+                    new EmailTask(
+                        ConfigurationManager.AppSettings["OwnerEmail"],
+                        $"{player.Name} logged in",
+                        string.Empty));
+            }
+            catch
+            {
+                //
+            }
+
             return RedirectToAction("Index", "Roster");
         }
 
