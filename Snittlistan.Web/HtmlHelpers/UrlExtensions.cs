@@ -1,9 +1,9 @@
-using System;
-using System.Diagnostics;
-using System.Web.Mvc;
-
 namespace Snittlistan.Web.HtmlHelpers
 {
+    using System;
+    using System.Diagnostics;
+    using System.Web.Mvc;
+
     public static class UrlExtensions
     {
         public static string ContentCacheBreak(this UrlHelper url, string contentPath)

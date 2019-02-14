@@ -5,19 +5,19 @@
 }
 
 <div class="well well-small editable">
-    @if (User.IsInRole(WebsiteRoles.Roster.EditPlayers) && hideControls == false)
+    @if (User.IsInRole2(WebsiteRoles.Roster.EditPlayers) && hideControls == false)
     {
         <a href="@Url.Action("EditPlayers", new { Model.Header.RosterId })" class="edit-right">
             <i class="sprite-glyphicons_151_edit"></i>
         </a>
     }
-    @if (Model.Preliminary && User.IsInRole(WebsiteRoles.Roster.ViewPreliminary))
+    @if (Model.Preliminary && User.IsInRole2(WebsiteRoles.Roster.ViewPreliminary))
     {
         <div class="alert alert-info">
             <strong>Preliminär</strong> Gömd för vanliga användare
         </div>
     }
-    @if (Model.Preliminary && User.IsInRole(WebsiteRoles.Roster.ViewPreliminary) == false)
+    @if (Model.Preliminary && User.IsInRole2(WebsiteRoles.Roster.ViewPreliminary) == false)
     {
         @* Hide preliminaries for regular users *@
         Model.Players.Clear();
