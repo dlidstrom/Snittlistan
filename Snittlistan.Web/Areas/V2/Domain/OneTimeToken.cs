@@ -27,14 +27,20 @@
             action.Invoke(OneTimeKey);
         }
 
-        public void ApplyToken(Action action)
+        public Result ApplyToken(Action action)
         {
-            if (UsedDate.HasValue) throw new Exception("Token has been used");
             var span = SystemTime.UtcNow - CreatedDate;
-            if (span.TotalDays > 1) throw new Exception("Token has expired");
+            if (span.TotalDays > 1) return Result.Expired;
 
             action.Invoke();
             UsedDate = SystemTime.UtcNow;
+            return Result.Ok;
+        }
+
+        public enum Result
+        {
+            Ok,
+            Expired
         }
     }
 }
