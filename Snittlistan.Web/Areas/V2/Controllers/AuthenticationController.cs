@@ -5,6 +5,7 @@
     using System.Configuration;
     using System.Diagnostics;
     using System.Linq;
+    using System.Text;
     using System.Web;
     using System.Web.Mvc;
     using Domain;
@@ -142,22 +143,35 @@
             var player = DocumentSession.Load<Player>(oneTimeToken.Payload);
             if (player == null)
                 throw new HttpException(404, "Player not found");
-            oneTimeToken.ApplyToken(
-                () => authenticationService.SetAuthCookie(oneTimeToken.Payload, true));
-            try
+            switch (oneTimeToken.ApplyToken(
+                () => authenticationService.SetAuthCookie(oneTimeToken.Payload, true)))
             {
-                PublishMessage(
-                    new EmailTask(
-                        ConfigurationManager.AppSettings["OwnerEmail"],
-                        $"{player.Name} logged in",
-                        string.Empty));
-            }
-            catch
-            {
-                //
-            }
+                case OneTimeToken.Result.Ok:
+                {
+                    try
+                    {
+                        var builder = new StringBuilder();
+                        builder.AppendLine($"User Agent: {Request.UserAgent}");
+                        PublishMessage(
+                            EmailTask.Create(
+                                ConfigurationManager.AppSettings["OwnerEmail"],
+                                $"{player.Name} logged in",
+                                builder.ToString()));
+                    }
+                    catch
+                    {
+                        //
+                    }
 
-            return RedirectToAction("Index", "Roster");
+                    return RedirectToAction("Index", "Roster");
+                }
+                case OneTimeToken.Result.Expired:
+                {
+                    return View("TokenExpired");
+                }
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         public ActionResult LogOff()

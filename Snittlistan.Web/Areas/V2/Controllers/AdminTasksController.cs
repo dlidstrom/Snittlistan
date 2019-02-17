@@ -168,7 +168,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         {
             if (!ModelState.IsValid) return View(vm);
 
-            PublishMessage(new EmailTask(vm.Recipient, vm.Subject, vm.Content));
+            PublishMessage(EmailTask.Create(vm.Recipient, vm.Subject, vm.Content));
 
             return RedirectToAction("Index");
         }

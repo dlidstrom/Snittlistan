@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
+    using System.Text;
     using System.Web.Http;
     using Elmah;
     using Newtonsoft.Json;
@@ -265,7 +266,10 @@
 
         private IHttpActionResult Handle(EmailTask task)
         {
-            Emails.SendMail(task.Recipient, task.Subject, task.Content);
+            Emails.SendMail(
+                task.Recipient,
+                Encoding.UTF8.GetString(Convert.FromBase64String(task.Subject)),
+                Encoding.UTF8.GetString(Convert.FromBase64String(task.Content)));
 
             return Ok();
         }

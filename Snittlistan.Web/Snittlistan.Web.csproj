@@ -593,6 +593,7 @@
     <Content Include="Areas\V2\Views\Authentication\LogOnPassword.cshtml" />
     <Content Include="Areas\V2\Views\Authentication\EmailSent.cshtml" />
     <Content Include="Areas\V2\Views\AdminRosterAccept\AcceptPlayer.cshtml" />
+    <Content Include="Areas\V2\Views\Authentication\TokenExpired.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
