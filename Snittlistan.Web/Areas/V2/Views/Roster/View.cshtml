@@ -48,6 +48,19 @@
     </div>
 </div>
 
+@if (User.CustomIdentity.PlayerId != null
+     && Model.RosterViewModels.Any(x => x.Preliminary == false
+                                        && x.Players.Find(y => y.Item1 == User.CustomIdentity.PlayerId)?.Item3 == false))
+{
+    <div class="row">
+        <div class="span12">
+            <div class="alert alert-success">
+                <strong>Du är uttagen!</strong> Vänligen bekräfta nedan.
+            </div>
+        </div>
+    </div>
+}
+
 @{
     var start = 0;
     var rosters = Model.RosterViewModels.Skip(start).Take(3).ToList();

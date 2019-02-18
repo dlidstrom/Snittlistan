@@ -28,8 +28,7 @@
          && hideControls == false)
     {
         if (User.CustomIdentity.PlayerId != null
-            && Model.Players.Exists(x => x.Item1 == User.CustomIdentity.PlayerId)
-            && Model.Players.Find(x => x.Item1 == User.CustomIdentity.PlayerId).Item3 == false)
+            && Model.Players.Find(x => x.Item1 == User.CustomIdentity.PlayerId)?.Item3 == false)
         {
             using (Html.BeginForm(
                 "Accept",
