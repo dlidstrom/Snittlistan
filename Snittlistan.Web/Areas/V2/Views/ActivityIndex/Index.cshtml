@@ -1,0 +1,51 @@
+﻿@model Snittlistan.Web.Areas.V2.Controllers.ActivityIndexController.IndexViewModel
+
+<div class="row">
+    <div class="span12">
+        <h4>Träningsaktiviteter och träffar</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="span12">
+        <a href="@Url.Action("Create", "ActivityEdit")">
+            <i class="sprite-glyphicons_030_pencil"></i>
+            Lägg till aktivitet
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="span12">
+        <table class="table table-condensed table-striped">
+            <thead>
+            <tr>
+                <th>Aktivitet</th>
+                <th>Datum</th>
+                <th>Text</th>
+                <th>Redigera</th>
+            </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>
+                            @item.Title
+                        </td>
+                        <td>
+                            <time datetime="@item.Date.ToString("s")">
+                                @item.Date.ToString("dddd d MMMM HH:mm")
+                            </time>
+                        </td>
+                        <td>
+                            @item.Message
+                        </td>
+                        <td>
+                            @Html.ActionLink("Redigera", "Edit", "ActivityEdit")
+                            | @Html.ActionLink("Ta bort", "Delete", "ActivityEdit")
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

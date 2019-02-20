@@ -1,8 +1,8 @@
-﻿using System;
-using Raven.Imports.Newtonsoft.Json;
-
-namespace Snittlistan.Web.Areas.V2.Domain
+﻿namespace Snittlistan.Web.Areas.V2.Domain
 {
+    using System;
+    using Raven.Imports.Newtonsoft.Json;
+
     public class Absence
     {
         [JsonConstructor]
