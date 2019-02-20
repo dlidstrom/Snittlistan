@@ -200,12 +200,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="Areas\V2\Controllers\ActivityEditController.cs" />
+    <Compile Include="Areas\V2\Controllers\ActivityIndexController.cs" />
     <Compile Include="Areas\V2\Controllers\AdminRosterAcceptController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\ApiErrorController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\QueryController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\TaskController.cs" />
     <Compile Include="Areas\V2\Controllers\EliteMedalsPrintController.cs" />
     <Compile Include="Areas\V2\Controllers\RosterAcceptController.cs" />
+    <Compile Include="Areas\V2\Domain\Activity.cs" />
     <Compile Include="Areas\V2\Domain\Match\Commentary\Match4Analyzer.cs" />
     <Compile Include="Areas\V2\Domain\Match\Commentary\PlayerPin.cs" />
     <Compile Include="Areas\V2\Domain\Match\Commentary\PlayerResult.cs" />
@@ -214,6 +217,7 @@
     <Compile Include="Areas\V2\Domain\OneTimeToken.cs" />
     <Compile Include="Areas\V2\Domain\ParseStandingsResult.cs" />
     <Compile Include="Areas\V2\Domain\ParseMatchSchemeResult.cs" />
+    <Compile Include="Areas\V2\Indexes\ActivityIndex.cs" />
     <Compile Include="Areas\V2\Indexes\OneTimeTokenIndex.cs" />
     <Compile Include="Areas\V2\Queries\GetActivePlayersQuery.cs" />
     <Compile Include="Areas\V2\Queries\GetPendingMatchesQuery.cs" />
@@ -593,6 +597,11 @@
     <Content Include="Areas\V2\Views\Authentication\EmailSent.cshtml" />
     <Content Include="Areas\V2\Views\AdminRosterAccept\AcceptPlayer.cshtml" />
     <Content Include="Areas\V2\Views\Authentication\TokenExpired.cshtml" />
+    <Content Include="Areas\V2\Views\ActivityIndex\Index.cshtml" />
+    <Content Include="Areas\V2\Views\ActivityEdit\Edit.cshtml" />
+    <Content Include="Areas\V2\Views\ActivityEdit\Create.cshtml" />
+    <Content Include="Areas\V2\Views\ActivityEdit\Delete.cshtml" />
+    <Content Include="Areas\V2\Views\ActivityEdit\_ActivityEditor.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />

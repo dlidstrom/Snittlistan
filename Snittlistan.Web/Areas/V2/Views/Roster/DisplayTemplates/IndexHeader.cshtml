@@ -25,4 +25,13 @@
     </div>
 </div>
 
+@if (User.IsInRole2(WebsiteRoles.Activity.Manage))
+{
+    <div class="row">
+        <div class="span12">
+            @Html.ActionLink("Hantera aktiviteter", "Index", "ActivityIndex")
+        </div>
+    </div>
+}
+
 <hr />

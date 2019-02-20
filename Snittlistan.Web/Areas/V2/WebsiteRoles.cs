@@ -53,6 +53,11 @@
             public const string UkTasks = "Uk.UkTasks";
         }
 
+        public static class Activity
+        {
+            public const string Manage = "Activity.Manage";
+        }
+
         // groups
         public static WebsiteRole[] PlayerGroup()
         {
