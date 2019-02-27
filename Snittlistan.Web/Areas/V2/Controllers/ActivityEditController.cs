@@ -3,16 +3,21 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
+    using System.Web;
     using System.Web.Mvc;
     using Domain;
+    using Helpers;
+    using Raven.Abstractions;
     using Web.Controllers;
 
     [Authorize(Roles = WebsiteRoles.Activity.Manage)]
     public class ActivityEditController : AbstractController
     {
-        public ActionResult Create()
+        public ActionResult Create(int? season)
         {
-            return View(new ActivityViewModel());
+            if (season.HasValue == false)
+                season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+            return View(ActivityViewModel.ForCreate(season.Value));
         }
 
         [HttpPost]
@@ -26,13 +31,27 @@
             Debug.Assert(vm.Season != null, "vm.Season != null");
             Debug.Assert(vm.Date != null, "vm.Date != null");
             var activity = Activity.Create(vm.Season.Value, vm.Title, vm.Date.Value, vm.Message);
+            DocumentSession.Store(activity);
 
             return RedirectToAction("Index", "ActivityIndex");
         }
 
         public ActionResult Edit(string id)
         {
-            return View();
+            var activity = DocumentSession.Load<Activity>(id);
+            if (activity == null) throw new HttpException(404, "Activity not found");
+            return View(ActivityViewModel.ForEdit(activity));
+        }
+
+        [HttpPost]
+        public ActionResult Edit(string id, ActivityViewModel vm)
+        {
+            if (ModelState.IsValid == false) return View(vm);
+            var activity = DocumentSession.Load<Activity>(id);
+            Debug.Assert(vm.Season != null, "vm.Season != null");
+            Debug.Assert(vm.Date != null, "vm.Date != null");
+            activity.Update(vm.Season.Value, vm.Title, vm.Date.Value, vm.Message);
+            return RedirectToAction("Index", "ActivityIndex");
         }
 
         public ActionResult Delete(string id)
@@ -62,6 +81,25 @@
             [DataType(DataType.MultilineText)]
             [Display(Name = "Meddelande")]
             public string Message { get; set; }
+
+            public static ActivityViewModel ForCreate(int season)
+            {
+                return new ActivityViewModel
+                {
+                    Season = season
+                };
+            }
+
+            public static ActivityViewModel ForEdit(Activity activity)
+            {
+                return new ActivityViewModel
+                {
+                    Season = activity.Season,
+                    Title = activity.Title,
+                    Date = activity.Date,
+                    Message = activity.Message
+                };
+            }
         }
     }
 }

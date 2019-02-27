@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Web.Mvc;
     using Domain;
+    using Indexes;
     using Raven.Abstractions;
     using Snittlistan.Web.Helpers;
     using Web.Controllers;
@@ -18,19 +19,12 @@
                 season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
             }
 
-            //var activities =
-            //    DocumentSession.Query<Activity, ActivityIndex>()
-            //                   .Where(x => x.Season == season.Value)
-            //                   .ToArray();
-
-            var activities = new[]
-            {
-                Activity.Create(
-                    2018,
-                    "Träning",
-                    new DateTime(2019, 2, 27, 18, 0, 0),
-                    "Ett meddelande till allaEtt meddelande till allaEtt meddelande till allaEtt meddelande till allaEtt meddelande till alla")
-            };
+            var activities =
+                DocumentSession.Query<Activity, ActivityIndex>()
+                               .Where(x => x.Season == season.Value)
+                               .ToArray()
+                               .OrderBy(x => x.Date)
+                               .ToArray();
 
             var vm = new IndexViewModel(activities);
             return View(vm);
@@ -50,10 +44,13 @@
         {
             public IndexItemViewModel(Activity activity)
             {
+                Id = activity.Id;
                 Title = activity.Title;
                 Date = activity.Date;
                 Message = activity.Message;
             }
+
+            public string Id { get; }
 
             public string Title { get; }
 

@@ -40,7 +40,7 @@
                             @item.Message
                         </td>
                         <td>
-                            @Html.ActionLink("Redigera", "Edit", "ActivityEdit")
+                            @Html.ActionLink("Redigera", "Edit", "ActivityEdit", new { item.Id }, null)
                             | @Html.ActionLink("Ta bort", "Delete", "ActivityEdit")
                         </td>
                     </tr>
