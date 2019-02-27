@@ -1,38 +1,10 @@
-@model InitialDataViewModel
+@model Snittlistan.Web.Areas.V2.Controllers.RosterController.InitialDataViewModel
 
 @Html.DisplayFor(model => model, "IndexHeader")
 
 @Html.Partial("_Register")
 
-@foreach (var turn in Model.Turns)
+@foreach (var item in Model.ScheduledItems)
 {
-    <div class="row">
-        <div class="span6">
-            <h4 class="pull-left">Omgång @turn.Turn
-                <em>(@Html.FormatDateSpan(turn.StartDate, turn.EndDate))</em>
-            </h4>
-            <a class="pull-right rosters" href="@Url.Action("View", new { season = Model.SeasonStart, turn = turn.Turn })">
-                <i class="icon-user"></i>
-                Uttagningar
-            </a>
-        </div>
-    </div>
-    var start = 0;
-    while (true)
-    {
-        var rosters = turn.Rosters.Skip(start).Take(3).ToList();
-        if (rosters.Count == 0)
-        {
-            break;
-        }
-    <div class="row">
-        @foreach (var roster in rosters)
-        {
-            <div class="span4">
-                @Html.DisplayFor(model => roster, "Roster")
-            </div>
-        }
-    </div>
-        start += 3;
-    }
+    @item.Render(Html)
 }

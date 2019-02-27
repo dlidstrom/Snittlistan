@@ -6,6 +6,7 @@
     using System.Text;
     using System.Web;
     using System.Web.Mvc;
+    using System.Web.Mvc.Html;
     using Raven.Abstractions;
     using Raven.Client;
     using Rotativa;
@@ -45,28 +46,27 @@
                     into g
                     let lastDate = g.Max(x => x.Date)
                     where selectAll || lastDate >= SystemTime.UtcNow.Date
-                    select new TurnViewModel
-                    {
-                        Turn = g.Key,
-                        StartDate = g.Min(x => x.Date),
-                        EndDate = lastDate,
-                        Rosters = g.Select(x => new RosterViewModel(
+                    select new InitialDataViewModel.TurnViewModel(
+                        seasonStart: season.Value,
+                        turn: g.Key,
+                        startDate: g.Min(x => x.Date),
+                        endDate: lastDate,
+                        rosters: g.Select(x => new RosterViewModel(
                                        x,
                                        Tuple.Create(string.Empty, string.Empty, false),
                                        new List<Tuple<string, string, bool>>()))
                                    .SortRosters()
-                                   .ToList()
-                    };
-            var turns = q.ToList();
-            var isFiltered = rosters.Count != turns.Sum(x => x.Rosters.Count);
-            var vm = new InitialDataViewModel
-            {
-                SeasonStart = season.Value,
-                Turns = turns,
-                IsFiltered = isFiltered
-            };
+                                   .ToArray());
+            var turns = q.ToArray();
+            IEnumerable<InitialDataViewModel.ScheduledItem> activities =
+                DocumentSession.Query<Activity, ActivityIndex>()
+                               .Where(x => x.Season == season.Value)
+                               .ToArray()
+                               .Select(x => new InitialDataViewModel.ActivityItem(x));
+            var isFiltered = rosters.Count != turns.Sum(x => x.Rosters.Length);
+            var vm = new InitialDataViewModel(turns.Concat(activities).OrderBy(x => x.Date).ToArray(), season.Value, isFiltered);
 
-            if (turns.Count <= 0) return View("Unscheduled", vm);
+            if (turns.Length <= 0) return View("Unscheduled", vm);
             return View(vm);
         }
 
@@ -254,12 +254,10 @@
 
             if (rosterViewModels.Length <= 0)
             {
-                var vm = new InitialDataViewModel
-                {
-                    SeasonStart = season.Value,
-                    Turns = new List<TurnViewModel>(),
-                    IsFiltered = true
-                };
+                var vm = new InitialDataViewModel(
+                    new InitialDataViewModel.ScheduledItem[0],
+                    season.Value,
+                    true);
                 return View("Unscheduled", vm);
             }
 
@@ -518,6 +516,88 @@
             var roster = DocumentSession.Load<Roster>(id);
             ViewBag.Url = roster.OilPattern.Url;
             return View("_BitsIframe");
+        }
+
+        public class InitialDataViewModel
+        {
+            public InitialDataViewModel(
+                ScheduledItem[] scheduledItems,
+                int seasonStart,
+                bool isFiltered)
+            {
+                ScheduledItems = scheduledItems;
+                SeasonStart = seasonStart;
+                IsFiltered = isFiltered;
+            }
+
+            public ScheduledItem[] ScheduledItems { get; }
+
+            public int SeasonStart { get; }
+
+            public bool IsFiltered { get; }
+
+            public abstract class ScheduledItem
+            {
+                public abstract MvcHtmlString Render(HtmlHelper<InitialDataViewModel> helper);
+                public abstract DateTime Date { get; }
+            }
+
+            public class TurnViewModel : ScheduledItem
+            {
+                public TurnViewModel(
+                    int seasonStart,
+                    int turn,
+                    DateTime startDate,
+                    DateTime endDate,
+                    RosterViewModel[] rosters)
+                {
+                    SeasonStart = seasonStart;
+                    Turn = turn;
+                    StartDate = startDate;
+                    EndDate = endDate;
+                    Rosters = rosters;
+                }
+
+                public int SeasonStart { get; }
+
+                public int Turn { get; }
+
+                public DateTime StartDate { get; }
+
+                public DateTime EndDate { get; }
+
+                public RosterViewModel[] Rosters { get; }
+
+                public override DateTime Date => EndDate;
+
+                public override MvcHtmlString Render(HtmlHelper<InitialDataViewModel> helper)
+                {
+                    return helper.Partial("_TurnViewModel", this);
+                }
+            }
+
+            public class ActivityItem : ScheduledItem
+            {
+                public ActivityItem(Activity activity)
+                {
+                    Title = activity.Title;
+                    ActivityDate = activity.Date;
+                    Message = activity.Message;
+                }
+
+                public string Title { get; }
+
+                public DateTime ActivityDate { get; }
+
+                public string Message { get; }
+
+                public override MvcHtmlString Render(HtmlHelper<InitialDataViewModel> helper)
+                {
+                    return helper.Partial("_ActivityItem", this);
+                }
+
+                public override DateTime Date => ActivityDate;
+            }
         }
     }
 }
