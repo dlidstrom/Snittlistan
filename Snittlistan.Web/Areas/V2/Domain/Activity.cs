@@ -24,6 +24,15 @@
 
         public string Message { get; private set; }
 
+        public void Update(int season, string title, DateTime date, string message)
+        {
+            if (message.Length > 1024) throw new ArgumentOutOfRangeException(nameof(message), "Max 1024");
+            Season = season;
+            Title = title;
+            Date = date;
+            Message = message;
+        }
+
         public static Activity Create(
             int season,
             string title,
