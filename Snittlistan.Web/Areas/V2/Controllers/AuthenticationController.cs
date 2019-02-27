@@ -139,6 +139,8 @@
 
         public ActionResult OneTimeTokenLogOn(string oneTimeKey)
         {
+            if (Request.IsAuthenticated) return RedirectToAction("Index", "Roster");
+
             var oneTimeToken = DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>().Single(x => x.OneTimeKey == oneTimeKey);
             var player = DocumentSession.Load<Player>(oneTimeToken.Payload);
             if (player == null)
