@@ -481,7 +481,6 @@
     <Compile Include="Areas\V1\ViewModels\Account\RegistrationMailViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\EditUserViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\UserViewModel.cs" />
-    <Compile Include="Areas\V2\ViewModels\InitialDataViewModel.cs" />
     <Compile Include="Areas\V1\ViewModels\Match\EditTeam4x4ViewModel.cs" />
     <Compile Include="Areas\V1\ViewModels\Match\EditTeam8x4ViewModel.cs" />
     <Compile Include="Areas\V1\ViewModels\Match\Match4x4ViewModel.cs" />
@@ -493,7 +492,6 @@
     <Compile Include="Areas\V1\ViewModels\Match\Team8x4DetailsViewModel.cs" />
     <Compile Include="Areas\V1\ViewModels\Match\Team8x4ViewModel.cs" />
     <Compile Include="Areas\V1\ViewModels\PlayerMatchesViewModel.cs" />
-    <Compile Include="Areas\V2\ViewModels\TurnViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -602,6 +600,8 @@
     <Content Include="Areas\V2\Views\ActivityEdit\Create.cshtml" />
     <Content Include="Areas\V2\Views\ActivityEdit\Delete.cshtml" />
     <Content Include="Areas\V2\Views\ActivityEdit\_ActivityEditor.cshtml" />
+    <Content Include="Areas\V2\Views\Shared\_ActivityItem.cshtml" />
+    <Content Include="Areas\V2\Views\Shared\_TurnViewModel.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
@@ -633,7 +633,7 @@
     <Content Include="Areas\V2\Views\Authentication\LogOn.cshtml" />
     <Content Include="Areas\V2\Views\Roster\Create.cshtml" />
     <Content Include="Areas\V2\Views\Roster\Delete.cshtml" />
-    <Content Include="Areas\V2\Views\Roster\DisplayTemplates\Roster.cshtml" />
+    <Content Include="Areas\V2\Views\Shared\DisplayTemplates\RosterViewModel.cshtml" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
