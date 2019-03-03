@@ -568,7 +568,7 @@
 
                 public RosterViewModel[] Rosters { get; }
 
-                public override DateTime Date => EndDate;
+                public override DateTime Date => StartDate;
 
                 public override MvcHtmlString Render(HtmlHelper<InitialDataViewModel> helper)
                 {
