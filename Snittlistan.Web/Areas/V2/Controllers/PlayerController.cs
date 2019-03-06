@@ -1,13 +1,15 @@
-﻿using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.Indexes;
-using Snittlistan.Web.Areas.V2.ViewModels;
-using Snittlistan.Web.Controllers;
-
-namespace Snittlistan.Web.Areas.V2.Controllers
+﻿namespace Snittlistan.Web.Areas.V2.Controllers
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Mvc;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.Indexes;
+    using Snittlistan.Web.Areas.V2.ViewModels;
+    using Snittlistan.Web.Controllers;
+
     public class PlayerController : AbstractController
     {
         public ActionResult Index()
@@ -39,7 +41,14 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
             if (!ModelState.IsValid) return View(vm);
 
-            var player = new Player(vm.Name, vm.Email, vm.Status, vm.PersonalNumber.GetValueOrDefault(), vm.Nickname);
+            var player =
+                new Player(
+                    vm.Name,
+                    vm.Email,
+                    vm.Status,
+                    vm.PersonalNumber.GetValueOrDefault(),
+                    vm.Nickname,
+                    vm.Roles);
             DocumentSession.Store(player);
             return RedirectToAction("Index");
         }
@@ -74,6 +83,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             player.SetStatus(vm.Status);
             player.SetPersonalNumber(vm.PersonalNumber.GetValueOrDefault());
             player.SetNickname(vm.Nickname);
+            var allowedRoles = new HashSet<string>(WebsiteRoles.UserGroup().Except(WebsiteRoles.PlayerGroup()).Select(x => x.Name));
+            player.SetRoles(vm.Roles.Where(x => allowedRoles.Contains(x)).ToArray());
 
             return RedirectToAction("Index");
         }
@@ -97,6 +108,52 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 throw new HttpException(404, "Player not found");
             DocumentSession.Delete(player);
             return RedirectToAction("Index");
+        }
+
+        public class CreatePlayerViewModel
+        {
+            public CreatePlayerViewModel()
+            {
+                Name = string.Empty;
+                Nickname = string.Empty;
+                Email = string.Empty;
+                Status = Player.Status.Active;
+            }
+
+            public CreatePlayerViewModel(Player player)
+            {
+                Name = player.Name;
+                Nickname = player.Nickname;
+                Email = player.Email;
+                Status = player.PlayerStatus;
+                PersonalNumber = player.PersonalNumber;
+                var roles = WebsiteRoles.UserGroup().Except(WebsiteRoles.PlayerGroup()).OrderBy(x => x.Description).ToArray();
+                RolesList =
+                    new MultiSelectList(
+                        roles,
+                        "Name",
+                        "Description");
+                Roles = player.Roles;
+            }
+
+            [Required]
+            public string Name { get; set; }
+
+            public string Nickname { get; set; }
+
+            [Required]
+            public string Email { get; set; }
+
+            [Required]
+            public Player.Status Status { get; set; }
+
+            public int? PersonalNumber { get; set; }
+
+            public MultiSelectList RolesList { get; set; }
+
+            [Required]
+            [Display(Description = "Funktioner:")]
+            public string[] Roles { get; set; }
         }
     }
 }

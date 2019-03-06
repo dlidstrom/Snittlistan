@@ -363,7 +363,6 @@
     <Compile Include="Areas\V2\Controllers\SearchTermsController.cs" />
     <Compile Include="Areas\V2\Controllers\AuthenticationController.cs" />
     <Compile Include="Areas\V2\ViewModels\ViewTurnViewModel.cs" />
-    <Compile Include="Areas\V2\ViewModels\CreatePlayerViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\PlayerDataViewModel.cs" />
     <Compile Include="Areas\V2\Domain\Player.cs" />
     <Compile Include="Areas\V2\Controllers\PlayerController.cs" />

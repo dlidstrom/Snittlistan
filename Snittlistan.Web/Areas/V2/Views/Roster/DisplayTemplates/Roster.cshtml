@@ -4,7 +4,7 @@
 }
 
 <div class="well well-small editable">
-    @if (User.IsInRole2(WebsiteRoles.Roster.EditRoster) && hideControls == false && Model.Header.MatchResultId == null)
+    @if (User.IsInRole2(WebsiteRoles.Roster.ManageRosters) && hideControls == false && Model.Header.MatchResultId == null)
     {
         <div class="dropdown edit-left">
             <button class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="/page.html">

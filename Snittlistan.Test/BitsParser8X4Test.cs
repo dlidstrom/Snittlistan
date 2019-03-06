@@ -15,28 +15,28 @@ namespace Snittlistan.Test
         {
             playersTeamA = new[]
             {
-                new Player("Mikael Axelsson", "e@d.com", Player.Status.Active, 0, null) { Id = "player-1" },
-                new Player("Christer Liedholm", "e@d.com", Player.Status.Active, 0, null) { Id = "player-2" },
-                new Player("Lars Öberg", "e@d.com", Player.Status.Active, 0, null) { Id = "player-3" },
-                new Player("Hans Norbeck", "e@d.com", Player.Status.Active, 0, null) { Id = "player-4" },
-                new Player("Mathias Ernest", "e@d.com", Player.Status.Active, 0, null) { Id = "player-5" },
-                new Player("Torbjörn Jensen", "e@d.com", Player.Status.Active, 0, null) { Id = "player-6" },
-                new Player("Alf Kindblom", "e@d.com", Player.Status.Active, 0, null) { Id = "player-7" },
-                new Player("Peter Sjöberg", "e@d.com", Player.Status.Active, 0, null) { Id = "player-8" },
-                new Player("Lennart Axelsson", "e@d.com", Player.Status.Active, 0, null) { Id = "player-9" },
-                new Player("Lars Magnusson", "e@d.com", Player.Status.Active, 0, null) { Id = "player-10" }
+                new Player("Mikael Axelsson", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-1" },
+                new Player("Christer Liedholm", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-2" },
+                new Player("Lars Öberg", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-3" },
+                new Player("Hans Norbeck", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-4" },
+                new Player("Mathias Ernest", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-5" },
+                new Player("Torbjörn Jensen", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-6" },
+                new Player("Alf Kindblom", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-7" },
+                new Player("Peter Sjöberg", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-8" },
+                new Player("Lennart Axelsson", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-9" },
+                new Player("Lars Magnusson", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-10" }
             };
             playersTeamF = new[]
             {
-                new Player("Kjell Persson", "e@d.com", Player.Status.Active, 0, null) { Id = "player-1" },
-                new Player("Lars Öberg", "e@d.com", Player.Status.Active, 0, null) { Id = "player-2" },
-                new Player("Tomas Vikbro", "e@d.com", Player.Status.Active, 0, null) { Id = "player-3" },
-                new Player("Thomas Wallgren", "e@d.com", Player.Status.Active, 0, null) { Id = "player-4" },
-                new Player("Bengt Solvander", "e@d.com", Player.Status.Active, 0, null) { Id = "player-5" },
-                new Player("Lars Magnusson", "e@d.com", Player.Status.Active, 0, null) { Id = "player-6" },
-                new Player("Kjell Johansson", "e@d.com", Player.Status.Active, 0, null) { Id = "player-7" },
-                new Player("Thomas Gurell", "e@d.com", Player.Status.Active, 0, null) { Id = "player-8" },
-                new Player("Lars Norbeck", "e@d.com", Player.Status.Active, 0, null) { Id = "player-9" }
+                new Player("Kjell Persson", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-1" },
+                new Player("Lars Öberg", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-2" },
+                new Player("Tomas Vikbro", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-3" },
+                new Player("Thomas Wallgren", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-4" },
+                new Player("Bengt Solvander", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-5" },
+                new Player("Lars Magnusson", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-6" },
+                new Player("Kjell Johansson", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-7" },
+                new Player("Thomas Gurell", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-8" },
+                new Player("Lars Norbeck", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-9" }
             };
         }
 
@@ -185,15 +185,15 @@ namespace Snittlistan.Test
             const string Team = "Fredrikshof IF";
             var players = new[]
             {
-                new Player("Daniel Solvander", "e@d.com", Player.Status.Active, 0, null) { Id = "player-1" },
-                new Player("Daniel Lidström", "e@d.com", Player.Status.Active, 0, null) { Id = "player-2" },
-                new Player("Thomas Gurell", "e@d.com", Player.Status.Active, 0, null) { Id = "player-3" },
-                new Player("Lennart Axelsson", "e@d.com", Player.Status.Active, 0, null) { Id = "player-4" },
-                new Player("Håkan Gustavsson", "e@d.com", Player.Status.Active, 0, null) { Id = "player-5" },
-                new Player("Kjell Johansson", "e@d.com", Player.Status.Active, 0, null) { Id = "player-6" },
-                new Player("Bengt Solvander", "e@d.com", Player.Status.Active, 0, null) { Id = "player-7" },
-                new Player("Stefan Traav", "e@d.com", Player.Status.Active, 0, null) { Id = "player-8" },
-                new Player("Matz Classon", "e@d.com", Player.Status.Active, 0, null) { Id = "player-9" }
+                new Player("Daniel Solvander", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-1" },
+                new Player("Daniel Lidström", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-2" },
+                new Player("Thomas Gurell", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-3" },
+                new Player("Lennart Axelsson", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-4" },
+                new Player("Håkan Gustavsson", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-5" },
+                new Player("Kjell Johansson", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-6" },
+                new Player("Bengt Solvander", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-7" },
+                new Player("Stefan Traav", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-8" },
+                new Player("Matz Classon", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-9" }
             };
 
             // Act
