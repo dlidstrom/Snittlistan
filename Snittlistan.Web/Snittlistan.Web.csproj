@@ -200,6 +200,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="Areas\V2\Controllers\ActivityDetailsController.cs" />
     <Compile Include="Areas\V2\Controllers\ActivityEditController.cs" />
     <Compile Include="Areas\V2\Controllers\ActivityIndexController.cs" />
     <Compile Include="Areas\V2\Controllers\AdminRosterAcceptController.cs" />
@@ -237,6 +238,7 @@
     <Compile Include="Areas\V2\Handlers\SeasonResultsHandler.cs" />
     <Compile Include="Areas\V2\Migration\IEventMigratorWithResults.cs" />
     <Compile Include="Areas\V2\ReadModels\SeasonResults.cs" />
+    <Compile Include="Areas\V2\ViewModels\ActivityViewModel.cs" />
     <Compile Include="Areas\V2\WebsiteRoles.cs" />
     <Compile Include="Areas\V2\ViewModels\EditMedalsPostModel.cs" />
     <Compile Include="Areas\V2\ViewModels\EditMedalsViewModel.cs" />
@@ -600,8 +602,9 @@
     <Content Include="Areas\V2\Views\ActivityEdit\Create.cshtml" />
     <Content Include="Areas\V2\Views\ActivityEdit\Delete.cshtml" />
     <Content Include="Areas\V2\Views\ActivityEdit\_ActivityEditor.cshtml" />
-    <Content Include="Areas\V2\Views\Shared\_ActivityItem.cshtml" />
+    <Content Include="Areas\V2\Views\Shared\DisplayTemplates\ActivityViewModel.cshtml" />
     <Content Include="Areas\V2\Views\Shared\_TurnViewModel.cshtml" />
+    <Content Include="Areas\V2\Views\ActivityDetails\Index.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />

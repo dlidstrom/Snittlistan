@@ -375,3 +375,29 @@ textarea {
 
 .print-options-container {
 }
+
+.activity-item-container {
+    .activity-item-image {
+        display: inline-block;
+        vertical-align: top;
+        width: 10%;
+    }
+
+    .activity-item-content-container {
+        display: inline-block;
+        width: 80%;
+        padding-left: 1rem;
+
+        .activity-item-content-message {
+            white-space: pre-line;
+        }
+
+        .activity-item-content-message-clamped {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 8;
+            display: -webkit-box;
+        }
+    }
+}

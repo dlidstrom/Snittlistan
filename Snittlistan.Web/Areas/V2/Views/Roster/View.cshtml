@@ -71,7 +71,7 @@
         @foreach (var roster in rosters)
         {
             <div class="span4">
-                @Html.DisplayFor(model => roster, "Roster", new { hideControls = true })
+                @Html.DisplayFor(model => roster, "RosterViewModel", new { hideControls = true })
                 @Html.DisplayFor(model => roster, "Players")
             </div>
         }

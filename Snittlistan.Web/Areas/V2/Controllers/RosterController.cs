@@ -62,7 +62,8 @@
                 DocumentSession.Query<Activity, ActivityIndex>()
                                .Where(x => x.Season == season.Value)
                                .ToArray()
-                               .Select(x => new InitialDataViewModel.ActivityItem(x));
+                               .Where(x => selectAll || x.Date >= SystemTime.UtcNow.Date)
+                               .Select(x => new InitialDataViewModel.ScheduledActivityItem(x));
             var isFiltered = rosters.Count != turns.Sum(x => x.Rosters.Length);
             var vm = new InitialDataViewModel(turns.Concat(activities).OrderBy(x => x.Date).ToArray(), season.Value, isFiltered);
 
@@ -576,27 +577,21 @@
                 }
             }
 
-            public class ActivityItem : ScheduledItem
+            public class ScheduledActivityItem : ScheduledItem
             {
-                public ActivityItem(Activity activity)
+                public ScheduledActivityItem(Activity activity)
                 {
-                    Title = activity.Title;
-                    ActivityDate = activity.Date;
-                    Message = activity.Message;
+                    ViewModel = new ActivityViewModel(activity);
                 }
 
-                public string Title { get; }
-
-                public DateTime ActivityDate { get; }
-
-                public string Message { get; }
+                public ActivityViewModel ViewModel { get; }
 
                 public override MvcHtmlString Render(HtmlHelper<InitialDataViewModel> helper)
                 {
-                    return helper.Partial("_ActivityItem", this);
+                    return helper.DisplayFor(x => ViewModel, new { showViewMoreLink = true });
                 }
 
-                public override DateTime Date => ActivityDate;
+                public override DateTime Date => ViewModel.ActivityDate;
             }
         }
     }

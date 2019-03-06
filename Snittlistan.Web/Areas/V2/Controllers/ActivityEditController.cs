@@ -17,11 +17,11 @@
         {
             if (season.HasValue == false)
                 season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
-            return View(ActivityViewModel.ForCreate(season.Value));
+            return View(ActivityEditViewModel.ForCreate(season.Value));
         }
 
         [HttpPost]
-        public ActionResult Create(ActivityViewModel vm)
+        public ActionResult Create(ActivityEditViewModel vm)
         {
             if (ModelState.IsValid == false)
             {
@@ -40,11 +40,11 @@
         {
             var activity = DocumentSession.Load<Activity>(id);
             if (activity == null) throw new HttpException(404, "Activity not found");
-            return View(ActivityViewModel.ForEdit(activity));
+            return View(ActivityEditViewModel.ForEdit(activity));
         }
 
         [HttpPost]
-        public ActionResult Edit(string id, ActivityViewModel vm)
+        public ActionResult Edit(string id, ActivityEditViewModel vm)
         {
             if (ModelState.IsValid == false) return View(vm);
             var activity = DocumentSession.Load<Activity>(id);
@@ -59,7 +59,7 @@
             return View();
         }
 
-        public class ActivityViewModel
+        public class ActivityEditViewModel
         {
             [Required]
             [Display(Name = "Säsong")]
@@ -82,17 +82,17 @@
             [Display(Name = "Meddelande")]
             public string Message { get; set; }
 
-            public static ActivityViewModel ForCreate(int season)
+            public static ActivityEditViewModel ForCreate(int season)
             {
-                return new ActivityViewModel
+                return new ActivityEditViewModel
                 {
                     Season = season
                 };
             }
 
-            public static ActivityViewModel ForEdit(Activity activity)
+            public static ActivityEditViewModel ForEdit(Activity activity)
             {
-                return new ActivityViewModel
+                return new ActivityEditViewModel
                 {
                     Season = activity.Season,
                     Title = activity.Title,
