@@ -13,9 +13,9 @@
         public void ComparesAbsences()
         {
             // Arrange
-            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null, new string[0]), new PlayerFormViewModel("A"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
             left.AddAbsence(new AbsenceIndex.Result());
-            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null, new string[0]), new PlayerFormViewModel("B"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
             right.AddAbsence(new AbsenceIndex.Result());
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
@@ -31,7 +31,7 @@
         {
             // Arrange
             var left = new PlayerStatusViewModel(
-                new Player("A", "e@d.com", Player.Status.Active, 0, null),
+                new Player("A", "e@d.com", Player.Status.Active, -1, null, new string[0]),
                 null,
                 new DateTime(2018, 1, 1),
                 new DateTime(2018, 1, 1));
@@ -40,7 +40,7 @@
                 From = new DateTime(2018, 1, 1),
                 To = new DateTime(2018, 1, 1)
             });
-            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), null, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, -1, null, new string[0]), null, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
@@ -54,8 +54,8 @@
         public void ComparesRightAbsence()
         {
             // Arrange
-            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
-            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, -1, null, new string[0]), new PlayerFormViewModel("A"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, -1, null, new string[0]), new PlayerFormViewModel("B"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
             right.AddAbsence(new AbsenceIndex.Result());
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
@@ -70,11 +70,11 @@
         public void ComparesSeasonAverageLess()
         {
             // Arrange
-            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A")
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, -1, null, new string[0]), new PlayerFormViewModel("A")
             {
                 SeasonAverage = 190
             }, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
-            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B")
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, -1, null, new string[0]), new PlayerFormViewModel("B")
             {
                 SeasonAverage = 195
             }, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
@@ -91,11 +91,11 @@
         public void ComparesSeasonAverageGreater()
         {
             // Arrange
-            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A")
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, -1, null, new string[0]), new PlayerFormViewModel("A")
             {
                 SeasonAverage = 197
             }, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
-            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B")
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, -1, null, new string[0]), new PlayerFormViewModel("B")
             {
                 SeasonAverage = 195
             }, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
@@ -112,12 +112,12 @@
         public void ComparesPlayerFormLess()
         {
             // Arrange
-            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A")
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, -1, null, new string[0]), new PlayerFormViewModel("A")
             {
                 SeasonAverage = 190,
                 Last5Average = 190
             }, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
-            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B")
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, -1, null, new string[0]), new PlayerFormViewModel("B")
             {
                 SeasonAverage = 190,
                 Last5Average = 195
@@ -135,12 +135,12 @@
         public void ComparesPlayerFormGreater()
         {
             // Arrange
-            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A")
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, -1, null, new string[0]), new PlayerFormViewModel("A")
             {
                 SeasonAverage = 190,
                 Last5Average = 197
             }, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
-            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B")
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, -1, null, new string[0]), new PlayerFormViewModel("B")
             {
                 SeasonAverage = 190,
                 Last5Average = 195
@@ -158,12 +158,12 @@
         public void ComparesSeasonAverageLeft()
         {
             // Arrange
-            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A")
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, -1, null, new string[0]), new PlayerFormViewModel("A")
             {
                 SeasonAverage = 190,
                 HasResult = true
             }, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
-            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, -1, null, new string[0]), new PlayerFormViewModel("B"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
@@ -177,8 +177,8 @@
         public void ComparesSeasonAverageRight()
         {
             // Arrange
-            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
-            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B")
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, -1, null, new string[0]), new PlayerFormViewModel("A"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, -1, null, new string[0]), new PlayerFormViewModel("B")
             {
                 SeasonAverage = 195,
                 HasResult = true
@@ -196,12 +196,12 @@
         public void ComparesPlayerFormLeft()
         {
             // Arrange
-            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A")
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, -1, null, new string[0]), new PlayerFormViewModel("A")
             {
                 Last5Average = 190,
                 HasResult = true
             }, new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
-            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, -1, null, new string[0]), new PlayerFormViewModel("B"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.PlayerForm);
 
             // Act
@@ -215,8 +215,8 @@
         public void ComparesPlayerFormRight()
         {
             // Arrange
-            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
-            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B")
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, -1, null, new string[0]), new PlayerFormViewModel("A"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, -1, null, new string[0]), new PlayerFormViewModel("B")
             {
                 Last5Average = 195,
                 HasResult = true
@@ -235,7 +235,7 @@
         {
             // Arrange
             var left = new PlayerStatusViewModel(
-                new Player("A", "e@d.com", Player.Status.Active, 0, null),
+                new Player("A", "e@d.com", Player.Status.Active, -1, null, new string[0]),
                 null,
                 new DateTime(2018, 1, 1),
                 new DateTime(2018, 1, 1));
@@ -244,7 +244,7 @@
                 From = new DateTime(2018, 1, 1),
                 To = new DateTime(2018, 1, 1)
             });
-            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("B"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var right = new PlayerStatusViewModel(new Player("B", "e@d.com", Player.Status.Active, -1, null, new string[0]), new PlayerFormViewModel("B"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
@@ -258,9 +258,9 @@
         public void ComparesFormToAbsence()
         {
             // Arrange
-            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, 0, null), new PlayerFormViewModel("A"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
+            var left = new PlayerStatusViewModel(new Player("A", "e@d.com", Player.Status.Active, -1, null, new string[0]), new PlayerFormViewModel("A"), new DateTime(2018, 1, 1), new DateTime(2018, 1, 1));
             var right = new PlayerStatusViewModel(
-                new Player("B", "e@d.com", Player.Status.Active, 0, null),
+                new Player("B", "e@d.com", Player.Status.Active, -1, null, new string[0]),
                 null,
                 new DateTime(2018, 1, 1),
                 new DateTime(2018, 1, 1));
@@ -283,7 +283,7 @@
         {
             // Arrange
             var left = new PlayerStatusViewModel(
-                new Player("A", "e@d.com", Player.Status.Active, 0, null),
+                new Player("A", "e@d.com", Player.Status.Active, -1, null, new string[0]),
                 new PlayerFormViewModel("A")
                 {
                     Last5Average = 190
@@ -291,7 +291,7 @@
                 new DateTime(2018, 1, 1),
                 new DateTime(2018, 1, 2));
             var right = new PlayerStatusViewModel(
-                new Player("B", "e@d.com", Player.Status.Active, 0, null),
+                new Player("B", "e@d.com", Player.Status.Active, -1, null, new string[0]),
                 new PlayerFormViewModel("B")
                 {
                     Last5Average = 180
@@ -317,7 +317,7 @@
         {
             // Arrange
             var left = new PlayerStatusViewModel(
-                new Player("A", "e@d.com", Player.Status.Active, 0, null),
+                new Player("A", "e@d.com", Player.Status.Active, -1, null, new string[0]),
                 new PlayerFormViewModel("A")
                 {
                     Last5Average = 180
@@ -325,7 +325,7 @@
                 new DateTime(2018, 1, 1),
                 new DateTime(2018, 1, 2));
             var right = new PlayerStatusViewModel(
-                new Player("B", "e@d.com", Player.Status.Active, 0, null),
+                new Player("B", "e@d.com", Player.Status.Active, -1, null, new string[0]),
                 new PlayerFormViewModel("B")
                 {
                     Last5Average = 190

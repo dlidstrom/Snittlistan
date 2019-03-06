@@ -75,13 +75,13 @@
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = WebsiteRoles.Roster.AddRoster)]
+        [Authorize(Roles = WebsiteRoles.Roster.ManageRosters)]
         public ActionResult CreateBits()
         {
             return View();
         }
 
-        [Authorize(Roles = WebsiteRoles.Roster.AddRoster)]
+        [Authorize(Roles = WebsiteRoles.Roster.ManageRosters)]
         [HttpPost]
         public ActionResult CreateBitsVerify(VerifyBitsViewModel vm)
         {
@@ -115,7 +115,7 @@
                 });
         }
 
-        [Authorize(Roles = WebsiteRoles.Roster.AddRoster)]
+        [Authorize(Roles = WebsiteRoles.Roster.ManageRosters)]
         public ActionResult Create()
         {
             var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
@@ -128,7 +128,7 @@
         }
 
         [HttpPost]
-        [Authorize(Roles = WebsiteRoles.Roster.AddRoster)]
+        [Authorize(Roles = WebsiteRoles.Roster.ManageRosters)]
         public ActionResult Create(CreateRosterViewModel vm)
         {
             if (!ModelState.IsValid) return View(vm);
@@ -148,7 +148,7 @@
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = WebsiteRoles.Roster.EditRoster)]
+        [Authorize(Roles = WebsiteRoles.Roster.ManageRosters)]
         public ActionResult Edit(string id)
         {
             var roster = DocumentSession.Load<Roster>(id);
@@ -161,7 +161,7 @@
             return View(new CreateRosterViewModel(roster));
         }
 
-        [Authorize(Roles = WebsiteRoles.Roster.EditRoster)]
+        [Authorize(Roles = WebsiteRoles.Roster.ManageRosters)]
         [HttpPost]
         public ActionResult Edit(string id, CreateRosterViewModel vm)
         {
@@ -195,7 +195,7 @@
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = WebsiteRoles.Roster.EditRoster)]
+        [Authorize(Roles = WebsiteRoles.Roster.ManageRosters)]
         public ActionResult Delete(string id)
         {
             var roster = DocumentSession.Load<Roster>(id);
@@ -210,7 +210,7 @@
         }
 
         [HttpPost]
-        [Authorize(Roles = WebsiteRoles.Roster.EditRoster)]
+        [Authorize(Roles = WebsiteRoles.Roster.ManageRosters)]
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(string id)
         {
@@ -278,7 +278,7 @@
             return View(viewTurnViewModel);
         }
 
-        [Authorize(Roles = WebsiteRoles.Roster.EditRoster)]
+        [Authorize(Roles = WebsiteRoles.Roster.ManageRosters)]
         [HttpPost]
         public ActionResult Print(
             int season,
@@ -331,7 +331,7 @@
             return View(viewTurnViewModel);
         }
 
-        [Authorize(Roles = WebsiteRoles.Roster.EditPlayers)]
+        [Authorize(Roles = WebsiteRoles.Roster.ManageRosters)]
         public ActionResult EditPlayers(string rosterId)
         {
             var roster = DocumentSession
@@ -354,7 +354,7 @@
         }
 
         [HttpPost]
-        [Authorize(Roles = WebsiteRoles.Roster.EditPlayers)]
+        [Authorize(Roles = WebsiteRoles.Roster.ManageRosters)]
         public ActionResult EditPlayers(string rosterId, RosterPlayersViewModel vm)
         {
             if (ModelState.IsValid == false) return EditPlayers(rosterId);

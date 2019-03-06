@@ -24,6 +24,17 @@
             </td>
         }
     </tr>
+     if (User.IsInRole2(WebsiteRoles.Player.EditPlayer) && player.Roles.Any())
+     {
+         <tr>
+             <td colspan="4">
+                 @foreach (var role in player.Roles)
+                 {
+                     <span class="badge badge-info">@role</span>
+                 }
+             </td>
+         </tr>
+     }
 }
 
 <div class="row">
@@ -40,7 +51,7 @@
                 Lägg till spelare
             </a>
         }
-        @if (User.IsInRole2(WebsiteRoles.Player.SendEmailToAll))
+        @if (User.IsInRole2(WebsiteRoles.Player.ShowEmailAddresses))
         {
             <div class="btn-group pull-right">
                 <button type="button" class="btn btn-small btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -87,7 +98,7 @@
                 @ShowPlayer(player)
             }
 
-            @if (User.IsInRole2(WebsiteRoles.Player.ShowInactive))
+            @if (User.IsInRole2(WebsiteRoles.Player.EditPlayer))
             {
                 foreach (var player in Model.Where(x => x.Status == Player.Status.Inactive))
                 {
