@@ -21,7 +21,7 @@
 
             var activities =
                 DocumentSession.Query<Activity, ActivityIndex>()
-                               .Where(x => x.Season == season.Value)
+                               .Where(x => x.Season >= season.Value)
                                .ToArray()
                                .OrderBy(x => x.Date)
                                .ToArray();
