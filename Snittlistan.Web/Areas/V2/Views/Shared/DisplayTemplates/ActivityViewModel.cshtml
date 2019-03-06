@@ -3,15 +3,16 @@
 @{
     var tenantConfiguration = Html.GetTenantConfiguration();
     var showViewMoreLink = Convert.ToBoolean(ViewData["showViewMoreLink"]);
+    var showComments = Convert.ToBoolean(ViewData["showComments"]);
 
 }
 <div class="row">
     <div class="span12">
-        <div class="well well-small activity-item-container">
-            <img class="activity-item-image"
+        <div class="well well-small activity-container">
+            <img class="activity-image"
                  src="@Url.ContentCacheBreak($"~/Content/css/images/{tenantConfiguration.AppleTouchIcon}")"
                  alt="@tenantConfiguration.FullTeamName" />
-            <div class="activity-item-content-container">
+            <div class="activity-content-container">
                 <h4>
                     @Model.Title
                     <em>
@@ -20,18 +21,18 @@
                 </h4>
                 @if (showViewMoreLink)
                 {
-                    <p class="activity-item-content-message activity-item-content-message-clamped">@Model.Message</p>
+                    <p class="activity-content-message activity-content-message-clamped">@Model.Message</p>
                     @Html.ActionLink("Visa mer", "Index", "ActivityDetails", null, null, "disqus_thread", new { Model.Id }, null)
                 }
                 else
                 {
-                    <p class="activity-item-content-message">@Model.Message</p>
+                    <p class="activity-content-message">@Model.Message</p>
                 }
             </div>
         </div>
     </div>
 </div>
-@if (showViewMoreLink == false)
+@if (showComments)
 {
     <div class="row">
         <div class="span12">
