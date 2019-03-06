@@ -7,7 +7,6 @@
                id="season"
                name="season"
                placeholder="Säsong"
-               autofocus="autofocus"
                title="Ange säsong"
                pattern="\d*"
                required="required"
@@ -21,7 +20,7 @@
 <div class="control-group">
     @Html.LabelFor(x => x.Title, new { @class = "control-label" })
     <div class="controls">
-        @Html.TextBoxFor(x => x.Title, new { required = "required", maxlength = "80" })
+        @Html.TextBoxFor(x => x.Title, new { required = "required", maxlength = "80", autofocus="autofocus" })
     </div>
 </div>
 <div class="control-group">
