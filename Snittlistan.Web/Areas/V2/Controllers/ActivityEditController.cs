@@ -8,6 +8,7 @@
     using Domain;
     using Helpers;
     using Raven.Abstractions;
+    using ViewModels;
     using Web.Controllers;
 
     [Authorize(Roles = WebsiteRoles.Activity.Manage)]
@@ -48,6 +49,7 @@
         {
             if (ModelState.IsValid == false) return View(vm);
             var activity = DocumentSession.Load<Activity>(id);
+            if (activity == null) throw new HttpException(404, "Activity not found");
             Debug.Assert(vm.Season != null, "vm.Season != null");
             Debug.Assert(vm.Date != null, "vm.Date != null");
             activity.Update(vm.Season.Value, vm.Title, vm.Date.Value, vm.Message);
@@ -56,7 +58,18 @@
 
         public ActionResult Delete(string id)
         {
-            return View();
+            var activity = DocumentSession.Load<Activity>(id);
+            if (activity == null) throw new HttpException(404, "Activity not found");
+            return View(new ActivityViewModel(activity));
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public ActionResult DeleteActivity(string id)
+        {
+            var activity = DocumentSession.Load<Activity>(id);
+            if (activity != null) DocumentSession.Delete(activity);
+            return RedirectToAction("Index", "ActivityIndex");
         }
 
         public class ActivityEditViewModel

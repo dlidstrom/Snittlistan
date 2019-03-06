@@ -17,31 +17,42 @@
     <div class="span12">
         <table class="table table-condensed table-striped">
             <thead>
-            <tr>
-                <th>Aktivitet</th>
-                <th>Datum</th>
-                <th>Text</th>
-                <th>Redigera</th>
-            </tr>
+                <tr>
+                    <th>Aktivitet</th>
+                    <th>Datum</th>
+                    <th>Text</th>
+                    <th colspan="2">Redigera</th>
+                </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.Items)
                 {
                     <tr>
-                        <td>
+                        <td rowspan="3">
                             @item.Title
                         </td>
-                        <td>
+                        <td rowspan="3">
                             <time datetime="@item.Date.ToString("s")">
                                 @item.Date.ToString("dddd d MMMM HH:mm")
                             </time>
                         </td>
-                        <td>
-                            @item.Message
+                        <td rowspan="3">
+                            <div class="activity-content-message activity-content-message-clamped">
+                                @item.Message
+                            </div>
                         </td>
                         <td>
                             @Html.ActionLink("Redigera", "Edit", "ActivityEdit", new { item.Id }, null)
-                            | @Html.ActionLink("Ta bort", "Delete", "ActivityEdit")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.ActionLink("Ta bort", "Delete", "ActivityEdit", new { item.Id }, null)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.ActionLink("Visa", "Index", "ActivityDetails", null, null, "disqus_thread", new { item.Id }, null)
                         </td>
                     </tr>
                 }

@@ -12,6 +12,7 @@
         {
             var activity = DocumentSession.Load<Activity>(id);
             if (activity==null) throw new HttpException(404, "Not found");
+            ViewData["showComments"] = true;
             return View(new ActivityViewModel(activity));
         }
     }
