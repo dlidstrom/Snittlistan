@@ -10,23 +10,12 @@
 
         public static void Initialize()
         {
-            var absenceView =
-                new WebsiteRole(Absence.View, "Visa frånvaro", RoleLevel.Player);
-
-            var editAllRole =
-                new WebsiteRole(Absence.EditAll, "Frånvaro", RoleLevel.User);
-
-            var editMedalsRole =
-                new WebsiteRole(EliteMedals.EditMedals, "Elitmärken", RoleLevel.User);
-
-            var editPlayerRole =
-                new WebsiteRole(Player.EditPlayer, "Medlemmar", RoleLevel.User);
-
-            var showEmailAddressesRole =
-                new WebsiteRole(Player.ShowEmailAddresses, "Visa e-postadresser", RoleLevel.Player);
-
-            var ukTasks =
-                new WebsiteRole(Uk.UkTasks, "Laguttagningar (UK)", RoleLevel.User);
+            Roles.Add(new WebsiteRole(Absence.View, "Visa frånvaro", RoleLevel.Player));
+            Roles.Add(new WebsiteRole(Absence.EditAll, "Frånvaro", RoleLevel.User));
+            Roles.Add(new WebsiteRole(EliteMedals.EditMedals, "Elitmärken", RoleLevel.User));
+            Roles.Add(new WebsiteRole(Player.EditPlayer, "Medlemmar", RoleLevel.User));
+            Roles.Add(new WebsiteRole(Player.ShowEmailAddresses, "Visa e-postadresser", RoleLevel.Player));
+            Roles.Add(new WebsiteRole(Uk.UkTasks, "Laguttagningar (UK)", RoleLevel.User));
         }
 
         public static class Absence
@@ -93,7 +82,6 @@
                 Name = name;
                 Description = description;
                 RoleLevel = roleLevel;
-                Roles.Add(this);
             }
 
             public string Name { get; }
