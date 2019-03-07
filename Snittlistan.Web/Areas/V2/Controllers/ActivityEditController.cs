@@ -111,7 +111,8 @@
             {
                 return new ActivityEditViewModel
                 {
-                    Season = season
+                    Season = season,
+                    Date = SystemTime.UtcNow.Date.AddDays(1).AddHours(18)
                 };
             }
 
