@@ -39,7 +39,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = WebsiteRoles.Absence.EditAll)]
+        [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
         public ActionResult Edit(int id, CreateAbsenceViewModel vm)
         {
             if (ModelState.IsValid == false)
@@ -56,7 +56,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = WebsiteRoles.Absence.EditAll)]
+        [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
         [HttpPost]
         public ActionResult Create(CreateAbsenceViewModel vm)
         {
@@ -72,7 +72,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = WebsiteRoles.Absence.EditAll)]
+        [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
         public ActionResult Edit(int id)
         {
             var absence = DocumentSession.Load<Absence>(id);
@@ -81,7 +81,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             return View(new CreateAbsenceViewModel(absence));
         }
 
-        [Authorize(Roles = WebsiteRoles.Absence.EditAll)]
+        [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
         public ActionResult Delete(int id)
         {
             var absence = DocumentSession.Include<Absence>(x => x.Player).Load<Absence>(id);
@@ -91,7 +91,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = WebsiteRoles.Absence.EditAll)]
+        [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {

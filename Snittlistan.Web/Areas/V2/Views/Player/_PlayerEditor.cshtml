@@ -80,7 +80,8 @@
     <div class="controls">
         @Html.ListBoxFor(x => x.Roles, Model.RolesList, new
         {
-            size = 5
+            size = 5,
+            style = "width: auto;"
         })
         <span class="help-block">Välj vilka funktioner medlemmen ska ha tillgång till.</span>
     </div>

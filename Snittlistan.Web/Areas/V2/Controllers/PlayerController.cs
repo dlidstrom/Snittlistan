@@ -22,14 +22,14 @@
             return View(vm);
         }
 
-        [Authorize(Roles = WebsiteRoles.Player.EditPlayer)]
+        [Authorize(Roles = WebsiteRoles.Player.Admin)]
         public ActionResult Create()
         {
             return View(new CreatePlayerViewModel());
         }
 
         [HttpPost]
-        [Authorize(Roles = WebsiteRoles.Player.EditPlayer)]
+        [Authorize(Roles = WebsiteRoles.Player.Admin)]
         public ActionResult Create(CreatePlayerViewModel vm)
         {
             // prevent duplicates
@@ -53,7 +53,7 @@
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = WebsiteRoles.Player.EditPlayer)]
+        [Authorize(Roles = WebsiteRoles.Player.Admin)]
         public ActionResult Edit(int id)
         {
             var player = DocumentSession.Load<Player>(id);
@@ -61,7 +61,7 @@
             return View(new CreatePlayerViewModel(player));
         }
 
-        [Authorize(Roles = WebsiteRoles.Player.EditPlayer)]
+        [Authorize(Roles = WebsiteRoles.Player.Admin)]
         [HttpPost]
         public ActionResult Edit(int id, CreatePlayerViewModel vm)
         {
@@ -89,7 +89,7 @@
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = WebsiteRoles.Player.EditPlayer)]
+        [Authorize(Roles = WebsiteRoles.Player.Admin)]
         public ActionResult Delete(int id)
         {
             var player = DocumentSession.Load<Player>(id);
@@ -99,7 +99,7 @@
         }
 
         [HttpPost]
-        [Authorize(Roles = WebsiteRoles.Player.EditPlayer)]
+        [Authorize(Roles = WebsiteRoles.Player.Admin)]
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
@@ -152,7 +152,7 @@
             public MultiSelectList RolesList { get; set; }
 
             [Required]
-            [Display(Description = "Funktioner:")]
+            [Display(Name = "Funktioner:")]
             public string[] Roles { get; set; }
         }
     }
