@@ -11,40 +11,22 @@
         public static void Initialize()
         {
             var absenceView =
-                new WebsiteRole(Absence.View, RoleLevel.Player);
+                new WebsiteRole(Absence.View, "Visa frånvaro", RoleLevel.Player);
 
             var editAllRole =
-                new WebsiteRole(Absence.EditAll, RoleLevel.User);
+                new WebsiteRole(Absence.EditAll, "Frånvaro", RoleLevel.User);
 
             var editMedalsRole =
-                new WebsiteRole(EliteMedals.EditMedals, RoleLevel.User);
-
-            var generateReportRole =
-                new WebsiteRole(EliteMedals.GenerateReport, RoleLevel.User);
-
-            var addManualResultRole =
-                new WebsiteRole(MatchResult.AddManualResult, RoleLevel.User);
+                new WebsiteRole(EliteMedals.EditMedals, "Elitmärken", RoleLevel.User);
 
             var editPlayerRole =
-                new WebsiteRole(Player.EditPlayer, RoleLevel.User);
-
-            var sendEmailToAllRole =
-                new WebsiteRole(Player.SendEmailToAll, RoleLevel.Player);
+                new WebsiteRole(Player.EditPlayer, "Medlemmar", RoleLevel.User);
 
             var showEmailAddressesRole =
-                new WebsiteRole(Player.ShowEmailAddresses, RoleLevel.Player);
+                new WebsiteRole(Player.ShowEmailAddresses, "Visa e-postadresser", RoleLevel.Player);
 
-            var showInactiveRole =
-                new WebsiteRole(Player.ShowInactive, RoleLevel.User);
-
-            var addRosterRole =
-                new WebsiteRole(Roster.AddRoster, RoleLevel.User);
-            var editPlayersRole =
-                new WebsiteRole(Roster.EditPlayers, RoleLevel.User);
-            var viewPreliminaryRole =
-                new WebsiteRole(Roster.ViewPreliminary, RoleLevel.User);
-            var editRosterRole =
-                new WebsiteRole(Roster.EditRoster, RoleLevel.User);
+            var ukTasks =
+                new WebsiteRole(Uk.UkTasks, "Laguttagningar (UK)", RoleLevel.User);
         }
 
         public static class Absence
@@ -57,35 +39,18 @@
         public static class EliteMedals
         {
             public const string EditMedals = "EliteMedals.EditMedals";
-
-            public const string GenerateReport = "EliteMedals.GenerateReport";
-        }
-
-        public static class MatchResult
-        {
-            public const string AddManualResult = "MatchResult.AddManualResult";
         }
 
         public static class Player
         {
             public const string EditPlayer = "Player.EditPlayer";
 
-            public const string SendEmailToAll = "Player.SendEmailToAll";
-
             public const string ShowEmailAddresses = "Player.ShowEmailAddresses";
-
-            public const string ShowInactive = "Player.ShowInactive";
         }
 
-        public static class Roster
+        public static class Uk
         {
-            public const string AddRoster = "Roster.AddRoster";
-
-            public const string EditPlayers = "Roster.EditPlayers";
-
-            public const string ViewPreliminary = "Roster.ViewPreliminary";
-
-            public const string EditRoster = "Roster.EditRoster";
+            public const string UkTasks = "Uk.UkTasks";
         }
 
         // groups
@@ -104,6 +69,11 @@
             return Roles.Where(x => x.RoleLevel <= RoleLevel.Admin).ToArray();
         }
 
+        public static IReadOnlyDictionary<string, WebsiteRole> ToDict(this WebsiteRole[] roles)
+        {
+            return roles.ToDictionary(x => x.Name);
+        }
+
         public enum RoleLevel
         {
             Player,
@@ -113,14 +83,17 @@
 
         public class WebsiteRole
         {
-            public WebsiteRole(string name, RoleLevel roleLevel)
+            public WebsiteRole(string name, string description, RoleLevel roleLevel)
             {
                 Name = name;
+                Description = description;
                 RoleLevel = roleLevel;
                 Roles.Add(this);
             }
 
             public string Name { get; }
+
+            public string Description { get; }
 
             public RoleLevel RoleLevel { get; }
         }

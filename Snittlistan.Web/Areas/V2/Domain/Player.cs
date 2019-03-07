@@ -1,16 +1,23 @@
-using System;
-
 namespace Snittlistan.Web.Areas.V2.Domain
 {
+    using System;
+
     public class Player
     {
-        public Player(string name, string email, Status playerStatus, int personalNumber, string nickname)
+        public Player(
+            string name,
+            string email,
+            Status playerStatus,
+            int personalNumber,
+            string nickname,
+            string[] roles)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Email = email; // allow null
             PlayerStatus = playerStatus;
             PersonalNumber = personalNumber;
             Nickname = nickname ?? name;
+            Roles = roles ?? new string[0];
         }
 
         public enum Status
@@ -31,6 +38,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public int PersonalNumber { get; private set; }
 
         public string Nickname { get; private set; }
+
+        public string[] Roles { get; private set; }
 
         public void SetName(string name)
         {
@@ -55,6 +64,11 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public void SetNickname(string nickname)
         {
             Nickname = nickname ?? Name;
+        }
+
+        public void SetRoles(string[] roles)
+        {
+            Roles = roles ?? throw new ArgumentNullException(nameof(roles));
         }
     }
 }

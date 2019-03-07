@@ -24,35 +24,35 @@ namespace Snittlistan.Test.Domain
             // Arrange
             var players = new[]
             {
-                new Player("n", "e@d.com", Player.Status.Active, -1, null)
+                new Player("n", "e@d.com", Player.Status.Active, -1, null, new string[0])
                 {
                     Id = "p1"
                 },
-                new Player("n", "e@d.com", Player.Status.Active, -1, null)
+                new Player("n", "e@d.com", Player.Status.Active, -1, null, new string[0])
                 {
                     Id = "p2"
                 },
-                new Player("n", "e@d.com", Player.Status.Active, -1, null)
+                new Player("n", "e@d.com", Player.Status.Active, -1, null, new string[0])
                 {
                     Id = "p3"
                 },
-                new Player("n", "e@d.com", Player.Status.Active, -1, null)
+                new Player("n", "e@d.com", Player.Status.Active, -1, null, new string[0])
                 {
                     Id = "p4"
                 },
-                new Player("n", "e@d.com", Player.Status.Active, -1, null)
+                new Player("n", "e@d.com", Player.Status.Active, -1, null, new string[0])
                 {
                     Id = "p5"
                 },
-                new Player("n", "e@d.com", Player.Status.Active, -1, null)
+                new Player("n", "e@d.com", Player.Status.Active, -1, null, new string[0])
                 {
                     Id = "p6"
                 },
-                new Player("n", "e@d.com", Player.Status.Active, -1, null)
+                new Player("n", "e@d.com", Player.Status.Active, -1, null, new string[0])
                 {
                     Id = "p7"
                 },
-                new Player("n", "e@d.com", Player.Status.Active, -1, null)
+                new Player("n", "e@d.com", Player.Status.Active, -1, null, new string[0])
                 {
                     Id = "p8"
                 },

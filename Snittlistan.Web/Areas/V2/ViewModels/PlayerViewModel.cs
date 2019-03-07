@@ -2,15 +2,25 @@ using Snittlistan.Web.Areas.V2.Domain;
 
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class PlayerViewModel
     {
-        public PlayerViewModel(Player player)
+        public PlayerViewModel(
+            Player player,
+            IReadOnlyDictionary<string, WebsiteRoles.WebsiteRole> rolesDict)
         {
             Id = player.Id;
             Name = player.Name;
             Nickname = player.Nickname;
             Email = player.Email;
             Status = player.PlayerStatus;
+            Roles = player.Roles
+                          .Where(rolesDict.ContainsKey)
+                          .Select(x => rolesDict[x].Description)
+                          .OrderBy(x => x)
+                          .ToArray();
             switch (player.PlayerStatus)
             {
                 case Player.Status.Active:
@@ -27,16 +37,18 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             }
         }
 
-        public string Id { get; private set; }
+        public string Id { get; }
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
-        public string Email { get; private set; }
+        public string Email { get; }
 
-        public Player.Status Status { get; private set; }
+        public Player.Status Status { get; }
 
-        public string StatusText { get; private set; }
+        public string StatusText { get; }
 
-        public string Nickname { get; private set; }
+        public string Nickname { get; }
+
+        public string[] Roles { get; }
     }
 }

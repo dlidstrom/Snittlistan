@@ -75,15 +75,15 @@ namespace Snittlistan.Test.ApiControllers
             {
                 var players = new[]
                 {
-                    new Player("Christer Liedholm", "e@d.com", Player.Status.Active, 0, null),
-                    new Player("Mathias Ernest", "e@d.com", Player.Status.Active, 0, null),
-                    new Player("Torbjörn Jensen", "e@d.com", Player.Status.Active, 0, null),
-                    new Player("Alf Kindblom", "e@d.com", Player.Status.Active, 0, null),
-                    new Player("Peter Sjöberg", "e@d.com", Player.Status.Active, 0, null),
-                    new Player("Lars Öberg", "e@d.com", Player.Status.Active, 0, null),
-                    new Player("Mikael Axelsson", "e@d.com", Player.Status.Active, 0, null),
-                    new Player("Hans Norbeck", "e@d.com", Player.Status.Active, 0, null),
-                    new Player("Lennart Axelsson", "e@d.com", Player.Status.Active, 0, null)
+                    new Player("Christer Liedholm", "e@d.com", Player.Status.Active, 0, null, new string[0]),
+                    new Player("Mathias Ernest", "e@d.com", Player.Status.Active, 0, null, new string[0]),
+                    new Player("Torbjörn Jensen", "e@d.com", Player.Status.Active, 0, null, new string[0]),
+                    new Player("Alf Kindblom", "e@d.com", Player.Status.Active, 0, null, new string[0]),
+                    new Player("Peter Sjöberg", "e@d.com", Player.Status.Active, 0, null, new string[0]),
+                    new Player("Lars Öberg", "e@d.com", Player.Status.Active, 0, null, new string[0]),
+                    new Player("Mikael Axelsson", "e@d.com", Player.Status.Active, 0, null, new string[0]),
+                    new Player("Hans Norbeck", "e@d.com", Player.Status.Active, 0, null, new string[0]),
+                    new Player("Lennart Axelsson", "e@d.com", Player.Status.Active, 0, null, new string[0])
                 };
 
                 foreach (var player in players)
