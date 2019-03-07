@@ -10,30 +10,17 @@
 
         public static void Initialize()
         {
-            var absenceView =
-                new WebsiteRole(Absence.View, "Visa frånvaro", RoleLevel.Player);
-
-            var editAllRole =
-                new WebsiteRole(Absence.EditAll, "Frånvaro", RoleLevel.User);
-
-            var editMedalsRole =
-                new WebsiteRole(EliteMedals.EditMedals, "Elitmärken", RoleLevel.User);
-
-            var editPlayerRole =
-                new WebsiteRole(Player.EditPlayer, "Medlemmar", RoleLevel.User);
-
-            var showEmailAddressesRole =
-                new WebsiteRole(Player.ShowEmailAddresses, "Visa e-postadresser", RoleLevel.Player);
-
-            var ukTasks =
-                new WebsiteRole(Uk.UkTasks, "Laguttagningar (UK)", RoleLevel.User);
+            Roles.Add(new WebsiteRole(Absence.View, "Visa frånvaro", RoleLevel.Player));
+            Roles.Add(new WebsiteRole(Activity.Manage, "Aktiviteter (banledare och klubbmästare)", RoleLevel.User));
+            Roles.Add(new WebsiteRole(EliteMedals.EditMedals, "Elitmärken", RoleLevel.User));
+            Roles.Add(new WebsiteRole(Player.Admin, "Administratör (fullständig access)", RoleLevel.User));
+            Roles.Add(new WebsiteRole(Player.ShowEmailAddresses, "Visa e-postadresser", RoleLevel.Player));
+            Roles.Add(new WebsiteRole(Uk.UkTasks, "UK-rollen (uttagningar och frånvaro)", RoleLevel.User));
         }
 
         public static class Absence
         {
             public const string View = "Absence.View";
-
-            public const string EditAll = "Absence.EditAll";
         }
 
         public static class EliteMedals
@@ -43,7 +30,7 @@
 
         public static class Player
         {
-            public const string EditPlayer = "Player.EditPlayer";
+            public const string Admin = "Player.Admin";
 
             public const string ShowEmailAddresses = "Player.ShowEmailAddresses";
         }
@@ -51,6 +38,11 @@
         public static class Uk
         {
             public const string UkTasks = "Uk.UkTasks";
+        }
+
+        public static class Activity
+        {
+            public const string Manage = "Activity.Manage";
         }
 
         // groups
@@ -88,7 +80,6 @@
                 Name = name;
                 Description = description;
                 RoleLevel = roleLevel;
-                Roles.Add(this);
             }
 
             public string Name { get; }
