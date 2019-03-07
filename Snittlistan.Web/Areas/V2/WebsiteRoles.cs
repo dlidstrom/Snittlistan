@@ -12,6 +12,7 @@
         {
             Roles.Add(new WebsiteRole(Absence.View, "Visa frånvaro", RoleLevel.Player));
             Roles.Add(new WebsiteRole(Absence.EditAll, "Frånvaro", RoleLevel.User));
+            Roles.Add(new WebsiteRole(Activity.Manage, "Hantera aktiviteter", RoleLevel.User));
             Roles.Add(new WebsiteRole(EliteMedals.EditMedals, "Elitmärken", RoleLevel.User));
             Roles.Add(new WebsiteRole(Player.EditPlayer, "Medlemmar", RoleLevel.User));
             Roles.Add(new WebsiteRole(Player.ShowEmailAddresses, "Visa e-postadresser", RoleLevel.Player));
