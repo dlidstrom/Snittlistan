@@ -5,19 +5,19 @@
 }
 
 <div class="well well-small editable">
-    @if (User.IsInRole2(WebsiteRoles.Roster.ManageRosters) && hideControls == false)
+    @if (User.IsInRole2(WebsiteRoles.Uk.UkTasks) && hideControls == false)
     {
         <a href="@Url.Action("EditPlayers", new { Model.Header.RosterId })" class="edit-right">
             <i class="sprite-glyphicons_151_edit"></i>
         </a>
     }
-    @if (Model.Preliminary && User.IsInRole2(WebsiteRoles.Roster.ManageRosters))
+    @if (Model.Preliminary && User.IsInRole2(WebsiteRoles.Uk.UkTasks))
     {
         <div class="alert alert-info">
             <strong>Preliminär</strong> Gömd för vanliga användare
         </div>
     }
-    @if (Model.Preliminary && User.IsInRole2(WebsiteRoles.Roster.ManageRosters) == false)
+    @if (Model.Preliminary && User.IsInRole2(WebsiteRoles.Uk.UkTasks) == false)
     {
         @* Hide preliminaries for regular users *@
         Model.Players.Clear();
@@ -49,7 +49,7 @@
         }
         else if (Model.Players.Any()
                  && Model.Players.Any(x => x.Item3 == false)
-                 && User.IsInRole2(WebsiteRoles.Roster.ManageRosters))
+                 && User.IsInRole2(WebsiteRoles.Uk.UkTasks))
         {
             @Html.ActionLink(
                 "Ange spelare deltar",

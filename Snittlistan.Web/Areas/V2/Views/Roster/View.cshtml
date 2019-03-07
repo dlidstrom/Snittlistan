@@ -3,7 +3,7 @@
 <div class="row">
     <div class="span12">
         <h1 class="pull-left">Omgång @Model.Turn</h1>
-        @if (User.IsInRole2(WebsiteRoles.Roster.ManageRosters))
+        @if (User.IsInRole2(WebsiteRoles.Uk.UkTasks))
         {
             <div class="pull-right">
                 @using (Html.BeginForm(
@@ -80,7 +80,7 @@
     start += 3;
     rosters = Model.RosterViewModels.Skip(start).Take(3).ToList();
 }
-@if (User.IsInRole2(WebsiteRoles.Roster.ManageRosters))
+@if (User.IsInRole2(WebsiteRoles.Uk.UkTasks))
 {
     @Html.Action("PlayerStatus", new
     {

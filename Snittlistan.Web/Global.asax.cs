@@ -1,6 +1,7 @@
 ﻿namespace Snittlistan.Web
 {
     using System;
+    using System.Collections.Generic;
     using System.Configuration;
     using System.Linq;
     using System.Reflection;
@@ -107,51 +108,52 @@
         protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
         {
             var authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
-            if (authCookie != null)
+            if (authCookie == null) return;
+
+            var authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+            if (authTicket == null) return;
+
+            var session = Container.Resolve<IDocumentSession>();
+
+            // try the player first
+            var player = session.Load<Player>(authTicket.Name);
+            if (player != null)
             {
-                var authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-                if (authTicket == null) return;
+                var defaultRoles = WebsiteRoles.PlayerGroup().Select(x => x.Name);
+                var roles = new HashSet<string>(defaultRoles.Concat(player.Roles)).ToArray();
+                HttpContext.Current.User =
+                    new CustomPrincipal(
+                        player.Id,
+                        player.Name,
+                        roles);
+                return;
+            }
 
-                var session = Container.Resolve<IDocumentSession>();
-
-                // try the player first
-                var player = session.Load<Player>(authTicket.Name);
-                if (player != null)
+            // try the user now
+            var user = session.FindUserByEmail(authTicket.Name);
+            if (user != null)
+            {
+                if (user.Id == "Admin")
                 {
                     HttpContext.Current.User =
                         new CustomPrincipal(
-                            player.Id,
-                            player.Name,
-                            WebsiteRoles.PlayerGroup().Select(x => x.Name).ToArray());
-                    return;
+                            null,
+                            user.Email,
+                            WebsiteRoles.AdminGroup().Select(x => x.Name).ToArray());
                 }
-
-                // try the user now
-                var user = session.FindUserByEmail(authTicket.Name);
-                if (user != null)
+                else
                 {
-                    if (user.Id == "Admin")
-                    {
-                        HttpContext.Current.User =
-                            new CustomPrincipal(
-                                null,
-                                user.Email,
-                                WebsiteRoles.AdminGroup().Select(x => x.Name).ToArray());
-                    }
-                    else
-                    {
-                        HttpContext.Current.User =
-                            new CustomPrincipal(
-                                null,
-                                user.Email,
-                                WebsiteRoles.UserGroup().Select(x => x.Name).ToArray());
-                    }
-
-                    return;
+                    HttpContext.Current.User =
+                        new CustomPrincipal(
+                            null,
+                            user.Email,
+                            WebsiteRoles.UserGroup().Select(x => x.Name).ToArray());
                 }
 
-                Log.Error("Unable to load profile information using {0}", authTicket.Name);
+                return;
             }
+
+            Log.Error("Unable to load profile information using {0}", authTicket.Name);
         }
 
         private static void Bootstrap(HttpConfiguration configuration)

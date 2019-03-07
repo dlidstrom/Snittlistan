@@ -18,7 +18,7 @@
                 .OrderBy(p => p.PlayerStatus)
                 .ThenBy(p => p.Name)
                 .ToList();
-            var vm = players.Select(x => new PlayerViewModel(x)).ToList();
+            var vm = players.Select(x => new PlayerViewModel(x, WebsiteRoles.UserGroup().ToDict())).ToList();
             return View(vm);
         }
 
@@ -95,7 +95,7 @@
             var player = DocumentSession.Load<Player>(id);
             if (player == null)
                 throw new HttpException(404, "Player not found");
-            return View(new PlayerViewModel(player));
+            return View(new PlayerViewModel(player, WebsiteRoles.UserGroup().ToDictionary(x => x.Name)));
         }
 
         [HttpPost]
