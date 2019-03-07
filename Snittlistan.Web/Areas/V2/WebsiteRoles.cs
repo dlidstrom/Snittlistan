@@ -11,19 +11,16 @@
         public static void Initialize()
         {
             Roles.Add(new WebsiteRole(Absence.View, "Visa frånvaro", RoleLevel.Player));
-            Roles.Add(new WebsiteRole(Absence.EditAll, "Frånvaro", RoleLevel.User));
-            Roles.Add(new WebsiteRole(Activity.Manage, "Hantera aktiviteter", RoleLevel.User));
+            Roles.Add(new WebsiteRole(Activity.Manage, "Aktiviteter (banledare och klubbmästare)", RoleLevel.User));
             Roles.Add(new WebsiteRole(EliteMedals.EditMedals, "Elitmärken", RoleLevel.User));
-            Roles.Add(new WebsiteRole(Player.EditPlayer, "Medlemmar", RoleLevel.User));
+            Roles.Add(new WebsiteRole(Player.Admin, "Administratör (fullständig access)", RoleLevel.User));
             Roles.Add(new WebsiteRole(Player.ShowEmailAddresses, "Visa e-postadresser", RoleLevel.Player));
-            Roles.Add(new WebsiteRole(Uk.UkTasks, "Laguttagningar (UK)", RoleLevel.User));
+            Roles.Add(new WebsiteRole(Uk.UkTasks, "UK-rollen (uttagningar och frånvaro)", RoleLevel.User));
         }
 
         public static class Absence
         {
             public const string View = "Absence.View";
-
-            public const string EditAll = "Absence.EditAll";
         }
 
         public static class EliteMedals
@@ -33,7 +30,7 @@
 
         public static class Player
         {
-            public const string EditPlayer = "Player.EditPlayer";
+            public const string Admin = "Player.Admin";
 
             public const string ShowEmailAddresses = "Player.ShowEmailAddresses";
         }

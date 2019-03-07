@@ -62,7 +62,7 @@
                 DocumentSession.Query<Activity, ActivityIndex>()
                                .Where(x => x.Season == season.Value)
                                .ToArray()
-                               .Where(x => selectAll || x.Date >= SystemTime.UtcNow.Date)
+                               .Where(x => selectAll || x.Date >= SystemTime.UtcNow.Date.AddDays(-7))
                                .Select(x => new InitialDataViewModel.ScheduledActivityItem(x));
             var isFiltered = rosters.Count != turns.Sum(x => x.Rosters.Length);
             var vm = new InitialDataViewModel(turns.Concat(activities).OrderBy(x => x.Date).ToArray(), season.Value, isFiltered);

@@ -15,7 +15,7 @@
                 }
             </td>
         }
-        @if (User.IsInRole2(WebsiteRoles.Player.EditPlayer))
+        @if (User.IsInRole2(WebsiteRoles.Player.Admin))
         {
             <td>
                 <a href="@Url.Action("Edit", new { id = player.Id.Substring(player.Id.LastIndexOf('-') + 1) })">
@@ -24,7 +24,7 @@
             </td>
         }
     </tr>
-     if (User.IsInRole2(WebsiteRoles.Player.EditPlayer) && player.Roles.Any())
+     if (User.IsInRole2(WebsiteRoles.Player.Admin) && player.Roles.Any())
      {
          <tr>
              <td colspan="4">
@@ -44,7 +44,7 @@
 </div>
 <div class="row">
     <div class="span8">
-        @if (User.IsInRole2(WebsiteRoles.Player.EditPlayer))
+        @if (User.IsInRole2(WebsiteRoles.Player.Admin))
         {
             <a class="pull-left" href="@Url.Action("Create")">
                 <i class="sprite-glyphicons_006_user_add"></i>
@@ -98,7 +98,7 @@
                 @ShowPlayer(player)
             }
 
-            @if (User.IsInRole2(WebsiteRoles.Player.EditPlayer))
+            @if (User.IsInRole2(WebsiteRoles.Player.Admin))
             {
                 foreach (var player in Model.Where(x => x.Status == Player.Status.Inactive))
                 {
