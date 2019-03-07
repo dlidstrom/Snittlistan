@@ -31,7 +31,13 @@
 
             Debug.Assert(vm.Season != null, "vm.Season != null");
             Debug.Assert(vm.Date != null, "vm.Date != null");
-            var activity = Activity.Create(vm.Season.Value, vm.Title, vm.Date.Value, vm.Message);
+            var activity =
+                Activity.Create(
+                    vm.Season.Value,
+                    vm.Title,
+                    vm.Date.Value,
+                    vm.Message,
+                    User.CustomIdentity.PlayerId);
             DocumentSession.Store(activity);
 
             return RedirectToAction("Index", "ActivityIndex");
@@ -52,7 +58,12 @@
             if (activity == null) throw new HttpException(404, "Activity not found");
             Debug.Assert(vm.Season != null, "vm.Season != null");
             Debug.Assert(vm.Date != null, "vm.Date != null");
-            activity.Update(vm.Season.Value, vm.Title, vm.Date.Value, vm.Message);
+            activity.Update(
+                vm.Season.Value,
+                vm.Title,
+                vm.Date.Value,
+                vm.Message,
+                User.CustomIdentity.PlayerId);
             return RedirectToAction("Index", "ActivityIndex");
         }
 
@@ -60,7 +71,8 @@
         {
             var activity = DocumentSession.Load<Activity>(id);
             if (activity == null) throw new HttpException(404, "Activity not found");
-            return View(new ActivityViewModel(activity));
+            var player = DocumentSession.Load<Player>(activity.AuthorId);
+            return View(new ActivityViewModel(activity.Id, activity.Title, activity.Date, activity.Message, player?.Name ?? string.Empty));
         }
 
         [HttpPost]

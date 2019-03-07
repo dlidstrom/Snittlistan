@@ -14,7 +14,7 @@
                  src="@Url.ContentCacheBreak($"~/Content/css/images/{tenantConfiguration.AppleTouchIcon}")"
                  alt="@tenantConfiguration.FullTeamName" />
             <div class="activity-content-container">
-                <h4>
+                <h4 class="activity-main-title">
                     @Model.Title
                     <em>
                         (<time datetime="@($"{Model.ActivityDate:s}")">@Model.ActivityDate.ToString("d MMMM HH:mm")</time>)
@@ -24,6 +24,9 @@
                         <span class="label label-important">PASSERAT</span>
                     }
                 </h4>
+                <h5 class="activity-sub-title">
+                    @Model.Author
+                </h5>
                 @if (showViewMoreLink)
                 {
                     <p class="activity-content-message activity-content-message-clamped">@Model.Message</p>

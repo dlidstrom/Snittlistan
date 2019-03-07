@@ -1,16 +1,21 @@
 ﻿namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using System;
-    using Domain;
 
     public class ActivityViewModel
     {
-        public ActivityViewModel(Activity activity)
+        public ActivityViewModel(
+            string id,
+            string title,
+            DateTime date,
+            string message,
+            string author)
         {
-            Id = activity.Id;
-            Title = activity.Title;
-            ActivityDate = activity.Date;
-            Message = activity.Message;
+            Id = id;
+            Title = title;
+            ActivityDate = date;
+            Message = message;
+            Author = author;
         }
 
         public string Id { get; }
@@ -20,5 +25,7 @@
         public DateTime ActivityDate { get; }
 
         public string Message { get; }
+
+        public string Author { get; }
     }
 }

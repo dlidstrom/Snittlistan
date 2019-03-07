@@ -11,9 +11,10 @@
         public ActionResult Index(string id)
         {
             var activity = DocumentSession.Load<Activity>(id);
-            if (activity==null) throw new HttpException(404, "Not found");
+            if (activity == null) throw new HttpException(404, "Not found");
             ViewData["showComments"] = true;
-            return View(new ActivityViewModel(activity));
+            var player = DocumentSession.Load<Player>(activity.AuthorId);
+            return View(new ActivityViewModel(activity.Id, activity.Title, activity.Date, activity.Message, player?.Name ?? string.Empty));
         }
     }
 }
