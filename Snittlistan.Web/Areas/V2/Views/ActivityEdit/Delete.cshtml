@@ -1,0 +1,18 @@
+﻿@model ActivityViewModel
+
+@Html.DisplayForModel()
+
+<div class="row">
+    <div class="span12">
+        @using (Html.BeginForm("Delete", "ActivityEdit", FormMethod.Post))
+        {
+            <fieldset>
+                <legend>Är du säker på att du vill ta bort den här aktiviteten?</legend>
+            </fieldset>
+            <div class="form-actions">
+                <button class="btn btn-danger btn-large" type="submit">Ta bort</button>
+                @Html.ActionLink("Avbryt", "Index", "ActivityIndex", null, new { @class = "btn btn-large" })
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,21 @@
+﻿@model Snittlistan.Web.Areas.V2.Controllers.ActivityEditController.ActivityEditViewModel
+
+<div class="row">
+    <div class="span12">
+        @using (Html.BeginForm("Edit", "ActivityEdit", FormMethod.Post, new
+        {
+            @class = "form-horizontal"
+        }))
+        {
+            <fieldset>
+                <legend>Redigera aktivitet</legend>
+            </fieldset>
+            @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
+            @Html.Partial("_ActivityEditor", Model)
+            <div class="form-actions">
+                <button class="btn btn-primary btn-large" type="submit">Spara</button>
+                @Html.ActionLink("Avbryt", "Index", "ActivityIndex", null, new { @class = "btn btn-large" })
+            </div>
+        }
+    </div>
+</div>
