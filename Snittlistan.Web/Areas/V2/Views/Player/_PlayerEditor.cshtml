@@ -1,5 +1,5 @@
 ﻿@using Snittlistan.Web.Areas.V2.Domain
-@model CreatePlayerViewModel
+@model Snittlistan.Web.Areas.V2.Controllers.PlayerController.CreatePlayerViewModel
 
 @* TODO Use html helpers here *@
 <div class="control-group">
@@ -53,7 +53,7 @@
                autocomplete="off"
                pattern="\d*"
                title="Ange 6 siffror enligt ÅÅMMDD"
-               value="@(Model.PersonalNumber != null ? Model.PersonalNumber.Value.ToString() : string.Empty)" />
+               value="@(Model.PersonalNumber?.ToString() ?? string.Empty)" />
     </div>
 </div>
 <div class="control-group">
@@ -73,5 +73,15 @@
                 Inaktiv
             </option>
         </select>
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(x => x.Roles, new { @class = "control-label" })
+    <div class="controls">
+        @Html.ListBoxFor(x => x.Roles, Model.RolesList, new
+        {
+            size = 5
+        })
+        <span class="help-block">Välj vilka funktioner medlemmen ska ha tillgång till.</span>
     </div>
 </div>

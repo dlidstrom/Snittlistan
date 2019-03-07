@@ -7,7 +7,7 @@
     using ViewModels;
     using Web.Controllers;
 
-    [Authorize(Roles = WebsiteRoles.Roster.EditPlayers)]
+    [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
     public class AdminRosterAcceptController : AbstractController
     {
         public ActionResult AcceptPlayer(string rosterId, int season, int turn)

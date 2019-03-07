@@ -16,7 +16,7 @@
     using System.Web;
     using System.Web.Mvc;
 
-    [Authorize(Roles = WebsiteRoles.MatchResult.AddManualResult)]
+    [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
     public class MatchResultAdminController : AbstractController
     {
         public ActionResult Register(int? season)
