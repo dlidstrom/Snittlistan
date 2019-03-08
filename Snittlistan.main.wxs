@@ -60,7 +60,7 @@
     <CustomAction Id="StartServices_Cmd"
                   Property="StartServices"
                   Execute="immediate"
-                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU System /SC MINUTE /MO 1 /TN StartServices /TR &quot;\&quot;powershell.exe\&quot; -f \&quot;[#StartServicesScript]\&quot; &quot;" />
+                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU System /SC MINUTE /MO 1 /TN StartServices /TR &quot;\&quot;powershell.exe\&quot; -f \&quot;[#StartServices.ps1]\&quot; &quot;" />
     <CustomAction Id="StartServices_Task"
                   BinaryKey="WixCA"
                   DllEntry="CAQuietExec"
@@ -189,7 +189,7 @@
                             ElementPath="/configuration/log4net/appender[\[]@name='RollingFileAppenderErrors'[\]]/file/@value"
                             Value="[SnittlistanQueueDir]Logs\logfile.error.log" />
             </Component>
-            <Component Id="StartServicesScriptComponent" Guid="*" Win64="yes">
+            <Component Id="StartServices.ps1" Guid="*" Win64="yes">
               <File KeyPath="yes" Source="StartServices.ps1" Name="StartServicesScript" />
             </Component>
             <Directory Id="SnittlistanQueue_Logs" Name="Logs">
@@ -252,7 +252,7 @@
       <ComponentRef Id="SnittlistanTool_Logs" />
       <ComponentRef Id="Snittlistan.Queue.WindowsServiceHost.exe" />
       <ComponentRef Id="Snittlistan.Queue.WindowsServiceHost.exe.config" />
-      <ComponentRef Id="StartServicesScriptComponent" />
+      <ComponentRef Id="StartServices.ps1" />
       <ComponentRef Id="SnittlistanQueue_Logs" />
       <ComponentRef Id="AppPool" />
       <ComponentRef Id="SnittlistanWebSite" />
