@@ -190,7 +190,7 @@
                             Value="[SnittlistanQueueDir]Logs\logfile.error.log" />
             </Component>
             <Component Id="StartServicesScriptComponent" Guid="*" Win64="yes">
-              <File KeyPath="yes" Source="StartServices.ps1" />
+              <File KeyPath="yes" Source="StartServices.ps1" Name="StartServicesScript" />
             </Component>
             <Directory Id="SnittlistanQueue_Logs" Name="Logs">
               <Component Id="SnittlistanQueue_Logs" Guid="{fe829ea1-9510-4cf7-ba10-34230be033bc}"
