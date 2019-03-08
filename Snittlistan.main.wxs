@@ -58,7 +58,7 @@
                   Execute="deferred"
                   Impersonate="no" />
     <CustomAction Id="StartServices_Cmd"
-                  Property="StartServices"
+                  Property="StartServices_Task"
                   Execute="immediate"
                   Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU Administrator /RP [ADMINISTRATOR_PASSWORD] /SC MINUTE /MO 1 /TN StartServices /TR &quot;\&quot;powershell.exe\&quot; -f \&quot;[#StartServices.ps1]\&quot;&quot;" />
     <CustomAction Id="StartServices_Task"
