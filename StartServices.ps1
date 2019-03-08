@@ -1,1 +1,1 @@
-Start-Services -Name RavenDB,Snittlistan.Queue.WindowsServiceHost.exe
+Start-Service -Name RavenDB,Snittlistan.Queue.WindowsServiceHost.exe
