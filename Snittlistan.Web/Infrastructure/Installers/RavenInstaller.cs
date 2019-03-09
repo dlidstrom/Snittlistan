@@ -1,17 +1,18 @@
-﻿using System;
-using System.Reflection;
-using Castle.Core;
-using Castle.MicroKernel;
-using Castle.MicroKernel.Registration;
-using Castle.MicroKernel.SubSystems.Configuration;
-using Castle.Windsor;
-using Raven.Client;
-using Raven.Client.Document;
-using Raven.Client.Embedded;
-using Snittlistan.Web.Areas.V1.Models;
-
-namespace Snittlistan.Web.Infrastructure.Installers
+﻿namespace Snittlistan.Web.Infrastructure.Installers
 {
+    using System;
+    using System.Reflection;
+    using Castle.Core;
+    using Castle.MicroKernel;
+    using Castle.MicroKernel.Registration;
+    using Castle.MicroKernel.SubSystems.Configuration;
+    using Castle.Windsor;
+    using Raven.Client;
+    using Raven.Client.Document;
+    using Raven.Client.Embedded;
+    using Snittlistan.Web.Areas.V1.Models;
+    using ViewModels;
+
     public class RavenInstaller : IWindsorInstaller
     {
         private readonly DocumentStoreMode mode;

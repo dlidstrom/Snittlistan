@@ -1,11 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Web;
-using Castle.MicroKernel;
-using Raven.Client;
-
-namespace Snittlistan.Web.Infrastructure.IoC
+﻿namespace Snittlistan.Web.Infrastructure.IoC
 {
+    using System;
+    using System.Linq;
+    using System.Web;
+    using Castle.MicroKernel;
+    using Raven.Client;
+    using ViewModels;
+
     public class HostBasedComponentSelector : IHandlerSelector
     {
         public bool HasOpinionAbout(string key, Type service)
