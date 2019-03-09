@@ -23,4 +23,13 @@ $(function () {
         language: 'sv',
         minutesStep: 10
     });
+
+    // should prevent double submit
+    // https://stackoverflow.com/a/46296752/286406
+    $('form').submit(function () {
+        $(this).submit(function () {
+            return false;
+        });
+        return true;
+    });
 });

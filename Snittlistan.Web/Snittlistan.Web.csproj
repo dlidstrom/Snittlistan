@@ -374,7 +374,6 @@
     <Compile Include="Areas\V2\Controllers\RedirectController.cs" />
     <Compile Include="Areas\V1\V1AreaRegistration.cs" />
     <Compile Include="Areas\V2\V2AreaRegistration.cs" />
-    <Compile Include="Areas\V2\ViewModels\CreateRosterViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\PlayerViewModel.cs" />
     <Content Include="Content\css\glyphicons.css" />
     <Content Include="Content\css\images\endast svarta prickarna.tif" />
