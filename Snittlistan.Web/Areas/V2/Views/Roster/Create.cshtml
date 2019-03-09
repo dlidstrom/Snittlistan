@@ -1,15 +1,12 @@
-﻿@model CreateRosterViewModel
-
-@{
-    ViewBag.Title = "Lägg till match";
-    Bundles.Reference("Content/js/helpers/typeahead.js");
-}
+﻿@model Snittlistan.Web.Areas.V2.Controllers.RosterController.CreateRosterViewModel
 
 <div class="row">
-    <div class="span8">
-        <h4>@ViewBag.Title</h4>
+    <div class="span12">
         @using (Html.BeginForm("Create", "Roster", FormMethod.Post, new { @class = "form-horizontal"}))
         {
+            <fieldset>
+                <legend>Lägg till match</legend>
+            </fieldset>
             @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
             @Html.Partial("_RosterEditor", Model)
             <div class="form-actions">
