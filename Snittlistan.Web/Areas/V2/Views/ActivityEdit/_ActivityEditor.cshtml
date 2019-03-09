@@ -24,13 +24,19 @@
     </div>
 </div>
 <div class="control-group">
-    <label class="control-label" for="date">Datum:</label>
+    @Html.LabelFor(x => x.Date, new { @class = "control-label" })
     <div class="controls">
-        <input type="datetime-local"
-               id="date"
-               name="date"
-               value="@(Model.Date?.ToString("yyyy-MM-ddTHH:mm:ss"))"
-               required />
+        @Html.TextBoxFor(
+            x => x.Date,
+            new
+            {
+                @class = "date-picker",
+                @readonly = "readonly",
+                required = "required",
+                placeholder = "Välj datum",
+                data_datepicker = "",
+                data_timepicker = "true"
+            })
     </div>
 </div>
 <div class="control-group">

@@ -3,6 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
+    using System.Globalization;
     using System.Web;
     using System.Web.Mvc;
     using Domain;
@@ -14,6 +15,8 @@
     [Authorize(Roles = WebsiteRoles.Activity.Manage)]
     public class ActivityEditController : AbstractController
     {
+        private const string DateTimeFormat = "yyyy-MM-dd HH:mm";
+
         public ActionResult Create(int? season)
         {
             if (season.HasValue == false)
@@ -35,7 +38,7 @@
                 Activity.Create(
                     vm.Season.Value,
                     vm.Title,
-                    vm.Date.Value,
+                    ParseDate(vm.Date),
                     vm.Message,
                     User.CustomIdentity.PlayerId);
             DocumentSession.Store(activity);
@@ -61,10 +64,15 @@
             activity.Update(
                 vm.Season.Value,
                 vm.Title,
-                vm.Date.Value,
+                ParseDate(vm.Date),
                 vm.Message,
                 User.CustomIdentity.PlayerId);
             return RedirectToAction("Index", "ActivityIndex");
+        }
+
+        private static DateTime ParseDate(string date)
+        {
+            return DateTime.ParseExact(date, DateTimeFormat, CultureInfo.InvariantCulture);
         }
 
         public ActionResult Delete(string id)
@@ -97,9 +105,8 @@
             public string Title { get; set; }
 
             [Required]
-            [DataType(DataType.DateTime)]
             [Display(Name = "Datum")]
-            public DateTime? Date { get; set; }
+            public string Date { get; set; }
 
             [Required]
             [MaxLength(1024)]
@@ -112,7 +119,7 @@
                 return new ActivityEditViewModel
                 {
                     Season = season,
-                    Date = SystemTime.UtcNow.Date.AddDays(1).AddHours(18)
+                    Date = SystemTime.UtcNow.Date.AddDays(1).AddHours(18).ToString(DateTimeFormat)
                 };
             }
 
@@ -122,7 +129,7 @@
                 {
                     Season = activity.Season,
                     Title = activity.Title,
-                    Date = activity.Date,
+                    Date = activity.Date.ToString(DateTimeFormat),
                     Message = activity.Message
                 };
             }
