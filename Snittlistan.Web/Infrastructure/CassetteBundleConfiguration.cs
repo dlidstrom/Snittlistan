@@ -25,6 +25,7 @@ namespace Snittlistan.Web.Infrastructure
                 new FileSearch { SearchOption = SearchOption.TopDirectoryOnly });
             bundles.AddPerIndividualFile<ScriptBundle>("Content/js/helpers");
             bundles.AddPerIndividualFile<ScriptBundle>("Content/external");
+            bundles.AddPerIndividualFile<StylesheetBundle>("Content/external");
 
             // To combine files, try something like this instead:
             //   bundles.Add<StylesheetBundle>("Content");

@@ -1,17 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Castle.MicroKernel.Registration;
-using Castle.MicroKernel.SubSystems.Configuration;
-using Castle.Windsor;
-using Raven.Client;
-using Snittlistan.Web.Infrastructure;
-using Snittlistan.Web.Infrastructure.Installers;
-
 // ReSharper disable once CheckNamespace
 namespace EventStoreLite.IoC
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using Castle.MicroKernel.Registration;
+    using Castle.MicroKernel.SubSystems.Configuration;
+    using Castle.Windsor;
+    using Raven.Client;
+    using Snittlistan.Web.Infrastructure.Installers;
+    using Snittlistan.Web.ViewModels;
+
     /// <summary>
     /// Installs the event store into a Castle Windsor container.
     /// </summary>
