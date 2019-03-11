@@ -390,7 +390,11 @@
     <Content Include="Content\external\bootstrap4\bootstrap.css" />
     <Content Include="Content\external\jquery\jquery-3.3.1.js" />
     <Content Include="Content\external\jquery\jquery-3.3.1.min.js" />
+    <Content Include="Content\external\quill\quill.js" />
+    <Content Include="Content\external\quill\quill.min.js" />
+    <Content Include="Content\external\quill\quill.snow.css" />
     <Content Include="Content\external\waypoints\waypoints-0.0.1.min.js" />
+    <Content Include="Content\js\ActivityEditor.js" />
     <Content Include="Content\js\helpers\typeahead.js" />
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="Areas\V1\Controllers\AccountController.cs" />

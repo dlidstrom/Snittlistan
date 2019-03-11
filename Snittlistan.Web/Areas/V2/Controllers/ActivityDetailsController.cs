@@ -13,7 +13,12 @@
             var activity = DocumentSession.Load<Activity>(id);
             if (activity == null) throw new HttpException(404, "Not found");
             ViewData["showComments"] = true;
-            var player = DocumentSession.Load<Player>(activity.AuthorId);
+            Player player = null;
+            if (activity.AuthorId != null)
+            {
+                player = DocumentSession.Load<Player>(activity.AuthorId);
+            }
+
             return View(new ActivityViewModel(activity.Id, activity.Title, activity.Date, activity.Message, player?.Name ?? string.Empty));
         }
     }

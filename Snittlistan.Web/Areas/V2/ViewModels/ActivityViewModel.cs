@@ -1,6 +1,7 @@
 ﻿namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using System;
+    using System.Web;
 
     public class ActivityViewModel
     {
@@ -14,7 +15,7 @@
             Id = id;
             Title = title;
             ActivityDate = date;
-            Message = message;
+            Message = new HtmlString(message);
             Author = author;
         }
 
@@ -24,7 +25,7 @@
 
         public DateTime ActivityDate { get; }
 
-        public string Message { get; }
+        public IHtmlString Message { get; }
 
         public string Author { get; }
     }
