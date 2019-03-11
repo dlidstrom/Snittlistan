@@ -1,67 +1,69 @@
 ﻿@{
     Layout = "_BareLayout.cshtml";
+    Bundles.Reference("Content/js/Layout.js", "layout");
 }
 
-@* header will be placed here, as first element under body *@
-@* modal dialogs are placed here *@
-<div id="modal-root"></div>
-<div class="navbar">
-    <div class="navbar-inner">
-        <div class="container">
-            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="@Url.RouteUrl("V2_default", new { controller = "Roster", action = "Index" })" class="brand">
-                Snittlistan
-            </a>
-            <div class="nav-collapse" data-nav-collapse>
-                @Html.Action("NavPart", "Layout")
-                <ul class="nav pull-right">
-                    @if (Request.IsAuthenticated)
-                    {
-                        <li class="dropdown">
-                            <button data-auth-menu-toggle class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                <i class="sprite-glyphicons_019_cogwheel"></i>
-                                <b class="caret"></b>
-                            </button>
-                            <ul class="dropdown-menu">
-                                @if (Request.IsAdmin(User))
-                                {
+@section main
+{
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="container">
+                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="@Url.RouteUrl("V2_default", new { controller = "Roster", action = "Index" })" class="brand">
+                    Snittlistan
+                </a>
+                <div class="nav-collapse" data-nav-collapse>
+                    @Html.Action("NavPart", "Layout")
+                    <ul class="nav pull-right">
+                        @if (Request.IsAuthenticated)
+                        {
+                            <li class="dropdown">
+                                <button data-auth-menu-toggle class="btn dropdown-toggle" data-toggle="dropdown">
+                                    <i class="sprite-glyphicons_019_cogwheel"></i>
+                                    <b class="caret"></b>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    @if (Request.IsAdmin(User))
+                                    {
+                                        <li>
+                                            <a href="@Url.Action("Index", "AdminTasks")">
+                                                <i class="sprite-glyphicons_023_cogwheels"></i>
+                                                Administration
+                                            </a>
+                                        </li>
+                                        <li class="divider"></li>
+                                    }
+                                    <li class="nav-header">
+                                        @User.Identity.Name
+                                    </li>
                                     <li>
-                                        <a href="@Url.Action("Index", "AdminTasks")">
-                                            <i class="sprite-glyphicons_023_cogwheels"></i>
-                                            Administration
+                                        <a href="@Url.Action("LogOff", "Authentication")">
+                                            <i class="sprite-glyphicons_203_lock"></i>
+                                            Logga ut
                                         </a>
                                     </li>
-                                    <li class="divider"></li>
-                                }
-                                <li class="nav-header">
-                                    @User.Identity.Name
-                                </li>
-                                <li>
-                                    <a href="@Url.Action("LogOff", "Authentication")">
-                                        <i class="sprite-glyphicons_203_lock"></i>
-                                        Logga ut
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    }
-                    else
-                    {
-                        <li>
-                            <a href="@Url.Action("LogOn", "Authentication")">
-                                <i class="sprite-glyphicons_204_unlock"></i>
-                            </a>
-                        </li>
-                    }
-                </ul>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="@Url.Action("LogOn", "Authentication")">
+                                    <i class="sprite-glyphicons_204_unlock"></i>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div id="main" class="container">
-    @RenderBody()
-</div>
+    <div id="main" class="container">
+        @RenderBody()
+    </div>
+    <script id="dsq-count-scr" src="//snittlistan.disqus.com/count.js" async></script>
+}

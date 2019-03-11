@@ -1,20 +1,25 @@
-﻿@model CreateAbsenceViewModel
-
-@{
-    ViewBag.Title = "Registrera frånvaro";
-}
+﻿@model Snittlistan.Web.Areas.V2.Controllers.AbsenceController.CreateAbsenceViewModel
 
 <div class="row">
-    <div class="span8">
-        <h4>@ViewBag.Title</h4>
-        @using (Html.BeginForm("Create", "Absence", FormMethod.Post, new { @class = "form-horizontal"}))
+    <div class="span12">
+        @using (Html.BeginForm("Create", "Absence", FormMethod.Post, new
         {
+            @class = "form-horizontal"
+        }))
+        {
+            <fieldset>
+                <legend>Registrera frånvaro</legend>
+            </fieldset>
             @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
             @Html.Partial("_AbsenceEditor", Model)
             <div class="form-actions">
                 <button class="btn btn-primary btn-large" type="submit">Spara</button>
-                @Html.ActionLink("Avbryt", "Index", null, new { @class = "btn btn-large" })
+                @Html.ActionLink("Avbryt", "Index", null, new
+                {
+                    @class = "btn btn-large"
+                })
             </div>
         }
     </div>
 </div>
+

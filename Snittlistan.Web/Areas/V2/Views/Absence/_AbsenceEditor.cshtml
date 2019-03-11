@@ -1,29 +1,26 @@
-﻿@model CreateAbsenceViewModel
+﻿@model Snittlistan.Web.Areas.V2.Controllers.AbsenceController.CreateAbsenceViewModel
 
 <div class="control-group">
     <label class="control-label" for="player">Spelare:</label>
     <div class="controls">
-        @Html.DropDownList("Player", null, new { required = "required", id="player" })
+        @Html.DropDownList("Player", null, new { required = "required", id = "player" })
     </div>
 </div>
 <div class="control-group">
-    <label class="control-label" for="from">Från:</label>
+    @Html.LabelFor(x => x.DateRange, new { @class = "control-label" })
     <div class="controls">
-        <input type="date"
-               name="from"
-               id="from"
-               value="@Model.From.ToShortDateString()"
-               required />
-    </div>
-</div>
-<div class="control-group">
-    <label class="control-label" for="to">Till:</label>
-    <div class="controls">
-        <input type="date"
-               name="to"
-               id="to"
-               value="@Model.To.ToShortDateString()"
-               required />
+        @Html.TextBoxFor(
+            x => x.DateRange,
+            new
+            {
+                @class = "date-picker",
+                @readonly = "readonly",
+                required = "required",
+                placeholder = "Välj datum",
+                data_datepicker = "",
+                data_range = "true",
+                data_multiple_dates_separator =" - "
+            })
     </div>
 </div>
 <div class="control-group">

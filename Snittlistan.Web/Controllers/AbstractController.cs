@@ -1,15 +1,16 @@
-﻿using System;
-using System.Diagnostics;
-using System.Web.Mvc;
-using EventStoreLite;
-using Raven.Client;
-using Snittlistan.Queue;
-using Snittlistan.Queue.Messages;
-using Snittlistan.Web.Infrastructure;
-using Snittlistan.Web.Models;
-
-namespace Snittlistan.Web.Controllers
+﻿namespace Snittlistan.Web.Controllers
 {
+    using System;
+    using System.Diagnostics;
+    using System.Web.Mvc;
+    using EventStoreLite;
+    using Raven.Client;
+    using Snittlistan.Queue;
+    using Snittlistan.Queue.Messages;
+    using Snittlistan.Web.Infrastructure;
+    using Snittlistan.Web.Models;
+    using ViewModels;
+
     public abstract class AbstractController : Controller
     {
         public Action<object> PublishMessage;

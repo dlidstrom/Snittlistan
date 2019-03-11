@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Snittlistan.Web.Infrastructure
+﻿namespace Snittlistan.Web.ViewModels
 {
+    using System;
+
     public class TenantConfiguration
     {
         public TenantConfiguration(

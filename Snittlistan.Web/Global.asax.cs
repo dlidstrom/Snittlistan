@@ -29,6 +29,7 @@
     using Snittlistan.Web.Infrastructure.Installers;
     using Snittlistan.Web.Infrastructure.IoC;
     using Snittlistan.Web.Models;
+    using ViewModels;
 
     public class MvcApplication : HttpApplication
     {

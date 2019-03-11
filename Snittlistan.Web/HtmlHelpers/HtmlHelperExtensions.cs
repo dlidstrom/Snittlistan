@@ -1,13 +1,12 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using System.Web;
-using System.Web.Mvc;
-using Raven.Imports.Newtonsoft.Json;
-using Snittlistan.Web.Infrastructure;
-
-namespace Snittlistan.Web.HtmlHelpers
+﻿namespace Snittlistan.Web.HtmlHelpers
 {
+    using System;
+    using System.IO;
+    using System.Text;
+    using System.Web;
+    using System.Web.Mvc;
+    using Raven.Imports.Newtonsoft.Json;
+
     public static class HtmlHelperExtensions
     {
         public static ApplicationMode ApplicationMode(this HtmlHelper helper)
@@ -94,12 +93,6 @@ namespace Snittlistan.Web.HtmlHelpers
         {
             var version = MvcApplication.GetAssemblyVersion();
             return new HtmlString(version);
-        }
-
-        public static TenantConfiguration GetTenantConfiguration(this HtmlHelper helper)
-        {
-            var tenantConfiguration = DependencyResolver.Current.GetService<TenantConfiguration>();
-            return tenantConfiguration;
         }
     }
 }

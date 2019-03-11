@@ -91,7 +91,7 @@ button.btn {
     text-transform: uppercase;
     text-overflow: ellipsis;
     overflow: hidden;
-    max-width: 100%;
+    max-width: ~"calc(100% - 1rem)";
 }
 
 .label-team-a {
@@ -319,11 +319,11 @@ textarea {
     /* reduce width of definition list on iPad */
     .dl-horizontal {
         dt {
-            width: 80px;
+            width: 70px;
         }
 
         dd {
-            margin-left: 90px;
+            margin-left: 80px;
         }
     }
 }
@@ -332,11 +332,11 @@ textarea {
     /* reduce width of definition list on iPad */
     .dl-horizontal {
         dt {
-            width: 120px;
+            width: 100px;
         }
 
         dd {
-            margin-left: 140px;
+            margin-left: 120px;
         }
     }
 }
@@ -409,4 +409,9 @@ textarea {
 .activity-sub-title {
     margin-top: 0;
     font-style: italic;
+}
+
+input[type=text].date-picker {
+    background-color: white;
+    cursor: default;
 }
