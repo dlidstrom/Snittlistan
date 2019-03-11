@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Web;
@@ -21,6 +23,7 @@
 
     public class RosterController : AbstractController
     {
+        private const string DateTimeFormat = "yyyy-MM-dd HH:mm";
         private readonly IBitsClient bitsClient;
 
         public RosterController(IBitsClient bitsClient)
@@ -109,7 +112,7 @@
                     Team = header.Team,
                     IsFourPlayer = false,
                     Opponent = header.Opponent,
-                    Date = header.Date,
+                    Date = header.Date.ToString(DateTimeFormat),
                     Location = header.Location,
                     OilPatternName = header.OilPattern.Name,
                     OilPatternUrl = header.OilPattern.Url
@@ -142,7 +145,7 @@
                 vm.Team.Split(';')[1],
                 vm.Location,
                 vm.Opponent,
-                vm.Date,
+                ParseDate(vm.Date),
                 vm.IsFourPlayer,
                 new OilPatternInformation(vm.OilPatternName, vm.OilPatternUrl));
             DocumentSession.Store(roster);
@@ -187,7 +190,7 @@
             roster.Turn = vm.Turn;
             roster.BitsMatchId = vm.BitsMatchId;
             roster.IsFourPlayer = vm.IsFourPlayer;
-            roster.Date = vm.Date;
+            roster.Date = ParseDate(vm.Date);
             if (vm.BitsMatchId == 0)
             {
                 roster.OilPattern = new OilPatternInformation(vm.OilPatternName, string.Empty);
@@ -519,6 +522,11 @@
             return View("_BitsIframe");
         }
 
+        private static DateTime ParseDate(string date)
+        {
+            return DateTime.ParseExact(date, DateTimeFormat, CultureInfo.InvariantCulture);
+        }
+
         public class InitialDataViewModel
         {
             public InitialDataViewModel(
@@ -598,6 +606,59 @@
 
                 public override DateTime Date => ViewModel.ActivityDate;
             }
+        }
+
+        public class CreateRosterViewModel
+        {
+            public CreateRosterViewModel()
+            {
+                Team = string.Empty;
+                Location = string.Empty;
+                Opponent = string.Empty;
+                Date = SystemTime.UtcNow.ToLocalTime().Date.AddHours(10).ToString(DateTimeFormat);
+            }
+
+            public CreateRosterViewModel(Roster roster)
+            {
+                Season = roster.Season;
+                Turn = roster.Turn;
+                BitsMatchId = roster.BitsMatchId;
+                Team = roster.Team;
+                Location = roster.Location;
+                Opponent = roster.Opponent;
+                Date = roster.Date.ToString(DateTimeFormat);
+                IsFourPlayer = roster.IsFourPlayer;
+                OilPatternName = roster.OilPattern.Name;
+                OilPatternUrl = roster.OilPattern.Url;
+            }
+
+            [Required]
+            public int Season { get; set; }
+
+            [Required]
+            public int Turn { get; set; }
+
+            [Required]
+            public int BitsMatchId { get; set; }
+
+            [Required]
+            public string Team { get; set; }
+
+            [Required]
+            public string Location { get; set; }
+
+            [Required]
+            public string Opponent { get; set; }
+
+            [Required]
+            [Display(Name = "Datum:")]
+            public string Date { get; set; }
+
+            public bool IsFourPlayer { get; set; }
+
+            public string OilPatternName { get; set; }
+
+            public string OilPatternUrl { get; set; }
         }
     }
 }

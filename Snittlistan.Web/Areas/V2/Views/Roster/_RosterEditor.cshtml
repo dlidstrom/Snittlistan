@@ -1,5 +1,9 @@
 ﻿@using Snittlistan.Web.Models
-@model CreateRosterViewModel
+@model Snittlistan.Web.Areas.V2.Controllers.RosterController.CreateRosterViewModel
+
+@{
+    Bundles.Reference("Content/js/helpers/typeahead.js", "page");
+}
 
 <div class="control-group">
     <label class="control-label" for="season">Säsong:</label>
@@ -58,7 +62,7 @@
             @foreach (WebsiteConfig.TeamNameAndLevel nameAndLevel in ViewBag.TeamNamesAndLevels)
             {
                 <option value="@nameAndLevel.FormattedForOption"
-                        @if (nameAndLevel.TeamName == Model.Team) { <text> selected="selected" </text>  }>
+                        @if (nameAndLevel.TeamName == Model.Team) { <text> selected="selected" </text> }>
                     @nameAndLevel.TeamName
                 </option>
             }
@@ -89,13 +93,19 @@
     </div>
 </div>
 <div class="control-group">
-    <label class="control-label" for="date">Datum:</label>
+    @Html.LabelFor(x => x.Date, new { @class = "control-label" })
     <div class="controls">
-        <input type="datetime-local"
-               id="date"
-               name="date"
-               value="@Model.Date.ToString("yyyy-MM-ddTHH:mm:ss")"
-               required />
+        @Html.TextBoxFor(
+            x => x.Date,
+            new
+            {
+                @class = "date-picker",
+                @readonly = "readonly",
+                required = "required",
+                placeholder = "Välj datum",
+                data_datepicker = "",
+                data_timepicker = "true"
+            })
     </div>
 </div>
 <div class="control-group">
@@ -124,10 +134,7 @@
                autocorrect="off"
                autocomplete="off"
                spellcheck="false"
-               @if (Model.BitsMatchId != 0)
-               {
-                   <text>readonly="readonly"</text>
-               }
+               @if (Model.BitsMatchId != 0) { <text> readonly="readonly" </text>  }
                value="@Model.OilPatternName"
                data-enabletypeahead="yes"
                data-url="/search/oilpattern" />
