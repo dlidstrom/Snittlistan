@@ -110,9 +110,11 @@
 
             [Required]
             [MaxLength(1024)]
-            [DataType(DataType.MultilineText)]
             [Display(Name = "Meddelande")]
+            [AllowHtml]
             public string Message { get; set; }
+
+            public IHtmlString MessageDisplay { get; set; }
 
             public static ActivityEditViewModel ForCreate(int season)
             {
@@ -130,7 +132,7 @@
                     Season = activity.Season,
                     Title = activity.Title,
                     Date = activity.Date.ToString(DateTimeFormat),
-                    Message = activity.Message
+                    MessageDisplay = new HtmlString(activity.Message)
                 };
             }
         }

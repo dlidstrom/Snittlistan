@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Web;
     using System.Web.Mvc;
     using Domain;
     using Indexes;
@@ -47,7 +48,7 @@
                 Id = activity.Id;
                 Title = activity.Title;
                 Date = activity.Date;
-                Message = activity.Message;
+                Message = new HtmlString(activity.Message);
             }
 
             public string Id { get; }
@@ -56,7 +57,7 @@
 
             public DateTime Date { get; }
 
-            public string Message { get; }
+            public IHtmlString Message { get; }
         }
     }
 }
