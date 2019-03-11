@@ -91,7 +91,7 @@ button.btn {
     text-transform: uppercase;
     text-overflow: ellipsis;
     overflow: hidden;
-    max-width: 100%;
+    max-width: ~"calc(100% - 1rem)";
 }
 
 .label-team-a {
@@ -314,26 +314,16 @@ textarea {
     table-layout: fixed;
 }
 
-.dl-horizontal {
-    dt {
-        width: 120px;
-    }
-
-    dd {
-        margin-left: 140px;
-    }
-}
-
 /* media queries */
 @media (min-width: 768px) and (max-width: 979px) {
     /* reduce width of definition list on iPad */
     .dl-horizontal {
         dt {
-            width: 80px;
+            width: 70px;
         }
 
         dd {
-            margin-left: 90px;
+            margin-left: 80px;
         }
     }
 }
