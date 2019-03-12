@@ -28,7 +28,7 @@
                 </h5>
                 @if (showViewMoreLink)
                 {
-                    <div class="activity-content-message">@Model.Message</div>
+                    <div class="cropped-message">@Model.Message</div>
                     @Html.ActionLink("Visa mer", "Index", "ActivityDetails", null, null, "disqus_thread", new { Model.Id }, null)
                 }
                 else

@@ -154,7 +154,12 @@
                 viewModel.Model.OpponentScore.Value,
                 roster.Turn,
                 series.ToArray());
-            ExecuteCommand(new RegisterMatch4Command(roster, parse4Result, viewModel.Model.Commentary));
+            ExecuteCommand(
+                new RegisterMatch4Command(
+                    roster,
+                    parse4Result,
+                    viewModel.Model.Commentary,
+                    viewModel.Model.CommentaryHtml));
 
             return RedirectToAction(
                 "Details",
@@ -200,8 +205,14 @@
                 }
 
                 [MaxLength(1024)]
-                [Display(Name = "Matchreferat")]
                 public string Commentary { get; set; }
+
+                [MaxLength(1024)]
+                [Display(Name = "Matchreferat")]
+                [AllowHtml]
+                public string CommentaryHtml { get; set; }
+
+                public IHtmlString CommentaryDisplay { get; set; }
 
                 [Required]
                 [Range(0, 20)]

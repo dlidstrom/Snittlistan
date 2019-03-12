@@ -1,10 +1,10 @@
-using System;
-using System.Web;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.ReadModels;
-
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
+    using System;
+    using System.Web;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+
     public class ResultHeaderViewModel
     {
         public ResultHeaderViewModel(ResultHeaderReadModel readModel, Roster roster)
@@ -19,7 +19,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             BitsMatchId = roster.BitsMatchId;
             FormattedResult = new HtmlString($"{readModel.TeamScore}&minus;{readModel.OpponentScore}");
             Location = roster.Location;
-            MatchCommentary = readModel.MatchCommentary;
+            MatchCommentaryHtml = new HtmlString(readModel.MatchCommentaryHtml);
             BodyText = readModel.BodyText;
         }
 
@@ -39,11 +39,11 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public int BitsMatchId { get; }
 
-        public HtmlString FormattedResult { get; }
+        public IHtmlString FormattedResult { get; }
 
         public string Location { get; }
 
-        public string MatchCommentary { get; }
+        public IHtmlString MatchCommentaryHtml { get; }
 
         public string[] BodyText { get; }
     }

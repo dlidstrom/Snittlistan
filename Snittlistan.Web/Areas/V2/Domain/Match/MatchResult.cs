@@ -1,18 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using EventStoreLite;
-using JetBrains.Annotations;
-using Newtonsoft.Json;
-using Raven.Abstractions;
-using Snittlistan.Queue.Messages;
-using Snittlistan.Web.Areas.V2.Domain.Match.Commentary;
-using Snittlistan.Web.Areas.V2.Domain.Match.Events;
-using Snittlistan.Web.Areas.V2.Indexes;
-using Snittlistan.Web.Areas.V2.ReadModels;
-
 namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using EventStoreLite;
+    using JetBrains.Annotations;
+    using Newtonsoft.Json;
+    using Raven.Abstractions;
+    using Snittlistan.Queue.Messages;
+    using Snittlistan.Web.Areas.V2.Domain.Match.Commentary;
+    using Snittlistan.Web.Areas.V2.Domain.Match.Events;
+    using Snittlistan.Web.Areas.V2.Indexes;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+
     public class MatchResult : AggregateRoot
     {
         private Dictionary<string, List<PinsAndScoreResult>> playerPins;
@@ -252,7 +252,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             var commentaryAnalyzer = new MatchAnalyzer(matchSeries, opponentSeries, players);
             var summaryText = commentaryAnalyzer.GetSummaryText();
             var bodyText = commentaryAnalyzer.GetBodyText(resultsForPlayer);
-            return new MatchCommentaryEvent(BitsMatchId, RosterId, summaryText, bodyText);
+            return new MatchCommentaryEvent(BitsMatchId, RosterId, summaryText, summaryText, bodyText);
         }
 
         // events
