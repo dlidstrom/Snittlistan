@@ -88,10 +88,7 @@
                             <td>
                                 @if (++index == 8)
                                 {
-                                    @:@string.Format(
-                                          "{0} = {1}",
-                                          result.PinsAndSeries,
-                                          week.Top8)
+                                    @($"{result.PinsAndSeries} = {week.Top8}")
                                 }
                                 else
                                 {

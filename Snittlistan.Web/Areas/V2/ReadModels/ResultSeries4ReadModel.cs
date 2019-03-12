@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using EventStoreLite;
-using Raven.Imports.Newtonsoft.Json;
-
-namespace Snittlistan.Web.Areas.V2.ReadModels
+﻿namespace Snittlistan.Web.Areas.V2.ReadModels
 {
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using EventStoreLite;
+    using Raven.Imports.Newtonsoft.Json;
+
     public class ResultSeries4ReadModel : IReadModel
     {
         public ResultSeries4ReadModel()

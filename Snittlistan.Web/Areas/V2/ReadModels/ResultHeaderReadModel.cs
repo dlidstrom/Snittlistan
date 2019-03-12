@@ -1,9 +1,9 @@
-﻿using EventStoreLite;
-using Raven.Imports.Newtonsoft.Json;
-using Snittlistan.Web.Areas.V2.Domain;
-
-namespace Snittlistan.Web.Areas.V2.ReadModels
+﻿namespace Snittlistan.Web.Areas.V2.ReadModels
 {
+    using EventStoreLite;
+    using Raven.Imports.Newtonsoft.Json;
+    using Snittlistan.Web.Areas.V2.Domain;
+
     public class ResultHeaderReadModel : IReadModel
     {
         public ResultHeaderReadModel(
@@ -42,6 +42,8 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
         public string MatchCommentary { get; private set; }
 
+        public string MatchCommentaryHtml { get; private set; }
+
         public string[] BodyText { get; private set; }
 
         public static string IdFromBitsMatchId(int bitsMatchId, string rosterId)
@@ -60,9 +62,13 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             OpponentScore = opponentScore;
         }
 
-        public void SetMatchCommentary(string matchCommentary, string[] bodyText)
+        public void SetMatchCommentary(
+            string matchCommentary,
+            string matchCommentaryHtml,
+            string[] bodyText)
         {
             MatchCommentary = matchCommentary;
+            MatchCommentaryHtml = matchCommentaryHtml;
             BodyText = bodyText;
         }
     }

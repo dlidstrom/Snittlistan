@@ -618,6 +618,7 @@
     <Content Include="Content\js\knockout-1.3.0beta.js" />
     <Content Include="Content\js\knockout-2.0.0.js" />
     <Content Include="Content\js\Layout.js" />
+    <Content Include="Content\js\Match4PostModel.js" />
     <Content Include="Content\js\sortable.js" />
     <Content Include="Content\js\stacktrace.js" />
     <Content Include="Content\js\team4x4.js" />

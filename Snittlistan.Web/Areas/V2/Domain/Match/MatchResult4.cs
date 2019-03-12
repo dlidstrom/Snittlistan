@@ -1,16 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using EventStoreLite;
-using JetBrains.Annotations;
-using Newtonsoft.Json;
-using Raven.Abstractions;
-using Snittlistan.Queue.Messages;
-using Snittlistan.Web.Areas.V2.Domain.Match.Events;
-
 namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using Commentary;
+    using EventStoreLite;
+    using JetBrains.Annotations;
+    using Newtonsoft.Json;
+    using Raven.Abstractions;
+    using Snittlistan.Queue.Messages;
+    using Snittlistan.Web.Areas.V2.Domain.Match.Events;
 
     public class MatchResult4 : AggregateRoot
     {
@@ -89,7 +88,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                     bitsMatchId,
                     playerPins.Keys.AsEnumerable().ToArray());
                 ApplyChange(@event);
-                RegisterSeries(publish, matchSeries, players, null);
+                RegisterSeries(publish, matchSeries, players, null, null);
             }
 
             return roster.Date.AddDays(5) < SystemTime.UtcNow;
@@ -110,7 +109,8 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             Action<object> publish,
             MatchSerie4[] matchSeries,
             Player[] players,
-            string summaryText)
+            string summaryText,
+            string summaryHtml)
         {
             if (rosterPlayers.Count != 4 && rosterPlayers.Count != 5)
                 throw new MatchException("Roster must have 4 or 5 players when registering results");
@@ -126,11 +126,23 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             var bodyText = analyzer.GetBodyText();
             if (string.IsNullOrWhiteSpace(summaryText))
             {
-                ApplyChange(new MatchCommentaryEvent(BitsMatchId, RosterId, bodyText, new string[0]));
+                ApplyChange(
+                    new MatchCommentaryEvent(
+                        BitsMatchId,
+                        RosterId,
+                        bodyText,
+                        bodyText,
+                        new string[0]));
             }
             else
             {
-                ApplyChange(new MatchCommentaryEvent(BitsMatchId, RosterId, summaryText, new[] { bodyText }));
+                ApplyChange(
+                    new MatchCommentaryEvent(
+                        BitsMatchId,
+                        RosterId,
+                        summaryText,
+                        summaryHtml,
+                        new[] { bodyText }));
             }
 
             publish.Invoke(new MatchRegisteredEvent(RosterId, TeamScore, OpponentScore));

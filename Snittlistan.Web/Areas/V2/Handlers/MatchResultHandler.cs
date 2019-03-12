@@ -1,12 +1,12 @@
-﻿using System.Web;
-using EventStoreLite;
-using Raven.Client;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.Domain.Match.Events;
-using Snittlistan.Web.Areas.V2.ReadModels;
-
-namespace Snittlistan.Web.Areas.V2.Handlers
+﻿namespace Snittlistan.Web.Areas.V2.Handlers
 {
+    using System.Web;
+    using EventStoreLite;
+    using Raven.Client;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.Domain.Match.Events;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+
     public class MatchResultHandler :
         IEventHandler<MatchResultRegistered>,
         IEventHandler<MatchResult4Registered>,
@@ -28,7 +28,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
         {
             var id = ResultHeaderReadModel.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
             var results = DocumentSession.Load<ResultHeaderReadModel>(id);
-            results.SetMatchCommentary(e.SummaryText, e.BodyText);
+            results.SetMatchCommentary(e.SummaryText, e.SummaryHtml, e.BodyText);
         }
 
         private void DoRegister(string aggregateId, string rosterId, int teamScore, int opponentScore)

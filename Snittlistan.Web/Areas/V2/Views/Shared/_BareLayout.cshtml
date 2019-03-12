@@ -2,14 +2,14 @@
     ViewBag.Title = "Snittlistan";
     Bundles.Reference("Content/css/main.less", "local");
     Bundles.Reference("Content/css/glyphicons.css");
-    Bundles.Reference("Content/external/jquery/jquery-3.3.1.js");
-    Bundles.Reference("Content/external/bootstrap/js/bootstrap.js");
+    Bundles.Reference("Content/external/jquery/jquery-3.3.1.js", "base");
+    Bundles.Reference("Content/external/bootstrap/js/bootstrap.js", "base");
     Bundles.Reference("Content/external/bootstrap/css/bootstrap.css");
     Bundles.Reference("Content/external/bootstrap/css/bootstrap-responsive.css");
-    Bundles.Reference("Content/external/waypoints/waypoints-0.0.1.min.js");
-    Bundles.Reference("Content/external/air-datepicker/datepicker.js");
+    Bundles.Reference("Content/external/waypoints/waypoints-0.0.1.min.js", "base");
+    Bundles.Reference("Content/external/air-datepicker/datepicker.js", "base");
     Bundles.Reference("Content/external/air-datepicker/datepicker.css");
-    Bundles.Reference("Content/external/quill/quill.js");
+    Bundles.Reference("Content/external/quill/quill.js", "base");
     Bundles.Reference("Content/external/quill/quill.snow.css");
 }<!DOCTYPE html>
 <html lang="se">
@@ -36,8 +36,8 @@
 </head>
 <body>
     @RenderSection("main")
-    @Bundles.RenderScripts()
+    @Bundles.RenderScripts("base")
     @Bundles.RenderScripts("layout")
-    @Bundles.RenderScripts("page")
+    @Bundles.RenderScripts()
 </body>
 </html>
