@@ -1,14 +1,14 @@
-﻿using System;
-using System.ComponentModel.Composition.Hosting;
-using System.Linq;
-using System.Reflection;
-using EventStoreLite;
-using NLog;
-using Raven.Client;
-using Raven.Client.Indexes;
-
-namespace Snittlistan.Web.Infrastructure.Indexes
+﻿namespace Snittlistan.Web.Infrastructure.Indexes
 {
+    using System;
+    using System.ComponentModel.Composition.Hosting;
+    using System.Linq;
+    using System.Reflection;
+    using EventStoreLite;
+    using NLog;
+    using Raven.Client;
+    using Raven.Client.Indexes;
+
     public static class IndexCreator
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();

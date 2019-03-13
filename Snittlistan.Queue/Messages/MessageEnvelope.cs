@@ -1,8 +1,8 @@
-﻿using System;
-using Newtonsoft.Json;
-
-namespace Snittlistan.Queue.Messages
+﻿namespace Snittlistan.Queue.Messages
 {
+    using System;
+    using Newtonsoft.Json;
+
     public class MessageEnvelope
     {
         public MessageEnvelope(object payload, Uri uri)

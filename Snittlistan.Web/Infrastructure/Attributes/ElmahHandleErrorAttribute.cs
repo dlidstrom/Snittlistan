@@ -1,10 +1,10 @@
-﻿using System;
-using System.Web;
-using System.Web.Mvc;
-using Elmah;
-
-namespace Snittlistan.Web.Infrastructure.Attributes
+﻿namespace Snittlistan.Web.Infrastructure.Attributes
 {
+    using System;
+    using System.Web;
+    using System.Web.Mvc;
+    using Elmah;
+
     public class ElmahHandleErrorAttribute : HandleErrorAttribute
     {
         public override void OnException(ExceptionContext context)

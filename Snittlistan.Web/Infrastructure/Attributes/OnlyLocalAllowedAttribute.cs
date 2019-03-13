@@ -1,10 +1,10 @@
-﻿using System.Net;
-using System.Net.Http;
-using System.Web.Http.Controllers;
-using System.Web.Http.Filters;
-
-namespace Snittlistan.Web.Infrastructure.Attributes
+﻿namespace Snittlistan.Web.Infrastructure.Attributes
 {
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http.Controllers;
+    using System.Web.Http.Filters;
+
     public class OnlyLocalAllowedAttribute : ActionFilterAttribute
     {
         // ReSharper disable once UnassignedField.Global

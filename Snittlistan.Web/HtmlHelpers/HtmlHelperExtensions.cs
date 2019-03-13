@@ -14,7 +14,7 @@
             return MvcApplication.Mode;
         }
 
-        public static HtmlString ToJson<T>(this HtmlHelper helper, T obj)
+        public static HtmlString ToJson<T>(this T obj)
         {
             var serializer = new JsonSerializer { Formatting = Formatting.Indented };
             var builder = new StringBuilder();

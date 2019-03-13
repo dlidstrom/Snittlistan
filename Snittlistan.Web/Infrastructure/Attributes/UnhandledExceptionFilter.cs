@@ -1,7 +1,7 @@
-using System.Web.Http.Filters;
-
 namespace Snittlistan.Web.Infrastructure.Attributes
 {
+    using System.Web.Http.Filters;
+
     public class UnhandledExceptionFilter : ExceptionFilterAttribute
     {
         public override void OnException(HttpActionExecutedContext actionExecutedContext)

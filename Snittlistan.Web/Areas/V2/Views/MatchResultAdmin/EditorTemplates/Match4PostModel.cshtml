@@ -1,6 +1,5 @@
 ﻿@model Snittlistan.Web.Areas.V2.Controllers.MatchResultAdminController.RegisterMatch4ViewModel.PostModel
 @{
-    Bundles.Reference("Content/js/Match4PostModel.js");
     var playerListItems = (SelectListItem[])ViewData["playerListItems"];
 }
 
@@ -59,15 +58,15 @@
         <div class="control-group">
             <div class="controls">
                 @Html.LabelFor(
-                    x => x.Commentary,
+                    x => x.CommentaryDisplay,
                     new
                     {
                         @class = "control-label"
                     })
-                @Html.HiddenFor(x => x.Commentary)
-                @Html.HiddenFor(x => x.CommentaryHtml)
                 <div data-quill>@Model.CommentaryDisplay</div>
             </div>
+            @Html.HiddenFor(x => x.Commentary)
+            @Html.HiddenFor(x => x.CommentaryHtml)
         </div>
     </div>
 </div>

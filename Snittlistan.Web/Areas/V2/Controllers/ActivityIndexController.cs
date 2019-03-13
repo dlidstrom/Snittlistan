@@ -48,7 +48,7 @@
                 Id = activity.Id;
                 Title = activity.Title;
                 Date = activity.Date;
-                Message = new HtmlString(activity.Message);
+                MessageHtml = new HtmlString(activity.MessageHtml);
             }
 
             public string Id { get; }
@@ -57,7 +57,7 @@
 
             public DateTime Date { get; }
 
-            public IHtmlString Message { get; }
+            public IHtmlString MessageHtml { get; }
         }
     }
 }
