@@ -1,9 +1,8 @@
-using Snittlistan.Web.Areas.V2.Domain;
-
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Snittlistan.Web.Areas.V2.Domain;
 
     public class PlayerViewModel
     {

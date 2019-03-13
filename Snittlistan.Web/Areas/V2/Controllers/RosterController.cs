@@ -66,7 +66,7 @@
                                .Where(x => x.Season == season.Value)
                                .ToArray()
                                .Where(x => selectAll || x.Date >= SystemTime.UtcNow.Date.AddDays(-7))
-                               .Select(x => new InitialDataViewModel.ScheduledActivityItem(x.Id, x.Title, x.Date, x.Message, string.IsNullOrEmpty(x.AuthorId) == false ? DocumentSession.Load<Player>(x.AuthorId)?.Name ?? string.Empty : string.Empty));
+                               .Select(x => new InitialDataViewModel.ScheduledActivityItem(x.Id, x.Title, x.Date, x.MessageHtml, string.IsNullOrEmpty(x.AuthorId) == false ? DocumentSession.Load<Player>(x.AuthorId)?.Name ?? string.Empty : string.Empty));
             var isFiltered = rosters.Count != turns.Sum(x => x.Rosters.Length);
             var vm = new InitialDataViewModel(turns.Concat(activities).OrderBy(x => x.Date).ToArray(), season.Value, isFiltered);
 
@@ -591,10 +591,10 @@
                     string id,
                     string title,
                     DateTime date,
-                    string message,
+                    string messageHtml,
                     string author)
                 {
-                    ViewModel = new ActivityViewModel(id, title, date, message, author);
+                    ViewModel = new ActivityViewModel(id, title, date, messageHtml, author);
                 }
 
                 public ActivityViewModel ViewModel { get; }

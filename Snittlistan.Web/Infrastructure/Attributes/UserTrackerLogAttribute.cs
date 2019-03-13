@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Web;
-using System.Web.Mvc;
-using NLog;
-
-namespace Snittlistan.Web.Infrastructure.Attributes
+﻿namespace Snittlistan.Web.Infrastructure.Attributes
 {
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Text;
+    using System.Web;
+    using System.Web.Mvc;
+    using NLog;
+
     public class UserTrackerLogAttribute : ActionFilterAttribute
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();

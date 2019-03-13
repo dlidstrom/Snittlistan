@@ -2,10 +2,19 @@
 
 <div class="row">
     <div class="span12">
-        @using (Html.BeginForm("Edit", "ActivityEdit", FormMethod.Post, new
-        {
-            @class = "form-horizontal"
-        }))
+        @using (
+            Html.BeginForm(
+                "Edit",
+                "ActivityEdit",
+                FormMethod.Post,
+                new
+                {
+                    @class = "form-horizontal quill-form",
+                    data_quill_data = new QuillData(
+                        Html.NameFor(x => x.MessageHtml).ToString(),
+                        Html.NameFor(x => x.Message).ToString(),
+                        "Beskriv aktiviteten...").ToJson()
+                }))
         {
             <fieldset>
                 <legend>Redigera aktivitet</legend>

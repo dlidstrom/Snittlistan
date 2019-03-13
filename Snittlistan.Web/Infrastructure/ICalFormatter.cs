@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
-using System.Net.Http.Formatting;
-using System.Net.Http.Headers;
-using Snittlistan.Web.Areas.V2.ViewModels;
-
-namespace Snittlistan.Web.Infrastructure
+﻿namespace Snittlistan.Web.Infrastructure
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net.Http;
+    using System.Net.Http.Formatting;
+    using System.Net.Http.Headers;
+    using Snittlistan.Web.Areas.V2.ViewModels;
+
     // ReSharper disable once InconsistentNaming
     public class ICalFormatter
         : BufferedMediaTypeFormatter
@@ -24,12 +24,12 @@ namespace Snittlistan.Web.Infrastructure
 
         public override bool CanWriteType(Type type)
         {
-            if (type == typeof(RosterCalendarEvent))
+            if (type == typeof(CalendarEvent))
             {
                 return true;
             }
 
-            var enumerableType = typeof(IEnumerable<RosterCalendarEvent>);
+            var enumerableType = typeof(IEnumerable<CalendarEvent>);
             return enumerableType.IsAssignableFrom(type);
         }
 
@@ -55,47 +55,27 @@ namespace Snittlistan.Web.Infrastructure
                 writer.WriteLine("VERSION:2.0");
                 writer.WriteLine("X-PUBLISHED-TTL:PT1H");
                 writer.WriteLine("X-WR-CALNAME:Snittlistan");
-                if (value is IEnumerable<RosterCalendarEvent> rosters)
+                if (value is IEnumerable<CalendarEvent> rosters)
                 {
                     foreach (var roster in rosters)
                     {
-                        WriteRoster(roster, writer);
+                        roster.Write(writer);
                     }
                 }
                 else
                 {
-                    if (!(value is RosterCalendarEvent roster))
+                    if (!(value is CalendarEvent roster))
                     {
                         throw new InvalidOperationException("Cannot serialize type");
                     }
 
-                    WriteRoster(roster, writer);
+                    roster.Write(writer);
                 }
 
                 writer.WriteLine("END:VCALENDAR");
             }
 
             writeStream.Close();
-        }
-
-        private static void WriteRoster(RosterCalendarEvent roster, TextWriter writer)
-        {
-            writer.WriteLine("BEGIN:VEVENT");
-            writer.WriteLine("UID:" + roster.Id);
-            writer.WriteLine("DTSTAMP:" + $"{DateTime.UtcNow:yyyyMMddTHHmmssZ}");
-            writer.WriteLine("DTSTART:" + $"{roster.Date.ToUniversalTime():yyyyMMddTHHmmssZ}");
-            writer.WriteLine("DTEND:" + $"{roster.Date.ToUniversalTime().AddMinutes(60 + 40):yyyyMMddTHHmmssZ}");
-            writer.WriteLine("SUMMARY:{0} - {1}", roster.Team, roster.Opponent);
-            var description = $"DESCRIPTION:{roster.Description}";
-            writer.WriteLine(description.Substring(0, Math.Min(description.Length, 74)));
-            while (description.Length > 74)
-            {
-                description = description.Substring(74);
-                writer.WriteLine(" " + description.Substring(0, Math.Min(description.Length, 74)));
-            }
-
-            writer.WriteLine("LOCATION:{0}", roster.Location);
-            writer.WriteLine("END:VEVENT");
         }
     }
 }

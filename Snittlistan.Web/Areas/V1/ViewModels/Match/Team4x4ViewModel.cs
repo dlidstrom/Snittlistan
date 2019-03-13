@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Snittlistan.Web.Infrastructure.Validation;
-
-namespace Snittlistan.Web.Areas.V1.ViewModels.Match
+﻿namespace Snittlistan.Web.Areas.V1.ViewModels.Match
 {
+    using System.ComponentModel.DataAnnotations;
+    using Snittlistan.Web.Infrastructure.Validation;
+
     /// <summary>
     /// Represents a team.
     /// </summary>

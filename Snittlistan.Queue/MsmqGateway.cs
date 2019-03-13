@@ -1,11 +1,11 @@
-﻿using System;
-using System.Messaging;
-using System.Reflection;
-using log4net;
-using Snittlistan.Queue.Messages;
-
-namespace Snittlistan.Queue
+﻿namespace Snittlistan.Queue
 {
+    using System;
+    using System.Messaging;
+    using System.Reflection;
+    using log4net;
+    using Snittlistan.Queue.Messages;
+
     public static class MsmqGateway
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);

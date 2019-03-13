@@ -1,18 +1,18 @@
-﻿using System.Diagnostics;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using EventStoreLite;
-using Snittlistan.Queue.Messages;
-using Snittlistan.Web.Areas.V2.Migration;
-using Snittlistan.Web.Areas.V2.ViewModels;
-using Snittlistan.Web.Controllers;
-using Snittlistan.Web.Helpers;
-using Snittlistan.Web.Infrastructure.Indexes;
-using Snittlistan.Web.Models;
-
-namespace Snittlistan.Web.Areas.V2.Controllers
+﻿namespace Snittlistan.Web.Areas.V2.Controllers
 {
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Mvc;
+    using EventStoreLite;
+    using Snittlistan.Queue.Messages;
+    using Snittlistan.Web.Areas.V2.Migration;
+    using Snittlistan.Web.Areas.V2.ViewModels;
+    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Helpers;
+    using Snittlistan.Web.Infrastructure.Indexes;
+    using Snittlistan.Web.Models;
+
     public class AdminTasksController : AdminController
     {
         public ActionResult Index()

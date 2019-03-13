@@ -40,6 +40,7 @@
                     vm.Title,
                     ParseDate(vm.Date),
                     vm.Message,
+                    vm.MessageHtml,
                     User.CustomIdentity.PlayerId);
             DocumentSession.Store(activity);
 
@@ -66,6 +67,7 @@
                 vm.Title,
                 ParseDate(vm.Date),
                 vm.Message,
+                vm.MessageHtml,
                 User.CustomIdentity.PlayerId);
             return RedirectToAction("Index", "ActivityIndex");
         }
@@ -109,11 +111,15 @@
             public string Date { get; set; }
 
             [Required]
-            [MaxLength(1024)]
-            [Display(Name = "Meddelande")]
-            [AllowHtml]
+            [MaxLength(10*1024)]
             public string Message { get; set; }
 
+            [Required]
+            [MaxLength(10*1024)]
+            [AllowHtml]
+            public string MessageHtml { get; set; }
+
+            [Display(Name = "Meddelande")]
             public IHtmlString MessageDisplay { get; set; }
 
             public static ActivityEditViewModel ForCreate(int season)
@@ -132,7 +138,7 @@
                     Season = activity.Season,
                     Title = activity.Title,
                     Date = activity.Date.ToString(DateTimeFormat),
-                    MessageDisplay = new HtmlString(activity.Message)
+                    MessageDisplay = new HtmlString(activity.MessageHtml)
                 };
             }
         }

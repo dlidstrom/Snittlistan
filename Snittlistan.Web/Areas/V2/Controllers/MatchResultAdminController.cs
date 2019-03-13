@@ -208,10 +208,10 @@
                 public string Commentary { get; set; }
 
                 [MaxLength(1024)]
-                [Display(Name = "Matchreferat")]
                 [AllowHtml]
                 public string CommentaryHtml { get; set; }
 
+                [Display(Name = "Matchreferat")]
                 public IHtmlString CommentaryDisplay { get; set; }
 
                 [Required]

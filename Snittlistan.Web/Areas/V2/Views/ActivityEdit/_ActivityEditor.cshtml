@@ -1,9 +1,5 @@
 ﻿@model Snittlistan.Web.Areas.V2.Controllers.ActivityEditController.ActivityEditViewModel
 
-@{
-    Bundles.Reference("Content/js/ActivityEditor.js");
-}
-
 <div class="control-group">
     <label class="control-label" for="season">Säsong:</label>
     <div class="controls">
@@ -44,11 +40,12 @@
     </div>
 </div>
 <div class="control-group">
-    @Html.LabelFor(x => x.Message, new { @class = "control-label" })
+    @Html.LabelFor(x => x.MessageDisplay, new { @class = "control-label" })
     <div class="controls">
-        @Html.HiddenFor(x => x.Message)
         <div data-quill>
             @Model.MessageDisplay
         </div>
+        @Html.HiddenFor(x => x.Message)
+        @Html.HiddenFor(x => x.MessageHtml)
     </div>
 </div>

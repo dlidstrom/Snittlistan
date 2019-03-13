@@ -2,7 +2,18 @@
 <div class="well well-small">
     @Html.DisplayFor(x => x.RosterViewModel.Header)
 </div>
-@using (Html.BeginForm("RegisterMatch4Editor", "MatchResultAdmin", FormMethod.Post))
+@using (Html.BeginForm(
+    "RegisterMatch4Editor",
+    "MatchResultAdmin",
+    FormMethod.Post,
+    new
+    {
+        @class = " quill-form",
+        data_quill_data = new QuillData(
+            Html.NameFor(x => x.Model.CommentaryHtml).ToString(),
+            Html.NameFor(x => x.Model.Commentary).ToString(),
+            "Skriv ett matchreferat...").ToJson()
+    }))
 {
     @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
     @Html.EditorFor(x => x.Model, "Match4PostModel", new { Model.PlayerListItems })

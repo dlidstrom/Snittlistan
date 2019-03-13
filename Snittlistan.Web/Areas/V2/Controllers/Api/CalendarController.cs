@@ -19,6 +19,7 @@
         {
             var season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
 
+            // rosters
             var rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
                                          .Where(r => r.Season == season)
                                          .ToArray();
@@ -26,12 +27,23 @@
             var results = DocumentSession.Load<ResultHeaderReadModel>(resultIds);
             var resultsDictionary = results.Where(x => x != null)
                                            .ToDictionary(x => x.Id);
-            var calendarEvents = new List<RosterCalendarEvent>();
+            var calendarEvents = new List<CalendarEvent>();
             foreach (var roster in rosters)
             {
                 resultsDictionary.TryGetValue(ResultHeaderReadModel.IdFromBitsMatchId(roster.BitsMatchId, roster.Id), out var resultHeaderReadModel);
                 var rosterCalendarEvent = new RosterCalendarEvent(roster, resultHeaderReadModel);
                 calendarEvents.Add(rosterCalendarEvent);
+            }
+
+            // activities
+            var activities = DocumentSession.Query<Activity, ActivityIndex>()
+                                            .Where(x => x.Season == season)
+                                            .ToArray();
+
+            foreach (var activity in activities)
+            {
+                var activityCalendarEvent = new ActivityCalendarEvent(activity);
+                calendarEvents.Add(activityCalendarEvent);
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, calendarEvents.ToArray(), new MediaTypeHeaderValue("text/iCal"));

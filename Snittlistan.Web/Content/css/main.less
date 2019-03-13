@@ -24,6 +24,14 @@
     margin-right: auto;
 }
 
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
 .navbar .brand {
     font-weight: bold;
     text-shadow: 0 1px 0 rgba(255, 255, 0, 0.1), rgba(255, 255, 0, .125) 0 0 30px;
@@ -370,8 +378,7 @@ textarea {
     }
 }
 
-.cropped-message {
-    /*white-space: pre-line;*/
+.cropped-message (@toColor) {
     max-height: 8rem;
     position: relative;
     overflow: hidden;
@@ -383,8 +390,16 @@ textarea {
         position: absolute;
         left: 0;
         top: 0;
-        background: linear-gradient(transparent 5rem, #f5f5f5);
+        background: linear-gradient(transparent 5rem, @toColor);
     }
+}
+
+.cropped-message-well {
+    .cropped-message(#f5f5f5);
+}
+
+.cropped-message-free {
+    .cropped-message(white);
 }
 
 .print-links-container {
@@ -419,4 +434,8 @@ textarea {
 input[type=text].date-picker {
     background-color: white;
     cursor: default;
+}
+
+.quill-form {
+    visibility: hidden;
 }
