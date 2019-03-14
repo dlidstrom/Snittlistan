@@ -5,6 +5,7 @@
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
+    using Infrastructure;
     using Raven.Abstractions;
     using Snittlistan.Web.Areas.V2.Domain;
     using Snittlistan.Web.Areas.V2.Indexes;

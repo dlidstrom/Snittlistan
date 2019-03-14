@@ -6,7 +6,6 @@
     using System.Net.Http;
     using System.Net.Http.Formatting;
     using System.Net.Http.Headers;
-    using Snittlistan.Web.Areas.V2.ViewModels;
 
     // ReSharper disable once InconsistentNaming
     public class ICalFormatter
@@ -55,21 +54,21 @@
                 writer.WriteLine("VERSION:2.0");
                 writer.WriteLine("X-PUBLISHED-TTL:PT1H");
                 writer.WriteLine("X-WR-CALNAME:Snittlistan");
-                if (value is IEnumerable<CalendarEvent> rosters)
+                if (value is IEnumerable<CalendarEvent> calendarEvents)
                 {
-                    foreach (var roster in rosters)
+                    foreach (var calendarEvent in calendarEvents)
                     {
-                        roster.Write(writer);
+                        calendarEvent.Write(writer);
                     }
                 }
                 else
                 {
-                    if (!(value is CalendarEvent roster))
+                    if (!(value is CalendarEvent calendarEvent))
                     {
                         throw new InvalidOperationException("Cannot serialize type");
                     }
 
-                    roster.Write(writer);
+                    calendarEvent.Write(writer);
                 }
 
                 writer.WriteLine("END:VCALENDAR");
