@@ -238,7 +238,9 @@
     <Compile Include="Areas\V2\Handlers\SeasonResultsHandler.cs" />
     <Compile Include="Areas\V2\Migration\IEventMigratorWithResults.cs" />
     <Compile Include="Areas\V2\ReadModels\SeasonResults.cs" />
+    <Compile Include="Areas\V2\ViewModels\ActivityCalendarEvent.cs" />
     <Compile Include="Areas\V2\ViewModels\ActivityViewModel.cs" />
+    <Compile Include="Infrastructure\CalendarEvent.cs" />
     <Compile Include="Areas\V2\WebsiteRoles.cs" />
     <Compile Include="Areas\V2\ViewModels\EditMedalsPostModel.cs" />
     <Compile Include="Areas\V2\ViewModels\EditMedalsViewModel.cs" />
