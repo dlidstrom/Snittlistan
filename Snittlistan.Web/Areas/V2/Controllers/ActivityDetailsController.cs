@@ -19,7 +19,14 @@
                 player = DocumentSession.Load<Player>(activity.AuthorId);
             }
 
-            return View(new ActivityViewModel(activity.Id, activity.Title, activity.Date, activity.Message, player?.Name ?? string.Empty));
+            var activityViewModel =
+                new ActivityViewModel(
+                    activity.Id,
+                    activity.Title,
+                    activity.Date,
+                    activity.MessageHtml,
+                    player?.Name ?? string.Empty);
+            return View(activityViewModel);
         }
     }
 }
