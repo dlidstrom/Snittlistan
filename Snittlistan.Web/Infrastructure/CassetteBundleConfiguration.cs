@@ -2,6 +2,7 @@ namespace Snittlistan.Web.Infrastructure
 {
     using System.IO;
     using Cassette;
+    using Cassette.BundleProcessing;
     using Cassette.Scripts;
     using Cassette.Stylesheets;
 
@@ -20,9 +21,19 @@ namespace Snittlistan.Web.Infrastructure
             // bundles.AddPerIndividualFile<StylesheetBundle>("Content");
             // bundles.AddPerIndividualFile<ScriptBundle>("Scripts");
             bundles.AddPerIndividualFile<StylesheetBundle>("Content/css");
+
+            // these files are using newer JS syntax that the minifier doesn't support
             bundles.AddPerIndividualFile<ScriptBundle>(
                 "Content/js",
-                new FileSearch { SearchOption = SearchOption.TopDirectoryOnly });
+                new FileSearch { SearchOption = SearchOption.TopDirectoryOnly },
+                x =>
+                {
+                    var i = x.Pipeline.IndexOf<MinifyAssets>();
+                    if (i >= 0)
+                    {
+                        x.Pipeline.RemoveAt(i);
+                    }
+                });
             bundles.AddPerIndividualFile<ScriptBundle>("Content/js/helpers");
             bundles.AddPerIndividualFile<ScriptBundle>("Content/external");
             bundles.AddPerIndividualFile<StylesheetBundle>("Content/external");
