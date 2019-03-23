@@ -6,7 +6,7 @@
         [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
         ['clean']                                         // remove formatting button
     ];
-    $('form[data-quill-data]').each(function (i, e) {
+    $('form[data-quill-data]').each(function (_, e) {
         var $e = $(e);
         var quillData = $e.data('quill-data');
         var options = {
@@ -27,10 +27,10 @@
         });
 
         function onSubmit() {
-            var commentaryHtml = document.querySelector('input[name="' + quillData.HtmlFieldName + '"]');
+            var commentaryHtml = document.querySelector(`input[name="${quillData.HtmlFieldName}"]`);
             commentaryHtml.value = quill.root.innerHTML;
 
-            var commentary = document.querySelector('input[name="' + quillData.StringFieldName + '"]');
+            var commentary = document.querySelector(`input[name="${quillData.StringFieldName}"]`);
             commentary.value = quill.getText();
         }
     });

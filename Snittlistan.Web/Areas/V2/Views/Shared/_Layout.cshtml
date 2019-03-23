@@ -1,10 +1,42 @@
 ﻿@{
-    Layout = "_BareLayout.cshtml";
-    Bundles.Reference("Content/js/Layout.js", "layout");
-}
+    ViewBag.Title = "Snittlistan";
+    @* The only file that should be transpiled. *@
+    Bundles.Reference("Content/css/main.less");
+}<!DOCTYPE html>
+<html lang="se">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1.0,width=device-width" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="@TenantConfiguration.WebAppTitle" />
+    <meta name="google-site-verification" content="g8KwkjfVGgtu5zxYGhIEfJS4JGVkCMS1YMdp5WNOOpU" />
+    <link rel="icon"
+          href="@Url.ContentCacheBreak($"~/Content/css/images/{TenantConfiguration.Favicon}")" />
+    <link rel="apple-touch-icon"
+          sizes="@TenantConfiguration.AppleTouchIconSize"
+          href="@Url.ContentCacheBreak($"~/Content/css/images/{TenantConfiguration.AppleTouchIcon}")" />
+    <title>@ViewBag.Title</title>
 
-@section main
-{
+    @if (HttpContext.Current.IsDebuggingEnabled)
+    {
+        <link href="@Url.ContentCacheBreak("~/Content/external/bootstrap/css/bootstrap.css")" type="text/css" rel="stylesheet" />
+        <link href="@Url.ContentCacheBreak("~/Content/external/bootstrap/css/bootstrap-responsive.css")" type="text/css" rel="stylesheet" />
+        <link href="@Url.ContentCacheBreak("~/Content/external/air-datepicker/datepicker.css")" type="text/css" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="@Url.ContentCacheBreak("~/Content/external/bootstrap/css/bootstrap.min.css")" type="text/css" rel="stylesheet" />
+        <link href="@Url.ContentCacheBreak("~/Content/external/bootstrap/css/bootstrap-responsive.min.css")" type="text/css" rel="stylesheet" />
+        <link href="@Url.ContentCacheBreak("~/Content/external/air-datepicker/datepicker.min.css")" type="text/css" rel="stylesheet" />
+    }
+    <link href="@Url.ContentCacheBreak("~/Content/external/quill/quill.snow.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.ContentCacheBreak("~/Content/css/glyphicons.css")" type="text/css" rel="stylesheet" />
+
+    @Bundles.RenderStylesheets()
+    <script src="@Url.ContentCacheBreak("~/Content/js/GA.js")"></script>
+</head>
+<body>
     <div class="navbar">
         <div class="navbar-inner">
             <div class="container">
@@ -66,4 +98,24 @@
         @RenderBody()
     </div>
     <script id="dsq-count-scr" src="//snittlistan.disqus.com/count.js" async></script>
-}
+    @if (HttpContext.Current.IsDebuggingEnabled)
+    {
+        <script src="@Url.ContentCacheBreak("~/Content/external/jquery/jquery-3.3.1.js")"></script>
+        <script src="@Url.ContentCacheBreak("~/Content/external/bootstrap/js/bootstrap.js")"></script>
+        <script src="@Url.ContentCacheBreak("~/Content/external/air-datepicker/datepicker.js")"></script>
+        <script src="@Url.ContentCacheBreak("~/Content/external/quill/quill.js")"></script>
+    }
+    else
+    {
+        <script src="@Url.ContentCacheBreak("~/Content/external/jquery/jquery-3.3.1.min.js")"></script>
+        <script src="@Url.ContentCacheBreak("~/Content/external/bootstrap/js/bootstrap.min.js")"></script>
+        <script src="@Url.ContentCacheBreak("~/Content/external/air-datepicker/datepicker.min.js")"></script>
+        <script src="@Url.ContentCacheBreak("~/Content/external/quill/quill.min.js")"></script>
+    }
+    <script src="@Url.ContentCacheBreak("~/Content/external/waypoints/waypoints-0.0.1.min.js")"></script>
+    <script src="@Url.ContentCacheBreak("~/Content/js/helpers/typeahead.js")"></script>
+    <script src="@Url.ContentCacheBreak("~/Content/js/QuillForm.js")"></script>
+    <script src="@Url.ContentCacheBreak("~/Content/js/Layout.js")"></script>
+    @RenderSection("scripts", false)
+</body>
+</html>
