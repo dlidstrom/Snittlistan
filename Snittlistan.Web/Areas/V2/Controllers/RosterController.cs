@@ -65,7 +65,7 @@
                 DocumentSession.Query<Activity, ActivityIndex>()
                                .Where(x => x.Season == season.Value)
                                .ToArray()
-                               .Where(x => selectAll || x.Date >= SystemTime.UtcNow.Date.AddDays(-7))
+                               .Where(x => selectAll || x.Date >= SystemTime.UtcNow.Date.AddDays(-3))
                                .Select(x => new InitialDataViewModel.ScheduledActivityItem(x.Id, x.Title, x.Date, x.MessageHtml, string.IsNullOrEmpty(x.AuthorId) == false ? DocumentSession.Load<Player>(x.AuthorId)?.Name ?? string.Empty : string.Empty));
             var isFiltered = rosters.Count != turns.Sum(x => x.Rosters.Length);
             var vm = new InitialDataViewModel(turns.Concat(activities).OrderBy(x => x.Date).ToArray(), season.Value, isFiltered);
