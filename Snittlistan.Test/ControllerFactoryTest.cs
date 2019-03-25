@@ -1,13 +1,13 @@
-﻿using System.Web.Mvc;
-using System.Web.Routing;
-using Castle.Windsor;
-using NUnit.Framework;
-using Snittlistan.Web.Areas.V1.Controllers;
-using Snittlistan.Web.Infrastructure.Installers;
-using Snittlistan.Web.Infrastructure.IoC;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using System.Web.Mvc;
+    using System.Web.Routing;
+    using Castle.Windsor;
+    using NUnit.Framework;
+    using Snittlistan.Web.Infrastructure.Installers;
+    using Snittlistan.Web.Infrastructure.IoC;
+    using Web.Areas.V2.Controllers;
+
     [TestFixture]
     public class ControllerFactoryTest
     {

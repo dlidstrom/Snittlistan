@@ -98,6 +98,9 @@
         @RenderBody()
     </div>
     <script id="dsq-count-scr" src="//snittlistan.disqus.com/count.js" async></script>
+    <script>
+        var logErrorUrl = '@Url.Action("LogJavaScriptError", "Error")';
+    </script>
     @if (HttpContext.Current.IsDebuggingEnabled)
     {
         <script src="@Url.ContentCacheBreak("~/Content/external/jquery/jquery-3.3.1.js")"></script>
@@ -113,6 +116,7 @@
         <script src="@Url.ContentCacheBreak("~/Content/external/quill/quill.min.js")"></script>
     }
     <script src="@Url.ContentCacheBreak("~/Content/external/waypoints/waypoints-0.0.1.min.js")"></script>
+    <script src="@Url.ContentCacheBreak("~/Content/js/stacktrace.js")"></script>
     <script src="@Url.ContentCacheBreak("~/Content/js/helpers/typeahead.js")"></script>
     <script src="@Url.ContentCacheBreak("~/Content/js/QuillForm.js")"></script>
     <script src="@Url.ContentCacheBreak("~/Content/js/Layout.js")"></script>
