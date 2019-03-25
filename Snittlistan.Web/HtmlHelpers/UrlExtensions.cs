@@ -10,8 +10,6 @@ namespace Snittlistan.Web.HtmlHelpers
 
     public static class UrlExtensions
     {
-        private static readonly MD5 HashAlgorithm = MD5.Create();
-
         public static string ContentCacheBreak(this UrlHelper url, string contentPath)
         {
             if (contentPath == null) throw new ArgumentNullException(nameof(contentPath));
@@ -21,14 +19,17 @@ namespace Snittlistan.Web.HtmlHelpers
             if (path != null)
             {
                 var bytes = File.ReadAllBytes(path);
-                var hash = HashAlgorithm.ComputeHash(bytes);
-                var hashBuilder = new StringBuilder();
-                foreach (var b in hash)
+                using (var md5 = MD5.Create())
                 {
-                    hashBuilder.Append($"{b:x2}");
-                }
+                    var hash = md5.ComputeHash(bytes);
+                    var hashBuilder = new StringBuilder();
+                    foreach (var b in hash)
+                    {
+                        hashBuilder.Append($"{b:x2}");
+                    }
 
-                hashPart = $"?{hashBuilder}";
+                    hashPart = $"?{hashBuilder}";
+                }
             }
 
             return $"{url.Content(contentPath)}{hashPart}";

@@ -54,9 +54,6 @@
     <Reference Include="AjaxMin, Version=4.84.4790.14405, Culture=neutral, PublicKeyToken=21ef50ce11b5d80f, processorArchitecture=MSIL">
       <HintPath>..\packages\AjaxMin.4.84.4790.14417\lib\net40\AjaxMin.dll</HintPath>
     </Reference>
-    <Reference Include="AutoMapper, Version=2.1.267.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.2.1.267\lib\net40\AutoMapper.dll</HintPath>
-    </Reference>
     <Reference Include="Cassette, Version=2.4.2.13844, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Cassette.2.4.2\lib\net40-client\Cassette.dll</HintPath>
     </Reference>
@@ -405,15 +402,12 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Areas\V2\Controllers\RosterController.cs" />
     <Compile Include="Areas\V1\Controllers\ElmahController.cs" />
-    <Compile Include="Areas\V1\Controllers\ErrorController.cs" />
+    <Compile Include="Areas\V2\Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HackerController.cs" />
     <Compile Include="Areas\V1\Controllers\HomeController.cs" />
-    <Compile Include="Areas\V1\Controllers\MailController.cs" />
     <Compile Include="Areas\V1\Controllers\MatchController.cs" />
     <Compile Include="Areas\V1\Controllers\NotFoundController.cs" />
     <Compile Include="Areas\V1\Controllers\SearchController.cs" />
-    <Compile Include="Areas\V1\Controllers\ValidationController.cs" />
-    <Compile Include="Areas\V1\Controllers\WelcomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -426,16 +420,6 @@
     <Compile Include="Infrastructure\ActionInvokerWrapper.cs" />
     <Compile Include="Infrastructure\Attributes\ElmahHandleErrorAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\UserTrackerLogAttribute.cs" />
-    <Compile Include="Infrastructure\AutoMapper\AutoMapperConfiguration.cs" />
-    <Compile Include="Infrastructure\AutoMapper\AutoMapperExtensions.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Profiles\Match4x4Profile.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Profiles\Match8x4Profile.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Profiles\NameShortener.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Profiles\PairResolver.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Profiles\PlayerResolver.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Profiles\Team4x4ViewModelConverter.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Profiles\Team8x4ViewModelConverter.cs" />
-    <Compile Include="Infrastructure\AutoMapper\Profiles\UserProfile.cs" />
     <Compile Include="Infrastructure\CassetteBundleConfiguration.cs" />
     <Compile Include="Infrastructure\GuidBinder.cs" />
     <Compile Include="Infrastructure\IdAttribute.cs" />
@@ -449,7 +433,6 @@
     <Compile Include="Infrastructure\Indexes\Teams.cs" />
     <Compile Include="Infrastructure\Indexes\User_ByEmail.cs" />
     <Compile Include="Infrastructure\InjectingActionInvoker.cs" />
-    <Compile Include="Infrastructure\Installers\AutoMapperInstaller.cs" />
     <Compile Include="Infrastructure\Installers\ControllerInstaller.cs" />
     <Compile Include="Infrastructure\Installers\DocumentStoreMode.cs" />
     <Compile Include="Infrastructure\Installers\RavenInstaller.cs" />
@@ -484,18 +467,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\FormsAuthenticationService.cs" />
     <Compile Include="Services\IAuthenticationService.cs" />
-    <Compile Include="Areas\V1\ViewModels\Account\ChangePasswordViewModel.cs" />
-    <Compile Include="Areas\V1\ViewModels\Account\LogOnViewModel.cs" />
-    <Compile Include="Areas\V1\ViewModels\Account\RegisterViewModel.cs" />
-    <Compile Include="Areas\V1\ViewModels\Account\RegistrationMailViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\EditUserViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\UserViewModel.cs" />
-    <Compile Include="Areas\V1\ViewModels\Match\EditTeam4x4ViewModel.cs" />
-    <Compile Include="Areas\V1\ViewModels\Match\EditTeam8x4ViewModel.cs" />
-    <Compile Include="Areas\V1\ViewModels\Match\Match4x4ViewModel.cs" />
-    <Compile Include="Areas\V1\ViewModels\Match\Match8x4ViewModel.cs" />
-    <Compile Include="Areas\V1\ViewModels\Match\Register4x4MatchViewModel.cs" />
-    <Compile Include="Areas\V1\ViewModels\Match\Register8x4MatchViewModel.cs" />
     <Compile Include="Areas\V1\ViewModels\Match\Team4x4DetailsViewModel.cs" />
     <Compile Include="Areas\V1\ViewModels\Match\Team4x4ViewModel.cs" />
     <Compile Include="Areas\V1\ViewModels\Match\Team8x4DetailsViewModel.cs" />
@@ -528,7 +501,6 @@
     <Content Include="Areas\V1\Views\Web.config" />
     <Content Include="Areas\V2\Views\Web.config" />
     <Content Include="Areas\V2\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\V1\Views\App\Index.cshtml" />
     <Content Include="Areas\V2\Views\Shared\Error.cshtml" />
     <Content Include="Areas\V2\Views\Shared\NotFound.cshtml" />
     <Content Include="Areas\V2\Views\Roster\Edit.cshtml" />
@@ -660,44 +632,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\V1\ViewModels\Admin\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\V1\Views\Account\ChangePassword.cshtml" />
-    <Content Include="Areas\V1\Views\Account\ChangePasswordSuccess.cshtml" />
-    <Content Include="Areas\V1\Views\Account\LogOn.cshtml" />
-    <Content Include="Areas\V1\Views\Account\Register.cshtml" />
-    <Content Include="Areas\V1\Views\Account\RegisterSuccess.cshtml" />
-    <Content Include="Areas\V1\Views\Account\VerifySuccess.cshtml" />
     <Content Include="Views\Hacker\Index.cshtml" />
-    <Content Include="Areas\V1\Views\Home\About.cshtml" />
-    <Content Include="Areas\V1\Views\Home\Index.cshtml" />
-    <Content Include="Areas\V1\Views\Home\Player.cshtml" />
     <Content Include="Views\Emails\UserRegistered.cshtml" />
-    <Content Include="Areas\V1\Views\Match\Delete4x4.cshtml" />
-    <Content Include="Areas\V1\Views\Match\Delete8x4.cshtml" />
-    <Content Include="Areas\V1\Views\Match\Details4x4.cshtml" />
-    <Content Include="Areas\V1\Views\Match\Details8x4.cshtml" />
-    <Content Include="Areas\V1\Views\Match\DisplayTemplates\Match4x4Display.cshtml" />
-    <Content Include="Areas\V1\Views\Match\DisplayTemplates\Match8x4Display.cshtml" />
-    <Content Include="Areas\V1\Views\Match\DisplayTemplates\Team4x4Display.cshtml" />
-    <Content Include="Areas\V1\Views\Match\DisplayTemplates\Team8x4Display.cshtml" />
-    <Content Include="Areas\V1\Views\Match\DisplayTemplates\TeamResults.cshtml" />
-    <Content Include="Areas\V1\Views\Match\EditDetails4x4.cshtml" />
-    <Content Include="Areas\V1\Views\Match\EditDetails8x4.cshtml" />
-    <Content Include="Areas\V1\Views\Match\EditorTemplates\MatchEditor4x4.cshtml" />
-    <Content Include="Areas\V1\Views\Match\EditorTemplates\MatchEditor8x4.cshtml" />
-    <Content Include="Areas\V1\Views\Match\EditorTemplates\PairEditor.cshtml" />
-    <Content Include="Areas\V1\Views\Match\EditorTemplates\PlayerEditor.cshtml" />
-    <Content Include="Areas\V1\Views\Match\EditorTemplates\Serie2Editor.cshtml" />
-    <Content Include="Areas\V1\Views\Match\EditorTemplates\TeamEditor4x4.cshtml" />
-    <Content Include="Areas\V1\Views\Match\EditorTemplates\TeamEditor8x4.cshtml" />
-    <Content Include="Areas\V1\Views\Match\EditTeam4x4.cshtml" />
-    <Content Include="Areas\V1\Views\Match\EditTeam8x4.cshtml" />
-    <Content Include="Areas\V1\Views\Match\Index.cshtml" />
-    <Content Include="Areas\V1\Views\Match\Register4x4.cshtml" />
-    <Content Include="Areas\V1\Views\Match\Register8x4.cshtml" />
-    <Content Include="Areas\V1\Views\Shared\EditorTemplates\DateTimeOffset.cshtml" />
     <Content Include="Areas\V1\Views\Shared\Error.cshtml" />
     <Content Include="Areas\V1\Views\Shared\NotFound.cshtml" />
     <Content Include="Areas\V1\Views\Shared\_Layout.cshtml" />
@@ -705,9 +643,6 @@
     <Content Include="Areas\V2\Views\AdminTasks\CreateUser.cshtml" />
     <Content Include="Areas\V2\Views\AdminTasks\DeleteUser.cshtml" />
     <Content Include="Areas\V2\Views\AdminTasks\Users.cshtml" />
-    <Content Include="Areas\V1\Views\Welcome\Index.cshtml" />
-    <Content Include="Areas\V1\Views\Welcome\Reset.cshtml" />
-    <Content Include="Areas\V1\Views\Welcome\Success.cshtml" />
     <Content Include="Areas\V1\Views\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>

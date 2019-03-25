@@ -3,7 +3,7 @@
 function logError(ex, stack) {
 	if (ex == null) return;
 	if (logErrorUrl == null) {
-		alert('logErrorUrl must be defined.');
+		console.error('logErrorUrl must be defined.');
 		return;
 	}
 

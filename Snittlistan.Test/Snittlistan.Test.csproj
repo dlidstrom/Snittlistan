@@ -37,9 +37,6 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=2.1.267.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.2.1.267\lib\net40\AutoMapper.dll</HintPath>
-    </Reference>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
@@ -135,15 +132,7 @@
     <Compile Include="Domain\MatchGame4Test.cs" />
     <Compile Include="Domain\MatchResult4Test.cs" />
     <Compile Include="TeamOfWeekLeadersViewModelTest.cs" />
-    <Compile Include="Controllers\AccountController_ChangePassword.cs" />
-    <Compile Include="Controllers\AccountController_LogOff.cs" />
-    <Compile Include="Controllers\AccountController_Logon.cs" />
-    <Compile Include="Controllers\AccountController_Register.cs" />
-    <Compile Include="Controllers\AccountController_Scenario.cs" />
-    <Compile Include="Controllers\AccountController_Verify.cs" />
     <Compile Include="ActionResultHelper.cs" />
-    <Compile Include="AutoMapperConfigurationTest.cs" />
-    <Compile Include="AutoMapperInstallerTest.cs" />
     <Compile Include="ControllerFactoryTest.cs" />
     <Compile Include="ControllersInstallerTest.cs" />
     <Compile Include="DbSeed.cs" />
@@ -152,21 +141,10 @@
     <Compile Include="Domain\MatchResultTest.cs" />
     <Compile Include="Domain\MatchSerieTest.cs" />
     <Compile Include="Domain\MatchTableTest.cs" />
-    <Compile Include="Controllers\HomeController_Player.cs" />
     <Compile Include="InstallerTestHelper.cs" />
     <Compile Include="Match4x4Test.cs" />
     <Compile Include="Match8x4Test.cs" />
-    <Compile Include="Controllers\MatchController_Details4x4.cs" />
-    <Compile Include="Controllers\MatchController_Details8x4.cs" />
-    <Compile Include="Controllers\MatchController_EditDetails4x4.cs" />
-    <Compile Include="Controllers\MatchController_EditDetails8x4.cs" />
-    <Compile Include="Controllers\MatchController_EditTeam4x4.cs" />
-    <Compile Include="Controllers\MatchController_EditTeam8x4.cs" />
-    <Compile Include="Controllers\MatchController_Index.cs" />
-    <Compile Include="Controllers\MatchController_Register4x4.cs" />
-    <Compile Include="Controllers\MatchController_Register8x4.cs" />
     <Compile Include="Match_ByBitsMatchIdTest.cs" />
-    <Compile Include="NameShortenerResolverTest.cs" />
     <Compile Include="BitsParser8X4Test.cs" />
     <Compile Include="PlayerStat_Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -24,7 +24,6 @@
     using Snittlistan.Queue;
     using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Attributes;
-    using Snittlistan.Web.Infrastructure.AutoMapper;
     using Snittlistan.Web.Infrastructure.Indexes;
     using Snittlistan.Web.Infrastructure.Installers;
     using Snittlistan.Web.Infrastructure.IoC;
@@ -173,9 +172,6 @@
             // add model binders
             ModelBinders.Binders.Add(typeof(Guid), new GuidBinder());
 
-            // configure AutoMapper
-            AutoMapperConfiguration.Configure(Container);
-
             Emails.Initialize(HostingEnvironment.MapPath("~/Views/Emails"));
 
             MsmqGateway.Initialize(ConfigurationManager.AppSettings["TaskQueue"]);
@@ -236,7 +232,6 @@
                 Container.Kernel.AddHandlerSelector(new HostBasedComponentSelector());
                 Container.Install(
                     new ApiControllerInstaller(),
-                    new AutoMapperInstaller(),
                     new BitsClientInstaller(),
                     new ControllerInstaller(),
                     new EventMigratorInstaller(),
