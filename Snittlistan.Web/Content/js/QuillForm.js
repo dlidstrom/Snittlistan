@@ -6,7 +6,9 @@
         [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
         ['clean']                                         // remove formatting button
     ];
-    $('form[data-quill-data]').each(function (_, e) {
+    $('form[data-quill-data]').each(setupQuillForm);
+
+    function setupQuillForm(_, e) {
         var $e = $(e);
         var quillData = $e.data('quill-data');
         var options = {
@@ -33,5 +35,5 @@
             var commentary = document.querySelector(`input[name="${quillData.StringFieldName}"]`);
             commentary.value = quill.getText();
         }
-    });
+    }
 });

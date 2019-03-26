@@ -7,32 +7,32 @@
     {
         public ActionResult Index()
         {
-            return RedirectToActionPermanent("Index", "Roster");
+            return RedirectToActionPermanent("Index", "Roster", new { area = "V2" });
         }
 
         public ActionResult Details8x4()
         {
-            return RedirectToActionPermanent("Index", "Roster");
+            return RedirectToActionPermanent("Index", "Roster", new { area = "V2" });
         }
 
         public ActionResult Details4x4()
         {
-            return RedirectToActionPermanent("Index", "Roster");
+            return RedirectToActionPermanent("Index", "Roster", new { area = "V2" });
         }
 
         public ActionResult Create()
         {
-            return RedirectToActionPermanent("Index");
+            return RedirectToActionPermanent("Index", "Roster", new { area = "V2" });
         }
 
         public ActionResult Edit()
         {
-            return RedirectToActionPermanent("Index");
+            return RedirectToActionPermanent("Index", "Roster", new { area = "V2" });
         }
 
         public ActionResult LegacyRedirect()
         {
-            return RedirectToActionPermanent("Index");
+            return RedirectToActionPermanent("Index", "Roster", new { area = "V2" });
         }
     }
 }

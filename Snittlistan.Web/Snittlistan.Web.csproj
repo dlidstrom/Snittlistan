@@ -581,6 +581,7 @@
     <Content Include="Areas\V2\Views\Shared\DisplayTemplates\ActivityViewModel.cshtml" />
     <Content Include="Areas\V2\Views\Shared\_TurnViewModel.cshtml" />
     <Content Include="Areas\V2\Views\ActivityDetails\Index.cshtml" />
+    <Content Include="Content\external\quill\quill.min.js.map" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
