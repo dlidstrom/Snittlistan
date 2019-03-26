@@ -1,4 +1,4 @@
 ﻿User-agent: *
-Disallow: /v1/error/logjavascripterror
-Disallow: /v1/Error/LogJavaScriptError
+Disallow: /error/logjavascripterror
+Disallow: /Error/LogJavaScriptError
 Disallow: /api/calendar

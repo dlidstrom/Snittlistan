@@ -57,9 +57,23 @@ namespace Snittlistan.Web.Areas.V1
                 defaults: new { controller = "Elmah", action = "Index", type = UrlParameter.Optional });
 
             context.MapRoute(
+                "V1_roster",
+                "v1/{*rest}",
+                defaults: new
+                {
+                    controller = "Match",
+                    action = "LegacyRedirect"
+                });
+
+            context.MapRoute(
                 "V1_default",
                 "v1/{controller}/{action}/{id}",
-                new { controller = "Home", action = "Index", id = UrlParameter.Optional });
+                defaults: new
+                {
+                    controller = "Match",
+                    action = "LegacyRedirect",
+                    id = UrlParameter.Optional
+                });
         }
     }
 }
