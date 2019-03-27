@@ -170,16 +170,6 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                 }
             }
 
-            if (aboveLast20Players.Any())
-            {
-                var aboveLast20 = playerPins.Where(x => aboveLast20Players.Contains(x.PlayerId))
-                                            .OrderByDescending(x => x.Average)
-                                            .ToArray();
-                var nicknames = nicknameFormatter.Invoke(aboveLast20.Select(x => Tuple.Create(x.PlayerId, 0)).ToArray(), false);
-                var formSentence = $"{nicknames} visade att formkurvan pekar uppåt med bra spel.";
-                bodySummaryText.Add(formSentence);
-            }
-
             // summera ihop alla som tagit 4 poäng och utmärk dom också
             var fourPointPlayers = new HashSet<string>();
             foreach (var playerPin in playerPins)
