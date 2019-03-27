@@ -32,17 +32,6 @@
         }
 
         [Test]
-        public void LegacyRoutes()
-        {
-            RouteTable.Routes.Maps("GET", "~/v1", new { controller = "Home", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/v1/Match", new { controller = "Match", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/v1/Match/Register8x4", new { controller = "Match", action = "Register8x4" });
-            RouteTable.Routes.Maps("GET", "~/v1/Match/Register4x4", new { controller = "Match", action = "Register4x4" });
-            RouteTable.Routes.Maps("GET", "~/v1/About", new { controller = "Home", action = "About" });
-            RouteTable.Routes.Maps("GET", "~/Home/About", new { controller = "Home", action = "About" });
-        }
-
-        [Test]
         public void V2Route()
         {
             RouteTable.Routes.Maps("GET", "~/", new { controller = "Roster", action = "Index" });
@@ -62,12 +51,6 @@
         }
 
         [Test]
-        public void LowerCaseRoutes()
-        {
-            RouteTable.Routes.Maps("GET", "~/v1/account/register", new { controller = "Account", action = "Register" });
-        }
-
-        [Test]
         public void Shortcuts()
         {
             RouteTable.Routes.Maps("GET", "~/v1/register", new { controller = "Account", action = "Register" });
@@ -79,12 +62,6 @@
         public void Verify()
         {
             RouteTable.Routes.Maps("GET", "~/v1/verify", new { controller = "Account", action = "Verify" });
-        }
-
-        [Test]
-        public void Welcome()
-        {
-            RouteTable.Routes.Maps("GET", "~/v1/welcome", new { controller = "Welcome", action = "Index" });
         }
 
         [Test]
