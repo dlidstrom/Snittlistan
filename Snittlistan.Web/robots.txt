@@ -2,3 +2,5 @@
 Disallow: /error/logjavascripterror
 Disallow: /Error/LogJavaScriptError
 Disallow: /api/calendar
+Disallow: /cassette.axd/script/Os2NRMRTDzg78JGLMBVrPBMVMqE=/Content/external/waypoints/waypoints-0.0.1.min.js
+Disallow: /cassette.axd/script/pwaGvJ_iXcStJ-ZH0oc0ksByRwc=/Content/js/sortable.js
