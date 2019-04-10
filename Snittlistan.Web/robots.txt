@@ -3,4 +3,8 @@ Disallow: /error/logjavascripterror
 Disallow: /Error/LogJavaScriptError
 Disallow: /api/calendar
 Disallow: /cassette.axd/script/Os2NRMRTDzg78JGLMBVrPBMVMqE=/Content/external/waypoints/waypoints-0.0.1.min.js
+Disallow: /cassette.axd/stylesheet/CJGOXuoN7ScCJERoaM3OriFtA1M=/Content/external/bootstrap/css/bootstrap.css
+Disallow: /cassette.axd/script/R5TDkF--ADKfgfV-aXrpxAoXKe0=/Content/js/button.js
+Disallow: /cassette.axd/script/jEN6AuLtoeKTudwVTMYmyfIs8Og=/Content/js/feedback.js
 Disallow: /cassette.axd/script/pwaGvJ_iXcStJ-ZH0oc0ksByRwc=/Content/js/sortable.js
+Disallow: /cassette.axd/script/nlIZthTJzceL91pj28Aeb1qvsnk=/Content/js/stacktrace.js
