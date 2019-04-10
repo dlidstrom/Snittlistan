@@ -118,6 +118,7 @@
                 Nickname = string.Empty;
                 Email = string.Empty;
                 Status = Player.Status.Active;
+                Roles = new string[0];
             }
 
             public CreatePlayerViewModel(Player player)
@@ -127,12 +128,6 @@
                 Email = player.Email;
                 Status = player.PlayerStatus;
                 PersonalNumber = player.PersonalNumber;
-                var roles = WebsiteRoles.UserGroup().Except(WebsiteRoles.PlayerGroup()).OrderBy(x => x.Description).ToArray();
-                RolesList =
-                    new MultiSelectList(
-                        roles,
-                        "Name",
-                        "Description");
                 Roles = player.Roles;
             }
 
@@ -149,7 +144,22 @@
 
             public int? PersonalNumber { get; set; }
 
-            public MultiSelectList RolesList { get; set; }
+            public MultiSelectList RolesList
+            {
+                get
+                {
+                    var roles = WebsiteRoles.UserGroup()
+                                            .Except(WebsiteRoles.PlayerGroup())
+                                            .OrderBy(x => x.Description)
+                                            .ToArray();
+                    var rolesList =
+                        new MultiSelectList(
+                            roles,
+                            "Name",
+                            "Description");
+                    return rolesList;
+                }
+            }
 
             [Required]
             [Display(Name = "Funktioner:")]
