@@ -27,12 +27,10 @@
             action.Invoke(OneTimeKey);
         }
 
-        public Result ApplyToken(Action action)
+        public Result ApplyToken()
         {
             var span = SystemTime.UtcNow - CreatedDate;
             if (span.TotalDays > 1) return Result.Expired;
-
-            action.Invoke();
             UsedDate = SystemTime.UtcNow;
             return Result.Ok;
         }

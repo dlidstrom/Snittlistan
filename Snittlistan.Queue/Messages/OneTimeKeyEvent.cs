@@ -2,14 +2,14 @@
 {
     public class OneTimeKeyEvent
     {
-        public OneTimeKeyEvent(string email, string activationUri)
+        public OneTimeKeyEvent(string email, string oneTimePassword)
         {
             Email = email;
-            ActivationUri = activationUri;
+            OneTimePassword = oneTimePassword;
         }
 
         public string Email { get; }
 
-        public string ActivationUri { get; }
+        public string OneTimePassword { get; }
     }
 }
