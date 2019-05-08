@@ -92,7 +92,7 @@
             return File(stream, "application/zip", archiveFileName);
         }
 
-        enum CreateFileEntryResult
+        private enum CreateFileEntryResult
         {
             NotAchievedThreeResults,
             MissingPersonalNumber,

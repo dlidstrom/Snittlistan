@@ -12,15 +12,18 @@
     {
         private static EmailService service;
 
-        public static void SendLoginLink(string recipient, string subject, string activationUri)
+        public static void SendOneTimePassword(
+            string recipient,
+            string subject,
+            string oneTimePassword)
         {
             Send(
-                "LoginLink",
+                "OneTimePassword",
                 recipient,
                 subject,
                 o =>
                 {
-                    o.ActivationUri = activationUri;
+                    o.OneTimePassword = oneTimePassword;
                 });
         }
 

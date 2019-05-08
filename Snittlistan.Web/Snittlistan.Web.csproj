@@ -582,6 +582,8 @@
     <Content Include="Areas\V2\Views\Shared\_TurnViewModel.cshtml" />
     <Content Include="Areas\V2\Views\ActivityDetails\Index.cshtml" />
     <Content Include="Content\external\quill\quill.min.js.map" />
+    <Content Include="Areas\V2\Views\Authentication\LogOnOneTimePassword.cshtml" />
+    <Content Include="Areas\V2\Views\Authentication\_PasswordEditor.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
@@ -629,7 +631,7 @@
     <Content Include="Views\Emails\Mail.cshtml" />
     <Content Include="Views\Emails\Web.config" />
     <Content Include="Views\Emails\_ViewStart.cshtml" />
-    <Content Include="Views\Emails\LoginLink.cshtml" />
+    <Content Include="Views\Emails\OneTimePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

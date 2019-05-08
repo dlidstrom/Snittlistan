@@ -17,6 +17,7 @@
 
     public class AuthenticationController : AbstractController
     {
+        private static readonly Random Random = new Random();
         private readonly IAuthenticationService authenticationService;
 
         public AuthenticationController(IAuthenticationService authenticationService)
@@ -60,23 +61,16 @@
                     var player = players[0];
                     var token = new OneTimeToken();
                     Debug.Assert(Request.Url != null, "Request.Url != null");
+                    var oneTimePassword =
+                        string.Join("", Enumerable.Range(1, 6).Select(_ => Random.Next(10)));
                     token.Activate(
                         oneTimeKey =>
                         {
-                            var activationUri =
-                                Url.Action(
-                                    "OneTimeTokenLogOn",
-                                    "Authentication",
-                                    new
-                                    {
-                                        oneTimeKey
-                                    },
-                                    Request.Url.Scheme);
-                            PublishMessage(new OneTimeKeyEvent(player.Email, activationUri));
+                            PublishMessage(new OneTimeKeyEvent(player.Email, oneTimePassword));
                         },
-                        player.Id);
+                        oneTimePassword);
                     DocumentSession.Store(token);
-                    return View("EmailSent");
+                    return RedirectToAction("LogOnOneTimePassword", new { id = player.Id, token.OneTimeKey });
                 }
                 else if (players.Length > 1)
                 {
@@ -96,6 +90,64 @@
                 return View(vm);
 
             return RedirectToAction("LogOnPassword", new { vm.Email, returnUrl });
+        }
+
+        public ActionResult LogOnOneTimePassword(string id, string oneTimeKey)
+        {
+            var player = DocumentSession.Load<Player>(id);
+            return View(new PasswordViewModel
+            {
+                Email = player.Email,
+                RememberMe = true,
+                OneTimeKey = oneTimeKey
+            });
+        }
+
+        [HttpPost]
+        public ActionResult LogOnOneTimePassword(string id, PasswordViewModel vm)
+        {
+            if (Request.IsAuthenticated) return RedirectToAction("Index", "Roster");
+
+            var oneTimeToken = DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>().Single(x => x.OneTimeKey == vm.OneTimeKey);
+            var player = DocumentSession.Load<Player>(id);
+            if (player == null)
+                throw new HttpException(404, "Player not found");
+            switch (oneTimeToken.ApplyToken())
+            {
+                case OneTimeToken.Result.Ok:
+                {
+                    try
+                    {
+                        if (vm.Password != oneTimeToken.Payload)
+                        {
+                            ModelState.AddModelError("Lösenord", "Felaktigt lösenord");
+                            vm.Password = string.Empty;
+                            return View();
+                        }
+
+                        authenticationService.SetAuthCookie(player.Id, vm.RememberMe);
+                        var builder = new StringBuilder();
+                        builder.AppendLine($"User Agent: {Request.UserAgent}");
+                        PublishMessage(
+                            EmailTask.Create(
+                                ConfigurationManager.AppSettings["OwnerEmail"],
+                                $"{player.Name} logged in",
+                                builder.ToString()));
+                    }
+                    catch
+                    {
+                        //
+                    }
+
+                    return RedirectToAction("Index", "Roster");
+                }
+                case OneTimeToken.Result.Expired:
+                {
+                    return View("TokenExpired");
+                }
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         public ActionResult LogOnPassword(string email, string returnUrl)
@@ -137,45 +189,6 @@
             return RedirectToAction("Index", "Roster");
         }
 
-        public ActionResult OneTimeTokenLogOn(string oneTimeKey)
-        {
-            if (Request.IsAuthenticated) return RedirectToAction("Index", "Roster");
-
-            var oneTimeToken = DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>().Single(x => x.OneTimeKey == oneTimeKey);
-            var player = DocumentSession.Load<Player>(oneTimeToken.Payload);
-            if (player == null)
-                throw new HttpException(404, "Player not found");
-            switch (oneTimeToken.ApplyToken(
-                () => authenticationService.SetAuthCookie(oneTimeToken.Payload, true)))
-            {
-                case OneTimeToken.Result.Ok:
-                {
-                    try
-                    {
-                        var builder = new StringBuilder();
-                        builder.AppendLine($"User Agent: {Request.UserAgent}");
-                        PublishMessage(
-                            EmailTask.Create(
-                                ConfigurationManager.AppSettings["OwnerEmail"],
-                                $"{player.Name} logged in",
-                                builder.ToString()));
-                    }
-                    catch
-                    {
-                        //
-                    }
-
-                    return RedirectToAction("Index", "Roster");
-                }
-                case OneTimeToken.Result.Expired:
-                {
-                    return View("TokenExpired");
-                }
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
         public ActionResult LogOff()
         {
             authenticationService.SignOut();
@@ -205,6 +218,8 @@
             public string Password { get; set; }
 
             public bool RememberMe { get; set; }
+
+            public string OneTimeKey { get; set; }
         }
     }
 }

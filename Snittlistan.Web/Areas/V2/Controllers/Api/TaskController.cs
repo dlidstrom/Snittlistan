@@ -49,7 +49,7 @@
         private IHttpActionResult Handle(OneTimeKeyEvent @event)
         {
             const string Subject = "Logga in på Snittlistan";
-            Emails.SendLoginLink(@event.Email, Subject, @event.ActivationUri);
+            Emails.SendOneTimePassword(@event.Email, Subject, @event.OneTimePassword);
             return Ok();
         }
 
