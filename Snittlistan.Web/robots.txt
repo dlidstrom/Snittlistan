@@ -3,8 +3,13 @@ Disallow: /error/logjavascripterror
 Disallow: /Error/LogJavaScriptError
 Disallow: /api/calendar
 Disallow: /cassette.axd/script/Os2NRMRTDzg78JGLMBVrPBMVMqE=/Content/external/waypoints/waypoints-0.0.1.min.js
+Disallow: /cassette.axd/script/G5JXQh0MBJ4iS0b6BmmY_O7-oUU=/Content/external/air-datepicker/datepicker.js
+Disallow: /cassette.axd/stylesheet/gfLH9zJHN-2TzqgDhaY3frFo9NY=/Content/external/air-datepicker/datepicker.css
 Disallow: /cassette.axd/stylesheet/CJGOXuoN7ScCJERoaM3OriFtA1M=/Content/external/bootstrap/css/bootstrap.css
+Disallow: /cassette.axd/script/mCp1AEwytSv62w0paGd4DbojJUM=/Content/external/bootstrap/js/bootstrap.js
+Disallow: /cassette.axd/script/Sopzzq_uPq2vygoR_KM_Ue26WKI=/Content/external/quill/quill.js
 Disallow: /cassette.axd/script/R5TDkF--ADKfgfV-aXrpxAoXKe0=/Content/js/button.js
 Disallow: /cassette.axd/script/jEN6AuLtoeKTudwVTMYmyfIs8Og=/Content/js/feedback.js
+Disallow: /cassette.axd/script/QnogqLu6lA6Ds5ctf8hYiOClaRo=/Content/js/Layout.js
 Disallow: /cassette.axd/script/pwaGvJ_iXcStJ-ZH0oc0ksByRwc=/Content/js/sortable.js
 Disallow: /cassette.axd/script/nlIZthTJzceL91pj28Aeb1qvsnk=/Content/js/stacktrace.js
