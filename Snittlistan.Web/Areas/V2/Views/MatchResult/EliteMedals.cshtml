@@ -173,8 +173,15 @@
     <div class="span12">
         @{
             var first = true;
+            var orderedPlayers =
+                Model.Players
+                     .OrderBy(x => x.ExistingMedal)
+                     .ThenBy(x =>
+                         x.ExistingMedal == EliteMedals.EliteMedal.EliteMedalValue.Gold5
+                             ? x.FormattedExistingMedal().SeasonSpan
+                             : x.Name);
         }
-        @foreach (var player in Model.Players.OrderBy(x => x.ExistingMedal).ThenBy(x => x.Name))
+        @foreach (var player in orderedPlayers)
         {
             <table class="table table-condensed table-bordered table-striped">
                 @{
@@ -192,14 +199,14 @@
                         @{
                             var existingMedal = player.FormattedExistingMedal();
                         }
-                        @if (string.IsNullOrEmpty(existingMedal.Item1) == false)
+                        @if (string.IsNullOrEmpty(existingMedal.Description) == false)
                         {
                             <text>Innehar</text>
                             <span class="label label-inverse">
-                                @player.FormattedExistingMedal().Item1
+                                @player.FormattedExistingMedal().Description
                             </span>
                         }
-                        @player.FormattedExistingMedal().Item2
+                        @player.FormattedExistingMedal().SeasonSpan
                         @if (User.IsInRole2(WebsiteRoles.EliteMedals.EditMedals))
                         {
                             <a href="@Url.Action("EditMedals", new
@@ -214,14 +221,14 @@
                         @{
                             var nextMedal = player.FormattedNextMedal();
                         }
-                        @if (string.IsNullOrEmpty(nextMedal.Item1) == false)
+                        @if (string.IsNullOrEmpty(nextMedal.Description) == false)
                         {
                             <text>Ska ha</text>
                             <span class="label label-inverse">
-                                @nextMedal.Item1
+                                @nextMedal.Description
                             </span>
                         }
-                        @nextMedal.Item2
+                        @nextMedal.SeasonSpan
                     </th>
                 </tr>
                 @if (player.ExistingMedal != EliteMedals.EliteMedal.EliteMedalValue.Gold5 && player.TopThreeResults.Any())

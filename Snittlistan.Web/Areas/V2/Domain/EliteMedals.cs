@@ -1,9 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-
 namespace Snittlistan.Web.Areas.V2.Domain
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using ViewModels;
+
     public class EliteMedals
     {
         public EliteMedals()
@@ -25,14 +26,14 @@ namespace Snittlistan.Web.Areas.V2.Domain
             return existingMedal;
         }
 
-        public Tuple<string, string> GetFormattedExistingMedal(string playerId)
+        public FormattedMedal GetFormattedExistingMedal(string playerId)
         {
             if (AwardedMedals.TryGetValue(playerId, out var existingMedal) == false)
                 existingMedal = EliteMedal.None;
             return existingMedal.GetDescription();
         }
 
-        public Tuple<string, string> GetNextMedal(string playerId)
+        public FormattedMedal GetNextMedal(string playerId)
         {
             if (AwardedMedals.TryGetValue(playerId, out var existingMedal) == false)
                 existingMedal = EliteMedal.None;
@@ -68,7 +69,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
                     throw new ArgumentOutOfRangeException();
             }
 
-            return Tuple.Create(nextMedal, text);
+            return new FormattedMedal(nextMedal, text);
         }
 
         public void AwardMedal(string playerId, EliteMedal.EliteMedalValue eliteMedalValue, int? capturedSeason)
@@ -113,10 +114,10 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 Gold5
             }
 
-            public Tuple<string, string> GetDescription()
+            public FormattedMedal GetDescription()
             {
-                if (Value == EliteMedalValue.None) return Tuple.Create(string.Empty, "Saknar medalj");
-                return Tuple.Create(GetDescription(Value), $"({CapturedSeason} - {CapturedSeason + 1})");
+                if (Value == EliteMedalValue.None) return new FormattedMedal(string.Empty, "Saknar medalj");
+                return new FormattedMedal(GetDescription(Value), $"({CapturedSeason} - {CapturedSeason + 1})");
             }
 
             public static string GetDescription(Enum value)
