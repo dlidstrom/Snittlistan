@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Web;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.ReadModels;
-
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+
     public class EliteMedalsViewModel
     {
         private readonly int season;
@@ -48,8 +48,8 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public class PlayerInfo
         {
-            private readonly Tuple<string, string> formattedExistingMedal;
-            private readonly Tuple<string, string> formattedNextMedal;
+            private readonly FormattedMedal formattedExistingMedal;
+            private readonly FormattedMedal formattedNextMedal;
 
             public PlayerInfo(
                 string playerId,
@@ -57,8 +57,8 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                 int personalNumber,
                 HashSet<Tuple<SeasonResults.PlayerResult, bool>> topThreeResults,
                 EliteMedals.EliteMedal.EliteMedalValue existingMedal,
-                Tuple<string, string> formattedExistingMedal,
-                Tuple<string, string> formattedNextMedal)
+                FormattedMedal formattedExistingMedal,
+                FormattedMedal formattedNextMedal)
             {
                 PlayerId = playerId;
                 Name = name;
@@ -79,12 +79,12 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
             public HashSet<Tuple<SeasonResults.PlayerResult, bool>> TopThreeResults { get; }
 
-            public Tuple<string, string> FormattedExistingMedal()
+            public FormattedMedal FormattedExistingMedal()
             {
                 return formattedExistingMedal;
             }
 
-            public Tuple<string, string> FormattedNextMedal()
+            public FormattedMedal FormattedNextMedal()
             {
                 return formattedNextMedal;
             }

@@ -137,9 +137,9 @@
 
                 document.AcroForm.Fields["Text1"].Value = new PdfString(playerMedalInfo.PlayerName);
                 document.AcroForm.Fields["Text2"].Value = new PdfString(playerMedalInfo.PlayerPersonalNumber.ToString());
-                document.AcroForm.Fields["Text3"].Value = new PdfString(playerMedalInfo.FormattedExistingMedal.Item1);
+                document.AcroForm.Fields["Text3"].Value = new PdfString(playerMedalInfo.FormattedExistingMedal.Description);
                 //document.AcroForm.Fields["Text4"].Value = new PdfString("Märkets nummer");
-                document.AcroForm.Fields["Text5"].Value = new PdfString(playerMedalInfo.FormattedNextMedal.Item1);
+                document.AcroForm.Fields["Text5"].Value = new PdfString(playerMedalInfo.FormattedNextMedal.Description);
 
                 var firstResult = top3ValidResults[0];
                 var secondResult = top3ValidResults[1];
@@ -186,8 +186,8 @@
             public PlayerMedalInfo(
                 string playerName,
                 int playerPersonalNumber,
-                Tuple<string, string> formattedExistingMedal,
-                Tuple<string, string> formattedNextMedal,
+                FormattedMedal formattedExistingMedal,
+                FormattedMedal formattedNextMedal,
                 HashSet<Tuple<SeasonResults.PlayerResult, bool>> playerTopThreeResults)
             {
                 PlayerName = playerName;
@@ -199,8 +199,8 @@
 
             public string PlayerName { get; }
             public int PlayerPersonalNumber { get; }
-            public Tuple<string, string> FormattedExistingMedal { get; }
-            public Tuple<string, string> FormattedNextMedal { get; }
+            public FormattedMedal FormattedExistingMedal { get; }
+            public FormattedMedal FormattedNextMedal { get; }
             public HashSet<Tuple<SeasonResults.PlayerResult, bool>> PlayerTopThreeResults { get; }
         }
     }

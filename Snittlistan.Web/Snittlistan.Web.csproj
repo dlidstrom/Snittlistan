@@ -234,6 +234,7 @@
     <Compile Include="Areas\V2\ReadModels\SeasonResults.cs" />
     <Compile Include="Areas\V2\ViewModels\ActivityCalendarEvent.cs" />
     <Compile Include="Areas\V2\ViewModels\ActivityViewModel.cs" />
+    <Compile Include="Areas\V2\ViewModels\FormattedMedal.cs" />
     <Compile Include="Infrastructure\CalendarEvent.cs" />
     <Compile Include="Areas\V2\WebsiteRoles.cs" />
     <Compile Include="Areas\V2\ViewModels\EditMedalsPostModel.cs" />
