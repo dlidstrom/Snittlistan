@@ -1,0 +1,41 @@
+﻿@model Snittlistan.Web.Areas.V2.Controllers.SupporterTravet.SupporterTravetTurnsController.ViewModel
+
+@Html.Partial("_SupporterTravetModels_Header", Model.Header)
+
+@foreach (var turn in Model.Turns)
+{
+    <div class="row">
+        <div class="span12">
+            <h2>@turn.Index</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <table class="table table-condensed table-striped table-bordered">
+                <tr>
+                    <th>Lopp</th>
+                    <th>Plats</th>
+                    <th>Nummer</th>
+                    <th>Odds</th>
+                </tr>
+                @for (var i = 0; i < turn.Races.Length; i++)
+                {
+                    var race = turn.Races[i];
+                    for (var j = 0; j < race.Results.Length; j++)
+                    {
+                        var result = race.Results[j];
+                        <tr>
+                            @if (j == 0)
+                            {
+                                <td rowspan="@(race.Results.Length)">@race.RaceIndex</td>
+                            }
+                            <td>@(j + 1)</td>
+                            <td>@result.Horse</td>
+                            <td>@result.Odds</td>
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+}

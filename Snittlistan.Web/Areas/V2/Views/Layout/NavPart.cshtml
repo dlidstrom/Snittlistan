@@ -9,6 +9,15 @@
     @Content.ControllerMenuLink(Html, "Resultat", "sprite-glyphicons_040_stats", "MatchResult", Url.Action("Index", "MatchResult"))
     @Content.ControllerMenuLink(Html, "Frånvaro", "sprite-glyphicons_045_calendar", "Absence", Url.Action("Index", "Absence"))
     @Content.ControllerMenuLink(Html, "Medlemmar", "sprite-glyphicons_043_group", "Player", Url.Action("Index", "Player"))
+    @if (Model.HasSupporterTravet)
+    {
+        @Content.ControllerMenuLink(
+            Html,
+            "SupporterTravet",
+            "sprite-glyphicons_040_stats",
+            "SupporterTravetIndex",
+            Url.Action("Index", "SupporterTravetIndex"))
+    }
     @if (Model.HasV1)
     {
         @Content.ControllerMenuLink(

@@ -6,13 +6,19 @@
     {
         public const string GlobalId = "WebsiteConfig";
 
-        public WebsiteConfig(TeamNameAndLevel[] teamNamesAndLevels, bool hasV1, int clubId, int seasonId)
+        public WebsiteConfig(
+            TeamNameAndLevel[] teamNamesAndLevels,
+            bool hasV1,
+            bool hasSupporterTravet,
+            int clubId,
+            int seasonId)
         {
             Id = GlobalId;
             TeamNamesAndLevels = teamNamesAndLevels ?? new TeamNameAndLevel[0];
             HasV1 = hasV1;
             ClubId = clubId;
             SeasonId = seasonId;
+            HasSupporterTravet = hasSupporterTravet;
         }
 
         public string Id { get; }
@@ -22,6 +28,7 @@
         public bool HasV1 { get; }
 
         public int ClubId { get; }
+        public bool HasSupporterTravet { get; }
 
         public int SeasonId { get; }
 

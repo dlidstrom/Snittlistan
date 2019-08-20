@@ -74,7 +74,14 @@
             WebsiteConfig websiteContent = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             if (websiteContent == null)
             {
-                DocumentSession.Store(new WebsiteConfig(new WebsiteConfig.TeamNameAndLevel[0], false, -1, 2019));
+                var config =
+                    new WebsiteConfig(
+                        new WebsiteConfig.TeamNameAndLevel[0],
+                        false,
+                        false,
+                        -1,
+                        2020);
+                DocumentSession.Store(config);
             }
 
             // make sure there's an admin user

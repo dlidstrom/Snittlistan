@@ -5,6 +5,7 @@
     using System.Text;
     using System.Web;
     using System.Web.Mvc;
+    using System.Web.Routing;
     using Raven.Imports.Newtonsoft.Json;
 
     public static class HtmlHelperExtensions
@@ -26,14 +27,17 @@
             this HtmlHelper helper,
             string text,
             string icon,
+            string controller,
             string action,
             string url)
         {
-            System.Web.Routing.RouteValueDictionary routeData = helper.ViewContext.RouteData.Values;
+            RouteValueDictionary routeData = helper.ViewContext.RouteData.Values;
+            object currentController = routeData["controller"];
             object currentAction = routeData["action"];
 
             string liClass = string.Empty;
-            if (string.Equals(action, currentAction as string, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(action, currentAction as string, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(controller, currentController as string, StringComparison.OrdinalIgnoreCase))
             {
                 liClass = "active";
             }
