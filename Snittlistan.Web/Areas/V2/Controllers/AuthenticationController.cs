@@ -11,6 +11,7 @@
     using Domain;
     using Indexes;
     using Queue.Messages;
+    using Raven.Abstractions;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Helpers;
     using Snittlistan.Web.Services;
@@ -59,18 +60,40 @@
                 else if (players.Length == 1)
                 {
                     var player = players[0];
-                    var token = new OneTimeToken();
-                    Debug.Assert(Request.Url != null, "Request.Url != null");
-                    var oneTimePassword =
-                        string.Join("", Enumerable.Range(1, 6).Select(_ => Random.Next(10)));
-                    token.Activate(
-                        oneTimeKey =>
+
+                    // if player already has non-expired token, then reuse that one,
+                    // else create a new token
+                    var existingTokens =
+                        DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>()
+                                       .Where(x => x.PlayerId == player.Id && x.CreatedDate > SystemTime.UtcNow.AddDays(-1))
+                                       .Take(10)
+                                       .ToArray();
+                    var validExistingToken = existingTokens.FirstOrDefault(x => x.IsExpired() == false);
+                    if (validExistingToken != null)
+                    {
+                        // reuse still valid token
+                        return RedirectToAction("LogOnOneTimePassword", new
                         {
-                            PublishMessage(new OneTimeKeyEvent(player.Email, oneTimePassword));
-                        },
-                        oneTimePassword);
-                    DocumentSession.Store(token);
-                    return RedirectToAction("LogOnOneTimePassword", new { id = player.Id, token.OneTimeKey });
+                            id = player.Id,
+                            validExistingToken.OneTimeKey
+                        });
+                    }
+                    else
+                    {
+                        // no valid token, generate new
+                        var token = new OneTimeToken(player.Id);
+                        Debug.Assert(Request.Url != null, "Request.Url != null");
+                        var oneTimePassword =
+                            string.Join("", Enumerable.Range(1, 6).Select(_ => Random.Next(10)));
+                        token.Activate(
+                            oneTimeKey =>
+                            {
+                                PublishMessage(new OneTimeKeyEvent(player.Email, oneTimePassword));
+                            },
+                            oneTimePassword);
+                        DocumentSession.Store(token);
+                        return RedirectToAction("LogOnOneTimePassword", new { id = player.Id, token.OneTimeKey });
+                    }
                 }
                 else if (players.Length > 1)
                 {
