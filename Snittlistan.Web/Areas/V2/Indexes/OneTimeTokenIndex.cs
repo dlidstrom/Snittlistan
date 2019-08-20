@@ -11,7 +11,9 @@ namespace Snittlistan.Web.Areas.V2.Indexes
             Map = tokens => from token in tokens
                             select new
                             {
-                                token.OneTimeKey
+                                token.OneTimeKey,
+                                token.PlayerId,
+                                token.CreatedDate
                             };
         }
     }
