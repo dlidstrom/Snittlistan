@@ -81,22 +81,20 @@
                             validExistingToken.OneTimeKey
                         });
                     }
-                    else
-                    {
-                        // no valid token, generate new
-                        var token = new OneTimeToken(player.Id);
-                        Debug.Assert(Request.Url != null, "Request.Url != null");
-                        var oneTimePassword =
-                            string.Join("", Enumerable.Range(1, 6).Select(_ => Random.Next(10)));
-                        token.Activate(
-                            oneTimeKey =>
-                            {
-                                PublishMessage(new OneTimeKeyEvent(player.Email, oneTimePassword));
-                            },
-                            oneTimePassword);
-                        DocumentSession.Store(token);
-                        return RedirectToAction("LogOnOneTimePassword", new { id = player.Id, token.OneTimeKey });
-                    }
+
+                    // no valid token, generate new
+                    var token = new OneTimeToken(player.Id);
+                    Debug.Assert(Request.Url != null, "Request.Url != null");
+                    var oneTimePassword =
+                        string.Join("", Enumerable.Range(1, 6).Select(_ => Random.Next(10)));
+                    token.Activate(
+                        oneTimeKey =>
+                        {
+                            PublishMessage(new OneTimeKeyEvent(player.Email, oneTimePassword));
+                        },
+                        oneTimePassword);
+                    DocumentSession.Store(token);
+                    return RedirectToAction("LogOnOneTimePassword", new { id = player.Id, token.OneTimeKey });
                 }
                 else if (players.Length > 1)
                 {
@@ -138,42 +136,36 @@
             var player = DocumentSession.Load<Player>(id);
             if (player == null)
                 throw new HttpException(404, "Player not found");
-            switch (oneTimeToken.ApplyToken())
+            if (oneTimeToken.IsExpired())
             {
-                case OneTimeToken.Result.Ok:
-                {
-                    try
-                    {
-                        if (vm.Password != oneTimeToken.Payload)
-                        {
-                            ModelState.AddModelError("Lösenord", "Felaktigt lösenord");
-                            vm.Password = string.Empty;
-                            return View(vm);
-                        }
-
-                        authenticationService.SetAuthCookie(player.Id, vm.RememberMe);
-                        var builder = new StringBuilder();
-                        builder.AppendLine($"User Agent: {Request.UserAgent}");
-                        PublishMessage(
-                            EmailTask.Create(
-                                ConfigurationManager.AppSettings["OwnerEmail"],
-                                $"{player.Name} logged in",
-                                builder.ToString()));
-                    }
-                    catch
-                    {
-                        //
-                    }
-
-                    return RedirectToAction("Index", "Roster");
-                }
-                case OneTimeToken.Result.Expired:
-                {
-                    return View("TokenExpired");
-                }
-                default:
-                    throw new ArgumentOutOfRangeException();
+                return View("TokenExpired");
             }
+
+            try
+            {
+                if (vm.Password != oneTimeToken.Payload)
+                {
+                    ModelState.AddModelError("Lösenord", "Felaktigt lösenord");
+                    vm.Password = string.Empty;
+                    return View(vm);
+                }
+
+                authenticationService.SetAuthCookie(player.Id, vm.RememberMe);
+                var builder = new StringBuilder();
+                builder.AppendLine($"User Agent: {Request.UserAgent}");
+                oneTimeToken.MarkUsed();
+                PublishMessage(
+                    EmailTask.Create(
+                        ConfigurationManager.AppSettings["OwnerEmail"],
+                        $"{player.Name} logged in",
+                        builder.ToString()));
+            }
+            catch
+            {
+                //
+            }
+
+            return RedirectToAction("Index", "Roster");
         }
 
         public ActionResult LogOnPassword(string email, string returnUrl)
