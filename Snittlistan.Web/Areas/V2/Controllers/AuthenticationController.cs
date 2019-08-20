@@ -148,7 +148,7 @@
                         {
                             ModelState.AddModelError("Lösenord", "Felaktigt lösenord");
                             vm.Password = string.Empty;
-                            return View();
+                            return View(vm);
                         }
 
                         authenticationService.SetAuthCookie(player.Id, vm.RememberMe);
