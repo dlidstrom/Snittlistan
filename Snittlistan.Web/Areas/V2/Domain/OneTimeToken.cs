@@ -29,24 +29,16 @@
             return span.TotalDays > 1;
         }
 
+        public void MarkUsed()
+        {
+            UsedDate = SystemTime.UtcNow;
+        }
+
         public void Activate(Action<string> action, string payload)
         {
             OneTimeKey = Guid.NewGuid().ToString();
             Payload = payload;
             action.Invoke(OneTimeKey);
-        }
-
-        public Result ApplyToken()
-        {
-            if (IsExpired()) return Result.Expired;
-            UsedDate = SystemTime.UtcNow;
-            return Result.Ok;
-        }
-
-        public enum Result
-        {
-            Ok,
-            Expired
         }
     }
 }
