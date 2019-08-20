@@ -50,7 +50,10 @@
                 }
                 else
                 {
-                    players = DocumentSession.Query<Player, PlayerSearch>().Where(x => x.Email == vm.Email).ToArray();
+                    players = DocumentSession.Query<Player, PlayerSearch>()
+                                             .Where(x => x.Email == vm.Email
+                                                         && (x.PlayerStatus == Player.Status.Active || x.PlayerStatus == Player.Status.Supporter))
+                                             .ToArray();
                 }
 
                 if (players.Length == 0)
