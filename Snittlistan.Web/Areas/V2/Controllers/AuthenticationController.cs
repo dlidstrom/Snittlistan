@@ -71,7 +71,7 @@
                                        .Where(x => x.PlayerId == player.Id && x.CreatedDate > SystemTime.UtcNow.AddDays(-1))
                                        .Take(10)
                                        .ToArray();
-                    var validExistingToken = existingTokens.FirstOrDefault(x => x.IsExpired() == false);
+                    var validExistingToken = existingTokens.FirstOrDefault(x => x.IsExpired() == false && x.UsedDate.HasValue == false);
                     if (validExistingToken != null)
                     {
                         // reuse still valid token
