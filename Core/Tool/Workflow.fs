@@ -1,13 +1,11 @@
 [<RequireQualifiedAccessAttribute>]
 module Workflow
 
-let bitsApi = BitsApi.functions()
-
-let run matchId =
+let run (bitsClient : Api.Bits.Client) matchId =
     let matchScores =
-        bitsApi.getMatchResults matchId
+        bitsClient.GetMatchScores matchId
 
     let matchResults =
-        bitsApi.getMatchResults matchId
+        bitsClient.GetMatchResults matchId
 
     matchScores, matchResults
