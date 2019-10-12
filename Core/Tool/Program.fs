@@ -2,23 +2,27 @@
 
 open System
 open Argu
-open Contracts
+open Contracts.Snittlistan
 
 module BitsFetch =
 
     type Arguments =
+        | [<Mandatory>] ApiKey of apiKey : string
         | [<Mandatory>] MatchId of matchId : int
         with
             interface IArgParserTemplate with
                 member this.Usage =
                     match this with
+                    | ApiKey _ -> "Specifies the ApiKey"
                     | MatchId _ -> "specifies the match id"
 
     let main argv =
         let parser = ArgumentParser.Create<Arguments>(programName = "Tool.exe")
         let results = parser.Parse argv
+        let apiKey = results.GetResult(ApiKey)
         let matchId = results.GetResult(MatchId)
-        let x, y = Workflow.run matchId
+        let bitsClient = Api.Bits.Client(apiKey)
+        let x, y = Workflow.run bitsClient matchId
         printfn "%s" x.Series.[0].Boards.[0].Scores.[0].PlayerName
         0
 
