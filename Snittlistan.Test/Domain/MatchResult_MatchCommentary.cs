@@ -13,6 +13,8 @@ using Snittlistan.Web.Areas.V2.ReadModels;
 
 namespace Snittlistan.Test.Domain
 {
+    using System.Threading.Tasks;
+
     [TestFixture]
     public class MatchResult_MatchCommentary : WebApiIntegrationTest
     {
@@ -55,11 +57,11 @@ namespace Snittlistan.Test.Domain
         };
 
         [TestCaseSource(nameof(BitsMatchIdAndCommentaries))]
-        public void CorrectTurn(TestCase testCase)
+        public async Task CorrectTurn(TestCase testCase)
         {
             // Act
             var bitsParser = new BitsParser(Players);
-            var content = BitsGateway.GetMatch(testCase.BitsMatchId);
+            var content = await BitsGateway.GetMatch(testCase.BitsMatchId);
             var parseResult = bitsParser.Parse(content, "Fredrikshof");
 
             // Assert
@@ -67,10 +69,10 @@ namespace Snittlistan.Test.Domain
         }
 
         [TestCaseSource(nameof(BitsMatchIdAndCommentaries))]
-        public void MatchCommentarySummaryText(TestCase testCase)
+        public async Task MatchCommentarySummaryText(TestCase testCase)
         {
             // Act
-            var matchResult = Act(testCase);
+            var matchResult = await  Act(testCase);
 
             // Assert
             var changes = matchResult.GetUncommittedChanges();
@@ -79,10 +81,10 @@ namespace Snittlistan.Test.Domain
         }
 
         [TestCaseSource(nameof(BitsMatchIdAndCommentaries))]
-        public void MatchCommentaryBodyText(TestCase testCase)
+        public async Task MatchCommentaryBodyText(TestCase testCase)
         {
             // Act
-            var matchResult = Act(testCase);
+            var matchResult = await Act(testCase);
 
             // Assert
             var changes = matchResult.GetUncommittedChanges();
@@ -90,7 +92,7 @@ namespace Snittlistan.Test.Domain
             Assert.That(string.Join(" ", matchCommentaryEvent.BodyText), Is.EqualTo(testCase.ExpectedBodyText));
         }
 
-        private MatchResult Act(TestCase testCase)
+        private async Task<MatchResult> Act(TestCase testCase)
         {
             // Arrange
             Transact(session =>
@@ -102,7 +104,7 @@ namespace Snittlistan.Test.Domain
             });
             var bitsParser = new BitsParser(Players);
 
-            var content = BitsGateway.GetMatch(testCase.BitsMatchId);
+            var content = await BitsGateway.GetMatch(testCase.BitsMatchId);
             var parseResult = bitsParser.Parse(content, "Fredrikshof");
             var rosterPlayerIds = new HashSet<string>(
                 parseResult.Series.SelectMany(x => x.Tables.SelectMany(y => new[] { y.Game1.Player, y.Game2.Player })));

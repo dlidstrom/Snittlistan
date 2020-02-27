@@ -194,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="Areas\V2\Contracts\HeadInfo.cs" />
     <Compile Include="Areas\V2\Controllers\ActivityDetailsController.cs" />
     <Compile Include="Areas\V2\Controllers\ActivityEditController.cs" />
     <Compile Include="Areas\V2\Controllers\ActivityIndexController.cs" />

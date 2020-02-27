@@ -5,6 +5,8 @@ using Snittlistan.Web.Areas.V2.ReadModels;
 
 namespace Snittlistan.Test
 {
+    using System.Threading.Tasks;
+
     [TestFixture]
     public class BitsParser4X4Test
     {
@@ -31,13 +33,13 @@ namespace Snittlistan.Test
         }
 
         [Test]
-        public void CanParseHomeTeam()
+        public async Task CanParseHomeTeam()
         {
             // Arrange
             const string Team = "Fredrikshof B";
 
             // Act
-            var result = new BitsParser(homePlayers).Parse4(BitsGateway.GetMatch(3060835), Team);
+            var result = new BitsParser(homePlayers).Parse4(await BitsGateway.GetMatch(3060835), Team);
             Assert.That(result.TeamScore, Is.EqualTo(18));
             Assert.That(result.OpponentScore, Is.EqualTo(1));
             Assert.That(result.Turn, Is.EqualTo(11));
@@ -75,13 +77,13 @@ namespace Snittlistan.Test
         }
 
         [Test]
-        public void CanParseAwayTeam()
+        public async Task CanParseAwayTeam()
         {
             // Arrange
             const string Team = "Trippel XXX";
 
             // Act
-            var result = new BitsParser(awayPlayers).Parse4(BitsGateway.GetMatch(3060835), Team);
+            var result = new BitsParser(awayPlayers).Parse4(await BitsGateway.GetMatch(3060835), Team);
             Assert.That(result.TeamScore, Is.EqualTo(1));
             Assert.That(result.OpponentScore, Is.EqualTo(18));
             Assert.That(result.Turn, Is.EqualTo(11));
@@ -119,13 +121,13 @@ namespace Snittlistan.Test
         }
 
         [Test]
-        public void DoesNotParseUnfinishedGame()
+        public async Task DoesNotParseUnfinishedGame()
         {
             // Arrange
             const string Team = "Värtans IK B";
 
             // Act
-            var result = new BitsParser(awayPlayers).Parse4(BitsGateway.GetMatch(0), Team);
+            var result = new BitsParser(awayPlayers).Parse4(await BitsGateway.GetMatch(0), Team);
 
             // Assert
             Assert.That(result, Is.Null);

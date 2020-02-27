@@ -25,7 +25,7 @@ namespace Snittlistan.Test.ApiControllers
         private IWindsorContainer Container { get; set; }
 
         [SetUp]
-        public void SetUp()
+        public async Task SetUp()
         {
             var configuration = new HttpConfiguration();
             Container = new WindsorContainer();
@@ -37,7 +37,7 @@ namespace Snittlistan.Test.ApiControllers
                 EventStoreInstaller.FromAssembly(typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),
                 new EventStoreSessionInstaller(LifestyleType.Scoped));
             Container.Register(Component.For<IMsmqTransaction>().Instance(Mock.Of<IMsmqTransaction>()));
-            OnSetUp(Container);
+            await OnSetUp(Container);
 
             MvcApplication.Bootstrap(Container, configuration);
             Client = new HttpClient(new HttpServer(configuration));
@@ -69,8 +69,9 @@ namespace Snittlistan.Test.ApiControllers
             WaitForIndexing();
         }
 
-        protected virtual void OnSetUp(IWindsorContainer container)
+        protected virtual Task OnSetUp(IWindsorContainer container)
         {
+            return Task.CompletedTask;
         }
 
         private void WaitForIndexing()

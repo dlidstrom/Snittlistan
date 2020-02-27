@@ -88,7 +88,7 @@
         public ActionResult Delete(int id)
         {
             var absence = DocumentSession.Include<Absence>(x => x.Player).Load<Absence>(id);
-            if (absence == null) throw new HttpException(404, "Absence not found");
+            if (absence == null) return RedirectToAction("Index");
             var player = DocumentSession.Load<Player>(absence.Player);
             return View(new AbsenceViewModel(absence, player));
         }

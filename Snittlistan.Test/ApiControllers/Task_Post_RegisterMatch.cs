@@ -13,6 +13,8 @@ using Snittlistan.Web.Infrastructure;
 
 namespace Snittlistan.Test.ApiControllers
 {
+    using System.Threading.Tasks;
+
     [TestFixture]
     public class Task_Post_RegisterMatch : WebApiIntegrationTest
     {
@@ -68,7 +70,7 @@ namespace Snittlistan.Test.ApiControllers
             content = httpContent.ReadAsStringAsync().Result;
         }
 
-        protected override void OnSetUp(Castle.Windsor.IWindsorContainer container)
+        protected override async Task OnSetUp(Castle.Windsor.IWindsorContainer container)
         {
             // Arrange
             Transact(session =>
@@ -108,7 +110,9 @@ namespace Snittlistan.Test.ApiControllers
                 session.Store(roster);
             });
 
-            var bitsClient = Mock.Of<IBitsClient>(x => x.DownloadMatchResult(3048746) == BitsGateway.GetMatch(3048746));
+            var bitsClient = Mock.Of<IBitsClient>();
+            Mock.Get(bitsClient).Setup(x => x.DownloadMatchResult(3048746))
+                .Returns(await BitsGateway.GetMatch(3048746));
             container.Register(Component.For<IBitsClient>().Instance(bitsClient));
         }
     }
