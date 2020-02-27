@@ -8,6 +8,8 @@ using Snittlistan.Web.Areas.V2.ReadModels;
 
 namespace Snittlistan.Web.Areas.V2.Domain
 {
+    using Contracts;
+
     public class BitsParser
     {
         private readonly Player[] players;
@@ -23,113 +25,25 @@ namespace Snittlistan.Web.Areas.V2.Domain
             Away = 2
         }
 
-        public static ParseHeaderResult ParseHeader(string content, HashSet<string> possibleTeams)
+        public static ParseHeaderResult ParseHeader(string content)
         {
             if (content == null) throw new ArgumentNullException(nameof(content));
-            if (possibleTeams == null) throw new ArgumentNullException(nameof(possibleTeams));
 
-            var document = new HtmlDocument();
-            document.LoadHtml(content);
+            var headInfo = HeadInfo.FromJson(content);
 
-            // find team
-            var documentNode = document.DocumentNode;
-            var homeTeamNode = documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelHomeTeam']");
-            var homeTeamName = homeTeamNode.InnerText;
-            var awayTeamNode = documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelAwayTeam']");
-            var awayTeamName = awayTeamNode.InnerText;
-            var dateNode = documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelMatchDate']");
-            var dateText = dateNode.InnerText;
-            var locationNode = documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelHallName']");
-            var locationText = locationNode.InnerText;
-            var turnNode = documentNode.SelectSingleNode("//td[@id='MainContentPlaceHolder_MatchInfo_LabelRound']");
-            var turn = int.Parse(turnNode.InnerText.Replace("Omgång ", string.Empty));
-            var oilPatternNode = documentNode.SelectSingleNode("//td[@id='MainContentPlaceHolder_MatchInfo_LabelMatchOilPatternName']//a");
-            string oilPatternText;
-            string oilPatternUrl;
-            if (oilPatternNode != null)
-            {
-                oilPatternText = oilPatternNode.InnerText;
-                var matches = Regex.Match(oilPatternNode.OuterHtml, @"\.\./(?<url>OilPattern\.aspx\?OilPatternId=\d+)");
-                oilPatternUrl = $"http://bits.swebowl.se/{matches.Groups["url"].Value}";
-            }
-            else
-            {
-                oilPatternText = string.Empty;
-                oilPatternUrl = string.Empty;
-            }
-
-            var homeTeamNameSplit = homeTeamName.Split();
-            string homeTeam = null;
-            foreach (var possibleTeam in possibleTeams)
-            {
-                // perfect match
-                var equals = possibleTeam.Equals(homeTeamName, StringComparison.InvariantCultureIgnoreCase);
-                if (equals)
-                {
-                    homeTeam = possibleTeam;
-                    break;
-                }
-            }
-
-            if (homeTeam == null)
-            {
-                foreach (var possibleTeam in possibleTeams)
-                {
-                    // best match
-                    var contains = possibleTeam.IndexOf(homeTeamNameSplit.First(), StringComparison.InvariantCultureIgnoreCase);
-                    if (contains == 0)
-                    {
-                        homeTeam = possibleTeam;
-                    }
-                }
-            }
-
-            var oilPatternInformation = new OilPatternInformation(oilPatternText, oilPatternUrl);
-            if (homeTeam != null)
-            {
-                var result = new ParseHeaderResult(
-                    homeTeam,
-                    awayTeamName,
-                    turn,
-                    DateTime.Parse(dateText),
-                    locationText,
-                    oilPatternInformation);
-                return result;
-            }
-
-            var awayTeamNameSplit = awayTeamName.Split();
-            string awayTeam = null;
-            foreach (var possibleTeam in possibleTeams)
-            {
-                // perfect match
-                var equals = possibleTeam.Equals(awayTeamName, StringComparison.InvariantCultureIgnoreCase);
-                if (equals)
-                {
-                    awayTeam = possibleTeam;
-                    break;
-                }
-            }
-
-            if (awayTeam == null)
-            {
-                foreach (var possibleTeam in possibleTeams)
-                {
-                    // best match
-                    var contains = possibleTeam.IndexOf(awayTeamNameSplit.First(), StringComparison.InvariantCultureIgnoreCase);
-                    if (contains == 0)
-                    {
-                        awayTeam = possibleTeam;
-                    }
-                }
-            }
-
-            if (awayTeam == null)
-            {
-                var message = $"No matching teams found (homeTeamName = {homeTeamName}, awayTeamName = {awayTeamName}, possible = {string.Join(", ", possibleTeams)})";
-                throw new ApplicationException(message);
-            }
-
-            return new ParseHeaderResult(awayTeam, homeTeamName, turn, DateTime.Parse(dateText), locationText, oilPatternInformation);
+            var yearPart = headInfo.MatchDate.Substring(0, 4);
+            var monthPart = headInfo.MatchDate.Substring(5, 2);
+            var dayPart = headInfo.MatchDate.Substring(8, 2);
+            var result = new ParseHeaderResult(
+                headInfo.MatchHomeTeamName,
+                headInfo.MatchAwayTeamName,
+                headInfo.MatchRoundId,
+                new DateTime(int.Parse(yearPart), int.Parse(monthPart), int.Parse(dayPart)).AddHours(headInfo.MatchTime / 100).AddMinutes(headInfo.MatchTime % 100),
+                headInfo.MatchHallName,
+                new OilPatternInformation(
+                    headInfo.MatchOilPatternName,
+                    headInfo.MatchOilPatternId != 0 ? $"https://bits.swebowl.se/MiscDisplay/Oilpattern/{headInfo.MatchOilPatternId}" : string.Empty));
+            return result;
         }
 
         public static ParseStandingsResult ParseStandings(string content)

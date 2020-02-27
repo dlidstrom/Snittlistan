@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using NUnit.Framework;
-using Snittlistan.Web.Areas.V2.Domain;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using NUnit.Framework;
+    using Snittlistan.Web.Areas.V2.Domain;
+
     [TestFixture]
     public class BitsParser_Header
     {
         [TestCaseSource(nameof(TestCases))]
-        public void TestParseHeader(
+        public async Task TestParseHeader(
             int bitsMatchId,
             HashSet<string> possibleTeams,
             DateTime date,
@@ -20,10 +21,10 @@ namespace Snittlistan.Test
             string oilPatternUrl)
         {
             // Arrange
-            var content = BitsGateway.GetMatch(bitsMatchId);
+            var content = await BitsGateway.GetHeadInfo(bitsMatchId);
 
             // Act
-            var header = BitsParser.ParseHeader(content, possibleTeams);
+            var header = BitsParser.ParseHeader(content);
 
             // Assert
             Assert.That(header.Date, Is.EqualTo(date));
@@ -63,7 +64,7 @@ namespace Snittlistan.Test
                     "Fredrikshof IF F",
                     "BwK Ankaret F",
                     22,
-                    string.Empty,
+                    "Ingen OljeProfil",
                     string.Empty);
             }
         }

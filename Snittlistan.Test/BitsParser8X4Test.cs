@@ -5,6 +5,8 @@ using Snittlistan.Web.Areas.V2.ReadModels;
 
 namespace Snittlistan.Test
 {
+    using System.Threading.Tasks;
+
     [TestFixture]
     public class BitsParser8X4Test
     {
@@ -41,65 +43,65 @@ namespace Snittlistan.Test
         }
 
         [Test]
-        public void CanFindName()
+        public async Task CanFindName()
         {
             // Arrange
             const string Team = "Fredrikshof A";
 
             // Act
-            var result = new BitsParser(playersTeamA).Parse(BitsGateway.GetMatch(3050651), Team);
+            var result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetMatch(3050651), Team);
 
             // Assert
             Assert.That(result.TeamScore, Is.EqualTo(7));
         }
 
         [Test]
-        public void CanParseAlternateHomeTeamName()
+        public async Task CanParseAlternateHomeTeamName()
         {
             // Arrange
             const string Team = "Fredrikshof A";
 
             // Act
-            var result = new BitsParser(playersTeamA).Parse(BitsGateway.GetMatch(3048746), Team);
+            var result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetMatch(3048746), Team);
 
             // Assert
             Assert.That(result.TeamScore, Is.EqualTo(11));
         }
 
         [Test]
-        public void CanParseAlternateAwayTeamName()
+        public async Task CanParseAlternateAwayTeamName()
         {
             // Arrange
             const string Team = "Fredrikshof A";
 
             // Act
-            var result = new BitsParser(playersTeamA).Parse(BitsGateway.GetMatch(3048747), Team);
+            var result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetMatch(3048747), Team);
 
             // Assert
             Assert.That(result.TeamScore, Is.EqualTo(10));
         }
 
         [Test]
-        public void CanParseAlternateAwayTeamNameWithIf()
+        public async Task CanParseAlternateAwayTeamNameWithIf()
         {
             // Arrange
             const string Team = "Fredrikshof F";
 
             // Act
-            var result = new BitsParser(playersTeamF).Parse(BitsGateway.GetMatch(3048477), Team);
+            var result = new BitsParser(playersTeamF).Parse(await BitsGateway.GetMatch(3048477), Team);
 
             // Assert
             Assert.That(result.TeamScore, Is.EqualTo(14));
         }
 
         [Test]
-        public void CanParseHomeTeam()
+        public async Task CanParseHomeTeam()
         {
             // Arrange
             const string Team = "Fredrikshof IF";
 
             // Act
-            var result = new BitsParser(playersTeamA).Parse(BitsGateway.GetMatch(3048746), Team);
+            var result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetMatch(3048746), Team);
             Assert.That(result.TeamScore, Is.EqualTo(11));
             Assert.That(result.OpponentScore, Is.EqualTo(9));
             var series = result.Series;
@@ -136,13 +138,13 @@ namespace Snittlistan.Test
         }
 
         [Test]
-        public void CanParseAwayTeam()
+        public async Task CanParseAwayTeam()
         {
             // Arrange
             const string Team = "Fredrikshof IF";
 
             // Act
-            var result = new BitsParser(playersTeamA).Parse(BitsGateway.GetMatch(3048747), Team);
+            var result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetMatch(3048747), Team);
             Assert.That(result.TeamScore, Is.EqualTo(10));
             Assert.That(result.OpponentScore, Is.EqualTo(9));
             var series = result.Series;
@@ -179,7 +181,7 @@ namespace Snittlistan.Test
         }
 
         [Test]
-        public void CanParseThreeSeries()
+        public async Task CanParseThreeSeries()
         {
             // Arrange
             const string Team = "Fredrikshof IF";
@@ -197,7 +199,7 @@ namespace Snittlistan.Test
             };
 
             // Act
-            var result = new BitsParser(players).Parse(BitsGateway.GetMatch(3067035), Team);
+            var result = new BitsParser(players).Parse(await BitsGateway.GetMatch(3067035), Team);
             Assert.That(result.TeamScore, Is.EqualTo(10));
             Assert.That(result.OpponentScore, Is.EqualTo(5));
             Assert.That(result.Turn, Is.EqualTo(24));
@@ -228,13 +230,13 @@ namespace Snittlistan.Test
         }
 
         [Test]
-        public void DoesNotParseUnfinishedGame()
+        public async Task DoesNotParseUnfinishedGame()
         {
             // Arrange
             const string Team = "Fredrikshof IF BK";
 
             // Act
-            var result = new BitsParser(playersTeamA).Parse(BitsGateway.GetMatch(0), Team);
+            var result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetMatch(0), Team);
 
             // Assert
             Assert.That(result, Is.Null);
