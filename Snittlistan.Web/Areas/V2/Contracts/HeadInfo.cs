@@ -1,9 +1,7 @@
 ﻿namespace Snittlistan.Web.Areas.V2.Contracts
 {
     using System;
-    using System.Globalization;
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Converters;
 
     public partial class HeadInfo
     {

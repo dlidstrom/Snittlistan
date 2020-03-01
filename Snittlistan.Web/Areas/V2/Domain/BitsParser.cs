@@ -25,7 +25,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
             Away = 2
         }
 
-        public static ParseHeaderResult ParseHeader(string content)
+        public static ParseHeaderResult ParseHeader(string content, int clubId)
         {
             if (content == null) throw new ArgumentNullException(nameof(content));
 
@@ -34,9 +34,25 @@ namespace Snittlistan.Web.Areas.V2.Domain
             var yearPart = headInfo.MatchDate.Substring(0, 4);
             var monthPart = headInfo.MatchDate.Substring(5, 2);
             var dayPart = headInfo.MatchDate.Substring(8, 2);
+            string homeTeamName;
+            string awayTeamName;
+            if (headInfo.MatchHomeClubId == clubId)
+            {
+                homeTeamName = headInfo.MatchHomeTeamAlias;
+                awayTeamName = headInfo.MatchAwayTeamAlias;
+            } else if (headInfo.MatchAwayClubId == clubId)
+            {
+                homeTeamName = headInfo.MatchAwayTeamAlias;
+                awayTeamName = headInfo.MatchHomeTeamAlias;
+            }
+            else
+            {
+                throw new Exception($"Unmatched clubId: {clubId}");
+            }
+
             var result = new ParseHeaderResult(
-                headInfo.MatchHomeTeamName,
-                headInfo.MatchAwayTeamName,
+                homeTeamName,
+                awayTeamName,
                 headInfo.MatchRoundId,
                 new DateTime(int.Parse(yearPart), int.Parse(monthPart), int.Parse(dayPart)).AddHours(headInfo.MatchTime / 100).AddMinutes(headInfo.MatchTime % 100),
                 headInfo.MatchHallName,

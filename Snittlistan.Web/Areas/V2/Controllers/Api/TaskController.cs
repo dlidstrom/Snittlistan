@@ -60,9 +60,9 @@
             var players = DocumentSession.Query<Player, PlayerSearch>()
                                          .ToArray();
             var parser = new BitsParser(players);
-            //var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+            var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             var result = bitsClient.DownloadMatchResult(roster.BitsMatchId);
-            var header = BitsParser.ParseHeader(result);
+            var header = BitsParser.ParseHeader(result, websiteConfig.ClubId);
 
             // chance to update roster values
             roster.OilPattern = header.OilPattern;

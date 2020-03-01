@@ -8,11 +8,12 @@ namespace Snittlistan.Web.Models
     {
         public const string GlobalId = "WebsiteConfig";
 
-        public WebsiteConfig(TeamNameAndLevel[] teamNamesAndLevels, bool hasV1)
+        public WebsiteConfig(TeamNameAndLevel[] teamNamesAndLevels, bool hasV1, int clubId)
         {
             Id = GlobalId;
             TeamNamesAndLevels = teamNamesAndLevels ?? new TeamNameAndLevel[0];
             HasV1 = hasV1;
+            ClubId = clubId;
         }
 
         public string Id { get; }
@@ -20,6 +21,8 @@ namespace Snittlistan.Web.Models
         public TeamNameAndLevel[] TeamNamesAndLevels { get; }
 
         public bool HasV1 { get; }
+
+        public int ClubId { get; }
 
         public HashSet<string> GetTeamNames()
         {

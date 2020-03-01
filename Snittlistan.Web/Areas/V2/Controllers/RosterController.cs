@@ -101,7 +101,7 @@
             var season = DocumentSession.LatestSeasonOrDefault(DateTime.Now.Year);
             var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             var content = bitsClient.DownloadMatchResult(vm.BitsMatchId);
-            var header = BitsParser.ParseHeader(content);
+            var header = BitsParser.ParseHeader(content, websiteConfig.ClubId);
             ViewBag.TeamNamesAndLevels = websiteConfig.TeamNamesAndLevels;
             return View(
                 "Create", new CreateRosterViewModel
