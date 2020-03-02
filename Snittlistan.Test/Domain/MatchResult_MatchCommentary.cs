@@ -61,7 +61,7 @@ namespace Snittlistan.Test.Domain
         {
             // Act
             var bitsParser = new BitsParser(Players);
-            var content = await BitsGateway.GetMatch(testCase.BitsMatchId);
+            var content = await BitsGateway.GetResultsAndScores(testCase.BitsMatchId);
             var parseResult = bitsParser.Parse(content, "Fredrikshof");
 
             // Assert
@@ -104,7 +104,7 @@ namespace Snittlistan.Test.Domain
             });
             var bitsParser = new BitsParser(Players);
 
-            var content = await BitsGateway.GetMatch(testCase.BitsMatchId);
+            var content = await BitsGateway.GetResultsAndScores(testCase.BitsMatchId);
             var parseResult = bitsParser.Parse(content, "Fredrikshof");
             var rosterPlayerIds = new HashSet<string>(
                 parseResult.Series.SelectMany(x => x.Tables.SelectMany(y => new[] { y.Game1.Player, y.Game2.Player })));

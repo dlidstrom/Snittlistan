@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Text;
+    using System.Threading.Tasks;
     using System.Web.Http;
     using Elmah;
     using Newtonsoft.Json;
@@ -53,7 +54,7 @@
             return Ok();
         }
 
-        private IHttpActionResult Handle(VerifyMatchMessage message)
+        private async Task<IHttpActionResult> Handle(VerifyMatchMessage message)
         {
             var roster = DocumentSession.Load<Roster>(message.RosterId);
             if (roster.IsVerified) return Ok();
@@ -61,7 +62,7 @@
                                          .ToArray();
             var parser = new BitsParser(players);
             var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
-            var result = bitsClient.DownloadMatchResult(roster.BitsMatchId);
+            var result = await bitsClient.GetHeadInfo(roster.BitsMatchId);
             var header = BitsParser.ParseHeader(result, websiteConfig.ClubId);
 
             // chance to update roster values
@@ -72,10 +73,11 @@
             if (roster.MatchResultId == null) return Ok();
 
             // update match result values
+            var (matchResults, matchScores) = await bitsClient.GetResultsAndScores(roster.BitsMatchId);
             if (roster.IsFourPlayer)
             {
                 var matchResult = EventStoreSession.Load<MatchResult4>(roster.MatchResultId);
-                var parseResult = parser.Parse4(result, roster.Team);
+                var parseResult = parser.Parse4((matchResults, matchScores), roster.Team);
                 roster.Players = GetPlayerIds(parseResult);
                 var isVerified = matchResult.Update(
                     PublishMessage,
@@ -90,7 +92,7 @@
             else
             {
                 var matchResult = EventStoreSession.Load<MatchResult>(roster.MatchResultId);
-                var parseResult = parser.Parse(result, roster.Team);
+                var parseResult = parser.Parse((matchResults, matchScores), roster.Team);
                 roster.Players = GetPlayerIds(parseResult);
                 var resultsForPlayer = DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
                                                       .Where(x => x.Season == roster.Season)
@@ -112,7 +114,7 @@
             return Ok();
         }
 
-        private IHttpActionResult Handle(RegisterMatchesMessage message)
+        private async Task<IHttpActionResult> Handle(RegisterMatchesMessage message)
         {
             var pendingMatches = ExecuteQuery(new GetPendingMatchesQuery());
             var players = ExecuteQuery(new GetActivePlayersQuery());
@@ -122,7 +124,7 @@
                 try
                 {
                     var parser = new BitsParser(players);
-                    var content = bitsClient.DownloadMatchResult(pendingMatch.BitsMatchId);
+                    var content = await bitsClient.GetResultsAndScores(pendingMatch.BitsMatchId);
                     if (pendingMatch.IsFourPlayer)
                     {
                         var parse4Result = parser.Parse4(content, pendingMatch.Team);

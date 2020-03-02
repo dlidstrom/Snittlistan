@@ -111,8 +111,10 @@ namespace Snittlistan.Test.ApiControllers
             });
 
             var bitsClient = Mock.Of<IBitsClient>();
-            Mock.Get(bitsClient).Setup(x => x.DownloadMatchResult(3048746))
-                .Returns(await BitsGateway.GetMatch(3048746));
+            Mock.Get(bitsClient).Setup(x => x.GetMatchResults(3048746))
+                .Returns(BitsGateway.GetMatchResults(3048746));
+            Mock.Get(bitsClient).Setup(x => x.GetMatchScores(3048746))
+                .Returns(BitsGateway.GetMatchScores(3048746));
             container.Register(Component.For<IBitsClient>().Instance(bitsClient));
         }
     }

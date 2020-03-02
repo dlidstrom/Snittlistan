@@ -2,33 +2,39 @@ namespace Snittlistan.Test
 {
     using System;
     using System.IO;
-    using System.Net.Http;
     using System.Threading.Tasks;
     using Snittlistan.Web.Infrastructure;
 
     public static class BitsGateway
     {
-        private static readonly HttpClient Client = new HttpClient();
+        private static readonly IBitsClient Client = new BitsClient(Environment.GetEnvironmentVariable("ApiKey"));
 
-        public static async Task<string> GetHeadInfo(int id)
+        public static async Task<string> GetHeadInfo(int matchId)
         {
-            return await Try($"HeadInfo-{id}.json", async () =>
-            {
-                var apiKey = Environment.GetEnvironmentVariable("ApiKey");
-                var request = new HttpRequestMessage(HttpMethod.Get, $"https://api.swebowl.se/api/v1/matchResult/GetHeadInfo?APIKey={apiKey}&id={id}");
-                request.Headers.Referrer = new Uri($"https://bits.swebowl.se/match-detail?matchid={id}");
-                var result = await Client.SendAsync(request);
-                result.EnsureSuccessStatusCode();
-                var content = await result.Content.ReadAsStringAsync();
-                return content;
-            });
+            return await Try($"HeadInfo-{matchId}.json", async () => await Client.GetHeadInfo(matchId));
         }
 
-        public static async Task<string> GetMatch(int bitsMatchId)
+        public static async Task<string> GetMatchResults(int matchId)
         {
-            var bitsClient = new BitsClient();
-            var content = await Try($"BitsMatch-{bitsMatchId}.html", () => Task.FromResult(bitsClient.DownloadMatchResult(bitsMatchId)));
-            return content;
+            var matchResults = await Try(
+                $"MatchResults-{matchId}.json",
+                () => Client.GetMatchResults(matchId));
+            return matchResults;
+        }
+
+        public static async Task<string> GetMatchScores(int matchId)
+        {
+            var matchScores = await Try(
+                $"MatchScores-{matchId}.json",
+                () => Client.GetMatchScores(matchId));
+            return matchScores;
+        }
+
+        public static async Task<(string, string)> GetResultsAndScores(int matchId)
+        {
+            var matchResults = await GetMatchResults(matchId);
+            var matchScores = await GetMatchScores(matchId);
+            return (matchResults, matchScores);
         }
 
         private static async Task<string> Try(string filename, Func<Task<string>> func)

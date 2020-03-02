@@ -194,6 +194,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="Areas\V2\Contracts\MatchResults.cs" />
+    <Compile Include="Areas\V2\Contracts\MatchScores.cs" />
     <Compile Include="Areas\V2\Contracts\HeadInfo.cs" />
     <Compile Include="Areas\V2\Controllers\ActivityDetailsController.cs" />
     <Compile Include="Areas\V2\Controllers\ActivityEditController.cs" />
@@ -205,6 +207,7 @@
     <Compile Include="Areas\V2\Controllers\EliteMedalsPrintController.cs" />
     <Compile Include="Areas\V2\Controllers\RosterAcceptController.cs" />
     <Compile Include="Areas\V2\Domain\Activity.cs" />
+    <Compile Include="Areas\V2\Domain\NameShortener.cs" />
     <Compile Include="Areas\V2\Domain\Match\Commentary\Match4Analyzer.cs" />
     <Compile Include="Areas\V2\Domain\Match\Commentary\PlayerPin.cs" />
     <Compile Include="Areas\V2\Domain\Match\Commentary\PlayerResult.cs" />
