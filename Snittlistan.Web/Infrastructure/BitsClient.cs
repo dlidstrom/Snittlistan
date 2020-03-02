@@ -1,23 +1,47 @@
-using System.Net;
-using NLog;
-using Snittlistan.Web.HtmlHelpers;
-
 namespace Snittlistan.Web.Infrastructure
 {
+    using System;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+
     public class BitsClient : IBitsClient
     {
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        private readonly string apiKey;
+        private static readonly HttpClient Client = new HttpClient();
 
-        public string DownloadMatchResult(int bitsMatchId)
+        public BitsClient(string apiKey)
         {
-            using (var client = new WebClient())
-            {
-                var address = CustomHtmlHelpers.GenerateBitsUrl(bitsMatchId);
-                Log.Info("Downloading {0}", address);
-                var content = client.DownloadString(address);
-                Log.Info("Match {0} raw content: {1}", bitsMatchId, content);
-                return content;
-            }
+            this.apiKey = apiKey;
+        }
+
+        public async Task<string> GetHeadInfo(int matchId)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, $"https://api.swebowl.se/api/v1/matchResult/GetHeadInfo?APIKey={apiKey}&id={matchId}");
+            request.Headers.Referrer = new Uri($"https://bits.swebowl.se/match-detail?matchid={matchId}");
+            var result = await Client.SendAsync(request);
+            result.EnsureSuccessStatusCode();
+            var content = await result.Content.ReadAsStringAsync();
+            return content;
+        }
+
+        public async Task<string> GetMatchResults(int matchId)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, $"https://api.swebowl.se/api/v1/matchResult/GetMatchResults?APIKey={apiKey}&id={matchId}&matchSchemeId=8M8BA");
+            request.Headers.Referrer = new Uri($"https://bits.swebowl.se/match-detail?matchid={matchId}");
+            var result = await Client.SendAsync(request);
+            result.EnsureSuccessStatusCode();
+            var content = await result.Content.ReadAsStringAsync();
+            return content;
+        }
+
+        public async Task<string> GetMatchScores(int matchId)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, $"https://api.swebowl.se/api/v1/matchResult/GetMatchScores?APIKey={apiKey}&id={matchId}&matchSchemeId=8M8BA");
+            request.Headers.Referrer = new Uri($"https://bits.swebowl.se/match-detail?matchid={matchId}");
+            var result = await Client.SendAsync(request);
+            result.EnsureSuccessStatusCode();
+            var content = await result.Content.ReadAsStringAsync();
+            return content;
         }
     }
 }

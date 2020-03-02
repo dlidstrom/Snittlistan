@@ -185,10 +185,10 @@ namespace Snittlistan.Web.Areas.V2.Domain
             return new ParseMatchSchemeResult(matches.ToArray());
         }
 
-        public ParseResult Parse(string content, string team)
+        public ParseResult Parse((string matchResults, string matchScores) content, string team)
         {
             var document = new HtmlDocument();
-            document.LoadHtml(content);
+            document.LoadHtml(content.matchResults);
             var documentNode = document.DocumentNode;
 
             // make sure match is finished
@@ -225,10 +225,10 @@ namespace Snittlistan.Web.Areas.V2.Domain
             throw new ApplicationException(message);
         }
 
-        public Parse4Result Parse4(string content, string team)
+        public Parse4Result Parse4((string matchResults, string matchScores) content, string team)
         {
             var document = new HtmlDocument();
-            document.LoadHtml(content);
+            document.LoadHtml(content.matchResults);
             var documentNode = document.DocumentNode;
 
             // make sure match is finished
