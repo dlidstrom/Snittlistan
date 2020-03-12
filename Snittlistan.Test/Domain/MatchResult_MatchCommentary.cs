@@ -62,7 +62,7 @@ namespace Snittlistan.Test.Domain
             // Act
             var bitsParser = new BitsParser(Players);
             var content = await BitsGateway.GetBitsMatchResult(testCase.BitsMatchId);
-            var parseResult = bitsParser.Parse(content, "Fredrikshof");
+            var parseResult = bitsParser.Parse(content, 1660);
 
             // Assert
             Assert.That(parseResult.Turn, Is.EqualTo(testCase.Turn));
@@ -105,7 +105,7 @@ namespace Snittlistan.Test.Domain
             var bitsParser = new BitsParser(Players);
 
             var content = await BitsGateway.GetBitsMatchResult(testCase.BitsMatchId);
-            var parseResult = bitsParser.Parse(content, "Fredrikshof");
+            var parseResult = bitsParser.Parse(content, 1660);
             var rosterPlayerIds = new HashSet<string>(
                 parseResult.Series.SelectMany(x => x.Tables.SelectMany(y => new[] { y.Game1.Player, y.Game2.Player })));
             var roster = new Roster(2017, 1, testCase.BitsMatchId, "Fredrikshof", "A", string.Empty, string.Empty, DateTime.Now, false, OilPatternInformation.Empty)

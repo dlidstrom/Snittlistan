@@ -4,11 +4,12 @@ namespace Snittlistan.Web.Infrastructure
 
     public class BitsMatchResult
     {
-        public BitsMatchResult(MatchResults matchResults, MatchScores matchScores, HeadResultInfo headResultInfo)
+        public BitsMatchResult(MatchResults matchResults, MatchScores matchScores, HeadResultInfo headResultInfo, HeadInfo headInfo)
         {
             MatchResults = matchResults;
             MatchScores = matchScores;
             HeadResultInfo = headResultInfo;
+            HeadInfo = headInfo;
         }
 
         public MatchResults MatchResults { get; }
@@ -16,5 +17,7 @@ namespace Snittlistan.Web.Infrastructure
         public MatchScores MatchScores { get; }
 
         public HeadResultInfo HeadResultInfo { get; }
+
+        public HeadInfo HeadInfo { get; }
     }
 }

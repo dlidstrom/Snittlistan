@@ -77,7 +77,7 @@
             if (roster.IsFourPlayer)
             {
                 var matchResult = EventStoreSession.Load<MatchResult4>(roster.MatchResultId);
-                var parseResult = parser.Parse4(bitsMatchResult, roster.Team);
+                var parseResult = parser.Parse4(bitsMatchResult, websiteConfig.ClubId);
                 roster.Players = GetPlayerIds(parseResult);
                 var isVerified = matchResult.Update(
                     PublishMessage,
@@ -92,7 +92,7 @@
             else
             {
                 var matchResult = EventStoreSession.Load<MatchResult>(roster.MatchResultId);
-                var parseResult = parser.Parse(bitsMatchResult, roster.Team);
+                var parseResult = parser.Parse(bitsMatchResult, websiteConfig.ClubId);
                 roster.Players = GetPlayerIds(parseResult);
                 var resultsForPlayer = DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
                                                       .Where(x => x.Season == roster.Season)
@@ -118,6 +118,7 @@
         {
             var pendingMatches = ExecuteQuery(new GetPendingMatchesQuery());
             var players = ExecuteQuery(new GetActivePlayersQuery());
+            var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             var registeredMatches = new List<Roster>();
             foreach (var pendingMatch in pendingMatches)
             {
@@ -127,7 +128,7 @@
                     var bitsMatchResult = await bitsClient.GetBitsMatchResult(pendingMatch.BitsMatchId);
                     if (pendingMatch.IsFourPlayer)
                     {
-                        var parse4Result = parser.Parse4(bitsMatchResult, pendingMatch.Team);
+                        var parse4Result = parser.Parse4(bitsMatchResult, websiteConfig.ClubId);
                         if (parse4Result != null)
                         {
                             var allPlayerIds = GetPlayerIds(parse4Result);
@@ -137,7 +138,7 @@
                     }
                     else
                     {
-                        var parseResult = parser.Parse(bitsMatchResult, pendingMatch.Team);
+                        var parseResult = parser.Parse(bitsMatchResult, websiteConfig.ClubId);
                         if (parseResult != null)
                         {
                             var allPlayerIds = GetPlayerIds(parseResult);
