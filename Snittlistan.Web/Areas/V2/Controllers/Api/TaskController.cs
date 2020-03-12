@@ -8,6 +8,7 @@
     using System.Threading.Tasks;
     using System.Web.Http;
     using Elmah;
+    using Infrastructure.Bits;
     using Newtonsoft.Json;
     using NLog;
     using Raven.Abstractions;
@@ -20,7 +21,6 @@
     using Snittlistan.Web.Areas.V2.ReadModels;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Helpers;
-    using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Attributes;
     using Snittlistan.Web.Infrastructure.Indexes;
     using Snittlistan.Web.Models;
@@ -73,11 +73,11 @@
             if (roster.MatchResultId == null) return Ok();
 
             // update match result values
-            var (matchResults, matchScores) = await bitsClient.GetResultsAndScores(roster.BitsMatchId);
+            var bitsMatchResult = await bitsClient.GetBitsMatchResult(roster.BitsMatchId);
             if (roster.IsFourPlayer)
             {
                 var matchResult = EventStoreSession.Load<MatchResult4>(roster.MatchResultId);
-                var parseResult = parser.Parse4((matchResults, matchScores), roster.Team);
+                var parseResult = parser.Parse4(bitsMatchResult, roster.Team);
                 roster.Players = GetPlayerIds(parseResult);
                 var isVerified = matchResult.Update(
                     PublishMessage,
@@ -92,7 +92,7 @@
             else
             {
                 var matchResult = EventStoreSession.Load<MatchResult>(roster.MatchResultId);
-                var parseResult = parser.Parse((matchResults, matchScores), roster.Team);
+                var parseResult = parser.Parse(bitsMatchResult, roster.Team);
                 roster.Players = GetPlayerIds(parseResult);
                 var resultsForPlayer = DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
                                                       .Where(x => x.Season == roster.Season)
@@ -124,10 +124,10 @@
                 try
                 {
                     var parser = new BitsParser(players);
-                    var content = await bitsClient.GetResultsAndScores(pendingMatch.BitsMatchId);
+                    var bitsMatchResult = await bitsClient.GetBitsMatchResult(pendingMatch.BitsMatchId);
                     if (pendingMatch.IsFourPlayer)
                     {
-                        var parse4Result = parser.Parse4(content, pendingMatch.Team);
+                        var parse4Result = parser.Parse4(bitsMatchResult, pendingMatch.Team);
                         if (parse4Result != null)
                         {
                             var allPlayerIds = GetPlayerIds(parse4Result);
@@ -137,7 +137,7 @@
                     }
                     else
                     {
-                        var parseResult = parser.Parse(content, pendingMatch.Team);
+                        var parseResult = parser.Parse(bitsMatchResult, pendingMatch.Team);
                         if (parseResult != null)
                         {
                             var allPlayerIds = GetPlayerIds(parseResult);

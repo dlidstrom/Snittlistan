@@ -1,4 +1,4 @@
-﻿namespace Snittlistan.Web.Areas.V2.Contracts
+﻿namespace Snittlistan.Web.Infrastructure.Bits.Contracts
 {
     using System.Collections.Generic;
     using Newtonsoft.Json;

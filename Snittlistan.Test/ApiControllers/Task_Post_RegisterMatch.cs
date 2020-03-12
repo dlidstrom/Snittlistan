@@ -1,19 +1,18 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using Castle.MicroKernel.Registration;
-using Moq;
-using Newtonsoft.Json;
-using NUnit.Framework;
-using Snittlistan.Queue.Messages;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.ReadModels;
-using Snittlistan.Web.Infrastructure;
-
-namespace Snittlistan.Test.ApiControllers
+﻿namespace Snittlistan.Test.ApiControllers
 {
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
     using System.Threading.Tasks;
+    using Castle.MicroKernel.Registration;
+    using Moq;
+    using Newtonsoft.Json;
+    using NUnit.Framework;
+    using Snittlistan.Queue.Messages;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+    using Web.Infrastructure.Bits;
 
     [TestFixture]
     public class Task_Post_RegisterMatch : WebApiIntegrationTest

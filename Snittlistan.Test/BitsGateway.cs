@@ -2,19 +2,26 @@ namespace Snittlistan.Test
 {
     using System;
     using System.IO;
+    using System.Net.Http;
     using System.Threading.Tasks;
-    using Snittlistan.Web.Infrastructure;
+    using Newtonsoft.Json;
+    using Web.Infrastructure;
+    using Web.Infrastructure.Bits;
+    using Web.Infrastructure.Bits.Contracts;
 
     public static class BitsGateway
     {
-        private static readonly IBitsClient Client = new BitsClient(Environment.GetEnvironmentVariable("ApiKey"));
+        private static readonly IBitsClient Client = new BitsClient(Environment.GetEnvironmentVariable("ApiKey"), new HttpClient());
 
-        public static async Task<string> GetHeadInfo(int matchId)
+        public static async Task<HeadInfo> GetHeadInfo(int matchId)
         {
-            return await Try($"HeadInfo-{matchId}.json", async () => await Client.GetHeadInfo(matchId));
+            var headInfo = await Try(
+                $"HeadInfo-{matchId}.json",
+                () => Client.GetHeadInfo(matchId));
+            return headInfo;
         }
 
-        public static async Task<string> GetMatchResults(int matchId)
+        public static async Task<MatchResults> GetMatchResults(int matchId)
         {
             var matchResults = await Try(
                 $"MatchResults-{matchId}.json",
@@ -22,7 +29,7 @@ namespace Snittlistan.Test
             return matchResults;
         }
 
-        public static async Task<string> GetMatchScores(int matchId)
+        public static async Task<MatchScores> GetMatchScores(int matchId)
         {
             var matchScores = await Try(
                 $"MatchScores-{matchId}.json",
@@ -30,16 +37,13 @@ namespace Snittlistan.Test
             return matchScores;
         }
 
-        public static async Task<(string, string)> GetResultsAndScores(int matchId)
+        public static Task<BitsMatchResult> GetBitsMatchResult(int matchId)
         {
-            var matchResults = await GetMatchResults(matchId);
-            var matchScores = await GetMatchScores(matchId);
-            return (matchResults, matchScores);
+            return Client.GetBitsMatchResult(matchId);
         }
 
-        private static async Task<string> Try(string filename, Func<Task<string>> func)
+        private static async Task<TResult> Try<TResult>(string filename, Func<Task<TResult>> func)
         {
-            string content;
             var currentDirectory = Directory.GetCurrentDirectory();
             var outputDirectory = Path.Combine(currentDirectory, "bits");
             if (Directory.Exists(outputDirectory) == false)
@@ -50,15 +54,15 @@ namespace Snittlistan.Test
             var path = Path.Combine(outputDirectory, filename);
             try
             {
-                content = File.ReadAllText(path);
+                var content = File.ReadAllText(path);
+                return JsonConvert.DeserializeObject<TResult>(content);
             }
             catch (Exception)
             {
-                content = await func.Invoke();
-                File.WriteAllText(path, content);
+                var result = await func.Invoke();
+                File.WriteAllText(path, JsonConvert.SerializeObject(result));
+                return result;
             }
-
-            return content;
         }
     }
 }

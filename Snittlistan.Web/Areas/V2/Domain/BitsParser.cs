@@ -8,7 +8,8 @@ using Snittlistan.Web.Areas.V2.ReadModels;
 
 namespace Snittlistan.Web.Areas.V2.Domain
 {
-    using Contracts;
+    using Infrastructure;
+    using Infrastructure.Bits.Contracts;
 
     public class BitsParser
     {
@@ -25,12 +26,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
             Away = 2
         }
 
-        public static ParseHeaderResult ParseHeader(string content, int clubId)
+        public static ParseHeaderResult ParseHeader(HeadInfo headInfo, int clubId)
         {
-            if (content == null) throw new ArgumentNullException(nameof(content));
-
-            var headInfo = HeadInfo.FromJson(content);
-
             var yearPart = headInfo.MatchDate.Substring(0, 4);
             var monthPart = headInfo.MatchDate.Substring(5, 2);
             var dayPart = headInfo.MatchDate.Substring(8, 2);
@@ -185,84 +182,86 @@ namespace Snittlistan.Web.Areas.V2.Domain
             return new ParseMatchSchemeResult(matches.ToArray());
         }
 
-        public ParseResult Parse((string matchResults, string matchScores) content, string team)
+        public ParseResult Parse(BitsMatchResult content, string team)
         {
-            var document = new HtmlDocument();
-            document.LoadHtml(content.matchResults);
-            var documentNode = document.DocumentNode;
+            return new ParseResult();
+            //var document = new HtmlDocument();
+            //document.LoadHtml(content.matchResults);
+            //var documentNode = document.DocumentNode;
 
-            // make sure match is finished
-            var finishedNode = documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelFinished']");
-            if (finishedNode != null)
-            {
-                return null;
-            }
+            //// make sure match is finished
+            //var finishedNode = documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelFinished']");
+            //if (finishedNode != null)
+            //{
+            //    return null;
+            //}
 
-            // find which team we should import
-            var homeTeamLabel =
-                documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelHomeTeam']");
-            var awayTeamLabel =
-                documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelAwayTeam']");
+            //// find which team we should import
+            //var homeTeamLabel =
+            //    documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelHomeTeam']");
+            //var awayTeamLabel =
+            //    documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelAwayTeam']");
 
-            var homeTeamName = homeTeamLabel.InnerText;
-            if (team == homeTeamName)
-                return ExtractTeam(documentNode, Team.Home, Team.Away);
-            var awayTeamName = awayTeamLabel.InnerText;
-            if (team == awayTeamName)
-                return ExtractTeam(documentNode, Team.Away, Team.Home);
+            //var homeTeamName = homeTeamLabel.InnerText;
+            //if (team == homeTeamName)
+            //    return ExtractTeam(documentNode, Team.Home, Team.Away);
+            //var awayTeamName = awayTeamLabel.InnerText;
+            //if (team == awayTeamName)
+            //    return ExtractTeam(documentNode, Team.Away, Team.Home);
 
-            // try alternate name
-            var teamPrefix = team.Split(' ').First();
-            if (homeTeamName.StartsWith(teamPrefix) && awayTeamName.StartsWith(teamPrefix))
-                throw new ApplicationException($"Could not find team with prefix {teamPrefix}");
+            //// try alternate name
+            //var teamPrefix = team.Split(' ').First();
+            //if (homeTeamName.StartsWith(teamPrefix) && awayTeamName.StartsWith(teamPrefix))
+            //    throw new ApplicationException($"Could not find team with prefix {teamPrefix}");
 
-            if (homeTeamName.StartsWith(teamPrefix) && awayTeamName.StartsWith(teamPrefix) == false)
-                return ExtractTeam(documentNode, Team.Home, Team.Away);
-            if (awayTeamName.StartsWith(teamPrefix) && homeTeamName.StartsWith(teamPrefix) == false)
-                return ExtractTeam(documentNode, Team.Away, Team.Home);
+            //if (homeTeamName.StartsWith(teamPrefix) && awayTeamName.StartsWith(teamPrefix) == false)
+            //    return ExtractTeam(documentNode, Team.Home, Team.Away);
+            //if (awayTeamName.StartsWith(teamPrefix) && homeTeamName.StartsWith(teamPrefix) == false)
+            //    return ExtractTeam(documentNode, Team.Away, Team.Home);
 
-            var message = $"No team with name {team} was found (homeTeamName = {homeTeamName}, awayTeamName = {awayTeamName})";
-            throw new ApplicationException(message);
+            //var message = $"No team with name {team} was found (homeTeamName = {homeTeamName}, awayTeamName = {awayTeamName})";
+            //throw new ApplicationException(message);
         }
 
-        public Parse4Result Parse4((string matchResults, string matchScores) content, string team)
+        public Parse4Result Parse4(BitsMatchResult bitsMatchResult, string team)
         {
-            var document = new HtmlDocument();
-            document.LoadHtml(content.matchResults);
-            var documentNode = document.DocumentNode;
+            return new Parse4Result(bitsMatchResult.HeadResultInfo.);
+            //var document = new HtmlDocument();
+            //document.LoadHtml(content.matchResults);
+            //var documentNode = document.DocumentNode;
 
-            // make sure match is finished
-            var finishedNode = documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelFinished']");
-            if (finishedNode != null)
-            {
-                return null;
-            }
+            //// make sure match is finished
+            //var finishedNode = documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelFinished']");
+            //if (finishedNode != null)
+            //{
+            //    return null;
+            //}
 
-            // find which team we should import
-            var homeTeamLabel =
-                documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelHomeTeam']");
-            var awayTeamLabel =
-                documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelAwayTeam']");
+            //// find which team we should import
+            //var homeTeamLabel =
+            //    documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelHomeTeam']");
+            //var awayTeamLabel =
+            //    documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelAwayTeam']");
 
-            var homeTeamName = homeTeamLabel.InnerText;
-            if (team == homeTeamName)
-                return ExtractTeam4(documentNode, Team.Home, Team.Away);
-            var awayTeamName = awayTeamLabel.InnerText;
-            if (team == awayTeamName)
-                return ExtractTeam4(documentNode, Team.Away, Team.Home);
+            //var homeTeamName = homeTeamLabel.InnerText;
+            //if (team == homeTeamName)
+            //    return ExtractTeam4(documentNode, Team.Home, Team.Away);
+            //var awayTeamName = awayTeamLabel.InnerText;
+            //if (team == awayTeamName)
+            //    return ExtractTeam4(documentNode, Team.Away, Team.Home);
 
-            // try alternate name
-            var teamPrefix = team.Split(' ')
-                .First();
-            if (homeTeamName.StartsWith(teamPrefix) && awayTeamName.StartsWith(teamPrefix))
-                throw new ApplicationException($"Could not find team with prefix {teamPrefix}");
+            //// try alternate name
+            //var teamPrefix = team.Split(' ')
+            //    .First();
+            //if (homeTeamName.StartsWith(teamPrefix) && awayTeamName.StartsWith(teamPrefix))
+            //    throw new ApplicationException($"Could not find team with prefix {teamPrefix}");
 
-            if (homeTeamName.StartsWith(teamPrefix) && awayTeamName.StartsWith(teamPrefix) == false)
-                return ExtractTeam4(documentNode, Team.Home, Team.Away);
-            if (awayTeamName.StartsWith(teamPrefix) && homeTeamName.StartsWith(teamPrefix) == false)
-                return ExtractTeam4(documentNode, Team.Away, Team.Home);
+            //if (homeTeamName.StartsWith(teamPrefix) && awayTeamName.StartsWith(teamPrefix) == false)
+            //    return ExtractTeam4(documentNode, Team.Home, Team.Away);
+            //if (awayTeamName.StartsWith(teamPrefix) && homeTeamName.StartsWith(teamPrefix) == false)
+            //    return ExtractTeam4(documentNode, Team.Away, Team.Home);
 
-            throw new ApplicationException($"No team with name {team} was found");
+            //throw new ApplicationException($"No team with name {team} was found");
         }
 
         private ParseResult ExtractTeam(HtmlNode documentNode, Team team, Team away)
