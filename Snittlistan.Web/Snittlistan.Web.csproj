@@ -194,9 +194,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
-    <Compile Include="Areas\V2\Contracts\MatchResults.cs" />
-    <Compile Include="Areas\V2\Contracts\MatchScores.cs" />
-    <Compile Include="Areas\V2\Contracts\HeadInfo.cs" />
+    <Compile Include="Infrastructure\Bits\Contracts\Converter.cs" />
+    <Compile Include="Infrastructure\Bits\Contracts\HeadResultInfo.cs" />
+    <Compile Include="Infrastructure\Bits\Contracts\MatchResults.cs" />
+    <Compile Include="Infrastructure\Bits\Contracts\MatchScores.cs" />
+    <Compile Include="Infrastructure\Bits\Contracts\HeadInfo.cs" />
     <Compile Include="Areas\V2\Controllers\ActivityDetailsController.cs" />
     <Compile Include="Areas\V2\Controllers\ActivityEditController.cs" />
     <Compile Include="Areas\V2\Controllers\ActivityIndexController.cs" />
@@ -239,6 +241,7 @@
     <Compile Include="Areas\V2\ViewModels\ActivityCalendarEvent.cs" />
     <Compile Include="Areas\V2\ViewModels\ActivityViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\FormattedMedal.cs" />
+    <Compile Include="Infrastructure\BitsMatchResult.cs" />
     <Compile Include="Infrastructure\CalendarEvent.cs" />
     <Compile Include="Areas\V2\WebsiteRoles.cs" />
     <Compile Include="Areas\V2\ViewModels\EditMedalsPostModel.cs" />
@@ -319,7 +322,7 @@
     <Compile Include="Infrastructure\Attributes\SaveChangesAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\UnhandledExceptionFilter.cs" />
     <Compile Include="Infrastructure\BaseViewPage.cs" />
-    <Compile Include="Infrastructure\BitsClient.cs" />
+    <Compile Include="Infrastructure\Bits\BitsClient.cs" />
     <Compile Include="Infrastructure\CustomIdentity.cs" />
     <Compile Include="Infrastructure\CustomPrincipal.cs" />
     <Compile Include="Infrastructure\EventStoreLite\AggregateRoot.cs" />
@@ -342,7 +345,7 @@
     <Compile Include="Infrastructure\EventStoreLite\IReadModel.cs" />
     <Compile Include="Infrastructure\EventStoreLite\ObjectReferenceEqualityComparer.cs" />
     <Compile Include="Infrastructure\HttpNotFoundAwareDefaultHttpControllerSelector.cs" />
-    <Compile Include="Infrastructure\IBitsClient.cs" />
+    <Compile Include="Infrastructure\Bits\IBitsClient.cs" />
     <Compile Include="Infrastructure\ICalFormatter.cs" />
     <Compile Include="Infrastructure\ICommand.cs" />
     <Compile Include="Infrastructure\Installers\ApiControllerInstaller.cs" />

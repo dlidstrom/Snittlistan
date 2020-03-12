@@ -10,6 +10,7 @@
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
+    using Infrastructure.Bits;
     using Raven.Abstractions;
     using Raven.Client;
     using Rotativa;
@@ -19,7 +20,6 @@
     using Snittlistan.Web.Areas.V2.ViewModels;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Helpers;
-    using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Models;
 
     public class RosterController : AbstractController

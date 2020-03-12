@@ -1,4 +1,4 @@
-﻿namespace Snittlistan.Web.Areas.V2.Contracts
+﻿namespace Snittlistan.Web.Infrastructure.Bits.Contracts
 {
     using System;
     using Newtonsoft.Json;
@@ -305,10 +305,5 @@
     public static class Serialize
     {
         public static string ToJson(this HeadInfo self) => JsonConvert.SerializeObject(self, Converter.Settings);
-    }
-
-    internal static class Converter
-    {
-        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings();
     }
 }
