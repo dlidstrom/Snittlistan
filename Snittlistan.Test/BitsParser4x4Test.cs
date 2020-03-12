@@ -36,10 +36,10 @@ namespace Snittlistan.Test
         public async Task CanParseHomeTeam()
         {
             // Arrange
-            const string Team = "Fredrikshof B";
+            const int ClubId = 1660;
 
             // Act
-            var result = new BitsParser(homePlayers).Parse4(await BitsGateway.GetBitsMatchResult(3060835), Team);
+            var result = new BitsParser(homePlayers).Parse4(await BitsGateway.GetBitsMatchResult(3060835), ClubId);
             Assert.That(result.TeamScore, Is.EqualTo(18));
             Assert.That(result.OpponentScore, Is.EqualTo(1));
             Assert.That(result.Turn, Is.EqualTo(11));
@@ -80,10 +80,10 @@ namespace Snittlistan.Test
         public async Task CanParseAwayTeam()
         {
             // Arrange
-            const string Team = "Trippel XXX";
+            const int ClubId = 91114;
 
             // Act
-            var result = new BitsParser(awayPlayers).Parse4(await BitsGateway.GetBitsMatchResult(3060835), Team);
+            var result = new BitsParser(awayPlayers).Parse4(await BitsGateway.GetBitsMatchResult(3060835), ClubId);
             Assert.That(result.TeamScore, Is.EqualTo(1));
             Assert.That(result.OpponentScore, Is.EqualTo(18));
             Assert.That(result.Turn, Is.EqualTo(11));
@@ -118,19 +118,6 @@ namespace Snittlistan.Test
             VerifyGame(serie4.Games[1], Tuple.Create(0, "player-9", 119));
             VerifyGame(serie4.Games[2], Tuple.Create(0, "player-5", 122));
             VerifyGame(serie4.Games[3], Tuple.Create(0, "player-6", 167));
-        }
-
-        [Test]
-        public async Task DoesNotParseUnfinishedGame()
-        {
-            // Arrange
-            const string Team = "Värtans IK B";
-
-            // Act
-            var result = new BitsParser(awayPlayers).Parse4(await BitsGateway.GetBitsMatchResult(0), Team);
-
-            // Assert
-            Assert.That(result, Is.Null);
         }
 
         private static void VerifyGame(ResultSeries4ReadModel.Game game, Tuple<int, string, int> expected)

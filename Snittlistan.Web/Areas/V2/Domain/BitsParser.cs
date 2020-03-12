@@ -182,9 +182,26 @@ namespace Snittlistan.Web.Areas.V2.Domain
             return new ParseMatchSchemeResult(matches.ToArray());
         }
 
-        public ParseResult Parse(BitsMatchResult content, string team)
+        public ParseResult Parse(BitsMatchResult bitsMatchResult, int clubId)
         {
-            return new ParseResult();
+            if (bitsMatchResult.HeadInfo.MatchFinished == false) return null;
+
+            if (bitsMatchResult.HeadInfo.MatchHomeClubId == clubId)
+            {
+                return new ParseResult(
+                    bitsMatchResult.HeadResultInfo.MatchHeadHomeTeamScore,
+                    bitsMatchResult.HeadResultInfo.MatchHeadAwayTeamScore,
+                    bitsMatchResult.HeadInfo.MatchRoundId,
+                    new ResultSeriesReadModel.Serie[0],
+                    new ResultSeriesReadModel.Serie[0]);
+            }
+
+            return new ParseResult(
+                bitsMatchResult.HeadResultInfo.MatchHeadAwayTeamScore,
+                bitsMatchResult.HeadResultInfo.MatchHeadHomeTeamScore,
+                bitsMatchResult.HeadInfo.MatchRoundId,
+                new ResultSeriesReadModel.Serie[0],
+                new ResultSeriesReadModel.Serie[0]);
             //var document = new HtmlDocument();
             //document.LoadHtml(content.matchResults);
             //var documentNode = document.DocumentNode;
@@ -223,9 +240,25 @@ namespace Snittlistan.Web.Areas.V2.Domain
             //throw new ApplicationException(message);
         }
 
-        public Parse4Result Parse4(BitsMatchResult bitsMatchResult, string team)
+        public Parse4Result Parse4(BitsMatchResult bitsMatchResult, int clubId)
         {
-            return new Parse4Result(bitsMatchResult.HeadResultInfo.);
+            if (bitsMatchResult.HeadInfo.MatchFinished == false) return null;
+
+            if (bitsMatchResult.HeadInfo.MatchHomeClubId == clubId)
+            {
+                return new Parse4Result(
+                    bitsMatchResult.HeadResultInfo.MatchHeadHomeTeamScore,
+                    bitsMatchResult.HeadResultInfo.MatchHeadAwayTeamScore,
+                    bitsMatchResult.HeadInfo.MatchRoundId,
+                    new ResultSeries4ReadModel.Serie[0]);
+            }
+
+            return new Parse4Result(
+                bitsMatchResult.HeadResultInfo.MatchHeadAwayTeamScore,
+                bitsMatchResult.HeadResultInfo.MatchHeadHomeTeamScore,
+                bitsMatchResult.HeadInfo.MatchRoundId,
+                new ResultSeries4ReadModel.Serie[0]);
+
             //var document = new HtmlDocument();
             //document.LoadHtml(content.matchResults);
             //var documentNode = document.DocumentNode;

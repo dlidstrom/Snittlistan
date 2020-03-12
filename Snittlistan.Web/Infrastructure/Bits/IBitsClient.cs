@@ -18,10 +18,18 @@ namespace Snittlistan.Web.Infrastructure.Bits
     {
         public static async Task<BitsMatchResult> GetBitsMatchResult(this IBitsClient client, int matchId)
         {
-            var matchResults = await client.GetMatchResults(matchId);
-            var matchScores = await client.GetMatchScores(matchId);
-            var headResultInfo = await client.GetHeadResultInfo(matchId);
-            return new BitsMatchResult(matchResults, matchScores, headResultInfo);
+            var matchResultsTask = client.GetMatchResults(matchId);
+            var matchScoresTask = client.GetMatchScores(matchId);
+            var headResultInfoTask = client.GetHeadResultInfo(matchId);
+            var headInfoTask = client.GetHeadInfo(matchId);
+
+            await Task.WhenAll(matchResultsTask, matchScoresTask, headResultInfoTask, headInfoTask);
+
+            var matchResults = await matchResultsTask;
+            var matchScores = await matchScoresTask;
+            var headResultInfo = await headResultInfoTask;
+            var headInfo = await headInfoTask;
+            return new BitsMatchResult(matchResults, matchScores, headResultInfo, headInfo);
         }
     }
 }
