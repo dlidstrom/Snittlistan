@@ -1,4 +1,3 @@
-
 #ignore thumbnails created by windows
 Thumbs.db
 #Ignore files build by Visual Studio
@@ -35,4 +34,5 @@ Tools/
 _install/
 Build/_build/
 .vs
-.ionide/
+.ionide
+.fake
