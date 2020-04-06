@@ -1,0 +1,28 @@
+@startuml MatchScheme
+
+autonumber
+
+' participants
+participant SL
+participant BITS
+
+' interactions
+SL -> BITS: Team
+note over BITS
+Supply clubId, seasonId
+end note
+BITS -> SL: teamId's
+
+SL -> BITS: Division
+note over BITS
+Supply teamId, seasonId
+end note
+BITS -> SL: divisionId
+
+SL -> BITS: Match
+note over BITS
+Supply teamId, divisionId, seasonId
+end note
+BITS -> SL: match scheme
+
+@enduml
