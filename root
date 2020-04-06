@@ -1,0 +1,1 @@
+{"version":1,"ops":[{"type":1,"author":{"id":"027a2bcb19402705046b570711cd98e591403e96"},"timestamp":1308688318,"metadata":{"github-id":"MDU6SXNzdWUxMDk0MjIx","github-url":"https://github.com/dlidstrom/Snittlistan/issues/11","origin":"github"},"title":"Utnyttja CDN","message":"Hämta jquery-\\* from Microsofts CDN, eller http://code.jquery.com/","files":null}]}
