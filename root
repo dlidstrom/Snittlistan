@@ -1,0 +1,1 @@
+{"version":1,"ops":[{"type":1,"author":{"id":"027a2bcb19402705046b570711cd98e591403e96"},"timestamp":1365261012,"metadata":{"github-id":"MDU6SXNzdWUxMjg3ODkxNQ==","github-url":"https://github.com/dlidstrom/Snittlistan/issues/203","origin":"github"},"title":"Ta inte bort eventstore index","message":"Nu verkar det som att dom försvinner när man gör event replay","files":null}]}
