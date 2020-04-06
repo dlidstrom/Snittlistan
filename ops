@@ -1,1 +1,1 @@
-{"version":1,"ops":[{"type":1,"author":{"id":"027a2bcb19402705046b570711cd98e591403e96"},"timestamp":1549884677,"metadata":{"github-id":"MDU6SXNzdWU0MDg3MzkwOTQ=","github-url":"https://github.com/dlidstrom/Snittlistan/issues/414","origin":"github"},"title":"Delayed auto start","message":"Kanske gör att servicen har större chans att hinna starta efter omstart.","files":null}]}
+{"version":1,"ops":[{"type":4,"author":{"id":"027a2bcb19402705046b570711cd98e591403e96"},"timestamp":1549884731,"metadata":{"github-id":"MDExOkNsb3NlZEV2ZW50MjEzMDMwMjI4NQ=="},"status":2}]}
