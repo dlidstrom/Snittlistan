@@ -1,0 +1,1 @@
+{"version":1,"ops":[{"type":1,"author":{"id":"027a2bcb19402705046b570711cd98e591403e96"},"timestamp":1322566978,"metadata":{"github-id":"MDU6SXNzdWUyMzgzNTQx","github-url":"https://github.com/dlidstrom/Snittlistan/issues/97","origin":"github"},"title":"Reducera loggningen från RavenDB","message":"Raven.Database.Storage.IndexDefinitionStorage - Error-nivå","files":null}]}
