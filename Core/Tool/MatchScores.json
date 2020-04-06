@@ -1,1 +1,907 @@
-{"series":[{"boards":[{"scores":[{"playerName":"K. Johansson","score":"128","laneScore":"0","scoreId":"lblSerie1Table1Order1"},{"playerName":"C. Holmström","score":"199","laneScore":"0","scoreId":"lblSerie1Table2Order1"},{"playerName":"L. Öberg","score":"185","laneScore":"1","scoreId":"lblSerie1Table3Order1"},{"playerName":"M. Classon","score":"143","laneScore":"0","scoreId":"lblSerie1Table4Order1"}],"boardId":null,"boardName":null},{"scores":[{"playerName":"L. Axelsson","score":"179","laneScore":"307","scoreId":"lblSerie1Table1Order2"},{"playerName":"D. Lidström","score":"202","laneScore":"401","scoreId":"lblSerie1Table2Order2"},{"playerName":"P. Sjöberg","score":"198","laneScore":"383","scoreId":"lblSerie1Table3Order2"},{"playerName":"H. Gustavsson","score":"191","laneScore":"334","scoreId":"lblSerie1Table4Order2"}],"boardId":null,"boardName":null},{"scores":[{"playerName":"T. Wilson","score":"160","laneScore":"1","scoreId":"lblSerie1Table1Order3"},{"playerName":"P. Hellström","score":"220","laneScore":"1","scoreId":"lblSerie1Table2Order3"},{"playerName":"J. Nygren","score":"168","laneScore":"0","scoreId":"lblSerie1Table3Order3"},{"playerName":"K. Andersson","score":"165","laneScore":"1","scoreId":"lblSerie1Table4Order3"}],"boardId":null,"boardName":null},{"scores":[{"playerName":"A. Olofsson","score":"256","laneScore":"416","scoreId":"lblSerie1Table1Order4"},{"playerName":"F. Johansson","score":"190","laneScore":"410","scoreId":"lblSerie1Table2Order4"},{"playerName":"C. Jakobsson","score":"154","laneScore":"322","scoreId":"lblSerie1Table3Order4"},{"playerName":"T. Ahlby","score":"176","laneScore":"341","scoreId":"lblSerie1Table4Order4"}],"boardId":null,"boardName":null}],"serieId":null,"serieName":null},{"boards":[{"scores":[{"playerName":"L. Öberg","score":"172","laneScore":"0","scoreId":"lblSerie2Table1Order1"},{"playerName":"M. Classon","score":"194","laneScore":"0","scoreId":"lblSerie2Table2Order1"},{"playerName":"H. Adeby","score":"235","laneScore":"0","scoreId":"lblSerie2Table3Order1"},{"playerName":"C. Holmström","score":"184","laneScore":"1","scoreId":"lblSerie2Table4Order1"}],"boardId":null,"boardName":null},{"scores":[{"playerName":"P. Sjöberg","score":"194","laneScore":"366","scoreId":"lblSerie2Table1Order2"},{"playerName":"H. Gustavsson","score":"184","laneScore":"378","scoreId":"lblSerie2Table2Order2"},{"playerName":"L. Axelsson","score":"184","laneScore":"419","scoreId":"lblSerie2Table3Order2"},{"playerName":"D. Lidström","score":"254","laneScore":"438","scoreId":"lblSerie2Table4Order2"}],"boardId":null,"boardName":null},{"scores":[{"playerName":"K. Andersson","score":"213","laneScore":"1","scoreId":"lblSerie2Table1Order3"},{"playerName":"J. Nygren","score":"202","laneScore":"0","scoreId":"lblSerie2Table2Order3"},{"playerName":"P. Hellström","score":"278","laneScore":"1","scoreId":"lblSerie2Table3Order3"},{"playerName":"T. Wilson","score":"177","laneScore":"0","scoreId":"lblSerie2Table4Order3"}],"boardId":null,"boardName":null},{"scores":[{"playerName":"T. Ahlby","score":"172","laneScore":"385","scoreId":"lblSerie2Table1Order4"},{"playerName":"C. Jakobsson","score":"176","laneScore":"378","scoreId":"lblSerie2Table2Order4"},{"playerName":"F. Johansson","score":"194","laneScore":"472","scoreId":"lblSerie2Table3Order4"},{"playerName":"A. Olofsson","score":"235","laneScore":"412","scoreId":"lblSerie2Table4Order4"}],"boardId":null,"boardName":null}],"serieId":null,"serieName":null},{"boards":[{"scores":[{"playerName":"M. Classon","score":"211","laneScore":"0","scoreId":"lblSerie3Table1Order1"},{"playerName":"L. Öberg","score":"193","laneScore":"0","scoreId":"lblSerie3Table2Order1"},{"playerName":"C. Holmström","score":"218","laneScore":"0","scoreId":"lblSerie3Table3Order1"},{"playerName":"H. Adeby","score":"151","laneScore":"0","scoreId":"lblSerie3Table4Order1"}],"boardId":null,"boardName":null},{"scores":[{"playerName":"H. Gustavsson","score":"156","laneScore":"367","scoreId":"lblSerie3Table1Order2"},{"playerName":"P. Sjöberg","score":"192","laneScore":"385","scoreId":"lblSerie3Table2Order2"},{"playerName":"D. Lidström","score":"174","laneScore":"392","scoreId":"lblSerie3Table3Order2"},{"playerName":"L. Axelsson","score":"183","laneScore":"334","scoreId":"lblSerie3Table4Order2"}],"boardId":null,"boardName":null},{"scores":[{"playerName":"P. Hellström","score":"192","laneScore":"1","scoreId":"lblSerie3Table1Order3"},{"playerName":"T. Wilson","score":"189","laneScore":"1","scoreId":"lblSerie3Table2Order3"},{"playerName":"K. Andersson","score":"266","laneScore":"1","scoreId":"lblSerie3Table3Order3"},{"playerName":"J. Nygren","score":"161","laneScore":"1","scoreId":"lblSerie3Table4Order3"}],"boardId":null,"boardName":null},{"scores":[{"playerName":"F. Johansson","score":"182","laneScore":"374","scoreId":"lblSerie3Table1Order4"},{"playerName":"A. Olofsson","score":"239","laneScore":"428","scoreId":"lblSerie3Table2Order4"},{"playerName":"T. Ahlby","score":"178","laneScore":"444","scoreId":"lblSerie3Table3Order4"},{"playerName":"C. Jakobsson","score":"208","laneScore":"369","scoreId":"lblSerie3Table4Order4"}],"boardId":null,"boardName":null}],"serieId":null,"serieName":null},{"boards":[{"scores":[{"playerName":"C. Holmström","score":"268","laneScore":"1","scoreId":"lblSerie4Table1Order1"},{"playerName":"H. Adeby","score":"162","laneScore":"0","scoreId":"lblSerie4Table2Order1"},{"playerName":"M. Classon","score":"236","laneScore":"1","scoreId":"lblSerie4Table3Order1"},{"playerName":"L. Öberg","score":"184","laneScore":"0","scoreId":"lblSerie4Table4Order1"}],"boardId":null,"boardName":null},{"scores":[{"playerName":"D. Lidström","score":"220","laneScore":"488","scoreId":"lblSerie4Table1Order2"},{"playerName":"L. Axelsson","score":"162","laneScore":"324","scoreId":"lblSerie4Table2Order2"},{"playerName":"H. Gustavsson","score":"169","laneScore":"405","scoreId":"lblSerie4Table3Order2"},{"playerName":"P. Sjöberg","score":"206","laneScore":"390","scoreId":"lblSerie4Table4Order2"}],"boardId":null,"boardName":null},{"scores":[{"playerName":"J. Nygren","score":"203","laneScore":"0","scoreId":"lblSerie4Table1Order3"},{"playerName":"K. Andersson","score":"174","laneScore":"1","scoreId":"lblSerie4Table2Order3"},{"playerName":"T. Wilson","score":"171","laneScore":"0","scoreId":"lblSerie4Table3Order3"},{"playerName":"P. Hellström","score":"176","laneScore":"1","scoreId":"lblSerie4Table4Order3"}],"boardId":null,"boardName":null},{"scores":[{"playerName":"E. Svensson","score":"177","laneScore":"380","scoreId":"lblSerie4Table1Order4"},{"playerName":"T. Ahlby","score":"210","laneScore":"384","scoreId":"lblSerie4Table2Order4"},{"playerName":"A. Olofsson","score":"218","laneScore":"389","scoreId":"lblSerie4Table3Order4"},{"playerName":"F. Johansson","score":"259","laneScore":"435","scoreId":"lblSerie4Table4Order4"}],"boardId":null,"boardName":null}],"serieId":null,"serieName":null}],"serieNames":["1","2","3","4"],"boardNames":["Bord 1              ","Bord 2              ","Bord 3              ","Bord 4              "],"scoreKvpList":{"lblSerie1Table1Order1":{"playerName":"K. Johansson","score":"128","laneScore":"0","scoreId":"lblSerie1Table1Order1"},"lblSerie1Table2Order1":{"playerName":"C. Holmström","score":"199","laneScore":"0","scoreId":"lblSerie1Table2Order1"},"lblSerie1Table3Order1":{"playerName":"L. Öberg","score":"185","laneScore":"1","scoreId":"lblSerie1Table3Order1"},"lblSerie1Table4Order1":{"playerName":"M. Classon","score":"143","laneScore":"0","scoreId":"lblSerie1Table4Order1"},"lblSerie1Table1Order2":{"playerName":"L. Axelsson","score":"179","laneScore":"307","scoreId":"lblSerie1Table1Order2"},"lblSerie1Table2Order2":{"playerName":"D. Lidström","score":"202","laneScore":"401","scoreId":"lblSerie1Table2Order2"},"lblSerie1Table3Order2":{"playerName":"P. Sjöberg","score":"198","laneScore":"383","scoreId":"lblSerie1Table3Order2"},"lblSerie1Table4Order2":{"playerName":"H. Gustavsson","score":"191","laneScore":"334","scoreId":"lblSerie1Table4Order2"},"lblSerie1Table1Order3":{"playerName":"T. Wilson","score":"160","laneScore":"1","scoreId":"lblSerie1Table1Order3"},"lblSerie1Table2Order3":{"playerName":"P. Hellström","score":"220","laneScore":"1","scoreId":"lblSerie1Table2Order3"},"lblSerie1Table3Order3":{"playerName":"J. Nygren","score":"168","laneScore":"0","scoreId":"lblSerie1Table3Order3"},"lblSerie1Table4Order3":{"playerName":"K. Andersson","score":"165","laneScore":"1","scoreId":"lblSerie1Table4Order3"},"lblSerie1Table1Order4":{"playerName":"A. Olofsson","score":"256","laneScore":"416","scoreId":"lblSerie1Table1Order4"},"lblSerie1Table2Order4":{"playerName":"F. Johansson","score":"190","laneScore":"410","scoreId":"lblSerie1Table2Order4"},"lblSerie1Table3Order4":{"playerName":"C. Jakobsson","score":"154","laneScore":"322","scoreId":"lblSerie1Table3Order4"},"lblSerie1Table4Order4":{"playerName":"T. Ahlby","score":"176","laneScore":"341","scoreId":"lblSerie1Table4Order4"},"lblSerie2Table1Order1":{"playerName":"L. Öberg","score":"172","laneScore":"0","scoreId":"lblSerie2Table1Order1"},"lblSerie2Table2Order1":{"playerName":"M. Classon","score":"194","laneScore":"0","scoreId":"lblSerie2Table2Order1"},"lblSerie2Table3Order1":{"playerName":"H. Adeby","score":"235","laneScore":"0","scoreId":"lblSerie2Table3Order1"},"lblSerie2Table4Order1":{"playerName":"C. Holmström","score":"184","laneScore":"1","scoreId":"lblSerie2Table4Order1"},"lblSerie2Table1Order2":{"playerName":"P. Sjöberg","score":"194","laneScore":"366","scoreId":"lblSerie2Table1Order2"},"lblSerie2Table2Order2":{"playerName":"H. Gustavsson","score":"184","laneScore":"378","scoreId":"lblSerie2Table2Order2"},"lblSerie2Table3Order2":{"playerName":"L. Axelsson","score":"184","laneScore":"419","scoreId":"lblSerie2Table3Order2"},"lblSerie2Table4Order2":{"playerName":"D. Lidström","score":"254","laneScore":"438","scoreId":"lblSerie2Table4Order2"},"lblSerie2Table1Order3":{"playerName":"K. Andersson","score":"213","laneScore":"1","scoreId":"lblSerie2Table1Order3"},"lblSerie2Table2Order3":{"playerName":"J. Nygren","score":"202","laneScore":"0","scoreId":"lblSerie2Table2Order3"},"lblSerie2Table3Order3":{"playerName":"P. Hellström","score":"278","laneScore":"1","scoreId":"lblSerie2Table3Order3"},"lblSerie2Table4Order3":{"playerName":"T. Wilson","score":"177","laneScore":"0","scoreId":"lblSerie2Table4Order3"},"lblSerie2Table1Order4":{"playerName":"T. Ahlby","score":"172","laneScore":"385","scoreId":"lblSerie2Table1Order4"},"lblSerie2Table2Order4":{"playerName":"C. Jakobsson","score":"176","laneScore":"378","scoreId":"lblSerie2Table2Order4"},"lblSerie2Table3Order4":{"playerName":"F. Johansson","score":"194","laneScore":"472","scoreId":"lblSerie2Table3Order4"},"lblSerie2Table4Order4":{"playerName":"A. Olofsson","score":"235","laneScore":"412","scoreId":"lblSerie2Table4Order4"},"lblSerie3Table1Order1":{"playerName":"M. Classon","score":"211","laneScore":"0","scoreId":"lblSerie3Table1Order1"},"lblSerie3Table2Order1":{"playerName":"L. Öberg","score":"193","laneScore":"0","scoreId":"lblSerie3Table2Order1"},"lblSerie3Table3Order1":{"playerName":"C. Holmström","score":"218","laneScore":"0","scoreId":"lblSerie3Table3Order1"},"lblSerie3Table4Order1":{"playerName":"H. Adeby","score":"151","laneScore":"0","scoreId":"lblSerie3Table4Order1"},"lblSerie3Table1Order2":{"playerName":"H. Gustavsson","score":"156","laneScore":"367","scoreId":"lblSerie3Table1Order2"},"lblSerie3Table2Order2":{"playerName":"P. Sjöberg","score":"192","laneScore":"385","scoreId":"lblSerie3Table2Order2"},"lblSerie3Table3Order2":{"playerName":"D. Lidström","score":"174","laneScore":"392","scoreId":"lblSerie3Table3Order2"},"lblSerie3Table4Order2":{"playerName":"L. Axelsson","score":"183","laneScore":"334","scoreId":"lblSerie3Table4Order2"},"lblSerie3Table1Order3":{"playerName":"P. Hellström","score":"192","laneScore":"1","scoreId":"lblSerie3Table1Order3"},"lblSerie3Table2Order3":{"playerName":"T. Wilson","score":"189","laneScore":"1","scoreId":"lblSerie3Table2Order3"},"lblSerie3Table3Order3":{"playerName":"K. Andersson","score":"266","laneScore":"1","scoreId":"lblSerie3Table3Order3"},"lblSerie3Table4Order3":{"playerName":"J. Nygren","score":"161","laneScore":"1","scoreId":"lblSerie3Table4Order3"},"lblSerie3Table1Order4":{"playerName":"F. Johansson","score":"182","laneScore":"374","scoreId":"lblSerie3Table1Order4"},"lblSerie3Table2Order4":{"playerName":"A. Olofsson","score":"239","laneScore":"428","scoreId":"lblSerie3Table2Order4"},"lblSerie3Table3Order4":{"playerName":"T. Ahlby","score":"178","laneScore":"444","scoreId":"lblSerie3Table3Order4"},"lblSerie3Table4Order4":{"playerName":"C. Jakobsson","score":"208","laneScore":"369","scoreId":"lblSerie3Table4Order4"},"lblSerie4Table1Order1":{"playerName":"C. Holmström","score":"268","laneScore":"1","scoreId":"lblSerie4Table1Order1"},"lblSerie4Table2Order1":{"playerName":"H. Adeby","score":"162","laneScore":"0","scoreId":"lblSerie4Table2Order1"},"lblSerie4Table3Order1":{"playerName":"M. Classon","score":"236","laneScore":"1","scoreId":"lblSerie4Table3Order1"},"lblSerie4Table4Order1":{"playerName":"L. Öberg","score":"184","laneScore":"0","scoreId":"lblSerie4Table4Order1"},"lblSerie4Table1Order2":{"playerName":"D. Lidström","score":"220","laneScore":"488","scoreId":"lblSerie4Table1Order2"},"lblSerie4Table2Order2":{"playerName":"L. Axelsson","score":"162","laneScore":"324","scoreId":"lblSerie4Table2Order2"},"lblSerie4Table3Order2":{"playerName":"H. Gustavsson","score":"169","laneScore":"405","scoreId":"lblSerie4Table3Order2"},"lblSerie4Table4Order2":{"playerName":"P. Sjöberg","score":"206","laneScore":"390","scoreId":"lblSerie4Table4Order2"},"lblSerie4Table1Order3":{"playerName":"J. Nygren","score":"203","laneScore":"0","scoreId":"lblSerie4Table1Order3"},"lblSerie4Table2Order3":{"playerName":"K. Andersson","score":"174","laneScore":"1","scoreId":"lblSerie4Table2Order3"},"lblSerie4Table3Order3":{"playerName":"T. Wilson","score":"171","laneScore":"0","scoreId":"lblSerie4Table3Order3"},"lblSerie4Table4Order3":{"playerName":"P. Hellström","score":"176","laneScore":"1","scoreId":"lblSerie4Table4Order3"},"lblSerie4Table1Order4":{"playerName":"E. Svensson","score":"177","laneScore":"380","scoreId":"lblSerie4Table1Order4"},"lblSerie4Table2Order4":{"playerName":"T. Ahlby","score":"210","laneScore":"384","scoreId":"lblSerie4Table2Order4"},"lblSerie4Table3Order4":{"playerName":"A. Olofsson","score":"218","laneScore":"389","scoreId":"lblSerie4Table3Order4"},"lblSerie4Table4Order4":{"playerName":"F. Johansson","score":"259","laneScore":"435","scoreId":"lblSerie4Table4Order4"}},"boardColSpan":3}
+{
+    "series": [
+        {
+            "boards": [
+                {
+                    "scores": [
+                        {
+                            "playerName": "K. Johansson",
+                            "score": "128",
+                            "laneScore": "0",
+                            "scoreId": "lblSerie1Table1Order1"
+                        },
+                        {
+                            "playerName": "C. Holmström",
+                            "score": "199",
+                            "laneScore": "0",
+                            "scoreId": "lblSerie1Table2Order1"
+                        },
+                        {
+                            "playerName": "L. Öberg",
+                            "score": "185",
+                            "laneScore": "1",
+                            "scoreId": "lblSerie1Table3Order1"
+                        },
+                        {
+                            "playerName": "M. Classon",
+                            "score": "143",
+                            "laneScore": "0",
+                            "scoreId": "lblSerie1Table4Order1"
+                        }
+                    ],
+                    "boardId": null,
+                    "boardName": null
+                },
+                {
+                    "scores": [
+                        {
+                            "playerName": "L. Axelsson",
+                            "score": "179",
+                            "laneScore": "307",
+                            "scoreId": "lblSerie1Table1Order2"
+                        },
+                        {
+                            "playerName": "D. Lidström",
+                            "score": "202",
+                            "laneScore": "401",
+                            "scoreId": "lblSerie1Table2Order2"
+                        },
+                        {
+                            "playerName": "P. Sjöberg",
+                            "score": "198",
+                            "laneScore": "383",
+                            "scoreId": "lblSerie1Table3Order2"
+                        },
+                        {
+                            "playerName": "H. Gustavsson",
+                            "score": "191",
+                            "laneScore": "334",
+                            "scoreId": "lblSerie1Table4Order2"
+                        }
+                    ],
+                    "boardId": null,
+                    "boardName": null
+                },
+                {
+                    "scores": [
+                        {
+                            "playerName": "T. Wilson",
+                            "score": "160",
+                            "laneScore": "1",
+                            "scoreId": "lblSerie1Table1Order3"
+                        },
+                        {
+                            "playerName": "P. Hellström",
+                            "score": "220",
+                            "laneScore": "1",
+                            "scoreId": "lblSerie1Table2Order3"
+                        },
+                        {
+                            "playerName": "J. Nygren",
+                            "score": "168",
+                            "laneScore": "0",
+                            "scoreId": "lblSerie1Table3Order3"
+                        },
+                        {
+                            "playerName": "K. Andersson",
+                            "score": "165",
+                            "laneScore": "1",
+                            "scoreId": "lblSerie1Table4Order3"
+                        }
+                    ],
+                    "boardId": null,
+                    "boardName": null
+                },
+                {
+                    "scores": [
+                        {
+                            "playerName": "A. Olofsson",
+                            "score": "256",
+                            "laneScore": "416",
+                            "scoreId": "lblSerie1Table1Order4"
+                        },
+                        {
+                            "playerName": "F. Johansson",
+                            "score": "190",
+                            "laneScore": "410",
+                            "scoreId": "lblSerie1Table2Order4"
+                        },
+                        {
+                            "playerName": "C. Jakobsson",
+                            "score": "154",
+                            "laneScore": "322",
+                            "scoreId": "lblSerie1Table3Order4"
+                        },
+                        {
+                            "playerName": "T. Ahlby",
+                            "score": "176",
+                            "laneScore": "341",
+                            "scoreId": "lblSerie1Table4Order4"
+                        }
+                    ],
+                    "boardId": null,
+                    "boardName": null
+                }
+            ],
+            "serieId": null,
+            "serieName": null
+        },
+        {
+            "boards": [
+                {
+                    "scores": [
+                        {
+                            "playerName": "L. Öberg",
+                            "score": "172",
+                            "laneScore": "0",
+                            "scoreId": "lblSerie2Table1Order1"
+                        },
+                        {
+                            "playerName": "M. Classon",
+                            "score": "194",
+                            "laneScore": "0",
+                            "scoreId": "lblSerie2Table2Order1"
+                        },
+                        {
+                            "playerName": "H. Adeby",
+                            "score": "235",
+                            "laneScore": "0",
+                            "scoreId": "lblSerie2Table3Order1"
+                        },
+                        {
+                            "playerName": "C. Holmström",
+                            "score": "184",
+                            "laneScore": "1",
+                            "scoreId": "lblSerie2Table4Order1"
+                        }
+                    ],
+                    "boardId": null,
+                    "boardName": null
+                },
+                {
+                    "scores": [
+                        {
+                            "playerName": "P. Sjöberg",
+                            "score": "194",
+                            "laneScore": "366",
+                            "scoreId": "lblSerie2Table1Order2"
+                        },
+                        {
+                            "playerName": "H. Gustavsson",
+                            "score": "184",
+                            "laneScore": "378",
+                            "scoreId": "lblSerie2Table2Order2"
+                        },
+                        {
+                            "playerName": "L. Axelsson",
+                            "score": "184",
+                            "laneScore": "419",
+                            "scoreId": "lblSerie2Table3Order2"
+                        },
+                        {
+                            "playerName": "D. Lidström",
+                            "score": "254",
+                            "laneScore": "438",
+                            "scoreId": "lblSerie2Table4Order2"
+                        }
+                    ],
+                    "boardId": null,
+                    "boardName": null
+                },
+                {
+                    "scores": [
+                        {
+                            "playerName": "K. Andersson",
+                            "score": "213",
+                            "laneScore": "1",
+                            "scoreId": "lblSerie2Table1Order3"
+                        },
+                        {
+                            "playerName": "J. Nygren",
+                            "score": "202",
+                            "laneScore": "0",
+                            "scoreId": "lblSerie2Table2Order3"
+                        },
+                        {
+                            "playerName": "P. Hellström",
+                            "score": "278",
+                            "laneScore": "1",
+                            "scoreId": "lblSerie2Table3Order3"
+                        },
+                        {
+                            "playerName": "T. Wilson",
+                            "score": "177",
+                            "laneScore": "0",
+                            "scoreId": "lblSerie2Table4Order3"
+                        }
+                    ],
+                    "boardId": null,
+                    "boardName": null
+                },
+                {
+                    "scores": [
+                        {
+                            "playerName": "T. Ahlby",
+                            "score": "172",
+                            "laneScore": "385",
+                            "scoreId": "lblSerie2Table1Order4"
+                        },
+                        {
+                            "playerName": "C. Jakobsson",
+                            "score": "176",
+                            "laneScore": "378",
+                            "scoreId": "lblSerie2Table2Order4"
+                        },
+                        {
+                            "playerName": "F. Johansson",
+                            "score": "194",
+                            "laneScore": "472",
+                            "scoreId": "lblSerie2Table3Order4"
+                        },
+                        {
+                            "playerName": "A. Olofsson",
+                            "score": "235",
+                            "laneScore": "412",
+                            "scoreId": "lblSerie2Table4Order4"
+                        }
+                    ],
+                    "boardId": null,
+                    "boardName": null
+                }
+            ],
+            "serieId": null,
+            "serieName": null
+        },
+        {
+            "boards": [
+                {
+                    "scores": [
+                        {
+                            "playerName": "M. Classon",
+                            "score": "211",
+                            "laneScore": "0",
+                            "scoreId": "lblSerie3Table1Order1"
+                        },
+                        {
+                            "playerName": "L. Öberg",
+                            "score": "193",
+                            "laneScore": "0",
+                            "scoreId": "lblSerie3Table2Order1"
+                        },
+                        {
+                            "playerName": "C. Holmström",
+                            "score": "218",
+                            "laneScore": "0",
+                            "scoreId": "lblSerie3Table3Order1"
+                        },
+                        {
+                            "playerName": "H. Adeby",
+                            "score": "151",
+                            "laneScore": "0",
+                            "scoreId": "lblSerie3Table4Order1"
+                        }
+                    ],
+                    "boardId": null,
+                    "boardName": null
+                },
+                {
+                    "scores": [
+                        {
+                            "playerName": "H. Gustavsson",
+                            "score": "156",
+                            "laneScore": "367",
+                            "scoreId": "lblSerie3Table1Order2"
+                        },
+                        {
+                            "playerName": "P. Sjöberg",
+                            "score": "192",
+                            "laneScore": "385",
+                            "scoreId": "lblSerie3Table2Order2"
+                        },
+                        {
+                            "playerName": "D. Lidström",
+                            "score": "174",
+                            "laneScore": "392",
+                            "scoreId": "lblSerie3Table3Order2"
+                        },
+                        {
+                            "playerName": "L. Axelsson",
+                            "score": "183",
+                            "laneScore": "334",
+                            "scoreId": "lblSerie3Table4Order2"
+                        }
+                    ],
+                    "boardId": null,
+                    "boardName": null
+                },
+                {
+                    "scores": [
+                        {
+                            "playerName": "P. Hellström",
+                            "score": "192",
+                            "laneScore": "1",
+                            "scoreId": "lblSerie3Table1Order3"
+                        },
+                        {
+                            "playerName": "T. Wilson",
+                            "score": "189",
+                            "laneScore": "1",
+                            "scoreId": "lblSerie3Table2Order3"
+                        },
+                        {
+                            "playerName": "K. Andersson",
+                            "score": "266",
+                            "laneScore": "1",
+                            "scoreId": "lblSerie3Table3Order3"
+                        },
+                        {
+                            "playerName": "J. Nygren",
+                            "score": "161",
+                            "laneScore": "1",
+                            "scoreId": "lblSerie3Table4Order3"
+                        }
+                    ],
+                    "boardId": null,
+                    "boardName": null
+                },
+                {
+                    "scores": [
+                        {
+                            "playerName": "F. Johansson",
+                            "score": "182",
+                            "laneScore": "374",
+                            "scoreId": "lblSerie3Table1Order4"
+                        },
+                        {
+                            "playerName": "A. Olofsson",
+                            "score": "239",
+                            "laneScore": "428",
+                            "scoreId": "lblSerie3Table2Order4"
+                        },
+                        {
+                            "playerName": "T. Ahlby",
+                            "score": "178",
+                            "laneScore": "444",
+                            "scoreId": "lblSerie3Table3Order4"
+                        },
+                        {
+                            "playerName": "C. Jakobsson",
+                            "score": "208",
+                            "laneScore": "369",
+                            "scoreId": "lblSerie3Table4Order4"
+                        }
+                    ],
+                    "boardId": null,
+                    "boardName": null
+                }
+            ],
+            "serieId": null,
+            "serieName": null
+        },
+        {
+            "boards": [
+                {
+                    "scores": [
+                        {
+                            "playerName": "C. Holmström",
+                            "score": "268",
+                            "laneScore": "1",
+                            "scoreId": "lblSerie4Table1Order1"
+                        },
+                        {
+                            "playerName": "H. Adeby",
+                            "score": "162",
+                            "laneScore": "0",
+                            "scoreId": "lblSerie4Table2Order1"
+                        },
+                        {
+                            "playerName": "M. Classon",
+                            "score": "236",
+                            "laneScore": "1",
+                            "scoreId": "lblSerie4Table3Order1"
+                        },
+                        {
+                            "playerName": "L. Öberg",
+                            "score": "184",
+                            "laneScore": "0",
+                            "scoreId": "lblSerie4Table4Order1"
+                        }
+                    ],
+                    "boardId": null,
+                    "boardName": null
+                },
+                {
+                    "scores": [
+                        {
+                            "playerName": "D. Lidström",
+                            "score": "220",
+                            "laneScore": "488",
+                            "scoreId": "lblSerie4Table1Order2"
+                        },
+                        {
+                            "playerName": "L. Axelsson",
+                            "score": "162",
+                            "laneScore": "324",
+                            "scoreId": "lblSerie4Table2Order2"
+                        },
+                        {
+                            "playerName": "H. Gustavsson",
+                            "score": "169",
+                            "laneScore": "405",
+                            "scoreId": "lblSerie4Table3Order2"
+                        },
+                        {
+                            "playerName": "P. Sjöberg",
+                            "score": "206",
+                            "laneScore": "390",
+                            "scoreId": "lblSerie4Table4Order2"
+                        }
+                    ],
+                    "boardId": null,
+                    "boardName": null
+                },
+                {
+                    "scores": [
+                        {
+                            "playerName": "J. Nygren",
+                            "score": "203",
+                            "laneScore": "0",
+                            "scoreId": "lblSerie4Table1Order3"
+                        },
+                        {
+                            "playerName": "K. Andersson",
+                            "score": "174",
+                            "laneScore": "1",
+                            "scoreId": "lblSerie4Table2Order3"
+                        },
+                        {
+                            "playerName": "T. Wilson",
+                            "score": "171",
+                            "laneScore": "0",
+                            "scoreId": "lblSerie4Table3Order3"
+                        },
+                        {
+                            "playerName": "P. Hellström",
+                            "score": "176",
+                            "laneScore": "1",
+                            "scoreId": "lblSerie4Table4Order3"
+                        }
+                    ],
+                    "boardId": null,
+                    "boardName": null
+                },
+                {
+                    "scores": [
+                        {
+                            "playerName": "E. Svensson",
+                            "score": "177",
+                            "laneScore": "380",
+                            "scoreId": "lblSerie4Table1Order4"
+                        },
+                        {
+                            "playerName": "T. Ahlby",
+                            "score": "210",
+                            "laneScore": "384",
+                            "scoreId": "lblSerie4Table2Order4"
+                        },
+                        {
+                            "playerName": "A. Olofsson",
+                            "score": "218",
+                            "laneScore": "389",
+                            "scoreId": "lblSerie4Table3Order4"
+                        },
+                        {
+                            "playerName": "F. Johansson",
+                            "score": "259",
+                            "laneScore": "435",
+                            "scoreId": "lblSerie4Table4Order4"
+                        }
+                    ],
+                    "boardId": null,
+                    "boardName": null
+                }
+            ],
+            "serieId": null,
+            "serieName": null
+        }
+    ],
+    "serieNames": [
+        "1",
+        "2",
+        "3",
+        "4"
+    ],
+    "boardNames": [
+        "Bord 1              ",
+        "Bord 2              ",
+        "Bord 3              ",
+        "Bord 4              "
+    ],
+    "scoreKvpList": {
+        "lblSerie1Table1Order1": {
+            "playerName": "K. Johansson",
+            "score": "128",
+            "laneScore": "0",
+            "scoreId": "lblSerie1Table1Order1"
+        },
+        "lblSerie1Table2Order1": {
+            "playerName": "C. Holmström",
+            "score": "199",
+            "laneScore": "0",
+            "scoreId": "lblSerie1Table2Order1"
+        },
+        "lblSerie1Table3Order1": {
+            "playerName": "L. Öberg",
+            "score": "185",
+            "laneScore": "1",
+            "scoreId": "lblSerie1Table3Order1"
+        },
+        "lblSerie1Table4Order1": {
+            "playerName": "M. Classon",
+            "score": "143",
+            "laneScore": "0",
+            "scoreId": "lblSerie1Table4Order1"
+        },
+        "lblSerie1Table1Order2": {
+            "playerName": "L. Axelsson",
+            "score": "179",
+            "laneScore": "307",
+            "scoreId": "lblSerie1Table1Order2"
+        },
+        "lblSerie1Table2Order2": {
+            "playerName": "D. Lidström",
+            "score": "202",
+            "laneScore": "401",
+            "scoreId": "lblSerie1Table2Order2"
+        },
+        "lblSerie1Table3Order2": {
+            "playerName": "P. Sjöberg",
+            "score": "198",
+            "laneScore": "383",
+            "scoreId": "lblSerie1Table3Order2"
+        },
+        "lblSerie1Table4Order2": {
+            "playerName": "H. Gustavsson",
+            "score": "191",
+            "laneScore": "334",
+            "scoreId": "lblSerie1Table4Order2"
+        },
+        "lblSerie1Table1Order3": {
+            "playerName": "T. Wilson",
+            "score": "160",
+            "laneScore": "1",
+            "scoreId": "lblSerie1Table1Order3"
+        },
+        "lblSerie1Table2Order3": {
+            "playerName": "P. Hellström",
+            "score": "220",
+            "laneScore": "1",
+            "scoreId": "lblSerie1Table2Order3"
+        },
+        "lblSerie1Table3Order3": {
+            "playerName": "J. Nygren",
+            "score": "168",
+            "laneScore": "0",
+            "scoreId": "lblSerie1Table3Order3"
+        },
+        "lblSerie1Table4Order3": {
+            "playerName": "K. Andersson",
+            "score": "165",
+            "laneScore": "1",
+            "scoreId": "lblSerie1Table4Order3"
+        },
+        "lblSerie1Table1Order4": {
+            "playerName": "A. Olofsson",
+            "score": "256",
+            "laneScore": "416",
+            "scoreId": "lblSerie1Table1Order4"
+        },
+        "lblSerie1Table2Order4": {
+            "playerName": "F. Johansson",
+            "score": "190",
+            "laneScore": "410",
+            "scoreId": "lblSerie1Table2Order4"
+        },
+        "lblSerie1Table3Order4": {
+            "playerName": "C. Jakobsson",
+            "score": "154",
+            "laneScore": "322",
+            "scoreId": "lblSerie1Table3Order4"
+        },
+        "lblSerie1Table4Order4": {
+            "playerName": "T. Ahlby",
+            "score": "176",
+            "laneScore": "341",
+            "scoreId": "lblSerie1Table4Order4"
+        },
+        "lblSerie2Table1Order1": {
+            "playerName": "L. Öberg",
+            "score": "172",
+            "laneScore": "0",
+            "scoreId": "lblSerie2Table1Order1"
+        },
+        "lblSerie2Table2Order1": {
+            "playerName": "M. Classon",
+            "score": "194",
+            "laneScore": "0",
+            "scoreId": "lblSerie2Table2Order1"
+        },
+        "lblSerie2Table3Order1": {
+            "playerName": "H. Adeby",
+            "score": "235",
+            "laneScore": "0",
+            "scoreId": "lblSerie2Table3Order1"
+        },
+        "lblSerie2Table4Order1": {
+            "playerName": "C. Holmström",
+            "score": "184",
+            "laneScore": "1",
+            "scoreId": "lblSerie2Table4Order1"
+        },
+        "lblSerie2Table1Order2": {
+            "playerName": "P. Sjöberg",
+            "score": "194",
+            "laneScore": "366",
+            "scoreId": "lblSerie2Table1Order2"
+        },
+        "lblSerie2Table2Order2": {
+            "playerName": "H. Gustavsson",
+            "score": "184",
+            "laneScore": "378",
+            "scoreId": "lblSerie2Table2Order2"
+        },
+        "lblSerie2Table3Order2": {
+            "playerName": "L. Axelsson",
+            "score": "184",
+            "laneScore": "419",
+            "scoreId": "lblSerie2Table3Order2"
+        },
+        "lblSerie2Table4Order2": {
+            "playerName": "D. Lidström",
+            "score": "254",
+            "laneScore": "438",
+            "scoreId": "lblSerie2Table4Order2"
+        },
+        "lblSerie2Table1Order3": {
+            "playerName": "K. Andersson",
+            "score": "213",
+            "laneScore": "1",
+            "scoreId": "lblSerie2Table1Order3"
+        },
+        "lblSerie2Table2Order3": {
+            "playerName": "J. Nygren",
+            "score": "202",
+            "laneScore": "0",
+            "scoreId": "lblSerie2Table2Order3"
+        },
+        "lblSerie2Table3Order3": {
+            "playerName": "P. Hellström",
+            "score": "278",
+            "laneScore": "1",
+            "scoreId": "lblSerie2Table3Order3"
+        },
+        "lblSerie2Table4Order3": {
+            "playerName": "T. Wilson",
+            "score": "177",
+            "laneScore": "0",
+            "scoreId": "lblSerie2Table4Order3"
+        },
+        "lblSerie2Table1Order4": {
+            "playerName": "T. Ahlby",
+            "score": "172",
+            "laneScore": "385",
+            "scoreId": "lblSerie2Table1Order4"
+        },
+        "lblSerie2Table2Order4": {
+            "playerName": "C. Jakobsson",
+            "score": "176",
+            "laneScore": "378",
+            "scoreId": "lblSerie2Table2Order4"
+        },
+        "lblSerie2Table3Order4": {
+            "playerName": "F. Johansson",
+            "score": "194",
+            "laneScore": "472",
+            "scoreId": "lblSerie2Table3Order4"
+        },
+        "lblSerie2Table4Order4": {
+            "playerName": "A. Olofsson",
+            "score": "235",
+            "laneScore": "412",
+            "scoreId": "lblSerie2Table4Order4"
+        },
+        "lblSerie3Table1Order1": {
+            "playerName": "M. Classon",
+            "score": "211",
+            "laneScore": "0",
+            "scoreId": "lblSerie3Table1Order1"
+        },
+        "lblSerie3Table2Order1": {
+            "playerName": "L. Öberg",
+            "score": "193",
+            "laneScore": "0",
+            "scoreId": "lblSerie3Table2Order1"
+        },
+        "lblSerie3Table3Order1": {
+            "playerName": "C. Holmström",
+            "score": "218",
+            "laneScore": "0",
+            "scoreId": "lblSerie3Table3Order1"
+        },
+        "lblSerie3Table4Order1": {
+            "playerName": "H. Adeby",
+            "score": "151",
+            "laneScore": "0",
+            "scoreId": "lblSerie3Table4Order1"
+        },
+        "lblSerie3Table1Order2": {
+            "playerName": "H. Gustavsson",
+            "score": "156",
+            "laneScore": "367",
+            "scoreId": "lblSerie3Table1Order2"
+        },
+        "lblSerie3Table2Order2": {
+            "playerName": "P. Sjöberg",
+            "score": "192",
+            "laneScore": "385",
+            "scoreId": "lblSerie3Table2Order2"
+        },
+        "lblSerie3Table3Order2": {
+            "playerName": "D. Lidström",
+            "score": "174",
+            "laneScore": "392",
+            "scoreId": "lblSerie3Table3Order2"
+        },
+        "lblSerie3Table4Order2": {
+            "playerName": "L. Axelsson",
+            "score": "183",
+            "laneScore": "334",
+            "scoreId": "lblSerie3Table4Order2"
+        },
+        "lblSerie3Table1Order3": {
+            "playerName": "P. Hellström",
+            "score": "192",
+            "laneScore": "1",
+            "scoreId": "lblSerie3Table1Order3"
+        },
+        "lblSerie3Table2Order3": {
+            "playerName": "T. Wilson",
+            "score": "189",
+            "laneScore": "1",
+            "scoreId": "lblSerie3Table2Order3"
+        },
+        "lblSerie3Table3Order3": {
+            "playerName": "K. Andersson",
+            "score": "266",
+            "laneScore": "1",
+            "scoreId": "lblSerie3Table3Order3"
+        },
+        "lblSerie3Table4Order3": {
+            "playerName": "J. Nygren",
+            "score": "161",
+            "laneScore": "1",
+            "scoreId": "lblSerie3Table4Order3"
+        },
+        "lblSerie3Table1Order4": {
+            "playerName": "F. Johansson",
+            "score": "182",
+            "laneScore": "374",
+            "scoreId": "lblSerie3Table1Order4"
+        },
+        "lblSerie3Table2Order4": {
+            "playerName": "A. Olofsson",
+            "score": "239",
+            "laneScore": "428",
+            "scoreId": "lblSerie3Table2Order4"
+        },
+        "lblSerie3Table3Order4": {
+            "playerName": "T. Ahlby",
+            "score": "178",
+            "laneScore": "444",
+            "scoreId": "lblSerie3Table3Order4"
+        },
+        "lblSerie3Table4Order4": {
+            "playerName": "C. Jakobsson",
+            "score": "208",
+            "laneScore": "369",
+            "scoreId": "lblSerie3Table4Order4"
+        },
+        "lblSerie4Table1Order1": {
+            "playerName": "C. Holmström",
+            "score": "268",
+            "laneScore": "1",
+            "scoreId": "lblSerie4Table1Order1"
+        },
+        "lblSerie4Table2Order1": {
+            "playerName": "H. Adeby",
+            "score": "162",
+            "laneScore": "0",
+            "scoreId": "lblSerie4Table2Order1"
+        },
+        "lblSerie4Table3Order1": {
+            "playerName": "M. Classon",
+            "score": "236",
+            "laneScore": "1",
+            "scoreId": "lblSerie4Table3Order1"
+        },
+        "lblSerie4Table4Order1": {
+            "playerName": "L. Öberg",
+            "score": "184",
+            "laneScore": "0",
+            "scoreId": "lblSerie4Table4Order1"
+        },
+        "lblSerie4Table1Order2": {
+            "playerName": "D. Lidström",
+            "score": "220",
+            "laneScore": "488",
+            "scoreId": "lblSerie4Table1Order2"
+        },
+        "lblSerie4Table2Order2": {
+            "playerName": "L. Axelsson",
+            "score": "162",
+            "laneScore": "324",
+            "scoreId": "lblSerie4Table2Order2"
+        },
+        "lblSerie4Table3Order2": {
+            "playerName": "H. Gustavsson",
+            "score": "169",
+            "laneScore": "405",
+            "scoreId": "lblSerie4Table3Order2"
+        },
+        "lblSerie4Table4Order2": {
+            "playerName": "P. Sjöberg",
+            "score": "206",
+            "laneScore": "390",
+            "scoreId": "lblSerie4Table4Order2"
+        },
+        "lblSerie4Table1Order3": {
+            "playerName": "J. Nygren",
+            "score": "203",
+            "laneScore": "0",
+            "scoreId": "lblSerie4Table1Order3"
+        },
+        "lblSerie4Table2Order3": {
+            "playerName": "K. Andersson",
+            "score": "174",
+            "laneScore": "1",
+            "scoreId": "lblSerie4Table2Order3"
+        },
+        "lblSerie4Table3Order3": {
+            "playerName": "T. Wilson",
+            "score": "171",
+            "laneScore": "0",
+            "scoreId": "lblSerie4Table3Order3"
+        },
+        "lblSerie4Table4Order3": {
+            "playerName": "P. Hellström",
+            "score": "176",
+            "laneScore": "1",
+            "scoreId": "lblSerie4Table4Order3"
+        },
+        "lblSerie4Table1Order4": {
+            "playerName": "E. Svensson",
+            "score": "177",
+            "laneScore": "380",
+            "scoreId": "lblSerie4Table1Order4"
+        },
+        "lblSerie4Table2Order4": {
+            "playerName": "T. Ahlby",
+            "score": "210",
+            "laneScore": "384",
+            "scoreId": "lblSerie4Table2Order4"
+        },
+        "lblSerie4Table3Order4": {
+            "playerName": "A. Olofsson",
+            "score": "218",
+            "laneScore": "389",
+            "scoreId": "lblSerie4Table3Order4"
+        },
+        "lblSerie4Table4Order4": {
+            "playerName": "F. Johansson",
+            "score": "259",
+            "laneScore": "435",
+            "scoreId": "lblSerie4Table4Order4"
+        }
+    },
+    "boardColSpan": 3
+}
