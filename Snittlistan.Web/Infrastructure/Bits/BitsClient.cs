@@ -5,9 +5,11 @@ namespace Snittlistan.Web.Infrastructure.Bits
     using System.Threading.Tasks;
     using Contracts;
     using Newtonsoft.Json;
+    using NLog;
 
     public class BitsClient : IBitsClient
     {
+        private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
         private readonly string apiKey;
         private readonly HttpClient client;
 
@@ -73,6 +75,7 @@ namespace Snittlistan.Web.Infrastructure.Bits
 
         private async Task<string> Request(HttpMethod method, string url, Action<HttpRequestMessage> action)
         {
+            Logger.Info("{0}", url);
             var request = new HttpRequestMessage(method, url);
             request.Headers.Referrer = new Uri("https://bits.swebowl.se");
             action.Invoke(request);
