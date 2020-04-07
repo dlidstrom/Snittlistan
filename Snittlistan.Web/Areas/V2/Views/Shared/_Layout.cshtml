@@ -1,7 +1,5 @@
 ﻿@{
     ViewBag.Title = "Snittlistan";
-    @* The only file that should be transpiled. *@
-    Bundles.Reference("Content/css/main.less");
 }<!DOCTYPE html>
 <html lang="se">
 <head>
@@ -33,7 +31,7 @@
     <link href="@Url.ContentCacheBreak("~/Content/external/quill/quill.snow.css")" type="text/css" rel="stylesheet" />
     <link href="@Url.ContentCacheBreak("~/Content/css/glyphicons.css")" type="text/css" rel="stylesheet" />
 
-    @Bundles.RenderStylesheets()
+    <link href="@Url.ContentCacheBreak("~/Content/css/main.css")" type="text/css" rel="stylesheet" />
     <script src="@Url.ContentCacheBreak("~/Content/js/GA.js")"></script>
 </head>
 <body>
