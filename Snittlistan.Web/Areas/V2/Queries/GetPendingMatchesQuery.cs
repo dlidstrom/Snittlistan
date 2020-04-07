@@ -10,6 +10,13 @@ namespace Snittlistan.Web.Areas.V2.Queries
 
     public class GetPendingMatchesQuery : IQuery<Roster[]>
     {
+        private readonly int seasonId;
+
+        public GetPendingMatchesQuery(int seasonId)
+        {
+            this.seasonId = seasonId;
+        }
+
         public Roster[] Execute(IDocumentSession session)
         {
             var results = session.Query<RosterSearchTerms.Result, RosterSearchTerms>()
@@ -17,6 +24,7 @@ namespace Snittlistan.Web.Areas.V2.Queries
                                  .Where(x => x.Date < DateTime.Now)
                                  .Where(x => x.BitsMatchId != 0)
                                  .Where(x => x.MatchResultId == null)
+                                 .Where(x => x.Season == seasonId)
                                  .OrderBy(x => x.Date)
                                  .ProjectFromIndexFieldsInto<RosterSearchTerms.Result>()
                                  .ToArray();

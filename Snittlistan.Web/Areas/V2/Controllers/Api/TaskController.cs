@@ -40,6 +40,14 @@
 
         public async Task<IHttpActionResult> Post(TaskRequest request)
         {
+            Log.Info("Received task");
+            var result = await HandleTask(request);
+            Log.Info("Done");
+            return result;
+        }
+
+        private async Task<IHttpActionResult> HandleTask(TaskRequest request)
+        {
             if (ModelState.IsValid == false) return BadRequest(ModelState);
             var taskObject = JsonConvert.DeserializeObject(
                 request.TaskJson,
@@ -231,9 +239,9 @@
 
         private async Task<IHttpActionResult> Handle(RegisterMatchesMessage message)
         {
-            var pendingMatches = ExecuteQuery(new GetPendingMatchesQuery());
-            var players = ExecuteQuery(new GetActivePlayersQuery());
             var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+            var pendingMatches = ExecuteQuery(new GetPendingMatchesQuery(websiteConfig.SeasonId));
+            var players = ExecuteQuery(new GetActivePlayersQuery());
             var registeredMatches = new List<Roster>();
             foreach (var pendingMatch in pendingMatches)
             {
