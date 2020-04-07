@@ -67,6 +67,16 @@
                   Return="check"
                   Execute="deferred"
                   Impersonate="no" />
+    <CustomAction Id="GetRostersFromBits_Cmd"
+                  Property="GetRostersFromBits_Task"
+                  Execute="immediate"
+                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU Administrator /RP [ADMINISTRATOR_PASSWORD] /SC HOURLY /TN GetRostersFromBits /TR &quot;\&quot;[#Snittlistan.Tool.exe]\&quot; GetRostersFromBits&quot;" />
+    <CustomAction Id="GetRostersFromBits_Task"
+                  BinaryKey="WixCA"
+                  DllEntry="CAQuietExec"
+                  Return="check"
+                  Execute="deferred"
+                  Impersonate="no" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Merge Id="VCRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\Microsoft_VC140_CRT_x86.msm" DiskId="1" Language="0" />
@@ -240,6 +250,8 @@
       <Custom Action="RegisterMatch_Task" After="RegisterMatch_Cmd">NOT Installed</Custom>
       <Custom Action="StartServices_Cmd" Before="InstallFinalize">NOT Installed</Custom>
       <Custom Action="StartServices_Task" After="StartServices_Cmd">NOT Installed</Custom>
+      <Custom Action="GetRostersFromBits_Cmd" Before="InstallFinalize">NOT Installed</Custom>
+      <Custom Action="GetRostersFromBits_Task" After="GetRostersFromBits_Cmd">NOT Installed</Custom>
     </InstallExecuteSequence>
 
     <Feature Id="Service" Level="1">
