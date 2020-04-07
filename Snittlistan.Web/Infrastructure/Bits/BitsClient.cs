@@ -2,6 +2,7 @@ namespace Snittlistan.Web.Infrastructure.Bits
 {
     using System;
     using System.Net.Http;
+    using System.Text;
     using System.Threading.Tasks;
     using Contracts;
     using Newtonsoft.Json;
@@ -61,16 +62,36 @@ namespace Snittlistan.Web.Infrastructure.Bits
             return result;
         }
 
+        public async Task<PlayerResult> GetPlayers(int clubId)
+        {
+            var result = await Post<PlayerResult>(
+                new
+                {
+                    ClubId = clubId,
+                    TakeOnlyActive = true,
+                    take = "250",
+                    skip = 0,
+                    page = 1,
+                    pageSize = "250",
+                    sort = new object[0]
+                },
+                $"https://api.swebowl.se/api/v1/player/GetAll?APIKey={apiKey}");
+            return result;
+        }
+
         private async Task<TResult> Get<TResult>(string url)
         {
             var result = await Request(HttpMethod.Get, url, _ => { });
             return JsonConvert.DeserializeObject<TResult>(result);
         }
 
-        private async Task<string> Post(object body, string url)
+        private async Task<TResult> Post<TResult>(object body, string url)
         {
-            var result = await Request(HttpMethod.Post, url, x => x.Content = new StringContent(JsonConvert.SerializeObject(body)));
-            return result;
+            var result = await Request(
+                HttpMethod.Post,
+                url,
+                x => x.Content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json"));
+            return JsonConvert.DeserializeObject<TResult>(result);
         }
 
         private async Task<string> Request(HttpMethod method, string url, Action<HttpRequestMessage> action)

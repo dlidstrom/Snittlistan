@@ -63,6 +63,7 @@
     <Compile Include="JsonMessageFormatter.cs" />
     <Compile Include="LoggingHandler.cs" />
     <Compile Include="Messages\EmailTask.cs" />
+    <Compile Include="Messages\GetPlayersFromBitsMessage.cs" />
     <Compile Include="Messages\GetRostersFromBitsMessage.cs" />
     <Compile Include="Messages\InitializeIndexesMessage.cs" />
     <Compile Include="Messages\MatchRegisteredEvent.cs" />

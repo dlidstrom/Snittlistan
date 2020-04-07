@@ -28,6 +28,7 @@
 
         public string Database { get; }
 
+        // TODO Remove
         public string ConnectionStringName { get; }
 
         public string Favicon { get; }
