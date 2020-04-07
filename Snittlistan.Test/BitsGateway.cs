@@ -77,6 +77,14 @@ namespace Snittlistan.Test
             return matchRounds;
         }
 
+        public static async Task<PlayerResult> GetPlayers(int clubId)
+        {
+            var playerResult = await Try(
+                $"PlayerResult-{clubId}.json",
+                () => Client.GetPlayers(clubId));
+            return playerResult;
+        }
+
         private static async Task<TResult> Try<TResult>(string filename, Func<Task<TResult>> func)
         {
             var currentDirectory = Directory.GetCurrentDirectory();

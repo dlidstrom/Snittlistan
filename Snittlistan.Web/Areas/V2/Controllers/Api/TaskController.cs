@@ -54,29 +54,71 @@
                 new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
             switch (taskObject)
             {
-                case OneTimeKeyEvent oneTimeKeyEvent:
-                    return Handle(oneTimeKeyEvent);
-                case VerifyMatchMessage verifyMatchMessage:
-                    return await Handle(verifyMatchMessage);
-                case RegisterMatchesMessage registerMatchesMessage:
-                    return await Handle(registerMatchesMessage);
-                case InitializeIndexesMessage initializeIndexesMessage:
-                    return Handle(initializeIndexesMessage);
-                case VerifyMatchesMessage verifyMatchesMessage:
-                    return Handle(verifyMatchesMessage);
-                case NewUserCreatedEvent newUserCreatedEvent:
-                    return Handle(newUserCreatedEvent);
-                case UserInvitedEvent userInvitedEvent:
-                    return Handle(userInvitedEvent);
-                case EmailTask emailTask:
-                    return Handle(emailTask);
-                case MatchRegisteredEvent matchRegisteredEvent:
-                    return Handle(matchRegisteredEvent);
-                case GetRostersFromBitsMessage getRostersFromBitsMessage:
-                    return await Handle(getRostersFromBitsMessage);
+                case OneTimeKeyEvent @event:
+                    return Handle(@event);
+                case VerifyMatchMessage message:
+                    return await Handle(message);
+                case RegisterMatchesMessage message:
+                    return await Handle(message);
+                case InitializeIndexesMessage message:
+                    return Handle(message);
+                case VerifyMatchesMessage message:
+                    return Handle(message);
+                case NewUserCreatedEvent @event:
+                    return Handle(@event);
+                case UserInvitedEvent @event:
+                    return Handle(@event);
+                case EmailTask task:
+                    return Handle(task);
+                case MatchRegisteredEvent @event:
+                    return Handle(@event);
+                case GetRostersFromBitsMessage message:
+                    return await Handle(message);
+                case GetPlayersFromBitsMessage message:
+                    return await Handle(message);
             }
 
             throw new Exception($"Unhandled task {taskObject.GetType()}");
+        }
+
+        private async Task<IHttpActionResult> Handle(GetPlayersFromBitsMessage message)
+        {
+            var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+            var playersResult = await bitsClient.GetPlayers(websiteConfig.ClubId);
+            var players = DocumentSession.Query<Player, PlayerSearch>()
+                                         .ToArray();
+
+            // update existing players by matching on license number
+            var playersByLicense = playersResult.Data.ToDictionary(x => x.LicNbr);
+            foreach (var player in players.Where(x => x.PlayerItem != null))
+            {
+                if (playersByLicense.TryGetValue(player.PlayerItem.LicNbr, out var playerItem))
+                {
+                    player.PlayerItem = playerItem;
+                    playersByLicense.Remove(player.PlayerItem.LicNbr);
+                }
+            }
+
+            // add missing players, i.e. what is left from first step
+            foreach (var playerItem in playersByLicense.Values)
+            {
+                var personalNumber = int.Parse(playerItem.LicNbr.Substring(5, 2)
+                                               + playerItem.LicNbr.Substring(3, 2)
+                                               + playerItem.LicNbr.Substring(1, 2));
+                var newPlayer = new Player(
+                    $"{playerItem.FirstName} {playerItem.SurName}",
+                    playerItem.Email,
+                    playerItem.Inactive ? Player.Status.Inactive : Player.Status.Active,
+                    personalNumber,
+                    string.Empty,
+                    new string[0])
+                {
+                    PlayerItem = playerItem
+                };
+                DocumentSession.Store(newPlayer);
+            }
+
+            return Ok();
         }
 
         private async Task<IHttpActionResult> Handle(GetRostersFromBitsMessage message)

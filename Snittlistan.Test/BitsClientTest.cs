@@ -1,5 +1,6 @@
 ﻿namespace Snittlistan.Test
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using NUnit.Framework;
 
@@ -33,7 +34,7 @@
 
             // Assert
             Assert.That(divisions, Has.Length.EqualTo(1));
-            Assert.That(divisions[0].DivisionId, Is.EqualTo("8"));
+            Assert.That(divisions[0].DivisionId, Is.EqualTo(8));
             Assert.That(divisions[0].DivisionName, Is.EqualTo("Div 1 Södra Svealand"));
         }
 
@@ -46,6 +47,26 @@
             // Assert
             Assert.That(matches, Has.Length.EqualTo(15));
             Assert.That(matches[0].MatchRoundId, Is.EqualTo(2));
+        }
+
+        [TestCaseSource(nameof(Players))]
+        public async Task ParsesPlayers(int clubId, int length, string licNbr)
+        {
+            // Act
+            var players = await BitsGateway.GetPlayers(clubId);
+
+            // Assert
+            Assert.That(players.Data, Has.Length.EqualTo(length));
+            Assert.That(players.Data[0].LicNbr, Is.EqualTo(licNbr));
+        }
+
+        private static IEnumerable<TestCaseData> Players
+        {
+            get
+            {
+                yield return new TestCaseData(51538, 36, "M020551RAL01");
+                yield return new TestCaseData(4494, 30, "K081082CAR01");
+            }
         }
     }
 }

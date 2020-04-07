@@ -1,6 +1,7 @@
 namespace Snittlistan.Web.Areas.V2.Domain
 {
     using System;
+    using Infrastructure.Bits.Contracts;
 
     public class Player
     {
@@ -40,6 +41,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public string Nickname { get; private set; }
 
         public string[] Roles { get; private set; }
+
+        public PlayerItem PlayerItem { get; set; }
 
         public void SetName(string name)
         {

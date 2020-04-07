@@ -95,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Tasks\CommandLineTaskHelper.cs" />
+    <Compile Include="Tasks\GetPlayersFromBitsCommandLineTask.cs" />
     <Compile Include="Tasks\GetRostersFromBitsCommandLineTask.cs" />
     <Compile Include="Tasks\HelpCommandLineTask.cs" />
     <Compile Include="Tasks\ICommandLineTask.cs" />
