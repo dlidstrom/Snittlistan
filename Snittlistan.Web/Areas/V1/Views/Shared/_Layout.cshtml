@@ -1,9 +1,4 @@
-﻿@{
-    Bundles.Reference("Content/js/stacktrace.js");
-    Bundles.Reference("Content/js/feedback.js");
-    Bundles.Reference("Content/js/button.js");
-    Bundles.Reference("Content/external/waypoints/waypoints-0.0.1.min.js");
-}<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -54,7 +49,10 @@
             window.Waypoints.debug(true).intercept('a');
         });
     </script>
-    @Bundles.RenderScripts()
+    <link href="@Url.ContentCacheBreak("~/Content/js/stacktrace.js")" type="text/css" rel="stylesheet" />
+    <link href="@Url.ContentCacheBreak("~/Content/js/feedback.js")" type="text/css" rel="stylesheet" />
+    <link href="@Url.ContentCacheBreak("~/Content/js/button.js")" type="text/css" rel="stylesheet" />
+    <link href="@Url.ContentCacheBreak("~/Content/external/waypoints/waypoints-0.0.1.min.js")" type="text/css" rel="stylesheet" />
     @RenderSection("scripts", false)
 </body>
 </html>
