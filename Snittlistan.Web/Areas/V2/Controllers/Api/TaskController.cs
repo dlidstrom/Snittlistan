@@ -96,6 +96,11 @@
                 {
                     player.PlayerItem = playerItem;
                     playersByLicense.Remove(player.PlayerItem.LicNbr);
+                    Log.Info("Updating player with existing PlayerItem: {0}", player.PlayerItem.LicNbr);
+                }
+                else
+                {
+                    Log.Info("Player with {0} not found from BITS", player.PlayerItem.LicNbr);
                 }
             }
 
@@ -109,6 +114,7 @@
                 if (playerNamesWithoutPlayerItem.TryGetValue(nameFromBits, out var player))
                 {
                     player.PlayerItem = playerItem;
+                    Log.Info("Updating player with missing PlayerItem: {0}", nameFromBits);
                 }
                 else
                 {
@@ -126,6 +132,7 @@
                     {
                         PlayerItem = playerItem
                     };
+                    Log.Info("Created player {0} {1}", playerItem.FirstName, playerItem.SurName);
                     DocumentSession.Store(newPlayer);
                 }
             }
