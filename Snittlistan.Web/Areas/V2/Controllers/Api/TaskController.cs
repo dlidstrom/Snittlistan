@@ -100,22 +100,34 @@
             }
 
             // add missing players, i.e. what is left from first step
+            // try first to match on name, update those, add the rest
+            var playerNamesWithoutPlayerItem = players.Where(x => x.PlayerItem == null).ToDictionary(x => x.Name);
             foreach (var playerItem in playersByLicense.Values)
             {
-                var personalNumber = int.Parse(playerItem.LicNbr.Substring(5, 2)
-                                               + playerItem.LicNbr.Substring(3, 2)
-                                               + playerItem.LicNbr.Substring(1, 2));
-                var newPlayer = new Player(
-                    $"{playerItem.FirstName} {playerItem.SurName}",
-                    playerItem.Email,
-                    playerItem.Inactive ? Player.Status.Inactive : Player.Status.Active,
-                    personalNumber,
-                    string.Empty,
-                    new string[0])
+                // look for name
+                var nameFromBits = $"{playerItem.FirstName} {playerItem.SurName}";
+                if (playerNamesWithoutPlayerItem.TryGetValue(nameFromBits, out var player))
                 {
-                    PlayerItem = playerItem
-                };
-                DocumentSession.Store(newPlayer);
+                    player.PlayerItem = playerItem;
+                }
+                else
+                {
+                    // create new
+                    var personalNumber = int.Parse(playerItem.LicNbr.Substring(5, 2)
+                                                   + playerItem.LicNbr.Substring(3, 2)
+                                                   + playerItem.LicNbr.Substring(1, 2));
+                    var newPlayer = new Player(
+                        $"{playerItem.FirstName} {playerItem.SurName}",
+                        playerItem.Email,
+                        playerItem.Inactive ? Player.Status.Inactive : Player.Status.Active,
+                        personalNumber,
+                        string.Empty,
+                        new string[0])
+                    {
+                        PlayerItem = playerItem
+                    };
+                    DocumentSession.Store(newPlayer);
+                }
             }
 
             return Ok();
