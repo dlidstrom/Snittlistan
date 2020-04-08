@@ -216,7 +216,6 @@
     <Compile Include="Areas\V2\Domain\ParseMatchSchemeResult.cs" />
     <Compile Include="Areas\V2\Indexes\ActivityIndex.cs" />
     <Compile Include="Areas\V2\Indexes\OneTimeTokenIndex.cs" />
-    <Compile Include="Areas\V2\Queries\GetActivePlayersQuery.cs" />
     <Compile Include="Areas\V2\Queries\GetPendingMatchesQuery.cs" />
     <Compile Include="Areas\V2\Queries\GetPlayersQuery.cs" />
     <Compile Include="Areas\V2\Commands\RegisterMatch4Command.cs" />
