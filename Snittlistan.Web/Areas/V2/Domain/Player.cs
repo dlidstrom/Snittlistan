@@ -11,14 +11,18 @@ namespace Snittlistan.Web.Areas.V2.Domain
             Status playerStatus,
             int personalNumber,
             string nickname,
-            string[] roles)
+            string[] roles,
+            PlayerItem playerItem = null)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Email = email; // allow null
             PlayerStatus = playerStatus;
-            PersonalNumber = personalNumber;
+            PersonalNumber = (personalNumber != 0 ? personalNumber : playerItem?.GetPersonalNumber()) ?? 0;
             Nickname = nickname ?? name;
             Roles = roles ?? new string[0];
+
+            // nullable fields
+            PlayerItem = playerItem;
         }
 
         public enum Status

@@ -113,6 +113,18 @@
         public bool Inactive { get; set; }
     }
 
+    public static class PlayerItemExtesions
+    {
+        public static int GetPersonalNumber(this PlayerItem playerItem)
+        {
+            var asString = playerItem.LicNbr.Substring(5, 2)
+                + playerItem.LicNbr.Substring(3, 2)
+                + playerItem.LicNbr.Substring(1, 2);
+            int.TryParse(asString, out var personalNumber);
+            return personalNumber;
+        }
+    }
+
     public enum Sex
     {
         M,
