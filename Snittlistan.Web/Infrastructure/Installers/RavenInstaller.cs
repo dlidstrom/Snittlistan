@@ -37,6 +37,9 @@
                 case ApplicationMode.Test:
                     mode = DocumentStoreMode.InMemory;
                     break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 

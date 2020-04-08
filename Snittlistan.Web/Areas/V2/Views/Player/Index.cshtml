@@ -4,7 +4,7 @@
 @helper ShowPlayer(PlayerViewModel player)
 {
     <tr>
-        <td>@player.Name (@player.Nickname)</td>
+        <td title="@player.LicenseNumber">@player.Name (@player.Nickname)</td>
         <td>@player.StatusText</td>
         @if (User.IsInRole2(WebsiteRoles.Player.ShowEmailAddresses))
         {

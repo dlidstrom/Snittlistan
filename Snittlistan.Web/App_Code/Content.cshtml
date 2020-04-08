@@ -1,21 +1,9 @@
 ﻿@using System.Web.Mvc
 @using Snittlistan.Web.HtmlHelpers
 
-@* Used to include internal javascript *@
-@helper Script(string scriptName, UrlHelper url)
-{
-    <script src="@url.Content("~/Content/js/" + scriptName)" type="text/javascript"></script>
-}
-
-@* Used to include external javascript *@
-@helper External(string scriptName, UrlHelper url)
-{
-    <script src="@url.Content("~/Content/external/" + scriptName)" type="text/javascript"></script>
-}
-
 @helper Script(ScriptType type)
 {
-    string src = string.Empty;
+    string src;
     switch (type)
     {
         case ScriptType.JQuery:
@@ -39,6 +27,9 @@
         case ScriptType.Modernizr:
             src = "https://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.0.6-development-only.js";
             break;
+
+        default:
+            throw new ArgumentOutOfRangeException(nameof(type), type, null);
     }
     <script src="@src" type="text/javascript"></script>
 }
@@ -55,12 +46,15 @@
 
 @helper Css(CssType type)
 {
-    string src = string.Empty;
+    string src;
     switch (type)
     {
         case CssType.Blitzer:
             src = "https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/themes/blitzer/jquery-ui.css";
             break;
+
+        default:
+            throw new ArgumentOutOfRangeException(nameof(type), type, null);
     }
 
     <link href="@src" rel="Stylesheet" type="text/css" />

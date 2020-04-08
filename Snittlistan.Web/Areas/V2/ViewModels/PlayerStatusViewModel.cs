@@ -87,6 +87,9 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                     case CompareMode.PlayerForm:
                         comparer = (left, right) => left.PlayerForm.Last5Average.CompareTo(right.PlayerForm.Last5Average);
                         break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(compareMode), compareMode, null);
                 }
             }
 

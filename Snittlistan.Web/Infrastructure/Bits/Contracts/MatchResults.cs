@@ -1,6 +1,5 @@
 ﻿namespace Snittlistan.Web.Infrastructure.Bits.Contracts
 {
-    using System;
     using Newtonsoft.Json;
 
     public class MatchResults
@@ -64,45 +63,4 @@
     }
 
     public enum HomeOrAwayTeam { A, H };
-
-    internal class HomeOrAwayTeamConverter : JsonConverter
-    {
-        public override bool CanConvert(Type t) => t == typeof(HomeOrAwayTeam) || t == typeof(HomeOrAwayTeam?);
-
-        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null) return null;
-            var value = serializer.Deserialize<string>(reader);
-            switch (value)
-            {
-                case "A":
-                    return HomeOrAwayTeam.A;
-                case "H":
-                    return HomeOrAwayTeam.H;
-            }
-            throw new Exception("Cannot unmarshal type HomeOrAwayTeam");
-        }
-
-        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
-        {
-            if (untypedValue == null)
-            {
-                serializer.Serialize(writer, null);
-                return;
-            }
-            var value = (HomeOrAwayTeam)untypedValue;
-            switch (value)
-            {
-                case HomeOrAwayTeam.A:
-                    serializer.Serialize(writer, "A");
-                    return;
-                case HomeOrAwayTeam.H:
-                    serializer.Serialize(writer, "H");
-                    return;
-            }
-            throw new Exception("Cannot marshal type HomeOrAwayTeam");
-        }
-
-        public static readonly HomeOrAwayTeamConverter Singleton = new HomeOrAwayTeamConverter();
-    }
 }
