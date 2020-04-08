@@ -300,7 +300,10 @@
         {
             var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             var pendingMatches = ExecuteQuery(new GetPendingMatchesQuery(websiteConfig.SeasonId));
-            var players = ExecuteQuery(new GetActivePlayersQuery());
+            var players = DocumentSession.Query<Player, PlayerSearch>()
+                                         .ToArray()
+                                         .Where(x => x.PlayerItem?.LicNbr != null)
+                                         .ToArray();
             var registeredMatches = new List<Roster>();
             foreach (var pendingMatch in pendingMatches)
             {
