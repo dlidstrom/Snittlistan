@@ -9,6 +9,7 @@
     using System.Web.Http;
     using Elmah;
     using Infrastructure.Bits;
+    using Infrastructure.Bits.Contracts;
     using Newtonsoft.Json;
     using NLog;
     using Raven.Abstractions;
@@ -119,14 +120,11 @@
                 else
                 {
                     // create new
-                    var personalNumber = int.Parse(playerItem.LicNbr.Substring(5, 2)
-                                                   + playerItem.LicNbr.Substring(3, 2)
-                                                   + playerItem.LicNbr.Substring(1, 2));
                     var newPlayer = new Player(
                         $"{playerItem.FirstName} {playerItem.SurName}",
                         playerItem.Email,
                         playerItem.Inactive ? Player.Status.Inactive : Player.Status.Active,
-                        personalNumber,
+                        playerItem.GetPersonalNumber(),
                         string.Empty,
                         new string[0])
                     {

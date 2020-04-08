@@ -4,7 +4,13 @@
 @helper ShowPlayer(PlayerViewModel player)
 {
     <tr>
-        <td title="@player.LicenseNumber">@player.Name (@player.Nickname)</td>
+        <td title="@player.LicenseNumber">
+            @player.Name
+            @if (string.IsNullOrEmpty(player.Nickname) == false)
+            {
+                @($"({player.Nickname})")
+            }
+        </td>
         <td>@player.StatusText</td>
         @if (User.IsInRole2(WebsiteRoles.Player.ShowEmailAddresses))
         {
