@@ -18,7 +18,9 @@
                 .OrderBy(p => p.PlayerStatus)
                 .ThenBy(p => p.Name)
                 .ToList();
-            var vm = players.Select(x => new PlayerViewModel(x, WebsiteRoles.UserGroup().ToDict())).ToList();
+            var vm = players.Where(x => x.Hidden == false)
+                            .Select(x => new PlayerViewModel(x, WebsiteRoles.UserGroup().ToDict()))
+                            .ToList();
             return View(vm);
         }
 

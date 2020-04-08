@@ -12,7 +12,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
             int personalNumber,
             string nickname,
             string[] roles,
-            PlayerItem playerItem = null)
+            PlayerItem playerItem = null,
+            bool? hidden = null)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Email = email; // allow null
@@ -23,6 +24,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
             // nullable fields
             PlayerItem = playerItem;
+            Hidden = hidden ?? false;
         }
 
         public enum Status
@@ -47,6 +49,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public string[] Roles { get; private set; }
 
         public PlayerItem PlayerItem { get; set; }
+
+        public bool Hidden { get; }
 
         public void SetName(string name)
         {
