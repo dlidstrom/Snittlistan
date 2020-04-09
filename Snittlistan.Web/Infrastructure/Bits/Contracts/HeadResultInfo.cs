@@ -41,16 +41,16 @@
         public int MatchHeadHomeTeamScoreRound4 { get; set; }
 
         [JsonProperty("matchHeadHomeTeamRankPointRound1")]
-        public int MatchHeadHomeTeamRankPointRound1 { get; set; }
+        public double MatchHeadHomeTeamRankPointRound1 { get; set; }
 
         [JsonProperty("matchHeadHomeTeamRankPointRound2")]
-        public int MatchHeadHomeTeamRankPointRound2 { get; set; }
+        public double MatchHeadHomeTeamRankPointRound2 { get; set; }
 
         [JsonProperty("matchHeadHomeTeamRankPointRound3")]
-        public int MatchHeadHomeTeamRankPointRound3 { get; set; }
+        public double MatchHeadHomeTeamRankPointRound3 { get; set; }
 
         [JsonProperty("matchHeadHomeTeamRankPointRound4")]
-        public int MatchHeadHomeTeamRankPointRound4 { get; set; }
+        public double MatchHeadHomeTeamRankPointRound4 { get; set; }
 
         [JsonProperty("matchHeadAwayTeamScoreRound1")]
         public int MatchHeadAwayTeamScoreRound1 { get; set; }
@@ -65,16 +65,16 @@
         public int MatchHeadAwayTeamScoreRound4 { get; set; }
 
         [JsonProperty("matchHeadAwayTeamRankPointRound1")]
-        public int MatchHeadAwayTeamRankPointRound1 { get; set; }
+        public double MatchHeadAwayTeamRankPointRound1 { get; set; }
 
         [JsonProperty("matchHeadAwayTeamRankPointRound2")]
-        public int MatchHeadAwayTeamRankPointRound2 { get; set; }
+        public double MatchHeadAwayTeamRankPointRound2 { get; set; }
 
         [JsonProperty("matchHeadAwayTeamRankPointRound3")]
-        public int MatchHeadAwayTeamRankPointRound3 { get; set; }
+        public double MatchHeadAwayTeamRankPointRound3 { get; set; }
 
         [JsonProperty("matchHeadAwayTeamRankPointRound4")]
-        public int MatchHeadAwayTeamRankPointRound4 { get; set; }
+        public double MatchHeadAwayTeamRankPointRound4 { get; set; }
 
         [JsonProperty("matchHeadHomeTeamScore")]
         public int MatchHeadHomeTeamScore { get; set; }
@@ -83,10 +83,10 @@
         public int MatchHeadAwayTeamScore { get; set; }
 
         [JsonProperty("matchHeadHomeTeamRankPoints")]
-        public int MatchHeadHomeTeamRankPoints { get; set; }
+        public double MatchHeadHomeTeamRankPoints { get; set; }
 
         [JsonProperty("matchHeadAwayTeamRankPoints")]
-        public int MatchHeadAwayTeamRankPoints { get; set; }
+        public double MatchHeadAwayTeamRankPoints { get; set; }
     }
 
     public class HeadDetail

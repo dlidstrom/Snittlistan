@@ -37,7 +37,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
             {
                 homeTeamName = headInfo.MatchHomeTeamAlias;
                 awayTeamName = headInfo.MatchAwayTeamAlias;
-            } else if (headInfo.MatchAwayClubId == clubId)
+            }
+            else if (headInfo.MatchAwayClubId == clubId)
             {
                 homeTeamName = headInfo.MatchAwayTeamAlias;
                 awayTeamName = headInfo.MatchHomeTeamAlias;
@@ -244,20 +245,81 @@ namespace Snittlistan.Web.Areas.V2.Domain
         {
             if (bitsMatchResult.HeadInfo.MatchFinished == false) return null;
 
+            Parse4Result parse4Result;
             if (bitsMatchResult.HeadInfo.MatchHomeClubId == clubId)
             {
-                return new Parse4Result(
-                    bitsMatchResult.HeadResultInfo.MatchHeadHomeTeamScore,
-                    bitsMatchResult.HeadResultInfo.MatchHeadAwayTeamScore,
+                var series = new List<ResultSeries4ReadModel.Serie>();
+                for (var i = 0; i < bitsMatchResult.HeadResultInfo.HomeHeadDetails.Length; i++)
+                {
+                    var homeHeadDetail = bitsMatchResult.HeadResultInfo.HomeHeadDetails[i];
+                    var games = new List<ResultSeries4ReadModel.Game>();
+                    foreach (var boardScore in bitsMatchResult.MatchScores.Series[i].Boards[0].Scores)
+                    {
+                        var game = new ResultSeries4ReadModel.Game
+                        {
+                            Player = GetPlayerId(boardScore.PlayerName).Id,
+                            Pins = boardScore.ScoreScore,
+                            Score = boardScore.LaneScore
+                        };
+
+                        games.Add(game);
+                    }
+
+                    var score = homeHeadDetail.TeamRp - games.Sum(x => x.Score);
+                    var serie = new ResultSeries4ReadModel.Serie
+                    {
+                        Score = score,
+                        Games = games
+                    };
+                    series.Add(serie);
+                }
+
+                parse4Result = new Parse4Result(
+                    bitsMatchResult.HeadResultInfo.MatchHeadHomeTotalRp,
+                    bitsMatchResult.HeadResultInfo.MatchHeadAwayTotalRp,
                     bitsMatchResult.HeadInfo.MatchRoundId,
-                    new ResultSeries4ReadModel.Serie[0]);
+                    series.ToArray());
+            }
+            else if (bitsMatchResult.HeadInfo.MatchAwayClubId == clubId)
+            {
+                var series = new List<ResultSeries4ReadModel.Serie>();
+                for (var i = 0; i < bitsMatchResult.HeadResultInfo.AwayHeadDetails.Length; i++)
+                {
+                    var awayHeadDetail = bitsMatchResult.HeadResultInfo.AwayHeadDetails[i];
+                    var games = new List<ResultSeries4ReadModel.Game>();
+                    foreach (var boardScore in bitsMatchResult.MatchScores.Series[i].Boards[1].Scores)
+                    {
+                        var game = new ResultSeries4ReadModel.Game
+                        {
+                            Player = GetPlayerId(boardScore.PlayerName).Id,
+                            Pins = boardScore.ScoreScore,
+                            Score = boardScore.LaneScore
+                        };
+
+                        games.Add(game);
+                    }
+
+                    var score = awayHeadDetail.TeamRp - games.Sum(x => x.Score);
+                    var serie = new ResultSeries4ReadModel.Serie
+                    {
+                        Score = score,
+                        Games = games
+                    };
+                    series.Add(serie);
+                }
+
+                parse4Result = new Parse4Result(
+                    bitsMatchResult.HeadResultInfo.MatchHeadAwayTotalRp,
+                    bitsMatchResult.HeadResultInfo.MatchHeadHomeTotalRp,
+                    bitsMatchResult.HeadInfo.MatchRoundId,
+                    series.ToArray());
+            }
+            else
+            {
+                throw new Exception($"No clubs matching {clubId}");
             }
 
-            return new Parse4Result(
-                bitsMatchResult.HeadResultInfo.MatchHeadAwayTeamScore,
-                bitsMatchResult.HeadResultInfo.MatchHeadHomeTeamScore,
-                bitsMatchResult.HeadInfo.MatchRoundId,
-                new ResultSeries4ReadModel.Serie[0]);
+            return parse4Result;
 
             //var document = new HtmlDocument();
             //document.LoadHtml(content.matchResults);
