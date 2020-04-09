@@ -14,6 +14,7 @@
     using Snittlistan.Web.Areas.V2.Domain;
     using Snittlistan.Web.Areas.V2.ReadModels;
     using Web.Infrastructure.Bits;
+    using Web.Models;
 
     [TestFixture]
     public class Task_Post_RegisterMatch : WebApiIntegrationTest
@@ -59,15 +60,15 @@
                 });
         }
 
-        protected override void Act()
+        protected override async Task Act()
         {
             // Act
             var request = new TaskRequest(new MessageEnvelope(new RegisterMatchesMessage(), new Uri("http://temp.uri/")));
-            responseMessage = Client.PostAsJsonAsync("http://temp.uri/api/task", request).Result;
+            responseMessage = await Client.PostAsJsonAsync("http://temp.uri/api/task", request);
             responseMessage.EnsureSuccessStatusCode();
 
             httpContent = responseMessage.Content;
-            content = httpContent.ReadAsStringAsync().Result;
+            content = await httpContent.ReadAsStringAsync();
         }
 
         protected override Task OnSetUp(IWindsorContainer container)
@@ -75,6 +76,7 @@
             // Arrange
             Transact(session =>
             {
+                session.Store(new WebsiteConfig(new[] { new WebsiteConfig.TeamNameAndLevel("FIF", "A") }, false, 1660));
                 var players = new[]
                 {
                     new Player("Christer Liedholm", "e@d.com", Player.Status.Active, 0, null, new string[0]),
@@ -111,10 +113,18 @@
             });
 
             var bitsClient = Mock.Of<IBitsClient>();
-            Mock.Get(bitsClient).Setup(x => x.GetMatchResults(3048746))
+            Mock.Get(bitsClient)
+                .Setup(x => x.GetMatchResults(3048746))
                 .Returns(BitsGateway.GetMatchResults(3048746));
-            Mock.Get(bitsClient).Setup(x => x.GetMatchScores(3048746))
+            Mock.Get(bitsClient)
+                .Setup(x => x.GetMatchScores(3048746))
                 .Returns(BitsGateway.GetMatchScores(3048746));
+            Mock.Get(bitsClient)
+                .Setup(x => x.GetHeadInfo(3048746))
+                .Returns(BitsGateway.GetHeadInfo(3048746));
+            Mock.Get(bitsClient)
+                .Setup(x => x.GetHeadResultInfo(3048746))
+                .Returns(BitsGateway.GetHeadResultInfo(3048746));
             container.Register(Component.For<IBitsClient>().Instance(bitsClient));
             return Task.CompletedTask;
         }

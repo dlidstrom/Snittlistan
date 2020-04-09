@@ -37,14 +37,35 @@
             this.bitsClient = bitsClient;
         }
 
-        public IHttpActionResult Post(TaskRequest request)
+        public async Task<IHttpActionResult> Post(TaskRequest request)
         {
             if (ModelState.IsValid == false) return BadRequest(ModelState);
-            dynamic task = JsonConvert.DeserializeObject(
+            var taskObject = JsonConvert.DeserializeObject(
                 request.TaskJson,
                 new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
-            var result = Handle(task);
-            return result;
+            switch (taskObject)
+            {
+                case OneTimeKeyEvent oneTimeKeyEvent:
+                    return Handle(oneTimeKeyEvent);
+                case VerifyMatchMessage verifyMatchMessage:
+                    return await Handle(verifyMatchMessage);
+                case RegisterMatchesMessage registerMatchesMessage:
+                    return await Handle(registerMatchesMessage);
+                case InitializeIndexesMessage initializeIndexesMessage:
+                    return Handle(initializeIndexesMessage);
+                case VerifyMatchesMessage verifyMatchesMessage:
+                    return Handle(verifyMatchesMessage);
+                case NewUserCreatedEvent newUserCreatedEvent:
+                    return Handle(newUserCreatedEvent);
+                case UserInvitedEvent userInvitedEvent:
+                    return Handle(userInvitedEvent);
+                case EmailTask emailTask:
+                    return Handle(emailTask);
+                case MatchRegisteredEvent matchRegisteredEvent:
+                    return Handle(matchRegisteredEvent);
+            }
+
+            throw new Exception($"Unhandled task {taskObject.GetType()}");
         }
 
         private IHttpActionResult Handle(OneTimeKeyEvent @event)

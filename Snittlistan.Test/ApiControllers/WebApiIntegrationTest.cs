@@ -1,23 +1,23 @@
-﻿using System;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Web.Http;
-using Castle.Core;
-using Castle.MicroKernel.Registration;
-using Castle.Windsor;
-using EventStoreLite.IoC;
-using Moq;
-using NUnit.Framework;
-using Raven.Client;
-using Snittlistan.Queue;
-using Snittlistan.Web;
-using Snittlistan.Web.Infrastructure.Attributes;
-using Snittlistan.Web.Infrastructure.Installers;
-using Snittlistan.Web.Infrastructure.IoC;
-
-namespace Snittlistan.Test.ApiControllers
+﻿namespace Snittlistan.Test.ApiControllers
 {
+    using System;
+    using System.Diagnostics;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using System.Web.Http;
+    using Castle.Core;
+    using Castle.MicroKernel.Registration;
+    using Castle.Windsor;
+    using EventStoreLite.IoC;
+    using Moq;
+    using NUnit.Framework;
+    using Raven.Client;
+    using Snittlistan.Queue;
+    using Snittlistan.Web;
+    using Snittlistan.Web.Infrastructure.Attributes;
+    using Snittlistan.Web.Infrastructure.Installers;
+    using Snittlistan.Web.Infrastructure.IoC;
+
     public abstract class WebApiIntegrationTest
     {
         protected HttpClient Client { get; private set; }
@@ -25,7 +25,7 @@ namespace Snittlistan.Test.ApiControllers
         private IWindsorContainer Container { get; set; }
 
         [SetUp]
-        public async Task SetUp()
+        public void SetUp()
         {
             var configuration = new HttpConfiguration();
             Container = new WindsorContainer();
@@ -37,13 +37,13 @@ namespace Snittlistan.Test.ApiControllers
                 EventStoreInstaller.FromAssembly(typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),
                 new EventStoreSessionInstaller(LifestyleType.Scoped));
             Container.Register(Component.For<IMsmqTransaction>().Instance(Mock.Of<IMsmqTransaction>()));
-            await OnSetUp(Container);
+            Task.Run(async () => await OnSetUp(Container)).Wait();
 
             MvcApplication.Bootstrap(Container, configuration);
             Client = new HttpClient(new HttpServer(configuration));
             OnlyLocalAllowedAttribute.SkipValidation = true;
 
-            Act();
+            Task.Run(async () => await Act()).Wait();
         }
 
         [TearDown]
@@ -52,8 +52,9 @@ namespace Snittlistan.Test.ApiControllers
             MvcApplication.Shutdown();
         }
 
-        protected virtual void Act()
+        protected virtual Task Act()
         {
+            return Task.CompletedTask;
         }
 
         protected void Transact(Action<IDocumentSession> action)
@@ -91,7 +92,7 @@ namespace Snittlistan.Test.ApiControllers
                             break;
                         }
 
-                        Task.Delay(500);
+                        Task.Delay(500).Wait();
                     }
                 });
             indexingTask.Wait(Timeout);

@@ -1,11 +1,10 @@
-﻿using System;
-using NUnit.Framework;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.ReadModels;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using System;
     using System.Threading.Tasks;
+    using NUnit.Framework;
+    using Web.Areas.V2.Domain;
+    using Web.Areas.V2.ReadModels;
 
     [TestFixture]
     public class BitsParser8X4Test
@@ -32,7 +31,7 @@ namespace Snittlistan.Test
             {
                 new Player("Kjell Persson", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-1" },
                 new Player("Lars Öberg", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-2" },
-                new Player("Tomas Vikbro", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-3" },
+                new Player("Tomas Wikbro", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-3" },
                 new Player("Thomas Wallgren", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-4" },
                 new Player("Bengt Solvander", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-5" },
                 new Player("Lars Magnusson", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-6" },
