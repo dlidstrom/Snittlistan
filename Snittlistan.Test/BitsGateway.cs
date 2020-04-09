@@ -45,6 +45,14 @@ namespace Snittlistan.Test
             return matchResult;
         }
 
+        public static async Task<HeadResultInfo> GetHeadResultInfo(int matchId)
+        {
+            var matchResult = await Try(
+                $"HeadResultInfo-{matchId}.json",
+                () => Client.GetHeadResultInfo(matchId));
+            return matchResult;
+        }
+
         private static async Task<TResult> Try<TResult>(string filename, Func<Task<TResult>> func)
         {
             var currentDirectory = Directory.GetCurrentDirectory();

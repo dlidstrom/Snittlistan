@@ -20,12 +20,6 @@ namespace Snittlistan.Web.Areas.V2.Domain
             this.players = players ?? throw new ArgumentNullException(nameof(players));
         }
 
-        private enum Team
-        {
-            Home = 0,
-            Away = 2
-        }
-
         public static ParseHeaderResult ParseHeader(HeadInfo headInfo, int clubId)
         {
             var yearPart = headInfo.MatchDate.Substring(0, 4);
@@ -187,58 +181,94 @@ namespace Snittlistan.Web.Areas.V2.Domain
         {
             if (bitsMatchResult.HeadInfo.MatchFinished == false) return null;
 
+            ParseResult parseResult;
             if (bitsMatchResult.HeadInfo.MatchHomeClubId == clubId)
             {
-                return new ParseResult(
-                    bitsMatchResult.HeadResultInfo.MatchHeadHomeTeamScore,
-                    bitsMatchResult.HeadResultInfo.MatchHeadAwayTeamScore,
+                var homeSeries = CreateSeries(
+                    bitsMatchResult.HeadResultInfo.HomeHeadDetails,
+                    bitsMatchResult.MatchScores,
+                    x => GetPlayerId(x).Id,
+                    0);
+                var awaySeries = CreateSeries(
+                    bitsMatchResult.HeadResultInfo.HomeHeadDetails,
+                    bitsMatchResult.MatchScores,
+                    x => x,
+                    2);
+                parseResult = new ParseResult(
+                    bitsMatchResult.HeadResultInfo.MatchHeadHomeTotalRp,
+                    bitsMatchResult.HeadResultInfo.MatchHeadAwayTotalRp,
                     bitsMatchResult.HeadInfo.MatchRoundId,
-                    new ResultSeriesReadModel.Serie[0],
-                    new ResultSeriesReadModel.Serie[0]);
+                    homeSeries.ToArray(),
+                    awaySeries.ToArray());
+            }
+            else if (bitsMatchResult.HeadInfo.MatchAwayClubId == clubId)
+            {
+                var homeSeries = CreateSeries(
+                    bitsMatchResult.HeadResultInfo.HomeHeadDetails,
+                    bitsMatchResult.MatchScores,
+                    x => GetPlayerId(x).Id,
+                    2);
+                var awaySeries = CreateSeries(
+                    bitsMatchResult.HeadResultInfo.HomeHeadDetails,
+                    bitsMatchResult.MatchScores,
+                    x => x,
+                    0);
+                parseResult = new ParseResult(
+                    bitsMatchResult.HeadResultInfo.MatchHeadAwayTotalRp,
+                    bitsMatchResult.HeadResultInfo.MatchHeadHomeTotalRp,
+                    bitsMatchResult.HeadInfo.MatchRoundId,
+                    homeSeries.ToArray(),
+                    awaySeries.ToArray());
+            }
+            else
+            {
+                throw new Exception($"No club matching {clubId}");
             }
 
-            return new ParseResult(
-                bitsMatchResult.HeadResultInfo.MatchHeadAwayTeamScore,
-                bitsMatchResult.HeadResultInfo.MatchHeadHomeTeamScore,
-                bitsMatchResult.HeadInfo.MatchRoundId,
-                new ResultSeriesReadModel.Serie[0],
-                new ResultSeriesReadModel.Serie[0]);
-            //var document = new HtmlDocument();
-            //document.LoadHtml(content.matchResults);
-            //var documentNode = document.DocumentNode;
+            return parseResult;
 
-            //// make sure match is finished
-            //var finishedNode = documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelFinished']");
-            //if (finishedNode != null)
-            //{
-            //    return null;
-            //}
+            List<ResultSeriesReadModel.Serie> CreateSeries(
+                HeadDetail[] headDetails,
+                MatchScores matchScores,
+                Func<string, string> getPlayer,
+                int offset)
+            {
+                var series = new List<ResultSeriesReadModel.Serie>();
+                for (int i = 0; i < headDetails.Length; i++)
+                {
+                    var tables = new List<ResultSeriesReadModel.Table>();
+                    for (var j = 0; j < 4; j++)
+                    {
+                        var score1 = matchScores.Series[i].Boards[0 + offset].Scores[j];
+                        var score2 = matchScores.Series[i].Boards[1 + offset].Scores[j];
+                        var game1 = new ResultSeriesReadModel.Game
+                        {
+                            Pins = score1.ScoreScore,
+                            Player = getPlayer.Invoke(score1.PlayerName)
+                        };
+                        var game2 = new ResultSeriesReadModel.Game
+                        {
+                            Pins = score2.ScoreScore,
+                            Player = getPlayer.Invoke(score2.PlayerName)
+                        };
+                        var table = new ResultSeriesReadModel.Table
+                        {
+                            Score = score1.LaneScore,
+                            Game1 = game1,
+                            Game2 = game2
+                        };
+                        tables.Add(table);
+                    }
 
-            //// find which team we should import
-            //var homeTeamLabel =
-            //    documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelHomeTeam']");
-            //var awayTeamLabel =
-            //    documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelAwayTeam']");
+                    var serie = new ResultSeriesReadModel.Serie
+                    {
+                        Tables = tables
+                    };
+                    series.Add(serie);
+                }
 
-            //var homeTeamName = homeTeamLabel.InnerText;
-            //if (team == homeTeamName)
-            //    return ExtractTeam(documentNode, Team.Home, Team.Away);
-            //var awayTeamName = awayTeamLabel.InnerText;
-            //if (team == awayTeamName)
-            //    return ExtractTeam(documentNode, Team.Away, Team.Home);
-
-            //// try alternate name
-            //var teamPrefix = team.Split(' ').First();
-            //if (homeTeamName.StartsWith(teamPrefix) && awayTeamName.StartsWith(teamPrefix))
-            //    throw new ApplicationException($"Could not find team with prefix {teamPrefix}");
-
-            //if (homeTeamName.StartsWith(teamPrefix) && awayTeamName.StartsWith(teamPrefix) == false)
-            //    return ExtractTeam(documentNode, Team.Home, Team.Away);
-            //if (awayTeamName.StartsWith(teamPrefix) && homeTeamName.StartsWith(teamPrefix) == false)
-            //    return ExtractTeam(documentNode, Team.Away, Team.Home);
-
-            //var message = $"No team with name {team} was found (homeTeamName = {homeTeamName}, awayTeamName = {awayTeamName})";
-            //throw new ApplicationException(message);
+                return series;
+            }
         }
 
         public Parse4Result Parse4(BitsMatchResult bitsMatchResult, int clubId)
@@ -320,170 +350,6 @@ namespace Snittlistan.Web.Areas.V2.Domain
             }
 
             return parse4Result;
-
-            //var document = new HtmlDocument();
-            //document.LoadHtml(content.matchResults);
-            //var documentNode = document.DocumentNode;
-
-            //// make sure match is finished
-            //var finishedNode = documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelFinished']");
-            //if (finishedNode != null)
-            //{
-            //    return null;
-            //}
-
-            //// find which team we should import
-            //var homeTeamLabel =
-            //    documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelHomeTeam']");
-            //var awayTeamLabel =
-            //    documentNode.SelectSingleNode("//span[@id='MainContentPlaceHolder_MatchInfo_LabelAwayTeam']");
-
-            //var homeTeamName = homeTeamLabel.InnerText;
-            //if (team == homeTeamName)
-            //    return ExtractTeam4(documentNode, Team.Home, Team.Away);
-            //var awayTeamName = awayTeamLabel.InnerText;
-            //if (team == awayTeamName)
-            //    return ExtractTeam4(documentNode, Team.Away, Team.Home);
-
-            //// try alternate name
-            //var teamPrefix = team.Split(' ')
-            //    .First();
-            //if (homeTeamName.StartsWith(teamPrefix) && awayTeamName.StartsWith(teamPrefix))
-            //    throw new ApplicationException($"Could not find team with prefix {teamPrefix}");
-
-            //if (homeTeamName.StartsWith(teamPrefix) && awayTeamName.StartsWith(teamPrefix) == false)
-            //    return ExtractTeam4(documentNode, Team.Home, Team.Away);
-            //if (awayTeamName.StartsWith(teamPrefix) && homeTeamName.StartsWith(teamPrefix) == false)
-            //    return ExtractTeam4(documentNode, Team.Away, Team.Home);
-
-            //throw new ApplicationException($"No team with name {team} was found");
-        }
-
-        private ParseResult ExtractTeam(HtmlNode documentNode, Team team, Team away)
-        {
-            var tableNode = documentNode.SelectSingleNode("//table[@id='MainContentPlaceHolder_MatchFact1_TableMatch']");
-
-            // adjust for header and footer rows
-            var tableRows = documentNode.SelectNodes("//table[@id='MainContentPlaceHolder_MatchHead1_matchinfo']//tr");
-            var numberOfSeries = tableRows.Count - 2;
-            if (numberOfSeries < 1 || numberOfSeries > 4)
-            {
-                return null;
-            }
-
-            var teamSeries = ExtractSeriesForTeam(team, numberOfSeries, tableNode, s => GetPlayerId(s).Id);
-            var opponentSeries = ExtractSeriesForTeam(away, numberOfSeries, tableNode, s => s);
-
-            var teamScoreNode = documentNode.SelectSingleNode($"//span[@id='MainContentPlaceHolder_MatchHead1_LblSumPoints{team}']");
-            var teamScore = int.Parse(teamScoreNode.InnerText);
-
-            var awayScoreNode = documentNode.SelectSingleNode($"//span[@id='MainContentPlaceHolder_MatchHead1_LblSumPoints{away}']");
-            var awayScore = int.Parse(awayScoreNode.InnerText);
-
-            var turnNode = documentNode.SelectSingleNode("//td[@id='MainContentPlaceHolder_MatchInfo_LabelRound']");
-            var turn = int.Parse(turnNode.InnerText.Replace("Omgång ", string.Empty));
-
-            return new ParseResult(teamScore, awayScore, turn, teamSeries, opponentSeries);
-        }
-
-        private ResultSeriesReadModel.Serie[] ExtractSeriesForTeam(
-            Team team,
-            int numberOfSeries,
-            HtmlNode tableNode,
-            Func<string, string> getPlayerId)
-        {
-            var series = new List<ResultSeriesReadModel.Serie>();
-            for (var serieNumber = 1; serieNumber <= numberOfSeries; serieNumber++)
-            {
-                var serie = new ResultSeriesReadModel.Serie();
-                var tables = new List<ResultSeriesReadModel.Table>();
-                for (var tableNumber = 1; tableNumber <= 4; tableNumber++)
-                {
-                    var name1 = tableNode.SelectSingleNode(
-                        $"//span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{serieNumber}Table{tableNumber}Order{1 + (int)team}Player']");
-                    var name2 = tableNode.SelectSingleNode(
-                        $"//span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{serieNumber}Table{tableNumber}Order{2 + (int)team}Player']");
-                    var res1Node = tableNode.SelectSingleNode(
-                        $"//span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{serieNumber}Table{tableNumber}Order{1 + (int)team}Result']");
-                    var res2Node = tableNode.SelectSingleNode(
-                        $"//span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{serieNumber}Table{tableNumber}Order{2 + (int)team}Result']");
-                    var scoreNode = tableNode.SelectSingleNode(
-                        $"//span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{serieNumber}Table{tableNumber}Order{1 + (int)team}Total']");
-                    var score = int.Parse(scoreNode.InnerText);
-                    int.TryParse(res1Node.InnerText, out var res1);
-                    int.TryParse(res2Node.InnerText, out var res2);
-                    var playerForGame1 = getPlayerId(name1.InnerText);
-                    var playerForGame2 = getPlayerId(name2.InnerText);
-                    var table = new ResultSeriesReadModel.Table
-                    {
-                        Score = score,
-                        Game1 = new ResultSeriesReadModel.Game
-                        {
-                            Pins = res1,
-                            Player = playerForGame1
-                        },
-                        Game2 = new ResultSeriesReadModel.Game
-                        {
-                            Pins = res2,
-                            Player = playerForGame2
-                        }
-                    };
-                    tables.Add(table);
-                }
-
-                serie.Tables = tables;
-                series.Add(serie);
-            }
-
-            return series.ToArray();
-        }
-
-        private Parse4Result ExtractTeam4(HtmlNode documentNode, Team team, Team away)
-        {
-            var series = new List<ResultSeries4ReadModel.Serie>();
-            var tableNode = documentNode.SelectSingleNode("//table[@id='MainContentPlaceHolder_MatchFact1_TableMatch']");
-            var order = team == Team.Home ? 1 : 2;
-
-            for (var serieNumber = 1; serieNumber <= 4; serieNumber++)
-            {
-                var games = new List<ResultSeries4ReadModel.Game>();
-                for (var tableNumber = 1; tableNumber <= 4; tableNumber++)
-                {
-                    var playerNameNode = tableNode.SelectSingleNode(
-                        $"//span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{serieNumber}Table{tableNumber}Order{order}Player']");
-                    var playerPinsNode = tableNode.SelectSingleNode(
-                        $"//span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{serieNumber}Table{tableNumber}Order{order}Result']");
-                    var opponentPinsNode = tableNode.SelectSingleNode(
-                        $"//span[@id='MainContentPlaceHolder_MatchFact1_lblSerie{serieNumber}Table{tableNumber}Order{3 - order}Result']");
-                    var playerPins = int.Parse(playerPinsNode.InnerText);
-                    var opponentPins = int.Parse(opponentPinsNode.InnerText);
-                    var score = playerPins > opponentPins ? 1 : 0;
-                    var game = new ResultSeries4ReadModel.Game
-                    {
-                        Score = score,
-                        Pins = playerPins,
-                        Player = GetPlayerId(playerNameNode.InnerText).Id
-                    };
-                    games.Add(game);
-                }
-
-                var serie = new ResultSeries4ReadModel.Serie
-                {
-                    Games = games
-                };
-                series.Add(serie);
-            }
-
-            var teamScoreNode = documentNode.SelectSingleNode($"//span[@id='MainContentPlaceHolder_MatchHead1_LblSumPoints{team}']");
-            var teamScore = int.Parse(teamScoreNode.InnerText);
-
-            var awayScoreNode = documentNode.SelectSingleNode($"//span[@id='MainContentPlaceHolder_MatchHead1_LblSumPoints{away}']");
-            var awayScore = int.Parse(awayScoreNode.InnerText);
-
-            var turnNode = documentNode.SelectSingleNode("//td[@id='MainContentPlaceHolder_MatchInfo_LabelRound']");
-            var turn = int.Parse(turnNode.InnerText.Replace("Omgång ", string.Empty));
-
-            return new Parse4Result(teamScore, awayScore, turn, series.ToArray());
         }
 
         private Player GetPlayerId(string name)
