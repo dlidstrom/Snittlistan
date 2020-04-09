@@ -37,9 +37,12 @@ namespace Snittlistan.Test
             return matchScores;
         }
 
-        public static Task<BitsMatchResult> GetBitsMatchResult(int matchId)
+        public static async Task<BitsMatchResult> GetBitsMatchResult(int matchId)
         {
-            return Client.GetBitsMatchResult(matchId);
+            var matchResult = await Try(
+                $"MatchResult-{matchId}.json",
+                () => Client.GetBitsMatchResult(matchId));
+            return matchResult;
         }
 
         private static async Task<TResult> Try<TResult>(string filename, Func<Task<TResult>> func)

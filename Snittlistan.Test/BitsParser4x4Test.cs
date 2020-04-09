@@ -80,7 +80,7 @@ namespace Snittlistan.Test
         public async Task CanParseAwayTeam()
         {
             // Arrange
-            const int ClubId = 91114;
+            const int ClubId = 34534;
 
             // Act
             var result = new BitsParser(awayPlayers).Parse4(await BitsGateway.GetBitsMatchResult(3060835), ClubId);

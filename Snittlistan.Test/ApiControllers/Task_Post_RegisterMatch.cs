@@ -6,6 +6,7 @@
     using System.Net.Http;
     using System.Threading.Tasks;
     using Castle.MicroKernel.Registration;
+    using Castle.Windsor;
     using Moq;
     using Newtonsoft.Json;
     using NUnit.Framework;
@@ -69,7 +70,7 @@
             content = httpContent.ReadAsStringAsync().Result;
         }
 
-        protected override async Task OnSetUp(Castle.Windsor.IWindsorContainer container)
+        protected override Task OnSetUp(IWindsorContainer container)
         {
             // Arrange
             Transact(session =>
@@ -115,6 +116,7 @@
             Mock.Get(bitsClient).Setup(x => x.GetMatchScores(3048746))
                 .Returns(BitsGateway.GetMatchScores(3048746));
             container.Register(Component.For<IBitsClient>().Instance(bitsClient));
+            return Task.CompletedTask;
         }
     }
 }

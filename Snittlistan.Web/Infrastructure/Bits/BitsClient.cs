@@ -32,14 +32,14 @@ namespace Snittlistan.Web.Infrastructure.Bits
 
         public async Task<MatchResults> GetMatchResults(int matchId)
         {
-            var result = await Send($"https://api.swebowl.se/api/v1/matchResult/GetMatchResults?APIKey={apiKey}&id={matchId}&matchSchemeId=8M8BA", matchId);
+            var result = await Send($"https://api.swebowl.se/api/v1/matchResult/GetMatchResults?APIKey={apiKey}&matchId={matchId}&matchSchemeId=8M8BA", matchId);
             var matchResults = MatchResults.FromJson(result);
             return matchResults;
         }
 
         public async Task<MatchScores> GetMatchScores(int matchId)
         {
-            var result = await Send($"https://api.swebowl.se/api/v1/matchResult/GetMatchScores?APIKey={apiKey}&id={matchId}&matchSchemeId=8M8BA", matchId);
+            var result = await Send($"https://api.swebowl.se/api/v1/matchResult/GetMatchScores?APIKey={apiKey}&matchId={matchId}&matchSchemeId=8M8BA", matchId);
             var matchScores = MatchScores.FromJson(result);
             return matchScores;
         }

@@ -29,10 +29,10 @@
         public string PlayerName { get; set; }
 
         [JsonProperty("score")]
-        public long ScoreScore { get; set; }
+        public int ScoreScore { get; set; }
 
         [JsonProperty("laneScore")]
-        public long LaneScore { get; set; }
+        public int LaneScore { get; set; }
 
         [JsonProperty("scoreId")]
         public string ScoreId { get; set; }
