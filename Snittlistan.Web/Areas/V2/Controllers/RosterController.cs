@@ -6,9 +6,11 @@
     using System.Globalization;
     using System.Linq;
     using System.Text;
+    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
+    using Infrastructure.Bits;
     using Raven.Abstractions;
     using Raven.Client;
     using Rotativa;
@@ -18,7 +20,6 @@
     using Snittlistan.Web.Areas.V2.ViewModels;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Helpers;
-    using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Models;
 
     public class RosterController : AbstractController
@@ -87,7 +88,7 @@
 
         [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
         [HttpPost]
-        public ActionResult CreateBitsVerify(VerifyBitsViewModel vm)
+        public async Task<ActionResult> CreateBitsVerify(VerifyBitsViewModel vm)
         {
             if (DocumentSession.Query<Roster, RosterSearchTerms>()
                                .SingleOrDefault(x => x.BitsMatchId == vm.BitsMatchId) != null)
@@ -100,8 +101,8 @@
 
             var season = DocumentSession.LatestSeasonOrDefault(DateTime.Now.Year);
             var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
-            var content = bitsClient.DownloadMatchResult(vm.BitsMatchId);
-            var header = BitsParser.ParseHeader(content, websiteConfig.GetTeamNames());
+            var content = await bitsClient.GetHeadInfo(vm.BitsMatchId);
+            var header = BitsParser.ParseHeader(content, websiteConfig.ClubId);
             ViewBag.TeamNamesAndLevels = websiteConfig.TeamNamesAndLevels;
             return View(
                 "Create", new CreateRosterViewModel

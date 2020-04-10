@@ -150,6 +150,9 @@
       <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -194,6 +197,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="Areas\V2\Extensions.cs" />
+    <Compile Include="Infrastructure\Bits\Contracts\Converter.cs" />
+    <Compile Include="Infrastructure\Bits\Contracts\DivisionResult.cs" />
+    <Compile Include="Infrastructure\Bits\Contracts\HeadResultInfo.cs" />
+    <Compile Include="Infrastructure\Bits\Contracts\MatchOilProfile.cs" />
+    <Compile Include="Infrastructure\Bits\Contracts\MatchResults.cs" />
+    <Compile Include="Infrastructure\Bits\Contracts\MatchRound.cs" />
+    <Compile Include="Infrastructure\Bits\Contracts\MatchScores.cs" />
+    <Compile Include="Infrastructure\Bits\Contracts\HeadInfo.cs" />
     <Compile Include="Areas\V2\Controllers\ActivityDetailsController.cs" />
     <Compile Include="Areas\V2\Controllers\ActivityEditController.cs" />
     <Compile Include="Areas\V2\Controllers\ActivityIndexController.cs" />
@@ -204,6 +216,7 @@
     <Compile Include="Areas\V2\Controllers\EliteMedalsPrintController.cs" />
     <Compile Include="Areas\V2\Controllers\RosterAcceptController.cs" />
     <Compile Include="Areas\V2\Domain\Activity.cs" />
+    <Compile Include="Areas\V2\Domain\NameShortener.cs" />
     <Compile Include="Areas\V2\Domain\Match\Commentary\Match4Analyzer.cs" />
     <Compile Include="Areas\V2\Domain\Match\Commentary\PlayerPin.cs" />
     <Compile Include="Areas\V2\Domain\Match\Commentary\PlayerResult.cs" />
@@ -235,6 +248,8 @@
     <Compile Include="Areas\V2\ViewModels\ActivityCalendarEvent.cs" />
     <Compile Include="Areas\V2\ViewModels\ActivityViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\FormattedMedal.cs" />
+    <Compile Include="Infrastructure\BitsMatchResult.cs" />
+    <Compile Include="Infrastructure\Bits\Contracts\TeamResult.cs" />
     <Compile Include="Infrastructure\CalendarEvent.cs" />
     <Compile Include="Areas\V2\WebsiteRoles.cs" />
     <Compile Include="Areas\V2\ViewModels\EditMedalsPostModel.cs" />
@@ -315,7 +330,7 @@
     <Compile Include="Infrastructure\Attributes\SaveChangesAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\UnhandledExceptionFilter.cs" />
     <Compile Include="Infrastructure\BaseViewPage.cs" />
-    <Compile Include="Infrastructure\BitsClient.cs" />
+    <Compile Include="Infrastructure\Bits\BitsClient.cs" />
     <Compile Include="Infrastructure\CustomIdentity.cs" />
     <Compile Include="Infrastructure\CustomPrincipal.cs" />
     <Compile Include="Infrastructure\EventStoreLite\AggregateRoot.cs" />
@@ -338,7 +353,7 @@
     <Compile Include="Infrastructure\EventStoreLite\IReadModel.cs" />
     <Compile Include="Infrastructure\EventStoreLite\ObjectReferenceEqualityComparer.cs" />
     <Compile Include="Infrastructure\HttpNotFoundAwareDefaultHttpControllerSelector.cs" />
-    <Compile Include="Infrastructure\IBitsClient.cs" />
+    <Compile Include="Infrastructure\Bits\IBitsClient.cs" />
     <Compile Include="Infrastructure\ICalFormatter.cs" />
     <Compile Include="Infrastructure\ICommand.cs" />
     <Compile Include="Infrastructure\Installers\ApiControllerInstaller.cs" />
@@ -660,6 +675,9 @@
       <Project>{18a532fa-9c94-4ff2-acf8-b267f127606d}</Project>
       <Name>Snittlistan.Queue</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Lindhart.Analyser.MissingAwaitWarning.1.2.0\analyzers\dotnet\cs\Lindhart.Analyser.MissingAwaitWarning.dll" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

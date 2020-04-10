@@ -1,29 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using NUnit.Framework;
-using Snittlistan.Web.Areas.V2.Domain;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using NUnit.Framework;
+    using Snittlistan.Web.Areas.V2.Domain;
+
     [TestFixture]
     public class BitsParser_Header
     {
         [TestCaseSource(nameof(TestCases))]
-        public void TestParseHeader(
+        public async Task TestParseHeader(
             int bitsMatchId,
-            HashSet<string> possibleTeams,
+            int homeTeamId,
             DateTime date,
             string team,
             string opponent,
             int turn,
             string oilPatternName,
-            string oilPatternUrl)
+            string oilPatternUrl,
+            string location)
         {
             // Arrange
-            var content = BitsGateway.GetMatch(bitsMatchId);
+            var content = await BitsGateway.GetHeadInfo(bitsMatchId);
 
             // Act
-            var header = BitsParser.ParseHeader(content, possibleTeams);
+            var header = BitsParser.ParseHeader(content, homeTeamId);
 
             // Assert
             Assert.That(header.Date, Is.EqualTo(date));
@@ -32,6 +34,7 @@ namespace Snittlistan.Test
             Assert.That(header.Turn, Is.EqualTo(turn));
             Assert.That(header.OilPattern.Name, Is.EqualTo(oilPatternName));
             Assert.That(header.OilPattern.Url, Is.EqualTo(oilPatternUrl));
+            Assert.That(header.Location, Is.EqualTo(location));
         }
 
         private static IEnumerable<TestCaseData> TestCases
@@ -40,31 +43,34 @@ namespace Snittlistan.Test
             {
                 yield return new TestCaseData(
                     3148486,
-                    new HashSet<string> { "Värtans IK B" },
+                    4494,
                     new DateTime(2018, 1, 21, 16, 20, 0),
                     "Värtans IK B",
-                    "IK Makkabi",
+                    "IK Makkabi - B1",
                     13,
                     "High Street",
-                    "http://bits.swebowl.se/OilPattern.aspx?OilPatternId=51");
+                    "https://bits.swebowl.se/MiscDisplay/Oilpattern/51",
+                    "Stockholm - Brännkyrka");
                 yield return new TestCaseData(
                     3152235,
-                    new HashSet<string> { "Fredrikshof IF BK F" },
+                    51538,
                     new DateTime(2017, 10, 28, 12, 20, 0),
-                    "Fredrikshof IF BK F",
-                    "BajenFans BF",
+                    "Fredrikshof IF BK A",
+                    "BajenFans BF A",
                     8,
                     "ABT#2",
-                    "http://bits.swebowl.se/OilPattern.aspx?OilPatternId=61");
+                    "https://bits.swebowl.se/MiscDisplay/Oilpattern/61",
+                    "Stockholm - Bowl-O-Rama");
                 yield return new TestCaseData(
                     3048477,
-                    new HashSet<string> { "Fredrikshof IF F" },
+                    1660,
                     new DateTime(2013, 4, 20),
                     "Fredrikshof IF F",
                     "BwK Ankaret F",
                     22,
+                    "Ingen OljeProfil",
                     string.Empty,
-                    string.Empty);
+                    "Stockholm - Lidingö");
             }
         }
     }

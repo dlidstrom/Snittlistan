@@ -1,18 +1,21 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using Castle.MicroKernel.Registration;
-using Moq;
-using Newtonsoft.Json;
-using NUnit.Framework;
-using Snittlistan.Queue.Messages;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.ReadModels;
-using Snittlistan.Web.Infrastructure;
-
-namespace Snittlistan.Test.ApiControllers
+﻿namespace Snittlistan.Test.ApiControllers
 {
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using Castle.MicroKernel.Registration;
+    using Castle.Windsor;
+    using Moq;
+    using Newtonsoft.Json;
+    using NUnit.Framework;
+    using Snittlistan.Queue.Messages;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+    using Web.Infrastructure.Bits;
+    using Web.Models;
+
     [TestFixture]
     public class Task_Post_RegisterMatch : WebApiIntegrationTest
     {
@@ -57,22 +60,23 @@ namespace Snittlistan.Test.ApiControllers
                 });
         }
 
-        protected override void Act()
+        protected override async Task Act()
         {
             // Act
             var request = new TaskRequest(new MessageEnvelope(new RegisterMatchesMessage(), new Uri("http://temp.uri/")));
-            responseMessage = Client.PostAsJsonAsync("http://temp.uri/api/task", request).Result;
+            responseMessage = await Client.PostAsJsonAsync("http://temp.uri/api/task", request);
             responseMessage.EnsureSuccessStatusCode();
 
             httpContent = responseMessage.Content;
-            content = httpContent.ReadAsStringAsync().Result;
+            content = await httpContent.ReadAsStringAsync();
         }
 
-        protected override void OnSetUp(Castle.Windsor.IWindsorContainer container)
+        protected override Task OnSetUp(IWindsorContainer container)
         {
             // Arrange
             Transact(session =>
             {
+                session.Store(new WebsiteConfig(new[] { new WebsiteConfig.TeamNameAndLevel("FIF", "A") }, false, 1660, 2019));
                 var players = new[]
                 {
                     new Player("Christer Liedholm", "e@d.com", Player.Status.Active, 0, null, new string[0]),
@@ -108,8 +112,21 @@ namespace Snittlistan.Test.ApiControllers
                 session.Store(roster);
             });
 
-            var bitsClient = Mock.Of<IBitsClient>(x => x.DownloadMatchResult(3048746) == BitsGateway.GetMatch(3048746));
+            var bitsClient = Mock.Of<IBitsClient>();
+            Mock.Get(bitsClient)
+                .Setup(x => x.GetMatchResults(3048746))
+                .Returns(BitsGateway.GetMatchResults(3048746));
+            Mock.Get(bitsClient)
+                .Setup(x => x.GetMatchScores(3048746))
+                .Returns(BitsGateway.GetMatchScores(3048746));
+            Mock.Get(bitsClient)
+                .Setup(x => x.GetHeadInfo(3048746))
+                .Returns(BitsGateway.GetHeadInfo(3048746));
+            Mock.Get(bitsClient)
+                .Setup(x => x.GetHeadResultInfo(3048746))
+                .Returns(BitsGateway.GetHeadResultInfo(3048746));
             container.Register(Component.For<IBitsClient>().Instance(bitsClient));
+            return Task.CompletedTask;
         }
     }
 }

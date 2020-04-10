@@ -11,6 +11,13 @@ namespace Snittlistan.Web.Areas.V2.Domain
             Url = url;
         }
 
+        public static OilPatternInformation Create(string matchOilPatternName, int matchOilPatternId)
+        {
+            return new OilPatternInformation(
+                matchOilPatternName,
+                matchOilPatternId != 0 ? $"https://bits.swebowl.se/MiscDisplay/Oilpattern/{matchOilPatternId}" : string.Empty);
+        }
+
         public string Name { get; private set; }
 
         public string Url { get; private set; }
