@@ -12,6 +12,7 @@
     using Newtonsoft.Json;
     using NLog;
     using Raven.Abstractions;
+    using Raven.Client;
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Areas.V2.Commands;
     using Snittlistan.Web.Areas.V2.Domain;
@@ -63,9 +64,102 @@
                     return Handle(emailTask);
                 case MatchRegisteredEvent matchRegisteredEvent:
                     return Handle(matchRegisteredEvent);
+                case GetRostersFromBitsMessage getRostersFromBitsMessage:
+                    return await Handle(getRostersFromBitsMessage);
             }
 
             throw new Exception($"Unhandled task {taskObject.GetType()}");
+        }
+
+        private async Task<IHttpActionResult> Handle(GetRostersFromBitsMessage message)
+        {
+            var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+            var rosterSearchTerms = DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
+                                                   .Where(x => x.Season == websiteConfig.SeasonId)
+                                                   .Where(x => x.BitsMatchId != 0)
+                                                   .ProjectFromIndexFieldsInto<RosterSearchTerms.Result>()
+                                                   .ToArray();
+            var rosters = DocumentSession.Load<Roster>(rosterSearchTerms.Select(x => x.Id));
+
+            // Team
+            var teams = await bitsClient.GetTeam(websiteConfig.ClubId, websiteConfig.SeasonId);
+            foreach (var teamResult in teams)
+            {
+                // Division
+                var divisionResults = await bitsClient.GetDivisions(teamResult.TeamId, websiteConfig.SeasonId);
+
+                // Match
+                if (divisionResults.Length != 1) throw new Exception($"Unexpected number of divisions: {divisionResults.Length}");
+                var divisionResult = divisionResults[0];
+                var matchRounds = await bitsClient.GetMatchRounds(teamResult.TeamId, divisionResult.DivisionId, websiteConfig.SeasonId);
+                var dict = matchRounds.ToDictionary(x => x.MatchId);
+
+                // update existing rosters
+                foreach (var roster in rosters.Where(x => dict.ContainsKey(x.BitsMatchId)))
+                {
+                    var matchRound = dict[roster.BitsMatchId];
+                    roster.OilPattern = OilPatternInformation.Create(
+                        matchRound.MatchOilPatternName,
+                        matchRound.MatchOilPatternId);
+                    roster.Date = matchRound.MatchDate.ToDateTime(matchRound.MatchTime);
+                    if (matchRound.HomeTeamClubId == websiteConfig.ClubId)
+                    {
+                        roster.Team = matchRound.MatchHomeTeamAlias;
+                        roster.TeamLevel = roster.Team.Substring(roster.Team.LastIndexOf(' ') + 1);
+                        roster.Opponent = matchRound.MatchAwayTeamAlias;
+                    }
+                    else if (matchRound.AwayTeamClubId == websiteConfig.ClubId)
+                    {
+                        roster.Team = matchRound.MatchAwayTeamAlias;
+                        roster.TeamLevel = roster.Team.Substring(roster.Team.LastIndexOf(' ') + 1);
+                        roster.Opponent = matchRound.MatchHomeTeamAlias;
+                    }
+                    else
+                    {
+                        throw new Exception($"Unknown clubs: {matchRound.HomeTeamClubId} {matchRound.AwayTeamClubId}");
+                    }
+
+                    roster.Location = matchRound.MatchHallName;
+                }
+
+                // add missing rosters
+                var existingMatchIds = new HashSet<int>(rosters.Select(x => x.BitsMatchId));
+                foreach (var matchId in dict.Keys.Where(x => existingMatchIds.Contains(x) == false))
+                {
+                    var matchRound = dict[matchId];
+                    string team;
+                    string opponent;
+                    if (matchRound.HomeTeamClubId == websiteConfig.ClubId)
+                    {
+                        team = matchRound.MatchHomeTeamAlias;
+                        opponent = matchRound.MatchAwayTeamAlias;
+                    }
+                    else if (matchRound.AwayTeamClubId == websiteConfig.ClubId)
+                    {
+                        team = matchRound.MatchAwayTeamAlias;
+                        opponent = matchRound.MatchHomeTeamAlias;
+                    }
+                    else
+                    {
+                        throw new Exception($"Unknown clubs: {matchRound.HomeTeamClubId} {matchRound.AwayTeamClubId}");
+                    }
+
+                    var roster = new Roster(
+                        matchRound.MatchSeason,
+                        matchRound.MatchRoundId,
+                        matchRound.MatchId,
+                        team,
+                        team.Substring(team.LastIndexOf(' ') + 1),
+                        matchRound.MatchHallName,
+                        opponent,
+                        matchRound.MatchDate.ToDateTime(matchRound.MatchTime),
+                        matchRound.MatchNbrOfPlayers == 4,
+                        OilPatternInformation.Create(matchRound.MatchOilPatternName, matchRound.MatchOilPatternId));
+                    DocumentSession.Store(roster);
+                }
+            }
+
+            return Ok();
         }
 
         private IHttpActionResult Handle(OneTimeKeyEvent @event)

@@ -76,7 +76,7 @@
             // Arrange
             Transact(session =>
             {
-                session.Store(new WebsiteConfig(new[] { new WebsiteConfig.TeamNameAndLevel("FIF", "A") }, false, 1660));
+                session.Store(new WebsiteConfig(new[] { new WebsiteConfig.TeamNameAndLevel("FIF", "A") }, false, 1660, 2019));
                 var players = new[]
                 {
                     new Player("Christer Liedholm", "e@d.com", Player.Status.Active, 0, null, new string[0]),

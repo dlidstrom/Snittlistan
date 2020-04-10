@@ -12,6 +12,12 @@ namespace Snittlistan.Web.Infrastructure.Bits
         Task<MatchResults> GetMatchResults(int matchId);
 
         Task<MatchScores> GetMatchScores(int matchId);
+
+        Task<TeamResult[]> GetTeam(int clubId, int seasonId);
+
+        Task<DivisionResult[]> GetDivisions(int teamId, int seasonId);
+
+        Task<MatchRound[]> GetMatchRounds(int teamId, int divisionId, int seasonId);
     }
 
     public static class BitsClientExtensions

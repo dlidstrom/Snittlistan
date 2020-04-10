@@ -296,14 +296,4 @@
         [JsonProperty("divisionSeasonStartMatchDayNo")]
         public int DivisionSeasonStartMatchDayNo { get; set; }
     }
-
-    public partial class HeadInfo
-    {
-        public static HeadInfo FromJson(string json) => JsonConvert.DeserializeObject<HeadInfo>(json, Converter.Settings);
-    }
-
-    public static class Serialize
-    {
-        public static string ToJson(this HeadInfo self) => JsonConvert.SerializeObject(self, Converter.Settings);
-    }
 }

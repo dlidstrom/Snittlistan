@@ -1,13 +1,13 @@
-using System;
-using System.Linq;
-using Raven.Client;
-using Raven.Client.Linq;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.Indexes;
-using Snittlistan.Web.Infrastructure;
-
 namespace Snittlistan.Web.Areas.V2.Queries
 {
+    using System;
+    using System.Linq;
+    using Raven.Client;
+    using Raven.Client.Linq;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.Indexes;
+    using Snittlistan.Web.Infrastructure;
+
     public class GetPendingMatchesQuery : IQuery<Roster[]>
     {
         public Roster[] Execute(IDocumentSession session)

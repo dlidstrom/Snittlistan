@@ -197,9 +197,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="Areas\V2\Extensions.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\Converter.cs" />
+    <Compile Include="Infrastructure\Bits\Contracts\DivisionResult.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\HeadResultInfo.cs" />
+    <Compile Include="Infrastructure\Bits\Contracts\MatchOilProfile.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\MatchResults.cs" />
+    <Compile Include="Infrastructure\Bits\Contracts\MatchRound.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\MatchScores.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\HeadInfo.cs" />
     <Compile Include="Areas\V2\Controllers\ActivityDetailsController.cs" />
@@ -245,6 +249,7 @@
     <Compile Include="Areas\V2\ViewModels\ActivityViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\FormattedMedal.cs" />
     <Compile Include="Infrastructure\BitsMatchResult.cs" />
+    <Compile Include="Infrastructure\Bits\Contracts\TeamResult.cs" />
     <Compile Include="Infrastructure\CalendarEvent.cs" />
     <Compile Include="Areas\V2\WebsiteRoles.cs" />
     <Compile Include="Areas\V2\ViewModels\EditMedalsPostModel.cs" />
