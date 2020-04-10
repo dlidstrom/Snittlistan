@@ -10,8 +10,6 @@
 
         [JsonProperty("playerListAway")]
         public PlayerList[] PlayerListAway { get; set; }
-
-        public static MatchResults FromJson(string json) => JsonConvert.DeserializeObject<MatchResults>(json);
     }
 
     public class PlayerList

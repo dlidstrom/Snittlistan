@@ -100,9 +100,4 @@
         [JsonProperty("teamRP")]
         public int TeamRp { get; set; }
     }
-
-    public partial class HeadResultInfo
-    {
-        public static HeadResultInfo FromJson(string json) => JsonConvert.DeserializeObject<HeadResultInfo>(json, Converter.Settings);
-    }
 }

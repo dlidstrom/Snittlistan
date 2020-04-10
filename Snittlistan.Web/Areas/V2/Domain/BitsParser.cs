@@ -22,9 +22,6 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         public static ParseHeaderResult ParseHeader(HeadInfo headInfo, int clubId)
         {
-            var yearPart = headInfo.MatchDate.Substring(0, 4);
-            var monthPart = headInfo.MatchDate.Substring(5, 2);
-            var dayPart = headInfo.MatchDate.Substring(8, 2);
             string homeTeamName;
             string awayTeamName;
             if (headInfo.MatchHomeClubId == clubId)
@@ -46,11 +43,11 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 homeTeamName,
                 awayTeamName,
                 headInfo.MatchRoundId,
-                new DateTime(int.Parse(yearPart), int.Parse(monthPart), int.Parse(dayPart)).AddHours(headInfo.MatchTime / 100).AddMinutes(headInfo.MatchTime % 100),
+                headInfo.MatchDate.ToDateTime(headInfo.MatchTime),
                 headInfo.MatchHallName,
-                new OilPatternInformation(
+                OilPatternInformation.Create(
                     headInfo.MatchOilPatternName,
-                    headInfo.MatchOilPatternId != 0 ? $"https://bits.swebowl.se/MiscDisplay/Oilpattern/{headInfo.MatchOilPatternId}" : string.Empty));
+                    headInfo.MatchOilPatternId));
             return result;
         }
 

@@ -19,8 +19,6 @@
 
         [JsonProperty("boardColSpan")]
         public long BoardColSpan { get; set; }
-
-        public static MatchScores FromJson(string json) => JsonConvert.DeserializeObject<MatchScores>(json);
     }
 
     public class Score
