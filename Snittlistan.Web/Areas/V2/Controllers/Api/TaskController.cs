@@ -240,9 +240,6 @@
         {
             var roster = DocumentSession.Load<Roster>(message.RosterId);
             if (roster.IsVerified) return Ok();
-            var players = DocumentSession.Query<Player, PlayerSearch>()
-                                         .ToArray();
-            var parser = new BitsParser(players);
             var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             var result = await bitsClient.GetHeadInfo(roster.BitsMatchId);
             var header = BitsParser.ParseHeader(result, websiteConfig.ClubId);
@@ -256,6 +253,11 @@
 
             // update match result values
             var bitsMatchResult = await bitsClient.GetBitsMatchResult(roster.BitsMatchId);
+            var players = DocumentSession.Query<Player, PlayerSearch>()
+                                         .ToArray()
+                                         .Where(x => x.PlayerItem?.LicNbr != null)
+                                         .ToArray();
+            var parser = new BitsParser(players);
             if (roster.IsFourPlayer)
             {
                 var matchResult = EventStoreSession.Load<MatchResult4>(roster.MatchResultId);
