@@ -68,7 +68,7 @@ namespace Snittlistan.Web.Infrastructure.Bits
                 new
                 {
                     ClubId = clubId,
-                    TakeOnlyActive = false,
+                    TakeOnlyActive = true,
                     take = "250",
                     skip = 0,
                     page = 1,
