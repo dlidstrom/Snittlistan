@@ -1,1 +1,1 @@
-{"version":1,"ops":[{"type":1,"author":{"id":"027a2bcb19402705046b570711cd98e591403e96"},"timestamp":1586289789,"title":"Ska gå att sätta upp Admin-användaren genom Tool","message":"","files":null}]}
+{"version":1,"ops":[{"type":8,"author":{"id":"027a2bcb19402705046b570711cd98e591403e96"},"timestamp":1586501374,"target":"5c570bcd642d23b258b1f0175cc0badcc316091702474c03f3fa9ddba808e9e9","new_metadata":{"github-id":"MDU6SXNzdWU1OTc3Mjg2ODI=","github-url":"https://github.com/dlidstrom/Snittlistan/issues/450"}}]}
