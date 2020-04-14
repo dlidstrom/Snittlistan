@@ -3,6 +3,7 @@ namespace Snittlistan.Test
     using System;
     using System.IO;
     using System.Net.Http;
+    using System.Runtime.Caching;
     using System.Threading.Tasks;
     using Newtonsoft.Json;
     using Web.Infrastructure;
@@ -11,7 +12,10 @@ namespace Snittlistan.Test
 
     public static class BitsGateway
     {
-        private static readonly IBitsClient Client = new BitsClient(Environment.GetEnvironmentVariable("ApiKey"), new HttpClient());
+        private static readonly IBitsClient Client = new BitsClient(
+            Environment.GetEnvironmentVariable("ApiKey"),
+            new HttpClient(),
+            MemoryCache.Default);
 
         public static async Task<HeadInfo> GetHeadInfo(int matchId)
         {
