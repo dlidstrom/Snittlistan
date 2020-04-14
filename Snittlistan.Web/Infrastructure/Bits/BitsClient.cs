@@ -2,6 +2,7 @@ namespace Snittlistan.Web.Infrastructure.Bits
 {
     using System;
     using System.Net.Http;
+    using System.Runtime.Caching;
     using System.Text;
     using System.Threading.Tasks;
     using Contracts;
@@ -13,11 +14,13 @@ namespace Snittlistan.Web.Infrastructure.Bits
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
         private readonly string apiKey;
         private readonly HttpClient client;
+        private readonly MemoryCache memoryCache;
 
-        public BitsClient(string apiKey, HttpClient client)
+        public BitsClient(string apiKey, HttpClient client, MemoryCache memoryCache)
         {
             this.apiKey = apiKey;
             this.client = client;
+            this.memoryCache = memoryCache;
         }
 
         public async Task<HeadInfo> GetHeadInfo(int matchId)
@@ -79,24 +82,59 @@ namespace Snittlistan.Web.Infrastructure.Bits
             return result;
         }
 
-        private async Task<TResult> Get<TResult>(string url)
+        private async Task<TResult> Get<TResult>(string url) where TResult : class
         {
-            var result = await Request(HttpMethod.Get, url, _ => { });
-            return JsonConvert.DeserializeObject<TResult>(result);
+            if (memoryCache.Get(url) is TResult item)
+            {
+                Logger.Info("Found {0} in cache", url);
+                return item;
+            }
+
+            var response = await Request(HttpMethod.Get, url, _ => { });
+            var result = JsonConvert.DeserializeObject<TResult>(response);
+            memoryCache.Set(
+                url,
+                result,
+                new CacheItemPolicy
+                {
+                    AbsoluteExpiration = DateTime.Now.AddHours(1),
+                    RemovedCallback = x => Logger.Info("{0} evicted due to {1}", x.CacheItem.Key, x.RemovedReason)
+                });
+            return result;
         }
 
         private async Task<TResult> Post<TResult>(object body, string url)
         {
-            var result = await Request(
+            var cacheKey = JsonConvert.SerializeObject(new
+            {
+                body,
+                url
+            });
+            if (memoryCache.Get(cacheKey) is TResult item)
+            {
+                Logger.Info("Found {0} in cache", cacheKey);
+                return item;
+            }
+
+            var response = await Request(
                 HttpMethod.Post,
                 url,
                 x => x.Content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json"));
-            return JsonConvert.DeserializeObject<TResult>(result);
+            var result = JsonConvert.DeserializeObject<TResult>(response);
+            memoryCache.Set(
+                url,
+                result,
+                new CacheItemPolicy
+                {
+                    AbsoluteExpiration = DateTime.Now.AddHours(1),
+                    RemovedCallback = x => Logger.Info("{0} evicted due to {1}", x.CacheItem.Key, x.RemovedReason)
+                });
+            return result;
         }
 
         private async Task<string> Request(HttpMethod method, string url, Action<HttpRequestMessage> action)
         {
-            Logger.Info("{0}", url);
+            Logger.Info("Requesting {0}", url);
             var request = new HttpRequestMessage(method, url);
             request.Headers.Referrer = new Uri("https://bits.swebowl.se");
             action.Invoke(request);
