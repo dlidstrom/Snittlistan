@@ -41,7 +41,7 @@
 
         public async Task<IHttpActionResult> Post(TaskRequest request)
         {
-            Log.Info("Received task");
+            Log.Info($"Received task {request.TaskJson}");
             var result = await HandleTask(request);
             Log.Info("Done");
             return result;
@@ -79,7 +79,8 @@
                     return await Handle(message);
             }
 
-            throw new Exception($"Unhandled task {taskObject.GetType()}");
+            Log.Error($"Unhandled task {taskObject.GetType()}");
+            return Ok();
         }
 
         private async Task<IHttpActionResult> Handle(GetPlayersFromBitsMessage message)
