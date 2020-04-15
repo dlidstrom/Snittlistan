@@ -36,18 +36,17 @@
             var allowed = false;
             for (var currentTry = 0; currentTry < maxTries; currentTry++)
             {
-                var current = DateTime.Now;
-                var timePassed = current - lastCheck;
-
                 lock (locker)
                 {
+                    var current = DateTime.Now;
+                    var timePassed = current - lastCheck;
                     lastCheck = current;
                     allowance += timePassed.TotalSeconds * (rate / per);
 
                     if (allowance > rate)
                     {
                         allowance = rate;
-                        Logger.Info("Allowance exceeded rate");
+                        Logger.Info("Allowance exceeded rate ({0:F1} / {1:F1})", rate, per);
                     }
                     else
                     {
