@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Configuration;
+    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using System.Web;
@@ -90,6 +91,7 @@
 
         protected void Application_BeginRequest()
         {
+            Trace.CorrelationManager.ActivityId = Guid.NewGuid();
             if (Context.IsDebuggingEnabled)
             {
                 return;
