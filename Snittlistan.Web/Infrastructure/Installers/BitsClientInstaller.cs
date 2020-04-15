@@ -2,6 +2,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
 {
     using System;
     using System.Net.Http;
+    using System.Runtime.Caching;
     using Bits;
     using Castle.MicroKernel.Registration;
     using Castle.MicroKernel.SubSystems.Configuration;
@@ -16,7 +17,11 @@ namespace Snittlistan.Web.Infrastructure.Installers
         {
             var apiKey = Environment.GetEnvironmentVariable("ApiKey");
             Logger.Info("ApiKey: {0}", apiKey);
-            container.Register(Component.For<IBitsClient>().Instance(new BitsClient(apiKey, new HttpClient())));
+            var bitsClient = new BitsClient(
+                apiKey,
+                new HttpClient(new RateHandler(1.0, 1.0, 60)),
+                MemoryCache.Default);
+            container.Register(Component.For<IBitsClient>().Instance(bitsClient));
         }
     }
 }
