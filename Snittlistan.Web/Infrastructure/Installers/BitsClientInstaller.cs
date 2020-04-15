@@ -19,7 +19,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
             Logger.Info("ApiKey: {0}", apiKey);
             var bitsClient = new BitsClient(
                 apiKey,
-                new HttpClient(new RateHandler(1.0, 1.0, 60, 1.0)),
+                new HttpClient(new RateHandler(1.0, 1.0, 60, 0.5)),
                 MemoryCache.Default);
             container.Register(Component.For<IBitsClient>().Instance(bitsClient));
         }
