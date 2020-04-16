@@ -1,8 +1,8 @@
-﻿using System.Web.Mvc;
-using System.Web.Routing;
-
-namespace Snittlistan.Web
+﻿namespace Snittlistan.Web
 {
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
     public class RouteConfig
     {
         private readonly RouteCollection routes;
@@ -24,7 +24,7 @@ namespace Snittlistan.Web
                 name: "Hacker-Routes",
                 url: "{*php}",
                 defaults: new { controller = "Hacker", action = "Index" },
-                constraints: new { php = @"cpanel|status|.*php.*|catalog|^s?cgi(\-bin)?.*|^scripts.*|^(aw)?stats.*|^shop.*" });
+                constraints: new { php = @"cpanel|status|.*php.*|catalog|^s?cgi(\-bin)?.*|^scripts.*|^(aw)?stats.*|^shop.*|feed.*|temp.*" });
         }
     }
 }
