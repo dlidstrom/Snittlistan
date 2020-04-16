@@ -1,10 +1,10 @@
-﻿using System.Web.Http;
-using Newtonsoft.Json.Serialization;
-using Snittlistan.Web.Infrastructure;
-using Snittlistan.Web.Infrastructure.Attributes;
-
-namespace Snittlistan.Web
+﻿namespace Snittlistan.Web
 {
+    using System.Web.Http;
+    using Newtonsoft.Json.Serialization;
+    using Snittlistan.Web.Infrastructure;
+    using Snittlistan.Web.Infrastructure.Attributes;
+
     public static class WebApiConfig
     {
         public static void Register(HttpConfiguration config)

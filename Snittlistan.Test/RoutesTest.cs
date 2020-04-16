@@ -142,6 +142,11 @@
             RouteTable.Routes.Maps("GET", "~/stats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/status", new { controller = "Hacker", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/shop", new { controller = "Hacker", action = "Index" });
+            RouteTable.Routes.Maps("GET", "~/feeds/", new { controller = "Hacker", action = "Index" });
+            RouteTable.Routes.Maps("GET", "~/feeds", new { controller = "Hacker", action = "Index" });
+            RouteTable.Routes.Maps("GET", "~/feed/", new { controller = "Hacker", action = "Index" });
+            RouteTable.Routes.Maps("GET", "~/feed", new { controller = "Hacker", action = "Index" });
+            RouteTable.Routes.Maps("GET", "~/temp/", new { controller = "Hacker", action = "Index" });
         }
 
         private static void RegisterArea<T>(RouteCollection routes, object state) where T : AreaRegistration

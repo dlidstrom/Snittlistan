@@ -14,6 +14,7 @@
     using Snittlistan.Web.Areas.V2.Domain;
     using Snittlistan.Web.Areas.V2.ReadModels;
     using Web.Infrastructure.Bits;
+    using Web.Infrastructure.Bits.Contracts;
     using Web.Models;
 
     [TestFixture]
@@ -79,15 +80,15 @@
                 session.Store(new WebsiteConfig(new[] { new WebsiteConfig.TeamNameAndLevel("FIF", "A") }, false, 1660, 2012));
                 var players = new[]
                 {
-                    new Player("Christer Liedholm", "e@d.com", Player.Status.Active, 0, null, new string[0]),
-                    new Player("Mathias Ernest", "e@d.com", Player.Status.Active, 0, null, new string[0]),
-                    new Player("Torbjörn Jensen", "e@d.com", Player.Status.Active, 0, null, new string[0]),
-                    new Player("Alf Kindblom", "e@d.com", Player.Status.Active, 0, null, new string[0]),
-                    new Player("Peter Sjöberg", "e@d.com", Player.Status.Active, 0, null, new string[0]),
-                    new Player("Lars Öberg", "e@d.com", Player.Status.Active, 0, null, new string[0]),
-                    new Player("Mikael Axelsson", "e@d.com", Player.Status.Active, 0, null, new string[0]),
-                    new Player("Hans Norbeck", "e@d.com", Player.Status.Active, 0, null, new string[0]),
-                    new Player("Lennart Axelsson", "e@d.com", Player.Status.Active, 0, null, new string[0])
+                    new Player("Christer Liedholm", "e@d.com", Player.Status.Active, 0, null, new string[0], new PlayerItem { LicNbr = "M131061CHR01" }),
+                    new Player("Mathias Ernest", "e@d.com", Player.Status.Active, 0, null, new string[0], new PlayerItem { LicNbr = "M131061CHR01" }),
+                    new Player("Torbjörn Jensen", "e@d.com", Player.Status.Active, 0, null, new string[0], new PlayerItem { LicNbr = "M131061CHR01" }),
+                    new Player("Alf Kindblom", "e@d.com", Player.Status.Active, 0, null, new string[0], new PlayerItem { LicNbr = "M131061CHR01" }),
+                    new Player("Peter Sjöberg", "e@d.com", Player.Status.Active, 0, null, new string[0], new PlayerItem { LicNbr = "M131061CHR01" }),
+                    new Player("Lars Öberg", "e@d.com", Player.Status.Active, 0, null, new string[0], new PlayerItem { LicNbr = "M131061CHR01" }),
+                    new Player("Mikael Axelsson", "e@d.com", Player.Status.Active, 0, null, new string[0], new PlayerItem { LicNbr = "M131061CHR01" }),
+                    new Player("Hans Norbeck", "e@d.com", Player.Status.Active, 0, null, new string[0], new PlayerItem { LicNbr = "M131061CHR01" }),
+                    new Player("Lennart Axelsson", "e@d.com", Player.Status.Active, 0, null, new string[0], new PlayerItem { LicNbr = "M131061CHR01" })
                 };
 
                 foreach (var player in players)
