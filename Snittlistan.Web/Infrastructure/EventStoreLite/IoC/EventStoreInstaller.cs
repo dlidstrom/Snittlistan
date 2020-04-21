@@ -10,7 +10,7 @@ namespace EventStoreLite.IoC
     using Castle.Windsor;
     using Raven.Client;
     using Snittlistan.Web.Infrastructure.Installers;
-    using Snittlistan.Web.ViewModels;
+    using Snittlistan.Web.Models;
 
     /// <summary>
     /// Installs the event store into a Castle Windsor container.
@@ -86,11 +86,11 @@ namespace EventStoreLite.IoC
                 var tenantConfigurations = container.ResolveAll<TenantConfiguration>();
                 foreach (var tenantConfiguration in tenantConfigurations)
                 {
-                    var documentStore = container.Resolve<IDocumentStore>($"DocumentStore-{tenantConfiguration.Name}");
+                    var documentStore = container.Resolve<IDocumentStore>($"DocumentStore-{tenantConfiguration.Hostname}");
                     container.Register(
                         Component.For<EventStore>()
                                  .UsingFactoryMethod(x => CreateEventStore(documentStore, container))
-                                 .Named($"EventStore-{tenantConfiguration.Name}")
+                                 .Named($"EventStore-{tenantConfiguration.Hostname}")
                                  .LifestyleSingleton());
                 }
             }

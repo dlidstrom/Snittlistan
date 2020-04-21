@@ -24,7 +24,7 @@
                 name: "Hacker-Routes",
                 url: "{*php}",
                 defaults: new { controller = "Hacker", action = "Index" },
-                constraints: new { php = @"cpanel|status|.*php.*|catalog|^s?cgi(\-bin)?.*|^scripts.*|^(aw)?stats.*|^shop.*|feed.*|temp.*" });
+                constraints: new { php = @"cpanel|status|.*php.*|catalog|^s?cgi(\-bin)?.*|^scripts.*|^(aw)?stats.*|^shop.*|feed.*|temp.*|console" });
         }
     }
 }

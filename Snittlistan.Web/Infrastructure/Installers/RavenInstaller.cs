@@ -7,23 +7,20 @@
     using Castle.MicroKernel.Registration;
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
+    using Models;
     using Raven.Client;
     using Raven.Client.Document;
     using Raven.Client.Embedded;
     using Snittlistan.Web.Areas.V1.Models;
-    using ViewModels;
 
     public class RavenInstaller : IWindsorInstaller
     {
+        private readonly SiteWideConfiguration siteWideConfiguration;
         private readonly DocumentStoreMode mode;
 
-        /// <summary>
-        /// Initializes a new instance of the RavenInstaller class.
-        /// Raven mode is determined depending on debug or release:
-        /// run with server when debugging, and embedded in production.
-        /// </summary>
-        public RavenInstaller()
+        public RavenInstaller(SiteWideConfiguration siteWideConfiguration)
         {
+            this.siteWideConfiguration = siteWideConfiguration;
             switch (MvcApplication.Mode)
             {
                 case ApplicationMode.Debug:
@@ -43,10 +40,6 @@
             }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the RavenInstaller class.
-        /// </summary>
-        /// <param name="mode">Indicates which mode Raven will be run in.</param>
         public RavenInstaller(DocumentStoreMode mode)
         {
             this.mode = mode;
@@ -70,10 +63,10 @@
                 var tenantConfigurations = container.ResolveAll<TenantConfiguration>();
                 foreach (var tenantConfiguration in tenantConfigurations)
                 {
-                    var documentStore = InitializeStore(CreateDocumentStore(tenantConfiguration.ConnectionStringName));
+                    var documentStore = InitializeStore(CreateDocumentStore(tenantConfiguration));
                     var documentStoreComponent = Component.For<IDocumentStore>()
                                                           .Instance(documentStore)
-                                                          .Named($"DocumentStore-{tenantConfiguration.Name}")
+                                                          .Named($"DocumentStore-{tenantConfiguration.Hostname}")
                                                           .LifestyleSingleton();
                     container.Register(documentStoreComponent);
                 }
@@ -99,6 +92,7 @@
 
         private IDocumentSession GetDocumentSession(IKernel kernel)
         {
+            // document store is resolved depending on hostname
             var store = kernel.Resolve<IDocumentStore>();
             IDocumentSession documentSession;
             if (mode == DocumentStoreMode.InMemory)
@@ -107,8 +101,7 @@
             }
             else
             {
-                var tenantConfiguration = kernel.Resolve<TenantConfiguration>();
-                documentSession = store.OpenSession(tenantConfiguration.Database);
+                documentSession = store.OpenSession();
             }
 
             documentSession.Advanced.UseOptimisticConcurrency = true;
@@ -129,7 +122,7 @@
             return store;
         }
 
-        private IDocumentStore CreateDocumentStore(string connectionStringName)
+        private IDocumentStore CreateDocumentStore(TenantConfiguration tenantConfiguration)
         {
             IDocumentStore store;
             switch (mode)
@@ -147,7 +140,11 @@
                     break;
 
                 case DocumentStoreMode.Server:
-                    store = new DocumentStore { ConnectionStringName = connectionStringName };
+                    store = new DocumentStore
+                    {
+                        Url = siteWideConfiguration.DatabaseUrl,
+                        DefaultDatabase = tenantConfiguration.DatabaseName
+                    };
                     break;
 
                 default:
