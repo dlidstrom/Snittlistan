@@ -22,6 +22,7 @@
     using Helpers;
     using NLog;
     using Raven.Client;
+    using Raven.Client.Document;
     using Snittlistan.Queue;
     using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Attributes;
@@ -29,7 +30,6 @@
     using Snittlistan.Web.Infrastructure.Installers;
     using Snittlistan.Web.Infrastructure.IoC;
     using Snittlistan.Web.Models;
-    using ViewModels;
 
     public class MvcApplication : HttpApplication
     {
@@ -48,6 +48,8 @@
         public static IWindsorContainer ChildContainer { get; private set; }
 
         public static ApplicationMode Mode => applicationMode;
+
+        public static IDocumentStore SiteWideDocumentStore { get; private set; }
 
         public static void Bootstrap(IWindsorContainer container, HttpConfiguration configuration)
         {
@@ -68,6 +70,7 @@
             }
 
             Container?.Dispose();
+            SiteWideDocumentStore.Dispose();
         }
 
         public static string GetAssemblyVersion()
@@ -160,6 +163,12 @@
 
         private static void Bootstrap(HttpConfiguration configuration)
         {
+            // site-wide config
+            SiteWideDocumentStore = new DocumentStore
+            {
+                ConnectionStringName = "Snittlistan-SiteWide"
+            }.Initialize(true);
+
             RegisterGlobalFilters(GlobalFilters.Filters);
 
             // initialize container and controller factory
@@ -193,42 +202,28 @@
             if (Container == null)
             {
                 Container = new WindsorContainer();
-                var tenantConfigurations = new[]
+
+                // load tenant configurations from master database
+                //var tenantConfigurations = 1;
+                SiteWideConfiguration siteWideConfiguration;
+                using (var session = SiteWideDocumentStore.OpenSession())
                 {
-                    new TenantConfiguration(
-                        "test.localhost",
-                        "Snittlistan",
-                        "Snittlistan-hofvet",
-                        "hofvet.ico",
-                        "hofvet.png",
-                        "76x76",
-                        "Hofvet",
-                        "Fredrikshof IF BK"),
-                    new TenantConfiguration(
-                        "snittlistan.se",
-                        "Snittlistan",
-                        "Snittlistan-hofvet",
-                        "hofvet.ico",
-                        "hofvet.png",
-                        "76x76",
-                        "Hofvet",
-                        "Fredrikshof IF BK"),
-                    new TenantConfiguration(
-                        "vartansik.snittlistan.se",
-                        "Snittlistan-vartansik",
-                        "Snittlistan-vartansik",
-                        "vartansik.ico",
-                        "vartansik.png",
-                        "180x180",
-                        "Värtans IK",
-                        "Värtans IK")
-                };
-                foreach (var tenantConfiguration in tenantConfigurations)
+                    siteWideConfiguration = session.Load<SiteWideConfiguration>(SiteWideConfiguration.GlobalId);
+                    if (siteWideConfiguration == null)
+                    {
+                        siteWideConfiguration = new SiteWideConfiguration("", new[] { new TenantConfiguration("", "", "", "", "", "", "") });
+                        session.Store(siteWideConfiguration);
+                    }
+
+                    session.SaveChanges();
+                }
+
+                foreach (var tenantConfiguration in siteWideConfiguration.TenantConfigurations)
                 {
                     Container.Register(
                         Component.For<TenantConfiguration>()
                                  .Instance(tenantConfiguration)
-                                 .Named(tenantConfiguration.Name));
+                                 .Named(tenantConfiguration.Hostname));
                 }
 
                 Container.Kernel.AddHandlerSelector(new HostBasedComponentSelector());
@@ -238,7 +233,7 @@
                     new ControllerInstaller(),
                     new EventMigratorInstaller(),
                     new EventStoreSessionInstaller(),
-                    new RavenInstaller(),
+                    new RavenInstaller(siteWideConfiguration),
                     new ServicesInstaller(),
                     new MsmqInstaller(),
                     EventStoreInstaller.FromAssembly(Assembly.GetExecutingAssembly(), DocumentStoreMode.Server));

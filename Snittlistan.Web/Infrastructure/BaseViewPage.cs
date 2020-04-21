@@ -1,7 +1,7 @@
 ﻿namespace Snittlistan.Web.Infrastructure
 {
     using System.Web.Mvc;
-    using ViewModels;
+    using Models;
 
     public abstract class BaseViewPage : WebViewPage
     {

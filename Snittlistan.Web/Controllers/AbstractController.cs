@@ -9,7 +9,6 @@
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Models;
-    using ViewModels;
 
     public abstract class AbstractController : Controller
     {

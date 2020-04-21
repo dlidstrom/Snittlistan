@@ -4,8 +4,8 @@
     using System.Linq;
     using System.Web;
     using Castle.MicroKernel;
+    using Models;
     using Raven.Client;
-    using ViewModels;
 
     public class HostBasedComponentSelector : IHandlerSelector
     {
@@ -32,19 +32,9 @@
                 hostname = $"DocumentStore-{hostname}";
             }
 
-            var selectedHandler = handlers.FirstOrDefault(h => h.ComponentModel.Name == hostname)
-                                  ?? GetDefaultHandler(service, handlers);
+            var selectedHandler = handlers.SingleOrDefault(h => h.ComponentModel.Name == hostname);
+            if (selectedHandler == null) throw new Exception($"No tenant configured for {hostname}");
             return selectedHandler;
-        }
-
-        private static IHandler GetDefaultHandler(Type service, IHandler[] handlers)
-        {
-            if (handlers.Length == 0)
-            {
-                throw new ApplicationException($"No components registered for service {service.Name}");
-            }
-
-            return handlers[0];
         }
 
         private static string GetHostname()

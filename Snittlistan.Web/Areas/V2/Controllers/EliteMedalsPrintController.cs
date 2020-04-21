@@ -12,13 +12,13 @@
     using Helpers;
     using Indexes;
     using Infrastructure.Attributes;
+    using Models;
     using PdfSharp.Pdf;
     using PdfSharp.Pdf.IO;
     using Raven.Abstractions;
     using ReadModels;
     using ViewModels;
     using Web.Controllers;
-    using Web.ViewModels;
 
     [Authorize(Roles = WebsiteRoles.EliteMedals.EditMedals)]
     public class EliteMedalsPrintController : AbstractController

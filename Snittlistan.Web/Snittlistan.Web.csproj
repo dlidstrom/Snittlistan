@@ -310,8 +310,9 @@
     <Compile Include="Infrastructure\JetBrains\Annotations.cs" />
     <Compile Include="Infrastructure\OutlookAgentMessageHandler.cs" />
     <Compile Include="Infrastructure\RateHandler.cs" />
+    <Compile Include="Models\SiteWideConfiguration.cs" />
     <Compile Include="ViewModels\QuillData.cs" />
-    <Compile Include="ViewModels\TenantConfiguration.cs" />
+    <Compile Include="Models\TenantConfiguration.cs" />
     <Compile Include="Models\Emails.cs" />
     <Compile Include="Models\WebsiteConfig.cs" />
     <Compile Include="ViewModels\UserInvitedViewModel.cs" />
@@ -631,7 +632,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53150</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://test.localhost:61026/</IISUrl>
+          <IISUrl>http://hofvet.snittlistan.se:61026/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

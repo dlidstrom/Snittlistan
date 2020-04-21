@@ -1,15 +1,15 @@
-using System;
-using System.Linq;
-using EventStoreLite;
-using Raven.Client;
-using Raven.Client.Linq;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.Domain.Match;
-using Snittlistan.Web.Areas.V2.Indexes;
-using Snittlistan.Web.Infrastructure;
-
 namespace Snittlistan.Web.Areas.V2.Commands
 {
+    using System;
+    using System.Linq;
+    using EventStoreLite;
+    using Raven.Client;
+    using Raven.Client.Linq;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.Domain.Match;
+    using Snittlistan.Web.Areas.V2.Indexes;
+    using Snittlistan.Web.Infrastructure;
+
     public class RegisterMatchCommand : ICommand
     {
         private readonly Roster roster;
