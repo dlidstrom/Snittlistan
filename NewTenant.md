@@ -1,13 +1,18 @@
 # Ny subdomän
 
-* Ny binding i .vs\config\applicationhost.config
+* Skapa databasen
 * Ny Url reservation: netsh http add urlacl url=http://___.snittlistan.se:61026/ user=everyone
 * Lägg till domänen i C:\Windows\System32\drivers\etc\hosts
-* Lägg till connectionString och appSettings i Snittlistan.Tool
-* Skapa databasen
-* Ny connectionString i Snittlistan.Tool.exe.config och Snittlistan.Web.config
-* Kör Snittlistan.Tool.exe initialize
+* Ny binding i .vs\config\applicationhost.config
+
 * Fixa bilderna med https://realfavicongenerator.net
+    - Skapa bilderna i Snittlistan.Web\Content\css\images
+* Uppdatera SiteWideConfig
+* Kör Snittlistan.Tool.exe initialize
+    - Ska också sätta admin-lösenordet
+
+* Lägg till connectionString och appSettings i Snittlistan.Tool
+* Ny connectionString i Snittlistan.Tool.exe.config och Snittlistan.Web.config
 * Ny TenantConfiguration i Global.asax.cs
 * Lägg till A record för domänen i Netcetera Control Panel. Ska peka på 81.27.111.95
 * Uppdatera bindings i Snittlistan.main.wxs
