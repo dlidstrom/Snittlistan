@@ -344,6 +344,7 @@
     <Content Include="Content\external\air-datepicker\datepicker.js" />
     <Content Include="Content\external\air-datepicker\datepicker.min.css" />
     <Content Include="Content\external\air-datepicker\datepicker.min.js" />
+    <Content Include="Content\external\chatra\chatra.js" />
     <Content Include="Content\external\jquery\jquery-3.3.1.js" />
     <Content Include="Content\external\jquery\jquery-3.3.1.min.js" />
     <Content Include="Content\external\quill\quill.js" />

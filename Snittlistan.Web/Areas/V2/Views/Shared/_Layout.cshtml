@@ -33,6 +33,19 @@
 
     <link href="@Url.ContentCacheBreak("~/Content/css/main.css")" type="text/css" rel="stylesheet" />
     <script src="@Url.ContentCacheBreak("~/Content/js/GA.js")"></script>
+    <script>
+        window.ChatraIntegration = {
+            /* main properties */
+            name: '@User.CustomIdentity.Name',
+            email: '@User.CustomIdentity.',
+            phone: '+41-22-765-5749',
+            notes: 'Looking for courage...',
+
+            /* any number of custom properties */
+            'What does he do': 'Goes to Oz with his friends'
+        };
+    </script>
+    <script src="@Url.ContentCacheBreak("~/Content/external/chatra/chatra.js")"></script>
 </head>
 <body>
     <div class="navbar">

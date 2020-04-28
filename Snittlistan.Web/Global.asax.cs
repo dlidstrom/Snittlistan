@@ -130,7 +130,8 @@
                     new CustomPrincipal(
                         player.Id,
                         player.Name,
-                        roles);
+                        roles,
+                        player.Email);
                 return;
             }
 
