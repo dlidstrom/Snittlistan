@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web;
-using HtmlAgilityPack;
-using Snittlistan.Web.Areas.V2.ReadModels;
-
-namespace Snittlistan.Web.Areas.V2.Domain
+﻿namespace Snittlistan.Web.Areas.V2.Domain
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using HtmlAgilityPack;
     using Infrastructure;
     using Infrastructure.Bits.Contracts;
+    using Snittlistan.Web.Areas.V2.ReadModels;
 
     public class BitsParser
     {
@@ -55,8 +54,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
         {
             var document = new HtmlDocument();
             document.LoadHtml(content);
-            var documentNode = document.DocumentNode;
-            var directLinkNode = documentNode.SelectSingleNode("//span[@id=\"MainContentPlaceHolder_Standings1_LabelDirectLink\"]");
+            HtmlNode documentNode = document.DocumentNode;
+            HtmlNode directLinkNode = documentNode.SelectSingleNode("//span[@id=\"MainContentPlaceHolder_Standings1_LabelDirectLink\"]");
 
             // table
             var currentRow = 0;
@@ -64,31 +63,31 @@ namespace Snittlistan.Web.Areas.V2.Domain
             var currentGroup = (string)null;
             while (true)
             {
-                var trNode = documentNode.SelectSingleNode(
+                HtmlNode trNode = documentNode.SelectSingleNode(
                     $"//tr[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_TabelRowDivider_{currentRow}\"]");
                 if (trNode == null) break;
 
-                var nameNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsTeamName_{currentRow}\"]");
+                HtmlNode nameNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsTeamName_{currentRow}\"]");
                 if (nameNode.HasClass("GroupText"))
                 {
                     currentGroup = nameNode.InnerText;
                 }
                 else
                 {
-                    var matchesNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsMatches_{currentRow}\"]");
-                    var winNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsWin_{currentRow}\"]");
-                    var drawNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsDraw_{currentRow}\"]");
-                    var lossNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsLoss_{currentRow}\"]");
-                    var totalNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsTotal_{currentRow}\"]");
-                    var diffNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsDiff_{currentRow}\"]");
-                    var pointsNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsPoints_{currentRow}\"]");
-                    var dividerSolid = trNode.HasClass("DividerSolid");
-                    var matches = int.Parse(matchesNode.InnerText);
-                    var win = int.Parse(winNode.InnerText);
-                    var draw = int.Parse(drawNode.InnerText);
-                    var loss = int.Parse(lossNode.InnerText);
-                    var diff = int.Parse(diffNode.InnerText);
-                    var points = int.Parse(pointsNode.InnerText);
+                    HtmlNode matchesNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsMatches_{currentRow}\"]");
+                    HtmlNode winNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsWin_{currentRow}\"]");
+                    HtmlNode drawNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsDraw_{currentRow}\"]");
+                    HtmlNode lossNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsLoss_{currentRow}\"]");
+                    HtmlNode totalNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsTotal_{currentRow}\"]");
+                    HtmlNode diffNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsDiff_{currentRow}\"]");
+                    HtmlNode pointsNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsPoints_{currentRow}\"]");
+                    bool dividerSolid = trNode.HasClass("DividerSolid");
+                    int matches = int.Parse(matchesNode.InnerText);
+                    int win = int.Parse(winNode.InnerText);
+                    int draw = int.Parse(drawNode.InnerText);
+                    int loss = int.Parse(lossNode.InnerText);
+                    int diff = int.Parse(diffNode.InnerText);
+                    int points = int.Parse(pointsNode.InnerText);
                     standings.Add(new ParseStandingsResult.StandingsItem
                     {
                         Group = currentGroup,
@@ -118,40 +117,40 @@ namespace Snittlistan.Web.Areas.V2.Domain
             //
             var document = new HtmlDocument();
             document.LoadHtml(content);
-            var documentNode = document.DocumentNode;
-            var tableNode = documentNode.SelectSingleNode("//div[@id=\"MainContentPlaceHolder_MatchScheme1_PanelStandings\"]/table");
+            HtmlNode documentNode = document.DocumentNode;
+            HtmlNode tableNode = documentNode.SelectSingleNode("//div[@id=\"MainContentPlaceHolder_MatchScheme1_PanelStandings\"]/table");
 
             var currentRow = 0;
             var matches = new List<ParseMatchSchemeResult.MatchItem>();
             while (true)
             {
-                var matchFactNode = tableNode.SelectSingleNode($"//a[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HyperLinkMatchFakta_{currentRow}\"]");
+                HtmlNode matchFactNode = tableNode.SelectSingleNode($"//a[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HyperLinkMatchFakta_{currentRow}\"]");
                 if (matchFactNode == null) break;
-                var matchDayNode = tableNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_LblMatchDayFormatted_{currentRow}\"]");
-                var isTurnRow = matchDayNode.InnerText.IndexOf("Omgång", StringComparison.Ordinal) >= 0;
+                HtmlNode matchDayNode = tableNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_LblMatchDayFormatted_{currentRow}\"]");
+                bool isTurnRow = matchDayNode.InnerText.IndexOf("Omgång", StringComparison.Ordinal) >= 0;
                 if (isTurnRow == false)
                 {
-                    var turnNode = tableNode.SelectSingleNode($"//input[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HiddenRoundFormatted_{currentRow}\"]");
-                    var matchTimeNode = tableNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_LblMatchTimeFormatted_{currentRow}\"]");
-                    var matchDateNode = tableNode.SelectSingleNode($"//input[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HiddenFieldMatchDate_{currentRow}\"]");
-                    var matchIdNode = tableNode.SelectSingleNode($"//input[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HiddenFieldMatchId_{currentRow}\"]");
-                    var teamsNode = tableNode.SelectSingleNode($"//a[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HyperLinkMatchFakta_{currentRow}\"]");
-                    var resultNode = tableNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_LabelMatchResult_{currentRow}\"]");
-                    var oilPatternNameNode = tableNode.SelectSingleNode($"//a[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_LabelMatchOilPattern_{currentRow}\"]");
-                    var oilPatternIdNode = tableNode.SelectSingleNode($"//input[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HiddenOilPatternId_{currentRow}\"]");
-                    var locationNode = tableNode.SelectSingleNode($"//a[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HyperLinkHall_{currentRow}\"]");
+                    HtmlNode turnNode = tableNode.SelectSingleNode($"//input[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HiddenRoundFormatted_{currentRow}\"]");
+                    HtmlNode matchTimeNode = tableNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_LblMatchTimeFormatted_{currentRow}\"]");
+                    HtmlNode matchDateNode = tableNode.SelectSingleNode($"//input[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HiddenFieldMatchDate_{currentRow}\"]");
+                    HtmlNode matchIdNode = tableNode.SelectSingleNode($"//input[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HiddenFieldMatchId_{currentRow}\"]");
+                    HtmlNode teamsNode = tableNode.SelectSingleNode($"//a[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HyperLinkMatchFakta_{currentRow}\"]");
+                    HtmlNode resultNode = tableNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_LabelMatchResult_{currentRow}\"]");
+                    HtmlNode oilPatternNameNode = tableNode.SelectSingleNode($"//a[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_LabelMatchOilPattern_{currentRow}\"]");
+                    HtmlNode oilPatternIdNode = tableNode.SelectSingleNode($"//input[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HiddenOilPatternId_{currentRow}\"]");
+                    HtmlNode locationNode = tableNode.SelectSingleNode($"//a[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HyperLinkHall_{currentRow}\"]");
 
-                    var turn = int.Parse(turnNode.Attributes["value"].Value.Replace("Omgång ", string.Empty));
-                    var formattedDate = Regex.Replace(
+                    int turn = int.Parse(turnNode.Attributes["value"].Value.Replace("Omgång ", string.Empty));
+                    string formattedDate = Regex.Replace(
                         matchDateNode.Attributes["value"].Value,
                         @"(?<date>\d{4}-\d\d-\d\d) 00:00:00",
                         @"${date}");
-                    var date = DateTime.Parse($"{formattedDate}T{matchTimeNode.InnerText}");
-                    var dateChanged = matchTimeNode.Attributes["style"].Value.IndexOf("color:Red", StringComparison.OrdinalIgnoreCase) >= 0;
-                    var bitsMatchId = int.Parse(matchIdNode.Attributes["value"].Value);
-                    var oilPatternId = int.Parse(oilPatternIdNode.Attributes["value"].Value);
-                    var locationUrl = HttpUtility.HtmlDecode($"http://bits.swebowl.se/Matches/{locationNode.Attributes["href"].Value}");
-                    var location = HttpUtility.HtmlDecode(locationNode.InnerText);
+                    DateTime date = DateTime.Parse($"{formattedDate}T{matchTimeNode.InnerText}");
+                    bool dateChanged = matchTimeNode.Attributes["style"].Value.IndexOf("color:Red", StringComparison.OrdinalIgnoreCase) >= 0;
+                    int bitsMatchId = int.Parse(matchIdNode.Attributes["value"].Value);
+                    int oilPatternId = int.Parse(oilPatternIdNode.Attributes["value"].Value);
+                    string locationUrl = HttpUtility.HtmlDecode($"http://bits.swebowl.se/Matches/{locationNode.Attributes["href"].Value}");
+                    string location = HttpUtility.HtmlDecode(locationNode.InnerText);
                     matches.Add(new ParseMatchSchemeResult.MatchItem
                     {
                         RowFromHtml = currentRow,
@@ -181,12 +180,12 @@ namespace Snittlistan.Web.Areas.V2.Domain
             ParseResult parseResult;
             if (bitsMatchResult.HeadInfo.MatchHomeClubId == clubId)
             {
-                var homeSeries = CreateSeries(
+                List<ResultSeriesReadModel.Serie> homeSeries = CreateSeries(
                     bitsMatchResult.HeadResultInfo.HomeHeadDetails,
                     bitsMatchResult.MatchScores,
                     x => GetPlayerId(x).Id,
                     0);
-                var awaySeries = CreateSeries(
+                List<ResultSeriesReadModel.Serie> awaySeries = CreateSeries(
                     bitsMatchResult.HeadResultInfo.HomeHeadDetails,
                     bitsMatchResult.MatchScores,
                     x => x,
@@ -200,12 +199,12 @@ namespace Snittlistan.Web.Areas.V2.Domain
             }
             else if (bitsMatchResult.HeadInfo.MatchAwayClubId == clubId)
             {
-                var homeSeries = CreateSeries(
+                List<ResultSeriesReadModel.Serie> homeSeries = CreateSeries(
                     bitsMatchResult.HeadResultInfo.HomeHeadDetails,
                     bitsMatchResult.MatchScores,
                     x => GetPlayerId(x).Id,
                     2);
-                var awaySeries = CreateSeries(
+                List<ResultSeriesReadModel.Serie> awaySeries = CreateSeries(
                     bitsMatchResult.HeadResultInfo.HomeHeadDetails,
                     bitsMatchResult.MatchScores,
                     x => x,
@@ -231,13 +230,13 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 int offset)
             {
                 var series = new List<ResultSeriesReadModel.Serie>();
-                for (int i = 0; i < headDetails.Length; i++)
+                for (var i = 0; i < headDetails.Length; i++)
                 {
                     var tables = new List<ResultSeriesReadModel.Table>();
                     for (var j = 0; j < 4; j++)
                     {
-                        var score1 = matchScores.Series[i].Boards[0 + offset].Scores[j];
-                        var score2 = matchScores.Series[i].Boards[1 + offset].Scores[j];
+                        Score score1 = matchScores.Series[i].Boards[0 + offset].Scores[j];
+                        Score score2 = matchScores.Series[i].Boards[1 + offset].Scores[j];
                         var game1 = new ResultSeriesReadModel.Game
                         {
                             Pins = score1.ScoreScore,
@@ -278,9 +277,9 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 var series = new List<ResultSeries4ReadModel.Serie>();
                 for (var i = 0; i < bitsMatchResult.HeadResultInfo.HomeHeadDetails.Length; i++)
                 {
-                    var homeHeadDetail = bitsMatchResult.HeadResultInfo.HomeHeadDetails[i];
+                    HeadDetail homeHeadDetail = bitsMatchResult.HeadResultInfo.HomeHeadDetails[i];
                     var games = new List<ResultSeries4ReadModel.Game>();
-                    foreach (var boardScore in bitsMatchResult.MatchScores.Series[i].Boards[0].Scores)
+                    foreach (Score boardScore in bitsMatchResult.MatchScores.Series[i].Boards[0].Scores)
                     {
                         var game = new ResultSeries4ReadModel.Game
                         {
@@ -292,7 +291,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
                         games.Add(game);
                     }
 
-                    var score = homeHeadDetail.TeamRp - games.Sum(x => x.Score);
+                    int score = homeHeadDetail.TeamRp - games.Sum(x => x.Score);
                     var serie = new ResultSeries4ReadModel.Serie
                     {
                         Score = score,
@@ -312,9 +311,9 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 var series = new List<ResultSeries4ReadModel.Serie>();
                 for (var i = 0; i < bitsMatchResult.HeadResultInfo.AwayHeadDetails.Length; i++)
                 {
-                    var awayHeadDetail = bitsMatchResult.HeadResultInfo.AwayHeadDetails[i];
+                    HeadDetail awayHeadDetail = bitsMatchResult.HeadResultInfo.AwayHeadDetails[i];
                     var games = new List<ResultSeries4ReadModel.Game>();
-                    foreach (var boardScore in bitsMatchResult.MatchScores.Series[i].Boards[1].Scores)
+                    foreach (Score boardScore in bitsMatchResult.MatchScores.Series[i].Boards[1].Scores)
                     {
                         var game = new ResultSeries4ReadModel.Game
                         {
@@ -326,7 +325,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
                         games.Add(game);
                     }
 
-                    var score = awayHeadDetail.TeamRp - games.Sum(x => x.Score);
+                    int score = awayHeadDetail.TeamRp - games.Sum(x => x.Score);
                     var serie = new ResultSeries4ReadModel.Serie
                     {
                         Score = score,
@@ -351,14 +350,14 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         private Player GetPlayerId(string name)
         {
-            var split = name.Split(' ');
-            var lastName = split.Last();
-            var initial = name[0];
-            var q = from player in players
-                    where player.Name.EndsWith(lastName)
-                    where player.Name.StartsWith(new string(initial, 1))
-                    select player;
-            var p = q.SingleOrDefault();
+            string[] split = name.Split(' ');
+            string lastName = split.Last();
+            char initial = name[0];
+            IEnumerable<Player> q = from player in players
+                                    where player.Name.EndsWith(lastName)
+                                    where player.Name.StartsWith(new string(initial, 1))
+                                    select player;
+            Player p = q.SingleOrDefault();
             if (p == null)
                 throw new ApplicationException($"No player with name {name} was found");
             return p;

@@ -1,8 +1,9 @@
-﻿using NUnit.Framework;
-using Snittlistan.Web.Helpers;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using NUnit.Framework;
+    using Snittlistan.Web.Helpers;
+    using Web.Areas.V1.Models;
+
     [TestFixture]
     public class Match_ByBitsMatchIdTest : DbTest
     {
@@ -10,7 +11,7 @@ namespace Snittlistan.Test
         public void ShouldFindBitsId()
         {
             // Arrange
-            var match = DbSeed.Create8x4Match();
+            Match8x4 match = DbSeed.Create8x4Match();
             Session.Store(match);
             Session.SaveChanges();
 
