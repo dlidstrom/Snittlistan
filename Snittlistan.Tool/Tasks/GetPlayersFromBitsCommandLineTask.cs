@@ -18,6 +18,9 @@
             }
         }
 
-        public string HelpText => "Gets players from BITS.";
+        public string HelpText
+        {
+            get { return "Gets players from BITS."; }
+        }
     }
 }

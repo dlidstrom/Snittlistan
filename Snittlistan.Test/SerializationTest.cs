@@ -1,12 +1,13 @@
-﻿using System.IO;
-using System.Text;
-using NUnit.Framework;
-using Raven.Imports.Newtonsoft.Json;
-using Snittlistan.Web.Areas.V1.Models;
-using Snittlistan.Web.Models;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using System.IO;
+    using System.Text;
+    using NUnit.Framework;
+    using Raven.Client;
+    using Raven.Imports.Newtonsoft.Json;
+    using Snittlistan.Web.Areas.V1.Models;
+    using Snittlistan.Web.Models;
+
     [TestFixture]
     public class SerializationTest : DbTest
     {
@@ -14,7 +15,7 @@ namespace Snittlistan.Test
         public void CanSerialize8X4Match()
         {
             // Arrange
-            var serializer = Store.Conventions.CreateSerializer();
+            JsonSerializer serializer = Store.Conventions.CreateSerializer();
             var builder = new StringBuilder();
 
             // Act
@@ -30,7 +31,7 @@ namespace Snittlistan.Test
         public void CanSerialize4X4Match()
         {
             // Arrange
-            var serializer = Store.Conventions.CreateSerializer();
+            JsonSerializer serializer = Store.Conventions.CreateSerializer();
             var builder = new StringBuilder();
 
             // Act
@@ -49,14 +50,14 @@ namespace Snittlistan.Test
             var user = new User("firstName", "lastName", "e@d.com", "some-pass");
 
             // Act
-            using (var session = Store.OpenSession())
+            using (IDocumentSession session = Store.OpenSession())
             {
                 session.Store(user);
                 session.SaveChanges();
             }
 
             // Assert
-            using (var session = Store.OpenSession())
+            using (IDocumentSession session = Store.OpenSession())
             {
                 var loadedUser = session.Load<User>(user.Id);
                 Assert.True(loadedUser.ValidatePassword("some-pass"), "Password validation failed");

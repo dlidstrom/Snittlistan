@@ -43,9 +43,9 @@ namespace Snittlistan.Test
             Assert.That(team.PinsForPlayer("Christer Liedholm"), Is.EqualTo(735));
             Assert.That(team.PinsForPlayer("Kjell Persson"), Is.EqualTo(540));
             Assert.That(team.PinsForPlayer("Thomas Gurell"), Is.EqualTo(159));
-            for (int i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
             {
-                for (int j = 0; j < 4; j++)
+                for (var j = 0; j < 4; j++)
                 {
                     int result1 = Result8X4[(i * 4) + j][0];
                     int result2 = Result8X4[(i * 4) + j][1];
@@ -75,9 +75,9 @@ namespace Snittlistan.Test
             Assert.That(team.PinsForPlayer("Markus Norbeck"), Is.EqualTo(598));
             Assert.That(team.PinsForPlayer("Lars Norbeck"), Is.EqualTo(717));
             Assert.That(team.PinsForPlayer("Matz Classon"), Is.EqualTo(594));
-            for (int i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
             {
-                for (int j = 0; j < 4; j++)
+                for (var j = 0; j < 4; j++)
                 {
                     int result = Result4X4[(i * 4) + j];
 

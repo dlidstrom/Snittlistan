@@ -1,17 +1,18 @@
-﻿using Snittlistan.Queue;
-using Snittlistan.Queue.Messages;
-
-namespace Snittlistan.Tool.Tasks
+﻿namespace Snittlistan.Tool.Tasks
 {
+    using System;
+    using Snittlistan.Queue;
+    using Snittlistan.Queue.Messages;
+
     public class RegisterMatchCommandLineTask : ICommandLineTask
     {
         public void Run(string[] args)
         {
-            using (var scope = MsmqGateway.AutoCommitScope())
+            using (MsmqGateway.MsmqTransactionScope scope = MsmqGateway.AutoCommitScope())
             {
-                foreach (var tuple in CommandLineTaskHelper.AllConnectionStrings())
+                foreach (Uri apiUrl in CommandLineTaskHelper.AllApiUrls())
                 {
-                    scope.PublishMessage(new MessageEnvelope(new RegisterMatchesMessage(), tuple.Item2));
+                    scope.PublishMessage(new MessageEnvelope(new RegisterMatchesMessage(), apiUrl));
                 }
 
                 scope.Commit();

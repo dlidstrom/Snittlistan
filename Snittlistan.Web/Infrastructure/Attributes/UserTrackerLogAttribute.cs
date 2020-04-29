@@ -14,7 +14,7 @@
 
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
-            var actionDescriptor = filterContext.ActionDescriptor;
+            ActionDescriptor actionDescriptor = filterContext.ActionDescriptor;
             string controllerName = actionDescriptor.ControllerDescriptor.ControllerName;
             string actionName = actionDescriptor.ActionName;
             string userName = filterContext.HttpContext.User.Identity.Name;
@@ -59,7 +59,7 @@
                    .FirstOrDefault();
             }
 
-            var result = IPAddress.None;
+            IPAddress result = IPAddress.None;
             if (remoteAddress != null)
                 IPAddress.TryParse(remoteAddress, out result);
 

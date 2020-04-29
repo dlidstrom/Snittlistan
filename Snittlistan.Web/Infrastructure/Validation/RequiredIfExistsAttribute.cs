@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
-
-namespace Snittlistan.Web.Infrastructure.Validation
+﻿namespace Snittlistan.Web.Infrastructure.Validation
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Reflection;
+    using System.Web.Mvc;
+
     public class RequiredIfExistsAttribute : ValidationAttribute, IClientValidatable
     {
         private readonly RequiredAttribute innerAttribute = new RequiredAttribute();
@@ -33,13 +35,13 @@ namespace Snittlistan.Web.Infrastructure.Validation
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             // get a reference to the property this validation depends upon
-            var containerType = validationContext.ObjectInstance.GetType();
-            var field = containerType.GetProperty(DependentProperty);
+            Type containerType = validationContext.ObjectInstance.GetType();
+            PropertyInfo field = containerType.GetProperty(DependentProperty);
 
             if (field != null)
             {
                 // get the value of the dependent property
-                var dependentvalue = field.GetValue(validationContext.ObjectInstance, null);
+                object dependentvalue = field.GetValue(validationContext.ObjectInstance, null);
 
                 // compare the value against the target value
                 if (dependentvalue != null)
@@ -65,7 +67,7 @@ namespace Snittlistan.Web.Infrastructure.Validation
             // because the TemplateInfo's context has had this fieldname appended to it. Instead, we
             // want to get the context as though it was one level higher (i.e. outside the current property,
             // which is the containing object (our Person), and hence the same level as the dependent property.
-            var thisField = metadata.PropertyName + "_";
+            string thisField = metadata.PropertyName + "_";
             if (depProp.StartsWith(thisField))
             {
                 // strip it off again
