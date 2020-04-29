@@ -130,8 +130,9 @@
                     new CustomPrincipal(
                         player.Id,
                         player.Name,
-                        roles,
-                        player.Email);
+                        player.Email,
+                        player.UniqueId,
+                        roles);
                 return;
             }
 
@@ -145,6 +146,8 @@
                         new CustomPrincipal(
                             null,
                             user.Email,
+                            user.Email,
+                            user.UniqueId,
                             WebsiteRoles.AdminGroup().Select(x => x.Name).ToArray());
                 }
                 else
@@ -153,6 +156,8 @@
                         new CustomPrincipal(
                             null,
                             user.Email,
+                            user.Email,
+                            user.UniqueId,
                             WebsiteRoles.UserGroup().Select(x => x.Name).ToArray());
                 }
 
