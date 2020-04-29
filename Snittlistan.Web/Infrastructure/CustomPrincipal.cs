@@ -7,14 +7,11 @@
     {
         private readonly string[] roles;
 
-        public CustomPrincipal(string playerId, string name, string[] roles, string email)
+        public CustomPrincipal(string playerId, string name, string email, string uniqueId, string[] roles)
         {
-            Email = email;
             this.roles = roles;
-            CustomIdentity = new CustomIdentity(playerId, name);
+            CustomIdentity = new CustomIdentity(playerId, name, email, uniqueId);
         }
-
-        public string Email { get; }
 
         public bool IsInRole(string role)
         {
