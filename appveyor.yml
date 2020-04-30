@@ -1,5 +1,7 @@
 image:
   Visual Studio 2017
+build:
+  project: Snittlistan.sln
 before_build:
   - nuget restore
 cache:
