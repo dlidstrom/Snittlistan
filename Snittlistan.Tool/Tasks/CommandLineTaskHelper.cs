@@ -4,8 +4,12 @@ using System.Configuration;
 
 namespace Snittlistan.Tool.Tasks
 {
+    using Raven.Client;
+
     public static class CommandLineTaskHelper
     {
+        public static IDocumentStore DocumentStore { get; set; }
+
         public static Uri[] AllApiUrls()
         {
             var list = new List<Uri>();

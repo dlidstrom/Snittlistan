@@ -56,6 +56,7 @@
                 {
                     ConnectionStringName = "Snittlistan-SiteWide"
                 }.Initialize(true);
+                CommandLineTaskHelper.DocumentStore = siteWideDocumentStore;
                 var task = container.Resolve<ICommandLineTask>(args[0]);
                 task.Run(args);
             }
