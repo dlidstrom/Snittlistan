@@ -55,7 +55,7 @@
       <Version>4.4.1</Version>
     </PackageReference>
     <PackageReference Include="Castle.Windsor">
-      <Version>4.1.0</Version>
+      <Version>5.0.1</Version>
     </PackageReference>
     <PackageReference Include="Elmah.MVC">
       <Version>2.1.2</Version>
