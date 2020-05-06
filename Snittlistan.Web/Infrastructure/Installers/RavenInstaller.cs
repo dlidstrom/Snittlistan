@@ -79,10 +79,16 @@
                 }
             }
 
-            container.Register(
-                Component.For<IDocumentSession>()
-                         .UsingFactoryMethod(GetDocumentSession)
-                         .LifeStyle.Is(mode == DocumentStoreMode.InMemory ? LifestyleType.Scoped : LifestyleType.PerWebRequest));
+            if (mode == DocumentStoreMode.InMemory)
+            {
+                container.Register(
+                    Component.For<IDocumentSession>().UsingFactoryMethod(GetDocumentSession).LifestyleScoped());
+            }
+            else
+            {
+                container.Register(
+                    Component.For<IDocumentSession>().UsingFactoryMethod(GetDocumentSession).LifestylePerWebRequest());
+            }
         }
 
         private static bool FindIdentityProperty(MemberInfo memberInfo)

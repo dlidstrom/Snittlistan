@@ -54,8 +54,11 @@
     <PackageReference Include="Castle.Core">
       <Version>4.4.1</Version>
     </PackageReference>
+    <PackageReference Include="Castle.Facilities.AspNet.SystemWeb">
+      <Version>5.0.1</Version>
+    </PackageReference>
     <PackageReference Include="Castle.Windsor">
-      <Version>4.1.0</Version>
+      <Version>5.0.1</Version>
     </PackageReference>
     <PackageReference Include="Elmah.MVC">
       <Version>2.1.2</Version>
@@ -91,7 +94,7 @@
       <Version>3.5.4</Version>
     </PackageReference>
     <PackageReference Include="RavenDB.Embedded">
-      <Version>4.2.102</Version>
+      <Version>3.5.4</Version>
     </PackageReference>
     <PackageReference Include="Rotativa">
       <Version>1.7.3</Version>
