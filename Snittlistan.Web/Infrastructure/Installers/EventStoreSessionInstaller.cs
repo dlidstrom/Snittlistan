@@ -20,7 +20,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
 
         public EventStoreSessionInstaller(LifestyleType lifestyleType)
         {
-            func = x => x.LifeStyle.Is(lifeStyleType);
+            func = x => x.LifeStyle.Is(lifestyleType);
         }
 
         public void Install(IWindsorContainer container, IConfigurationStore store)
