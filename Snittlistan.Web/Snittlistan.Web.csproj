@@ -56,7 +56,7 @@
     </PackageReference>
     <PackageReference Include="Castle.Facilities.AspNet.SystemWeb">
       <Version>5.0.1</Version>
-    </PackageVersion>
+    </PackageReference>
     <PackageReference Include="Castle.Windsor">
       <Version>5.0.1</Version>
     </PackageReference>
