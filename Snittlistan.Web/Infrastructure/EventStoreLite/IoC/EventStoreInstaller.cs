@@ -9,8 +9,8 @@ namespace EventStoreLite.IoC
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
     using Raven.Client;
+    using Snittlistan.Queue.Models;
     using Snittlistan.Web.Infrastructure.Installers;
-    using Snittlistan.Web.Models;
 
     /// <summary>
     /// Installs the event store into a Castle Windsor container.

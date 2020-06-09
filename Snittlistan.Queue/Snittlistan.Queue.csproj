@@ -65,6 +65,8 @@
     <Compile Include="Messages\TaskRequest.cs" />
     <Compile Include="Messages\UserInvitedEvent.cs" />
     <Compile Include="Messages\VerifyMatchesMessage.cs" />
+    <Compile Include="Models\SiteWideConfiguration.cs" />
+    <Compile Include="Models\TenantConfiguration.cs" />
     <Compile Include="MsmqGateway.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GetTeamNamesQuery.cs" />
@@ -92,5 +94,6 @@
       <Version>12.0.3</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

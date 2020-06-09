@@ -86,13 +86,13 @@
 
         private async Task<IHttpActionResult> Handle(GetPlayersFromBitsMessage message)
         {
-            var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+            WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             PlayerResult playersResult = await bitsClient.GetPlayers(websiteConfig.ClubId);
             Player[] players = DocumentSession.Query<Player, PlayerSearch>()
                                          .ToArray();
 
             // update existing players by matching on license number
-            Dictionary<string, PlayerItem> playersByLicense = playersResult.Data.ToDictionary(x => x.LicNbr);
+            var playersByLicense = playersResult.Data.ToDictionary(x => x.LicNbr);
             foreach (Player player in players.Where(x => x.PlayerItem != null))
             {
                 if (playersByLicense.TryGetValue(player.PlayerItem.LicNbr, out PlayerItem playerItem))
@@ -109,7 +109,7 @@
 
             // add missing players, i.e. what is left from first step
             // try first to match on name, update those, add the rest
-            Dictionary<string, Player> playerNamesWithoutPlayerItem = players.Where(x => x.PlayerItem == null).ToDictionary(x => x.Name);
+            var playerNamesWithoutPlayerItem = players.Where(x => x.PlayerItem == null).ToDictionary(x => x.Name);
             foreach (PlayerItem playerItem in playersByLicense.Values)
             {
                 // look for name
@@ -142,7 +142,7 @@
 
         private async Task<IHttpActionResult> Handle(GetRostersFromBitsMessage message)
         {
-            var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+            WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             RosterSearchTerms.Result[] rosterSearchTerms = DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
                                                    .Where(x => x.Season == websiteConfig.SeasonId)
                                                    .Where(x => x.BitsMatchId != 0)
@@ -161,7 +161,7 @@
                 if (divisionResults.Length != 1) throw new Exception($"Unexpected number of divisions: {divisionResults.Length}");
                 DivisionResult divisionResult = divisionResults[0];
                 MatchRound[] matchRounds = await bitsClient.GetMatchRounds(teamResult.TeamId, divisionResult.DivisionId, websiteConfig.SeasonId);
-                Dictionary<int, MatchRound> dict = matchRounds.ToDictionary(x => x.MatchId);
+                var dict = matchRounds.ToDictionary(x => x.MatchId);
 
                 // update existing rosters
                 foreach (Roster roster in rosters.Where(x => dict.ContainsKey(x.BitsMatchId)))
@@ -240,9 +240,9 @@
 
         private async Task<IHttpActionResult> Handle(VerifyMatchMessage message)
         {
-            var roster = DocumentSession.Load<Roster>(message.RosterId);
+            Roster roster = DocumentSession.Load<Roster>(message.RosterId);
             if (roster.IsVerified) return Ok();
-            var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+            WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             HeadInfo result = await bitsClient.GetHeadInfo(roster.BitsMatchId);
             ParseHeaderResult header = BitsParser.ParseHeader(result, websiteConfig.ClubId);
 
@@ -262,7 +262,7 @@
             var parser = new BitsParser(players);
             if (roster.IsFourPlayer)
             {
-                var matchResult = EventStoreSession.Load<MatchResult4>(roster.MatchResultId);
+                MatchResult4 matchResult = EventStoreSession.Load<MatchResult4>(roster.MatchResultId);
                 Parse4Result parseResult = parser.Parse4(bitsMatchResult, websiteConfig.ClubId);
                 roster.Players = GetPlayerIds(parseResult);
                 bool isVerified = matchResult.Update(
@@ -277,13 +277,13 @@
             }
             else
             {
-                var matchResult = EventStoreSession.Load<MatchResult>(roster.MatchResultId);
+                MatchResult matchResult = EventStoreSession.Load<MatchResult>(roster.MatchResultId);
                 ParseResult parseResult = parser.Parse(bitsMatchResult, websiteConfig.ClubId);
                 roster.Players = GetPlayerIds(parseResult);
-                Dictionary<string, ResultForPlayerIndex.Result> resultsForPlayer = DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
-                                                      .Where(x => x.Season == roster.Season)
-                                                      .ToArray()
-                                                      .ToDictionary(x => x.PlayerId);
+                var resultsForPlayer = DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
+                    .Where(x => x.Season == roster.Season)
+                    .ToArray()
+                    .ToDictionary(x => x.PlayerId);
                 MatchSerie[] matchSeries = parseResult.CreateMatchSeries();
                 bool isVerified = matchResult.Update(
                     PublishMessage,
@@ -302,7 +302,7 @@
 
         private async Task<IHttpActionResult> Handle(RegisterMatchesMessage message)
         {
-            var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+            WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             Roster[] pendingMatches = ExecuteQuery(new GetPendingMatchesQuery(websiteConfig.SeasonId));
             Player[] players = DocumentSession.Query<Player, PlayerSearch>()
                                               .ToArray()
@@ -372,7 +372,7 @@
                             from game in serie.Games
                             where playerIdsWithoutReserve.Contains(game.Player) == false
                             select game.Player;
-            List<string> allPlayerIds = playerIds.Concat(
+            var allPlayerIds = playerIds.Concat(
                 new HashSet<string>(restQuery).Where(x => playerIdsWithoutReserve.Contains(x) == false)).ToList();
             return allPlayerIds;
         }
@@ -389,7 +389,7 @@
                             from game in new[] { table.Game1, table.Game2 }
                             where playerIdsWithoutReserve.Contains(game.Player) == false
                             select game.Player;
-            List<string> allPlayerIds = playerIds.Concat(
+            var allPlayerIds = playerIds.Concat(
                 new HashSet<string>(restQuery).Where(x => playerIdsWithoutReserve.Contains(x) == false)).ToList();
             return allPlayerIds;
         }
@@ -468,12 +468,12 @@
 
         private IHttpActionResult Handle(MatchRegisteredEvent @event)
         {
-            var roster = DocumentSession.Load<Roster>(@event.RosterId);
+            Roster roster = DocumentSession.Load<Roster>(@event.RosterId);
             if (roster.IsFourPlayer) return Ok();
             string resultSeriesReadModelId = ResultSeriesReadModel.IdFromBitsMatchId(roster.BitsMatchId, roster.Id);
-            var resultSeriesReadModel = DocumentSession.Load<ResultSeriesReadModel>(resultSeriesReadModelId);
+            ResultSeriesReadModel resultSeriesReadModel = DocumentSession.Load<ResultSeriesReadModel>(resultSeriesReadModelId);
             string resultHeaderReadModelId = ResultHeaderReadModel.IdFromBitsMatchId(roster.BitsMatchId, roster.Id);
-            var resultHeaderReadModel = DocumentSession.Load<ResultHeaderReadModel>(resultHeaderReadModelId);
+            ResultHeaderReadModel resultHeaderReadModel = DocumentSession.Load<ResultHeaderReadModel>(resultHeaderReadModelId);
             Emails.MatchRegistered(
                 roster.Team,
                 roster.Opponent,
