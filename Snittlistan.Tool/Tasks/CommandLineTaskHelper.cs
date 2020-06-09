@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-
-namespace Snittlistan.Tool.Tasks
+﻿namespace Snittlistan.Tool.Tasks
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Linq;
     using Raven.Client;
+    using Snittlistan.Queue.Models;
 
     public static class CommandLineTaskHelper
     {
@@ -12,17 +13,15 @@ namespace Snittlistan.Tool.Tasks
 
         public static Uri[] AllApiUrls()
         {
-            var list = new List<Uri>();
-            foreach (string name in ConfigurationManager.AppSettings)
+            int port = Convert.ToInt32(ConfigurationManager.AppSettings["Port"]);
+            using (IDocumentSession session = DocumentStore.OpenSession())
             {
-                if (name.Contains("Snittlistan-"))
-                {
-                    string url = ConfigurationManager.AppSettings[name];
-                    list.Add(new Uri(url));
-                }
+                SiteWideConfiguration siteWideConfig = session.Load<SiteWideConfiguration>(SiteWideConfiguration.GlobalId);
+                Uri[] list = siteWideConfig.TenantConfigurations
+                    .Select(x => new Uri($"http://{x.Hostname}:{port}/api/task"))
+                    .ToArray();
+                return list;
             }
-
-            return list.ToArray();
         }
     }
 }

@@ -7,6 +7,7 @@
     using Raven.Client;
     using Snittlistan.Queue;
     using Snittlistan.Queue.Messages;
+    using Snittlistan.Queue.Models;
     using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Models;
 

@@ -1,15 +1,16 @@
 ﻿namespace Snittlistan.Tool.Tasks
 {
-    using Queue;
-    using Queue.Messages;
+    using System;
+    using Snittlistan.Queue;
+    using Snittlistan.Queue.Messages;
 
     public class GetPlayersFromBitsCommandLineTask : ICommandLineTask
     {
         public void Run(string[] args)
         {
-            using (var scope = MsmqGateway.AutoCommitScope())
+            using (MsmqGateway.MsmqTransactionScope scope = MsmqGateway.AutoCommitScope())
             {
-                foreach (var apiUrl in CommandLineTaskHelper.AllApiUrls())
+                foreach (Uri apiUrl in CommandLineTaskHelper.AllApiUrls())
                 {
                     scope.PublishMessage(new MessageEnvelope(new GetPlayersFromBitsMessage(), apiUrl));
                 }

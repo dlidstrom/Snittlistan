@@ -1,4 +1,4 @@
-﻿namespace Snittlistan.Web.Models
+﻿namespace Snittlistan.Queue.Models
 {
     using System;
 

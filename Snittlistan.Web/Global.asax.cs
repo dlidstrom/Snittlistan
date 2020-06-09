@@ -24,6 +24,7 @@
     using Raven.Client;
     using Raven.Client.Document;
     using Snittlistan.Queue;
+    using Snittlistan.Queue.Models;
     using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Attributes;
     using Snittlistan.Web.Infrastructure.Indexes;
@@ -76,7 +77,7 @@
         public static string GetAssemblyVersion()
         {
             var assembly = Assembly.GetExecutingAssembly();
-            var version = assembly.GetName().Version;
+            Version version = assembly.GetName().Version;
             return version.ToString();
         }
 
@@ -95,7 +96,7 @@
         protected void Application_BeginRequest()
         {
             Trace.CorrelationManager.ActivityId = Guid.NewGuid();
-            if (Context.IsDebuggingEnabled)
+            if (Context.IsDebuggingEnabled || Context.Request.IsLocal)
             {
                 return;
             }
@@ -112,20 +113,20 @@
 
         protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
         {
-            var authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
+            HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
             if (authCookie == null) return;
 
-            var authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+            FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
             if (authTicket == null) return;
 
-            var session = Container.Resolve<IDocumentSession>();
+            IDocumentSession session = Container.Resolve<IDocumentSession>();
 
             // try the player first
-            var player = session.Load<Player>(authTicket.Name);
+            Player player = session.Load<Player>(authTicket.Name);
             if (player != null)
             {
-                var defaultRoles = WebsiteRoles.PlayerGroup().Select(x => x.Name);
-                var roles = new HashSet<string>(defaultRoles.Concat(player.Roles)).ToArray();
+                IEnumerable<string> defaultRoles = WebsiteRoles.PlayerGroup().Select(x => x.Name);
+                string[] roles = new HashSet<string>(defaultRoles.Concat(player.Roles)).ToArray();
                 HttpContext.Current.User =
                     new CustomPrincipal(
                         player.Id,
@@ -137,7 +138,7 @@
             }
 
             // try the user now
-            var user = session.FindUserByEmail(authTicket.Name);
+            User user = session.FindUserByEmail(authTicket.Name);
             if (user != null)
             {
                 if (user.Id == "Admin")
@@ -212,7 +213,7 @@
                 // load tenant configurations from master database
                 //var tenantConfigurations = 1;
                 SiteWideConfiguration siteWideConfiguration;
-                using (var session = SiteWideDocumentStore.OpenSession())
+                using (IDocumentSession session = SiteWideDocumentStore.OpenSession())
                 {
                     siteWideConfiguration = session.Load<SiteWideConfiguration>(SiteWideConfiguration.GlobalId);
                     if (siteWideConfiguration == null)
@@ -224,7 +225,7 @@
                     session.SaveChanges();
                 }
 
-                foreach (var tenantConfiguration in siteWideConfiguration.TenantConfigurations)
+                foreach (TenantConfiguration tenantConfiguration in siteWideConfiguration.TenantConfigurations)
                 {
                     Container.Register(
                         Component.For<TenantConfiguration>()
@@ -250,8 +251,8 @@
                 ChildContainer = new WindsorContainer().Register(
                     Component.For<IDocumentSession>().UsingFactoryMethod(kernel =>
                     {
-                        var documentSession = kernel.Resolve<IDocumentStore>()
-                                                    .OpenSession();
+                        IDocumentSession documentSession = kernel.Resolve<IDocumentStore>()
+                            .OpenSession();
                         documentSession.Advanced.UseOptimisticConcurrency = true;
                         return documentSession;
                     }).LifestyleTransient());

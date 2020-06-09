@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "Snittlistan";
-}<!DOCTYPE html>
+}
+<!DOCTYPE html>
 <html lang="se">
 <head>
     <meta charset="utf-8" />
@@ -33,7 +34,9 @@
 
     <link href="@Url.ContentCacheBreak("~/Content/css/main.css")" type="text/css" rel="stylesheet" />
     <script src="@Url.ContentCacheBreak("~/Content/js/GA.js")"></script>
-    <script>
+    @if (User is object)
+    {
+        <script>
         window.ChatraIntegration = {
             name: '@User.CustomIdentity.Name',
             email: '@User.CustomIdentity.Email'
@@ -41,7 +44,8 @@
         window.ChatraSetup = {
             clientId: '@User.CustomIdentity.UniqueId'
         };
-    </script>
+        </script>
+    }
     <script src="@Url.ContentCacheBreak("~/Content/external/chatra/chatra.js")"></script>
 </head>
 <body>

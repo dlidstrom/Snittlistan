@@ -6,6 +6,7 @@
     using Castle.MicroKernel;
     using Models;
     using Raven.Client;
+    using Snittlistan.Queue.Models;
 
     public class HostBasedComponentSelector : IHandlerSelector
     {

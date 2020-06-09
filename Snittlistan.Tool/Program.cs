@@ -33,7 +33,6 @@
 
         private static void Run(string[] args)
         {
-
             IWindsorContainer container = new WindsorContainer();
             container.Register(
                 Classes.FromThisAssembly()
@@ -57,7 +56,7 @@
                     ConnectionStringName = "Snittlistan-SiteWide"
                 }.Initialize(true);
                 CommandLineTaskHelper.DocumentStore = siteWideDocumentStore;
-                var task = container.Resolve<ICommandLineTask>(args[0]);
+                ICommandLineTask task = container.Resolve<ICommandLineTask>(args[0]);
                 task.Run(args);
             }
             catch (Exception e)

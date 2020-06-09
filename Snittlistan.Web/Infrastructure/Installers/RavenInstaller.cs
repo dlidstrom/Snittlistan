@@ -11,6 +11,7 @@
     using Raven.Client;
     using Raven.Client.Document;
     using Raven.Client.Embedded;
+    using Snittlistan.Queue.Models;
     using Snittlistan.Web.Areas.V1.Models;
 
     public class RavenInstaller : IWindsorInstaller

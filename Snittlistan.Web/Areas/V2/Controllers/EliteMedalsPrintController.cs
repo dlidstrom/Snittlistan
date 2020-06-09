@@ -17,6 +17,7 @@
     using PdfSharp.Pdf.IO;
     using Raven.Abstractions;
     using ReadModels;
+    using Snittlistan.Queue.Models;
     using ViewModels;
     using Web.Controllers;
 
