@@ -141,7 +141,7 @@
             User user = session.FindUserByEmail(authTicket.Name);
             if (user != null)
             {
-                if (user.Id == "Admin")
+                if (user.Id == Models.User.AdminId)
                 {
                     HttpContext.Current.User =
                         new CustomPrincipal(

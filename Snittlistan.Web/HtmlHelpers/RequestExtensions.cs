@@ -1,4 +1,4 @@
-namespace Snittlistan.Web.HtmlHelpers
+﻿namespace Snittlistan.Web.HtmlHelpers
 {
     using System.Security.Principal;
     using System.Web;
@@ -9,8 +9,8 @@ namespace Snittlistan.Web.HtmlHelpers
     {
         public static bool IsAdmin(this HttpRequestBase request, IPrincipal principal)
         {
-            var session = MvcApplication.Container.Resolve<IDocumentSession>();
-            var admin = session.Load<User>("Admin");
+            IDocumentSession session = MvcApplication.Container.Resolve<IDocumentSession>();
+            User admin = session.Load<User>(Models.User.AdminId);
             return admin != null && request.IsAuthenticated && principal.Identity.Name == admin.Email;
         }
     }
