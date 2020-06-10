@@ -1,7 +1,7 @@
-﻿using Raven.Imports.Newtonsoft.Json;
-
-namespace Snittlistan.Web.Models
+﻿namespace Snittlistan.Web.Models
 {
+    using Raven.Imports.Newtonsoft.Json;
+
     public class WebsiteConfig
     {
         public const string GlobalId = "WebsiteConfig";

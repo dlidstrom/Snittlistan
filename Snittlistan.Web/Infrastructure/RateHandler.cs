@@ -37,12 +37,12 @@
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var sw = Stopwatch.StartNew();
-            var allowed = false;
-            for (var currentTry = 0; currentTry < maxTries; currentTry++)
+            bool allowed = false;
+            for (int currentTry = 0; currentTry < maxTries; currentTry++)
             {
                 lock (locker)
                 {
-                    var increase = stopwatch.Elapsed.TotalSeconds * (rate / per);
+                    double increase = stopwatch.Elapsed.TotalSeconds * (rate / per);
                     Logger.Debug($"Time passed={stopwatch.ElapsedMilliseconds}ms Increasing allowance={allowance} to {allowance + increase}");
                     stopwatch = Stopwatch.StartNew();
                     allowance += increase;
@@ -73,7 +73,7 @@
                 throw new Exception($"Failed after {maxTries} tries (elapsed = {sw.Elapsed.TotalSeconds:F1}s)");
             }
 
-            var response = await base.SendAsync(request, cancellationToken);
+            HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
             return response;
         }
     }

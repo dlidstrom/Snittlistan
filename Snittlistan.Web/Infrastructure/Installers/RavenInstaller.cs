@@ -61,11 +61,11 @@
             }
             else
             {
-                var tenantConfigurations = container.ResolveAll<TenantConfiguration>();
-                foreach (var tenantConfiguration in tenantConfigurations)
+                TenantConfiguration[] tenantConfigurations = container.ResolveAll<TenantConfiguration>();
+                foreach (TenantConfiguration tenantConfiguration in tenantConfigurations)
                 {
-                    var documentStore = InitializeStore(CreateDocumentStore(tenantConfiguration));
-                    var documentStoreComponent = Component.For<IDocumentStore>()
+                    IDocumentStore documentStore = InitializeStore(CreateDocumentStore(tenantConfiguration));
+                    ComponentRegistration<IDocumentStore> documentStoreComponent = Component.For<IDocumentStore>()
                                                           .Instance(documentStore)
                                                           .Named($"DocumentStore-{tenantConfiguration.Hostname}")
                                                           .LifestyleSingleton();
@@ -94,7 +94,7 @@
         private IDocumentSession GetDocumentSession(IKernel kernel)
         {
             // document store is resolved depending on hostname
-            var store = kernel.Resolve<IDocumentStore>();
+            IDocumentStore store = kernel.Resolve<IDocumentStore>();
             IDocumentSession documentSession;
             if (mode == DocumentStoreMode.InMemory)
             {

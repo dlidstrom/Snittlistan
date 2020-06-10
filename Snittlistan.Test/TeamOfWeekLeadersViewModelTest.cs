@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.ReadModels;
-using Snittlistan.Web.Areas.V2.ViewModels;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using NUnit.Framework;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+    using Snittlistan.Web.Areas.V2.ViewModels;
+
     [TestFixture]
     public class TeamOfWeekLeadersViewModelTest
     {
@@ -45,18 +45,18 @@ namespace Snittlistan.Test
         public void GroupsByTurn()
         {
             // Assert
-            var weeks = viewModel.Weeks;
+            List<TeamOfWeekViewModel.Week> weeks = viewModel.Weeks;
             Assert.That(weeks, Has.Count.EqualTo(1));
-            var week = weeks[0];
+            TeamOfWeekViewModel.Week week = weeks[0];
             Assert.That(week.Turn, Is.EqualTo(10));
-            var players = week.Players;
+            PlayerScoreViewModel[] players = week.Players;
             Assert.That(players, Has.Length.EqualTo(2));
-            var playerScore1 = players[0];
+            PlayerScoreViewModel playerScore1 = players[0];
             Assert.That(playerScore1.Name, Is.EqualTo("Daniel"));
             Assert.That(playerScore1.Score, Is.EqualTo(0));
             Assert.That(playerScore1.Pins, Is.EqualTo(220));
             Assert.That(playerScore1.Series, Is.EqualTo(1));
-            var playerScore2 = players[1];
+            PlayerScoreViewModel playerScore2 = players[1];
             Assert.That(playerScore2.Name, Is.EqualTo("Tomas"));
             Assert.That(playerScore2.Score, Is.EqualTo(1));
             Assert.That(playerScore2.Pins, Is.EqualTo(190));

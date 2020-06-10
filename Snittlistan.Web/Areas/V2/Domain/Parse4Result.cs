@@ -31,20 +31,20 @@
         public MatchSerie4[] CreateMatchSeries()
         {
             var matchSeries = new List<MatchSerie4>();
-            var series = new[]
+            ResultSeries4ReadModel.Serie[] series = new[]
             {
                 Series.ElementAtOrDefault(0),
                 Series.ElementAtOrDefault(1),
                 Series.ElementAtOrDefault(2),
                 Series.ElementAtOrDefault(3)
             };
-            var serieNumber = 1;
-            foreach (var serie in series.Where(x => x != null))
+            int serieNumber = 1;
+            foreach (ResultSeries4ReadModel.Serie serie in series.Where(x => x != null))
             {
                 var games = new List<MatchGame4>();
-                for (var i = 0; i < 4; i++)
+                for (int i = 0; i < 4; i++)
                 {
-                    var game = serie.Games[i];
+                    ResultSeries4ReadModel.Game game = serie.Games[i];
                     var matchGame = new MatchGame4(game.Player, game.Score, game.Pins);
                     games.Add(matchGame);
                 }

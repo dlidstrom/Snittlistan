@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Snittlistan.Queue
+﻿namespace Snittlistan.Queue
 {
+    using System;
+
     public class MessageQueueProcessorSettings
     {
         /// <summary>

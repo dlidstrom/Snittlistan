@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Raven.Client.Indexes;
-using Snittlistan.Web.Areas.V2.ReadModels;
-
-namespace Snittlistan.Web.Areas.V2.Indexes
+﻿namespace Snittlistan.Web.Areas.V2.Indexes
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Raven.Client.Indexes;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+
     public class ResultForPlayerIndex : AbstractIndexCreationTask<ResultForPlayerReadModel, ResultForPlayerIndex.Result>
     {
         public ResultForPlayerIndex()

@@ -28,9 +28,9 @@ namespace Snittlistan.Web.Areas.V2.Commands
                 result.TeamScore,
                 result.OpponentScore,
                 roster.BitsMatchId);
-            var players = session.Load<Player>(roster.Players);
+            Player[] players = session.Load<Player>(roster.Players);
 
-            var matchSeries = result.CreateMatchSeries();
+            MatchSerie[] matchSeries = result.CreateMatchSeries();
 
             var resultsForPlayer = session.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
                                           .Where(x => x.Season == roster.Season)

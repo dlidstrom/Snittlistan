@@ -1,7 +1,7 @@
-using System.Web.Mvc;
-
 namespace Snittlistan.Web.Infrastructure.Results
 {
+    using System.Web.Mvc;
+
     public class NotFoundViewResult : ViewResult
     {
         public NotFoundViewResult()
@@ -11,9 +11,9 @@ namespace Snittlistan.Web.Infrastructure.Results
 
         public override void ExecuteResult(ControllerContext context)
         {
-            var response = context.HttpContext.Response;
-            var request = context.HttpContext.Request;
-            var url = request.Url.OriginalString;
+            System.Web.HttpResponseBase response = context.HttpContext.Response;
+            System.Web.HttpRequestBase request = context.HttpContext.Request;
+            string url = request.Url.OriginalString;
             ViewData["RequestedUrl"] = url;
             ViewData["ReferrerUrl"] = (request.UrlReferrer != null && request.UrlReferrer.OriginalString != url) ? request.UrlReferrer.OriginalString : null;
             response.StatusCode = 404;

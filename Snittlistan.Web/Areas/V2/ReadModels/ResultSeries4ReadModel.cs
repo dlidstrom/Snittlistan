@@ -32,11 +32,11 @@
 
         public IEnumerable<KeyValuePair<string, List<PlayerGame>>> SortedPlayers()
         {
-            var players = Series.SelectMany(x => x.Games)
+            IEnumerable<string> players = Series.SelectMany(x => x.Games)
                 .Select(x => x.Player);
 
             var dictionary = new Dictionary<string, List<PlayerGame>>();
-            foreach (var game in players)
+            foreach (string game in players)
             {
                 if (dictionary.ContainsKey(game) == false)
                     dictionary.Add(
@@ -50,16 +50,16 @@
                         });
             }
 
-            for (var i = 0; i < Series.Count; i++)
+            for (int i = 0; i < Series.Count; i++)
             {
-                var serie = Series[i];
-                foreach (var game in serie.Games)
+                Serie serie = Series[i];
+                foreach (Game game in serie.Games)
                 {
                     dictionary[game.Player][i] = new PlayerGame(game, game.Score);
                 }
             }
 
-            var q = from x in dictionary
+            IEnumerable<KeyValuePair<string, List<PlayerGame>>> q = from x in dictionary
                     let value = dictionary[x.Key]
                     let series = value.Where(y => y != null)
                     let sum = series.Sum(z => z.Pins)
@@ -72,7 +72,7 @@
         {
             if (Series.Count > i)
             {
-                var serieSum = Series[i].Games.Sum(t => t.Pins);
+                int serieSum = Series[i].Games.Sum(t => t.Pins);
                 return serieSum.ToString(CultureInfo.InvariantCulture);
             }
 
@@ -83,7 +83,7 @@
         {
             if (!Series.Any()) return string.Empty;
 
-            var total = Series.SelectMany(s => s.Games)
+            int total = Series.SelectMany(s => s.Games)
                 .Sum(t => t.Pins);
             return total.ToString(CultureInfo.InvariantCulture);
         }

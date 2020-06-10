@@ -58,9 +58,9 @@
             HtmlNode directLinkNode = documentNode.SelectSingleNode("//span[@id=\"MainContentPlaceHolder_Standings1_LabelDirectLink\"]");
 
             // table
-            var currentRow = 0;
+            int currentRow = 0;
             var standings = new List<ParseStandingsResult.StandingsItem>();
-            var currentGroup = (string)null;
+            string currentGroup = (string)null;
             while (true)
             {
                 HtmlNode trNode = documentNode.SelectSingleNode(
@@ -120,7 +120,7 @@
             HtmlNode documentNode = document.DocumentNode;
             HtmlNode tableNode = documentNode.SelectSingleNode("//div[@id=\"MainContentPlaceHolder_MatchScheme1_PanelStandings\"]/table");
 
-            var currentRow = 0;
+            int currentRow = 0;
             var matches = new List<ParseMatchSchemeResult.MatchItem>();
             while (true)
             {
@@ -230,10 +230,10 @@
                 int offset)
             {
                 var series = new List<ResultSeriesReadModel.Serie>();
-                for (var i = 0; i < headDetails.Length; i++)
+                for (int i = 0; i < headDetails.Length; i++)
                 {
                     var tables = new List<ResultSeriesReadModel.Table>();
-                    for (var j = 0; j < 4; j++)
+                    for (int j = 0; j < 4; j++)
                     {
                         Score score1 = matchScores.Series[i].Boards[0 + offset].Scores[j];
                         Score score2 = matchScores.Series[i].Boards[1 + offset].Scores[j];
@@ -275,7 +275,7 @@
             if (bitsMatchResult.HeadInfo.MatchHomeClubId == clubId)
             {
                 var series = new List<ResultSeries4ReadModel.Serie>();
-                for (var i = 0; i < bitsMatchResult.HeadResultInfo.HomeHeadDetails.Length; i++)
+                for (int i = 0; i < bitsMatchResult.HeadResultInfo.HomeHeadDetails.Length; i++)
                 {
                     HeadDetail homeHeadDetail = bitsMatchResult.HeadResultInfo.HomeHeadDetails[i];
                     var games = new List<ResultSeries4ReadModel.Game>();
@@ -309,7 +309,7 @@
             else if (bitsMatchResult.HeadInfo.MatchAwayClubId == clubId)
             {
                 var series = new List<ResultSeries4ReadModel.Serie>();
-                for (var i = 0; i < bitsMatchResult.HeadResultInfo.AwayHeadDetails.Length; i++)
+                for (int i = 0; i < bitsMatchResult.HeadResultInfo.AwayHeadDetails.Length; i++)
                 {
                     HeadDetail awayHeadDetail = bitsMatchResult.HeadResultInfo.AwayHeadDetails[i];
                     var games = new List<ResultSeries4ReadModel.Game>();

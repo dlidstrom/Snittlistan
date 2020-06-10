@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http.Dependencies;
-using Castle.MicroKernel;
-using Castle.MicroKernel.Lifestyle;
-
-namespace Snittlistan.Web.Infrastructure.IoC
+﻿namespace Snittlistan.Web.Infrastructure.IoC
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Http.Dependencies;
+    using Castle.MicroKernel;
+    using Castle.MicroKernel.Lifestyle;
+
     public sealed class WindsorDependencyScope : IDependencyScope
     {
         private readonly IKernel container;
@@ -20,7 +20,7 @@ namespace Snittlistan.Web.Infrastructure.IoC
 
         public object GetService(Type serviceType)
         {
-            var service = container.HasComponent(serviceType) ? container.Resolve(serviceType) : null;
+            object service = container.HasComponent(serviceType) ? container.Resolve(serviceType) : null;
             return service;
         }
 

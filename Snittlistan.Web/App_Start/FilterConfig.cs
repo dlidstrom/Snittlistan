@@ -1,7 +1,7 @@
-﻿using System.Web.Mvc;
-
-namespace Snittlistan.Web
+﻿namespace Snittlistan.Web
 {
+    using System.Web.Mvc;
+
     public class FilterConfig
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)

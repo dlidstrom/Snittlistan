@@ -1,7 +1,7 @@
-﻿using System.Web.Mvc;
-
-namespace Snittlistan.Web.Controllers
+﻿namespace Snittlistan.Web.Controllers
 {
+    using System.Web.Mvc;
+
     public class HackerController : Controller
     {
         public ActionResult Index()

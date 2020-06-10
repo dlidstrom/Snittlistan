@@ -1,8 +1,8 @@
-﻿using System;
-using System.Web.SessionState;
-
-namespace Snittlistan.Web.Infrastructure.SessionProvider
+﻿namespace Snittlistan.Web.Infrastructure.SessionProvider
 {
+    using System;
+    using System.Web.SessionState;
+
     internal class SessionState
     {
         public SessionState(string sessionId, string applicationName)

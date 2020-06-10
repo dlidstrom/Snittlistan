@@ -15,7 +15,7 @@
                 defaults: new { id = RouteParameter.Optional });
 
             // camelCase by default
-            var formatter = config.Formatters.JsonFormatter;
+            System.Net.Http.Formatting.JsonMediaTypeFormatter formatter = config.Formatters.JsonFormatter;
             formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
             config.Filters.Add(new UnhandledExceptionFilter());

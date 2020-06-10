@@ -1,8 +1,7 @@
-using System;
-using System.Collections.Generic;
-
 namespace Snittlistan.Web.Areas.V2.Domain
 {
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
     using Raven.Abstractions;
 

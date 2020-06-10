@@ -20,7 +20,7 @@
                 season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
             }
 
-            var activities =
+            Activity[] activities =
                 DocumentSession.Query<Activity, ActivityIndex>()
                                .Where(x => x.Season >= season.Value)
                                .ToArray()

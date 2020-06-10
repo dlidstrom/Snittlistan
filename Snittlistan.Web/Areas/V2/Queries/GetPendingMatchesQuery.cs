@@ -19,7 +19,7 @@ namespace Snittlistan.Web.Areas.V2.Queries
 
         public Roster[] Execute(IDocumentSession session)
         {
-            var results = session.Query<RosterSearchTerms.Result, RosterSearchTerms>()
+            RosterSearchTerms.Result[] results = session.Query<RosterSearchTerms.Result, RosterSearchTerms>()
                                  .Where(x => x.Preliminary == false)
                                  .Where(x => x.Date < DateTime.Now)
                                  .Where(x => x.BitsMatchId != 0)
@@ -29,7 +29,7 @@ namespace Snittlistan.Web.Areas.V2.Queries
                                  .ProjectFromIndexFieldsInto<RosterSearchTerms.Result>()
                                  .ToArray();
 
-            var rosters = session.Include<Roster>(x => x.Players).Load<Roster>(results.Select(x => x.Id));
+            Roster[] rosters = session.Include<Roster>(x => x.Players).Load<Roster>(results.Select(x => x.Id));
             return rosters;
         }
     }

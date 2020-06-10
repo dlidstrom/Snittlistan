@@ -1,9 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using Raven.Imports.Newtonsoft.Json;
-
-namespace Snittlistan.Web.Areas.V2.Domain.Match
+﻿namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
+    using System;
+    using System.Diagnostics;
+    using Raven.Imports.Newtonsoft.Json;
+
     [DebuggerDisplay("{Game1.Player} {Game2.Player} {Score}")]
     public class MatchTable
     {

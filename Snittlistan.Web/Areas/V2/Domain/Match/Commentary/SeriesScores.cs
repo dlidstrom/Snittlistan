@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using Snittlistan.Web.Areas.V2.ReadModels;
-
-namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
+﻿namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
 {
+    using System.Linq;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+
     public class SeriesScores
     {
         public SeriesScores(
@@ -11,8 +11,8 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
             int cumulativeScore,
             int cumulativeOpponentScore)
         {
-            var teamScore = 0;
-            var opponentScore = 0;
+            int teamScore = 0;
+            int opponentScore = 0;
             if (matchSerie.TeamTotal > opponentSerie.TeamTotal)
                 teamScore = 1;
             else if (matchSerie.TeamTotal < opponentSerie.TeamTotal)

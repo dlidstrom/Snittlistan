@@ -1,10 +1,10 @@
-﻿using System.Net;
-using System.Web.Http;
-using System.Web.Http.Controllers;
-using Snittlistan.Web.Areas.V2.Controllers.Api;
-
-namespace Snittlistan.Web.Infrastructure
+﻿namespace Snittlistan.Web.Infrastructure
 {
+    using System.Net;
+    using System.Web.Http;
+    using System.Web.Http.Controllers;
+    using Snittlistan.Web.Areas.V2.Controllers.Api;
+
     public class HttpNotFoundAwareControllerActionSelector : ApiControllerActionSelector
     {
         public override HttpActionDescriptor SelectAction(HttpControllerContext controllerContext)
@@ -16,10 +16,10 @@ namespace Snittlistan.Web.Infrastructure
             }
             catch (HttpResponseException ex)
             {
-                var code = ex.Response.StatusCode;
+                HttpStatusCode code = ex.Response.StatusCode;
                 if (code != HttpStatusCode.NotFound && code != HttpStatusCode.MethodNotAllowed)
                     throw;
-                var routeData = controllerContext.RouteData;
+                System.Web.Http.Routing.IHttpRouteData routeData = controllerContext.RouteData;
                 routeData.Values["action"] = "Handle404";
                 IHttpController httpController = new ApiErrorController();
                 controllerContext.Controller = httpController;

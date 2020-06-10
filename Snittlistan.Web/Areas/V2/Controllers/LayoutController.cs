@@ -9,7 +9,7 @@
         [ChildActionOnly]
         public ActionResult NavPart()
         {
-            var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+            WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             return View(websiteConfig);
         }
     }

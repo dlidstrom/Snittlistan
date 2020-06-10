@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-using System;
-
 // ReSharper disable CheckNamespace
 namespace JetBrains.Annotations
 // ReSharper restore CheckNamespace
 {
+    using System;
+
     [Flags]
     public enum ImplicitUseKindFlags
     {

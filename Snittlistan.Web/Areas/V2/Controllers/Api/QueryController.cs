@@ -18,14 +18,14 @@
             dynamic query = JsonConvert.DeserializeObject(
                 request.QueryJson,
                 new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
-            var result = Handle(query);
+            dynamic result = Handle(query);
             return result;
         }
 
         private IHttpActionResult Handle(GetTeamNamesQuery query)
         {
-            var websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
-            var teamNameAndLevels = websiteConfig.TeamNamesAndLevels
+            WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+            GetTeamNamesQuery.TeamNameAndLevel[] teamNameAndLevels = websiteConfig.TeamNamesAndLevels
                                                  .Select(x => new GetTeamNamesQuery.TeamNameAndLevel(x.TeamName, x.Level))
                                                  .ToArray();
             var result = new GetTeamNamesQuery.Result(teamNameAndLevels);

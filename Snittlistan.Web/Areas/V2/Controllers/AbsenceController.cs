@@ -26,7 +26,7 @@
         public ActionResult AbsenceTable(bool? hideControls)
         {
             ViewBag.HideControls = hideControls.GetValueOrDefault();
-            var absences = DocumentSession.Query<AbsenceIndex.Result, AbsenceIndex>()
+            AbsenceIndex.Result[] absences = DocumentSession.Query<AbsenceIndex.Result, AbsenceIndex>()
                                           .Where(x => x.To >= SystemTime.UtcNow.Date.AddDays(-1))
                                           .OrderBy(p => p.To)
                                           .ThenBy(p => p.PlayerName)
@@ -51,7 +51,7 @@
                 return View(vm);
             }
 
-            var absence = DocumentSession.Load<Absence>(id);
+            Absence absence = DocumentSession.Load<Absence>(id);
             absence.Player = vm.Player;
             absence.From = vm.From;
             absence.To = vm.To;
@@ -78,7 +78,7 @@
         [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
         public ActionResult Edit(int id)
         {
-            var absence = DocumentSession.Load<Absence>(id);
+            Absence absence = DocumentSession.Load<Absence>(id);
             if (absence == null) throw new HttpException(404, "Absence not found");
             ViewBag.Player = DocumentSession.CreatePlayerSelectList(absence.Player);
             return View(new CreateAbsenceViewModel(absence));
@@ -87,9 +87,9 @@
         [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
         public ActionResult Delete(int id)
         {
-            var absence = DocumentSession.Include<Absence>(x => x.Player).Load<Absence>(id);
+            Absence absence = DocumentSession.Include<Absence>(x => x.Player).Load<Absence>(id);
             if (absence == null) return RedirectToAction("Index");
-            var player = DocumentSession.Load<Player>(absence.Player);
+            Player player = DocumentSession.Load<Player>(absence.Player);
             return View(new AbsenceViewModel(absence, player));
         }
 
@@ -98,7 +98,7 @@
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            var absence = DocumentSession.Load<Absence>(id);
+            Absence absence = DocumentSession.Load<Absence>(id);
             if (absence == null) throw new HttpException(404, "Absence not found");
             DocumentSession.Delete(absence);
             return RedirectToAction("Index");
@@ -135,7 +135,7 @@
 
             public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
             {
-                var rangeSplit = DateRange.Split(new[] { " - " }, StringSplitOptions.RemoveEmptyEntries);
+                string[] rangeSplit = DateRange.Split(new[] { " - " }, StringSplitOptions.RemoveEmptyEntries);
                 if (rangeSplit.Length > 0)
                 {
                     From = To = DateTime.Parse(rangeSplit[0]);

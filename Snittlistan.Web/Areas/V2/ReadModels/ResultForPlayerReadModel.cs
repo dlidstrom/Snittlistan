@@ -1,9 +1,9 @@
-﻿using System;
-using EventStoreLite;
-using Snittlistan.Web.Areas.V2.Domain.Match;
-
-namespace Snittlistan.Web.Areas.V2.ReadModels
+﻿namespace Snittlistan.Web.Areas.V2.ReadModels
 {
+    using System;
+    using EventStoreLite;
+    using Snittlistan.Web.Areas.V2.Domain.Match;
+
     public class ResultForPlayerReadModel : IReadModel
     {
         public ResultForPlayerReadModel(

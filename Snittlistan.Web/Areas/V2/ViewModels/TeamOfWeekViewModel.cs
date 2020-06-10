@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.ReadModels;
-
-namespace Snittlistan.Web.Areas.V2.ViewModels
+﻿namespace Snittlistan.Web.Areas.V2.ViewModels
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+
     public class TeamOfWeekViewModel
     {
         public TeamOfWeekViewModel(
@@ -15,9 +15,9 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             Leaders = new TeamOfWeekLeadersViewModel(teamOfWeek, rostersDictionary);
             Season = season;
             Weeks = new List<Week>();
-            foreach (var turn in teamOfWeek.GroupBy(x => rostersDictionary[x.RosterId].Turn))
+            foreach (IGrouping<int, TeamOfWeek> turn in teamOfWeek.GroupBy(x => rostersDictionary[x.RosterId].Turn))
             {
-                var q = from t in turn
+                IEnumerable<PlayerScoreViewModel> q = from t in turn
                         from playerScore in t.PlayerScores
                         let item = new { playerScore, t.RosterId }
                         group item by new
@@ -61,7 +61,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             {
                 get
                 {
-                    var series = 0;
+                    int series = 0;
                     return Players.TakeWhile(x => (series += x.Series) <= 32).Sum(x => x.Pins);
                 }
             }

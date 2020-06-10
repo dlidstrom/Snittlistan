@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using Raven.Client.Indexes;
-using Snittlistan.Web.Areas.V1.Models;
-
-namespace Snittlistan.Web.Infrastructure.Indexes
+﻿namespace Snittlistan.Web.Infrastructure.Indexes
 {
+    using System.Linq;
+    using Raven.Client.Indexes;
+    using Snittlistan.Web.Areas.V1.Models;
+
     public class PlayersIndex : AbstractMultiMapIndexCreationTask<PlayersIndex.Result>
     {
         public PlayersIndex()

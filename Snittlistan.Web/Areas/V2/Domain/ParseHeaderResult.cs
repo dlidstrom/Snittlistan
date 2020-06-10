@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Snittlistan.Web.Areas.V2.Domain
+﻿namespace Snittlistan.Web.Areas.V2.Domain
 {
+    using System;
+
     public class ParseHeaderResult
     {
         public ParseHeaderResult(

@@ -14,7 +14,7 @@
         [Test]
         public void CanCreateController()
         {
-            var container = new WindsorContainer()
+            IWindsorContainer container = new WindsorContainer()
                 .Install(new ControllerFactoryInstaller())
                 .Install(new ControllerInstaller());
 

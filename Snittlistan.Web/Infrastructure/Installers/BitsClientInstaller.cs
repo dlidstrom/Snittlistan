@@ -15,7 +15,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
 
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            var apiKey = Environment.GetEnvironmentVariable("ApiKey");
+            string apiKey = Environment.GetEnvironmentVariable("ApiKey");
             Logger.Info("ApiKey: {0}", apiKey);
             var bitsClient = new BitsClient(
                 apiKey,

@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Snittlistan.Web.Infrastructure
+﻿namespace Snittlistan.Web.Infrastructure
 {
+    using System;
+
     public class JavaScriptException : Exception
     {
         public JavaScriptException(string message)

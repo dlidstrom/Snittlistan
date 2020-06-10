@@ -1,10 +1,10 @@
-﻿using System;
-using System.Net.Http;
-using Newtonsoft.Json;
-using Snittlistan.Queue.Messages;
-
-namespace Snittlistan.Queue
+﻿namespace Snittlistan.Queue
 {
+    using System;
+    using System.Net.Http;
+    using Newtonsoft.Json;
+    using Snittlistan.Queue.Messages;
+
     public class TaskQueueListener : MessageQueueListenerBase
     {
         private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
@@ -24,9 +24,9 @@ namespace Snittlistan.Queue
 
         protected override void DoHandle(string contents)
         {
-            var envelope = JsonConvert.DeserializeObject<MessageEnvelope>(contents, SerializerSettings);
+            MessageEnvelope envelope = JsonConvert.DeserializeObject<MessageEnvelope>(contents, SerializerSettings);
             var request = new TaskRequest(envelope);
-            var result = client.PostAsJsonAsync(
+            HttpResponseMessage result = client.PostAsJsonAsync(
                 envelope.Uri,
                 request).Result;
             result.EnsureSuccessStatusCode();
