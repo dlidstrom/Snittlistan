@@ -1,11 +1,11 @@
-using System;
-using System.Diagnostics;
-using System.Dynamic;
-using System.Reflection;
-
 // ReSharper disable once CheckNamespace
 namespace EventStoreLite.Infrastructure
 {
+    using System;
+    using System.Diagnostics;
+    using System.Dynamic;
+    using System.Reflection;
+
     internal class PrivateReflectionDynamicObject : DynamicObject
     {
         private const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;

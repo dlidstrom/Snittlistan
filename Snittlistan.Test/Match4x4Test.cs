@@ -1,8 +1,8 @@
-﻿using NUnit.Framework;
-using Snittlistan.Web.Areas.V1.Models;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using NUnit.Framework;
+    using Snittlistan.Web.Areas.V1.Models;
+
     [TestFixture]
     public class Match4x4Test : DbTest
     {

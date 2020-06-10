@@ -1,15 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
-using EventStoreLite.Infrastructure;
-using Raven.Client;
-using Raven.Client.Document;
-
-// ReSharper disable once CheckNamespace
+﻿// ReSharper disable once CheckNamespace
 namespace EventStoreLite
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using System.Runtime.Serialization;
+    using EventStoreLite.Infrastructure;
+    using Raven.Client;
+    using Raven.Client.Document;
+
     internal class EventStoreSession : IEventStoreSession
     {
         private readonly Dictionary<string, EventStreamAndAggregateRoot> entitiesByKey =
@@ -35,16 +35,16 @@ namespace EventStoreLite
         {
             if (id == null) throw new ArgumentNullException(nameof(id));
 
-            if (entitiesByKey.TryGetValue(id, out var unitOfWorkInstance))
+            if (entitiesByKey.TryGetValue(id, out EventStreamAndAggregateRoot unitOfWorkInstance))
                 return (TAggregate)unitOfWorkInstance.AggregateRoot;
-            var stream = documentSession.Load<EventStream>(id);
+            EventStream stream = documentSession.Load<EventStream>(id);
             if (stream != null)
             {
                 TAggregate instance;
 
                 // attempt to call default constructor
                 // if none found, create uninitialized object
-                var ctor =
+                ConstructorInfo ctor =
                     typeof(TAggregate).GetConstructor(
                         BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
                         null,
@@ -92,15 +92,15 @@ namespace EventStoreLite
             var currentChangeSequence = new Lazy<int>(GenerateChangeSequence);
             foreach (var aggregatesAndEvent in aggregatesAndEvents)
             {
-                var pendingEvent = aggregatesAndEvent.Event;
-                var eventStream = aggregatesAndEvent.EventStream;
-                var asDynamic = pendingEvent.AsDynamic();
+                IDomainEvent pendingEvent = aggregatesAndEvent.Event;
+                EventStream eventStream = aggregatesAndEvent.EventStream;
+                dynamic asDynamic = pendingEvent.AsDynamic();
                 asDynamic.SetChangeSequence(currentChangeSequence.Value);
                 dispatcher.Dispatch(pendingEvent, eventStream.Id);
                 eventStream.History.Add(pendingEvent);
             }
 
-            foreach (var aggregateRoot in unitOfWork.Select(x => x.AggregateRoot))
+            foreach (AggregateRoot aggregateRoot in unitOfWork.Select(x => x.AggregateRoot))
             {
                 aggregateRoot.ClearUncommittedChanges();
             }
@@ -110,21 +110,21 @@ namespace EventStoreLite
 
         private void GenerateId(EventStream eventStream, AggregateRoot aggregate)
         {
-            var typeTagName = documentStore.Conventions.GetTypeTagName(aggregate.GetType());
-            var id = eventStreamsHiLoKeyGenerator.GenerateDocumentKey(
+            string typeTagName = documentStore.Conventions.GetTypeTagName(aggregate.GetType());
+            string id = eventStreamsHiLoKeyGenerator.GenerateDocumentKey(
                 documentStore.DatabaseCommands, documentStore.Conventions, eventStream);
-            var identityPartsSeparator = documentStore.Conventions.IdentityPartsSeparator;
-            var lastIndexOf = id.LastIndexOf(identityPartsSeparator, StringComparison.Ordinal);
+            string identityPartsSeparator = documentStore.Conventions.IdentityPartsSeparator;
+            int lastIndexOf = id.LastIndexOf(identityPartsSeparator, StringComparison.Ordinal);
             eventStream.Id = string.Format(
                 "EventStreams{2}{0}{2}{1}", typeTagName, id.Substring(lastIndexOf + 1), identityPartsSeparator);
         }
 
         private int GenerateChangeSequence()
         {
-            var id = changeSequenceHiLoKeyGenerator.GenerateDocumentKey(
+            string id = changeSequenceHiLoKeyGenerator.GenerateDocumentKey(
                 documentStore.DatabaseCommands, documentStore.Conventions, null);
-            var identityPartsSeparator = documentStore.Conventions.IdentityPartsSeparator;
-            var lastIndexOf = id.LastIndexOf(identityPartsSeparator, StringComparison.Ordinal);
+            string identityPartsSeparator = documentStore.Conventions.IdentityPartsSeparator;
+            int lastIndexOf = id.LastIndexOf(identityPartsSeparator, StringComparison.Ordinal);
             return int.Parse(id.Substring(lastIndexOf + 1));
         }
     }

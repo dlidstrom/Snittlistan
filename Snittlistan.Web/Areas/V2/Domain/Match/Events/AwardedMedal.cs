@@ -1,7 +1,7 @@
-using EventStoreLite;
-
 namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
 {
+    using EventStoreLite;
+
     public class AwardedMedal : Event
     {
         public AwardedMedal(

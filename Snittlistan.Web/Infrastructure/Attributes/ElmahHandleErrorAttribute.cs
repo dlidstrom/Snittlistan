@@ -11,7 +11,7 @@
         {
             base.OnException(context);
 
-            var e = context.Exception;
+            Exception e = context.Exception;
             if (!context.ExceptionHandled   // if unhandled, will be logged anyhow
                 || RaiseErrorSignal(e)      // prefer signaling, if possible
                 || IsFiltered(context))     // filtered?
@@ -22,7 +22,7 @@
 
         private static bool RaiseErrorSignal(Exception e)
         {
-            var context = HttpContext.Current;
+            HttpContext context = HttpContext.Current;
             if (context == null)
                 return false;
             var signal = ErrorSignal.FromContext(context);
@@ -46,7 +46,7 @@
 
         private static void LogException(Exception e)
         {
-            var context = HttpContext.Current;
+            HttpContext context = HttpContext.Current;
             ErrorLog.GetDefault(context).Log(new Error(e, context));
         }
     }

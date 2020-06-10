@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Snittlistan.Web.Infrastructure
+﻿namespace Snittlistan.Web.Infrastructure
 {
+    using System.Linq;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Threading.Tasks;
+
     public class OutlookAgentMessageHandler
         : DelegatingHandler
     {

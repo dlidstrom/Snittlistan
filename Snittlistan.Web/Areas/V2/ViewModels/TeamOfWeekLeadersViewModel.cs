@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.ReadModels;
-
-namespace Snittlistan.Web.Areas.V2.ViewModels
+﻿namespace Snittlistan.Web.Areas.V2.ViewModels
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+
     public class TeamOfWeekLeadersViewModel
     {
         public TeamOfWeekLeadersViewModel(TeamOfWeek[] weeks, Dictionary<string, Roster> rostersDictionary)
         {
             var rankByTurn = new Dictionary<int, List<PlayerScore>>();
-            foreach (var week in weeks)
+            foreach (TeamOfWeek week in weeks)
             {
-                var turn = rostersDictionary[week.RosterId].Turn;
-                if (rankByTurn.TryGetValue(turn, out var list) == false)
+                int turn = rostersDictionary[week.RosterId].Turn;
+                if (rankByTurn.TryGetValue(turn, out List<PlayerScore> list) == false)
                 {
                     rankByTurn[turn] = week.PlayerScores.Values.ToList();
                 }
                 else
                 {
-                    foreach (var value in week.PlayerScores.Values)
+                    foreach (PlayerScore value in week.PlayerScores.Values)
                     {
-                        var item = list.SingleOrDefault(x => x.PlayerId == value.PlayerId);
+                        PlayerScore item = list.SingleOrDefault(x => x.PlayerId == value.PlayerId);
                         if (item == null)
                             list.Add(value);
                         else if (item.Pins < value.Pins)
@@ -35,13 +35,13 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             }
 
             var bestOfBest = new List<Tuple<string, int>>();
-            foreach (var turn in rankByTurn.Keys.OrderBy(x => x))
+            foreach (int turn in rankByTurn.Keys.OrderBy(x => x))
             {
-                var current = int.MaxValue;
-                var rank = 0;
-                var rankstep = 1;
-                var playerScores = rankByTurn[turn].OrderByDescending(x => x.Pins).ToArray();
-                foreach (var playerScore in playerScores)
+                int current = int.MaxValue;
+                int rank = 0;
+                int rankstep = 1;
+                PlayerScore[] playerScores = rankByTurn[turn].OrderByDescending(x => x.Pins).ToArray();
+                foreach (PlayerScore playerScore in playerScores)
                 {
                     if (playerScore.Pins != current)
                     {

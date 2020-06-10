@@ -40,7 +40,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             writer.WriteLine("DTSTART:" + $"{date.ToUniversalTime():yyyyMMddTHHmmssZ}");
             writer.WriteLine("DTEND:" + $"{date.ToUniversalTime().AddMinutes(60 + 40):yyyyMMddTHHmmssZ}");
             writer.WriteLine("SUMMARY:{0} - {1}", team, opponent);
-            var desc = $"DESCRIPTION:{description}";
+            string desc = $"DESCRIPTION:{description}";
             WriteWithLineFeeds(writer, desc);
 
             writer.WriteLine("LOCATION:{0}", location);

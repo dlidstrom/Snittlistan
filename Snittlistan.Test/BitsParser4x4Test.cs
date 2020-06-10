@@ -1,10 +1,9 @@
-﻿using System;
-using NUnit.Framework;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.ReadModels;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using System;
+    using NUnit.Framework;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.ReadModels;
     using System.Threading.Tasks;
 
     [TestFixture]
@@ -39,36 +38,36 @@ namespace Snittlistan.Test
             const int ClubId = 1660;
 
             // Act
-            var result = new BitsParser(homePlayers).Parse4(await BitsGateway.GetBitsMatchResult(3060835), ClubId);
+            Parse4Result result = new BitsParser(homePlayers).Parse4(await BitsGateway.GetBitsMatchResult(3060835), ClubId);
             Assert.That(result.TeamScore, Is.EqualTo(18));
             Assert.That(result.OpponentScore, Is.EqualTo(1));
             Assert.That(result.Turn, Is.EqualTo(11));
-            var series = result.Series;
+            ResultSeries4ReadModel.Serie[] series = result.Series;
 
             // Assert
             Assert.That(series.Length, Is.EqualTo(4));
-            var serie1 = series[0];
+            ResultSeries4ReadModel.Serie serie1 = series[0];
             Assert.That(serie1.Games, Has.Count.EqualTo(4));
             VerifyGame(serie1.Games[0], Tuple.Create(0, "player-1", 138));
             VerifyGame(serie1.Games[1], Tuple.Create(1, "player-2", 178));
             VerifyGame(serie1.Games[2], Tuple.Create(1, "player-3", 183));
             VerifyGame(serie1.Games[3], Tuple.Create(1, "player-4", 131));
 
-            var serie2 = series[1];
+            ResultSeries4ReadModel.Serie serie2 = series[1];
             Assert.That(serie2.Games, Has.Count.EqualTo(4));
             VerifyGame(serie2.Games[0], Tuple.Create(1, "player-3", 152));
             VerifyGame(serie2.Games[1], Tuple.Create(1, "player-4", 189));
             VerifyGame(serie2.Games[2], Tuple.Create(1, "player-1", 205));
             VerifyGame(serie2.Games[3], Tuple.Create(1, "player-2", 136));
 
-            var serie3 = series[2];
+            ResultSeries4ReadModel.Serie serie3 = series[2];
             Assert.That(serie3.Games, Has.Count.EqualTo(4));
             VerifyGame(serie3.Games[0], Tuple.Create(1, "player-4", 223));
             VerifyGame(serie3.Games[1], Tuple.Create(1, "player-3", 251));
             VerifyGame(serie3.Games[2], Tuple.Create(1, "player-2", 158));
             VerifyGame(serie3.Games[3], Tuple.Create(1, "player-1", 149));
 
-            var serie4 = series[3];
+            ResultSeries4ReadModel.Serie serie4 = series[3];
             Assert.That(serie4.Games, Has.Count.EqualTo(4));
             VerifyGame(serie4.Games[0], Tuple.Create(1, "player-2", 179));
             VerifyGame(serie4.Games[1], Tuple.Create(1, "player-1", 181));
@@ -83,36 +82,36 @@ namespace Snittlistan.Test
             const int ClubId = 34534;
 
             // Act
-            var result = new BitsParser(awayPlayers).Parse4(await BitsGateway.GetBitsMatchResult(3060835), ClubId);
+            Parse4Result result = new BitsParser(awayPlayers).Parse4(await BitsGateway.GetBitsMatchResult(3060835), ClubId);
             Assert.That(result.TeamScore, Is.EqualTo(1));
             Assert.That(result.OpponentScore, Is.EqualTo(18));
             Assert.That(result.Turn, Is.EqualTo(11));
-            var series = result.Series;
+            ResultSeries4ReadModel.Serie[] series = result.Series;
 
             // Assert
             Assert.That(series.Length, Is.EqualTo(4));
-            var serie1 = series[0];
+            ResultSeries4ReadModel.Serie serie1 = series[0];
             Assert.That(serie1.Games.Count, Is.EqualTo(4));
             VerifyGame(serie1.Games[0], Tuple.Create(1, "player-5", 160));
             VerifyGame(serie1.Games[1], Tuple.Create(0, "player-6", 117));
             VerifyGame(serie1.Games[2], Tuple.Create(0, "player-7", 139));
             VerifyGame(serie1.Games[3], Tuple.Create(0, "player-8", 83));
 
-            var serie2 = series[1];
+            ResultSeries4ReadModel.Serie serie2 = series[1];
             Assert.That(serie2.Games.Count, Is.EqualTo(4));
             VerifyGame(serie2.Games[0], Tuple.Create(0, "player-8", 122));
             VerifyGame(serie2.Games[1], Tuple.Create(0, "player-7", 156));
             VerifyGame(serie2.Games[2], Tuple.Create(0, "player-6", 101));
             VerifyGame(serie2.Games[3], Tuple.Create(0, "player-5", 133));
 
-            var serie3 = series[2];
+            ResultSeries4ReadModel.Serie serie3 = series[2];
             Assert.That(serie3.Games.Count, Is.EqualTo(4));
             VerifyGame(serie3.Games[0], Tuple.Create(0, "player-6", 148));
             VerifyGame(serie3.Games[1], Tuple.Create(0, "player-5", 142));
             VerifyGame(serie3.Games[2], Tuple.Create(0, "player-9", 118));
             VerifyGame(serie3.Games[3], Tuple.Create(0, "player-7", 136));
 
-            var serie4 = series[3];
+            ResultSeries4ReadModel.Serie serie4 = series[3];
             Assert.That(serie4.Games.Count, Is.EqualTo(4));
             VerifyGame(serie4.Games[0], Tuple.Create(0, "player-7", 134));
             VerifyGame(serie4.Games[1], Tuple.Create(0, "player-9", 119));

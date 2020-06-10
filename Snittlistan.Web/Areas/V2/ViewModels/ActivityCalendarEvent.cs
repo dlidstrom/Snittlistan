@@ -28,7 +28,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             writer.WriteLine("DTSTART:" + $"{date.ToUniversalTime():yyyyMMddTHHmmssZ}");
             writer.WriteLine("DTEND:" + $"{date.ToUniversalTime():yyyyMMddTHHmmssZ}");
             writer.WriteLine($"SUMMARY:{summary}");
-            var desc = $"DESCRIPTION:{description}";
+            string desc = $"DESCRIPTION:{description}";
             WriteWithLineFeeds(writer, desc);
 
             //writer.WriteLine("LOCATION:{0}", location);

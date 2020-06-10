@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web.Mvc;
-using Snittlistan.Web.Areas.V2.ReadModels;
-
-namespace Snittlistan.Web.Areas.V2.ViewModels
+﻿namespace Snittlistan.Web.Areas.V2.ViewModels
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.Mvc;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+
     // TODO Delete
     public class RegisterSerie
     {

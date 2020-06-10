@@ -1,9 +1,9 @@
-﻿using System.Web;
-using System.Web.Mvc;
-using Elmah;
-
-namespace Snittlistan.Web.Infrastructure.Results
+﻿namespace Snittlistan.Web.Infrastructure.Results
 {
+    using System.Web;
+    using System.Web.Mvc;
+    using Elmah;
+
     public class ElmahResult : ActionResult
     {
         private readonly string resourceType;
@@ -19,12 +19,12 @@ namespace Snittlistan.Web.Infrastructure.Results
             var factory = new ErrorLogPageFactory();
             if (!string.IsNullOrEmpty(resourceType))
             {
-                var pathInfo = "." + resourceType;
-                var action = url.Action("Index", "Elmah", new { type = (string)null });
+                string pathInfo = "." + resourceType;
+                string action = url.Action("Index", "Elmah", new { type = (string)null });
                 HttpContext.Current.RewritePath(action, pathInfo, HttpContext.Current.Request.QueryString.ToString());
             }
 
-            var handler = factory.GetHandler(HttpContext.Current, null, null, null);
+            IHttpHandler handler = factory.GetHandler(HttpContext.Current, null, null, null);
 
             handler.ProcessRequest(HttpContext.Current);
         }

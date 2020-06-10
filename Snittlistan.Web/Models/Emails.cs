@@ -60,7 +60,7 @@
             ResultSeriesReadModel resultSeriesReadModel,
             ResultHeaderReadModel resultHeaderReadModel)
         {
-            var subject = $"{team} mot {opponent}: {score} - {opponentScore}";
+            string subject = $"{team} mot {opponent}: {score} - {opponentScore}";
             Send(
                 "MatchRegistered",
                 ConfigurationManager.AppSettings["OwnerEmail"],
@@ -107,7 +107,7 @@
             email.Subject = $"=?UTF-8?B?{Convert.ToBase64String(Encoding.UTF8.GetBytes(subject))}?=";
 
             // add moderators
-            var moderatorEmails = string.Join(", ", ConfigurationManager.AppSettings["OwnerEmail"].Split(';'));
+            string moderatorEmails = string.Join(", ", ConfigurationManager.AppSettings["OwnerEmail"].Split(';'));
             email.Bcc = moderatorEmails;
             action.Invoke(email);
 

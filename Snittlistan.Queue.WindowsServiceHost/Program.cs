@@ -1,8 +1,8 @@
-﻿using System.ServiceProcess;
-using log4net.Config;
-
-namespace Snittlistan.Queue.WindowsServiceHost
+﻿namespace Snittlistan.Queue.WindowsServiceHost
 {
+    using System.ServiceProcess;
+    using log4net.Config;
+
     static class Program
     {
         /// <summary>

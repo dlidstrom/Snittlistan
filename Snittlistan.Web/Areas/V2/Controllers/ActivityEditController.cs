@@ -49,7 +49,7 @@
 
         public ActionResult Edit(string id)
         {
-            var activity = DocumentSession.Load<Activity>(id);
+            Activity activity = DocumentSession.Load<Activity>(id);
             if (activity == null) throw new HttpException(404, "Activity not found");
             return View(ActivityEditViewModel.ForEdit(activity));
         }
@@ -58,7 +58,7 @@
         public ActionResult Edit(string id, ActivityEditViewModel vm)
         {
             if (ModelState.IsValid == false) return View(vm);
-            var activity = DocumentSession.Load<Activity>(id);
+            Activity activity = DocumentSession.Load<Activity>(id);
             if (activity == null) throw new HttpException(404, "Activity not found");
             Debug.Assert(vm.Season != null, "vm.Season != null");
             Debug.Assert(vm.Date != null, "vm.Date != null");
@@ -79,9 +79,9 @@
 
         public ActionResult Delete(string id)
         {
-            var activity = DocumentSession.Load<Activity>(id);
+            Activity activity = DocumentSession.Load<Activity>(id);
             if (activity == null) throw new HttpException(404, "Activity not found");
-            var player = DocumentSession.Load<Player>(activity.AuthorId);
+            Player player = DocumentSession.Load<Player>(activity.AuthorId);
             return View(new ActivityViewModel(activity.Id, activity.Title, activity.Date, activity.Message, player?.Name ?? string.Empty));
         }
 
@@ -89,7 +89,7 @@
         [ActionName("Delete")]
         public ActionResult DeleteActivity(string id)
         {
-            var activity = DocumentSession.Load<Activity>(id);
+            Activity activity = DocumentSession.Load<Activity>(id);
             if (activity != null) DocumentSession.Delete(activity);
             return RedirectToAction("Index", "ActivityIndex");
         }

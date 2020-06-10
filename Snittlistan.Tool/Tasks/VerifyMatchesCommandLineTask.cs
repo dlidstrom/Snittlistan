@@ -7,9 +7,9 @@
     {
         public void Run(string[] args)
         {
-            using (var scope = MsmqGateway.AutoCommitScope())
+            using (MsmqGateway.MsmqTransactionScope scope = MsmqGateway.AutoCommitScope())
             {
-                foreach (var apiUrl in CommandLineTaskHelper.AllApiUrls())
+                foreach (System.Uri apiUrl in CommandLineTaskHelper.AllApiUrls())
                 {
                     scope.PublishMessage(new MessageEnvelope(new VerifyMatchesMessage(), apiUrl));
                 }

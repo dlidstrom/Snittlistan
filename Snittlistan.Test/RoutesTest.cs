@@ -154,7 +154,7 @@
         {
             var registration = (AreaRegistration)Activator.CreateInstance(typeof(T));
             var context = new AreaRegistrationContext(registration.AreaName, routes, state);
-            var typeNamespace = registration.GetType().Namespace;
+            string typeNamespace = registration.GetType().Namespace;
             if (typeNamespace != null)
             {
                 context.Namespaces.Add(typeNamespace + ".*");

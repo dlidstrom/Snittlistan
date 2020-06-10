@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http.Dependencies;
-using Castle.MicroKernel;
-
-namespace Snittlistan.Web.Infrastructure.IoC
+﻿namespace Snittlistan.Web.Infrastructure.IoC
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Http.Dependencies;
+    using Castle.MicroKernel;
+
     public sealed class WindsorHttpDependencyResolver : System.Web.Http.Dependencies.IDependencyResolver
     {
         private readonly IKernel container;

@@ -1,7 +1,7 @@
-﻿using System.Configuration;
-
-namespace Snittlistan.Queue.Config
+﻿namespace Snittlistan.Queue.Config
 {
+    using System.Configuration;
+
     public class QueueListenersCollection : ConfigurationElementCollection
     {
         protected override ConfigurationElement CreateNewElement()

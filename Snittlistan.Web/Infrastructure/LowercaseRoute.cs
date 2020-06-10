@@ -1,7 +1,7 @@
-﻿using System.Web.Routing;
-
-namespace Snittlistan.Web.Infrastructure
+﻿namespace Snittlistan.Web.Infrastructure
 {
+    using System.Web.Routing;
+
     public class LowercaseRoute : Route
     {
         public LowercaseRoute(string url, IRouteHandler routeHandler)

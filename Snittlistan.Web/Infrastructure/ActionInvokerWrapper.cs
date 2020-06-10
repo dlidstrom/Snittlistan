@@ -1,8 +1,8 @@
-﻿using System.Web.Mvc;
-using Snittlistan.Web.Areas.V1.Controllers;
-
-namespace Snittlistan.Web.Infrastructure
+﻿namespace Snittlistan.Web.Infrastructure
 {
+    using System.Web.Mvc;
+    using Snittlistan.Web.Areas.V1.Controllers;
+
     /// <summary>
     /// Wraps another IActionInvoker except it handles the case of an action method
     /// not being found and invokes the NotFoundController instead.

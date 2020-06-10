@@ -19,8 +19,8 @@
             if (eventStore == null) throw new ArgumentNullException(nameof(eventStore));
             while (true)
             {
-                var indexNames = store.DatabaseCommands.GetIndexNames(0, 20);
-                foreach (var indexName in indexNames)
+                string[] indexNames = store.DatabaseCommands.GetIndexNames(0, 20);
+                foreach (string indexName in indexNames)
                 {
                     if (string.Equals(indexName, "Raven/DocumentsByEntityName", StringComparison.OrdinalIgnoreCase) == false)
                     {
@@ -39,14 +39,14 @@
 
         public static void CreateIndexes(IDocumentStore store)
         {
-            var indexesQuery = from type in Assembly.GetExecutingAssembly().GetTypes()
+            System.Collections.Generic.IEnumerable<Type> indexesQuery = from type in Assembly.GetExecutingAssembly().GetTypes()
                                where type.IsSubclassOf(typeof(AbstractIndexCreationTask))
                                      && type.Namespace != null
                                      && type.Namespace.StartsWith("EventStore") == false
                                select type;
 
-            var indexes = indexesQuery.ToArray();
-            foreach (var index in indexes)
+            Type[] indexes = indexesQuery.ToArray();
+            foreach (Type index in indexes)
             {
                 Log.Info("Creating index {0}", index);
             }

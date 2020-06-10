@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using NUnit.Framework;
-using Snittlistan.Web.Areas.V1.Models;
-using Snittlistan.Web.Infrastructure.Indexes;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using NUnit.Framework;
+    using Snittlistan.Web.Areas.V1.Models;
+    using Snittlistan.Web.Infrastructure.Indexes;
+
     [TestFixture]
     public class PlayerStat_Test : DbTest
     {
@@ -19,7 +19,7 @@ namespace Snittlistan.Test
             Session.SaveChanges();
 
             // Act
-            var stats = Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
+            Matches_PlayerStats.Result stats = Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
                 .Customize(c => c.WaitForNonStaleResultsAsOfNow())
                 .SingleOrDefault(s => s.Player == "Mikael Axelsson");
 
@@ -50,7 +50,7 @@ namespace Snittlistan.Test
             Session.SaveChanges();
 
             // Act
-            var stats = Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
+            Matches_PlayerStats.Result stats = Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
                 .Customize(c => c.WaitForNonStaleResultsAsOfNow())
                 .SingleOrDefault(s => s.Player == "Lars Norbeck");
 
@@ -112,7 +112,7 @@ namespace Snittlistan.Test
             Session.SaveChanges();
 
             // Act
-            var stats = Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
+            Matches_PlayerStats.Result stats = Session.Query<Matches_PlayerStats.Result, Matches_PlayerStats>()
                 .Customize(c => c.WaitForNonStaleResultsAsOfNow())
                 .ToList()
                 .SingleOrDefault(s => s.Player == "Tomas Vikbro");

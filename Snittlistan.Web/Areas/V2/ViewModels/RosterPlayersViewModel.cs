@@ -1,9 +1,9 @@
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
+
     public class RosterPlayersViewModel : IValidatableObject
     {
         public string Table1Player1 { get; set; }

@@ -15,7 +15,7 @@
             try
             {
                 GetHostname();
-                var result = service == typeof(TenantConfiguration)
+                bool result = service == typeof(TenantConfiguration)
                     || service == typeof(IDocumentStore);
                 return result;
             }
@@ -27,13 +27,13 @@
 
         public IHandler SelectHandler(string key, Type service, IHandler[] handlers)
         {
-            var hostname = GetHostname();
+            string hostname = GetHostname();
             if (service == typeof(IDocumentStore))
             {
                 hostname = $"DocumentStore-{hostname}";
             }
 
-            var selectedHandler = handlers.SingleOrDefault(h => h.ComponentModel.Name == hostname);
+            IHandler selectedHandler = handlers.SingleOrDefault(h => h.ComponentModel.Name == hostname);
             if (selectedHandler == null) throw new Exception($"No tenant configured for {hostname}");
             return selectedHandler;
         }

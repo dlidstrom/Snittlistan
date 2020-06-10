@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Snittlistan.Web.Models;
-
-namespace Snittlistan.Web.Areas.V2.ViewModels
+﻿namespace Snittlistan.Web.Areas.V2.ViewModels
 {
+    using System.ComponentModel.DataAnnotations;
+    using Snittlistan.Web.Models;
+
     public class UserViewModel
     {
         public UserViewModel(User user)

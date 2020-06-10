@@ -12,8 +12,8 @@
     {
         public ActionResult AcceptPlayer(string rosterId, int season, int turn)
         {
-            var roster = DocumentSession.Load<Roster>(rosterId);
-            var players = DocumentSession.Load<Player>(roster.Players.Where(x => roster.AcceptedPlayers.Contains(x) == false));
+            Roster roster = DocumentSession.Load<Roster>(rosterId);
+            Player[] players = DocumentSession.Load<Player>(roster.Players.Where(x => roster.AcceptedPlayers.Contains(x) == false));
             ViewBag.PlayerId = DocumentSession.CreatePlayerSelectList(
                 getPlayers: () => players);
             return View(
@@ -40,7 +40,7 @@
         [HttpPost]
         public ActionResult AcceptPlayer(ViewModel vm)
         {
-            var roster = DocumentSession.Load<Roster>(vm.Model.RosterId);
+            Roster roster = DocumentSession.Load<Roster>(vm.Model.RosterId);
             roster.Accept(vm.Model.PlayerId);
             return RedirectToAction("View", "Roster", new
             {

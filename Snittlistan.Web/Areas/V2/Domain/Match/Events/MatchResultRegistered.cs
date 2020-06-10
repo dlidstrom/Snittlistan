@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
-using EventStoreLite;
-
 namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
 {
+    using System;
+    using System.Collections.Generic;
+    using EventStoreLite;
+
     public class MatchResultRegistered : Event
     {
         public MatchResultRegistered(

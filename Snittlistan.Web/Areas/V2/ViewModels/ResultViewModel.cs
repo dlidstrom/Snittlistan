@@ -1,8 +1,8 @@
-﻿using System;
-using Snittlistan.Web.Areas.V2.ReadModels;
-
-namespace Snittlistan.Web.Areas.V2.ViewModels
+﻿namespace Snittlistan.Web.Areas.V2.ViewModels
 {
+    using System;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+
     public class ResultViewModel
     {
         public ResultViewModel(ResultHeaderViewModel headerViewModel, ResultSeriesReadModel resultReadModel)

@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
-using NUnit.Framework;
-using Snittlistan.Web.Areas.V2.Domain;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Reflection;
+    using NUnit.Framework;
+    using Snittlistan.Web.Areas.V2.Domain;
+
     [TestFixture]
     public class BitsParser_Standings
     {
@@ -413,12 +413,12 @@ namespace Snittlistan.Test
             // Act
             ParseStandingsResult standings;
             var assembly = Assembly.GetExecutingAssembly();
-            using (var stream = assembly.GetManifestResourceStream(resourceName))
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             {
                 Debug.Assert(stream != null, nameof(stream) + " != null");
                 using (var reader = new StreamReader(stream))
                 {
-                    var content = reader.ReadToEnd();
+                    string content = reader.ReadToEnd();
                     standings = BitsParser.ParseStandings(content);
                 }
             }
@@ -426,10 +426,10 @@ namespace Snittlistan.Test
             // Assert
             Assert.That(standings.DirectLink, Is.EqualTo(expectedDirectLink), "DirectLink");
             Assert.That(standings.Items, Has.Length.EqualTo(expectedItems.Length));
-            for (var i = 0; i < standings.Items.Length; i++)
+            for (int i = 0; i < standings.Items.Length; i++)
             {
-                var item = standings.Items[i];
-                var expectedItem = expectedItems[i];
+                ParseStandingsResult.StandingsItem item = standings.Items[i];
+                ParseStandingsResult.StandingsItem expectedItem = expectedItems[i];
                 Assert.That(item.Group, Is.EqualTo(expectedItem.Group), $"Item {i} Group");
                 Assert.That(item.Name, Is.EqualTo(expectedItem.Name), $"Item {i} Name");
                 Assert.That(item.Matches, Is.EqualTo(expectedItem.Matches), $"Item {i} Matches");

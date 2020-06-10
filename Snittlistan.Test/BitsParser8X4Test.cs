@@ -48,7 +48,7 @@
             const int ClubId = 1660;
 
             // Act
-            var result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetBitsMatchResult(3050651), ClubId);
+            ParseResult result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetBitsMatchResult(3050651), ClubId);
 
             // Assert
             Assert.That(result.TeamScore, Is.EqualTo(7));
@@ -61,7 +61,7 @@
             const int ClubId = 1660;
 
             // Act
-            var result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetBitsMatchResult(3048746), ClubId);
+            ParseResult result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetBitsMatchResult(3048746), ClubId);
 
             // Assert
             Assert.That(result.TeamScore, Is.EqualTo(11));
@@ -74,7 +74,7 @@
             const int ClubId = 1660;
 
             // Act
-            var result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetBitsMatchResult(3048747), ClubId);
+            ParseResult result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetBitsMatchResult(3048747), ClubId);
 
             // Assert
             Assert.That(result.TeamScore, Is.EqualTo(10));
@@ -87,7 +87,7 @@
             const int ClubId = 1660;
 
             // Act
-            var result = new BitsParser(playersTeamF).Parse(await BitsGateway.GetBitsMatchResult(3048477), ClubId);
+            ParseResult result = new BitsParser(playersTeamF).Parse(await BitsGateway.GetBitsMatchResult(3048477), ClubId);
 
             // Assert
             Assert.That(result.TeamScore, Is.EqualTo(14));
@@ -100,35 +100,35 @@
             const int ClubId = 1660;
 
             // Act
-            var result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetBitsMatchResult(3048746), ClubId);
+            ParseResult result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetBitsMatchResult(3048746), ClubId);
             Assert.That(result.TeamScore, Is.EqualTo(11));
             Assert.That(result.OpponentScore, Is.EqualTo(9));
-            var series = result.Series;
+            ResultSeriesReadModel.Serie[] series = result.Series;
 
             // Assert
             Assert.That(series.Length, Is.EqualTo(4));
-            var serie1 = series[0];
+            ResultSeriesReadModel.Serie serie1 = series[0];
             Assert.That(serie1.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie1.Tables[0], Tuple.Create(1, "player-1", 202, "player-2", 219));
             VerifyTable(serie1.Tables[1], Tuple.Create(0, "player-3", 203, "player-4", 169));
             VerifyTable(serie1.Tables[2], Tuple.Create(1, "player-5", 206, "player-6", 195));
             VerifyTable(serie1.Tables[3], Tuple.Create(0, "player-7", 234, "player-8", 165));
 
-            var serie2 = series[1];
+            ResultSeriesReadModel.Serie serie2 = series[1];
             Assert.That(serie2.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie2.Tables[0], Tuple.Create(1, "player-5", 205, "player-6", 212));
             VerifyTable(serie2.Tables[1], Tuple.Create(0, "player-7", 192, "player-8", 192));
             VerifyTable(serie2.Tables[2], Tuple.Create(1, "player-1", 212, "player-2", 237));
             VerifyTable(serie2.Tables[3], Tuple.Create(1, "player-3", 202, "player-4", 199));
 
-            var serie3 = series[2];
+            ResultSeriesReadModel.Serie serie3 = series[2];
             Assert.That(serie3.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie3.Tables[0], Tuple.Create(0, "player-7", 206, "player-8", 204));
             VerifyTable(serie3.Tables[1], Tuple.Create(1, "player-5", 215, "player-6", 211));
             VerifyTable(serie3.Tables[2], Tuple.Create(0, "player-3", 184, "player-4", 172));
             VerifyTable(serie3.Tables[3], Tuple.Create(0, "player-1", 175, "player-2", 188));
 
-            var serie4 = series[3];
+            ResultSeriesReadModel.Serie serie4 = series[3];
             Assert.That(serie4.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie4.Tables[0], Tuple.Create(0, "player-3", 213, "player-9", 173));
             VerifyTable(serie4.Tables[1], Tuple.Create(1, "player-1", 188, "player-2", 213));
@@ -143,35 +143,35 @@
             const int ClubId = 1660;
 
             // Act
-            var result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetBitsMatchResult(3048747), ClubId);
+            ParseResult result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetBitsMatchResult(3048747), ClubId);
             Assert.That(result.TeamScore, Is.EqualTo(10));
             Assert.That(result.OpponentScore, Is.EqualTo(9));
-            var series = result.Series;
+            ResultSeriesReadModel.Serie[] series = result.Series;
 
             // Assert
             Assert.That(series.Length, Is.EqualTo(4));
-            var serie1 = series[0];
+            ResultSeriesReadModel.Serie serie1 = series[0];
             Assert.That(serie1.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie1.Tables[0], Tuple.Create(1, "player-3", 202, "player-10", 204));
             VerifyTable(serie1.Tables[1], Tuple.Create(0, "player-1", 196, "player-2", 234));
             VerifyTable(serie1.Tables[2], Tuple.Create(1, "player-7", 205, "player-8", 247));
             VerifyTable(serie1.Tables[3], Tuple.Create(1, "player-5", 227, "player-6", 212));
 
-            var serie2 = series[1];
+            ResultSeriesReadModel.Serie serie2 = series[1];
             Assert.That(serie2.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie2.Tables[0], Tuple.Create(0, "player-5", 182, "player-6", 213));
             VerifyTable(serie2.Tables[1], Tuple.Create(0, "player-7", 226, "player-8", 211));
             VerifyTable(serie2.Tables[2], Tuple.Create(1, "player-1", 218, "player-2", 269));
             VerifyTable(serie2.Tables[3], Tuple.Create(0, "player-3", 232, "player-10", 162));
 
-            var serie3 = series[2];
+            ResultSeriesReadModel.Serie serie3 = series[2];
             Assert.That(serie3.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie3.Tables[0], Tuple.Create(0, "player-1", 200, "player-2", 212));
             VerifyTable(serie3.Tables[1], Tuple.Create(0, "player-3", 202, "player-10", 201));
             VerifyTable(serie3.Tables[2], Tuple.Create(0, "player-5", 202, "player-6", 187));
             VerifyTable(serie3.Tables[3], Tuple.Create(1, "player-7", 232, "player-8", 201));
 
-            var serie4 = series[3];
+            ResultSeriesReadModel.Serie serie4 = series[3];
             Assert.That(serie4.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie4.Tables[0], Tuple.Create(1, "player-7", 217, "player-8", 203));
             VerifyTable(serie4.Tables[1], Tuple.Create(1, "player-5", 178, "player-6", 267));
@@ -184,7 +184,7 @@
         {
             // Arrange
             const int ClubId = 1660;
-            var players = new[]
+            Player[] players = new[]
             {
                 new Player("Daniel Solvander", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-1" },
                 new Player("Daniel Lidström", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "player-2" },
@@ -198,29 +198,29 @@
             };
 
             // Act
-            var result = new BitsParser(players).Parse(await BitsGateway.GetBitsMatchResult(3067035), ClubId);
+            ParseResult result = new BitsParser(players).Parse(await BitsGateway.GetBitsMatchResult(3067035), ClubId);
             Assert.That(result.TeamScore, Is.EqualTo(10));
             Assert.That(result.OpponentScore, Is.EqualTo(5));
             Assert.That(result.Turn, Is.EqualTo(24));
-            var series = result.Series;
+            ResultSeriesReadModel.Serie[] series = result.Series;
 
             // Assert
             Assert.That(series.Length, Is.EqualTo(3));
-            var serie1 = series[0];
+            ResultSeriesReadModel.Serie serie1 = series[0];
             Assert.That(serie1.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie1.Tables[0], Tuple.Create(1, "player-1", 200, "player-2", 199));
             VerifyTable(serie1.Tables[1], Tuple.Create(1, "player-3", 160, "player-4", 257));
             VerifyTable(serie1.Tables[2], Tuple.Create(1, "player-5", 214, "player-6", 195));
             VerifyTable(serie1.Tables[3], Tuple.Create(1, "player-7", 175, "player-8", 241));
 
-            var serie2 = series[1];
+            ResultSeriesReadModel.Serie serie2 = series[1];
             Assert.That(serie1.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie2.Tables[0], Tuple.Create(1, "player-7", 165, "player-8", 217));
             VerifyTable(serie2.Tables[1], Tuple.Create(0, "player-5", 180, "player-6", 158));
             VerifyTable(serie2.Tables[2], Tuple.Create(0, "player-3", 176, "player-4", 197));
             VerifyTable(serie2.Tables[3], Tuple.Create(1, "player-1", 145, "player-2", 161));
 
-            var serie3 = series[2];
+            ResultSeriesReadModel.Serie serie3 = series[2];
             Assert.That(serie1.Tables.Count, Is.EqualTo(4));
             VerifyTable(serie3.Tables[0], Tuple.Create(0, "player-3", 180, "player-4", 222));
             VerifyTable(serie3.Tables[1], Tuple.Create(1, "player-1", 159, "player-2", 277));

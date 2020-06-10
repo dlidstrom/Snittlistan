@@ -1,8 +1,8 @@
-﻿using System;
-using System.Diagnostics;
-
-namespace Snittlistan.Web.Areas.V2.Domain.Match
+﻿namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
+    using System;
+    using System.Diagnostics;
+
     [DebuggerDisplay("{Player} Pins={Pins} X={Strikes} Spares={Spares}")]
     public class MatchGame
     {

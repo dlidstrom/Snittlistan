@@ -18,13 +18,13 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         {
             this.season = season;
             var players = new List<PlayerInfo>();
-            foreach (var playerId in playersDict.Keys)
+            foreach (string playerId in playersDict.Keys)
             {
-                var player = playersDict[playerId];
-                var existingMedal = eliteMedals.GetExistingMedal(playerId);
-                var topThreeResults = seasonResults.GetTopThreeResults(playerId, existingMedal.Value);
-                var formattedExistingMedal = eliteMedals.GetFormattedExistingMedal(playerId);
-                var nextMedal = eliteMedals.GetNextMedal(playerId);
+                Player player = playersDict[playerId];
+                EliteMedals.EliteMedal existingMedal = eliteMedals.GetExistingMedal(playerId);
+                HashSet<Tuple<SeasonResults.PlayerResult, bool>> topThreeResults = seasonResults.GetTopThreeResults(playerId, existingMedal.Value);
+                FormattedMedal formattedExistingMedal = eliteMedals.GetFormattedExistingMedal(playerId);
+                FormattedMedal nextMedal = eliteMedals.GetNextMedal(playerId);
                 var playerInfo = new PlayerInfo(
                     playerId,
                     player.Name,

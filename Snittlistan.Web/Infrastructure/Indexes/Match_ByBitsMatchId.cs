@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using Raven.Client.Indexes;
-using Snittlistan.Web.Areas.V1.Models;
-
-namespace Snittlistan.Web.Infrastructure.Indexes
+﻿namespace Snittlistan.Web.Infrastructure.Indexes
 {
+    using System.Linq;
+    using Raven.Client.Indexes;
+    using Snittlistan.Web.Areas.V1.Models;
+
     public class Match_ByBitsMatchId : AbstractIndexCreationTask<Match8x4, Match_ByBitsMatchId.Result>
     {
         public Match_ByBitsMatchId()

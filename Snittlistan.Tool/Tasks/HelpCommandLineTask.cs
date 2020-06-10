@@ -14,7 +14,7 @@
 
         public void Run(string[] args)
         {
-            var task = kernel.Resolve<ICommandLineTask>(args[1]);
+            ICommandLineTask task = kernel.Resolve<ICommandLineTask>(args[1]);
             Console.WriteLine(task.HelpText);
         }
 

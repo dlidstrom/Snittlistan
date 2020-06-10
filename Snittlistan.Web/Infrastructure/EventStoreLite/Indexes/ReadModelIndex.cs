@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using Raven.Client.Indexes;
-
-// ReSharper disable once CheckNamespace
+﻿// ReSharper disable once CheckNamespace
 namespace EventStoreLite.Indexes
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using System.Reflection;
+    using Raven.Client.Indexes;
+
     public class ReadModelIndex : AbstractMultiMapIndexCreationTask<IReadModel>
     {
         public ReadModelIndex(IEnumerable<Type> types)
@@ -26,14 +26,14 @@ namespace EventStoreLite.Indexes
 
             // Index child classes.
             var children = types.Where(x => typeof(TBase).IsAssignableFrom(x)).ToList();
-            var addMapGeneric = GetType().GetMethod("AddMap", BindingFlags.Instance | BindingFlags.NonPublic);
+            MethodInfo addMapGeneric = GetType().GetMethod("AddMap", BindingFlags.Instance | BindingFlags.NonPublic);
             Debug.Assert(addMapGeneric != null, "addMapGeneric != null");
 
-            foreach (var child in children)
+            foreach (Type child in children)
             {
-                var genericEnumerable = typeof(IEnumerable<>).MakeGenericType(child);
-                var delegateType = typeof(Func<,>).MakeGenericType(genericEnumerable, typeof(IEnumerable));
-                var lambdaExpression = Expression.Lambda(delegateType, expr.Body, Expression.Parameter(genericEnumerable, expr.Parameters[0].Name));
+                Type genericEnumerable = typeof(IEnumerable<>).MakeGenericType(child);
+                Type delegateType = typeof(Func<,>).MakeGenericType(genericEnumerable, typeof(IEnumerable));
+                LambdaExpression lambdaExpression = Expression.Lambda(delegateType, expr.Body, Expression.Parameter(genericEnumerable, expr.Parameters[0].Name));
                 addMapGeneric.MakeGenericMethod(child).Invoke(this, new object[] { lambdaExpression });
             }
         }

@@ -1,9 +1,9 @@
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-
 // ReSharper disable once CheckNamespace
 namespace EventStoreLite
 {
+    using System.Collections.Generic;
+    using System.Runtime.CompilerServices;
+
     internal class ObjectReferenceEqualityComparer<T> : EqualityComparer<T> where T : class
     {
         public static new readonly IEqualityComparer<T> Default = new ObjectReferenceEqualityComparer<T>();

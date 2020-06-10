@@ -56,7 +56,7 @@
         {
             Transact(session =>
                 {
-                    var resultReadModel = session.Load<ResultHeaderReadModel>("ResultHeader-3048746");
+                    ResultHeaderReadModel resultReadModel = session.Load<ResultHeaderReadModel>("ResultHeader-3048746");
                     Assert.That(resultReadModel, Is.Not.Null);
                 });
         }
@@ -78,7 +78,7 @@
             Transact(session =>
             {
                 session.Store(new WebsiteConfig(new[] { new WebsiteConfig.TeamNameAndLevel("FIF", "A") }, false, 1660, 2012));
-                var players = new[]
+                Player[] players = new[]
                 {
                     new Player("Christer Liedholm", "e@d.com", Player.Status.Active, 0, null, new string[0], new PlayerItem { LicNbr = "M131061CHR01" }),
                     new Player("Mathias Ernest", "e@d.com", Player.Status.Active, 0, null, new string[0], new PlayerItem { LicNbr = "M131061CHR01" }),
@@ -91,7 +91,7 @@
                     new Player("Lennart Axelsson", "e@d.com", Player.Status.Active, 0, null, new string[0], new PlayerItem { LicNbr = "M131061CHR01" })
                 };
 
-                foreach (var player in players)
+                foreach (Player player in players)
                 {
                     session.Store(player);
                 }
@@ -113,7 +113,7 @@
                 session.Store(roster);
             });
 
-            var bitsClient = Mock.Of<IBitsClient>();
+            IBitsClient bitsClient = Mock.Of<IBitsClient>();
             Mock.Get(bitsClient)
                 .Setup(x => x.GetMatchResults(3048746))
                 .Returns(BitsGateway.GetMatchResults(3048746));

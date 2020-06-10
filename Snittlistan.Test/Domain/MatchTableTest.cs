@@ -1,9 +1,9 @@
-﻿using System;
-using NUnit.Framework;
-using Snittlistan.Web.Areas.V2.Domain.Match;
-
-namespace Snittlistan.Test.Domain
+﻿namespace Snittlistan.Test.Domain
 {
+    using System;
+    using NUnit.Framework;
+    using Snittlistan.Web.Areas.V2.Domain.Match;
+
     [TestFixture]
     public class MatchTableTest
     {
@@ -15,7 +15,7 @@ namespace Snittlistan.Test.Domain
             var game2 = new MatchGame("p1", 0, 0, 0);
 
             // Act & Assert
-            var ex = Assert.Throws<MatchException>(() => new MatchTable(1, game1, game2, 0));
+            MatchException ex = Assert.Throws<MatchException>(() => new MatchTable(1, game1, game2, 0));
             Assert.That(ex.Message, Is.EqualTo("Table must have different players"));
         }
 

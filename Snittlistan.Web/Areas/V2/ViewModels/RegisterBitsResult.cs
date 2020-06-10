@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Snittlistan.Web.Areas.V2.ReadModels;
-
-namespace Snittlistan.Web.Areas.V2.ViewModels
+﻿namespace Snittlistan.Web.Areas.V2.ViewModels
 {
+    using System.ComponentModel.DataAnnotations;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+
     public class RegisterBitsResult
     {
         [Required]

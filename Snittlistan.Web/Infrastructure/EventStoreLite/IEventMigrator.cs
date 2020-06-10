@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
-
 // ReSharper disable once CheckNamespace
 namespace EventStoreLite
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Defines an event migrator.
     /// </summary>

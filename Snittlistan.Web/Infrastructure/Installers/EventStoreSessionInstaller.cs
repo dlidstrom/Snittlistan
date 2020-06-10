@@ -1,14 +1,14 @@
-﻿using System;
-using Castle.Core;
-using Castle.MicroKernel;
-using Castle.MicroKernel.Registration;
-using Castle.MicroKernel.SubSystems.Configuration;
-using Castle.Windsor;
-using EventStoreLite;
-using Raven.Client;
-
-namespace Snittlistan.Web.Infrastructure.Installers
+﻿namespace Snittlistan.Web.Infrastructure.Installers
 {
+    using System;
+    using Castle.Core;
+    using Castle.MicroKernel;
+    using Castle.MicroKernel.Registration;
+    using Castle.MicroKernel.SubSystems.Configuration;
+    using Castle.Windsor;
+    using EventStoreLite;
+    using Raven.Client;
+
     public class EventStoreSessionInstaller : IWindsorInstaller
     {
         private readonly Func<ComponentRegistration<IEventStoreSession>, ComponentRegistration<IEventStoreSession>> func;

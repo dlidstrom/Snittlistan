@@ -33,7 +33,7 @@
         [ActionName("Register")]
         public ActionResult Register_RosterSelected(string rosterId)
         {
-            var roster = DocumentSession.Load<Roster>(rosterId);
+            Roster roster = DocumentSession.Load<Roster>(rosterId);
             if (roster == null)
                 throw new HttpException(404, "Roster not found");
             if (roster.IsFourPlayer)
@@ -43,7 +43,7 @@
 
         public ActionResult RegisterMatch4Editor(string rosterId)
         {
-            var roster = DocumentSession.Load<Roster>(rosterId);
+            Roster roster = DocumentSession.Load<Roster>(rosterId);
             if (roster == null)
                 throw new HttpException(404, "Roster not found");
             if (roster.MatchResultId != null)
@@ -53,7 +53,7 @@
                                                   .OrderBy(x => x.Name)
                                                   .Where(p => p.PlayerStatus == Player.Status.Active)
                                                   .ToList();
-            var playerListItems = availablePlayers.Select(x => new SelectListItem
+            SelectListItem[] playerListItems = availablePlayers.Select(x => new SelectListItem
             {
                 Text = x.Name,
                 Value = x.Id
@@ -70,7 +70,7 @@
         [ActionName("RegisterMatch4Editor")]
         public ActionResult RegisterMatchEditorStore(string rosterId, RegisterMatch4ViewModel viewModel)
         {
-            var roster = DocumentSession.Load<Roster>(rosterId);
+            Roster roster = DocumentSession.Load<Roster>(rosterId);
             if (roster == null)
                 throw new HttpException(404, "Roster not found");
             if (ModelState.IsValid == false)
@@ -79,7 +79,7 @@
                                                       .OrderBy(x => x.Name)
                                                       .Where(p => p.PlayerStatus == Player.Status.Active)
                                                       .ToList();
-                var playerListItems = availablePlayers.Select(x => new SelectListItem
+                SelectListItem[] playerListItems = availablePlayers.Select(x => new SelectListItem
                 {
                     Text = x.Name,
                     Value = x.Id
@@ -91,7 +91,7 @@
                     viewModel);
             }
 
-            var movement = new[,]
+            int[,] movement = new[,]
             {
                 { 1, 2, 3, 4 },
                 { 3, 4, 1, 2 },
@@ -101,21 +101,21 @@
             var series = new List<ResultSeries4ReadModel.Serie>();
 
             // keep track of who is the reserve
-            var currentReserve = 4;
-            var subs = new[] { 0, 1, 2, 3, 4 };
-            for (var i = 0; i < 4; i++)
+            int currentReserve = 4;
+            int[] subs = new[] { 0, 1, 2, 3, 4 };
+            for (int i = 0; i < 4; i++)
             {
                 var serie = new ResultSeries4ReadModel.Serie();
                 serie.Games.Clear();
                 var games = new List<PlayerGames>();
-                for (var j = 0; j < viewModel.Model.Players.Length; j++)
+                for (int j = 0; j < viewModel.Model.Players.Length; j++)
                 {
                     if (games.Count == 4) break;
 
                     if (viewModel.Model.Players[j].Games[i].Pins.HasValue == false
                         && currentReserve != j)
                     {
-                        var temp = subs[j];
+                        int temp = subs[j];
                         subs[Array.IndexOf(subs, j)] = currentReserve;
                         subs[4] = temp;
                         currentReserve = j;
@@ -124,11 +124,11 @@
 
                 games.AddRange(subs.Take(4).Select(sub => viewModel.Model.Players[sub]));
 
-                var leftPos = movement[i, 0] - 1;
-                var centerLeftPos = movement[i, 1] - 1;
-                var centerRightPos = movement[i, 2] - 1;
-                var rightPos = movement[i, 3] - 1;
-                foreach (var pos in new[] { leftPos, centerLeftPos, centerRightPos, rightPos })
+                int leftPos = movement[i, 0] - 1;
+                int centerLeftPos = movement[i, 1] - 1;
+                int centerRightPos = movement[i, 2] - 1;
+                int rightPos = movement[i, 3] - 1;
+                foreach (int pos in new[] { leftPos, centerLeftPos, centerRightPos, rightPos })
                 {
                     Debug.Assert(games[pos].Games[i].Pins != null, $"games[{pos}].Games[{i}].Pins != null");
                     var game = new ResultSeries4ReadModel.Game
@@ -233,7 +233,7 @@
                         yield return new ValidationResult("Summan av lagpoängen kan inte överstiga 20.");
                     }
 
-                    for (var i = 0; i < 4; i++)
+                    for (int i = 0; i < 4; i++)
                     {
                         if (Players.Count(x => x.Games[i].Pins.HasValue) != 4)
                         {

@@ -1,9 +1,9 @@
-﻿using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-
-namespace Snittlistan.Web.Areas.V2.Controllers.Api
+﻿namespace Snittlistan.Web.Areas.V2.Controllers.Api
 {
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
     public class ApiErrorController : ApiController
     {
         [HttpGet, HttpPost, HttpPut, HttpDelete, HttpHead, HttpOptions, AcceptVerbs("PATCH")]

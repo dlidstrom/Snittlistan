@@ -21,7 +21,7 @@
             // Act
             serializer.Serialize(new StringWriter(builder), DbSeed.Create8x4Match());
             string text = builder.ToString();
-            var match = serializer.Deserialize<Match8x4>(new JsonTextReader(new StringReader(text)));
+            Match8x4 match = serializer.Deserialize<Match8x4>(new JsonTextReader(new StringReader(text)));
 
             // Assert
             TestData.VerifyTeam(match.AwayTeam);
@@ -37,7 +37,7 @@
             // Act
             serializer.Serialize(new StringWriter(builder), DbSeed.Create4x4Match());
             string text = builder.ToString();
-            var match = serializer.Deserialize<Match4x4>(new JsonTextReader(new StringReader(text)));
+            Match4x4 match = serializer.Deserialize<Match4x4>(new JsonTextReader(new StringReader(text)));
 
             // Assert
             TestData.VerifyTeam(match.HomeTeam);
@@ -59,7 +59,7 @@
             // Assert
             using (IDocumentSession session = Store.OpenSession())
             {
-                var loadedUser = session.Load<User>(user.Id);
+                User loadedUser = session.Load<User>(user.Id);
                 Assert.True(loadedUser.ValidatePassword("some-pass"), "Password validation failed");
             }
         }

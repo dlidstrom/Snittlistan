@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Snittlistan.Web.Areas.V2.Domain.Match;
-using Snittlistan.Web.Areas.V2.ReadModels;
-
-namespace Snittlistan.Web.Areas.V2.Domain
+﻿namespace Snittlistan.Web.Areas.V2.Domain
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Snittlistan.Web.Areas.V2.Domain.Match;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+
     public class ParseResult
     {
         public ParseResult(
@@ -35,18 +35,18 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public MatchSerie[] CreateMatchSeries()
         {
             var matchSeries = new List<MatchSerie>();
-            var serieNumber = 1;
-            var series = new[]
+            int serieNumber = 1;
+            ResultSeriesReadModel.Serie[] series = new[]
             {
                 Series.ElementAtOrDefault(0),
                 Series.ElementAtOrDefault(1),
                 Series.ElementAtOrDefault(2),
                 Series.ElementAtOrDefault(3)
             };
-            foreach (var serie in series.Where(x => x != null))
+            foreach (ResultSeriesReadModel.Serie serie in series.Where(x => x != null))
             {
                 var tables = new List<MatchTable>();
-                for (var i = 0; i < 4; i++)
+                for (int i = 0; i < 4; i++)
                 {
                     var game1 = new MatchGame(
                         serie.Tables[i].Game1.Player,

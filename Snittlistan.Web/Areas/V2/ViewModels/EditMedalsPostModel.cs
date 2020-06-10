@@ -1,9 +1,9 @@
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Snittlistan.Web.Areas.V2.Domain;
-
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using Snittlistan.Web.Areas.V2.Domain;
+
     public class EditMedalsPostModel : IValidatableObject
     {
         public EliteMedals.EliteMedal.EliteMedalValue? EliteMedal { get; set; }

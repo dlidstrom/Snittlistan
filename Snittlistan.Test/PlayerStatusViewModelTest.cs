@@ -20,7 +20,7 @@
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
-            var result = comparer.Compare(left, right);
+            int result = comparer.Compare(left, right);
 
             // Assert
             Assert.That(result, Is.EqualTo(1));
@@ -44,7 +44,7 @@
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
-            var result = comparer.Compare(left, right);
+            int result = comparer.Compare(left, right);
 
             // Assert
             Assert.That(result, Is.EqualTo(-1));
@@ -60,7 +60,7 @@
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
-            var result = comparer.Compare(left, right);
+            int result = comparer.Compare(left, right);
 
             // Assert
             Assert.That(result, Is.EqualTo(1));
@@ -81,7 +81,7 @@
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
-            var result = comparer.Compare(left, right);
+            int result = comparer.Compare(left, right);
 
             // Assert
             Assert.That(result, Is.EqualTo(1));
@@ -102,7 +102,7 @@
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
-            var result = comparer.Compare(left, right);
+            int result = comparer.Compare(left, right);
 
             // Assert
             Assert.That(result, Is.EqualTo(1));
@@ -125,7 +125,7 @@
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.PlayerForm);
 
             // Act
-            var result = comparer.Compare(left, right);
+            int result = comparer.Compare(left, right);
 
             // Assert
             Assert.That(result, Is.EqualTo(1));
@@ -148,7 +148,7 @@
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.PlayerForm);
 
             // Act
-            var result = comparer.Compare(left, right);
+            int result = comparer.Compare(left, right);
 
             // Assert
             Assert.That(result, Is.EqualTo(1));
@@ -167,7 +167,7 @@
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
-            var result = comparer.Compare(left, right);
+            int result = comparer.Compare(left, right);
 
             // Assert
             Assert.That(result, Is.EqualTo(1));
@@ -186,7 +186,7 @@
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
-            var result = comparer.Compare(left, right);
+            int result = comparer.Compare(left, right);
 
             // Assert
             Assert.That(result, Is.EqualTo(-1));
@@ -205,7 +205,7 @@
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.PlayerForm);
 
             // Act
-            var result = comparer.Compare(left, right);
+            int result = comparer.Compare(left, right);
 
             // Assert
             Assert.That(result, Is.EqualTo(1));
@@ -224,7 +224,7 @@
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.PlayerForm);
 
             // Act
-            var result = comparer.Compare(left, right);
+            int result = comparer.Compare(left, right);
 
             // Assert
             Assert.That(result, Is.EqualTo(-1));
@@ -248,7 +248,7 @@
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
-            var result = comparer.Compare(left, right);
+            int result = comparer.Compare(left, right);
 
             // Assert
             Assert.That(result, Is.EqualTo(-1));
@@ -272,7 +272,7 @@
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.SeasonAverage);
 
             // Act
-            var result = comparer.Compare(left, right);
+            int result = comparer.Compare(left, right);
 
             // Assert
             Assert.That(result, Is.EqualTo(1));
@@ -306,7 +306,7 @@
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.PlayerForm);
 
             // Act
-            var result = comparer.Compare(left, right);
+            int result = comparer.Compare(left, right);
 
             // Assert
             Assert.That(result, Is.EqualTo(1));
@@ -340,7 +340,7 @@
             var comparer = new PlayerStatusViewModel.Comparer(CompareMode.PlayerForm);
 
             // Act
-            var result = comparer.Compare(left, right);
+            int result = comparer.Compare(left, right);
 
             // Assert
             Assert.That(result, Is.EqualTo(1));

@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-using Snittlistan.Web.Areas.V1.Models;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using NUnit.Framework;
+    using Snittlistan.Web.Areas.V1.Models;
+
     public static class TestData
     {
         private static readonly Dictionary<int, int[]> Result8X4 = new Dictionary<int, int[]>
@@ -43,9 +43,9 @@ namespace Snittlistan.Test
             Assert.That(team.PinsForPlayer("Christer Liedholm"), Is.EqualTo(735));
             Assert.That(team.PinsForPlayer("Kjell Persson"), Is.EqualTo(540));
             Assert.That(team.PinsForPlayer("Thomas Gurell"), Is.EqualTo(159));
-            for (var i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
-                for (var j = 0; j < 4; j++)
+                for (int j = 0; j < 4; j++)
                 {
                     int result1 = Result8X4[(i * 4) + j][0];
                     int result2 = Result8X4[(i * 4) + j][1];
@@ -75,9 +75,9 @@ namespace Snittlistan.Test
             Assert.That(team.PinsForPlayer("Markus Norbeck"), Is.EqualTo(598));
             Assert.That(team.PinsForPlayer("Lars Norbeck"), Is.EqualTo(717));
             Assert.That(team.PinsForPlayer("Matz Classon"), Is.EqualTo(594));
-            for (var i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
-                for (var j = 0; j < 4; j++)
+                for (int j = 0; j < 4; j++)
                 {
                     int result = Result4X4[(i * 4) + j];
 

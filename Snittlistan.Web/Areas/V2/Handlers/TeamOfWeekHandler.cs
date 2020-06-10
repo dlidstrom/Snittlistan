@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using EventStoreLite;
-using Raven.Client;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.Domain.Match.Events;
-using Snittlistan.Web.Areas.V2.ReadModels;
-
-namespace Snittlistan.Web.Areas.V2.Handlers
+﻿namespace Snittlistan.Web.Areas.V2.Handlers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using EventStoreLite;
+    using Raven.Client;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.Domain.Match.Events;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+
     public class TeamOfWeekHandler :
         IEventHandler<MatchResultRegistered>,
         IEventHandler<SerieRegistered>,
@@ -21,9 +21,9 @@ namespace Snittlistan.Web.Areas.V2.Handlers
 
         public void Handle(MatchResultRegistered e, string aggregateId)
         {
-            var roster = DocumentSession.Load<Roster>(e.RosterId);
-            var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
-            var teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
+            Roster roster = DocumentSession.Load<Roster>(e.RosterId);
+            string id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
+            TeamOfWeek teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
             if (teamOfWeek == null)
             {
                 teamOfWeek = new TeamOfWeek(e.BitsMatchId, roster.Season, roster.Id);
@@ -35,10 +35,10 @@ namespace Snittlistan.Web.Areas.V2.Handlers
 
         public void Handle(SerieRegistered e, string aggregateId)
         {
-            var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
-            var teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
-            var matchSerie = e.MatchSerie;
-            var playerIds = new[]
+            string id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
+            TeamOfWeek teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
+            Domain.Match.MatchSerie matchSerie = e.MatchSerie;
+            Tuple<string, int, int>[] playerIds = new[]
             {
                 Tuple.Create(
                     matchSerie.Table1.Game1.Player,
@@ -74,11 +74,11 @@ namespace Snittlistan.Web.Areas.V2.Handlers
                     matchSerie.Table4.Game2.Pins)
             };
             var uniquePlayerIds = new HashSet<string>(playerIds.Select(x => x.Item1));
-            var players = DocumentSession.Load<Player>(uniquePlayerIds);
-            foreach (var player in players)
+            Player[] players = DocumentSession.Load<Player>(uniquePlayerIds);
+            foreach (Player player in players)
             {
-                var playerId = player.Id;
-                foreach (var tuple in playerIds.Where(x => x.Item1 == playerId))
+                string playerId = player.Id;
+                foreach (Tuple<string, int, int> tuple in playerIds.Where(x => x.Item1 == playerId))
                 {
                     teamOfWeek.AddResultForPlayer(player, tuple.Item2, tuple.Item3);
                 }
@@ -87,9 +87,9 @@ namespace Snittlistan.Web.Areas.V2.Handlers
 
         public void Handle(MatchResult4Registered e, string aggregateId)
         {
-            var roster = DocumentSession.Load<Roster>(e.RosterId);
-            var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
-            var teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
+            Roster roster = DocumentSession.Load<Roster>(e.RosterId);
+            string id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
+            TeamOfWeek teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
             if (teamOfWeek == null)
             {
                 teamOfWeek = new TeamOfWeek(e.BitsMatchId, roster.Season, roster.Id);
@@ -101,10 +101,10 @@ namespace Snittlistan.Web.Areas.V2.Handlers
 
         public void Handle(Serie4Registered e, string aggregateId)
         {
-            var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
-            var teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
-            var matchSerie = e.MatchSerie;
-            var playerIds = new[]
+            string id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
+            TeamOfWeek teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
+            Domain.Match.MatchSerie4 matchSerie = e.MatchSerie;
+            Tuple<string, int, int>[] playerIds = new[]
             {
                 Tuple.Create(
                     matchSerie.Game1.Player,
@@ -123,26 +123,26 @@ namespace Snittlistan.Web.Areas.V2.Handlers
                     matchSerie.Game4.Score,
                     matchSerie.Game4.Pins)
             };
-            var players = DocumentSession.Load<Player>(playerIds.Select(x => x.Item1));
-            foreach (var player in players)
+            Player[] players = DocumentSession.Load<Player>(playerIds.Select(x => x.Item1));
+            foreach (Player player in players)
             {
-                var playerId = player.Id;
-                var tuple = playerIds.Single(x => x.Item1 == playerId);
+                string playerId = player.Id;
+                Tuple<string, int, int> tuple = playerIds.Single(x => x.Item1 == playerId);
                 teamOfWeek.AddResultForPlayer(player, tuple.Item2, tuple.Item3);
             }
         }
 
         public void Handle(AwardedMedal e, string aggregateId)
         {
-            var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
-            var teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
+            string id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
+            TeamOfWeek teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
             teamOfWeek.AddMedal(new AwardedMedalReadModel(e.Player, e.MedalType, e.Value));
         }
 
         public void Handle(ClearMedals e, string aggregateId)
         {
-            var id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
-            var teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
+            string id = TeamOfWeek.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
+            TeamOfWeek teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
             teamOfWeek.ClearMedals();
         }
     }

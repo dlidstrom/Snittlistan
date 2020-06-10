@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using EventStoreLite.Infrastructure;
-
 // ReSharper disable once CheckNamespace
 namespace EventStoreLite
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using EventStoreLite.Infrastructure;
+
     /// <summary>
     /// Used to define aggregate roots.
     /// </summary>
@@ -38,7 +38,7 @@ namespace EventStoreLite
         {
             if (history == null) throw new ArgumentNullException(nameof(history));
             uncommittedChanges = new List<IDomainEvent>();
-            foreach (var domainEvent in history) ApplyChange(domainEvent, false);
+            foreach (IDomainEvent domainEvent in history) ApplyChange(domainEvent, false);
         }
 
         /// <summary>
