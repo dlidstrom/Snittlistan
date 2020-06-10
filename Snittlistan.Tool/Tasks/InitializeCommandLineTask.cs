@@ -1,17 +1,21 @@
-﻿using Snittlistan.Queue;
-using Snittlistan.Queue.Messages;
-
-namespace Snittlistan.Tool.Tasks
+﻿namespace Snittlistan.Tool.Tasks
 {
+    using System;
+    using Snittlistan.Queue;
+    using Snittlistan.Queue.Messages;
+
     public class InitializeCommandLineTask : ICommandLineTask
     {
         public void Run(string[] args)
         {
-            using (var scope = MsmqGateway.AutoCommitScope())
+            if (args.Length != 3) throw new Exception("Specify email and password");
+            string email = args[1];
+            string password = args[2];
+            using (MsmqGateway.MsmqTransactionScope scope = MsmqGateway.AutoCommitScope())
             {
-                foreach (var url in CommandLineTaskHelper.AllApiUrls())
+                foreach (System.Uri url in CommandLineTaskHelper.AllApiUrls())
                 {
-                    var envelope = new MessageEnvelope(new InitializeIndexesMessage(), url);
+                    var envelope = new MessageEnvelope(new InitializeIndexesMessage(email, password), url);
                     scope.PublishMessage(envelope);
                 }
 

@@ -15,6 +15,7 @@
     using NLog;
     using Raven.Abstractions;
     using Raven.Client;
+    using Raven.Database.Extensions;
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Areas.V2.Commands;
     using Snittlistan.Web.Areas.V2.Domain;
@@ -397,6 +398,22 @@
         private IHttpActionResult Handle(InitializeIndexesMessage message)
         {
             IndexCreator.CreateIndexes(DocumentStore);
+            User admin = DocumentSession.Load<User>(Models.User.AdminId);
+            if (admin == null)
+            {
+                admin = new User("", "", message.Email, message.Password)
+                {
+                    Id = Models.User.AdminId
+                };
+                admin.Initialize(PublishMessage);
+                admin.Activate();
+                DocumentSession.Store(admin);
+            }
+            else
+            {
+                admin.SetEmail(message.Email);
+                admin.SetPassword(message.Password);
+            }
 
             return Ok();
         }

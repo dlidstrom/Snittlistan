@@ -1,16 +1,18 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Web.Mvc;
-using Raven.Imports.Newtonsoft.Json;
-using Snittlistan.Queue.Messages;
-
-namespace Snittlistan.Web.Models
+﻿namespace Snittlistan.Web.Models
 {
+    using System;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Web.Mvc;
+    using Raven.Imports.Newtonsoft.Json;
+    using Snittlistan.Queue.Messages;
+
     public class User
     {
+        public const string AdminId = "Admin";
+
         private const string ConstantSalt = "CheFe2ra8en9SW";
 
         private Guid passwordSalt;
@@ -52,7 +54,7 @@ namespace Snittlistan.Web.Models
         /// <summary>
         /// Gets the email address.
         /// </summary>
-        public string Email { get; }
+        public string Email { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether the user is activated.
@@ -87,6 +89,17 @@ namespace Snittlistan.Web.Models
                     passwordSalt = Guid.NewGuid();
                 return passwordSalt;
             }
+        }
+
+        public void SetEmail(string email)
+        {
+            Email = email;
+        }
+
+        public void SetPassword(string password)
+        {
+            HashedPassword = ComputeHashedPassword(password);
+            RequiresPasswordChange = true;
         }
 
         public void SetPassword(string password, string suppliedActivationKey)
@@ -128,7 +141,7 @@ namespace Snittlistan.Web.Models
             IsActive = true;
             ActivationKey = Guid.NewGuid().ToString();
             RequiresPasswordChange = true;
-            var activationUri = urlHelper.Action("SetPassword", "User", new
+            string activationUri = urlHelper.Action("SetPassword", "User", new
             {
                 id = Id,
                 activationKey = ActivationKey
@@ -151,7 +164,7 @@ namespace Snittlistan.Web.Models
             string hashedPassword;
             using (var sha = SHA256.Create())
             {
-                var computedHash = sha.ComputeHash(
+                byte[] computedHash = sha.ComputeHash(
                     PasswordSalt.ToByteArray().Concat(
                         Encoding.Unicode.GetBytes(password + PasswordSalt + ConstantSalt))
                         .ToArray());
