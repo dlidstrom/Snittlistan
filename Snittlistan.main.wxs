@@ -47,11 +47,11 @@
                   Return="check"
                   Execute="deferred"
                   Impersonate="no" />
-    <CustomAction Id="RegisterMatch_Cmd"
-                  Property="RegisterMatch_Task"
+    <CustomAction Id="RegisterMatches_Cmd"
+                  Property="RegisterMatches_Task"
                   Execute="immediate"
-                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU Administrator /RP [ADMINISTRATOR_PASSWORD] /SC MINUTE /MO 15 /TN RegisterMatch /TR &quot;\&quot;[#Snittlistan.Tool.exe]\&quot; registermatch&quot;" />
-    <CustomAction Id="RegisterMatch_Task"
+                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU Administrator /RP [ADMINISTRATOR_PASSWORD] /SC MINUTE /MO 15 /TN RegisterMatches /TR &quot;\&quot;[#Snittlistan.Tool.exe]\&quot; RegisterMatches&quot;" />
+    <CustomAction Id="RegisterMatches_Task"
                   BinaryKey="WixCA"
                   DllEntry="CAQuietExec"
                   Return="check"
@@ -256,8 +256,8 @@
       <!-- add tasks on install -->
       <Custom Action="VerifyMatches_Cmd" Before="InstallFinalize">NOT Installed</Custom>
       <Custom Action="VerifyMatches_Task" After="VerifyMatches_Cmd">NOT Installed</Custom>
-      <Custom Action="RegisterMatch_Cmd" Before="InstallFinalize">NOT Installed</Custom>
-      <Custom Action="RegisterMatch_Task" After="RegisterMatch_Cmd">NOT Installed</Custom>
+      <Custom Action="RegisterMatches_Cmd" Before="InstallFinalize">NOT Installed</Custom>
+      <Custom Action="RegisterMatches_Task" After="RegisterMatches_Cmd">NOT Installed</Custom>
       <Custom Action="StartServices_Cmd" Before="InstallFinalize">NOT Installed</Custom>
       <Custom Action="StartServices_Task" After="StartServices_Cmd">NOT Installed</Custom>
       <Custom Action="GetRostersFromBits_Cmd" Before="InstallFinalize">NOT Installed</Custom>

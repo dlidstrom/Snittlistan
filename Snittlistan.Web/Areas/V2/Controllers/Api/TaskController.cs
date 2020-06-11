@@ -15,7 +15,6 @@
     using NLog;
     using Raven.Abstractions;
     using Raven.Client;
-    using Raven.Database.Extensions;
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Areas.V2.Commands;
     using Snittlistan.Web.Areas.V2.Domain;
@@ -62,6 +61,8 @@
                 case VerifyMatchMessage message:
                     return await Handle(message);
                 case RegisterMatchesMessage message:
+                    return Handle(message);
+                case RegisterMatchMessage message:
                     return await Handle(message);
                 case InitializeIndexesMessage message:
                     return Handle(message);
@@ -90,7 +91,7 @@
             WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             PlayerResult playersResult = await bitsClient.GetPlayers(websiteConfig.ClubId);
             Player[] players = DocumentSession.Query<Player, PlayerSearch>()
-                                         .ToArray();
+                .ToArray();
 
             // update existing players by matching on license number
             var playersByLicense = playersResult.Data.ToDictionary(x => x.LicNbr);
@@ -144,11 +145,12 @@
         private async Task<IHttpActionResult> Handle(GetRostersFromBitsMessage message)
         {
             WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
-            RosterSearchTerms.Result[] rosterSearchTerms = DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
-                                                   .Where(x => x.Season == websiteConfig.SeasonId)
-                                                   .Where(x => x.BitsMatchId != 0)
-                                                   .ProjectFromIndexFieldsInto<RosterSearchTerms.Result>()
-                                                   .ToArray();
+            RosterSearchTerms.Result[] rosterSearchTerms =
+                DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
+                    .Where(x => x.Season == websiteConfig.SeasonId)
+                    .Where(x => x.BitsMatchId != 0)
+                    .ProjectFromIndexFieldsInto<RosterSearchTerms.Result>()
+                    .ToArray();
             Roster[] rosters = DocumentSession.Load<Roster>(rosterSearchTerms.Select(x => x.Id));
 
             // Team
@@ -301,78 +303,73 @@
             return Ok();
         }
 
-        private async Task<IHttpActionResult> Handle(RegisterMatchesMessage message)
+        private async Task<IHttpActionResult> Handle(RegisterMatchMessage message)
+        {
+            WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+            Player[] players =
+                DocumentSession.Query<Player, PlayerSearch>()
+                    .ToArray()
+                    .Where(x => x.PlayerItem?.LicNbr != null)
+                    .ToArray();
+            Roster pendingMatch = DocumentSession.Load<Roster>(message.RosterId);
+            try
+            {
+                var parser = new BitsParser(players);
+                BitsMatchResult bitsMatchResult = await bitsClient.GetBitsMatchResult(pendingMatch.BitsMatchId);
+                if (pendingMatch.IsFourPlayer)
+                {
+                    Parse4Result parse4Result = parser.Parse4(bitsMatchResult, websiteConfig.ClubId);
+                    if (parse4Result != null)
+                    {
+                        List<string> allPlayerIds = GetPlayerIds(parse4Result);
+                        pendingMatch.Players = allPlayerIds;
+                        ExecuteCommand(new RegisterMatch4Command(pendingMatch, parse4Result));
+                    }
+                }
+                else
+                {
+                    ParseResult parseResult = parser.Parse(bitsMatchResult, websiteConfig.ClubId);
+                    if (parseResult != null)
+                    {
+                        List<string> allPlayerIds = GetPlayerIds(parseResult);
+                        pendingMatch.Players = allPlayerIds;
+                        ExecuteCommand(new RegisterMatchCommand(pendingMatch, parseResult));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorSignal
+                    .FromCurrentContext()
+                    .Raise(new Exception($"Unable to auto register match {pendingMatch.Id} ({pendingMatch.BitsMatchId})", e));
+                return Ok(e.ToString());
+            }
+
+            return Ok();
+        }
+
+        private IHttpActionResult Handle(RegisterMatchesMessage message)
         {
             WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             Roster[] pendingMatches = ExecuteQuery(new GetPendingMatchesQuery(websiteConfig.SeasonId));
-            Player[] players = DocumentSession.Query<Player, PlayerSearch>()
-                                              .ToArray()
-                                              .Where(x => x.PlayerItem?.LicNbr != null)
-                                              .ToArray();
-            var registeredMatches = new List<Roster>();
             foreach (Roster pendingMatch in pendingMatches)
             {
-                try
-                {
-                    var parser = new BitsParser(players);
-                    BitsMatchResult bitsMatchResult = await bitsClient.GetBitsMatchResult(pendingMatch.BitsMatchId);
-                    if (pendingMatch.IsFourPlayer)
-                    {
-                        Parse4Result parse4Result = parser.Parse4(bitsMatchResult, websiteConfig.ClubId);
-                        if (parse4Result != null)
-                        {
-                            List<string> allPlayerIds = GetPlayerIds(parse4Result);
-                            pendingMatch.Players = allPlayerIds;
-                            ExecuteCommand(new RegisterMatch4Command(pendingMatch, parse4Result));
-                        }
-                    }
-                    else
-                    {
-                        ParseResult parseResult = parser.Parse(bitsMatchResult, websiteConfig.ClubId);
-                        if (parseResult != null)
-                        {
-                            List<string> allPlayerIds = GetPlayerIds(parseResult);
-                            pendingMatch.Players = allPlayerIds;
-                            ExecuteCommand(new RegisterMatchCommand(pendingMatch, parseResult));
-                        }
-                    }
-
-                    registeredMatches.Add(pendingMatch);
-                }
-                catch (Exception e)
-                {
-                    ErrorSignal
-                        .FromCurrentContext()
-                        .Raise(new Exception($"Unable to auto register match {pendingMatch.Id} ({pendingMatch.BitsMatchId})", e));
-                }
+                PublishMessage(new RegisterMatchMessage(pendingMatch.Id));
             }
 
-            var result = registeredMatches.Select(x => new
-            {
-                x.Date,
-                x.Season,
-                x.Turn,
-                x.BitsMatchId,
-                x.Team,
-                x.Location,
-                x.Opponent
-            }).ToArray();
-            if (result.Length > 0)
-                return Ok(result);
-
-            return Ok("No matches to register");
+            return Ok();
         }
 
         private static List<string> GetPlayerIds(Parse4Result parse4Result)
         {
             IEnumerable<string> query = from game in parse4Result.Series.First().Games
-                        select game.Player;
+                                        select game.Player;
             string[] playerIds = query.ToArray();
             var playerIdsWithoutReserve = new HashSet<string>(playerIds);
             IEnumerable<string> restQuery = from serie in parse4Result.Series
-                            from game in serie.Games
-                            where playerIdsWithoutReserve.Contains(game.Player) == false
-                            select game.Player;
+                                            from game in serie.Games
+                                            where playerIdsWithoutReserve.Contains(game.Player) == false
+                                            select game.Player;
             var allPlayerIds = playerIds.Concat(
                 new HashSet<string>(restQuery).Where(x => playerIdsWithoutReserve.Contains(x) == false)).ToList();
             return allPlayerIds;
@@ -381,15 +378,15 @@
         private static List<string> GetPlayerIds(ParseResult parseResult)
         {
             IEnumerable<string> query = from table in parseResult.Series.First().Tables
-                        from game in new[] { table.Game1, table.Game2 }
-                        select game.Player;
+                                        from game in new[] { table.Game1, table.Game2 }
+                                        select game.Player;
             string[] playerIds = query.ToArray();
             var playerIdsWithoutReserve = new HashSet<string>(playerIds);
             IEnumerable<string> restQuery = from serie in parseResult.Series
-                            from table in serie.Tables
-                            from game in new[] { table.Game1, table.Game2 }
-                            where playerIdsWithoutReserve.Contains(game.Player) == false
-                            select game.Player;
+                                            from table in serie.Tables
+                                            from game in new[] { table.Game1, table.Game2 }
+                                            where playerIdsWithoutReserve.Contains(game.Player) == false
+                                            select game.Player;
             var allPlayerIds = playerIds.Concat(
                 new HashSet<string>(restQuery).Where(x => playerIdsWithoutReserve.Contains(x) == false)).ToList();
             return allPlayerIds;
@@ -413,6 +410,7 @@
             {
                 admin.SetEmail(message.Email);
                 admin.SetPassword(message.Password);
+                admin.Activate();
             }
 
             return Ok();

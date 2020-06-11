@@ -99,7 +99,7 @@
         public void SetPassword(string password)
         {
             HashedPassword = ComputeHashedPassword(password);
-            RequiresPasswordChange = true;
+            RequiresPasswordChange = false;
         }
 
         public void SetPassword(string password, string suppliedActivationKey)
