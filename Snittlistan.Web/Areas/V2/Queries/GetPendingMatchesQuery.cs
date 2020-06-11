@@ -1,4 +1,4 @@
-namespace Snittlistan.Web.Areas.V2.Queries
+﻿namespace Snittlistan.Web.Areas.V2.Queries
 {
     using System;
     using System.Linq;
@@ -19,15 +19,16 @@ namespace Snittlistan.Web.Areas.V2.Queries
 
         public Roster[] Execute(IDocumentSession session)
         {
-            RosterSearchTerms.Result[] results = session.Query<RosterSearchTerms.Result, RosterSearchTerms>()
-                                 .Where(x => x.Preliminary == false)
-                                 .Where(x => x.Date < DateTime.Now)
-                                 .Where(x => x.BitsMatchId != 0)
-                                 .Where(x => x.MatchResultId == null)
-                                 .Where(x => x.Season == seasonId)
-                                 .OrderBy(x => x.Date)
-                                 .ProjectFromIndexFieldsInto<RosterSearchTerms.Result>()
-                                 .ToArray();
+            RosterSearchTerms.Result[] results =
+                session.Query<RosterSearchTerms.Result, RosterSearchTerms>()
+                    .Where(x => x.Preliminary == false)
+                    .Where(x => x.Date < DateTime.Now)
+                    .Where(x => x.BitsMatchId != 0)
+                    .Where(x => x.MatchResultId == null)
+                    .Where(x => x.Season == seasonId)
+                    .OrderBy(x => x.Date)
+                    .ProjectFromIndexFieldsInto<RosterSearchTerms.Result>()
+                    .ToArray();
 
             Roster[] rosters = session.Include<Roster>(x => x.Players).Load<Roster>(results.Select(x => x.Id));
             return rosters;

@@ -4,7 +4,7 @@
     using Snittlistan.Queue;
     using Snittlistan.Queue.Messages;
 
-    public class RegisterMatchCommandLineTask : ICommandLineTask
+    public class RegisterMatchesCommandLineTask : ICommandLineTask
     {
         public void Run(string[] args)
         {
