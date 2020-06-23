@@ -7,17 +7,18 @@
     {
         public void Run(string[] args)
         {
+            bool force = args.Length == 2 && args[1] == "--force";
             using (MsmqGateway.MsmqTransactionScope scope = MsmqGateway.AutoCommitScope())
             {
                 foreach (System.Uri apiUrl in CommandLineTaskHelper.AllApiUrls())
                 {
-                    scope.PublishMessage(new MessageEnvelope(new VerifyMatchesMessage(), apiUrl));
+                    scope.PublishMessage(new MessageEnvelope(new VerifyMatchesMessage(force), apiUrl));
                 }
 
                 scope.Commit();
             }
         }
 
-        public string HelpText => "Verifies registered matches";
+        public string HelpText => "Verifies registered matches. Supply --force to force all.";
     }
 }
