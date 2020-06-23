@@ -244,7 +244,7 @@
         private async Task<IHttpActionResult> Handle(VerifyMatchMessage message)
         {
             Roster roster = DocumentSession.Load<Roster>(message.RosterId);
-            if (roster.IsVerified) return Ok();
+            if (roster.IsVerified && message.Force == false) return Ok();
             WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             HeadInfo result = await bitsClient.GetHeadInfo(roster.BitsMatchId);
             ParseHeaderResult header = BitsParser.ParseHeader(result, websiteConfig.ClubId);
@@ -436,7 +436,7 @@
                 }
                 else
                 {
-                    toVerify.Add(new VerifyMatchMessage(roster.BitsMatchId, roster.Id));
+                    toVerify.Add(new VerifyMatchMessage(roster.BitsMatchId, roster.Id, message.Force));
                 }
             }
 
