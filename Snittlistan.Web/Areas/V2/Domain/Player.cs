@@ -1,4 +1,4 @@
-namespace Snittlistan.Web.Areas.V2.Domain
+﻿namespace Snittlistan.Web.Areas.V2.Domain
 {
     using System;
     using Infrastructure.Bits.Contracts;
@@ -20,7 +20,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
             Email = email; // allow null
             PlayerStatus = playerStatus;
             PersonalNumber = (personalNumber != 0 ? personalNumber : playerItem?.GetPersonalNumber()) ?? 0;
-            Nickname = nickname ?? name;
+            Nickname = string.IsNullOrEmpty(nickname) ? name : nickname;
             Roles = roles ?? new string[0];
 
             // nullable fields
