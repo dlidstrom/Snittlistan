@@ -259,9 +259,9 @@
             // update match result values
             BitsMatchResult bitsMatchResult = await bitsClient.GetBitsMatchResult(roster.BitsMatchId);
             Player[] players = DocumentSession.Query<Player, PlayerSearch>()
-                                         .ToArray()
-                                         .Where(x => x.PlayerItem?.LicNbr != null)
-                                         .ToArray();
+                .ToArray()
+                .Where(x => x.PlayerItem?.LicNbr != null)
+                .ToArray();
             var parser = new BitsParser(players);
             if (roster.IsFourPlayer)
             {
@@ -430,7 +430,7 @@
                     continue;
                 }
 
-                if (roster.IsVerified)
+                if (roster.IsVerified && message.Force == false)
                 {
                     Log.Info($"Skipping {roster.BitsMatchId} because it is already verified.");
                 }
