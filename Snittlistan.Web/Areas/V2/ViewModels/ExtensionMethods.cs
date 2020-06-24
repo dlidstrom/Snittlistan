@@ -9,8 +9,13 @@
             {
                 { "A", 1 },
                 { "F", 2 },
-                { "B", 3 },
-                { "C", 4 }
+                { "F1", 3 },
+                { "F2", 4 },
+                { "B", 5 },
+                { "C", 6 },
+                { "D", 7 },
+                { "DB", 8 },
+                { "DC", 9 },
             };
 
         public static IEnumerable<RosterViewModel> SortRosters(this IEnumerable<RosterViewModel> rosters)
