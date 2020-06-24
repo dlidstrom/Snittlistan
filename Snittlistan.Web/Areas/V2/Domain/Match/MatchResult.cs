@@ -1,4 +1,4 @@
-namespace Snittlistan.Web.Areas.V2.Domain.Match
+﻿namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
     using System;
     using System.Collections.Generic;
@@ -18,6 +18,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         private Dictionary<string, List<PinsAndScoreResult>> playerPins;
         private HashSet<string> rosterPlayers;
         private bool medalsAwarded;
+        private string matchCommentaryAsJson = string.Empty;
 
         // 1-based
         private int registeredSeries;
@@ -84,7 +85,17 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                 Formatting.Indented);
             bool pinsOrPlayersDiffer = oldResult != newResult;
             bool scoresDiffer = (teamScore, opponentScore).CompareTo((TeamScore, OpponentScore)) != 0;
-            if (pinsOrPlayersDiffer || scoresDiffer)
+            MatchCommentaryEvent matchCommentaryEvent = CreateMatchCommentary(
+                matchSeries,
+                opponentSeries,
+                players.ToDictionary(x => x.Id),
+                resultsForPlayer);
+            string newMatchCommentaryAsJson = JsonConvert.SerializeObject(
+                new { matchCommentaryEvent.BodyText, matchCommentaryEvent.SummaryText },
+                Formatting.Indented);
+            bool commentaryDiffers = matchCommentaryAsJson != newMatchCommentaryAsJson;
+
+            if (pinsOrPlayersDiffer || scoresDiffer || commentaryDiffers)
             {
                 var @event = new MatchResultRegistered(
                     roster.Id,
@@ -310,6 +321,9 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         [UsedImplicitly]
         private void Apply(MatchCommentaryEvent e)
         {
+            matchCommentaryAsJson = JsonConvert.SerializeObject(
+                new { e.BodyText, e.SummaryText },
+                Formatting.Indented);
         }
 
         [UsedImplicitly]
