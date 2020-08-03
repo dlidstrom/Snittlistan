@@ -2,13 +2,11 @@
 {
     using System;
     using System.Reflection;
-    using Castle.Core;
     using Castle.MicroKernel;
     using Castle.MicroKernel.Registration;
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
-    using Models;
-    using NLog.Fluent;
+    using NLog;
     using Raven.Client;
     using Raven.Client.Document;
     using Raven.Client.Embedded;
@@ -17,6 +15,7 @@
 
     public class RavenInstaller : IWindsorInstaller
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private readonly SiteWideConfiguration siteWideConfiguration;
         private readonly DocumentStoreMode mode;
 
