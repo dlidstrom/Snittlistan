@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace Snittlistan.Web.Areas.V2.ViewModels
+﻿namespace Snittlistan.Web.Areas.V2.ViewModels
 {
+    using System.Collections.Generic;
+
     public class MatchResultViewModel
     {
         public MatchResultViewModel()

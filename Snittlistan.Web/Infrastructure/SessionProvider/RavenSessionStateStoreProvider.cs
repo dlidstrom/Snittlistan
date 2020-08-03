@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Specialized;
-using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Web;
-using System.Web.Configuration;
-using System.Web.Hosting;
-using System.Web.SessionState;
-using NLog;
-using Raven.Abstractions.Exceptions;
-using Raven.Client;
-using Raven.Json.Linq;
-
-namespace Snittlistan.Web.Infrastructure.SessionProvider
+﻿namespace Snittlistan.Web.Infrastructure.SessionProvider
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Configuration;
+    using System.IO;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Configuration;
+    using System.Web.Hosting;
+    using System.Web.SessionState;
+    using NLog;
+    using Raven.Abstractions.Exceptions;
+    using Raven.Client;
+    using Raven.Json.Linq;
+
     /// <summary>
     /// An ASP.NET session-state store-provider implementation (http://msdn.microsoft.com/en-us/library/ms178588.aspx) using
     /// RavenDb (http://ravendb.net) for persistence.
@@ -64,7 +64,7 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
 
                 base.Initialize(name, config);
 
-                if (int.TryParse(config["retriesOnConcurrentConflicts"], out var retries))
+                if (int.TryParse(config["retriesOnConcurrentConflicts"], out int retries))
                     retriesOnConcurrentConflicts = retries;
 
                 ApplicationName = ConfigurationManager.AppSettings["ApplicationName"];
@@ -111,7 +111,7 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
             {
                 Logger.Debug("Beginning GetItemExclusive. SessionId={0}", id);
 
-                var item = GetSessionStoreItem(
+                SessionStateStoreData item = GetSessionStoreItem(
                     true, context, id, retriesOnConcurrentConflicts, out locked, out lockAge, out lockId, out actions);
 
                 Logger.Debug("Completed GetItemExclusive. SessionId={0}, locked={1}, lockAge={2}, lockId={3}, actions={4}", id, locked, lockAge, lockId, actions);
@@ -145,7 +145,7 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
             {
                 Logger.Debug("Beginning GetItem. SessionId={0}", id);
 
-                var item = GetSessionStoreItem(false, context, id, 0, out locked, out lockAge, out lockId, out actions);
+                SessionStateStoreData item = GetSessionStoreItem(false, context, id, 0, out locked, out lockAge, out lockId, out actions);
 
                 Logger.Debug("Completed GetItem. SessionId={0}, locked={1}, lockAge={2}, lockId={3}, actions={4}", id, locked, lockAge, lockId, actions);
 
@@ -176,10 +176,10 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
                 Logger.Debug(
                     " Beginning SetAndReleaseItemExclusive. SessionId={0}, LockId={1}, newItem={2}", id, lockId, newItem);
 
-                var serializedItems = Serialize((SessionStateItemCollection)item.Items);
+                string serializedItems = Serialize((SessionStateItemCollection)item.Items);
 
-                var store = storeLocator();
-                using (var documentSession = store.OpenSession())
+                IDocumentStore store = storeLocator();
+                using (IDocumentSession documentSession = store.OpenSession())
                 {
                     // if we get a concurrency conflict, then we want to know about it
                     documentSession.Advanced.UseOptimisticConcurrency = true;
@@ -204,8 +204,8 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
                             .Single(x => x.SessionId == id && x.ApplicationName == ApplicationName && x.LockId == (int)lockId);
                     }
 
-                    var expiryDate = DateTime.UtcNow.AddMinutes(sessionStateConfig.Timeout.TotalMinutes);
-                    var ravenJObject = documentSession.Advanced.GetMetadataFor(sessionState);
+                    DateTime expiryDate = DateTime.UtcNow.AddMinutes(sessionStateConfig.Timeout.TotalMinutes);
+                    RavenJObject ravenJObject = documentSession.Advanced.GetMetadataFor(sessionState);
                     ravenJObject["Raven-Expiration-Date"] = new RavenJValue(expiryDate);
                     sessionState.Expires = expiryDate;
                     sessionState.SessionItems = serializedItems;
@@ -235,19 +235,19 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
             {
                 Logger.Debug("Beginning ReleaseItemExclusive. SessionId={0}, LockId={1}", id, lockId);
 
-                var store = storeLocator();
-                using (var documentSession = store.OpenSession())
+                IDocumentStore store = storeLocator();
+                using (IDocumentSession documentSession = store.OpenSession())
                 {
                     // if we get a concurrency conflict, then we want to know about it
                     documentSession.Advanced.UseOptimisticConcurrency = true;
 
-                    var sessionState = documentSession.Query<SessionState>()
+                    SessionState sessionState = documentSession.Query<SessionState>()
                         .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
                         .Single(x => x.SessionId == id && x.ApplicationName == ApplicationName && x.LockId == (int)lockId);
 
                     sessionState.Locked = false;
 
-                    var expiry = DateTime.UtcNow.AddMinutes(sessionStateConfig.Timeout.TotalMinutes);
+                    DateTime expiry = DateTime.UtcNow.AddMinutes(sessionStateConfig.Timeout.TotalMinutes);
                     sessionState.Expires = expiry;
                     documentSession.Advanced.GetMetadataFor(sessionState)["Raven-Expiration-Date"] =
                         new RavenJValue(expiry);
@@ -278,13 +278,13 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
             {
                 Logger.Debug("Beginning RemoveItem. id={0}, lockId={1}", id, lockId);
 
-                var store = storeLocator();
-                using (var documentSession = store.OpenSession())
+                IDocumentStore store = storeLocator();
+                using (IDocumentSession documentSession = store.OpenSession())
                 {
                     // if we get a concurrency conflict, then we want to know about it
                     documentSession.Advanced.UseOptimisticConcurrency = true;
 
-                    var sessionState =
+                    SessionState sessionState =
                         documentSession.Query<SessionState>()
                         .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
                         .SingleOrDefault(
@@ -317,18 +317,18 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
             {
                 Logger.Debug("Beginning ResetItemTimeout. id={0}", id);
 
-                var store = storeLocator();
-                using (var documentSession = store.OpenSession())
+                IDocumentStore store = storeLocator();
+                using (IDocumentSession documentSession = store.OpenSession())
                 {
                     // we do not want to overwrite any changes
                     documentSession.Advanced.UseOptimisticConcurrency = true;
 
-                    var sessionState = documentSession.Query<SessionState>().SingleOrDefault(
+                    SessionState sessionState = documentSession.Query<SessionState>().SingleOrDefault(
                         x => x.SessionId == id && x.ApplicationName == ApplicationName);
 
                     if (sessionState != null)
                     {
-                        var expiry = DateTime.UtcNow.AddMinutes(sessionStateConfig.Timeout.TotalMinutes);
+                        DateTime expiry = DateTime.UtcNow.AddMinutes(sessionStateConfig.Timeout.TotalMinutes);
                         sessionState.Expires = expiry;
                         documentSession.Advanced.GetMetadataFor(sessionState)["Raven-Expiration-Date"] =
                             new RavenJValue(expiry);
@@ -362,10 +362,10 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
             {
                 Logger.Debug("Beginning CreateUninitializedItem. id={0}, timeout={1}", id, timeout);
 
-                var store = storeLocator();
-                using (var documentSession = store.OpenSession())
+                IDocumentStore store = storeLocator();
+                using (IDocumentSession documentSession = store.OpenSession())
                 {
-                    var expiry = DateTime.UtcNow.AddMinutes(timeout);
+                    DateTime expiry = DateTime.UtcNow.AddMinutes(timeout);
 
                     var sessionState = new SessionState(id, ApplicationName)
                                            {
@@ -496,8 +496,8 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
             locked = false;
             actionFlags = 0;
 
-            var store = storeLocator();
-            using (var documentSession = store.OpenSession())
+            IDocumentStore store = storeLocator();
+            using (IDocumentSession documentSession = store.OpenSession())
             {
                 // don't tolerate stale data
                 documentSession.Advanced.AllowNonAuthoritativeInformation = false;
@@ -507,7 +507,7 @@ namespace Snittlistan.Web.Infrastructure.SessionProvider
 
                 Logger.Debug("Retrieving item from RavenDB. SessionId: {0}; ApplicationName={1}", id, ApplicationName);
 
-                var sessionState =
+                SessionState sessionState =
                     documentSession.Query<SessionState>()
                     .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
                     .SingleOrDefault(x => x.SessionId == id && x.ApplicationName == ApplicationName);

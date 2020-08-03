@@ -1,9 +1,9 @@
-using System;
-using System.Text;
-
 #pragma warning disable 618
 namespace Snittlistan.Queue.Messages
 {
+    using System;
+    using System.Text;
+
     public class EmailTask
     {
         [Obsolete("Use the factory method")]

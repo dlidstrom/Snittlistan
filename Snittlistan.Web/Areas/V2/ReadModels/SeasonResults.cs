@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using EventStoreLite;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.Domain.Match;
-
 namespace Snittlistan.Web.Areas.V2.ReadModels
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using EventStoreLite;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.Domain.Match;
+
     public class SeasonResults : IReadModel
     {
         public SeasonResults(int season)
@@ -27,7 +27,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
         public void Add(int bitsMatchId, string rosterId, DateTime date, int turn, MatchSerie matchSerie)
         {
-            foreach (var matchTable in new[] { matchSerie.Table1, matchSerie.Table2, matchSerie.Table3, matchSerie.Table4 })
+            foreach (MatchTable matchTable in new[] { matchSerie.Table1, matchSerie.Table2, matchSerie.Table3, matchSerie.Table4 })
             {
                 var firstPlayerResult = new PlayerResult(
                     bitsMatchId,
@@ -56,14 +56,14 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
         public void Add(int bitsMatchId, string rosterId, DateTime date, int turn, MatchSerie4 matchSerie)
         {
-            var games = new[]
+            (int tableNumber, MatchGame4 game)[] games = new[]
             {
                 (tableNumber: 1, game: matchSerie.Game1),
                 (tableNumber: 2, game: matchSerie.Game2),
                 (tableNumber: 3, game: matchSerie.Game3),
                 (tableNumber: 4, game: matchSerie.Game4)
             };
-            foreach (var (tableNumber, game) in games)
+            foreach ((int tableNumber, MatchGame4 game) in games)
             {
                 var playerResult = new PlayerResult(
                     bitsMatchId,
@@ -104,7 +104,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
                     ValidResult = validResult
                 };
             var topThree = query.Take(3).ToArray();
-            var playerResults = topThree.SelectMany(x => x.PlayerResults.Select(y => Tuple.Create(y, x.ValidResult))).ToArray();
+            Tuple<PlayerResult, bool>[] playerResults = topThree.SelectMany(x => x.PlayerResults.Select(y => Tuple.Create(y, x.ValidResult))).ToArray();
             var topThreeResults = new HashSet<Tuple<PlayerResult, bool>>(playerResults);
             return topThreeResults;
         }
@@ -155,7 +155,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             {
                 unchecked
                 {
-                    var hashCode = BitsMatchId;
+                    int hashCode = BitsMatchId;
                     hashCode = (hashCode * 397) ^ (RosterId != null ? RosterId.GetHashCode() : 0);
                     hashCode = (hashCode * 397) ^ SerieNumber;
                     hashCode = (hashCode * 397) ^ TableNumber;
@@ -171,7 +171,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
             public bool Equals(PlayerResult playerResult)
             {
-                var eq = playerResult.BitsMatchId == BitsMatchId
+                bool eq = playerResult.BitsMatchId == BitsMatchId
                     && string.Equals(playerResult.RosterId, RosterId)
                     && playerResult.SerieNumber == SerieNumber
                     && playerResult.TableNumber == TableNumber

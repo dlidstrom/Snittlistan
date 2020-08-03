@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq.Expressions;
-using System.Web.Mvc;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using System;
+    using System.Linq.Expressions;
+    using System.Web.Mvc;
+
     public static class ActionResultHelper
     {
         public static T AssertResultIs<T>(this ActionResult result) where T : ActionResult

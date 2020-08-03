@@ -22,10 +22,10 @@
             string location)
         {
             // Arrange
-            var content = await BitsGateway.GetHeadInfo(bitsMatchId);
+            Web.Infrastructure.Bits.Contracts.HeadInfo content = await BitsGateway.GetHeadInfo(bitsMatchId);
 
             // Act
-            var header = BitsParser.ParseHeader(content, homeTeamId);
+            ParseHeaderResult header = BitsParser.ParseHeader(content, homeTeamId);
 
             // Assert
             Assert.That(header.Date, Is.EqualTo(date));

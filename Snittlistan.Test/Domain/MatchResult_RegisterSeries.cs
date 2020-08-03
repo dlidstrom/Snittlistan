@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-using Snittlistan.Queue.Messages;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.Domain.Match;
-using Snittlistan.Web.Areas.V2.Domain.Match.Events;
-using Snittlistan.Web.Areas.V2.Indexes;
-using Snittlistan.Web.Areas.V2.ReadModels;
-
-namespace Snittlistan.Test.Domain
+﻿namespace Snittlistan.Test.Domain
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using NUnit.Framework;
+    using Snittlistan.Queue.Messages;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.Domain.Match;
+    using Snittlistan.Web.Areas.V2.Domain.Match.Events;
+    using Snittlistan.Web.Areas.V2.Indexes;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+
     [TestFixture]
     public class MatchResult_RegisterSeries
     {
@@ -22,7 +22,7 @@ namespace Snittlistan.Test.Domain
         public void SetUp()
         {
             // Arrange
-            var players = new[]
+            Player[] players = new[]
             {
                 new Player("n", "e@d.com", Player.Status.Active, -1, null, new string[0])
                 {
@@ -65,7 +65,7 @@ namespace Snittlistan.Test.Domain
             matchResult = new MatchResult(roster, 9, 11, 123);
 
             // Act
-            var series = new[]
+            MatchSerie[] series = new[]
             {
                 new MatchSerie(
                     1,
@@ -86,7 +86,7 @@ namespace Snittlistan.Test.Domain
                         new MatchTable(4, new MatchGame("p7", 200, 0, 0), new MatchGame("p8", 0, 0, 0), 0),
                     })
             };
-            var opponentSeries = new[]
+            ResultSeriesReadModel.Serie[] opponentSeries = new[]
             {
                 new ResultSeriesReadModel.Serie
                 {
@@ -154,7 +154,7 @@ namespace Snittlistan.Test.Domain
         public void CanRegisterAllSeries()
         {
             // Assert
-            var changes = matchResult.GetUncommittedChanges();
+            EventStoreLite.IDomainEvent[] changes = matchResult.GetUncommittedChanges();
             Assert.That(changes, Has.Length.EqualTo(4));
             Assert.IsAssignableFrom<SerieRegistered>(changes[1]);
         }

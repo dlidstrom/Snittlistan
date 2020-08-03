@@ -22,14 +22,15 @@
     using Helpers;
     using NLog;
     using Raven.Client;
+    using Raven.Client.Document;
     using Snittlistan.Queue;
+    using Snittlistan.Queue.Models;
     using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Attributes;
     using Snittlistan.Web.Infrastructure.Indexes;
     using Snittlistan.Web.Infrastructure.Installers;
     using Snittlistan.Web.Infrastructure.IoC;
     using Snittlistan.Web.Models;
-    using ViewModels;
 
     public class MvcApplication : HttpApplication
     {
@@ -48,6 +49,8 @@
         public static IWindsorContainer ChildContainer { get; private set; }
 
         public static ApplicationMode Mode => applicationMode;
+
+        public static IDocumentStore SiteWideDocumentStore { get; private set; }
 
         public static void Bootstrap(IWindsorContainer container, HttpConfiguration configuration)
         {
@@ -68,12 +71,13 @@
             }
 
             Container?.Dispose();
+            SiteWideDocumentStore.Dispose();
         }
 
         public static string GetAssemblyVersion()
         {
             var assembly = Assembly.GetExecutingAssembly();
-            var version = assembly.GetName().Version;
+            Version version = assembly.GetName().Version;
             return version.ToString();
         }
 
@@ -92,7 +96,7 @@
         protected void Application_BeginRequest()
         {
             Trace.CorrelationManager.ActivityId = Guid.NewGuid();
-            if (Context.IsDebuggingEnabled)
+            if (Context.IsDebuggingEnabled || Context.Request.IsLocal)
             {
                 return;
             }
@@ -109,38 +113,42 @@
 
         protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
         {
-            var authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
+            HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
             if (authCookie == null) return;
 
-            var authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+            FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
             if (authTicket == null) return;
 
-            var session = Container.Resolve<IDocumentSession>();
+            IDocumentSession session = Container.Resolve<IDocumentSession>();
 
             // try the player first
-            var player = session.Load<Player>(authTicket.Name);
+            Player player = session.Load<Player>(authTicket.Name);
             if (player != null)
             {
-                var defaultRoles = WebsiteRoles.PlayerGroup().Select(x => x.Name);
-                var roles = new HashSet<string>(defaultRoles.Concat(player.Roles)).ToArray();
+                IEnumerable<string> defaultRoles = WebsiteRoles.PlayerGroup().Select(x => x.Name);
+                string[] roles = new HashSet<string>(defaultRoles.Concat(player.Roles)).ToArray();
                 HttpContext.Current.User =
                     new CustomPrincipal(
                         player.Id,
                         player.Name,
+                        player.Email,
+                        player.UniqueId,
                         roles);
                 return;
             }
 
             // try the user now
-            var user = session.FindUserByEmail(authTicket.Name);
+            User user = session.FindUserByEmail(authTicket.Name);
             if (user != null)
             {
-                if (user.Id == "Admin")
+                if (user.Id == Models.User.AdminId)
                 {
                     HttpContext.Current.User =
                         new CustomPrincipal(
                             null,
                             user.Email,
+                            user.Email,
+                            user.UniqueId,
                             WebsiteRoles.AdminGroup().Select(x => x.Name).ToArray());
                 }
                 else
@@ -149,6 +157,8 @@
                         new CustomPrincipal(
                             null,
                             user.Email,
+                            user.Email,
+                            user.UniqueId,
                             WebsiteRoles.UserGroup().Select(x => x.Name).ToArray());
                 }
 
@@ -160,6 +170,12 @@
 
         private static void Bootstrap(HttpConfiguration configuration)
         {
+            // site-wide config
+            SiteWideDocumentStore = new DocumentStore
+            {
+                ConnectionStringName = "Snittlistan-SiteWide"
+            }.Initialize(true);
+
             RegisterGlobalFilters(GlobalFilters.Filters);
 
             // initialize container and controller factory
@@ -193,42 +209,28 @@
             if (Container == null)
             {
                 Container = new WindsorContainer();
-                var tenantConfigurations = new[]
+
+                // load tenant configurations from master database
+                //var tenantConfigurations = 1;
+                SiteWideConfiguration siteWideConfiguration;
+                using (IDocumentSession session = SiteWideDocumentStore.OpenSession())
                 {
-                    new TenantConfiguration(
-                        "test.localhost",
-                        "Snittlistan",
-                        "Snittlistan-hofvet",
-                        "hofvet.ico",
-                        "hofvet.png",
-                        "76x76",
-                        "Hofvet",
-                        "Fredrikshof IF BK"),
-                    new TenantConfiguration(
-                        "snittlistan.se",
-                        "Snittlistan",
-                        "Snittlistan-hofvet",
-                        "hofvet.ico",
-                        "hofvet.png",
-                        "76x76",
-                        "Hofvet",
-                        "Fredrikshof IF BK"),
-                    new TenantConfiguration(
-                        "vartansik.snittlistan.se",
-                        "Snittlistan-vartansik",
-                        "Snittlistan-vartansik",
-                        "vartansik.ico",
-                        "vartansik.png",
-                        "180x180",
-                        "Värtans IK",
-                        "Värtans IK")
-                };
-                foreach (var tenantConfiguration in tenantConfigurations)
+                    siteWideConfiguration = session.Load<SiteWideConfiguration>(SiteWideConfiguration.GlobalId);
+                    if (siteWideConfiguration == null)
+                    {
+                        siteWideConfiguration = new SiteWideConfiguration("", new[] { new TenantConfiguration("", "", "", "", "", "", "") });
+                        session.Store(siteWideConfiguration);
+                    }
+
+                    session.SaveChanges();
+                }
+
+                foreach (TenantConfiguration tenantConfiguration in siteWideConfiguration.TenantConfigurations)
                 {
                     Container.Register(
                         Component.For<TenantConfiguration>()
                                  .Instance(tenantConfiguration)
-                                 .Named(tenantConfiguration.Name));
+                                 .Named(tenantConfiguration.Hostname));
                 }
 
                 Container.Kernel.AddHandlerSelector(new HostBasedComponentSelector());
@@ -238,7 +240,7 @@
                     new ControllerInstaller(),
                     new EventMigratorInstaller(),
                     new EventStoreSessionInstaller(),
-                    new RavenInstaller(),
+                    new RavenInstaller(siteWideConfiguration),
                     new ServicesInstaller(),
                     new MsmqInstaller(),
                     EventStoreInstaller.FromAssembly(Assembly.GetExecutingAssembly(), DocumentStoreMode.Server));
@@ -249,8 +251,8 @@
                 ChildContainer = new WindsorContainer().Register(
                     Component.For<IDocumentSession>().UsingFactoryMethod(kernel =>
                     {
-                        var documentSession = kernel.Resolve<IDocumentStore>()
-                                                    .OpenSession();
+                        IDocumentSession documentSession = kernel.Resolve<IDocumentStore>()
+                            .OpenSession();
                         documentSession.Advanced.UseOptimisticConcurrency = true;
                         return documentSession;
                     }).LifestyleTransient());

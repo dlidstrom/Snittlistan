@@ -1,11 +1,11 @@
-﻿using System.Net.Http;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-using log4net;
-
-namespace Snittlistan.Queue
+﻿namespace Snittlistan.Queue
 {
+    using System.Net.Http;
+    using System.Reflection;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using log4net;
+
     public class LoggingHandler : DelegatingHandler
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -23,7 +23,7 @@ namespace Snittlistan.Queue
                 Log.Info(await request.Content.ReadAsStringAsync());
             }
 
-            var response = await base.SendAsync(request, cancellationToken);
+            HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
 
             Log.Info(response.ToString());
             if (response.Content != null)

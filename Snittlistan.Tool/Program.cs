@@ -1,16 +1,18 @@
-﻿using System;
-using System.Configuration;
-using System.Linq;
-using System.Reflection;
-using Castle.MicroKernel.Registration;
-using Castle.Windsor;
-using log4net;
-using log4net.Config;
-using Snittlistan.Queue;
-using Snittlistan.Tool.Tasks;
-
-namespace Snittlistan.Tool
+﻿namespace Snittlistan.Tool
 {
+    using System;
+    using System.Configuration;
+    using System.Linq;
+    using System.Reflection;
+    using Castle.MicroKernel.Registration;
+    using Castle.Windsor;
+    using log4net;
+    using log4net.Config;
+    using Raven.Client;
+    using Raven.Client.Document;
+    using Snittlistan.Queue;
+    using Snittlistan.Tool.Tasks;
+
     public static class Program
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -31,7 +33,6 @@ namespace Snittlistan.Tool
 
         private static void Run(string[] args)
         {
-
             IWindsorContainer container = new WindsorContainer();
             container.Register(
                 Classes.FromThisAssembly()
@@ -48,7 +49,14 @@ namespace Snittlistan.Tool
             try
             {
                 MsmqGateway.Initialize(ConfigurationManager.AppSettings["TaskQueue"]);
-                var task = container.Resolve<ICommandLineTask>(args[0]);
+
+                // site-wide config
+                IDocumentStore siteWideDocumentStore = new DocumentStore
+                {
+                    ConnectionStringName = "Snittlistan-SiteWide"
+                }.Initialize(true);
+                CommandLineTaskHelper.DocumentStore = siteWideDocumentStore;
+                ICommandLineTask task = container.Resolve<ICommandLineTask>(args[0]);
                 task.Run(args);
             }
             catch (Exception e)
@@ -62,12 +70,12 @@ namespace Snittlistan.Tool
             Console.WriteLine($"Usage: {AppDomain.CurrentDomain.FriendlyName} <task>");
             Console.WriteLine();
             Console.WriteLine("Available tasks:");
-            var names = container.Kernel
+            string[] names = container.Kernel
                                  .GetAssignableHandlers(typeof(ICommandLineTask))
                                  .Select(x => x.ComponentModel.ComponentName.Name)
                                  .OrderBy(x => x)
                                  .ToArray();
-            foreach (var name in names)
+            foreach (string name in names)
             {
                 Console.WriteLine("{0,30}", name);
             }

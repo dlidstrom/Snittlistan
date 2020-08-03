@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using System.Web.Mvc;
-using Raven.Client.Linq;
-using Snittlistan.Web.Controllers;
-using Snittlistan.Web.Infrastructure.Indexes;
-
-namespace Snittlistan.Web.Areas.V1.Controllers
+﻿namespace Snittlistan.Web.Areas.V1.Controllers
 {
+    using System.Linq;
+    using System.Web.Mvc;
+    using Raven.Client.Linq;
+    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Infrastructure.Indexes;
+
     public class SearchController : AbstractController
     {
         public JsonResult PlayersQuickSearch(string term)

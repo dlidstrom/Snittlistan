@@ -59,7 +59,7 @@
 
         public ActionResult DeleteUser(string id)
         {
-            var user = DocumentSession.Load<User>(id);
+            User user = DocumentSession.Load<User>(id);
             if (user == null) throw new HttpException(404, "User not found");
 
             return View(new UserViewModel(user));
@@ -69,7 +69,7 @@
         [ActionName("DeleteUser")]
         public ActionResult DeleteUserConfirmed(string id)
         {
-            var user = DocumentSession.Load<User>(id);
+            User user = DocumentSession.Load<User>(id);
             if (user == null) throw new HttpException(404, "User not found");
             DocumentSession.Delete(user);
             return RedirectToAction("Users");
@@ -77,7 +77,7 @@
 
         public ActionResult ActivateUser(string id)
         {
-            var user = DocumentSession.Load<User>(id);
+            User user = DocumentSession.Load<User>(id);
             if (user == null) throw new HttpException(404, "User not found");
 
             return View(new UserViewModel(user));
@@ -87,7 +87,7 @@
         [ActionName("ActivateUser")]
         public ActionResult ActivateUserConfirmed(string id, bool? invite)
         {
-            var user = DocumentSession.Load<User>(id);
+            User user = DocumentSession.Load<User>(id);
             if (user == null) throw new HttpException(404, "User not found");
             if (user.IsActive) user.Deactivate();
             else
@@ -153,7 +153,7 @@
             var eventMigrators = MvcApplication.Container.ResolveAll<IEventMigratorWithResults>()
                 .ToList();
             EventStore.MigrateEvents(eventMigrators);
-            var results = string.Join("", eventMigrators.Select(x => x.GetResults()));
+            string results = string.Join("", eventMigrators.Select(x => x.GetResults()));
 
             return View("MigrateEvents", new HtmlString(results));
         }

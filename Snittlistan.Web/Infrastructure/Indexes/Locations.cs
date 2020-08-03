@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using Raven.Client.Indexes;
-using Snittlistan.Web.Areas.V1.Models;
-
-namespace Snittlistan.Web.Infrastructure.Indexes
+﻿namespace Snittlistan.Web.Infrastructure.Indexes
 {
+    using System.Linq;
+    using Raven.Client.Indexes;
+    using Snittlistan.Web.Areas.V1.Models;
+
     public class Locations : AbstractIndexCreationTask<Match8x4, Locations.Result>
     {
         public Locations()

@@ -1,7 +1,7 @@
-﻿using System.Web.Mvc;
-
-namespace Snittlistan.Web.Areas.V2.Controllers
+﻿namespace Snittlistan.Web.Areas.V2.Controllers
 {
+    using System.Web.Mvc;
+
     public class RedirectController : Controller
     {
         public ActionResult Redirect()

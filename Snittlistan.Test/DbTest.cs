@@ -19,7 +19,7 @@
         [SetUp]
         public void SetUp()
         {
-            var container = new WindsorContainer().Install(
+            IWindsorContainer container = new WindsorContainer().Install(
                 new RavenInstaller(DocumentStoreMode.InMemory));
 
             Store = container.Resolve<IDocumentStore>();
@@ -44,7 +44,7 @@
 
         protected static UrlHelper CreateUrlHelper()
         {
-            var context = Mock.Of<HttpContextBase>();
+            HttpContextBase context = Mock.Of<HttpContextBase>();
             var routes = new RouteCollection();
             new RouteConfig(routes).Configure();
             return new UrlHelper(new RequestContext(Mock.Get(context).Object, new RouteData()), routes);

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Web.Mvc;
-using System.Web.Routing;
-using Castle.MicroKernel;
-using Snittlistan.Web.Areas.V1.Controllers;
-
-namespace Snittlistan.Web.Infrastructure.IoC
+﻿namespace Snittlistan.Web.Infrastructure.IoC
 {
+    using System;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+    using Castle.MicroKernel;
+    using Snittlistan.Web.Areas.V1.Controllers;
+
     public class WindsorControllerFactory : DefaultControllerFactory
     {
         private readonly IKernel kernel;
@@ -29,7 +29,7 @@ namespace Snittlistan.Web.Infrastructure.IoC
 
             try
             {
-                var controller = kernel.Resolve<IController>(controllerName + "Controller");
+                IController controller = kernel.Resolve<IController>(controllerName + "Controller");
                 if (controller is Controller controllerWithInvoker)
                     controllerWithInvoker.ActionInvoker = new ActionInvokerWrapper(controllerWithInvoker.ActionInvoker);
                 return controller;

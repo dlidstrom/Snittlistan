@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace Snittlistan.Web.Areas.V1.Models
+﻿namespace Snittlistan.Web.Areas.V1.Models
 {
+    using System.Collections.Generic;
+
     public abstract class TeamFactory
     {
         public List<Serie8x4> Series { get; set; }

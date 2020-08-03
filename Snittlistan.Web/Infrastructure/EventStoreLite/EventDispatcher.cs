@@ -1,10 +1,10 @@
-﻿using System;
-using Castle.Windsor;
-using EventStoreLite.Infrastructure;
-
-// ReSharper disable once CheckNamespace
+﻿// ReSharper disable once CheckNamespace
 namespace EventStoreLite
 {
+    using System;
+    using Castle.Windsor;
+    using EventStoreLite.Infrastructure;
+
     /// <summary>
     /// Used to dispatch events to event handlers.
     /// </summary>
@@ -19,9 +19,9 @@ namespace EventStoreLite
 
         public void Dispatch(IDomainEvent e, string aggregateId)
         {
-            var type = typeof(IEventHandler<>).MakeGenericType(e.GetType());
-            var handlers = container.ResolveAll(type);
-            foreach (var handler in handlers)
+            Type type = typeof(IEventHandler<>).MakeGenericType(e.GetType());
+            Array handlers = container.ResolveAll(type);
+            foreach (object handler in handlers)
             {
                 handler.AsDynamic().Handle(e, aggregateId);
             }

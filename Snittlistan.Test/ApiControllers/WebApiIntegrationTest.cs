@@ -61,7 +61,7 @@
         {
             WaitForIndexing();
 
-            using (var session = Container.Resolve<IDocumentStore>().OpenSession())
+            using (IDocumentSession session = Container.Resolve<IDocumentStore>().OpenSession())
             {
                 action.Invoke(session);
                 session.SaveChanges();
@@ -77,15 +77,15 @@
 
         private void WaitForIndexing()
         {
-            var documentStore = Container.Resolve<IDocumentStore>();
+            IDocumentStore documentStore = Container.Resolve<IDocumentStore>();
             const int Timeout = 15000;
-            var indexingTask = Task.Factory.StartNew(
+            Task indexingTask = Task.Factory.StartNew(
                 () =>
                 {
                     var sw = Stopwatch.StartNew();
                     while (sw.Elapsed.TotalMilliseconds < Timeout)
                     {
-                        var s = documentStore.DatabaseCommands.GetStatistics()
+                        string[] s = documentStore.DatabaseCommands.GetStatistics()
                                              .StaleIndexes;
                         if (s.Length == 0)
                         {

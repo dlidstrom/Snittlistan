@@ -1,47 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-
-namespace Snittlistan.Tool.Tasks
+﻿namespace Snittlistan.Tool.Tasks
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Linq;
+    using Raven.Client;
+    using Snittlistan.Queue.Models;
+
     public static class CommandLineTaskHelper
     {
-        public static void ForAllConnectionStrings(Action<(ConnectionStringSettings, Uri)> action)
-        {
-            foreach (ConnectionStringSettings connectionStringSettings in ConfigurationManager.ConnectionStrings)
-            {
-                if (connectionStringSettings.ConnectionString.Contains("Snittlistan"))
-                {
-                    var url = ConfigurationManager.AppSettings[$"{connectionStringSettings.Name}-api"] ?? throw new Exception($"Specify url using appSettings key {connectionStringSettings.Name}-api");
-                    action.Invoke((connectionStringSettings, new Uri(url)));
-                }
-            }
-        }
-
-        public static (ConnectionStringSettings, Uri)[] AllConnectionStrings()
-        {
-            var list = new List<(ConnectionStringSettings, Uri)>();
-            ForAllConnectionStrings(x => list.Add(x));
-            return list.ToArray();
-        }
-
-        public static void ForAllApiUrls(Action<Uri> action)
-        {
-            foreach (string name in ConfigurationManager.AppSettings)
-            {
-                if (name.Contains("Snittlistan-"))
-                {
-                    var url = ConfigurationManager.AppSettings[name];
-                    action.Invoke(new Uri(url));
-                }
-            }
-        }
+        public static IDocumentStore DocumentStore { get; set; }
 
         public static Uri[] AllApiUrls()
         {
-            var list = new List<Uri>();
-            ForAllApiUrls(x => list.Add(x));
-            return list.ToArray();
+            int port = Convert.ToInt32(ConfigurationManager.AppSettings["Port"]);
+            using (IDocumentSession session = DocumentStore.OpenSession())
+            {
+                SiteWideConfiguration siteWideConfig = session.Load<SiteWideConfiguration>(SiteWideConfiguration.GlobalId);
+                Uri[] list = siteWideConfig.TenantConfigurations
+                    .Select(x => new Uri($"http://{x.Hostname}:{port}/api/task"))
+                    .ToArray();
+                return list;
+            }
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Raven.Imports.Newtonsoft.Json;
-
-namespace Snittlistan.Web.Areas.V2.Domain.Match
+﻿namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Raven.Imports.Newtonsoft.Json;
+
     public class MatchSerie
     {
         public MatchSerie(int serieNumber, IReadOnlyList<MatchTable> tables)
@@ -21,10 +21,10 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
             SerieNumber = serieNumber;
             var players = new HashSet<string>();
-            foreach (var matchTable in tables)
+            foreach (MatchTable matchTable in tables)
             {
-                var p1 = matchTable.Game1.Player;
-                var p2 = matchTable.Game2.Player;
+                string p1 = matchTable.Game1.Player;
+                string p2 = matchTable.Game2.Player;
                 players.Add(p1);
                 players.Add(p2);
             }

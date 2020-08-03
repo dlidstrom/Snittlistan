@@ -1,8 +1,8 @@
-using System.Diagnostics;
-
 // ReSharper disable once CheckNamespace
 namespace EventStoreLite.Infrastructure
 {
+    using System.Diagnostics;
+
     internal static class PrivateReflectionDynamicObjectExtensions
     {
         [DebuggerStepThrough]

@@ -311,7 +311,6 @@
     <Compile Include="Infrastructure\OutlookAgentMessageHandler.cs" />
     <Compile Include="Infrastructure\RateHandler.cs" />
     <Compile Include="ViewModels\QuillData.cs" />
-    <Compile Include="ViewModels\TenantConfiguration.cs" />
     <Compile Include="Models\Emails.cs" />
     <Compile Include="Models\WebsiteConfig.cs" />
     <Compile Include="ViewModels\UserInvitedViewModel.cs" />
@@ -343,6 +342,7 @@
     <Content Include="Content\external\air-datepicker\datepicker.js" />
     <Content Include="Content\external\air-datepicker\datepicker.min.css" />
     <Content Include="Content\external\air-datepicker\datepicker.min.js" />
+    <Content Include="Content\external\chatra\chatra.js" />
     <Content Include="Content\external\jquery\jquery-3.3.1.js" />
     <Content Include="Content\external\jquery\jquery-3.3.1.min.js" />
     <Content Include="Content\external\quill\quill.js" />
@@ -631,7 +631,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53150</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://test.localhost:61026/</IISUrl>
+          <IISUrl>http://hofvet.snittlistan.se:61026/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

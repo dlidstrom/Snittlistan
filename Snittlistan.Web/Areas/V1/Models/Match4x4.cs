@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Raven.Imports.Newtonsoft.Json;
-
-namespace Snittlistan.Web.Areas.V1.Models
+﻿namespace Snittlistan.Web.Areas.V1.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Raven.Imports.Newtonsoft.Json;
+
     /// <summary>
     /// Represents a league match.
     /// </summary>

@@ -147,13 +147,14 @@
             RouteTable.Routes.Maps("GET", "~/feed/", new { controller = "Hacker", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/feed", new { controller = "Hacker", action = "Index" });
             RouteTable.Routes.Maps("GET", "~/temp/", new { controller = "Hacker", action = "Index" });
+            RouteTable.Routes.Maps("GET", "~/console", new { controller = "Hacker", action = "Index" });
         }
 
         private static void RegisterArea<T>(RouteCollection routes, object state) where T : AreaRegistration
         {
             var registration = (AreaRegistration)Activator.CreateInstance(typeof(T));
             var context = new AreaRegistrationContext(registration.AreaName, routes, state);
-            var typeNamespace = registration.GetType().Namespace;
+            string typeNamespace = registration.GetType().Namespace;
             if (typeNamespace != null)
             {
                 context.Namespaces.Add(typeNamespace + ".*");

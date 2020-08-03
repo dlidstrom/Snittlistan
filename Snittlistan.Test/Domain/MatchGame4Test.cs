@@ -1,9 +1,9 @@
-﻿using System;
-using NUnit.Framework;
-using Snittlistan.Web.Areas.V2.Domain.Match;
-
-namespace Snittlistan.Test.Domain
+﻿namespace Snittlistan.Test.Domain
 {
+    using System;
+    using NUnit.Framework;
+    using Snittlistan.Web.Areas.V2.Domain.Match;
+
     [TestFixture]
     public class MatchGame4Test
     {

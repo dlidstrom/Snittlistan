@@ -1,11 +1,11 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Reflection;
-using NUnit.Framework;
-using Snittlistan.Web.Areas.V2.Domain;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using System.Diagnostics;
+    using System.IO;
+    using System.Reflection;
+    using NUnit.Framework;
+    using Snittlistan.Web.Areas.V2.Domain;
+
     [TestFixture]
     public class BitsParser_MatchScheme
     {
@@ -15,22 +15,22 @@ namespace Snittlistan.Test
             // Act
             ParseMatchSchemeResult matchScheme;
             var assembly = Assembly.GetExecutingAssembly();
-            using (var stream = assembly.GetManifestResourceStream(resourceName))
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             {
                 Debug.Assert(stream != null, nameof(stream) + " != null");
                 using (var reader = new StreamReader(stream))
                 {
-                    var content = reader.ReadToEnd();
+                    string content = reader.ReadToEnd();
                     matchScheme = BitsParser.ParseMatchScheme(content);
                 }
             }
 
             // Assert
             Assert.That(matchScheme.Matches, Has.Length.EqualTo(expectedItems.Length));
-            for (var i = 0; i < expectedItems.Length; i++)
+            for (int i = 0; i < expectedItems.Length; i++)
             {
-                var item = matchScheme.Matches[i];
-                var expectedItem = expectedItems[i];
+                ParseMatchSchemeResult.MatchItem item = matchScheme.Matches[i];
+                ParseMatchSchemeResult.MatchItem expectedItem = expectedItems[i];
                 Assert.That(item.Turn, Is.EqualTo(expectedItem.Turn), $"Item {item.RowFromHtml} {item.Teams} Turn");
                 Assert.That(item.Date, Is.EqualTo(expectedItem.Date), $"Item {item.RowFromHtml}: {item.Teams} Date");
                 Assert.That(item.DateChanged, Is.EqualTo(expectedItem.DateChanged), $"Item {item.RowFromHtml}: {item.Teams} DateChanged");

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.ReadModels;
-
-namespace Snittlistan.Web.Areas.V2.ViewModels
+﻿namespace Snittlistan.Web.Areas.V2.ViewModels
 {
+    using System.Collections.Generic;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+
     public class PlayerScoreViewModel
     {
         public PlayerScoreViewModel(PlayerScore playerScore, Roster roster)

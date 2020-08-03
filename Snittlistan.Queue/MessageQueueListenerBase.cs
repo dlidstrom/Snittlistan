@@ -1,15 +1,15 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Messaging;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-using log4net;
-
-namespace Snittlistan.Queue
+﻿namespace Snittlistan.Queue
 {
+    using System;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
+    using System.Messaging;
+    using System.Reflection;
+    using System.Text;
+    using System.Threading;
+    using log4net;
+
     public abstract class MessageQueueListenerBase : IDisposable
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -35,8 +35,8 @@ namespace Snittlistan.Queue
             }
 
             // limit threads to be between 1 and (# processors * 2)
-            var numberOfThreads = Math.Max(1, settings.WorkerThreadCount);
-            var maxThreads = Environment.ProcessorCount * 2;
+            int numberOfThreads = Math.Max(1, settings.WorkerThreadCount);
+            int maxThreads = Environment.ProcessorCount * 2;
             numberOfThreads = Math.Min(numberOfThreads, maxThreads);
 
             Log.InfoFormat(
@@ -63,7 +63,7 @@ namespace Snittlistan.Queue
         public void Start()
         {
             Log.Info("Starting msmq listener");
-            foreach (var importMessageQueue in _importMessageQueues)
+            foreach (MessageQueue importMessageQueue in _importMessageQueues)
             {
                 importMessageQueue.PeekCompleted += Queue_PeekCompleted;
                 importMessageQueue.BeginPeek();
@@ -74,7 +74,7 @@ namespace Snittlistan.Queue
         {
             _isClosing = true;
             Log.Info("Stopping msmq listener");
-            foreach (var importMessageQueue in _importMessageQueues)
+            foreach (MessageQueue importMessageQueue in _importMessageQueues)
             {
                 importMessageQueue.PeekCompleted -= Queue_PeekCompleted;
                 importMessageQueue.Close();
@@ -89,7 +89,7 @@ namespace Snittlistan.Queue
                 Thread.Sleep(100);
             }
 
-            var value = _counter.Value;
+            int value = _counter.Value;
             if (value > 0)
             {
                 Log.ErrorFormat(
@@ -103,7 +103,7 @@ namespace Snittlistan.Queue
 
         public void Dispose()
         {
-            foreach (var importMessageQueue in _importMessageQueues)
+            foreach (MessageQueue importMessageQueue in _importMessageQueues)
             {
                 importMessageQueue.Dispose();
             }
@@ -145,7 +145,7 @@ namespace Snittlistan.Queue
                 // but before the call to Receive, then an exception
                 // will be thrown and the transaction will be aborted
                 // leaving the message to be processed next time
-                var message = queue.Receive(TimeSpan.Zero, transaction);
+                Message message = queue.Receive(TimeSpan.Zero, transaction);
                 ProcessMessage(message, queue, transaction);
                 transaction.Commit();
             }
@@ -183,7 +183,7 @@ namespace Snittlistan.Queue
             try
             {
                 _counter.Increment();
-                var disposable = ThreadContext.Stacks["NDC"].Push(message.Id);
+                IDisposable disposable = ThreadContext.Stacks["NDC"].Push(message.Id);
                 try
                 {
                     Log.InfoFormat("Start");
@@ -206,7 +206,7 @@ namespace Snittlistan.Queue
             // get contents of message (don't dispose the reader
             // as that will dispose the stream and the message
             // can't be moved to the error queue)
-            var contents = new StreamReader(message.BodyStream).ReadToEnd();
+            string contents = new StreamReader(message.BodyStream).ReadToEnd();
 
             // try to process message up to 5 times
             const int MaximumTries = 5;
@@ -245,7 +245,7 @@ namespace Snittlistan.Queue
             message.Extension = Encoding.UTF8.GetBytes(ex.ToString());
 
             // maximum length allowed is 249
-            var exceptionMessage = ex.Message;
+            string exceptionMessage = ex.Message;
             message.Label = exceptionMessage.Substring(0, Math.Min(exceptionMessage.Length, 249));
 
             // send message to error queue

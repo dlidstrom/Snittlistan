@@ -1,15 +1,15 @@
-using System;
-using System.Linq;
-using EventStoreLite;
-using Raven.Client;
-using Raven.Client.Linq;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.Domain.Match;
-using Snittlistan.Web.Areas.V2.Indexes;
-using Snittlistan.Web.Infrastructure;
-
 namespace Snittlistan.Web.Areas.V2.Commands
 {
+    using System;
+    using System.Linq;
+    using EventStoreLite;
+    using Raven.Client;
+    using Raven.Client.Linq;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.Domain.Match;
+    using Snittlistan.Web.Areas.V2.Indexes;
+    using Snittlistan.Web.Infrastructure;
+
     public class RegisterMatchCommand : ICommand
     {
         private readonly Roster roster;
@@ -28,9 +28,9 @@ namespace Snittlistan.Web.Areas.V2.Commands
                 result.TeamScore,
                 result.OpponentScore,
                 roster.BitsMatchId);
-            var players = session.Load<Player>(roster.Players);
+            Player[] players = session.Load<Player>(roster.Players);
 
-            var matchSeries = result.CreateMatchSeries();
+            MatchSerie[] matchSeries = result.CreateMatchSeries();
 
             var resultsForPlayer = session.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
                                           .Where(x => x.Season == roster.Season)

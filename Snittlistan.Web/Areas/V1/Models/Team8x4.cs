@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Raven.Imports.Newtonsoft.Json;
-
-namespace Snittlistan.Web.Areas.V1.Models
+﻿namespace Snittlistan.Web.Areas.V1.Models
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Raven.Imports.Newtonsoft.Json;
+
     /// <summary>
     /// Represents a team in a match.
     /// </summary>
@@ -86,7 +86,7 @@ namespace Snittlistan.Web.Areas.V1.Models
         /// <param name="series">Team series.</param>
         public static Team8x4 CreateHomeTeam(string name, int score, IEnumerable<Serie8x4> series)
         {
-            var enumerable = series as List<Serie8x4> ?? series.ToList();
+            List<Serie8x4> enumerable = series as List<Serie8x4> ?? series.ToList();
             var seriesInOrder = new List<Serie8x4>
             {
                 CreateSerie(enumerable[0].Tables, 0, 1, 2, 3),
@@ -109,7 +109,7 @@ namespace Snittlistan.Web.Areas.V1.Models
         /// <param name="series">Team series.</param>
         public static Team8x4 CreateAwayTeam(string name, int score, IEnumerable<Serie8x4> series)
         {
-            var enumerable = series as List<Serie8x4> ?? series.ToList();
+            List<Serie8x4> enumerable = series as List<Serie8x4> ?? series.ToList();
             var seriesInOrder = new List<Serie8x4>
             {
                 CreateSerie(enumerable[0].Tables, 0, 1, 2, 3),
@@ -178,7 +178,7 @@ namespace Snittlistan.Web.Areas.V1.Models
 
         private static Serie8x4 CreateSerie(IEnumerable<Table8x4> tables, int i1, int i2, int i3, int i4)
         {
-            var enumerable = tables as List<Table8x4> ?? tables.ToList();
+            List<Table8x4> enumerable = tables as List<Table8x4> ?? tables.ToList();
             return new Serie8x4(new List<Table8x4>
             {
                 enumerable[i1],

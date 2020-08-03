@@ -1,11 +1,11 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using Raven.Client.Indexes;
-using Snittlistan.Web.Areas.V1.Models;
-
-namespace Snittlistan.Web.Infrastructure.Indexes
+﻿namespace Snittlistan.Web.Infrastructure.Indexes
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
+    using Raven.Client.Indexes;
+    using Snittlistan.Web.Areas.V1.Models;
+
     public class Player_ByMatch : AbstractMultiMapIndexCreationTask<Player_ByMatch.Result>
     {
         public Player_ByMatch()

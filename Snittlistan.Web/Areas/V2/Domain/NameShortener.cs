@@ -11,8 +11,8 @@
             if (name == null)
                 return string.Empty;
 
-            var shortenedName = name;
-            var match = ForenameSurnameRegex.Match(shortenedName);
+            string shortenedName = name;
+            System.Text.RegularExpressions.Match match = ForenameSurnameRegex.Match(shortenedName);
             if (match.Groups["Forename2"].Success)
             {
                 shortenedName = $"{match.Groups["Forename1"].Value.Substring(0, 1)}-{match.Groups["Forename2"].Value.Substring(1, 1)}. {match.Groups["Surname"].Value}";

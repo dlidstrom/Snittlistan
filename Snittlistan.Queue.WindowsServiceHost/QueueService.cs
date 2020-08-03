@@ -1,10 +1,10 @@
-﻿using System;
-using System.Reflection;
-using System.ServiceProcess;
-using log4net;
-
-namespace Snittlistan.Queue.WindowsServiceHost
+﻿namespace Snittlistan.Queue.WindowsServiceHost
 {
+    using System;
+    using System.Reflection;
+    using System.ServiceProcess;
+    using log4net;
+
     public partial class QueueService : ServiceBase
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);

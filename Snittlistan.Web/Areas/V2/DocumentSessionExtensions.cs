@@ -27,7 +27,7 @@
         {
             var accepted = new HashSet<string>(roster.AcceptedPlayers);
             var players = new List<Tuple<string, string, bool>>();
-            foreach (var player in roster.Players.Where(p => p != null).Select(session.Load<Player>))
+            foreach (Player player in roster.Players.Where(p => p != null).Select(session.Load<Player>))
             {
                 players.Add(Tuple.Create(player.Id, player.Name, accepted.Contains(player.Id)));
             }
@@ -35,7 +35,7 @@
             Tuple<string, string, bool> teamLeaderTuple = null;
             if (roster.TeamLeader != null)
             {
-                var teamLeader = session.Load<Player>(roster.TeamLeader);
+                Player teamLeader = session.Load<Player>(roster.TeamLeader);
                 teamLeaderTuple =
                     Tuple.Create(
                         teamLeader.Id,
@@ -58,14 +58,14 @@
                     Value = string.Empty
                 }
             };
-            var query =
+            Player[] query =
                 getPlayers != null
                     ? getPlayers.Invoke()
                     : documentSession.Query<Player, PlayerSearch>()
                                      .Where(x => x.PlayerStatus == Player.Status.Active)
                                      .ToArray();
 
-            var players = query.OrderBy(x => x.Name)
+            SelectListItem[] players = query.OrderBy(x => x.Name)
                                .Select(x => new SelectListItem
                                {
                                    Text = textFormatter != null ? textFormatter.Invoke(x) : x.Name,
@@ -84,7 +84,7 @@
             bool bits,
             Func<Roster, bool> pred)
         {
-            var query = session.Query<Roster, RosterSearchTerms>()
+            IQueryable<Roster> query = session.Query<Roster, RosterSearchTerms>()
                                .Where(x => x.Season == season)
                                .Where(x => x.Date < SystemTime.UtcNow)
                                .Where(x => x.Preliminary == false);
@@ -97,7 +97,7 @@
                 query = query.Where(x => x.BitsMatchId == 0);
             }
 
-            var rosterSelectList = query.OrderBy(x => x.Date)
+            SelectListItem[] rosterSelectList = query.OrderBy(x => x.Date)
                                         .ToList()
                                         .Where(x => x.MatchResultId == null || string.IsNullOrEmpty(rosterId) == false)
                                         .Where(pred)

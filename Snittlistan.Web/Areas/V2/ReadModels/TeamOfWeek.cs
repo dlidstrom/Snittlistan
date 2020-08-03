@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
-using EventStoreLite;
-using Snittlistan.Web.Areas.V2.Domain;
-
 namespace Snittlistan.Web.Areas.V2.ReadModels
 {
+    using System;
+    using System.Collections.Generic;
+    using EventStoreLite;
+    using Snittlistan.Web.Areas.V2.Domain;
+
     public class TeamOfWeek : IReadModel
     {
         public TeamOfWeek(int bitsMatchId, int season, string rosterId)
@@ -38,7 +38,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
                 PlayerScores.Add(player.Id, new PlayerScore(player.Id, player.Name));
             }
 
-            var playerScore = PlayerScores[player.Id];
+            PlayerScore playerScore = PlayerScores[player.Id];
             playerScore.Score += score;
             playerScore.Pins += pins;
             playerScore.Series++;
@@ -54,7 +54,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
         public void ClearMedals()
         {
-            foreach (var key in PlayerScores.Keys)
+            foreach (string key in PlayerScores.Keys)
             {
                 PlayerScores[key].ClearMedals();
             }

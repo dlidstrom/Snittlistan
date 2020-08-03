@@ -1,8 +1,8 @@
-using System;
-using EventStoreLite;
-
 namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
 {
+    using System;
+    using EventStoreLite;
+
     public class Serie4Registered : Event
     {
         public Serie4Registered(MatchSerie4 matchSerie, int bitsMatchId, string rosterId)

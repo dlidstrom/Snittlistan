@@ -9,8 +9,8 @@ namespace EventStoreLite.IoC
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
     using Raven.Client;
+    using Snittlistan.Queue.Models;
     using Snittlistan.Web.Infrastructure.Installers;
-    using Snittlistan.Web.ViewModels;
 
     /// <summary>
     /// Installs the event store into a Castle Windsor container.
@@ -78,26 +78,26 @@ namespace EventStoreLite.IoC
         {
             if (mode == DocumentStoreMode.InMemory)
             {
-                var documentStore = container.Resolve<IDocumentStore>();
+                IDocumentStore documentStore = container.Resolve<IDocumentStore>();
                 container.Register(Component.For<EventStore>().UsingFactoryMethod(x => CreateEventStore(documentStore, container)));
             }
             else
             {
-                var tenantConfigurations = container.ResolveAll<TenantConfiguration>();
-                foreach (var tenantConfiguration in tenantConfigurations)
+                TenantConfiguration[] tenantConfigurations = container.ResolveAll<TenantConfiguration>();
+                foreach (TenantConfiguration tenantConfiguration in tenantConfigurations)
                 {
-                    var documentStore = container.Resolve<IDocumentStore>($"DocumentStore-{tenantConfiguration.Name}");
+                    IDocumentStore documentStore = container.Resolve<IDocumentStore>($"DocumentStore-{tenantConfiguration.Hostname}");
                     container.Register(
                         Component.For<EventStore>()
                                  .UsingFactoryMethod(x => CreateEventStore(documentStore, container))
-                                 .Named($"EventStore-{tenantConfiguration.Name}")
+                                 .Named($"EventStore-{tenantConfiguration.Hostname}")
                                  .LifestyleSingleton());
                 }
             }
 
             if (handlerTypes != null)
             {
-                foreach (var type in handlerTypes.Where(x => x.IsClass && x.IsAbstract == false))
+                foreach (Type type in handlerTypes.Where(x => x.IsClass && x.IsAbstract == false))
                 {
                     RegisterEventTypes(container, type);
                 }
@@ -105,7 +105,7 @@ namespace EventStoreLite.IoC
 
             if (handlers != null)
             {
-                foreach (var handler in handlers)
+                foreach (IEventHandler handler in handlers)
                 {
                     RegisterEventTypes(container, handler.GetType(), handler);
                 }
@@ -114,14 +114,14 @@ namespace EventStoreLite.IoC
 
         private static void RegisterEventTypes(IWindsorContainer container, Type type, object instance = null)
         {
-            var interfaces = type.GetInterfaces();
-            foreach (var i in interfaces.Where(x => x.IsGenericType))
+            Type[] interfaces = type.GetInterfaces();
+            foreach (Type i in interfaces.Where(x => x.IsGenericType))
             {
-                var genericTypeDefinition = i.GetGenericTypeDefinition();
+                Type genericTypeDefinition = i.GetGenericTypeDefinition();
                 if (!typeof(IEventHandler<>).IsAssignableFrom(genericTypeDefinition)) continue;
-                var genericArguments = string.Join(
+                string genericArguments = string.Join(
                     ", ", i.GetGenericArguments().Select(x => x.ToString()));
-                var registration =
+                ComponentRegistration<object> registration =
                     Component.For(i)
                              .Named($"{type.FullName}<{genericArguments}>");
                 if (instance != null) registration.Instance(instance);

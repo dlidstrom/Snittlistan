@@ -10,7 +10,7 @@
     {
         public ActionResult Index(string id)
         {
-            var activity = DocumentSession.Load<Activity>(id);
+            Activity activity = DocumentSession.Load<Activity>(id);
             if (activity == null) throw new HttpException(404, "Not found");
             ViewData["showComments"] = true;
             Player player = null;

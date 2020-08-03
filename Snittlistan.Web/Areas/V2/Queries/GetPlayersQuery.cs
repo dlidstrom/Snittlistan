@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using Raven.Client;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Infrastructure;
-
 namespace Snittlistan.Web.Areas.V2.Queries
 {
+    using System;
+    using System.Collections.Generic;
+    using Raven.Client;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Infrastructure;
+
     public class GetPlayersQuery : IQuery<Player[]>
     {
         private readonly List<string> playerIds;
@@ -18,7 +18,7 @@ namespace Snittlistan.Web.Areas.V2.Queries
 
         public Player[] Execute(IDocumentSession session)
         {
-            var result = session.Load<Player>(playerIds);
+            Player[] result = session.Load<Player>(playerIds);
             return result;
         }
     }

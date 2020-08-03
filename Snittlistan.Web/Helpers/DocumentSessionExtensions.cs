@@ -1,12 +1,12 @@
-﻿using System.Linq;
-using Raven.Client;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.Indexes;
-using Snittlistan.Web.Infrastructure.Indexes;
-using Snittlistan.Web.Models;
-
-namespace Snittlistan.Web.Helpers
+﻿namespace Snittlistan.Web.Helpers
 {
+    using System.Linq;
+    using Raven.Client;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.Indexes;
+    using Snittlistan.Web.Infrastructure.Indexes;
+    using Snittlistan.Web.Models;
+
     public static class DocumentSessionExtensions
     {
         public static User FindUserByEmail(this IDocumentSession sess, string email)

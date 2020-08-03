@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
-
-namespace Snittlistan.Queue.WindowsServiceHost
+﻿namespace Snittlistan.Queue.WindowsServiceHost
 {
+    using System.ComponentModel;
+
     [RunInstaller(true)]
     public partial class ProjectInstaller : System.Configuration.Install.Installer
     {

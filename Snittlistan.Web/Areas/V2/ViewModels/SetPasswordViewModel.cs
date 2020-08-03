@@ -1,9 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
-using JetBrains.Annotations;
-
-namespace Snittlistan.Web.Areas.V2.ViewModels
+﻿namespace Snittlistan.Web.Areas.V2.ViewModels
 {
+    using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
+    using JetBrains.Annotations;
+
     [UsedImplicitly]
     public class SetPasswordViewModel
     {

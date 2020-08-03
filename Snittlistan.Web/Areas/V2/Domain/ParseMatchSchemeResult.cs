@@ -1,8 +1,8 @@
-﻿using System;
-using Snittlistan.Web.HtmlHelpers;
-
-namespace Snittlistan.Web.Areas.V2.Domain
+﻿namespace Snittlistan.Web.Areas.V2.Domain
 {
+    using System;
+    using Snittlistan.Web.HtmlHelpers;
+
     public class ParseMatchSchemeResult
     {
         public ParseMatchSchemeResult(MatchItem[] matches)

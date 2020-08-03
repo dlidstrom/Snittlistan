@@ -1,4 +1,4 @@
-namespace Snittlistan.Web.Areas.V2.Domain.Match
+﻿namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
     using System;
     using System.Collections.Generic;
@@ -18,6 +18,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         private Dictionary<string, List<PinsAndScoreResult>> playerPins;
         private HashSet<string> rosterPlayers;
         private bool medalsAwarded;
+        private string matchCommentaryAsJson = string.Empty;
 
         // 1-based
         private int registeredSeries;
@@ -59,13 +60,13 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         {
             // check if anything has changed
             var potentiallyNewPlayerPins = new SortedDictionary<string, List<PinsAndScoreResult>>();
-            foreach (var matchSerie in matchSeries)
+            foreach (MatchSerie matchSerie in matchSeries)
             {
-                foreach (var matchTable in new[] { matchSerie.Table1, matchSerie.Table2, matchSerie.Table3, matchSerie.Table4 })
+                foreach (MatchTable matchTable in new[] { matchSerie.Table1, matchSerie.Table2, matchSerie.Table3, matchSerie.Table4 })
                 {
-                    foreach (var game in new[] { matchTable.Game1, matchTable.Game2 })
+                    foreach (MatchGame game in new[] { matchTable.Game1, matchTable.Game2 })
                     {
-                        if (potentiallyNewPlayerPins.TryGetValue(game.Player, out var list) == false)
+                        if (potentiallyNewPlayerPins.TryGetValue(game.Player, out List<PinsAndScoreResult> list) == false)
                         {
                             list = new List<PinsAndScoreResult>();
                             potentiallyNewPlayerPins.Add(game.Player, list);
@@ -76,15 +77,25 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                 }
             }
 
-            var oldResult = JsonConvert.SerializeObject(
+            string oldResult = JsonConvert.SerializeObject(
                 new SortedDictionary<string, List<PinsAndScoreResult>>(playerPins),
                 Formatting.Indented);
-            var newResult = JsonConvert.SerializeObject(
+            string newResult = JsonConvert.SerializeObject(
                 potentiallyNewPlayerPins,
                 Formatting.Indented);
-            var pinsOrPlayersDiffer = oldResult != newResult;
-            var scoresDiffer = (teamScore, opponentScore).CompareTo((TeamScore, OpponentScore)) != 0;
-            if (pinsOrPlayersDiffer || scoresDiffer)
+            bool pinsOrPlayersDiffer = oldResult != newResult;
+            bool scoresDiffer = (teamScore, opponentScore).CompareTo((TeamScore, OpponentScore)) != 0;
+            MatchCommentaryEvent matchCommentaryEvent = CreateMatchCommentary(
+                matchSeries,
+                opponentSeries,
+                players.ToDictionary(x => x.Id),
+                resultsForPlayer);
+            string newMatchCommentaryAsJson = JsonConvert.SerializeObject(
+                new { matchCommentaryEvent.BodyText, matchCommentaryEvent.SummaryText },
+                Formatting.Indented);
+            bool commentaryDiffers = matchCommentaryAsJson != newMatchCommentaryAsJson;
+
+            if (pinsOrPlayersDiffer || scoresDiffer || commentaryDiffers)
             {
                 var @event = new MatchResultRegistered(
                     roster.Id,
@@ -113,7 +124,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             if (resultsForPlayer == null) throw new ArgumentNullException(nameof(resultsForPlayer));
             if (rosterPlayers.Count != 8 && rosterPlayers.Count != 9 && rosterPlayers.Count != 10)
                 throw new MatchException("Roster must have 8, 9, or 10 players when registering results");
-            foreach (var matchSerie in matchSeries)
+            foreach (MatchSerie matchSerie in matchSeries)
             {
                 VerifyPlayers(matchSerie);
                 ApplyChange(new SerieRegistered(matchSerie, BitsMatchId, RosterId));
@@ -121,7 +132,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                 if (registeredSeries > 4) throw new ArgumentException("Can only register up to 4 series");
             }
 
-            var matchCommentaryEvent = CreateMatchCommentary(
+            MatchCommentaryEvent matchCommentaryEvent = CreateMatchCommentary(
                 matchSeries,
                 opponentSeries,
                 players.ToDictionary(x => x.Id),
@@ -146,7 +157,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         {
             if (medalsAwarded)
                 throw new ApplicationException("Medals have already been awarded");
-            for (var i = 1; i <= registeredSeries; i++)
+            for (int i = 1; i <= registeredSeries; i++)
             {
                 DoAwardMedals(i);
             }
@@ -162,9 +173,9 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         public void AwardScores()
         {
             var dict = new Dictionary<string, int>();
-            foreach (var key in playerPins.Keys)
+            foreach (string key in playerPins.Keys)
             {
-                var totalScore = playerPins[key].Sum(x => x.Score);
+                int totalScore = playerPins[key].Sum(x => x.Score);
                 dict[key] = totalScore;
             }
 
@@ -189,10 +200,10 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
         private void DoAwardMedals(int serieNumber)
         {
-            foreach (var key in playerPins.Keys)
+            foreach (string key in playerPins.Keys)
             {
-                var list = playerPins[key];
-                foreach (var pinsResult in list.Where(x => x.SerieNumber == serieNumber))
+                List<PinsAndScoreResult> list = playerPins[key];
+                foreach (PinsAndScoreResult pinsResult in list.Where(x => x.SerieNumber == serieNumber))
                 {
                     if (pinsResult.Pins < 270) continue;
                     var medal = new AwardedMedal(
@@ -207,10 +218,10 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
             if (serieNumber == 4)
             {
-                foreach (var key in playerPins.Keys)
+                foreach (string key in playerPins.Keys)
                 {
-                    var list = playerPins[key];
-                    var score = list.Sum(x => x.Score);
+                    List<PinsAndScoreResult> list = playerPins[key];
+                    int score = list.Sum(x => x.Score);
                     if (score != 4) continue;
                     var medal = new AwardedMedal(
                         BitsMatchId,
@@ -250,8 +261,8 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             Dictionary<string, ResultForPlayerIndex.Result> resultsForPlayer)
         {
             var commentaryAnalyzer = new MatchAnalyzer(matchSeries, opponentSeries, players);
-            var summaryText = commentaryAnalyzer.GetSummaryText();
-            var bodyText = commentaryAnalyzer.GetBodyText(resultsForPlayer);
+            string summaryText = commentaryAnalyzer.GetSummaryText();
+            string[] bodyText = commentaryAnalyzer.GetBodyText(resultsForPlayer);
             return new MatchCommentaryEvent(BitsMatchId, RosterId, summaryText, summaryText, bodyText);
         }
 
@@ -272,7 +283,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         private void Apply(SerieRegistered e)
         {
             registeredSeries++;
-            foreach (var table in new[] { e.MatchSerie.Table1, e.MatchSerie.Table2, e.MatchSerie.Table3, e.MatchSerie.Table4 })
+            foreach (MatchTable table in new[] { e.MatchSerie.Table1, e.MatchSerie.Table2, e.MatchSerie.Table3, e.MatchSerie.Table4 })
             {
                 if (playerPins.ContainsKey(table.Game1.Player) == false)
                 {
@@ -310,6 +321,9 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         [UsedImplicitly]
         private void Apply(MatchCommentaryEvent e)
         {
+            matchCommentaryAsJson = JsonConvert.SerializeObject(
+                new { e.BodyText, e.SummaryText },
+                Formatting.Indented);
         }
 
         [UsedImplicitly]

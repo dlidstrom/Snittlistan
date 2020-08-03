@@ -1,9 +1,9 @@
-﻿using System;
-using System.Web.Mvc;
-using Snittlistan.Web.Controllers;
-
-namespace Snittlistan.Web.Areas.V1.Controllers
+﻿namespace Snittlistan.Web.Areas.V1.Controllers
 {
+    using System;
+    using System.Web.Mvc;
+    using Snittlistan.Web.Controllers;
+
     public class AccountController : AbstractController
     {
         public ActionResult LogOn()

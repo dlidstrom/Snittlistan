@@ -1,17 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Castle.Windsor;
-using EventStoreLite.Indexes;
-using Raven.Abstractions.Data;
-using Raven.Client;
-using Raven.Client.Linq;
-
 // ReSharper disable once CheckNamespace
 namespace EventStoreLite
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Castle.Windsor;
+    using EventStoreLite.Indexes;
+    using Raven.Abstractions.Data;
+    using Raven.Client;
+    using Raven.Client.Linq;
+
     /// <summary>
     /// Represents the event store. Use this class to create event store sessions.
     /// Typically, an instance of this class should be a singleton in your application.
@@ -94,29 +94,29 @@ namespace EventStoreLite
             // order by defined date
             eventMigrators = eventMigrators.OrderBy(x => x.DefinedOn()).ToList();
 
-            var current = 0;
+            int current = 0;
             while (true)
             {
                 var session = (IDocumentSession)container.Resolve(typeof(IDocumentSession));
                 try
                 {
                     // allow indexing to take its time
-                    var q =
+                    IRavenQueryable<EventStream> q =
                         session.Query<EventStream>()
                                .Customize(x => x.WaitForNonStaleResultsAsOf(DateTime.Now.AddSeconds(15)));
 
                     var eventStreams = q.Skip(current).Take(128).ToList();
                     if (eventStreams.Count == 0) break;
-                    foreach (var eventStream in eventStreams)
+                    foreach (EventStream eventStream in eventStreams)
                     {
                         var newHistory = new List<IDomainEvent>();
-                        foreach (var domainEvent in eventStream.History)
+                        foreach (IDomainEvent domainEvent in eventStream.History)
                         {
                             var oldEvents = new List<IDomainEvent> { domainEvent };
-                            foreach (var eventMigrator in eventMigrators)
+                            foreach (IEventMigrator eventMigrator in eventMigrators)
                             {
                                 var newEvents = new List<IDomainEvent>();
-                                foreach (var migratedEvent in oldEvents)
+                                foreach (IDomainEvent migratedEvent in oldEvents)
                                 {
                                     newEvents.AddRange(eventMigrator.Migrate(migratedEvent, eventStream.Id));
                                 }
@@ -158,7 +158,7 @@ namespace EventStoreLite
             // load all event streams and dispatch events
             var dispatcher = new EventDispatcher(container);
 
-            var current = 0;
+            int current = 0;
             while (true)
             {
                 IDocumentSession session = null;
@@ -166,18 +166,18 @@ namespace EventStoreLite
                 try
                 {
                     session = (IDocumentSession)container.Resolve(typeof(IDocumentSession));
-                    var eventsQuery =
+                    IRavenQueryable<EventsIndex.Result> eventsQuery =
                         session.Query<EventsIndex.Result, EventsIndex>()
                                .Customize(
                                    x => x.WaitForNonStaleResultsAsOf(DateTime.Now.AddSeconds(15)))
                                .OrderBy(x => x.ChangeSequence);
                     var results = eventsQuery.Skip(current).Take(128).ToList();
                     if (results.Count == 0) break;
-                    foreach (var result in results)
+                    foreach (EventsIndex.Result result in results)
                     {
-                        var changeSequence = result.ChangeSequence;
-                        var ids = result.Id.Select(x => x.Id);
-                        var streams = session.Load<EventStream>(ids);
+                        int changeSequence = result.ChangeSequence;
+                        IEnumerable<string> ids = result.Id.Select(x => x.Id);
+                        EventStream[] streams = session.Load<EventStream>(ids);
 
                         var events = from stream in streams
                                      from @event in stream.History
@@ -203,12 +203,12 @@ namespace EventStoreLite
 
         private static void WaitForIndexing(IDocumentStore documentStore)
         {
-            var indexingTask = Task.Factory.StartNew(
+            Task indexingTask = Task.Factory.StartNew(
                 () =>
                 {
                     while (true)
                     {
-                        var s = documentStore.DatabaseCommands.GetStatistics().StaleIndexes;
+                        string[] s = documentStore.DatabaseCommands.GetStatistics().StaleIndexes;
                         if (!s.Contains("ReadModelIndex"))
                         {
                             break;

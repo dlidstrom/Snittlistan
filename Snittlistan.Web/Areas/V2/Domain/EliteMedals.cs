@@ -21,24 +21,24 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         public EliteMedal GetExistingMedal(string playerId)
         {
-            if (AwardedMedals.TryGetValue(playerId, out var existingMedal) == false)
+            if (AwardedMedals.TryGetValue(playerId, out EliteMedal existingMedal) == false)
                 existingMedal = EliteMedal.None;
             return existingMedal;
         }
 
         public FormattedMedal GetFormattedExistingMedal(string playerId)
         {
-            if (AwardedMedals.TryGetValue(playerId, out var existingMedal) == false)
+            if (AwardedMedals.TryGetValue(playerId, out EliteMedal existingMedal) == false)
                 existingMedal = EliteMedal.None;
             return existingMedal.GetDescription();
         }
 
         public FormattedMedal GetNextMedal(string playerId)
         {
-            if (AwardedMedals.TryGetValue(playerId, out var existingMedal) == false)
+            if (AwardedMedals.TryGetValue(playerId, out EliteMedal existingMedal) == false)
                 existingMedal = EliteMedal.None;
-            var nextMedal = string.Empty;
-            var text = string.Empty;
+            string nextMedal = string.Empty;
+            string text = string.Empty;
             switch (existingMedal.Value)
             {
                 case EliteMedal.EliteMedalValue.None:
@@ -122,13 +122,13 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
             public static string GetDescription(Enum value)
             {
-                var type = value.GetType();
-                var name = Enum.GetName(type, value);
+                Type type = value.GetType();
+                string name = Enum.GetName(type, value);
                 if (name == null) return value.ToString();
 
-                var field = type.GetField(name);
+                System.Reflection.FieldInfo field = type.GetField(name);
                 if (field == null) return value.ToString();
-                var description = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) is DescriptionAttribute attr
+                string description = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) is DescriptionAttribute attr
                     ? attr.Description
                     : value.ToString();
                 return description;

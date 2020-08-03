@@ -1,11 +1,11 @@
-﻿using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using System.Web.Http.Controllers;
-using System.Web.Http.Dispatcher;
-
-namespace Snittlistan.Web.Infrastructure
+﻿namespace Snittlistan.Web.Infrastructure
 {
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+    using System.Web.Http.Controllers;
+    using System.Web.Http.Dispatcher;
+
     public class HttpNotFoundAwareDefaultHttpControllerSelector : DefaultHttpControllerSelector
     {
         public HttpNotFoundAwareDefaultHttpControllerSelector(HttpConfiguration configuration)
@@ -22,10 +22,10 @@ namespace Snittlistan.Web.Infrastructure
             }
             catch (HttpResponseException ex)
             {
-                var code = ex.Response.StatusCode;
+                HttpStatusCode code = ex.Response.StatusCode;
                 if (code != HttpStatusCode.NotFound)
                     throw;
-                var routeValues = request.GetRouteData().Values;
+                System.Collections.Generic.IDictionary<string, object> routeValues = request.GetRouteData().Values;
                 routeValues["controller"] = "ApiError";
                 routeValues["action"] = "Handle404";
                 decriptor = base.SelectController(request);

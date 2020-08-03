@@ -1,28 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Web;
-using System.Web.Routing;
-using Moq;
-using NUnit.Framework;
-
 namespace Snittlistan.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Routing;
+    using Moq;
+    using NUnit.Framework;
+
     public static class RouteTestHelper
     {
         public static void Maps(this RouteCollection routes, string httpVerb, string url, object expectations)
         {
-            var routeData = RetrieveRouteData(routes, httpVerb, url);
+            RouteData routeData = RetrieveRouteData(routes, httpVerb, url);
             Assert.NotNull(routeData);
 
-            foreach (var property in GetProperties(expectations))
+            foreach (PropertyValue property in GetProperties(expectations))
             {
-                var equal = string.Equals(
+                bool equal = string.Equals(
                     property.Value.ToString(),
                     routeData.Values[property.Name].ToString(),
                     StringComparison.OrdinalIgnoreCase);
-                var message = $"Expected '{property.Value}', not '{routeData.Values[property.Name]}' for '{property.Name}'.";
+                string message = $"Expected '{property.Value}', not '{routeData.Values[property.Name]}' for '{property.Name}'.";
                 Assert.True(equal, message);
             }
         }

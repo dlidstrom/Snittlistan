@@ -1,9 +1,9 @@
-﻿using System.Diagnostics;
-using System.Threading;
-
-// ReSharper disable UseNameofExpression
+﻿// ReSharper disable UseNameofExpression
 namespace Snittlistan.Queue
 {
+    using System.Diagnostics;
+    using System.Threading;
+
     /// <summary>
     /// Implements a thread-safe counter.
     /// </summary>
