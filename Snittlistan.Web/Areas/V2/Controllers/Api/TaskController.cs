@@ -13,6 +13,7 @@
     using Infrastructure.Bits.Contracts;
     using Newtonsoft.Json;
     using NLog;
+    using NLog.Fluent;
     using Raven.Abstractions;
     using Raven.Client;
     using Snittlistan.Queue.Messages;
@@ -31,8 +32,6 @@
     [OnlyLocalAllowed]
     public class TaskController : AbstractApiController
     {
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-
         private readonly IBitsClient bitsClient;
 
         public TaskController(IBitsClient bitsClient)
@@ -101,11 +100,11 @@
                 {
                     player.PlayerItem = playerItem;
                     playersByLicense.Remove(player.PlayerItem.LicNbr);
-                    Log.Info("Updating player with existing PlayerItem: {0}", player.PlayerItem.LicNbr);
+                    Log.Info($"Updating player with existing PlayerItem: {player.PlayerItem.LicNbr}");
                 }
                 else
                 {
-                    Log.Info("Player with {0} not found from BITS", player.PlayerItem.LicNbr);
+                    Log.Info($"Player with {player.PlayerItem.LicNbr} not found from BITS");
                 }
             }
 
@@ -119,7 +118,7 @@
                 if (playerNamesWithoutPlayerItem.TryGetValue(nameFromBits, out Player player))
                 {
                     player.PlayerItem = playerItem;
-                    Log.Info("Updating player with missing PlayerItem: {0}", nameFromBits);
+                    Log.Info($"Updating player with missing PlayerItem: {nameFromBits}");
                 }
                 else
                 {
@@ -134,7 +133,7 @@
                     {
                         PlayerItem = playerItem
                     };
-                    Log.Info("Created player {0} {1}", playerItem.FirstName, playerItem.SurName);
+                    Log.Info($"Created player {playerItem.FirstName} {playerItem.SurName}");
                     DocumentSession.Store(newPlayer);
                 }
             }
@@ -145,6 +144,7 @@
         private async Task<IHttpActionResult> Handle(GetRostersFromBitsMessage message)
         {
             WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+            Log.Info($"Importing from BITS for {TenantConfiguration.FullTeamName} (ClubId={websiteConfig.ClubId})");
             RosterSearchTerms.Result[] rosterSearchTerms =
                 DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
                     .Where(x => x.Season == websiteConfig.SeasonId)
@@ -154,21 +154,25 @@
             Roster[] rosters = DocumentSession.Load<Roster>(rosterSearchTerms.Select(x => x.Id));
 
             // Team
+            Log.Info($"Fetching teams");
             TeamResult[] teams = await bitsClient.GetTeam(websiteConfig.ClubId, websiteConfig.SeasonId);
             foreach (TeamResult teamResult in teams)
             {
                 // Division
+                Log.Info($"Fetching divisions");
                 DivisionResult[] divisionResults = await bitsClient.GetDivisions(teamResult.TeamId, websiteConfig.SeasonId);
 
                 // Match
                 if (divisionResults.Length != 1) throw new Exception($"Unexpected number of divisions: {divisionResults.Length}");
                 DivisionResult divisionResult = divisionResults[0];
+                Log.Info($"Fetching match rounds");
                 MatchRound[] matchRounds = await bitsClient.GetMatchRounds(teamResult.TeamId, divisionResult.DivisionId, websiteConfig.SeasonId);
                 var dict = matchRounds.ToDictionary(x => x.MatchId);
 
                 // update existing rosters
                 foreach (Roster roster in rosters.Where(x => dict.ContainsKey(x.BitsMatchId)))
                 {
+                    Log.Info($"Updating roster {roster.Id}");
                     MatchRound matchRound = dict[roster.BitsMatchId];
                     roster.OilPattern = OilPatternInformation.Create(
                         matchRound.MatchOilPatternName,
@@ -198,6 +202,7 @@
                 var existingMatchIds = new HashSet<int>(rosters.Select(x => x.BitsMatchId));
                 foreach (int matchId in dict.Keys.Where(x => existingMatchIds.Contains(x) == false))
                 {
+                    Log.Info($"Adding match {matchId}");
                     MatchRound matchRound = dict[matchId];
                     string team;
                     string opponent;

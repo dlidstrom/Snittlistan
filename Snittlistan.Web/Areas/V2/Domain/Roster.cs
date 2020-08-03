@@ -1,4 +1,4 @@
-namespace Snittlistan.Web.Areas.V2.Domain
+﻿namespace Snittlistan.Web.Areas.V2.Domain
 {
     using System;
     using System.Collections.Generic;
@@ -46,6 +46,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         public string Team { get; set; }
 
+        // TODO: should this be calculated from Team?
+        // Team.Substring(roster.Team.LastIndexOf(' ') + 1)
         public string TeamLevel
         {
             get { return teamLevel; }

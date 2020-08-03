@@ -6,6 +6,7 @@
     using Raven.Client;
     using Snittlistan.Queue;
     using Snittlistan.Queue.Messages;
+    using Snittlistan.Queue.Models;
     using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Attributes;
 
@@ -31,6 +32,11 @@
         /// Gets the event store.
         /// </summary>
         public EventStore EventStore { get; set; }
+
+        /// <summary>
+        /// Gets the tenant configuration.
+        /// </summary>
+        public TenantConfiguration TenantConfiguration { get; set; }
 
         /// <summary>
         /// Gets the msmq transaction.

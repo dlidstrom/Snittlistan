@@ -1,4 +1,4 @@
-namespace Snittlistan.Web.Infrastructure.Installers
+﻿namespace Snittlistan.Web.Infrastructure.Installers
 {
     using System;
     using System.Net.Http;
@@ -7,19 +7,23 @@ namespace Snittlistan.Web.Infrastructure.Installers
     using Castle.MicroKernel.Registration;
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
-    using NLog;
 
     public class BitsClientInstaller : IWindsorInstaller
     {
-        private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
+        private readonly string apiKey;
+        private readonly HttpClient httpClient;
+
+        public BitsClientInstaller(string apiKey, HttpClient httpClient)
+        {
+            this.apiKey = apiKey;
+            this.httpClient = httpClient;
+        }
 
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            string apiKey = Environment.GetEnvironmentVariable("ApiKey");
-            Logger.Info("ApiKey: {0}", apiKey);
             var bitsClient = new BitsClient(
                 apiKey,
-                new HttpClient(new RateHandler(1.0, 1.0, 60)),
+                httpClient,
                 MemoryCache.Default);
             container.Register(Component.For<IBitsClient>().Instance(bitsClient));
         }

@@ -18,8 +18,8 @@
         private double allowance;
         private Stopwatch stopwatch;
 
-        public RateHandler(double rate, double per, int maxTries)
-            : base(new HttpClientHandler())
+        public RateHandler(double rate, double per, int maxTries, HttpMessageHandler innerHandler)
+            : base(innerHandler)
         {
             if (rate < 1)
             {
