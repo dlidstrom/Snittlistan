@@ -144,7 +144,7 @@
         private async Task<IHttpActionResult> Handle(GetRostersFromBitsMessage message)
         {
             WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
-            Log.Info($"Importing from BITS for {TenantConfiguration.FullTeamName} (ClubId={websiteConfig.ClubId})");
+            Log.Info($"Importing BITS season {websiteConfig.SeasonId} for {TenantConfiguration.FullTeamName} (ClubId={websiteConfig.ClubId})");
             RosterSearchTerms.Result[] rosterSearchTerms =
                 DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
                     .Where(x => x.Season == websiteConfig.SeasonId)
