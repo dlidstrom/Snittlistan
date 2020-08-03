@@ -8,6 +8,7 @@
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
     using Models;
+    using NLog.Fluent;
     using Raven.Client;
     using Raven.Client.Document;
     using Raven.Client.Embedded;
@@ -65,10 +66,12 @@
                 foreach (TenantConfiguration tenantConfiguration in tenantConfigurations)
                 {
                     IDocumentStore documentStore = InitializeStore(CreateDocumentStore(tenantConfiguration));
+                    string nameOfComponent = $"DocumentStore-{tenantConfiguration.Hostname}";
+                    Log.Info($"Registering document store named {nameOfComponent}");
                     ComponentRegistration<IDocumentStore> documentStoreComponent = Component.For<IDocumentStore>()
-                                                          .Instance(documentStore)
-                                                          .Named($"DocumentStore-{tenantConfiguration.Hostname}")
-                                                          .LifestyleSingleton();
+                        .Instance(documentStore)
+                        .Named(nameOfComponent)
+                        .LifestyleSingleton();
                     container.Register(documentStoreComponent);
                 }
             }

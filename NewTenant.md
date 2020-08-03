@@ -7,7 +7,7 @@
 * Uppdatera SiteWideConfig
 * Kör Snittlistan.Tool.exe Initialize ... ...
 * Kör Snittlistan.Tool.exe GetPlayersFromBits
-* Kör Snittlistan.Tool.exe GetRostersBits
+* Kör Snittlistan.Tool.exe GetRostersFromBits
 * Kör Snittlistan.Tool.exe RegisterMatches
 
 * Fixa bilderna med https://realfavicongenerator.net

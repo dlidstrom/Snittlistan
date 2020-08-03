@@ -145,7 +145,7 @@
                         matchDateNode.Attributes["value"].Value,
                         @"(?<date>\d{4}-\d\d-\d\d) 00:00:00",
                         @"${date}");
-                    DateTime date = DateTime.Parse($"{formattedDate}T{matchTimeNode.InnerText}");
+                    var date = DateTime.Parse($"{formattedDate}T{matchTimeNode.InnerText}");
                     bool dateChanged = matchTimeNode.Attributes["style"].Value.IndexOf("color:Red", StringComparison.OrdinalIgnoreCase) >= 0;
                     int bitsMatchId = int.Parse(matchIdNode.Attributes["value"].Value);
                     int oilPatternId = int.Parse(oilPatternIdNode.Attributes["value"].Value);

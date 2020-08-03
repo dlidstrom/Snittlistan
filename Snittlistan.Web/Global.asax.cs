@@ -5,6 +5,7 @@
     using System.Configuration;
     using System.Diagnostics;
     using System.Linq;
+    using System.Net.Http;
     using System.Reflection;
     using System.Web;
     using System.Web.Hosting;
@@ -21,6 +22,7 @@
     using EventStoreLite.IoC;
     using Helpers;
     using NLog;
+    using NLog.Fluent;
     using Raven.Client;
     using Raven.Client.Document;
     using Snittlistan.Queue;
@@ -34,8 +36,6 @@
 
     public class MvcApplication : HttpApplication
     {
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-
         private static ApplicationMode applicationMode =
 #if DEBUG
  ApplicationMode.Debug;
@@ -165,7 +165,7 @@
                 return;
             }
 
-            Log.Error("Unable to load profile information using {0}", authTicket.Name);
+            Log.Error($"Unable to load profile information using {authTicket.Name}");
         }
 
         private static void Bootstrap(HttpConfiguration configuration)
@@ -234,16 +234,24 @@
                 }
 
                 Container.Kernel.AddHandlerSelector(new HostBasedComponentSelector());
+                string apiKey = Environment.GetEnvironmentVariable("ApiKey");
+                Log.Info($"ApiKey: {apiKey}");
+                var httpClient = new HttpClient(
+                    new RateHandler(rate: 1.0, per: 1.0, maxTries: 60,
+                        new LoggingHandler(
+                            new HttpClientHandler())));
                 Container.Install(
                     new ApiControllerInstaller(),
-                    new BitsClientInstaller(),
+                    new BitsClientInstaller(apiKey, httpClient),
                     new ControllerInstaller(),
                     new EventMigratorInstaller(),
                     new EventStoreSessionInstaller(),
                     new RavenInstaller(siteWideConfiguration),
                     new ServicesInstaller(),
                     new MsmqInstaller(),
-                    EventStoreInstaller.FromAssembly(Assembly.GetExecutingAssembly(), DocumentStoreMode.Server));
+                    EventStoreInstaller.FromAssembly(
+                        Assembly.GetExecutingAssembly(),
+                        DocumentStoreMode.Server));
             }
 
             if (ChildContainer == null)
