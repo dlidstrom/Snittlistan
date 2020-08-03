@@ -13,7 +13,6 @@
     using Infrastructure.Bits.Contracts;
     using Newtonsoft.Json;
     using NLog;
-    using NLog.Fluent;
     using Raven.Abstractions;
     using Raven.Client;
     using Snittlistan.Queue.Messages;
@@ -32,6 +31,7 @@
     [OnlyLocalAllowed]
     public class TaskController : AbstractApiController
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private readonly IBitsClient bitsClient;
 
         public TaskController(IBitsClient bitsClient)

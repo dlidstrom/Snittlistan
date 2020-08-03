@@ -22,7 +22,6 @@
     using EventStoreLite.IoC;
     using Helpers;
     using NLog;
-    using NLog.Fluent;
     using Raven.Client;
     using Raven.Client.Document;
     using Snittlistan.Queue;
@@ -36,6 +35,7 @@
 
     public class MvcApplication : HttpApplication
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private static ApplicationMode applicationMode =
 #if DEBUG
  ApplicationMode.Debug;
