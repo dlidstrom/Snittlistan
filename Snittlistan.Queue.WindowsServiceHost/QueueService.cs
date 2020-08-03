@@ -19,7 +19,7 @@
         {
             try
             {
-                Log.Info("Starting");
+                Log.Info("Starting queue service");
                 application.Start();
             }
             catch (Exception ex)
@@ -31,7 +31,7 @@
 
         protected override void OnStop()
         {
-            Log.Info("Stopping");
+            Log.Info("Stopping queue service");
             application.Stop();
         }
     }
