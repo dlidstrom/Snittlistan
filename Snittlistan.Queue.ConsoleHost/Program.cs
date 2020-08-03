@@ -1,8 +1,8 @@
-﻿using System;
-using log4net.Config;
-
-namespace Snittlistan.Queue.ConsoleHost
+﻿namespace Snittlistan.Queue.ConsoleHost
 {
+    using System;
+    using log4net.Config;
+
     public class Program
     {
         static void Main(string[] args)

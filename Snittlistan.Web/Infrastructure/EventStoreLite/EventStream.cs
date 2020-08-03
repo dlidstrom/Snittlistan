@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-
 // ReSharper disable once CheckNamespace
 namespace EventStoreLite
 {
+    using System.Collections.Generic;
+
     public class EventStream
     {
         public EventStream()

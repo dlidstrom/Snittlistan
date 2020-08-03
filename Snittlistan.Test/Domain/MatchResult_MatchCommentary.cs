@@ -1,18 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using EventStoreLite;
-using Moq;
-using NUnit.Framework;
-using Snittlistan.Test.ApiControllers;
-using Snittlistan.Web.Areas.V2.Commands;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.Domain.Match;
-using Snittlistan.Web.Areas.V2.Domain.Match.Events;
-using Snittlistan.Web.Areas.V2.ReadModels;
-
 namespace Snittlistan.Test.Domain
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using EventStoreLite;
+    using Moq;
+    using NUnit.Framework;
+    using Snittlistan.Test.ApiControllers;
+    using Snittlistan.Web.Areas.V2.Commands;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.Domain.Match;
+    using Snittlistan.Web.Areas.V2.Domain.Match.Events;
+    using Snittlistan.Web.Areas.V2.ReadModels;
     using System.Threading.Tasks;
 
     [TestFixture]
@@ -61,8 +60,8 @@ namespace Snittlistan.Test.Domain
         {
             // Act
             var bitsParser = new BitsParser(Players);
-            var content = await BitsGateway.GetBitsMatchResult(testCase.BitsMatchId);
-            var parseResult = bitsParser.Parse(content, testCase.ClubId);
+            Web.Infrastructure.BitsMatchResult content = await BitsGateway.GetBitsMatchResult(testCase.BitsMatchId);
+            ParseResult parseResult = bitsParser.Parse(content, testCase.ClubId);
 
             // Assert
             Assert.That(parseResult.Turn, Is.EqualTo(testCase.Turn));
@@ -72,10 +71,10 @@ namespace Snittlistan.Test.Domain
         public async Task MatchCommentarySummaryText(TestCase testCase)
         {
             // Act
-            var matchResult = await Act(testCase);
+            MatchResult matchResult = await Act(testCase);
 
             // Assert
-            var changes = matchResult.GetUncommittedChanges();
+            IDomainEvent[] changes = matchResult.GetUncommittedChanges();
             var matchCommentaryEvent = (MatchCommentaryEvent)changes.Single(x => x is MatchCommentaryEvent);
             Assert.That(matchCommentaryEvent.SummaryText, Is.EqualTo(testCase.ExpectedSummaryText));
         }
@@ -84,10 +83,10 @@ namespace Snittlistan.Test.Domain
         public async Task MatchCommentaryBodyText(TestCase testCase)
         {
             // Act
-            var matchResult = await Act(testCase);
+            MatchResult matchResult = await Act(testCase);
 
             // Assert
-            var changes = matchResult.GetUncommittedChanges();
+            IDomainEvent[] changes = matchResult.GetUncommittedChanges();
             var matchCommentaryEvent = (MatchCommentaryEvent)changes.Single(x => x is MatchCommentaryEvent);
             Assert.That(string.Join(" ", matchCommentaryEvent.BodyText), Is.EqualTo(testCase.ExpectedBodyText));
         }
@@ -97,15 +96,15 @@ namespace Snittlistan.Test.Domain
             // Arrange
             Transact(session =>
             {
-                foreach (var player in Players)
+                foreach (Player player in Players)
                 {
                     session.Store(player);
                 }
             });
             var bitsParser = new BitsParser(Players);
 
-            var content = await BitsGateway.GetBitsMatchResult(testCase.BitsMatchId);
-            var parseResult = bitsParser.Parse(content, testCase.ClubId);
+            Web.Infrastructure.BitsMatchResult content = await BitsGateway.GetBitsMatchResult(testCase.BitsMatchId);
+            ParseResult parseResult = bitsParser.Parse(content, testCase.ClubId);
             var rosterPlayerIds = new HashSet<string>(
                 parseResult.Series.SelectMany(x => x.Tables.SelectMany(y => new[] { y.Game1.Player, y.Game2.Player })));
             var roster = new Roster(2017, 1, testCase.BitsMatchId, "Fredrikshof", "A", string.Empty, string.Empty, DateTime.Now, false, OilPatternInformation.Empty)
@@ -128,12 +127,12 @@ namespace Snittlistan.Test.Domain
                     [nicknameToId["Norpan"].Id] = new[] { 190 },
                     [nicknameToId["Traav"].Id] = new[] { 190 }
                 };
-                foreach (var playerId in playerResults.Keys)
+                foreach (string playerId in playerResults.Keys)
                 {
-                    for (var bitsMatchId = 10; bitsMatchId < 15; bitsMatchId++)
+                    for (int bitsMatchId = 10; bitsMatchId < 15; bitsMatchId++)
                     {
                         var resultForPlayer = new ResultForPlayerReadModel(2017, playerId, bitsMatchId, null, DateTime.Now);
-                        foreach (var playerResult in playerResults[playerId])
+                        foreach (int playerResult in playerResults[playerId])
                         {
                             resultForPlayer.AddGame(1, new MatchGame(playerId, playerResult, 0, 0));
                             resultForPlayer.AddGame(1, new MatchGame(playerId, playerResult, 0, 0));
@@ -150,7 +149,7 @@ namespace Snittlistan.Test.Domain
             MatchResult matchResult = null;
             Transact(session =>
             {
-                var eventStoreSession = Mock.Of<IEventStoreSession>();
+                IEventStoreSession eventStoreSession = Mock.Of<IEventStoreSession>();
                 Mock.Get(eventStoreSession)
                     .Setup(x => x.Store(It.IsAny<AggregateRoot>()))
                     .Callback((AggregateRoot ar) => matchResult = (MatchResult)ar);

@@ -35,7 +35,7 @@
         public ActionResult LogOn(EmailViewModel vm, string returnUrl)
         {
             // find the user in question
-            var user = DocumentSession.FindUserByEmail(vm.Email);
+            Models.User user = DocumentSession.FindUserByEmail(vm.Email);
 
             if (user == null)
             {
@@ -62,16 +62,16 @@
                 }
                 else if (players.Length == 1)
                 {
-                    var player = players[0];
+                    Player player = players[0];
 
                     // if player already has non-expired token, then reuse that one,
                     // else create a new token
-                    var existingTokens =
+                    OneTimeToken[] existingTokens =
                         DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>()
                                        .Where(x => x.PlayerId == player.Id && x.CreatedDate > SystemTime.UtcNow.AddDays(-1))
                                        .Take(10)
                                        .ToArray();
-                    var validExistingToken = existingTokens.FirstOrDefault(x => x.IsExpired() == false && x.UsedDate.HasValue == false);
+                    OneTimeToken validExistingToken = existingTokens.FirstOrDefault(x => x.IsExpired() == false && x.UsedDate.HasValue == false);
                     if (validExistingToken != null)
                     {
                         // reuse still valid token
@@ -85,7 +85,7 @@
                     // no valid token, generate new
                     var token = new OneTimeToken(player.Id);
                     Debug.Assert(Request.Url != null, "Request.Url != null");
-                    var oneTimePassword =
+                    string oneTimePassword =
                         string.Join("", Enumerable.Range(1, 6).Select(_ => Random.Next(10)));
                     token.Activate(
                         oneTimeKey =>
@@ -118,7 +118,7 @@
 
         public ActionResult LogOnOneTimePassword(string id, string oneTimeKey)
         {
-            var player = DocumentSession.Load<Player>(id);
+            Player player = DocumentSession.Load<Player>(id);
             return View(new PasswordViewModel
             {
                 Email = player.Email,
@@ -132,8 +132,8 @@
         {
             if (Request.IsAuthenticated) return RedirectToAction("Index", "Roster");
 
-            var oneTimeToken = DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>().Single(x => x.OneTimeKey == vm.OneTimeKey);
-            var player = DocumentSession.Load<Player>(id);
+            OneTimeToken oneTimeToken = DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>().Single(x => x.OneTimeKey == vm.OneTimeKey);
+            Player player = DocumentSession.Load<Player>(id);
             if (player == null)
                 throw new HttpException(404, "Player not found");
             if (oneTimeToken.IsExpired())
@@ -177,7 +177,7 @@
         public ActionResult LogOnPassword(string returnUrl, PasswordViewModel vm)
         {
             // find the user in question
-            var user = DocumentSession.FindUserByEmail(vm.Email);
+            Models.User user = DocumentSession.FindUserByEmail(vm.Email);
 
             if (!user.ValidatePassword(vm.Password))
             {

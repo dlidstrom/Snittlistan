@@ -1,11 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Messaging;
-using System.Text;
-using Newtonsoft.Json;
-
-namespace Snittlistan.Queue
+﻿namespace Snittlistan.Queue
 {
+    using System;
+    using System.IO;
+    using System.Messaging;
+    using System.Text;
+    using Newtonsoft.Json;
+
     public class JsonMessageFormatter : IMessageFormatter
     {
         private static readonly JsonSerializerSettings DefaultSerializerSettings =
@@ -35,7 +35,7 @@ namespace Snittlistan.Queue
             if (message == null)
                 throw new ArgumentNullException(nameof(message));
 
-            var stream = message.BodyStream;
+            Stream stream = message.BodyStream;
 
             return stream != null
                    && stream.CanRead
@@ -57,7 +57,7 @@ namespace Snittlistan.Queue
 
             using (var reader = new StreamReader(message.BodyStream, Encoding))
             {
-                var json = reader.ReadToEnd();
+                string json = reader.ReadToEnd();
                 return JsonConvert.DeserializeObject(json, _serializerSettings);
             }
         }
@@ -70,7 +70,7 @@ namespace Snittlistan.Queue
             if (obj == null)
                 throw new ArgumentNullException(nameof(obj));
 
-            var json = JsonConvert.SerializeObject(obj, Formatting.None, _serializerSettings);
+            string json = JsonConvert.SerializeObject(obj, Formatting.None, _serializerSettings);
 
             message.BodyStream = new MemoryStream(Encoding.GetBytes(json));
 

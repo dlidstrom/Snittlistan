@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using EventStoreLite;
-using Raven.Client;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.Domain.Match;
-using Snittlistan.Web.Areas.V2.Domain.Match.Events;
-using Snittlistan.Web.Areas.V2.ReadModels;
-
-namespace Snittlistan.Web.Areas.V2.Handlers
+﻿namespace Snittlistan.Web.Areas.V2.Handlers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using EventStoreLite;
+    using Raven.Client;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.Domain.Match;
+    using Snittlistan.Web.Areas.V2.Domain.Match.Events;
+    using Snittlistan.Web.Areas.V2.ReadModels;
+
     public class ResultSeriesHandler :
         IEventHandler<MatchResultRegistered>,
         IEventHandler<SerieRegistered>
@@ -17,8 +17,8 @@ namespace Snittlistan.Web.Areas.V2.Handlers
 
         public void Handle(MatchResultRegistered e, string aggregateId)
         {
-            var id = ResultSeriesReadModel.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
-            var results = DocumentSession.Load<ResultSeriesReadModel>(id);
+            string id = ResultSeriesReadModel.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
+            ResultSeriesReadModel results = DocumentSession.Load<ResultSeriesReadModel>(id);
             if (results == null)
             {
                 results = new ResultSeriesReadModel { Id = id };
@@ -30,10 +30,10 @@ namespace Snittlistan.Web.Areas.V2.Handlers
 
         public void Handle(SerieRegistered e, string aggregateId)
         {
-            var id = ResultSeriesReadModel.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
-            var results = DocumentSession.Load<ResultSeriesReadModel>(id);
+            string id = ResultSeriesReadModel.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
+            ResultSeriesReadModel results = DocumentSession.Load<ResultSeriesReadModel>(id);
 
-            var matchSerie = e.MatchSerie;
+            MatchSerie matchSerie = e.MatchSerie;
             var playerIds = new HashSet<string>
             {
                 matchSerie.Table1.Game1.Player,
@@ -47,10 +47,10 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             };
 
             var players = DocumentSession.Load<Player>(playerIds).ToDictionary(x => x.Id);
-            var table1 = CreateTable(players, matchSerie.Table1);
-            var table2 = CreateTable(players, matchSerie.Table2);
-            var table3 = CreateTable(players, matchSerie.Table3);
-            var table4 = CreateTable(players, matchSerie.Table4);
+            ResultSeriesReadModel.Table table1 = CreateTable(players, matchSerie.Table1);
+            ResultSeriesReadModel.Table table2 = CreateTable(players, matchSerie.Table2);
+            ResultSeriesReadModel.Table table3 = CreateTable(players, matchSerie.Table3);
+            ResultSeriesReadModel.Table table4 = CreateTable(players, matchSerie.Table4);
 
             results.Series.Add(new ResultSeriesReadModel.Serie
                                {

@@ -1,10 +1,10 @@
-﻿using Castle.Windsor;
-using NUnit.Framework;
-using Raven.Client;
-using Snittlistan.Web.Infrastructure.Installers;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using Castle.Windsor;
+    using NUnit.Framework;
+    using Raven.Client;
+    using Snittlistan.Web.Infrastructure.Installers;
+
     [TestFixture]
     public class RavenInstallerTest
     {
@@ -18,7 +18,7 @@ namespace Snittlistan.Test
         [Test]
         public void InstallsDocumentStore()
         {
-            var store = container.Resolve<IDocumentStore>();
+            IDocumentStore store = container.Resolve<IDocumentStore>();
             Assert.NotNull(store);
             container.Release(store);
         }

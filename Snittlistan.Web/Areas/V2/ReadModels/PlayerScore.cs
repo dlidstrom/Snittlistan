@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using System.Globalization;
-
 namespace Snittlistan.Web.Areas.V2.ReadModels
 {
+    using System.Collections.Generic;
+    using System.Globalization;
+
     public class PlayerScore
     {
         public PlayerScore(string playerId, string name)

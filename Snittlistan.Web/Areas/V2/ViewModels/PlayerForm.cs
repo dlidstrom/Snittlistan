@@ -35,7 +35,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         public string FormattedDiff()
         {
             if (HasResult == false) return string.Empty;
-            var diff = Last5Average - SeasonAverage;
+            double diff = Last5Average - SeasonAverage;
             return diff.ToString("+0.0;-0.0;0");
         }
 
@@ -47,7 +47,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         public string Class()
         {
             if (HasResult == false) return string.Empty;
-            var diff = Last5Average - SeasonAverage;
+            double diff = Last5Average - SeasonAverage;
             string klass;
             if (diff <= -10)
             {

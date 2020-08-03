@@ -29,10 +29,10 @@
             string action,
             string url)
         {
-            var routeData = helper.ViewContext.RouteData.Values;
-            var currentAction = routeData["action"];
+            System.Web.Routing.RouteValueDictionary routeData = helper.ViewContext.RouteData.Values;
+            object currentAction = routeData["action"];
 
-            var liClass = string.Empty;
+            string liClass = string.Empty;
             if (string.Equals(action, currentAction as string, StringComparison.OrdinalIgnoreCase))
             {
                 liClass = "active";
@@ -91,7 +91,7 @@
 
         public static HtmlString GetAssemblyVersion(this HtmlHelper helper)
         {
-            var version = MvcApplication.GetAssemblyVersion();
+            string version = MvcApplication.GetAssemblyVersion();
             return new HtmlString(version);
         }
     }

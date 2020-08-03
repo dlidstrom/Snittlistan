@@ -1,8 +1,8 @@
-using System;
-
 // ReSharper disable once CheckNamespace
 namespace EventStoreLite
 {
+    using System;
+
     /// <summary>
     /// Represents a domain event.
     /// </summary>

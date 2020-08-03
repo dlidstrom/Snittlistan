@@ -25,7 +25,7 @@
 
         public bool IsExpired()
         {
-            var span = SystemTime.UtcNow - CreatedDate;
+            TimeSpan span = SystemTime.UtcNow - CreatedDate;
             return span.TotalDays > 1;
         }
 

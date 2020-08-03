@@ -1,9 +1,9 @@
-﻿using NUnit.Framework;
-using Snittlistan.Queue.Messages;
-using Snittlistan.Web.Models;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using NUnit.Framework;
+    using Snittlistan.Queue.Messages;
+    using Snittlistan.Web.Models;
+
     [TestFixture]
     public class UserTest
     {

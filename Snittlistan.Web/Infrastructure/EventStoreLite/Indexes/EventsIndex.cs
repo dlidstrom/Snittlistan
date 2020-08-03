@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Raven.Client.Indexes;
-
-// ReSharper disable once CheckNamespace
+﻿// ReSharper disable once CheckNamespace
 namespace EventStoreLite.Indexes
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Raven.Client.Indexes;
+
     public class EventsIndex : AbstractIndexCreationTask<EventStream, EventsIndex.Result>
     {
         public EventsIndex()

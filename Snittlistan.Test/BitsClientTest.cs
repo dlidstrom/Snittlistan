@@ -11,7 +11,7 @@
         public async Task ParsesTeam()
         {
             // Act
-            var team = await BitsGateway.GetTeam(51538, 2019);
+            Web.Infrastructure.Bits.Contracts.TeamResult[] team = await BitsGateway.GetTeam(51538, 2019);
 
             // Assert
             Assert.That(team, Has.Length.EqualTo(3));
@@ -30,7 +30,7 @@
         public async Task ParsesDivisions()
         {
             // Act
-            var divisions = await BitsGateway.GetDivisions(185185, 2019);
+            Web.Infrastructure.Bits.Contracts.DivisionResult[] divisions = await BitsGateway.GetDivisions(185185, 2019);
 
             // Assert
             Assert.That(divisions, Has.Length.EqualTo(1));
@@ -42,7 +42,7 @@
         public async Task ParsesMatchRounds()
         {
             // Act
-            var matches = await BitsGateway.GetMatchRounds(185567, 684, 2019);
+            Web.Infrastructure.Bits.Contracts.MatchRound[] matches = await BitsGateway.GetMatchRounds(185567, 684, 2019);
 
             // Assert
             Assert.That(matches, Has.Length.EqualTo(15));
@@ -53,7 +53,7 @@
         public async Task ParsesPlayers(int clubId, int length, string licNbr)
         {
             // Act
-            var players = await BitsGateway.GetPlayers(clubId);
+            Web.Infrastructure.Bits.Contracts.PlayerResult players = await BitsGateway.GetPlayers(clubId);
 
             // Assert
             Assert.That(players.Data, Has.Length.EqualTo(length));

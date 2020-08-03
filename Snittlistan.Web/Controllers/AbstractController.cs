@@ -7,9 +7,9 @@
     using Raven.Client;
     using Snittlistan.Queue;
     using Snittlistan.Queue.Messages;
+    using Snittlistan.Queue.Models;
     using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Models;
-    using ViewModels;
 
     public abstract class AbstractController : Controller
     {
@@ -60,9 +60,9 @@
 
         protected void DefaultPublishMessage<TPayload>(TPayload payload)
         {
-            var routeUrl = Url.HttpRouteUrl("DefaultApi", new { controller = "Task" });
+            string routeUrl = Url.HttpRouteUrl("DefaultApi", new { controller = "Task" });
             Debug.Assert(Request.Url != null, "Request.Url != null");
-            var uriString = $"{Request.Url.Scheme}://{Request.Url.Host}:{Request.Url.Port}{routeUrl}";
+            string uriString = $"{Request.Url.Scheme}://{Request.Url.Host}:{Request.Url.Port}{routeUrl}";
             var uri = new Uri(uriString);
             var envelope = new MessageEnvelope(payload, uri);
             MsmqTransaction.PublishMessage(envelope);
@@ -71,14 +71,14 @@
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             // load website config to make sure it always migrates
-            var websiteContent = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+            WebsiteConfig websiteContent = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             if (websiteContent == null)
             {
                 DocumentSession.Store(new WebsiteConfig(new WebsiteConfig.TeamNameAndLevel[0], false, -1, 2019));
             }
 
             // make sure there's an admin user
-            if (DocumentSession.Load<User>("Admin") != null) return;
+            if (DocumentSession.Load<User>(Models.User.AdminId) != null) return;
 
             // first launch
             Response.Redirect("/v1/welcome");

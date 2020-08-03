@@ -1,7 +1,7 @@
-using Snittlistan.Web.Areas.V2.Domain.Match.Events;
-
 namespace Snittlistan.Web.Areas.V2.ReadModels
 {
+    using Snittlistan.Web.Areas.V2.Domain.Match.Events;
+
     public class AwardedMedalReadModel
     {
         public AwardedMedalReadModel(string player, MedalType medalType, int value)

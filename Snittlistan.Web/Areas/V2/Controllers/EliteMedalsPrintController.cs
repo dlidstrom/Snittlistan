@@ -12,13 +12,14 @@
     using Helpers;
     using Indexes;
     using Infrastructure.Attributes;
+    using Models;
     using PdfSharp.Pdf;
     using PdfSharp.Pdf.IO;
     using Raven.Abstractions;
     using ReadModels;
+    using Snittlistan.Queue.Models;
     using ViewModels;
     using Web.Controllers;
-    using Web.ViewModels;
 
     [Authorize(Roles = WebsiteRoles.EliteMedals.EditMedals)]
     public class EliteMedalsPrintController : AbstractController
@@ -28,8 +29,8 @@
         public ActionResult GeneratePdf(PostModel postModel)
         {
             // find out current season
-            var season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
-            var seasonResults = DocumentSession.Load<SeasonResults>(SeasonResults.GetId(season));
+            int season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+            SeasonResults seasonResults = DocumentSession.Load<SeasonResults>(SeasonResults.GetId(season));
             if (seasonResults == null)
             {
                 ModelState.AddModelError("resultat", "Det finns inga resultat för säsongen.");
@@ -40,24 +41,24 @@
                 return RedirectToAction("EliteMedals", "MatchResult");
             }
 
-            var eliteMedals = DocumentSession.Load<EliteMedals>(EliteMedals.TheId);
+            EliteMedals eliteMedals = DocumentSession.Load<EliteMedals>(EliteMedals.TheId);
             var playersDict = DocumentSession.Query<Player, PlayerSearch>()
                                              .Where(p => p.PlayerStatus == Player.Status.Active)
                                              .ToDictionary(x => x.Id);
             var viewModel = new EliteMedalsViewModel(season, playersDict, eliteMedals, seasonResults);
 
-            var templateFilename = ConfigurationManager.AppSettings["ElitemedalsTemplateFilename"];
+            string templateFilename = ConfigurationManager.AppSettings["ElitemedalsTemplateFilename"];
             var stream = new MemoryStream();
-            var archiveFileName = $"Elitmedaljer_{TenantConfiguration.FullTeamName}_{season}-{season + 1}.zip";
+            string archiveFileName = $"Elitmedaljer_{TenantConfiguration.FullTeamName}_{season}-{season + 1}.zip";
             using (var zip = new ZipArchive(stream, ZipArchiveMode.Create, true))
             {
-                var playersThatHaveMedalsToAchieve =
+                EliteMedalsViewModel.PlayerInfo[] playersThatHaveMedalsToAchieve =
                     viewModel.Players
                              .Where(x => x.ExistingMedal != EliteMedals.EliteMedal.EliteMedalValue.Gold5)
                              .OrderBy(x => x.Name)
                              .ToArray();
                 var listOfMissingPersonalNumbers = new List<string>();
-                foreach (var player in playersThatHaveMedalsToAchieve)
+                foreach (EliteMedalsViewModel.PlayerInfo player in playersThatHaveMedalsToAchieve)
                 {
                     var playerMedalInfo = new PlayerMedalInfo(
                         player.Name,
@@ -65,7 +66,7 @@
                         player.FormattedExistingMedal(),
                         player.FormattedNextMedal(),
                         player.TopThreeResults);
-                    var result = CreateFileEntry(
+                    CreateFileEntryResult result = CreateFileEntry(
                         zip,
                         templateFilename,
                         playerMedalInfo,
@@ -79,7 +80,7 @@
 
                 if (listOfMissingPersonalNumbers.Any())
                 {
-                    foreach (var playerName in listOfMissingPersonalNumbers)
+                    foreach (string playerName in listOfMissingPersonalNumbers)
                     {
                         ModelState.AddModelError(playerName, $"{playerName} saknar personnummer i fliken Medlemmar.");
                     }
@@ -122,9 +123,9 @@
                 return CreateFileEntryResult.MissingPersonalNumber;
             }
 
-            var entry = zip.CreateEntry($"{playerMedalInfo.PlayerName}.pdf", CompressionLevel.Fastest);
-            using (var entryStream = entry.Open())
-            using (var document = PdfReader.Open(templateFilename, PdfDocumentOpenMode.Modify))
+            ZipArchiveEntry entry = zip.CreateEntry($"{playerMedalInfo.PlayerName}.pdf", CompressionLevel.Fastest);
+            using (Stream entryStream = entry.Open())
+            using (PdfDocument document = PdfReader.Open(templateFilename, PdfDocumentOpenMode.Modify))
             {
                 if (document.AcroForm.Elements.ContainsKey("/NeedAppearances"))
                 {

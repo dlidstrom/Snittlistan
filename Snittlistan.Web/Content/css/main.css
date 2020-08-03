@@ -77,7 +77,7 @@ button.btn {
     max-width: calc(99%);
 }
 
-.label-team-f {
+.label-team-f, .label-team-f1, .label-team-f2 {
     background-color: Orange;
     text-transform: uppercase;
     text-overflow: ellipsis;
@@ -85,7 +85,7 @@ button.btn {
     max-width: calc(99%);
 }
 
-.label-team-b {
+.label-team-b, .label-team-d {
     background-color: Purple;
     text-transform: uppercase;
     text-overflow: ellipsis;
@@ -93,7 +93,7 @@ button.btn {
     max-width: calc(99%);
 }
 
-.label-team-c {
+.label-team-c, .label-team-dc {
     background-color: DodgerBlue;
     text-transform: uppercase;
     text-overflow: ellipsis;

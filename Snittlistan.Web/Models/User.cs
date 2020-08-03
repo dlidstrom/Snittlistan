@@ -1,67 +1,41 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Web.Mvc;
-using Raven.Imports.Newtonsoft.Json;
-using Snittlistan.Queue.Messages;
-
-namespace Snittlistan.Web.Models
+﻿namespace Snittlistan.Web.Models
 {
-    /// <summary>
-    /// Represents a registered user.
-    /// </summary>
+    using System;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Web.Mvc;
+    using Raven.Imports.Newtonsoft.Json;
+    using Snittlistan.Queue.Messages;
+
     public class User
     {
+        public const string AdminId = "Admin";
+
         private const string ConstantSalt = "CheFe2ra8en9SW";
 
-        /// <summary>
-        /// The salt needs to be initialized lazily.
-        /// This allows it to be set when it is first needed (new user),
-        /// and also when reconstituting (loading an existing user).
-        /// </summary>
         private Guid passwordSalt;
-
         private string activationKey;
 
-        /// <summary>
-        /// Initializes a new instance of the User class.
-        /// </summary>
-        /// <param name="firstName">First name of the user.</param>
-        /// <param name="lastName">Last name of the user.</param>
-        /// <param name="email">Email address.</param>
-        /// <param name="password">User password.</param>
         public User(string firstName, string lastName, string email, string password)
         {
             FirstName = firstName;
             LastName = lastName;
             Email = email;
             HashedPassword = ComputeHashedPassword(password);
+            UniqueId = Guid.NewGuid().ToString();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the User class. This constructor is
-        /// used when deserializing an entity stored in Raven.
-        /// </summary>
-        /// <param name="firstName"></param>
-        /// <param name="lastName"></param>
-        /// <param name="email"></param>
-        /// <param name="hashedPassword"></param>
-        /// <param name="passwordSalt"></param>
-        /// <param name="requiresPasswordChange">Indicates whether this user requires password change.</param>
         [JsonConstructor]
-
-        // ReSharper disable UnusedMember.Local Used by Raven when loading.
         private User(
             string firstName,
             string lastName,
             string email,
             string hashedPassword,
             Guid passwordSalt,
-            bool requiresPasswordChange)
-
-        // ReSharper restore UnusedMember.Local
+            bool requiresPasswordChange,
+            string uniqueId)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -69,6 +43,7 @@ namespace Snittlistan.Web.Models
             HashedPassword = hashedPassword;
             this.passwordSalt = passwordSalt;
             RequiresPasswordChange = requiresPasswordChange;
+            UniqueId = uniqueId ?? Guid.NewGuid().ToString();
         }
 
         /// <summary>
@@ -96,44 +71,37 @@ namespace Snittlistan.Web.Models
             private set { activationKey = value; }
         }
 
-        /// <summary>
-        /// Gets the first name.
-        /// </summary>
-        public string FirstName { get; private set; }
+        public string FirstName { get; }
 
-        /// <summary>
-        /// Gets the last name.
-        /// </summary>
-        public string LastName { get; private set; }
+        public string LastName { get; }
 
-        /// <summary>
-        /// Gets or sets the hashed password.
-        /// </summary>
+        public string UniqueId { get; }
+
         private string HashedPassword { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether password change is required.
-        /// </summary>
         private bool RequiresPasswordChange { get; set; }
 
-        /// <summary>
-        /// Gets the password salt, per user.
-        /// </summary>
         private Guid PasswordSalt
         {
             get
             {
-                if (passwordSalt == default(Guid))
+                if (passwordSalt == default)
                     passwordSalt = Guid.NewGuid();
                 return passwordSalt;
             }
         }
 
-        /// <summary>
-        /// Sets the password.
-        /// </summary>
-        /// <param name="password">New password.</param>
-        /// <param name="suppliedActivationKey">Supplied activation key.</param>
+        public void SetEmail(string email)
+        {
+            Email = email;
+        }
+
+        public void SetPassword(string password)
+        {
+            HashedPassword = ComputeHashedPassword(password);
+            RequiresPasswordChange = false;
+        }
+
         public void SetPassword(string password, string suppliedActivationKey)
         {
             if (RequiresPasswordChange == false) throw new InvalidOperationException("Password change not allowed");
@@ -142,11 +110,6 @@ namespace Snittlistan.Web.Models
             RequiresPasswordChange = false;
         }
 
-        /// <summary>
-        /// Validates a password against the user password.
-        /// </summary>
-        /// <param name="somePassword">Password to validate.</param>
-        /// <returns>True if valid; false otherwise.</returns>
         public bool ValidatePassword(string somePassword)
         {
             return RequiresPasswordChange == false
@@ -178,7 +141,7 @@ namespace Snittlistan.Web.Models
             IsActive = true;
             ActivationKey = Guid.NewGuid().ToString();
             RequiresPasswordChange = true;
-            var activationUri = urlHelper.Action("SetPassword", "User", new
+            string activationUri = urlHelper.Action("SetPassword", "User", new
             {
                 id = Id,
                 activationKey = ActivationKey
@@ -196,17 +159,12 @@ namespace Snittlistan.Web.Models
             IsActive = false;
         }
 
-        /// <summary>
-        /// Computes a hashed password.
-        /// </summary>
-        /// <param name="password">Password to hash.</param>
-        /// <returns>Hashed password.</returns>
         private string ComputeHashedPassword(string password)
         {
             string hashedPassword;
             using (var sha = SHA256.Create())
             {
-                var computedHash = sha.ComputeHash(
+                byte[] computedHash = sha.ComputeHash(
                     PasswordSalt.ToByteArray().Concat(
                         Encoding.Unicode.GetBytes(password + PasswordSalt + ConstantSalt))
                         .ToArray());

@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
-
-namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
+﻿namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
 {
+    using System;
+    using System.Linq;
+
     public class SummaryPattern
     {
         public SummaryPattern(string description)
@@ -25,14 +25,14 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
         public bool Matches(
             SeriesScores[] seriesScores)
         {
-            var teamScore = seriesScores.Last().TeamScoreTotal;
-            var opponentScore = seriesScores.Last().OpponentScoreTotal;
-            var matchWon = teamScore > opponentScore
+            int teamScore = seriesScores.Last().TeamScoreTotal;
+            int opponentScore = seriesScores.Last().OpponentScoreTotal;
+            MatchResultType matchWon = teamScore > opponentScore
                 ? MatchResultType.Win
                 : (teamScore < opponentScore ? MatchResultType.Loss : MatchResultType.Draw);
-            var numberOfSeries = seriesScores.Length;
+            int numberOfSeries = seriesScores.Length;
 
-            var matches = numberOfSeries == NumberOfSeries
+            bool matches = numberOfSeries == NumberOfSeries
                           && matchWon == MatchWon
                           && TeamScore.Invoke(teamScore, opponentScore, seriesScores)
                           && OpponentScore.Invoke(teamScore, opponentScore);

@@ -1,7 +1,7 @@
-﻿using System.Web.Mvc;
-
-namespace Snittlistan.Web.HtmlHelpers
+﻿namespace Snittlistan.Web.HtmlHelpers
 {
+    using System.Web.Mvc;
+
     public static class CustomHtmlHelpers
     {
         /// <summary>

@@ -62,9 +62,12 @@
     <Compile Include="Messages\NewUserCreatedEvent.cs" />
     <Compile Include="Messages\OneTimeKeyEvent.cs" />
     <Compile Include="Messages\RegisterMatchesMessage.cs" />
+    <Compile Include="Messages\RegisterMatchMessage.cs" />
     <Compile Include="Messages\TaskRequest.cs" />
     <Compile Include="Messages\UserInvitedEvent.cs" />
     <Compile Include="Messages\VerifyMatchesMessage.cs" />
+    <Compile Include="Models\SiteWideConfiguration.cs" />
+    <Compile Include="Models\TenantConfiguration.cs" />
     <Compile Include="MsmqGateway.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GetTeamNamesQuery.cs" />
@@ -89,8 +92,9 @@
       <Version>2.0.95</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>11.0.1</Version>
+      <Version>12.0.3</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

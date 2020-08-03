@@ -1,8 +1,8 @@
-﻿using System.Web.Mvc;
-using Snittlistan.Web.Controllers;
-
-namespace Snittlistan.Web.Areas.V1.Controllers
+﻿namespace Snittlistan.Web.Areas.V1.Controllers
 {
+    using System.Web.Mvc;
+    using Snittlistan.Web.Controllers;
+
     public class HomeController : AbstractController
     {
         public ActionResult Index()

@@ -6,10 +6,10 @@
     {
         public static DateTime ToDateTime(this string s, int matchTime)
         {
-            var yearPart = s.Substring(0, 4);
-            var monthPart = s.Substring(5, 2);
-            var dayPart = s.Substring(8, 2);
-            var result = new DateTime(
+            string yearPart = s.Substring(0, 4);
+            string monthPart = s.Substring(5, 2);
+            string dayPart = s.Substring(8, 2);
+            DateTime result = new DateTime(
                 int.Parse(yearPart),
                 int.Parse(monthPart),
                 int.Parse(dayPart)).AddHours(matchTime / 100).AddMinutes(matchTime % 100);

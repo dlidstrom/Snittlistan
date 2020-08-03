@@ -36,9 +36,9 @@ namespace Snittlistan.Web.Areas.V2.Commands
                 result.TeamScore,
                 result.OpponentScore,
                 roster.BitsMatchId);
-            var players = session.Load<Player>(roster.Players);
+            Player[] players = session.Load<Player>(roster.Players);
 
-            var matchSeries = result.CreateMatchSeries();
+            MatchSerie4[] matchSeries = result.CreateMatchSeries();
             matchResult.RegisterSeries(
                 publish,
                 matchSeries,

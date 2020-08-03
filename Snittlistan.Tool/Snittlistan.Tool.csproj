@@ -63,8 +63,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tasks\InitializeCommandLineTask.cs" />
-    <Compile Include="Tasks\PollBitsMatchSchemeTask.cs" />
-    <Compile Include="Tasks\RegisterMatchCommandLineTask.cs" />
+    <Compile Include="Tasks\RegisterMatchesCommandLineTask.cs" />
     <Compile Include="Tasks\VerifyMatchesCommandLineTask.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -111,7 +110,10 @@
       <Version>2.2.29</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>11.0.1</Version>
+      <Version>12.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="RavenDB.Client">
+      <Version>3.5.9</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

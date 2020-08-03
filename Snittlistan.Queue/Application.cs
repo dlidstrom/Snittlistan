@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Configuration;
-using Snittlistan.Queue.Config;
-
-namespace Snittlistan.Queue
+﻿namespace Snittlistan.Queue
 {
+    using System.Collections.Generic;
+    using System.Configuration;
+    using Snittlistan.Queue.Config;
+
     public class Application
     {
         private readonly List<TaskQueueListener> taskQueueListeners = new List<TaskQueueListener>();
@@ -19,7 +19,7 @@ namespace Snittlistan.Queue
 
         public void Start()
         {
-            foreach (var taskQueueListener in taskQueueListeners)
+            foreach (TaskQueueListener taskQueueListener in taskQueueListeners)
             {
                 taskQueueListener.Start();
             }
@@ -27,7 +27,7 @@ namespace Snittlistan.Queue
 
         public void Stop()
         {
-            foreach (var taskQueueListener in taskQueueListeners)
+            foreach (TaskQueueListener taskQueueListener in taskQueueListeners)
             {
                 taskQueueListener.Stop();
             }

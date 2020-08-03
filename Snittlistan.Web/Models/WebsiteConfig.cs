@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Raven.Imports.Newtonsoft.Json;
-
-namespace Snittlistan.Web.Models
+﻿namespace Snittlistan.Web.Models
 {
+    using Raven.Imports.Newtonsoft.Json;
+
     public class WebsiteConfig
     {
         public const string GlobalId = "WebsiteConfig";
@@ -26,11 +24,6 @@ namespace Snittlistan.Web.Models
         public int ClubId { get; }
 
         public int SeasonId { get; }
-
-        public HashSet<string> GetTeamNames()
-        {
-            return new HashSet<string>(TeamNamesAndLevels.Select(x => x.TeamName));
-        }
 
         public class TeamNameAndLevel
         {

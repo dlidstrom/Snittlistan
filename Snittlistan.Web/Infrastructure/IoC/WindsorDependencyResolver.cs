@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using Castle.Windsor;
-
 namespace Snittlistan.Web.Infrastructure.IoC
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
+    using Castle.Windsor;
+
     public class WindsorDependencyResolver : IDependencyResolver
     {
         private readonly IWindsorContainer container;

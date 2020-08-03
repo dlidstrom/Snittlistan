@@ -33,7 +33,7 @@ namespace Snittlistan.Web.Infrastructure
         private static string FoldLines(string incoming)
         {
             // The spec says nothing about trimming, but it seems reasonable...
-            var trimmed = incoming.Trim();
+            string trimmed = incoming.Trim();
             if (trimmed.Length <= 75)
             {
                 return trimmed + SerializationConstants.LineBreak;
@@ -41,16 +41,16 @@ namespace Snittlistan.Web.Infrastructure
 
             const int TakeLimit = 74;
 
-            var firstLine = trimmed.Substring(0, TakeLimit);
-            var remainder = trimmed.Substring(TakeLimit, trimmed.Length - TakeLimit);
+            string firstLine = trimmed.Substring(0, TakeLimit);
+            string remainder = trimmed.Substring(TakeLimit, trimmed.Length - TakeLimit);
 
-            var chunkedRemainder = string.Join(SerializationConstants.LineBreak + " ", Chunk(remainder));
+            string chunkedRemainder = string.Join(SerializationConstants.LineBreak + " ", Chunk(remainder));
             return firstLine + SerializationConstants.LineBreak + " " + chunkedRemainder + SerializationConstants.LineBreak;
         }
 
         private static IEnumerable<string> Chunk(string str, int chunkSize = 73)
         {
-            for (var index = 0; index < str.Length; index += chunkSize)
+            for (int index = 0; index < str.Length; index += chunkSize)
             {
                 yield return str.Substring(index, Math.Min(chunkSize, str.Length - index));
             }

@@ -1,7 +1,7 @@
-﻿using System.Configuration;
-
-namespace Snittlistan.Queue.Config
+﻿namespace Snittlistan.Queue.Config
 {
+    using System.Configuration;
+
     public class QueueListenersElement : ConfigurationElement
     {
         [ConfigurationProperty("", IsRequired = true, IsDefaultCollection = true)]

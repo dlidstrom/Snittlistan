@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using EventStoreLite;
-using Raven.Imports.Newtonsoft.Json;
-
-namespace Snittlistan.Web.Areas.V2.ReadModels
+﻿namespace Snittlistan.Web.Areas.V2.ReadModels
 {
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using EventStoreLite;
+    using Raven.Imports.Newtonsoft.Json;
+
     public class ResultSeriesReadModel : IReadModel
     {
         public ResultSeriesReadModel()
@@ -32,14 +32,14 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
 
         public KeyValuePair<string, List<PlayerGame>[]>[] SortedPlayers()
         {
-            var first = Series.SelectMany(x => x.Tables)
+            IEnumerable<Game> first = Series.SelectMany(x => x.Tables)
                 .Select(x => x.Game1);
-            var second = Series.SelectMany(x => x.Tables)
+            IEnumerable<Game> second = Series.SelectMany(x => x.Tables)
                 .Select(x => x.Game2);
 
             var combined = first.Concat(second).ToList();
             var dictionary = new Dictionary<string, List<PlayerGame>[]>();
-            foreach (var game in combined)
+            foreach (Game game in combined)
             {
                 if (dictionary.ContainsKey(game.Player) == false)
                     dictionary.Add(
@@ -53,24 +53,24 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
                         });
             }
 
-            for (var i = 0; i < Series.Count; i++)
+            for (int i = 0; i < Series.Count; i++)
             {
-                var serie = Series[i];
-                foreach (var table in serie.Tables)
+                Serie serie = Series[i];
+                foreach (Table table in serie.Tables)
                 {
-                    var game1 = table.Game1;
-                    var game2 = table.Game2;
+                    Game game1 = table.Game1;
+                    Game game2 = table.Game2;
                     dictionary[game1.Player][i].Add(new PlayerGame(game1, table.Score));
                     dictionary[game2.Player][i].Add(new PlayerGame(game2, table.Score));
                 }
             }
 
-            var q = from x in dictionary
+            IEnumerable<KeyValuePair<string, List<PlayerGame>[]>> q = from x in dictionary
                     let value = dictionary[x.Key]
                     let sum = value.SelectMany(y => y).Sum(z => z.Pins)
                     orderby sum descending
                     select x;
-            var result = q.ToArray();
+            KeyValuePair<string, List<PlayerGame>[]>[] result = q.ToArray();
             return result;
         }
 
@@ -78,7 +78,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         {
             if (Series.Count > i)
             {
-                var serieSum = Series[i].Tables.Sum(t => t.Game1.Pins + t.Game2.Pins);
+                int serieSum = Series[i].Tables.Sum(t => t.Game1.Pins + t.Game2.Pins);
                 return serieSum.ToString(CultureInfo.InvariantCulture);
             }
 
@@ -89,7 +89,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         {
             if (!Series.Any()) return string.Empty;
 
-            var total = Series.SelectMany(s => s.Tables)
+            int total = Series.SelectMany(s => s.Tables)
                 .Sum(t => t.Game1.Pins + t.Game2.Pins);
             return total.ToString(CultureInfo.InvariantCulture);
         }

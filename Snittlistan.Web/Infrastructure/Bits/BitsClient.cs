@@ -25,49 +25,49 @@ namespace Snittlistan.Web.Infrastructure.Bits
 
         public async Task<HeadInfo> GetHeadInfo(int matchId)
         {
-            var result = await Get<HeadInfo>($"https://api.swebowl.se/api/v1/matchResult/GetHeadInfo?APIKey={apiKey}&id={matchId}");
+            HeadInfo result = await Get<HeadInfo>($"https://api.swebowl.se/api/v1/matchResult/GetHeadInfo?APIKey={apiKey}&id={matchId}");
             return result;
         }
 
         public async Task<HeadResultInfo> GetHeadResultInfo(int matchId)
         {
-            var result = await Get<HeadResultInfo>($"https://api.swebowl.se/api/v1/matchResult/GetHeadResultInfo?APIKey={apiKey}&id={matchId}");
+            HeadResultInfo result = await Get<HeadResultInfo>($"https://api.swebowl.se/api/v1/matchResult/GetHeadResultInfo?APIKey={apiKey}&id={matchId}");
             return result;
         }
 
         public async Task<MatchResults> GetMatchResults(int matchId)
         {
-            var result = await Get< MatchResults>($"https://api.swebowl.se/api/v1/matchResult/GetMatchResults?APIKey={apiKey}&matchId={matchId}&matchSchemeId=8M8BA");
+            MatchResults result = await Get< MatchResults>($"https://api.swebowl.se/api/v1/matchResult/GetMatchResults?APIKey={apiKey}&matchId={matchId}&matchSchemeId=8M8BA");
             return result;
         }
 
         public async Task<MatchScores> GetMatchScores(int matchId)
         {
-            var result = await Get<MatchScores>($"https://api.swebowl.se/api/v1/matchResult/GetMatchScores?APIKey={apiKey}&matchId={matchId}&matchSchemeId=8M8BA");
+            MatchScores result = await Get<MatchScores>($"https://api.swebowl.se/api/v1/matchResult/GetMatchScores?APIKey={apiKey}&matchId={matchId}&matchSchemeId=8M8BA");
             return result;
         }
 
         public async Task<TeamResult[]> GetTeam(int clubId, int seasonId)
         {
-            var result = await Get<TeamResult[]>($"https://api.swebowl.se/api/v1/Team?APIKey={apiKey}&clubId={clubId}&seasonId={seasonId}");
+            TeamResult[] result = await Get<TeamResult[]>($"https://api.swebowl.se/api/v1/Team?APIKey={apiKey}&clubId={clubId}&seasonId={seasonId}");
             return result;
         }
 
         public async Task<DivisionResult[]> GetDivisions(int teamId, int seasonId)
         {
-            var result = await Get<DivisionResult[]>($"https://api.swebowl.se/api/v1/Division?APIKey={apiKey}&teamId={teamId}&seasonId={seasonId}");
+            DivisionResult[] result = await Get<DivisionResult[]>($"https://api.swebowl.se/api/v1/Division?APIKey={apiKey}&teamId={teamId}&seasonId={seasonId}");
             return result;
         }
 
         public async Task<MatchRound[]> GetMatchRounds(int teamId, int divisionId, int seasonId)
         {
-            var result = await Get<MatchRound[]>($"https://api.swebowl.se/api/v1/Match/?APIKey={apiKey}&teamId={teamId}&divisionId={divisionId}&seasonId={seasonId}");
+            MatchRound[] result = await Get<MatchRound[]>($"https://api.swebowl.se/api/v1/Match/?APIKey={apiKey}&teamId={teamId}&divisionId={divisionId}&seasonId={seasonId}");
             return result;
         }
 
         public async Task<PlayerResult> GetPlayers(int clubId)
         {
-            var result = await Post<PlayerResult>(
+            PlayerResult result = await Post<PlayerResult>(
                 new
                 {
                     ClubId = clubId,
@@ -90,8 +90,8 @@ namespace Snittlistan.Web.Infrastructure.Bits
                 return item;
             }
 
-            var response = await Request(HttpMethod.Get, url, _ => { });
-            var result = JsonConvert.DeserializeObject<TResult>(response);
+            string response = await Request(HttpMethod.Get, url, _ => { });
+            TResult result = JsonConvert.DeserializeObject<TResult>(response);
             memoryCache.Set(
                 url,
                 result,
@@ -105,7 +105,7 @@ namespace Snittlistan.Web.Infrastructure.Bits
 
         private async Task<TResult> Post<TResult>(object body, string url)
         {
-            var cacheKey = JsonConvert.SerializeObject(new
+            string cacheKey = JsonConvert.SerializeObject(new
             {
                 body,
                 url
@@ -116,11 +116,11 @@ namespace Snittlistan.Web.Infrastructure.Bits
                 return item;
             }
 
-            var response = await Request(
+            string response = await Request(
                 HttpMethod.Post,
                 url,
                 x => x.Content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json"));
-            var result = JsonConvert.DeserializeObject<TResult>(response);
+            TResult result = JsonConvert.DeserializeObject<TResult>(response);
             memoryCache.Set(
                 url,
                 result,
@@ -138,9 +138,9 @@ namespace Snittlistan.Web.Infrastructure.Bits
             var request = new HttpRequestMessage(method, url);
             request.Headers.Referrer = new Uri("https://bits.swebowl.se");
             action.Invoke(request);
-            var result = await client.SendAsync(request);
+            HttpResponseMessage result = await client.SendAsync(request);
             result.EnsureSuccessStatusCode();
-            var content = await result.Content.ReadAsStringAsync();
+            string content = await result.Content.ReadAsStringAsync();
             return content;
         }
     }

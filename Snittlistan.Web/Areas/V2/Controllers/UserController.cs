@@ -1,13 +1,13 @@
-﻿using System;
-using System.Web;
-using System.Web.Mvc;
-using Snittlistan.Web.Areas.V2.ViewModels;
-using Snittlistan.Web.Controllers;
-using Snittlistan.Web.Models;
-using Snittlistan.Web.Services;
-
-namespace Snittlistan.Web.Areas.V2.Controllers
+﻿namespace Snittlistan.Web.Areas.V2.Controllers
 {
+    using System;
+    using System.Web;
+    using System.Web.Mvc;
+    using Snittlistan.Web.Areas.V2.ViewModels;
+    using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Models;
+    using Snittlistan.Web.Services;
+
     /// <summary>
     /// User administration.
     /// </summary>
@@ -26,7 +26,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         public ActionResult SetPassword(string id, string activationKey)
         {
-            var user = DocumentSession.Load<User>(id);
+            User user = DocumentSession.Load<User>(id);
             if (user == null) throw new HttpException(404, "User not found");
             if (user.ActivationKey != activationKey) throw new InvalidOperationException("Unknown activation key");
             return View(new SetPasswordViewModel { ActivationKey = activationKey });
@@ -35,7 +35,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         [HttpPost]
         public ActionResult SetPassword(string id, SetPasswordViewModel vm)
         {
-            var user = DocumentSession.Load<User>(id);
+            User user = DocumentSession.Load<User>(id);
             if (user == null) throw new HttpException(404, "User not found");
             if (ModelState.IsValid == false) return View(vm);
             user.SetPassword(vm.Password, vm.ActivationKey);

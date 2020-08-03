@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-using Snittlistan.Web.Areas.V1.Models;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using NUnit.Framework;
+    using Snittlistan.Web.Areas.V1.Models;
+
     public static class TestData
     {
         private static readonly Dictionary<int, int[]> Result8X4 = new Dictionary<int, int[]>

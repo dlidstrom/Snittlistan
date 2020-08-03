@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using Snittlistan.Web.Infrastructure.Indexes;
-
-namespace Snittlistan.Web.Areas.V1.ViewModels
+﻿namespace Snittlistan.Web.Areas.V1.ViewModels
 {
+    using System.Collections.Generic;
+    using Snittlistan.Web.Infrastructure.Indexes;
+
     public class PlayerMatchesViewModel
     {
         public string Player { get; set; }

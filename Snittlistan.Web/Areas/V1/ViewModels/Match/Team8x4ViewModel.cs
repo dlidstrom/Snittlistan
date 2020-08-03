@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Snittlistan.Web.Areas.V1.ViewModels.Match
+﻿namespace Snittlistan.Web.Areas.V1.ViewModels.Match
 {
+    using System.ComponentModel.DataAnnotations;
+
     /// <summary>
     /// Represents a team.
     /// </summary>

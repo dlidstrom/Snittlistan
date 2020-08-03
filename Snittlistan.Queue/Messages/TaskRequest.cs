@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace Snittlistan.Queue.Messages
+﻿namespace Snittlistan.Queue.Messages
 {
+    using Newtonsoft.Json;
+
     public class TaskRequest
     {
         private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings

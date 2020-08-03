@@ -1,9 +1,9 @@
-using System.Web.Mvc;
-using System.Web.Routing;
-using Snittlistan.Web.Infrastructure.Results;
-
 namespace Snittlistan.Web.Areas.V1.Controllers
 {
+    using System.Web.Mvc;
+    using System.Web.Routing;
+    using Snittlistan.Web.Infrastructure.Results;
+
     public class NotFoundController : IController
     {
         public void Execute(RequestContext requestContext)

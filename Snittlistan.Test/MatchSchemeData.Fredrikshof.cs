@@ -1,9 +1,9 @@
-﻿using System;
-using NUnit.Framework;
-using Snittlistan.Web.Areas.V2.Domain;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using System;
+    using NUnit.Framework;
+    using Snittlistan.Web.Areas.V2.Domain;
+
     public partial class MatchSchemeData
     {
         private static readonly TestCaseData Fif = new TestCaseData(

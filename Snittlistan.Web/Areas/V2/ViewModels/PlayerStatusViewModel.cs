@@ -98,17 +98,17 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                 Debug.Assert(left != null, nameof(left) + " != null");
                 Debug.Assert(right != null, nameof(right) + " != null");
 
-                var leftCompleteAbsences = left.CompleteAbsences();
-                var rightCompleteAbsences = right.CompleteAbsences();
+                AbsenceIndex.Result[] leftCompleteAbsences = left.CompleteAbsences();
+                AbsenceIndex.Result[] rightCompleteAbsences = right.CompleteAbsences();
 
-                var a = CompareAbsences(
+                int a = CompareAbsences(
                     leftCompleteAbsences,
                     left.Name,
                     rightCompleteAbsences,
                     right.Name);
                 if (a != 0) return a;
 
-                var f = CompareForm(left, right);
+                int f = CompareForm(left, right);
                 if (f != 0) return f;
 
                 return comparer.Invoke(left, right);

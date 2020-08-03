@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using NUnit.Framework;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using System.Collections.Generic;
+    using NUnit.Framework;
+
     public partial class MatchSchemeData
     {
         public static IEnumerable<TestCaseData> TestCases

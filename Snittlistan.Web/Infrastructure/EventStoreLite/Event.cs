@@ -1,8 +1,8 @@
-using System;
-
 // ReSharper disable once CheckNamespace
 namespace EventStoreLite
 {
+    using System;
+
     /// <summary>
     /// Event base class type.
     /// </summary>

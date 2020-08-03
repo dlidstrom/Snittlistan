@@ -26,20 +26,20 @@
 
         public void Handle(MatchCommentaryEvent e, string aggregateId)
         {
-            var id = ResultHeaderReadModel.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
-            var results = DocumentSession.Load<ResultHeaderReadModel>(id);
+            string id = ResultHeaderReadModel.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
+            ResultHeaderReadModel results = DocumentSession.Load<ResultHeaderReadModel>(id);
             results.SetMatchCommentary(e.SummaryText, e.SummaryHtml, e.BodyText);
         }
 
         private void DoRegister(string aggregateId, string rosterId, int teamScore, int opponentScore)
         {
-            var roster = DocumentSession.Load<Roster>(rosterId);
+            Roster roster = DocumentSession.Load<Roster>(rosterId);
             if (roster == null) throw new HttpException(404, "Roster not found");
 
             roster.MatchResultId = aggregateId;
-            var id = ResultHeaderReadModel.IdFromBitsMatchId(roster.BitsMatchId, roster.Id);
+            string id = ResultHeaderReadModel.IdFromBitsMatchId(roster.BitsMatchId, roster.Id);
 
-            var readModel = DocumentSession.Load<ResultHeaderReadModel>(id);
+            ResultHeaderReadModel readModel = DocumentSession.Load<ResultHeaderReadModel>(id);
             if (readModel == null)
             {
                 readModel = new ResultHeaderReadModel(roster, aggregateId, teamScore, opponentScore);

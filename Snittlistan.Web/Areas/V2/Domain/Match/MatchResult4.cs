@@ -56,11 +56,11 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         {
             // check if anything has changed
             var potentiallyNewPlayerPins = new SortedDictionary<string, List<PinsAndScoreResult>>();
-            foreach (var matchSerie in matchSeries)
+            foreach (MatchSerie4 matchSerie in matchSeries)
             {
-                foreach (var matchGame in new[] { matchSerie.Game1, matchSerie.Game2, matchSerie.Game3, matchSerie.Game4 })
+                foreach (MatchGame4 matchGame in new[] { matchSerie.Game1, matchSerie.Game2, matchSerie.Game3, matchSerie.Game4 })
                 {
-                    if (potentiallyNewPlayerPins.TryGetValue(matchGame.Player, out var list) == false)
+                    if (potentiallyNewPlayerPins.TryGetValue(matchGame.Player, out List<PinsAndScoreResult> list) == false)
                     {
                         list = new List<PinsAndScoreResult>();
                         potentiallyNewPlayerPins.Add(matchGame.Player, list);
@@ -70,14 +70,14 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                 }
             }
 
-            var oldResult = JsonConvert.SerializeObject(
+            string oldResult = JsonConvert.SerializeObject(
                 new SortedDictionary<string, List<PinsAndScoreResult>>(playerPins),
                 Formatting.Indented);
-            var newResult = JsonConvert.SerializeObject(
+            string newResult = JsonConvert.SerializeObject(
                 potentiallyNewPlayerPins,
                 Formatting.Indented);
-            var pinsOrPlayersDiffer = oldResult != newResult;
-            var scoresDiffer = (teamScore, opponentScore).CompareTo((TeamScore, OpponentScore)) != 0;
+            bool pinsOrPlayersDiffer = oldResult != newResult;
+            bool scoresDiffer = (teamScore, opponentScore).CompareTo((TeamScore, OpponentScore)) != 0;
             if (pinsOrPlayersDiffer || scoresDiffer)
             {
                 var @event = new MatchResult4Registered(
@@ -114,7 +114,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         {
             if (rosterPlayers.Count != 4 && rosterPlayers.Count != 5)
                 throw new MatchException("Roster must have 4 or 5 players when registering results");
-            foreach (var matchSerie in matchSeries)
+            foreach (MatchSerie4 matchSerie in matchSeries)
             {
                 VerifyPlayers(matchSerie);
 
@@ -123,7 +123,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             }
 
             var analyzer = new Match4Analyzer(matchSeries, players.ToDictionary(x => x.Id));
-            var bodyText = analyzer.GetBodyText();
+            string bodyText = analyzer.GetBodyText();
             if (string.IsNullOrWhiteSpace(summaryText))
             {
                 ApplyChange(
@@ -152,7 +152,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         {
             if (medalsAwarded)
                 throw new ApplicationException("Medals have already been awarded");
-            for (var i = 1; i <= registeredSeries; i++)
+            for (int i = 1; i <= registeredSeries; i++)
             {
                 DoAwardMedals(i);
             }
@@ -185,9 +185,9 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
         private void DoAwardMedals(int serie)
         {
-            foreach (var key in playerPins.Keys)
+            foreach (string key in playerPins.Keys)
             {
-                var pinsResult = playerPins[key].SingleOrDefault(x => x.SerieNumber == serie);
+                PinsAndScoreResult pinsResult = playerPins[key].SingleOrDefault(x => x.SerieNumber == serie);
 
                 if (pinsResult?.Pins >= 270)
                 {
@@ -203,10 +203,10 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
             if (serie == 4)
             {
-                foreach (var key in playerPins.Keys)
+                foreach (string key in playerPins.Keys)
                 {
-                    var list = playerPins[key];
-                    var score = list.Sum(x => x.Score);
+                    List<PinsAndScoreResult> list = playerPins[key];
+                    int score = list.Sum(x => x.Score);
                     if (score != 4) continue;
                     var medal = new AwardedMedal(
                         BitsMatchId,
@@ -250,7 +250,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         private void Apply(Serie4Registered e)
         {
             registeredSeries++;
-            foreach (var game in new[] { e.MatchSerie.Game1, e.MatchSerie.Game2, e.MatchSerie.Game3, e.MatchSerie.Game4 })
+            foreach (MatchGame4 game in new[] { e.MatchSerie.Game1, e.MatchSerie.Game2, e.MatchSerie.Game3, e.MatchSerie.Game4 })
             {
                 if (playerPins.ContainsKey(game.Player) == false)
                 {

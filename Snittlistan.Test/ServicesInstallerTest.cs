@@ -1,10 +1,10 @@
-﻿using Castle.Windsor;
-using NUnit.Framework;
-using Snittlistan.Web.Infrastructure.Installers;
-using Snittlistan.Web.Services;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using Castle.Windsor;
+    using NUnit.Framework;
+    using Snittlistan.Web.Infrastructure.Installers;
+    using Snittlistan.Web.Services;
+
     [TestFixture]
     public class ServicesInstallerTest
     {
@@ -18,7 +18,7 @@ namespace Snittlistan.Test
         [Test]
         public void InstallsFormsAuthenticationService()
         {
-            var service = container.Resolve<IAuthenticationService>();
+            IAuthenticationService service = container.Resolve<IAuthenticationService>();
             Assert.NotNull(service);
         }
     }

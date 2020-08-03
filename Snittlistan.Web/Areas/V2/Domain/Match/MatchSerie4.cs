@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Raven.Imports.Newtonsoft.Json;
-
-namespace Snittlistan.Web.Areas.V2.Domain.Match
+﻿namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Raven.Imports.Newtonsoft.Json;
+
     public class MatchSerie4
     {
         public MatchSerie4(int serieNumber, IReadOnlyList<MatchGame4> games)

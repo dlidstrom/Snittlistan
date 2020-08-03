@@ -1,9 +1,9 @@
-﻿using NUnit.Framework;
-using Snittlistan.Web.Helpers;
-using Snittlistan.Web.Models;
-
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
+    using NUnit.Framework;
+    using Snittlistan.Web.Helpers;
+    using Snittlistan.Web.Models;
+
     [TestFixture]
     public class User_ValidatePassword : DbTest
     {
@@ -15,7 +15,7 @@ namespace Snittlistan.Test
             Session.Store(original);
             Session.SaveChanges();
 
-            var user = Session.FindUserByEmail("e@d.com");
+            User user = Session.FindUserByEmail("e@d.com");
             Assert.That(user.ActivationKey, Is.EqualTo(original.ActivationKey));
             Assert.That(user.Email, Is.EqualTo(original.Email));
             Assert.That(user.FirstName, Is.EqualTo(original.FirstName));

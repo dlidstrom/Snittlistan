@@ -1,7 +1,7 @@
-﻿using System.Configuration;
-
-namespace Snittlistan.Queue.Config
+﻿namespace Snittlistan.Queue.Config
 {
+    using System.Configuration;
+
     public class QueueListenerElement : ConfigurationElement
     {
         [ConfigurationProperty("name", IsRequired = true)]
@@ -33,7 +33,7 @@ namespace Snittlistan.Queue.Config
         {
             get
             {
-                var value = (string)this["errorQueue"];
+                string value = (string)this["errorQueue"];
 
                 if (string.IsNullOrWhiteSpace(value))
                 {
@@ -64,10 +64,10 @@ namespace Snittlistan.Queue.Config
 
         public MessageQueueProcessorSettings CreateSettings()
         {
-            var readQueue = ReadQueue;
-            var errorQueue = ErrorQueue;
-            var workerThreads = WorkerThreads;
-            var autoCreateQueues = AutoCreateQueues;
+            string readQueue = ReadQueue;
+            string errorQueue = ErrorQueue;
+            int workerThreads = WorkerThreads;
+            bool autoCreateQueues = AutoCreateQueues;
             var settings = new MessageQueueProcessorSettings(readQueue, errorQueue, workerThreads, autoCreateQueues);
             return settings;
         }

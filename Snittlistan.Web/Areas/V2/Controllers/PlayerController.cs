@@ -35,7 +35,7 @@
         public ActionResult Create(CreatePlayerViewModel vm)
         {
             // prevent duplicates
-            var isDuplicate = DocumentSession.Query<Player, PlayerSearch>().Any(x => x.Name == vm.Name);
+            bool isDuplicate = DocumentSession.Query<Player, PlayerSearch>().Any(x => x.Name == vm.Name);
             if (isDuplicate)
             {
                 ModelState.AddModelError("namn", "Namnet är redan registrerat");
@@ -58,7 +58,7 @@
         [Authorize(Roles = WebsiteRoles.Player.Admin)]
         public ActionResult Edit(int id)
         {
-            var player = DocumentSession.Load<Player>(id);
+            Player player = DocumentSession.Load<Player>(id);
             if (player == null) throw new HttpException(404, "Player not found");
             return View(new CreatePlayerViewModel(player));
         }
@@ -67,11 +67,11 @@
         [HttpPost]
         public ActionResult Edit(int id, CreatePlayerViewModel vm)
         {
-            var player = DocumentSession.Load<Player>(id);
+            Player player = DocumentSession.Load<Player>(id);
             if (player == null) throw new HttpException(404, "Player not found");
 
             // prevent duplicates
-            var duplicates = DocumentSession.Query<Player, PlayerSearch>().Where(x => x.Name == vm.Name).ToArray();
+            Player[] duplicates = DocumentSession.Query<Player, PlayerSearch>().Where(x => x.Name == vm.Name).ToArray();
             if (duplicates.Any(x => x.Id != player.Id))
             {
                 ModelState.AddModelError("namn", "Namnet är redan registrerat");
@@ -94,7 +94,7 @@
         [Authorize(Roles = WebsiteRoles.Player.Admin)]
         public ActionResult Delete(int id)
         {
-            var player = DocumentSession.Load<Player>(id);
+            Player player = DocumentSession.Load<Player>(id);
             if (player == null)
                 throw new HttpException(404, "Player not found");
             return View(new PlayerViewModel(player, WebsiteRoles.UserGroup().ToDictionary(x => x.Name)));
@@ -105,7 +105,7 @@
         [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            var player = DocumentSession.Load<Player>(id);
+            Player player = DocumentSession.Load<Player>(id);
             if (player == null)
                 throw new HttpException(404, "Player not found");
             DocumentSession.Delete(player);
@@ -150,7 +150,7 @@
             {
                 get
                 {
-                    var roles = WebsiteRoles.UserGroup()
+                    WebsiteRoles.WebsiteRole[] roles = WebsiteRoles.UserGroup()
                                             .Except(WebsiteRoles.PlayerGroup())
                                             .OrderBy(x => x.Description)
                                             .ToArray();

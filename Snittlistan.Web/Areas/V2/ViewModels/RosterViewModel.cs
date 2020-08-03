@@ -1,9 +1,9 @@
-using Snittlistan.Web.Areas.V2.Domain;
-using System;
-using System.Collections.Generic;
-
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
+    using Snittlistan.Web.Areas.V2.Domain;
+    using System;
+    using System.Collections.Generic;
+
     public class RosterViewModel
     {
         public RosterViewModel()

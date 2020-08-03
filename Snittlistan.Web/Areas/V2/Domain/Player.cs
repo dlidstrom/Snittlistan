@@ -1,4 +1,4 @@
-namespace Snittlistan.Web.Areas.V2.Domain
+﻿namespace Snittlistan.Web.Areas.V2.Domain
 {
     using System;
     using Infrastructure.Bits.Contracts;
@@ -13,18 +13,20 @@ namespace Snittlistan.Web.Areas.V2.Domain
             string nickname,
             string[] roles,
             PlayerItem playerItem = null,
+            string uniqueId = null,
             bool? hidden = null)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Email = email; // allow null
             PlayerStatus = playerStatus;
             PersonalNumber = (personalNumber != 0 ? personalNumber : playerItem?.GetPersonalNumber()) ?? 0;
-            Nickname = nickname ?? name;
+            Nickname = string.IsNullOrEmpty(nickname) ? name : nickname;
             Roles = roles ?? new string[0];
 
             // nullable fields
             PlayerItem = playerItem;
             Hidden = hidden ?? false;
+            UniqueId = uniqueId ?? Guid.NewGuid().ToString();
         }
 
         public enum Status
@@ -51,6 +53,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public PlayerItem PlayerItem { get; set; }
 
         public bool Hidden { get; }
+
+        public string UniqueId { get; }
 
         public void SetName(string name)
         {

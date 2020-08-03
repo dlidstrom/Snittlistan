@@ -28,7 +28,7 @@
                 return true;
             }
 
-            var enumerableType = typeof(IEnumerable<CalendarEvent>);
+            Type enumerableType = typeof(IEnumerable<CalendarEvent>);
             return enumerableType.IsAssignableFrom(type);
         }
 
@@ -56,7 +56,7 @@
                 writer.WriteLine("X-WR-CALNAME:Snittlistan");
                 if (value is IEnumerable<CalendarEvent> calendarEvents)
                 {
-                    foreach (var calendarEvent in calendarEvents)
+                    foreach (CalendarEvent calendarEvent in calendarEvents)
                     {
                         calendarEvent.Write(writer);
                     }

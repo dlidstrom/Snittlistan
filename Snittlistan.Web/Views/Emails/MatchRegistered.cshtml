@@ -29,11 +29,11 @@ Content-Type: text/html; charset=utf-8
         <tr>
             <td>@(row++)</td>
             <td>@player.Key</td>
-            @for (int serie = 0; serie < 4; serie++)
+            @for (var serie = 0; serie < 4; serie++)
             {
                 <td>
                     @{
-                        var game = player.Value[serie];
+                        List<ResultSeriesReadModel.PlayerGame> game = player.Value[serie];
                     }
                     @string.Join("+", game.Select(x => x.Pins.ToString(CultureInfo.InvariantCulture)))
                 </td>
@@ -59,7 +59,7 @@ Content-Type: text/html; charset=utf-8
 <p>
     @Model.ResultHeaderReadModel.MatchCommentary
 </p>
-@foreach (var bodyTextPart in Model.ResultHeaderReadModel.BodyText)
+@foreach (dynamic bodyTextPart in Model.ResultHeaderReadModel.BodyText)
 {
     <p>
         @bodyTextPart

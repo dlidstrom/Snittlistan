@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using NUnit.Framework;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.Domain.Match;
-using Snittlistan.Web.Areas.V2.Domain.Match.Events;
-
-namespace Snittlistan.Test.Domain
+﻿namespace Snittlistan.Test.Domain
 {
+    using System;
+    using System.Collections.Generic;
+    using NUnit.Framework;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.Domain.Match;
+    using Snittlistan.Web.Areas.V2.Domain.Match.Events;
+
     [TestFixture]
     public class MatchResultTest
     {
@@ -27,7 +27,7 @@ namespace Snittlistan.Test.Domain
             var matchResult = new MatchResult(roster, 9, 11, 123);
 
             // Assert
-            var uncommittedChanges = matchResult.GetUncommittedChanges();
+            EventStoreLite.IDomainEvent[] uncommittedChanges = matchResult.GetUncommittedChanges();
             Assert.That(uncommittedChanges.Length, Is.EqualTo(1));
             var registered = uncommittedChanges[0] as MatchResultRegistered;
             Assert.NotNull(registered);
@@ -60,7 +60,7 @@ namespace Snittlistan.Test.Domain
             var matchResult = new MatchResult(invalidRoster, 9, 11, 123);
 
             // Act
-            var matchTables = new[]
+            MatchTable[] matchTables = new[]
                 {
                     new MatchTable(1, new MatchGame("p1", 0, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
                     new MatchTable(2, new MatchGame("p3", 0, 0, 0), new MatchGame("p4", 0, 0, 0), 0),
@@ -69,7 +69,7 @@ namespace Snittlistan.Test.Domain
                 };
 
             // Assert
-            var ex = Assert.Throws<MatchException>(() => matchResult.RegisterSerie(matchTables));
+            MatchException ex = Assert.Throws<MatchException>(() => matchResult.RegisterSerie(matchTables));
             Assert.That(ex.Message, Is.EqualTo("Roster must have 8, 9, or 10 players when registering results"));
         }
 
@@ -89,7 +89,7 @@ namespace Snittlistan.Test.Domain
             var matchResult = new MatchResult(validRoster, 9, 11, 123);
 
             // Act
-            var matchTables =
+            MatchTable[] matchTables =
                 new[]
                 {
                     new MatchTable(1, new MatchGame("p1", 0, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
@@ -121,7 +121,7 @@ namespace Snittlistan.Test.Domain
             var matchResult = new MatchResult(validRoster, 9, 11, 123);
 
             // Act
-            var matchTables =
+            MatchTable[] matchTables =
                 new[]
                 {
                     new MatchTable(1, new MatchGame("p1", 0, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
@@ -150,7 +150,7 @@ namespace Snittlistan.Test.Domain
             var matchResult = new MatchResult(validRoster, 9, 11, 123);
 
             // Act
-            var matchTables =
+            MatchTable[] matchTables =
                 new[]
                 {
                     new MatchTable(1, new MatchGame("p1", 0, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
@@ -179,7 +179,7 @@ namespace Snittlistan.Test.Domain
             var matchResult = new MatchResult(invalidRoster, 9, 11, 123);
 
             // Act
-            var matchTables = new[]
+            MatchTable[] matchTables = new[]
                 {
                     new MatchTable(1, new MatchGame("p1", 0, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
                     new MatchTable(2, new MatchGame("p3", 0, 0, 0), new MatchGame("p4", 0, 0, 0), 0),
@@ -188,7 +188,7 @@ namespace Snittlistan.Test.Domain
                 };
 
             // Assert
-            var ex = Assert.Throws<MatchException>(() => matchResult.RegisterSerie(matchTables));
+            MatchException ex = Assert.Throws<MatchException>(() => matchResult.RegisterSerie(matchTables));
             Assert.That(ex.Message, Is.EqualTo("Roster must have 8, 9, or 10 players when registering results"));
         }
 
@@ -207,7 +207,7 @@ namespace Snittlistan.Test.Domain
             var matchResult = new MatchResult(validRoster, 9, 11, 123);
 
             // Act
-            var matchTables = new[]
+            MatchTable[] matchTables = new[]
                 {
                     new MatchTable(1, new MatchGame("p1", 0, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
                     new MatchTable(2, new MatchGame("p3", 0, 0, 0), new MatchGame("p4", 0, 0, 0), 0),
@@ -234,7 +234,7 @@ namespace Snittlistan.Test.Domain
             var matchResult = new MatchResult(validRoster, 9, 11, 123);
 
             // Act
-            var matchTables = new[]
+            MatchTable[] matchTables = new[]
                 {
                     new MatchTable(1, new MatchGame("p1", 0, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
                     new MatchTable(2, new MatchGame("p3", 0, 0, 0), new MatchGame("p4", 0, 0, 0), 0),
@@ -261,7 +261,7 @@ namespace Snittlistan.Test.Domain
             var matchResult = new MatchResult(validRoster, 9, 11, 123);
 
             // Act
-            var matchTables = new[]
+            MatchTable[] matchTables = new[]
                 {
                     new MatchTable(1, new MatchGame("p1", 0, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
                     new MatchTable(2, new MatchGame("p3", 0, 0, 0), new MatchGame("p4", 0, 0, 0), 0),
@@ -288,7 +288,7 @@ namespace Snittlistan.Test.Domain
             var matchResult = new MatchResult(validRoster, 9, 11, 123);
 
             // Act
-            var matchTables = new[]
+            MatchTable[] matchTables = new[]
                 {
                     new MatchTable(1, new MatchGame("p1", 0, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
                     new MatchTable(2, new MatchGame("invalid-id", 0, 0, 0), new MatchGame("p4", 0, 0, 0), 0),
@@ -297,7 +297,7 @@ namespace Snittlistan.Test.Domain
                 };
 
             // Assert
-            var ex = Assert.Throws<MatchException>(() => matchResult.RegisterSerie(matchTables));
+            MatchException ex = Assert.Throws<MatchException>(() => matchResult.RegisterSerie(matchTables));
             Assert.That(ex.Message, Is.EqualTo("Can only register players from roster"));
         }
 
@@ -336,9 +336,9 @@ namespace Snittlistan.Test.Domain
             var matchResult = new MatchResult(validRoster, 9, 11, 123);
 
             // Act
-            for (var i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
-                var matchTables = new[]
+                MatchTable[] matchTables = new[]
                     {
                         new MatchTable(1, new MatchGame("p1", 0, 0, 0), new MatchGame("p2", 0, 0, 0), 1),
                         new MatchTable(2, new MatchGame("p3", 0, 0, 0), new MatchGame("p4", 0, 0, 0), 0),
@@ -349,7 +349,7 @@ namespace Snittlistan.Test.Domain
             }
 
             // Assert
-            var changes = matchResult.GetUncommittedChanges();
+            EventStoreLite.IDomainEvent[] changes = matchResult.GetUncommittedChanges();
             Assert.That(changes.Length, Is.EqualTo(7));
             var medal1 = changes[5] as AwardedMedal;
             var medal2 = changes[6] as AwardedMedal;
@@ -379,7 +379,7 @@ namespace Snittlistan.Test.Domain
             var matchResult = new MatchResult(validRoster, 9, 11, 123);
 
             // Act
-            var matchTables = new[]
+            MatchTable[] matchTables = new[]
                 {
                     new MatchTable(1, new MatchGame("p1", 269, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
                     new MatchTable(2, new MatchGame("p3", 0, 0, 0), new MatchGame("p4", 270, 0, 0), 0),
@@ -389,7 +389,7 @@ namespace Snittlistan.Test.Domain
             matchResult.RegisterSerie(matchTables);
 
             // Assert
-            var changes = matchResult.GetUncommittedChanges();
+            EventStoreLite.IDomainEvent[] changes = matchResult.GetUncommittedChanges();
             Assert.That(changes.Length, Is.EqualTo(4));
             var medal1 = changes[2] as AwardedMedal;
             var medal2 = changes[3] as AwardedMedal;
@@ -435,7 +435,7 @@ namespace Snittlistan.Test.Domain
             });
 
             // Assert
-            var changes = matchResult.GetUncommittedChanges();
+            EventStoreLite.IDomainEvent[] changes = matchResult.GetUncommittedChanges();
             Assert.That(changes.Length, Is.EqualTo(5));
             var medal1 = changes[2] as AwardedMedal;
             var medal2 = changes[3] as AwardedMedal;
@@ -490,9 +490,9 @@ namespace Snittlistan.Test.Domain
             matchResult.ClearMedals();
 
             // Assert
-            var changes = matchResult.GetUncommittedChanges();
+            EventStoreLite.IDomainEvent[] changes = matchResult.GetUncommittedChanges();
             Assert.That(changes.Length, Is.EqualTo(2));
-            var domainEvent = changes[1];
+            EventStoreLite.IDomainEvent domainEvent = changes[1];
             Assert.IsAssignableFrom<ClearMedals>(domainEvent);
             Assert.That(123, Is.EqualTo(((ClearMedals)domainEvent).BitsMatchId));
         }

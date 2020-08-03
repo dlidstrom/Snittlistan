@@ -1,4 +1,5 @@
 ﻿@using System.Globalization
+@using Snittlistan.Web.Areas.V2.ReadModels
 @model Snittlistan.Web.Areas.V2.ReadModels.ResultSeriesReadModel
 
 @{
@@ -20,16 +21,16 @@
     @{
         var row = 1;
     }
-    @foreach (var player in Model.SortedPlayers())
+    @foreach (KeyValuePair<string, List<ResultSeriesReadModel.PlayerGame>[]> player in Model.SortedPlayers())
     {
         <tr>
             <td>@(row++)</td>
             <td>@player.Key</td>
-            @for (int serie = 0; serie < 4; serie++)
+            @for (var serie = 0; serie < 4; serie++)
             {
                 <td>
                     @{
-                        var game = player.Value[serie];
+                        List<ResultSeriesReadModel.PlayerGame> game = player.Value[serie];
                     }
                     @string.Join("+", game.Select(x => x.Pins.ToString(CultureInfo.InvariantCulture)))
                 </td>

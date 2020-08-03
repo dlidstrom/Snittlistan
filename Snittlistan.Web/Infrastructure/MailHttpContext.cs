@@ -1,10 +1,10 @@
-﻿using System.Collections;
-using System.Configuration;
-using System.Web;
-using System.Web.Caching;
-
-namespace Snittlistan.Web.Infrastructure
+﻿namespace Snittlistan.Web.Infrastructure
 {
+    using System.Collections;
+    using System.Configuration;
+    using System.Web;
+    using System.Web.Caching;
+
     public class MailHttpContext : HttpContextBase
     {
         private readonly IDictionary items = new Hashtable();
