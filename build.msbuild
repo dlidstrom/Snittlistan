@@ -185,7 +185,7 @@
     <ItemGroup>
       <InstallFiles Include="$(OutputDirectory)\Snittlistan.msi" />
     </ItemGroup>
-    <Copy SourceFiles="@(InstallFiles);SnittlistanInstall.ps1"
+    <Copy SourceFiles="@(InstallFiles);SnittlistanInstall.ps1;Install.bat"
           DestinationFolder="$(InstallDirectory)\$(Version)" />
   </Target>
 </Project>
