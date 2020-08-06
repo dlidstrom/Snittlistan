@@ -94,7 +94,7 @@
       <Version>3.5.9</Version>
     </PackageReference>
     <PackageReference Include="RavenDB.Embedded">
-      <Version>3.5.9</Version>
+      <Version>5.0.1</Version>
     </PackageReference>
     <PackageReference Include="Rotativa">
       <Version>1.7.3</Version>
