@@ -1,6 +1,7 @@
 ﻿namespace Snittlistan.Web.Areas.V2
 {
     using System.Web.Mvc;
+    using Snittlistan.Web.Infrastructure;
 
     public class V2AreaRegistration : AreaRegistration
     {
@@ -92,7 +93,16 @@
             context.MapRoute(
                 "V2_default",
                 "{controller}/{action}/{id}",
-                new { controller = "Roster", action = "Index", id = UrlParameter.Optional });
+                new
+                {
+                    controller = "Roster",
+                    action = "Index",
+                    id = UrlParameter.Optional
+                },
+                new
+                {
+                    hostname = new HostnameRouteConstraint("snittlistan.se")
+                });
         }
 
         private static void RosterRoutes(AreaRegistrationContext context)

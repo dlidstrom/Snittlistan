@@ -138,6 +138,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="Areas\SportBowling\Controllers\HomeController.cs" />
+    <Compile Include="Areas\SportBowling\SportBowlingAreaRegistration.cs" />
     <Compile Include="Areas\V2\Extensions.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\PlayerResult.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\Converter.cs" />
@@ -293,6 +295,7 @@
     <Compile Include="Infrastructure\EventStoreLite\IoC\EventStoreInstaller.cs" />
     <Compile Include="Infrastructure\EventStoreLite\IReadModel.cs" />
     <Compile Include="Infrastructure\EventStoreLite\ObjectReferenceEqualityComparer.cs" />
+    <Compile Include="Infrastructure\HostnameRouteConstraint.cs" />
     <Compile Include="Infrastructure\HttpNotFoundAwareDefaultHttpControllerSelector.cs" />
     <Compile Include="Infrastructure\Bits\IBitsClient.cs" />
     <Compile Include="Infrastructure\ICalFormatter.cs" />
@@ -542,6 +545,10 @@
     <Content Include="Content\external\quill\quill.min.js.map" />
     <Content Include="Areas\V2\Views\Authentication\LogOnOneTimePassword.cshtml" />
     <Content Include="Areas\V2\Views\Authentication\_PasswordEditor.cshtml" />
+    <Content Include="Areas\SportBowling\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\SportBowling\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\SportBowling\Views\Home\Index.cshtml" />
+    <Content Include="Areas\SportBowling\Views\Web.config" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
