@@ -71,7 +71,7 @@
             }
 
             Container?.Dispose();
-            SiteWideDocumentStore.Dispose();
+            SiteWideDocumentStore?.Dispose();
         }
 
         public static string GetAssemblyVersion()
@@ -84,6 +84,11 @@
         protected void Application_Start()
         {
             Log.Info("Application Starting");
+            // site-wide config
+            SiteWideDocumentStore = new DocumentStore
+            {
+                ConnectionStringName = "Snittlistan-SiteWide"
+            }.Initialize(true);
             Bootstrap(GlobalConfiguration.Configuration);
         }
 
@@ -170,12 +175,6 @@
 
         private static void Bootstrap(HttpConfiguration configuration)
         {
-            // site-wide config
-            SiteWideDocumentStore = new DocumentStore
-            {
-                ConnectionStringName = "Snittlistan-SiteWide"
-            }.Initialize(true);
-
             RegisterGlobalFilters(GlobalFilters.Filters);
 
             // initialize container and controller factory
