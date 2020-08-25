@@ -1,0 +1,97 @@
+@startuml DataModel
+
+skinparam title {
+  BorderRoundCorner 15
+  BorderThickness 2
+  BorderColor MidnightBlue
+  BackgroundColor CornflowerBlue
+  FontColor White
+  FontSize 24
+}
+
+title
+Datamodell
+end title
+
+right header
+<size:16>Generated %date("yyyy-MM-dd 'at' HH:mm")</size>
+end header
+
+left to right direction
+
+legend top
+Nyheter ska visa omgångsnyheter paginerat.
+Blandat med det ska finnas nyheter från förbunden.
+Så det bör vara samma datatyp.
+end legend
+
+package Flöde {
+    entity A {}
+    legend
+    Flödet listar allt som är Nyhetspunkt, paginerat.
+    Fallande datum borde räcka.
+    Omgångsnyheter ska omringas av en ram.
+    end legend
+}
+
+interface Nyhetspunkt {
+    Publiceringsdatum
+}
+
+entity Förbundsnyhet implements Nyhetspunkt {
+    Publiceringsdatum
+}
+
+entity ExternNyhet implements Nyhetspunkt {
+    Publiceringsdatum
+}
+
+note left of ExternNyhet
+Det här kan vara sidor från svenska tidningar.
+end note
+
+entity Omgångsnyhet implements Nyhetspunkt {
+    Omgång
+    Säsong
+    Publiceringsdatum
+}
+
+note right of Omgångsnyhet
+Den här ska själv lista viktiga händelser inom
+omgången. Till exempel vilka matcher som avgör kring
+strecket, uppåt och neråt. Skulle också kunna vara
+derby-matcher, om det går att identifiera sådana.
+
+* Den här ska lista alla matcher och deras resultat.
+* Viktiga matcher kan listas stort
+* Mindre viktiga listas mindre
+
+Låt det se ut som masonry fast enklare,
+ungefär som The Guardian.
+end note
+
+entity Tabell {
+    Division
+    Omgång
+}
+
+note right of Tabell
+Den här håller reda på tabellen.
+Kan användas för att räkna ut viktiga händelser
+i en division. En ny sån här skapas för varje
+omgång. När omgångsnyheten ska räknas ut så hämtas
+den tabellen som gällde omgången innan.
+end note
+
+entity Matchnyhet {
+    Omgång
+    Säsong
+}
+
+Omgångsnyhet ||--|{ Matchnyhet
+
+note left of Matchnyhet
+Den här nyheten beskriver matchen i detalj.
+end note
+
+@enduml
