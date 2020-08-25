@@ -50,10 +50,11 @@
         {
             if (mode == DocumentStoreMode.InMemory)
             {
-                var store = new EmbeddableDocumentStore
+                var store = new EmbeddableDocumentStore()
                 {
                     RunInMemory = true
                 };
+                store.Configuration.Storage.Voron.AllowOn32Bits = true;
                 container.Register(Component.For<IDocumentStore>().Instance(store.Initialize()));
 #pragma warning disable 618
                 store.Conventions.DefaultQueryingConsistency = ConsistencyOptions.AlwaysWaitForNonStaleResultsAsOfLastWrite;
