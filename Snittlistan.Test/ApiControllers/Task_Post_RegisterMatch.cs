@@ -21,34 +21,13 @@
     public class Task_Post_RegisterMatch : WebApiIntegrationTest
     {
         private HttpResponseMessage responseMessage;
-        private string content;
-        private HttpContent httpContent;
+        private string rosterId;
 
         [Test]
         public void ShouldRegisterPendingResult()
         {
             // Assert
-            Assert.That(httpContent, Is.Not.Null);
             Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-        }
-
-        [Test]
-        public void ShouldReturnInfoAboutRegisteredMatches()
-        {
-            var expected = new[]
-            {
-                new
-                {
-                    date = "2013-04-27T00:00:00",
-                    season = 2012,
-                    turn = 1,
-                    bitsMatchId = 3048746,
-                    team = "Fredrikshof IF",
-                    location = "Bowl-O-Rama",
-                    opponent = "Högdalen BK"
-                }
-            };
-            Assert.That(content, Is.EqualTo(JsonConvert.SerializeObject(expected)));
         }
 
         [Test]
@@ -64,12 +43,9 @@
         protected override async Task Act()
         {
             // Act
-            var request = new TaskRequest(new MessageEnvelope(new RegisterMatchesMessage(), new Uri("http://temp.uri/")));
+            var request = new TaskRequest(new MessageEnvelope(new RegisterMatchMessage(rosterId), new Uri("http://temp.uri/")));
             responseMessage = await Client.PostAsJsonAsync("http://temp.uri/api/task", request);
             responseMessage.EnsureSuccessStatusCode();
-
-            httpContent = responseMessage.Content;
-            content = await httpContent.ReadAsStringAsync();
         }
 
         protected override Task OnSetUp(IWindsorContainer container)
@@ -111,6 +87,7 @@
                     Players = players.Select(x => x.Id).ToList()
                 };
                 session.Store(roster);
+                rosterId = roster.Id;
             });
 
             IBitsClient bitsClient = Mock.Of<IBitsClient>();

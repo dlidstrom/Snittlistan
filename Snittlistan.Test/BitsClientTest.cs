@@ -65,7 +65,7 @@
             get
             {
                 // may need updating, perhaps skip length entirely?
-                yield return new TestCaseData(51538, 40, "M020551RAL01");
+                yield return new TestCaseData(51538, 40, "M010982KRI01");
                 yield return new TestCaseData(4494, 27, "K081082CAR01");
             }
         }
