@@ -97,7 +97,7 @@
       <Version>3.5.9</Version>
     </PackageReference>
     <PackageReference Include="Rotativa">
-      <Version>1.7.3</Version>
+      <Version>1.7.4-rc</Version>
     </PackageReference>
     <PackageReference Include="PDFsharp">
       <Version>1.50.5147</Version>
@@ -557,6 +557,14 @@
     <Content Include="Content\SpecRunner.html" />
     <Content Include="Global.asax" />
     <Content Include="robots.txt" />
+    <Content Include="Rotativa\help-wkhtmltoimage.txt" />
+    <Content Include="Rotativa\help-wkhtmltopdf.txt" />
+    <Content Include="Rotativa\wkhtmltoimage.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Rotativa\wkhtmltopdf.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
