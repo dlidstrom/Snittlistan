@@ -327,18 +327,6 @@
                     return Ok();
                 }
 
-                if (bitsMatchResult.HeadInfo.MatchFinishedHomeTeam == false)
-                {
-                    Log.Info($"Match {pendingMatch.BitsMatchId} home team not yet finished");
-                    return Ok();
-                }
-
-                if (bitsMatchResult.HeadInfo.MatchFinishedAwayTeam == false)
-                {
-                    Log.Info($"Match {pendingMatch.BitsMatchId} away team not yet finished");
-                    return Ok();
-                }
-
                 if (pendingMatch.IsFourPlayer)
                 {
                     Parse4Result parse4Result = parser.Parse4(bitsMatchResult, websiteConfig.ClubId);
