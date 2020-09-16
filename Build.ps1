@@ -21,6 +21,7 @@ function Get-WeekOfYear {
 $year = Get-Date -UFormat %y
 $week = Get-WeekOfYear -date (Get-Date)
 $day = [int](Get-Date).DayOfWeek
+if ($day -eq 0) { $day = 7 }
 
 # http://stackoverflow.com/a/3879077
 $staged = & "${env:ProgramFiles(x86)}\Git\cmd\git.exe" "diff-index" "--cached" "--name-status" "-r" "--ignore-submodules" "HEAD" "--"
