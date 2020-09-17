@@ -66,7 +66,7 @@
         public List<AuditLogEntry> AuditLogEntries { get; }
         public bool Preliminary { get; set; }
 
-        public List<string> Players { get; set; }
+        public List<string> Players { get; set; } = new List<string>();
 
         public void SetPlayers(List<string> players, string userId)
         {
