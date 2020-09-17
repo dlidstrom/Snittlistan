@@ -41,7 +41,11 @@
         public ActionResult AcceptPlayer(ViewModel vm)
         {
             Roster roster = DocumentSession.Load<Roster>(vm.Model.RosterId);
-            roster.Accept(vm.Model.PlayerId);
+            roster.Update(
+                new Roster.Change(
+                    Roster.ChangeType.PlayerAccepted,
+                    User.Identity.Name,
+                    playerAccepted: AuditLogEntry.PropertyChange.Create(null, vm.Model.PlayerId)));
             return RedirectToAction("View", "Roster", new
             {
                 vm.Model.Season,
