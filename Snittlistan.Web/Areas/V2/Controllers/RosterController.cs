@@ -365,17 +365,18 @@
             if (roster == null) throw new HttpException(404, "Roster not found");
             if (roster.IsFourPlayer)
             {
-                roster.Players = new List<string>
+                roster.SetPlayers(new List<string>
                 {
                     vm.Player1,
                     vm.Player2,
                     vm.Player3,
                     vm.Player4
-                };
+                },
+                User.Identity.Name);
             }
             else
             {
-                roster.Players = new List<string>
+                roster.SetPlayers(new List<string>
                 {
                     vm.Table1Player1,
                     vm.Table1Player2,
@@ -385,7 +386,8 @@
                     vm.Table3Player2,
                     vm.Table4Player1,
                     vm.Table4Player2
-                };
+                },
+                User.Identity.Name);
             }
             roster.Preliminary = vm.Preliminary;
             if (vm.Reserve1 != null && DocumentSession.Load<Player>(vm.Reserve1) != null)

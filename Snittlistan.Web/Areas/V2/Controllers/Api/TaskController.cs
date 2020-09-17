@@ -272,7 +272,7 @@
             {
                 MatchResult4 matchResult = EventStoreSession.Load<MatchResult4>(roster.MatchResultId);
                 Parse4Result parseResult = parser.Parse4(bitsMatchResult, websiteConfig.ClubId);
-                roster.Players = GetPlayerIds(parseResult);
+                roster.SetPlayers(GetPlayerIds(parseResult), "verify-match-message");
                 bool isVerified = matchResult.Update(
                     PublishMessage,
                     roster,
@@ -287,7 +287,7 @@
             {
                 MatchResult matchResult = EventStoreSession.Load<MatchResult>(roster.MatchResultId);
                 ParseResult parseResult = parser.Parse(bitsMatchResult, websiteConfig.ClubId);
-                roster.Players = GetPlayerIds(parseResult);
+                roster.SetPlayers(GetPlayerIds(parseResult), "verify-match-message");
                 var resultsForPlayer = DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
                     .Where(x => x.Season == roster.Season)
                     .ToArray()
@@ -333,7 +333,7 @@
                     if (parse4Result != null)
                     {
                         List<string> allPlayerIds = GetPlayerIds(parse4Result);
-                        pendingMatch.Players = allPlayerIds;
+                        pendingMatch.SetPlayers(allPlayerIds, "register-match-message");
                         ExecuteCommand(new RegisterMatch4Command(pendingMatch, parse4Result));
                     }
                 }
@@ -343,7 +343,7 @@
                     if (parseResult != null)
                     {
                         List<string> allPlayerIds = GetPlayerIds(parseResult);
-                        pendingMatch.Players = allPlayerIds;
+                        pendingMatch.SetPlayers(allPlayerIds, "register-match-message");
                         ExecuteCommand(new RegisterMatchCommand(pendingMatch, parseResult));
                     }
                 }

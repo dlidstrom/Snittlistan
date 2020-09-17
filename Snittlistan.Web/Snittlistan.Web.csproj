@@ -138,6 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="Areas\V2\Domain\AuditLogEntry.cs" />
     <Compile Include="Areas\V2\Extensions.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\PlayerResult.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\Converter.cs" />

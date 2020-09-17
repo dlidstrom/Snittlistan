@@ -143,10 +143,12 @@
                 series.Add(serie);
             }
 
-            roster.Players = viewModel.Model
-                                      .Players
-                                      .Where(x => x.PlayerId != null)
-                                      .Select(x => x.PlayerId).ToList();
+            roster.SetPlayers(
+                viewModel.Model
+                    .Players
+                    .Where(x => x.PlayerId != null)
+                    .Select(x => x.PlayerId).ToList(),
+                User.Identity.Name);
             Debug.Assert(viewModel.Model.TeamScore != null, "viewModel.Model.TeamScore != null");
             Debug.Assert(viewModel.Model.OpponentScore != null, "viewModel.Model.OpponentScore != null");
             var parse4Result = new Parse4Result(
