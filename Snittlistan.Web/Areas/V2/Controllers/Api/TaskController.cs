@@ -425,13 +425,19 @@
         {
             int season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
             Roster[] rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
-                                         .Where(x => x.Season == season)
-                                         .ToArray();
+                .Where(x => x.Season == season)
+                .ToArray();
             var toVerify = new List<VerifyMatchMessage>();
             foreach (Roster roster in rosters)
             {
                 if (roster.BitsMatchId == 0)
                 {
+                    continue;
+                }
+
+                if (roster.Date.ToUniversalTime() > SystemTime.UtcNow)
+                {
+                    Log.Info($"Too early to verify {roster.BitsMatchId}");
                     continue;
                 }
 
@@ -447,6 +453,7 @@
 
             foreach (VerifyMatchMessage verifyMatchMessage in toVerify)
             {
+                Log.Info($"Scheduling verification of {verifyMatchMessage.BitsMatchId}");
                 PublishMessage(verifyMatchMessage);
             }
 
