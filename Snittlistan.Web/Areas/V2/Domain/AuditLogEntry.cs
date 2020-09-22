@@ -1,11 +1,21 @@
 ﻿namespace Snittlistan.Web.Areas.V2.Domain
 {
+    using System;
+    using Raven.Abstractions;
+
     public class AuditLogEntry
     {
-        public AuditLogEntry(string userId, string action, object change, object before, object after)
+        public AuditLogEntry(
+            string userId,
+            string action,
+            object change,
+            object before,
+            object after,
+            DateTime? date = null)
         {
             UserId = userId;
             Action = action;
+            Date = date ?? SystemTime.UtcNow.ToLocalTime();
             Change = change;
             Before = before;
             After = after;
@@ -13,6 +23,7 @@
 
         public string UserId { get; }
         public string Action { get; }
+        public DateTime? Date { get; }
         public object Change { get; }
         public object Before { get; }
         public object After { get; }

@@ -255,56 +255,63 @@
             ParseHeaderResult header = BitsParser.ParseHeader(result, websiteConfig.ClubId);
 
             // chance to update roster values
-            roster.OilPattern = header.OilPattern;
-            roster.Date = header.Date;
-            roster.Opponent = header.Opponent;
-            roster.Location = header.Location;
-            if (roster.MatchResultId == null) return Ok();
-
-            // update match result values
-            BitsMatchResult bitsMatchResult = await bitsClient.GetBitsMatchResult(roster.BitsMatchId);
-            Player[] players = DocumentSession.Query<Player, PlayerSearch>()
-                .ToArray()
-                .Where(x => x.PlayerItem?.LicNbr != null)
-                .ToArray();
-            var parser = new BitsParser(players);
-            if (roster.IsFourPlayer)
+            var update = new Roster.Update(
+                Roster.ChangeType.VerifyMatchMessage,
+                "system")
             {
-                MatchResult4 matchResult = EventStoreSession.Load<MatchResult4>(roster.MatchResultId);
-                Parse4Result parseResult = parser.Parse4(bitsMatchResult, websiteConfig.ClubId);
-                roster.SetPlayers(GetPlayerIds(parseResult), "verify-match-message");
-                bool isVerified = matchResult.Update(
-                    PublishMessage,
-                    roster,
-                    parseResult.TeamScore,
-                    parseResult.OpponentScore,
-                    roster.BitsMatchId,
-                    parseResult.CreateMatchSeries(),
-                    players);
-                roster.IsVerified = isVerified;
-            }
-            else
+                OilPattern = header.OilPattern,
+                Date = header.Date,
+                Opponent = header.Opponent,
+                Location = header.Location
+            };
+            if (roster.MatchResultId != null)
             {
-                MatchResult matchResult = EventStoreSession.Load<MatchResult>(roster.MatchResultId);
-                ParseResult parseResult = parser.Parse(bitsMatchResult, websiteConfig.ClubId);
-                roster.SetPlayers(GetPlayerIds(parseResult), "verify-match-message");
-                var resultsForPlayer = DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
-                    .Where(x => x.Season == roster.Season)
+                // update match result values
+                BitsMatchResult bitsMatchResult = await bitsClient.GetBitsMatchResult(roster.BitsMatchId);
+                Player[] players = DocumentSession.Query<Player, PlayerSearch>()
                     .ToArray()
-                    .ToDictionary(x => x.PlayerId);
-                MatchSerie[] matchSeries = parseResult.CreateMatchSeries();
-                bool isVerified = matchResult.Update(
-                    PublishMessage,
-                    roster,
-                    parseResult.TeamScore,
-                    parseResult.OpponentScore,
-                    matchSeries,
-                    parseResult.OpponentSeries,
-                    players,
-                    resultsForPlayer);
-                roster.IsVerified = isVerified;
+                    .Where(x => x.PlayerItem?.LicNbr != null)
+                    .ToArray();
+                var parser = new BitsParser(players);
+                if (roster.IsFourPlayer)
+                {
+                    MatchResult4 matchResult = EventStoreSession.Load<MatchResult4>(roster.MatchResultId);
+                    Parse4Result parseResult = parser.Parse4(bitsMatchResult, websiteConfig.ClubId);
+                    update.Players = GetPlayerIds(parseResult);
+                    bool isVerified = matchResult.Update(
+                        PublishMessage,
+                        roster,
+                        parseResult.TeamScore,
+                        parseResult.OpponentScore,
+                        roster.BitsMatchId,
+                        parseResult.CreateMatchSeries(),
+                        players);
+                    update.IsVerified = isVerified;
+                }
+                else
+                {
+                    MatchResult matchResult = EventStoreSession.Load<MatchResult>(roster.MatchResultId);
+                    ParseResult parseResult = parser.Parse(bitsMatchResult, websiteConfig.ClubId);
+                    update.Players = GetPlayerIds(parseResult);
+                    var resultsForPlayer = DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
+                        .Where(x => x.Season == roster.Season)
+                        .ToArray()
+                        .ToDictionary(x => x.PlayerId);
+                    MatchSerie[] matchSeries = parseResult.CreateMatchSeries();
+                    bool isVerified = matchResult.Update(
+                        PublishMessage,
+                        roster,
+                        parseResult.TeamScore,
+                        parseResult.OpponentScore,
+                        matchSeries,
+                        parseResult.OpponentSeries,
+                        players,
+                        resultsForPlayer);
+                    update.IsVerified = isVerified;
+                }
             }
 
+            roster.UpdateWith(update);
             return Ok();
         }
 
@@ -333,7 +340,7 @@
                     if (parse4Result != null)
                     {
                         List<string> allPlayerIds = GetPlayerIds(parse4Result);
-                        pendingMatch.SetPlayers(allPlayerIds, "register-match-message");
+                        pendingMatch.SetPlayers(allPlayerIds);
                         ExecuteCommand(new RegisterMatch4Command(pendingMatch, parse4Result));
                     }
                 }
@@ -343,7 +350,7 @@
                     if (parseResult != null)
                     {
                         List<string> allPlayerIds = GetPlayerIds(parseResult);
-                        pendingMatch.SetPlayers(allPlayerIds, "register-match-message");
+                        pendingMatch.SetPlayers(allPlayerIds);
                         ExecuteCommand(new RegisterMatchCommand(pendingMatch, parseResult));
                     }
                 }

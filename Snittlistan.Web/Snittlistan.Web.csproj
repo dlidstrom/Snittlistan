@@ -138,8 +138,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="Areas\V2\Controllers\AuditLogViewerController.cs" />
     <Compile Include="Areas\V2\Domain\AuditLogEntry.cs" />
+    <Compile Include="Areas\V2\Domain\FormattedAuditLogEntry.cs" />
     <Compile Include="Areas\V2\Extensions.cs" />
+    <Compile Include="Areas\V2\IAuditLogCapable.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\PlayerResult.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\Converter.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\DivisionResult.cs" />
@@ -311,6 +314,7 @@
     <Compile Include="Infrastructure\JetBrains\Annotations.cs" />
     <Compile Include="Infrastructure\OutlookAgentMessageHandler.cs" />
     <Compile Include="Infrastructure\RateHandler.cs" />
+    <Compile Include="Option.cs" />
     <Compile Include="ViewModels\QuillData.cs" />
     <Compile Include="Models\Emails.cs" />
     <Compile Include="Models\WebsiteConfig.cs" />
@@ -543,6 +547,7 @@
     <Content Include="Content\external\quill\quill.min.js.map" />
     <Content Include="Areas\V2\Views\Authentication\LogOnOneTimePassword.cshtml" />
     <Content Include="Areas\V2\Views\Authentication\_PasswordEditor.cshtml" />
+    <Content Include="Areas\V2\Views\AuditLogViewer\Index.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
