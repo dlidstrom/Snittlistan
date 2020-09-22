@@ -231,4 +231,16 @@
             </tr>
         </table>
     }
+    @Html.ActionLink(
+        "Visa händelser",
+        "Index",
+        "AuditLogViewer",
+        new
+        {
+            Id = Model.Header.RosterId
+        },
+        new
+        {
+            @class = "btn btn-link"
+        })
 </div>

@@ -371,8 +371,7 @@
                     vm.Player2,
                     vm.Player3,
                     vm.Player4
-                },
-                User.Identity.Name);
+                });
             }
             else
             {
@@ -386,8 +385,7 @@
                     vm.Table3Player2,
                     vm.Table4Player1,
                     vm.Table4Player2
-                },
-                User.Identity.Name);
+                });
             }
             roster.Preliminary = vm.Preliminary;
             if (vm.Reserve1 != null && DocumentSession.Load<Player>(vm.Reserve1) != null)

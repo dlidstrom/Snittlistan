@@ -11,11 +11,13 @@
         public ActionResult Accept(string rosterId, string playerId, int season, int turn)
         {
             Roster roster = DocumentSession.Load<Roster>(rosterId);
-            roster.Update(
-                new Roster.Change(
-                    Roster.ChangeType.PlayerAccepted,
-                    User.Identity.Name,
-                    playerAccepted: AuditLogEntry.PropertyChange.Create(null, playerId)));
+            var update = new Roster.Update(
+                Roster.ChangeType.PlayerAccepted,
+                User.Identity.Name)
+            {
+                PlayerAccepted = playerId
+            };
+            roster.UpdateWith(update);
             return RedirectToAction("View", "Roster", new { season, turn });
         }
     }

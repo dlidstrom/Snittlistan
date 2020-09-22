@@ -1,0 +1,17 @@
+﻿@model Snittlistan.Web.Areas.V2.Domain.FormattedAuditLogEntry[]
+
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>Medlem</th>
+        <th>Gjorde</th>
+        <th>När?</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.UserId</td>
+            <td>@item.Action</td>
+            <td>@(item.Date?.ToString("yyyy-MM-dd HH:mm"))</td>
+        </tr>
+    }
+</table>
