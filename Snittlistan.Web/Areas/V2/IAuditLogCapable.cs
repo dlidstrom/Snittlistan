@@ -5,6 +5,6 @@
 
     public interface IAuditLogCapable
     {
-        FormattedAuditLogEntry[] GetHistory(IDocumentSession documentSession);
+        FormattedAuditLog GetAuditLog(IDocumentSession documentSession);
     }
 }

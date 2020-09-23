@@ -11,11 +11,11 @@
             object model = DocumentSession.Load<object>(id);
             if (model is IAuditLogCapable capable)
             {
-                FormattedAuditLogEntry[] history = capable.GetHistory(DocumentSession);
+                FormattedAuditLog history = capable.GetAuditLog(DocumentSession);
                 return View(history);
             }
 
-            return View(new AuditLogEntry[0]);
+            return View(FormattedAuditLog.Empty);
         }
     }
 }

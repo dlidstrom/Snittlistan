@@ -194,9 +194,11 @@
             };
         }
 
-        public FormattedAuditLogEntry[] GetHistory(IDocumentSession documentSession)
+        public FormattedAuditLog GetAuditLog(IDocumentSession documentSession)
         {
-            return AuditLogEntries.Select(Format).ToArray();
+            return new FormattedAuditLog(
+                $"{Team} - {Opponent}, Omgång {Turn}, {Date:yyyy-MM-dd HH:mm}",
+                AuditLogEntries.Select(Format).ToArray());
 
             FormattedAuditLogEntry Format(AuditLogEntry entry)
             {
