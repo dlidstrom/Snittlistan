@@ -1,12 +1,14 @@
-﻿@model Snittlistan.Web.Areas.V2.Domain.FormattedAuditLogEntry[]
+﻿@model Snittlistan.Web.Areas.V2.Domain.FormattedAuditLog
+
+<h1>@Model.Title</h1>
 
 <table class="table table-bordered table-striped">
     <tr>
         <th>Medlem</th>
-        <th>Gjorde</th>
-        <th>När?</th>
+        <th>Åtgärd</th>
+        <th>Datum</th>
     </tr>
-    @foreach (var item in Model)
+    @foreach (var item in Model.Entries)
     {
         <tr>
             <td>@item.UserId</td>

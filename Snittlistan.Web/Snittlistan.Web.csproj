@@ -140,6 +140,7 @@
     <Compile Include="ApplicationMode.cs" />
     <Compile Include="Areas\V2\Controllers\AuditLogViewerController.cs" />
     <Compile Include="Areas\V2\Domain\AuditLogEntry.cs" />
+    <Compile Include="Areas\V2\Domain\FormattedAuditLog.cs" />
     <Compile Include="Areas\V2\Domain\FormattedAuditLogEntry.cs" />
     <Compile Include="Areas\V2\Extensions.cs" />
     <Compile Include="Areas\V2\IAuditLogCapable.cs" />
@@ -548,6 +549,7 @@
     <Content Include="Areas\V2\Views\Authentication\LogOnOneTimePassword.cshtml" />
     <Content Include="Areas\V2\Views\Authentication\_PasswordEditor.cshtml" />
     <Content Include="Areas\V2\Views\AuditLogViewer\Index.cshtml" />
+    <Content Include="Areas\V2\Views\AdminTasks\Adopt.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />

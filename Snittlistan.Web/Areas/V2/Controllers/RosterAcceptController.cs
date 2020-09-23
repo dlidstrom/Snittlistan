@@ -13,7 +13,7 @@
             Roster roster = DocumentSession.Load<Roster>(rosterId);
             var update = new Roster.Update(
                 Roster.ChangeType.PlayerAccepted,
-                User.Identity.Name)
+                User.CustomIdentity.PlayerId)
             {
                 PlayerAccepted = playerId
             };
