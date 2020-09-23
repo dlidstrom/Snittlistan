@@ -6,15 +6,25 @@
     using System.Web.Mvc;
     using EventStoreLite;
     using Snittlistan.Queue.Messages;
+    using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Areas.V2.Indexes;
     using Snittlistan.Web.Areas.V2.Migration;
     using Snittlistan.Web.Areas.V2.ViewModels;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Helpers;
     using Snittlistan.Web.Infrastructure.Indexes;
     using Snittlistan.Web.Models;
+    using Snittlistan.Web.Services;
 
     public class AdminTasksController : AdminController
     {
+        private readonly IAuthenticationService authenticationService;
+
+        public AdminTasksController(IAuthenticationService authenticationService)
+        {
+            this.authenticationService = authenticationService;
+        }
+
         public ActionResult Index()
         {
             return View();
@@ -171,6 +181,21 @@
             PublishMessage(EmailTask.Create(vm.Recipient, vm.Subject, vm.Content));
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Adopt()
+        {
+            Player[] players = DocumentSession.Query<Player, PlayerSearch>().ToArray();
+            ViewBag.PlayerId = DocumentSession.CreatePlayerSelectList(
+                getPlayers: () => players);
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Adopt(string playerId)
+        {
+            authenticationService.SetAuthCookie(playerId, true);
+            return RedirectToAction("Index", "Roster");
         }
     }
 }
