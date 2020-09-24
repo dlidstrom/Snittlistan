@@ -1,5 +1,6 @@
 ﻿namespace Snittlistan.Web.Areas.V2.Controllers
 {
+    using System.Diagnostics;
     using System.Web.Mvc;
     using Domain;
     using Web.Controllers;
@@ -17,7 +18,7 @@
             {
                 PlayerAccepted = playerId
             };
-            roster.UpdateWith(update);
+            roster.UpdateWith(Trace.CorrelationManager.ActivityId, update);
             return RedirectToAction("View", "Roster", new { season, turn });
         }
     }

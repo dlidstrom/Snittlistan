@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using Raven.Abstractions;
     using Raven.Client;
 
@@ -87,7 +88,7 @@
             set { acceptedPlayers = value; }
         }
 
-        public void UpdateWith(Update update)
+        public void UpdateWith(Guid correlationId, Update update)
         {
             var change = new Change(update.ChangeType, update.UserId);
             object before = GetState();
@@ -144,6 +145,17 @@
                 },
                 () => { });
 
+            update.Preliminary.Match(
+                x =>
+                {
+                    if (x != Preliminary)
+                    {
+                        change.Preliminary = AuditLogEntry.PropertyChange.Create(Preliminary, x);
+                        Preliminary = x;
+                    }
+                },
+                () => { });
+
             update.Players.Match(
                 x =>
                 {
@@ -166,10 +178,22 @@
                 },
                 () => { });
 
+            update.TeamLeader.Match(
+                x =>
+                {
+                    if (x != TeamLeader)
+                    {
+                        change.TeamLeader = AuditLogEntry.PropertyChange.Create(TeamLeader, x);
+                        TeamLeader = x;
+                    }
+                },
+                () => { });
+
             object after = GetState();
             var auditLogEntry = new AuditLogEntry(
                 change.UserId,
                 change.ChangeType.ToString(),
+                correlationId,
                 change,
                 before,
                 after);
@@ -217,6 +241,29 @@
                             action = "Verifierade resultatet";
                             break;
                         }
+                    case ChangeType.EditPlayers:
+                        {
+                            var changes = new List<string>();
+                            if (change.Preliminary is object)
+                                changes.Add($"{(change.Preliminary.NewValue ? "Gjordes preliminär" : "Inte längre preliminär")}");
+                            if (change.Players is object)
+                            {
+                                string[] outOfTeam = change.Players.OldValue.Except(change.Players.NewValue).Select(PlayerName).ToArray();
+                                IEnumerable<string> intoTeam = change.Players.NewValue.Except(change.Players.OldValue).Select(PlayerName);
+                                if (outOfTeam.Any() == false)
+                                    changes.Add($"Tog ut lag {string.Join("+", intoTeam)}");
+                                else
+                                    changes.Add($"Ändrade spelare ({string.Join("+", outOfTeam)} byttes mot {string.Join("+", intoTeam)})");
+
+                                string PlayerName(string playerId)
+                                {
+                                    return documentSession.Load<Player>(playerId).Nickname;
+                                }
+                            }
+
+                            action = string.Join("; ", changes);
+                            break;
+                        }
                 }
 
                 return new FormattedAuditLogEntry(
@@ -251,6 +298,8 @@
             public AuditLogEntry.PropertyChange<string> Location { get; set; }
             public AuditLogEntry.PropertyChange<List<string>> Players { get; set; }
             public AuditLogEntry.PropertyChange<bool> IsVerified { get; set; }
+            public AuditLogEntry.PropertyChange<bool> Preliminary { get; set; }
+            public AuditLogEntry.PropertyChange<string> TeamLeader { get; set; }
         }
 
         public class Update
@@ -270,14 +319,17 @@
             public Option<DateTime> Date { get; set; } = None.Value;
             public Option<string> Opponent { get; set; } = None.Value;
             public Option<string> Location { get; set; } = None.Value;
+            public Option<bool> Preliminary { get; set; } = None.Value;
             public Option<List<string>> Players { get; set; } = None.Value;
             public Option<bool> IsVerified { get; set; } = None.Value;
+            public Option<string> TeamLeader { get; set; } = None.Value;
         }
 
         public enum ChangeType
         {
             PlayerAccepted,
-            VerifyMatchMessage
+            VerifyMatchMessage,
+            EditPlayers
         }
     }
 }

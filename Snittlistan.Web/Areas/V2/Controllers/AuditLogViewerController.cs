@@ -4,6 +4,7 @@
     using Snittlistan.Web.Areas.V2.Domain;
     using Snittlistan.Web.Controllers;
 
+    [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
     public class AuditLogViewerController : AbstractController
     {
         public ActionResult Index(string id)

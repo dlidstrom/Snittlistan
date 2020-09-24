@@ -1,4 +1,5 @@
 ﻿@model ViewTurnViewModel
+@using Raven.Abstractions
 
 <div class="row">
     <div class="span12">
@@ -49,8 +50,9 @@
 </div>
 
 @if (User.CustomIdentity.PlayerId != null
-     && Model.RosterViewModels.Any(x => x.Preliminary == false
-                                        && x.Players.Find(y => y.Item1 == User.CustomIdentity.PlayerId)?.Item3 == false))
+    && Model.RosterViewModels.Any(x => x.Preliminary == false
+    && x.Header.Date.ToUniversalTime() > SystemTime.UtcNow // hit
+    && x.Players.Find(y => y.Item1 == User.CustomIdentity.PlayerId)?.Item3 == false))
 {
     <div class="row">
         <div class="span12">
