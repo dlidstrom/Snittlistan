@@ -51,7 +51,7 @@
 
 @if (User.CustomIdentity.PlayerId != null
     && Model.RosterViewModels.Any(x => x.Preliminary == false
-    && x.Header.Date.ToUniversalTime() > SystemTime.UtcNow // hit
+    && x.Header.Date.ToUniversalTime() > SystemTime.UtcNow
     && x.Players.Find(y => y.Item1 == User.CustomIdentity.PlayerId)?.Item3 == false))
 {
     <div class="row">
