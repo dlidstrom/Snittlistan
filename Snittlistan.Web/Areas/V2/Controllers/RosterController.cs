@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Diagnostics;
     using System.Globalization;
     using System.Linq;
     using System.Text;
@@ -363,19 +364,27 @@
             if (ModelState.IsValid == false) return EditPlayers(rosterId);
             Roster roster = DocumentSession.Load<Roster>(rosterId);
             if (roster == null) throw new HttpException(404, "Roster not found");
+
+            var update = new Roster.Update(
+                Roster.ChangeType.EditPlayers,
+                User.CustomIdentity.PlayerId ?? User.CustomIdentity.Email)
+            {
+                Preliminary = vm.Preliminary
+            };
+            List<string> players = null;
             if (roster.IsFourPlayer)
             {
-                roster.SetPlayers(new List<string>
+                players = new List<string>
                 {
                     vm.Player1,
                     vm.Player2,
                     vm.Player3,
                     vm.Player4
-                });
+                };
             }
             else
             {
-                roster.SetPlayers(new List<string>
+                players = new List<string>
                 {
                     vm.Table1Player1,
                     vm.Table1Player2,
@@ -385,34 +394,38 @@
                     vm.Table3Player2,
                     vm.Table4Player1,
                     vm.Table4Player2
-                });
+                };
             }
-            roster.Preliminary = vm.Preliminary;
+
             if (vm.Reserve1 != null && DocumentSession.Load<Player>(vm.Reserve1) != null)
             {
-                roster.Players.Add(vm.Reserve1);
+                players.Add(vm.Reserve1);
                 if (vm.Reserve2 != null && DocumentSession.Load<Player>(vm.Reserve2) != null)
                 {
-                    roster.Players.Add(vm.Reserve2);
+                    players.Add(vm.Reserve2);
                 }
             }
 
             // case where reserve1 is unselected while reserve2 is selected
             if (vm.Reserve2 != null
-                && roster.Players.Find(x => x == vm.Reserve2) == null
+                && players.Find(x => x == vm.Reserve2) == null
                 && DocumentSession.Load<Player>(vm.Reserve2) != null)
             {
-                roster.Players.Add(vm.Reserve2);
+                players.Add(vm.Reserve2);
             }
+
+            update.Players = players;
 
             if (vm.TeamLeader != null && DocumentSession.Load<Player>(vm.TeamLeader) != null)
             {
-                roster.TeamLeader = vm.TeamLeader;
+                update.TeamLeader = vm.TeamLeader;
             }
             else
             {
-                roster.TeamLeader = null;
+                update.TeamLeader = new Some<string>(null);
             }
+
+            roster.UpdateWith(Trace.CorrelationManager.ActivityId, update);
 
             return RedirectToAction("View", new { season = roster.Season, turn = roster.Turn });
         }

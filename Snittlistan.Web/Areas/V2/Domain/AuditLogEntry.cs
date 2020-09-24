@@ -8,6 +8,7 @@
         public AuditLogEntry(
             string userId,
             string action,
+            Guid correlationId,
             object change,
             object before,
             object after,
@@ -15,6 +16,7 @@
         {
             UserId = userId;
             Action = action;
+            CorrelationId = correlationId;
             Date = date ?? SystemTime.UtcNow.ToLocalTime();
             Change = change;
             Before = before;
@@ -23,6 +25,7 @@
 
         public string UserId { get; }
         public string Action { get; }
+        public Guid CorrelationId { get; }
         public DateTime? Date { get; }
         public object Change { get; }
         public object Before { get; }
