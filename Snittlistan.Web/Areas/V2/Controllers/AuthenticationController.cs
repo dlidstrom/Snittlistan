@@ -5,12 +5,14 @@
     using System.Configuration;
     using System.Diagnostics;
     using System.Linq;
+    using System.Reflection;
     using System.Text;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
     using Domain;
     using Indexes;
+    using log4net;
     using Queue.Messages;
     using Raven.Abstractions;
     using Snittlistan.Web.Controllers;
@@ -20,6 +22,7 @@
 
     public class AuthenticationController : AbstractController
     {
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private static readonly Random Random = new Random();
         private readonly IAuthenticationService authenticationService;
 
@@ -148,6 +151,7 @@
             {
                 if (activeTokens.Any() == false)
                 {
+                    Log.Info("No tokens");
                     ModelState.AddModelError("Lösenord", "Prova igen");
                     vm.Password = string.Empty;
                     await Task.Delay(2000);
@@ -157,6 +161,7 @@
                 OneTimeToken matchingPassword = activeTokens.FirstOrDefault(x => x.Payload == vm.Password);
                 if (matchingPassword == null)
                 {
+                    Log.Info("No matching password token");
                     ModelState.AddModelError("Lösenord", "Felaktigt lösenord");
                     vm.Password = string.Empty;
                     await Task.Delay(2000);
@@ -165,6 +170,7 @@
 
                 if (matchingPassword.UsedDate.HasValue)
                 {
+                    Log.Info("Token already used");
                     ModelState.AddModelError("Lösenord", "Koden har använts en gång, prova igen");
                     await Task.Delay(2000);
                     return RedirectToAction("LogOn");
