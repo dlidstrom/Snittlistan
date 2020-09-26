@@ -6,6 +6,7 @@
     using System.Diagnostics;
     using System.Linq;
     using System.Text;
+    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
     using Domain;
@@ -14,6 +15,7 @@
     using Raven.Abstractions;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Helpers;
+    using Snittlistan.Web.Infrastructure.Attributes;
     using Snittlistan.Web.Services;
 
     public class AuthenticationController : AbstractController
@@ -26,6 +28,7 @@
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
         }
 
+        [RestoreModelStateFromTempData]
         public ActionResult LogOn()
         {
             return View();
@@ -75,11 +78,9 @@
                     if (validExistingToken != null)
                     {
                         // reuse still valid token
-                        return RedirectToAction("LogOnOneTimePassword", new
-                        {
-                            id = player.Id,
-                            validExistingToken.OneTimeKey
-                        });
+                        return RedirectToAction(
+                            "LogOnOneTimePassword",
+                            new { id = player.Id, validExistingToken.OneTimeKey });
                     }
 
                     // no valid token, generate new
@@ -94,7 +95,9 @@
                         },
                         oneTimePassword);
                     DocumentSession.Store(token);
-                    return RedirectToAction("LogOnOneTimePassword", new { id = player.Id, token.OneTimeKey });
+                    return RedirectToAction(
+                        "LogOnOneTimePassword",
+                        new { id = player.Id, token.OneTimeKey });
                 }
                 else if (players.Length > 1)
                 {
@@ -110,12 +113,13 @@
             }
 
             // redisplay form if any errors at this point
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid == false)
                 return View(vm);
 
             return RedirectToAction("LogOnPassword", new { vm.Email, returnUrl });
         }
 
+        [RestoreModelStateFromTempData]
         public ActionResult LogOnOneTimePassword(string id, string oneTimeKey)
         {
             Player player = DocumentSession.Load<Player>(id);
@@ -128,32 +132,48 @@
         }
 
         [HttpPost]
-        public ActionResult LogOnOneTimePassword(string id, PasswordViewModel vm)
+        [SetTempModelState]
+        public async Task<ActionResult> LogOnOneTimePassword(string id, PasswordViewModel vm)
         {
             if (Request.IsAuthenticated) return RedirectToAction("Index", "Roster");
 
-            OneTimeToken oneTimeToken = DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>().Single(x => x.OneTimeKey == vm.OneTimeKey);
+            OneTimeToken[] activeTokens = DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>()
+                .Where(x => x.PlayerId == id && x.CreatedDate > SystemTime.UtcNow.AddDays(-1))
+                .ToArray();
             Player player = DocumentSession.Load<Player>(id);
             if (player == null)
                 throw new HttpException(404, "Player not found");
-            if (oneTimeToken.IsExpired())
-            {
-                return View("TokenExpired");
-            }
 
             try
             {
-                if (vm.Password != oneTimeToken.Payload)
+                if (activeTokens.Any() == false)
+                {
+                    ModelState.AddModelError("Lösenord", "Prova igen");
+                    vm.Password = string.Empty;
+                    await Task.Delay(2000);
+                    return View(vm);
+                }
+
+                OneTimeToken matchingPassword = activeTokens.FirstOrDefault(x => x.Payload == vm.Password);
+                if (matchingPassword == null)
                 {
                     ModelState.AddModelError("Lösenord", "Felaktigt lösenord");
                     vm.Password = string.Empty;
+                    await Task.Delay(2000);
                     return View(vm);
+                }
+
+                if (matchingPassword.UsedDate.HasValue)
+                {
+                    ModelState.AddModelError("Lösenord", "Koden har använts en gång, prova igen");
+                    await Task.Delay(2000);
+                    return RedirectToAction("LogOn");
                 }
 
                 authenticationService.SetAuthCookie(player.Id, vm.RememberMe);
                 var builder = new StringBuilder();
                 builder.AppendLine($"User Agent: {Request.UserAgent}");
-                oneTimeToken.MarkUsed();
+                matchingPassword.MarkUsed();
                 PublishMessage(
                     EmailTask.Create(
                         ConfigurationManager.AppSettings["OwnerEmail"],
