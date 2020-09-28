@@ -16,17 +16,23 @@
     <div class="span12">
         <ul class="nav nav-pills">
             @Html.ActionMenuLink(
+                "Topplistan",
+                string.Empty,
+                "SupporterTravetView",
+                "Index",
+                Url.Action("Index", "SupporterTravetView", new { Model.Id }))
+            @Html.ActionMenuLink(
                 "Omgångar",
                 string.Empty,
                 "SupporterTravetTurns",
                 "Index",
                 Url.Action("Index", "SupporterTravetTurns", new { Model.Id }))
             @Html.ActionMenuLink(
-                "Topplistan",
+                "Dina rader",
                 string.Empty,
-                "SupporterTravetView",
+                "SupporterTravetRows",
                 "Index",
-                Url.Action("Index", "SupporterTravetView", new { Model.Id }))
+                Url.Action("Index", "SupporterTravetRows", new { Model.Id }))
         </ul>
     </div>
 </div>

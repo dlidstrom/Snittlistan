@@ -139,6 +139,7 @@
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
     <Compile Include="Areas\V2\Controllers\AuditLogViewerController.cs" />
+    <Compile Include="Areas\V2\Controllers\SupporterTravet\SupporterTravetRowsController.cs" />
     <Compile Include="Areas\V2\Domain\AuditLogEntry.cs" />
     <Compile Include="Areas\V2\Domain\FormattedAuditLog.cs" />
     <Compile Include="Areas\V2\Domain\FormattedAuditLogEntry.cs" />
@@ -558,6 +559,7 @@
     <Content Include="Areas\V2\Views\SupporterTravetView\Index.cshtml" />
     <Content Include="Areas\V2\Views\SupporterTravetTurns\Index.cshtml" />
     <Content Include="Areas\V2\Views\Shared\_SupporterTravetModels_Header.cshtml" />
+    <Content Include="Areas\V2\Views\SupporterTravetRows\Index.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
