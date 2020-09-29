@@ -33,6 +33,12 @@
                 "SupporterTravetRows",
                 "Index",
                 Url.Action("Index", "SupporterTravetRows", new { Model.Id }))
+            @Html.ActionMenuLink(
+                "Administration",
+                string.Empty,
+                "SupporterTravetAdministration",
+                "Index",
+                Url.Action("Index", "SupporterTravetAdministration", new { Model.Id }))
         </ul>
     </div>
 </div>
