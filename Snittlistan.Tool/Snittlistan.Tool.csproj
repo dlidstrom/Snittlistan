@@ -92,7 +92,7 @@
       <Version>5.0.1</Version>
     </PackageReference>
     <PackageReference Include="Lindhart.Analyser.MissingAwaitWarning">
-      <Version>1.2.0</Version>
+      <Version>1.2.1</Version>
     </PackageReference>
     <PackageReference Include="log4net">
       <Version>2.0.11</Version>
