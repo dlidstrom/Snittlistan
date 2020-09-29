@@ -14,6 +14,8 @@
 
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
+            if (filterContext.RequestContext.HttpContext.Request.IsAuthenticated == false) return;
+
             ActionDescriptor actionDescriptor = filterContext.ActionDescriptor;
             string controllerName = actionDescriptor.ControllerDescriptor.ControllerName;
             string actionName = actionDescriptor.ActionName;
