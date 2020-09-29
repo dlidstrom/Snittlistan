@@ -153,7 +153,7 @@
                     .ProjectFromIndexFieldsInto<RosterSearchTerms.Result>()
                     .ToArray();
             Roster[] rosters = DocumentSession.Load<Roster>(rosterSearchTerms.Select(x => x.Id));
-            var foundMatchIds = new List<int>();
+            var foundMatchIds = new HashSet<int>();
 
             // Team
             Log.Info($"Fetching teams");
@@ -170,7 +170,7 @@
                 Log.Info($"Fetching match rounds");
                 MatchRound[] matchRounds = await bitsClient.GetMatchRounds(teamResult.TeamId, divisionResult.DivisionId, websiteConfig.SeasonId);
                 var dict = matchRounds.ToDictionary(x => x.MatchId);
-                foundMatchIds.AddRange(dict.Keys);
+                foreach (int key in dict.Keys) foundMatchIds.Add(key);
 
                 // update existing rosters
                 foreach (Roster roster in rosters.Where(x => dict.ContainsKey(x.BitsMatchId)))
@@ -240,7 +240,15 @@
             }
 
             // remove extraneous rosters
-            Log.Info($"Rosters to remove: {string.Join(",", rosters.Where(x => foundMatchIds.Contains(x.BitsMatchId) == false).Select(x => x.Id))}");
+            Roster[] toRemove = rosters.Where(x => foundMatchIds.Contains(x.BitsMatchId) == false).ToArray();
+            if (toRemove.Any())
+            {
+                string body = $"Rosters to remove: {string.Join(",", toRemove.Select(x => $"Id={x.Id} BitsMatchId={x.BitsMatchId}"))}";
+                Log.Info(body);
+                foreach (Roster roster in toRemove) DocumentSession.Delete(roster);
+                Emails.SendAdminMail($"Removed rosters for {TenantConfiguration.FullTeamName}", body);
+            }
+
 
             return Ok();
         }

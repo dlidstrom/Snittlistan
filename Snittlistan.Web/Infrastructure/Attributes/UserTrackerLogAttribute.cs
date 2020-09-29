@@ -18,7 +18,6 @@
             string controllerName = actionDescriptor.ControllerDescriptor.ControllerName;
             string actionName = actionDescriptor.ActionName;
             string userName = filterContext.HttpContext.User.Identity.Name;
-            DateTime timeStamp = filterContext.HttpContext.Timestamp;
             string routeId = string.Empty;
             if (filterContext.RouteData.Values["id"] != null)
                 routeId = filterContext.RouteData.Values["id"].ToString();
@@ -28,7 +27,6 @@
             message.AppendFormat("RemoteIp={0}|", GetIp(filterContext.HttpContext.Request));
             message.AppendFormat("Controller={0}|", controllerName);
             message.AppendFormat("Action={0}|", actionName);
-            message.AppendFormat("TimeStamp={0}|", timeStamp);
             if (!string.IsNullOrEmpty(routeId))
                 message.AppendFormat("RouteId={0}|", routeId);
 
