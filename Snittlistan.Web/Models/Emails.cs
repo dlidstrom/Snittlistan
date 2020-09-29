@@ -2,7 +2,9 @@
 {
     using System;
     using System.Configuration;
+    using System.Runtime.CompilerServices;
     using System.Text;
+    using System.Threading.Tasks;
     using System.Web.Mvc;
     using JetBrains.Annotations;
     using Postal;
@@ -12,12 +14,12 @@
     {
         private static EmailService service;
 
-        public static void SendOneTimePassword(
+        public static async Task SendOneTimePassword(
             string recipient,
             string subject,
             string oneTimePassword)
         {
-            Send(
+            await Send(
                 "OneTimePassword",
                 recipient,
                 subject,
@@ -27,9 +29,9 @@
                 });
         }
 
-        public static void InviteUser(string recipient, string subject, string activationUri)
+        public static async Task InviteUser(string recipient, string subject, string activationUri)
         {
-            Send(
+            await Send(
                 "InviteUser",
                 recipient,
                 subject,
@@ -39,9 +41,9 @@
                 });
         }
 
-        public static void UserRegistered(string recipient, string subject, string id, string activationKey)
+        public static async Task UserRegistered(string recipient, string subject, string id, string activationKey)
         {
-            Send(
+            await Send(
                 "UserRegistered",
                 recipient,
                 subject,
@@ -52,7 +54,7 @@
                 });
         }
 
-        public static void MatchRegistered(
+        public static async Task MatchRegistered(
             string team,
             string opponent,
             int score,
@@ -61,7 +63,7 @@
             ResultHeaderReadModel resultHeaderReadModel)
         {
             string subject = $"{team} mot {opponent}: {score} - {opponentScore}";
-            Send(
+            await Send(
                 "MatchRegistered",
                 ConfigurationManager.AppSettings["OwnerEmail"],
                 subject,
@@ -77,18 +79,18 @@
                 });
         }
 
-        public static void SendAdminMail(string subject, string content)
+        public static async Task SendAdminMail(string subject, string content)
         {
-            Send(
+            await Send(
                 "Mail",
                 ConfigurationManager.AppSettings["OwnerEmail"],
                 subject,
                 o => o.Content = content);
         }
 
-        public static void SendMail(string email, string subject, string content)
+        public static async Task SendMail(string email, string subject, string content)
         {
-            Send(
+            await Send(
                 "Mail",
                 email,
                 subject,
@@ -104,7 +106,7 @@
             service = new EmailService(engines);
         }
 
-        private static void Send(
+        private static async Task Send(
             [AspMvcView] string view,
             string recipient,
             string subject,
@@ -120,7 +122,7 @@
             email.Bcc = moderatorEmails;
             action.Invoke(email);
 
-            service.Send(email);
+            await service.SendAsync(email);
         }
     }
 }

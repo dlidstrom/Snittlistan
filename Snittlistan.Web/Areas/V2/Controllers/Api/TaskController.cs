@@ -57,7 +57,7 @@
             switch (taskObject)
             {
                 case OneTimeKeyEvent @event:
-                    return Handle(@event);
+                    return await Handle(@event);
                 case VerifyMatchMessage message:
                     return await Handle(message);
                 case RegisterMatchesMessage message:
@@ -69,13 +69,13 @@
                 case VerifyMatchesMessage message:
                     return Handle(message);
                 case NewUserCreatedEvent @event:
-                    return Handle(@event);
+                    return await Handle(@event);
                 case UserInvitedEvent @event:
-                    return Handle(@event);
+                    return await Handle(@event);
                 case EmailTask task:
-                    return Handle(task);
+                    return await Handle(task);
                 case MatchRegisteredEvent @event:
-                    return Handle(@event);
+                    return await Handle(@event);
                 case GetRostersFromBitsMessage message:
                     return await Handle(message);
                 case GetPlayersFromBitsMessage message:
@@ -246,17 +246,17 @@
                 string body = $"Rosters to remove: {string.Join(",", toRemove.Select(x => $"Id={x.Id} BitsMatchId={x.BitsMatchId}"))}";
                 Log.Info(body);
                 foreach (Roster roster in toRemove) DocumentSession.Delete(roster);
-                Emails.SendAdminMail($"Removed rosters for {TenantConfiguration.FullTeamName}", body);
+                await Emails.SendAdminMail($"Removed rosters for {TenantConfiguration.FullTeamName}", body);
             }
 
 
             return Ok();
         }
 
-        private IHttpActionResult Handle(OneTimeKeyEvent @event)
+        private async Task<IHttpActionResult> Handle(OneTimeKeyEvent @event)
         {
             const string Subject = "Logga in på Snittlistan";
-            Emails.SendOneTimePassword(@event.Email, Subject, @event.OneTimePassword);
+            await Emails.SendOneTimePassword(@event.Email, Subject, @event.OneTimePassword);
             return Ok();
         }
 
@@ -487,32 +487,32 @@
             return Ok();
         }
 
-        private IHttpActionResult Handle(NewUserCreatedEvent @event)
+        private async Task<IHttpActionResult> Handle(NewUserCreatedEvent @event)
         {
             string recipient = @event.Email;
             const string Subject = "Välkommen till Snittlistan!";
             string activationKey = @event.ActivationKey;
             string id = @event.UserId;
 
-            Emails.UserRegistered(recipient, Subject, id, activationKey);
+            await Emails.UserRegistered(recipient, Subject, id, activationKey);
 
             return Ok();
         }
 
-        private IHttpActionResult Handle(UserInvitedEvent @event)
+        private async Task<IHttpActionResult> Handle(UserInvitedEvent @event)
         {
             string recipient = @event.Email;
             const string Subject = "Välkommen till Snittlistan!";
             string activationUri = @event.ActivationUri;
 
-            Emails.InviteUser(recipient, Subject, activationUri);
+            await Emails.InviteUser(recipient, Subject, activationUri);
 
             return Ok();
         }
 
-        private IHttpActionResult Handle(EmailTask task)
+        private async Task<IHttpActionResult> Handle(EmailTask task)
         {
-            Emails.SendMail(
+            await Emails.SendMail(
                 task.Recipient,
                 Encoding.UTF8.GetString(Convert.FromBase64String(task.Subject)),
                 Encoding.UTF8.GetString(Convert.FromBase64String(task.Content)));
@@ -520,7 +520,7 @@
             return Ok();
         }
 
-        private IHttpActionResult Handle(MatchRegisteredEvent @event)
+        private async Task<IHttpActionResult> Handle(MatchRegisteredEvent @event)
         {
             Roster roster = DocumentSession.Load<Roster>(@event.RosterId);
             if (roster.IsFourPlayer) return Ok();
@@ -528,7 +528,7 @@
             ResultSeriesReadModel resultSeriesReadModel = DocumentSession.Load<ResultSeriesReadModel>(resultSeriesReadModelId);
             string resultHeaderReadModelId = ResultHeaderReadModel.IdFromBitsMatchId(roster.BitsMatchId, roster.Id);
             ResultHeaderReadModel resultHeaderReadModel = DocumentSession.Load<ResultHeaderReadModel>(resultHeaderReadModelId);
-            Emails.MatchRegistered(
+            await Emails.MatchRegistered(
                 roster.Team,
                 roster.Opponent,
                 @event.Score,
