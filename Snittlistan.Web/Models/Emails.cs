@@ -77,6 +77,15 @@
                 });
         }
 
+        public static void SendAdminMail(string subject, string content)
+        {
+            Send(
+                "Mail",
+                ConfigurationManager.AppSettings["OwnerEmail"],
+                subject,
+                o => o.Content = content);
+        }
+
         public static void SendMail(string email, string subject, string content)
         {
             Send(
