@@ -1,41 +1,56 @@
-﻿@model Snittlistan.Web.Areas.V2.Controllers.SupporterTravet.SupporterTravetTurnsController.ViewModel
+﻿@{
+    Layout = "~/Areas/V2/Views/Shared/_SupporterTravetLayout.cshtml";
+}
+
+@model Snittlistan.Web.Areas.V2.Controllers.SupporterTravet.SupporterTravetTurnsController.ViewModel
 
 @Html.Partial("_SupporterTravetModels_Header", Model.Header)
 
-@foreach (var turn in Model.Turns)
+@for (int i = 2; i >= 1; i--)
 {
-    <div class="row">
-        <div class="span12">
-            <h2>@turn.Index</h2>
-        </div>
+    <h3>Omgång @i <small>@(DateTime.Today.AddDays(-7 * (7 - i - 4)).ToString("yyyy-MM-dd"))</small></h3>
+    <p>Sammanfattande text om den här omgången.</p>
+    <div>
+        <h3>Raketen <small>(mest poäng)</small></h3>
+        <table class="table table-bordered table-condensed">
+            <tr>
+                <th>
+                    Namn
+                </th>
+                <th>
+                    Poäng
+                </th>
+            </tr>
+            <tr>
+                <td>Daniel</td>
+                <td>500</td>
+            </tr>
+            <tr>
+                <td>Daniel</td>
+                <td>500</td>
+            </tr>
+            <tr>
+                <td>Daniel</td>
+                <td>500</td>
+            </tr>
+        </table>
     </div>
-    <div class="row">
-        <div class="span12">
-            <table class="table table-condensed table-striped table-bordered">
-                <tr>
-                    <th>Lopp</th>
-                    <th>Plats</th>
-                    <th>Nummer</th>
-                    <th>Odds</th>
-                </tr>
-                @for (var i = 0; i < turn.Races.Length; i++)
-                {
-                    var race = turn.Races[i];
-                    for (var j = 0; j < race.Results.Length; j++)
-                    {
-                        var result = race.Results[j];
-                        <tr>
-                            @if (j == 0)
-                            {
-                                <td rowspan="@(race.Results.Length)">@race.RaceIndex</td>
-                            }
-                            <td>@(j + 1)</td>
-                            <td>@result.Horse</td>
-                            <td>@result.Odds</td>
-                        </tr>
-                    }
-                }
-            </table>
-        </div>
-    </div>
+    <h3>Topp-16</h3>
+    <table class="table table-bordered table-condensed table-striped">
+        <tr>
+            <th>Placering</th>
+            <th>Namn</th>
+            <th>Poäng</th>
+        </tr>
+        @for (int j = 16; j >= 1; j--)
+        {
+            <tr>
+                <td>@(16 - j + 1)</td>
+                <td>Daniel</td>
+                <td>@(i * j * 1000)</td>
+            </tr>
+        }
+    </table>
+    @Html.ActionLink("Visa alla resultat", "Index", "SupporterTravetView", new { @class = "btn btn-success" })
+    <hr />
 }

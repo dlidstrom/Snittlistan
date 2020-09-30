@@ -1,18 +1,31 @@
-﻿<h1>SupporterTravet</h1>
+﻿@{
+    Layout = "~/Areas/V2/Views/Shared/_SupporterTravetLayout.cshtml";
+}
 
 <table class="table table-striped table-bordered table-condensed">
     <tr>
+        <th></th>
         <th>Omgång</th>
         <th>Startdatum</th>
         <th>Slutdatum</th>
         <th></th>
     </tr>
     <tr>
+        <td><span class="badge badge-success">PÅGÅR</span></td>
         <td>Hösten 2019</td>
         <td>30 september</td>
         <td>31 oktober</td>
         <td>
-            @Html.ActionLink("Visa", "Index", "SupporterTravetView")
+            @Html.ActionLink("Visa", "Index", "SupporterTravetTurns")
+        </td>
+    </tr>
+    <tr>
+        <td><span class="badge badge-info">AVSLUTAD</span></td>
+        <td>Hösten 2019</td>
+        <td>30 september</td>
+        <td>31 oktober</td>
+        <td>
+            @Html.ActionLink("Visa", "Index", "SupporterTravetTurns")
         </td>
     </tr>
 </table>

@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "~/Areas/V2/Views/Shared/_Layout.cshtml";
+}
+
+<h1>SupporterTravet</h1>
+
+<div class="row">
+    <div class="span12">
+        <ul class="nav nav-pills">
+            @Html.ActionMenuLink(
+                "Start",
+                string.Empty,
+                "SupporterTravetIndex",
+                "Index",
+                Url.Action("Index", "SupporterTravetIndex"))
+            @Html.ActionMenuLink(
+                "Administration",
+                string.Empty,
+                "SupporterTravetAdministration",
+                "Index",
+                Url.Action("Index", "SupporterTravetAdministration"))
+        </ul>
+    </div>
+</div>
+
+@RenderBody()

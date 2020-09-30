@@ -557,11 +557,13 @@
     <Content Include="Areas\V2\Views\AuditLogViewer\Index.cshtml" />
     <Content Include="Areas\V2\Views\AdminTasks\Adopt.cshtml" />
     <Content Include="Areas\V2\Views\SupporterTravetIndex\Index.cshtml" />
-    <Content Include="Areas\V2\Views\SupporterTravetView\Index.cshtml" />
     <Content Include="Areas\V2\Views\SupporterTravetTurns\Index.cshtml" />
+    <Content Include="Areas\V2\Views\SupporterTravetView\Index.cshtml" />
     <Content Include="Areas\V2\Views\Shared\_SupporterTravetModels_Header.cshtml" />
     <Content Include="Areas\V2\Views\SupporterTravetRows\Index.cshtml" />
     <Content Include="Areas\V2\Views\SupporterTravetAdministration\Index.cshtml" />
+    <Content Include="Areas\V2\Views\Shared\_SupporterTravetLayout.cshtml" />
+    <Content Include="Areas\V2\Views\SupporterTravetAdministration\Edit.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />

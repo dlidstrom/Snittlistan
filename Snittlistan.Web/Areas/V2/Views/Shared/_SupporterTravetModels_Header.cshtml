@@ -2,12 +2,6 @@
 
 <div class="row">
     <div class="span12">
-        <h1>SupporterTravet</h1>
-    </div>
-</div>
-
-<div class="row">
-    <div class="span12">
         <h2>Hösten 2019 30 september - 31 oktober</h2>
     </div>
 </div>
@@ -16,29 +10,17 @@
     <div class="span12">
         <ul class="nav nav-pills">
             @Html.ActionMenuLink(
-                "Topplistan",
-                string.Empty,
-                "SupporterTravetView",
-                "Index",
-                Url.Action("Index", "SupporterTravetView", new { Model.Id }))
-            @Html.ActionMenuLink(
                 "Omgångar",
                 string.Empty,
                 "SupporterTravetTurns",
                 "Index",
                 Url.Action("Index", "SupporterTravetTurns", new { Model.Id }))
             @Html.ActionMenuLink(
-                "Dina rader",
+                "Mina rader",
                 string.Empty,
                 "SupporterTravetRows",
                 "Index",
                 Url.Action("Index", "SupporterTravetRows", new { Model.Id }))
-            @Html.ActionMenuLink(
-                "Administration",
-                string.Empty,
-                "SupporterTravetAdministration",
-                "Index",
-                Url.Action("Index", "SupporterTravetAdministration", new { Model.Id }))
         </ul>
     </div>
 </div>
