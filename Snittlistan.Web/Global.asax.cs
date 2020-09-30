@@ -170,7 +170,8 @@
                 return;
             }
 
-            Log.Error($"Unable to load profile information using {authTicket.Name}");
+            Log.Error($"Unable to load profile information using {authTicket.Name}, signing user out");
+            FormsAuthentication.SignOut();
         }
 
         private static void Bootstrap(HttpConfiguration configuration)
