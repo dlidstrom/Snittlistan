@@ -4,9 +4,12 @@
     using System.Web;
     using System.Web.Mvc;
     using Elmah;
+    using NLog;
 
     public class ElmahHandleErrorAttribute : HandleErrorAttribute
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         public override void OnException(ExceptionContext context)
         {
             base.OnException(context);
@@ -17,7 +20,8 @@
                 || IsFiltered(context))     // filtered?
                 return;
 
-            LogException(e);
+            ErrorLog.GetDefault(HttpContext.Current).Log(new Error(e, HttpContext.Current));
+            Log.Error(e);
         }
 
         private static bool RaiseErrorSignal(Exception e)
@@ -42,12 +46,6 @@
                 HttpContext.Current);
 
             return config.Assertion.Test(testContext);
-        }
-
-        private static void LogException(Exception e)
-        {
-            HttpContext context = HttpContext.Current;
-            ErrorLog.GetDefault(context).Log(new Error(e, context));
         }
     }
 }
