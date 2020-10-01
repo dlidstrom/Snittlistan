@@ -36,3 +36,4 @@ Build/_build/
 .vs
 .ionide
 .fake
+/Snittlistan.Web/node_modules
