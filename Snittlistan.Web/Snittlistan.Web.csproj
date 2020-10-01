@@ -564,6 +564,7 @@
     <Content Include="Areas\V2\Views\SupporterTravetAdministration\Index.cshtml" />
     <Content Include="Areas\V2\Views\Shared\_SupporterTravetLayout.cshtml" />
     <Content Include="Areas\V2\Views\SupporterTravetAdministration\Edit.cshtml" />
+    <Content Include="Areas\V2\Views\Shared\_Layout-v2.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />

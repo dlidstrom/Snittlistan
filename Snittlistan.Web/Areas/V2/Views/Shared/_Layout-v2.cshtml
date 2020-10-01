@@ -1,0 +1,132 @@
+﻿@{
+    ViewBag.Title = "Snittlistan";
+}<!DOCTYPE html>
+<html lang="se">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1.0,width=device-width" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="@TenantConfiguration.WebAppTitle" />
+    <meta name="google-site-verification" content="g8KwkjfVGgtu5zxYGhIEfJS4JGVkCMS1YMdp5WNOOpU" />
+    <link rel="icon"
+          href="@Url.ContentCacheBreak($"~/Content/css/images/{TenantConfiguration.Favicon}")" />
+    <link rel="apple-touch-icon"
+          sizes="@TenantConfiguration.AppleTouchIconSize"
+          href="@Url.ContentCacheBreak($"~/Content/css/images/{TenantConfiguration.AppleTouchIcon}")" />
+    <title>@ViewBag.Title</title>
+
+    @if (HttpContext.Current.IsDebuggingEnabled)
+    {
+        <link href="@Url.ContentCacheBreak("~/Content/css/main-v2.css")" type="text/css" rel="stylesheet" />
+        <link href="@Url.ContentCacheBreak("~/Content/external/air-datepicker/datepicker.css")" type="text/css" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="@Url.ContentCacheBreak("~/Content/css/main-v2.min.css")" type="text/css" rel="stylesheet" />
+        <link href="@Url.ContentCacheBreak("~/Content/external/air-datepicker/datepicker.min.css")" type="text/css" rel="stylesheet" />
+    }
+    <link href="@Url.ContentCacheBreak("~/Content/external/quill/quill.snow.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.ContentCacheBreak("~/Content/css/glyphicons.css")" type="text/css" rel="stylesheet" />
+
+    <script src="@Url.ContentCacheBreak("~/Content/js/GA.js")"></script>
+    @if (User is object)
+    {
+        <script>
+        window.ChatraIntegration = {
+            name: '@User.CustomIdentity.Name',
+            email: '@User.CustomIdentity.Email'
+        };
+        window.ChatraSetup = {
+            clientId: '@User.CustomIdentity.UniqueId'
+        };
+        </script>
+    }
+    <script src="@Url.ContentCacheBreak("~/Content/external/chatra/chatra.js")"></script>
+</head>
+<body class="d-flex bg-secondary text-center">
+    <form class="form-login">
+        <img src="/node_modules/bootstrap-icons/icons/bootstrap.svg" height="72" width="72" class="mb-4" />
+    </form>
+    <!--<div class="navbar">
+        <div class="navbar-inner">
+            <div class="container">
+                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="@Url.RouteUrl("V2_default", new { controller = "Roster", action = "Index" })" class="brand">
+                    Snittlistan
+                </a>
+                <div class="nav-collapse" data-nav-collapse>
+                    @Html.Action("NavPart", "Layout")
+                    <ul class="nav pull-right">
+                        @if (Request.IsAuthenticated)
+                        {
+                            <li class="dropdown">
+                                <button data-auth-menu-toggle class="btn dropdown-toggle" data-toggle="dropdown">
+                                    <i class="sprite-glyphicons_019_cogwheel"></i>
+                                    <b class="caret"></b>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    @if (Request.IsAdmin(User))
+                                    {
+                                        <li>
+                                            <a href="@Url.Action("Index", "AdminTasks")">
+                                                <i class="sprite-glyphicons_023_cogwheels"></i>
+                                                Administration
+                                            </a>
+                                        </li>
+                                        <li class="divider"></li>
+                                    }
+                                    <li class="nav-header">
+                                        @User.Identity.Name
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("LogOff", "Authentication")">
+                                            <i class="sprite-glyphicons_203_lock"></i>
+                                            Logga ut
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="@Url.Action("LogOn", "Authentication")">
+                                    <i class="sprite-glyphicons_204_unlock"></i>
+                                    Logga in
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    @RenderBody()
+    <script>
+        var logErrorUrl = '@Url.Action("LogJavaScriptError", "Error")';
+    </script>
+    @if (HttpContext.Current.IsDebuggingEnabled)
+    {
+        <script src="@Url.ContentCacheBreak("~/Content/external/jquery/jquery-3.3.1.js")"></script>
+        <script src="@Url.ContentCacheBreak("~/Content/external/air-datepicker/datepicker.js")"></script>
+        <script src="@Url.ContentCacheBreak("~/Content/external/quill/quill.js")"></script>
+    }
+    else
+    {
+        <script src="@Url.ContentCacheBreak("~/Content/external/jquery/jquery-3.3.1.min.js")"></script>
+        <script src="@Url.ContentCacheBreak("~/Content/external/air-datepicker/datepicker.min.js")"></script>
+        <script src="@Url.ContentCacheBreak("~/Content/external/quill/quill.min.js")"></script>
+    }
+
+    <script src="@Url.ContentCacheBreak("~/Content/js/stacktrace.js")"></script>
+    <script src="@Url.ContentCacheBreak("~/Content/js/helpers/typeahead.js")"></script>
+    <script src="@Url.ContentCacheBreak("~/Content/js/QuillForm.js")"></script>
+    <script src="@Url.ContentCacheBreak("~/Content/js/Layout.js")"></script>
+    @RenderSection("scripts", false)
+</body>
+</html>

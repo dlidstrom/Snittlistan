@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics;
     using System.IO;
+    using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
     using System.Web.Hosting;
@@ -23,7 +24,7 @@
                 {
                     byte[] hash = md5.ComputeHash(bytes);
                     var hashBuilder = new StringBuilder();
-                    foreach (byte b in hash)
+                    foreach (byte b in hash.Take(4))
                     {
                         hashBuilder.Append($"{b:x2}");
                     }

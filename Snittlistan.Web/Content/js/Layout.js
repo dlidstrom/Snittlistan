@@ -10,15 +10,7 @@
     timeFormat: 'hh:ii',
     firstDay: 1
 };
-$(function () {
-    window.Waypoints.debug(true).intercept('a');
-    $('[data-auth-menu-toggle]').on('click', function () {
-        setTimeout(function () {
-            $('[data-nav-collapse]').css({
-                height: 'auto'
-            });
-        });
-    });
+$(() => {
     $('[data-datepicker]').datepicker({
         language: 'sv',
         minutesStep: 10
@@ -26,8 +18,8 @@ $(function () {
 
     // should prevent double submit
     // https://stackoverflow.com/a/46296752/286406
-    $('form').submit(function () {
-        $(this).submit(function () {
+    $('form').submit(() => {
+        $(this).submit(() => {
             return false;
         });
         return true;
