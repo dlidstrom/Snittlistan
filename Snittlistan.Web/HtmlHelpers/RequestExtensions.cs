@@ -10,8 +10,8 @@
         public static bool IsAdmin(this HttpRequestBase request, IPrincipal principal)
         {
             IDocumentSession session = MvcApplication.Container.Resolve<IDocumentSession>();
-            User admin = session.Load<User>(Models.User.AdminId);
-            return admin != null && request.IsAuthenticated && principal.Identity.Name == admin.Email;
+            User admin = session.Load<User>(User.AdminId);
+            return admin != null && request.IsAuthenticated && principal?.Identity.Name == admin.Email;
         }
     }
 }
