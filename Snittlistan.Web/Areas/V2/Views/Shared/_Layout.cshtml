@@ -82,7 +82,7 @@
                                         <li class="divider"></li>
                                     }
                                     <li class="nav-header">
-                                        @User.Identity.Name
+                                        @(User?.Identity.Name)
                                     </li>
                                     <li>
                                         <a href="@Url.Action("LogOff", "Authentication")">
