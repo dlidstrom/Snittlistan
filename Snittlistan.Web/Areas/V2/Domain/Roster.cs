@@ -88,6 +88,8 @@
             set { acceptedPlayers = value; }
         }
 
+        public bool SkipRegistration { get; set; }
+
         public void UpdateWith(Guid correlationId, Update update)
         {
             var change = new Change(update.ChangeType, update.UserId);

@@ -385,7 +385,7 @@
         {
             WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             Roster[] pendingMatches = ExecuteQuery(new GetPendingMatchesQuery(websiteConfig.SeasonId));
-            foreach (Roster pendingMatch in pendingMatches)
+            foreach (Roster pendingMatch in pendingMatches.Where(x => x.SkipRegistration == false))
             {
                 PublishMessage(new RegisterMatchMessage(pendingMatch.Id));
             }
