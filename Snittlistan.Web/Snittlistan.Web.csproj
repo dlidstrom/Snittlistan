@@ -138,9 +138,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="Areas\SupporterTravet\SupporterTravetAreaRegistration.cs" />
     <Compile Include="Areas\V2\Controllers\AuditLogViewerController.cs" />
-    <Compile Include="Areas\V2\Controllers\SupporterTravet\SupporterTravetAdministrationController.cs" />
-    <Compile Include="Areas\V2\Controllers\SupporterTravet\SupporterTravetRowsController.cs" />
+    <Compile Include="Areas\SupporterTravet\Controllers\AdministrationController.cs" />
+    <Compile Include="Areas\SupporterTravet\Controllers\RowsController.cs" />
     <Compile Include="Areas\V2\Domain\AuditLogEntry.cs" />
     <Compile Include="Areas\V2\Domain\FormattedAuditLog.cs" />
     <Compile Include="Areas\V2\Domain\FormattedAuditLogEntry.cs" />
@@ -155,9 +156,9 @@
     <Compile Include="Infrastructure\Bits\Contracts\MatchRound.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\MatchScores.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\HeadInfo.cs" />
-    <Compile Include="Areas\V2\Controllers\SupporterTravet\SupporterTravetModels.cs" />
-    <Compile Include="Areas\V2\Controllers\SupporterTravet\SupporterTravetTurnsController.cs" />
-    <Compile Include="Areas\V2\Controllers\SupporterTravet\SupporterTravetViewController.cs" />
+    <Compile Include="Areas\SupporterTravet\Models.cs" />
+    <Compile Include="Areas\SupporterTravet\Controllers\TurnsController.cs" />
+    <Compile Include="Areas\SupporterTravet\Controllers\ViewController.cs" />
     <Compile Include="Areas\V2\Controllers\ActivityDetailsController.cs" />
     <Compile Include="Areas\V2\Controllers\ActivityEditController.cs" />
     <Compile Include="Areas\V2\Controllers\ActivityIndexController.cs" />
@@ -167,7 +168,7 @@
     <Compile Include="Areas\V2\Controllers\Api\TaskController.cs" />
     <Compile Include="Areas\V2\Controllers\EliteMedalsPrintController.cs" />
     <Compile Include="Areas\V2\Controllers\RosterAcceptController.cs" />
-    <Compile Include="Areas\V2\Controllers\SupporterTravet\SupporterTravetIndexController.cs" />
+    <Compile Include="Areas\SupporterTravet\Controllers\HomeController.cs" />
     <Compile Include="Areas\V2\Domain\Activity.cs" />
     <Compile Include="Areas\V2\Domain\NameShortener.cs" />
     <Compile Include="Areas\V2\Domain\Match\Commentary\Match4Analyzer.cs" />
@@ -203,7 +204,7 @@
     <Compile Include="Infrastructure\BitsMatchResult.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\TeamResult.cs" />
     <Compile Include="Infrastructure\CalendarEvent.cs" />
-    <Compile Include="Areas\V2\WebsiteRoles.cs" />
+    <Compile Include="Areas\WebsiteRoles.cs" />
     <Compile Include="Areas\V2\ViewModels\EditMedalsPostModel.cs" />
     <Compile Include="Areas\V2\ViewModels\EditMedalsViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\EliteMedalsViewModel.cs" />
@@ -558,15 +559,17 @@
     <Content Include="Areas\V2\Views\Authentication\_PasswordEditor.cshtml" />
     <Content Include="Areas\V2\Views\AuditLogViewer\Index.cshtml" />
     <Content Include="Areas\V2\Views\AdminTasks\Adopt.cshtml" />
-    <Content Include="Areas\V2\Views\SupporterTravetIndex\Index.cshtml" />
-    <Content Include="Areas\V2\Views\SupporterTravetTurns\Index.cshtml" />
-    <Content Include="Areas\V2\Views\SupporterTravetView\Index.cshtml" />
-    <Content Include="Areas\V2\Views\Shared\_SupporterTravetModels_Header.cshtml" />
-    <Content Include="Areas\V2\Views\SupporterTravetRows\Index.cshtml" />
-    <Content Include="Areas\V2\Views\SupporterTravetAdministration\Index.cshtml" />
-    <Content Include="Areas\V2\Views\Shared\_SupporterTravetLayout.cshtml" />
-    <Content Include="Areas\V2\Views\SupporterTravetAdministration\Edit.cshtml" />
-    <Content Include="Areas\V2\Views\Shared\_Layout-v2.cshtml" />
+    <Content Include="Areas\SupporterTravet\Views\Home\Index.cshtml" />
+    <Content Include="Areas\SupporterTravet\Views\Turns\Index.cshtml" />
+    <Content Include="Areas\SupporterTravet\Views\View\Index.cshtml" />
+    <Content Include="Areas\SupporterTravet\Views\Shared\_SupporterTravetModels_Header.cshtml" />
+    <Content Include="Areas\SupporterTravet\Views\Rows\Index.cshtml" />
+    <Content Include="Areas\SupporterTravet\Views\Administration\Index.cshtml" />
+    <Content Include="Areas\SupporterTravet\Views\Shared\_SupporterTravetLayout.cshtml" />
+    <Content Include="Areas\SupporterTravet\Views\Administration\Edit.cshtml" />
+    <Content Include="Views\Shared\_Layout-v2.cshtml" />
+    <Content Include="Areas\SupporterTravet\Views\Web.config" />
+    <Content Include="Areas\SupporterTravet\Views\_ViewStart.cshtml" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />

@@ -1,4 +1,4 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers.SupporterTravet
+﻿namespace Snittlistan.Web.Areas.SupporterTravet
 {
     public static class SupporterTravetModels
     {

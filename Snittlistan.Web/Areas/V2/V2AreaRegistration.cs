@@ -1,5 +1,8 @@
 ﻿namespace Snittlistan.Web.Areas.V2
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
     using System.Web.Mvc;
 
     public class V2AreaRegistration : AreaRegistration
@@ -115,10 +118,15 @@
             RosterRoutes(context);
 
             // default route
+            IEnumerable<string> controllerNames =
+                from t in Assembly.GetExecutingAssembly().GetTypes()
+                where typeof(Controller).IsAssignableFrom(t) && t.Namespace == "Snittlistan.Web.Areas.V2.Controllers"
+                select t.Name.Replace("Controller", string.Empty);
             context.MapRoute(
                 "V2_default",
                 "{controller}/{action}/{id}",
-                new { controller = "Roster", action = "Index", id = UrlParameter.Optional });
+                new { controller = "Roster", action = "Index", id = UrlParameter.Optional },
+                new { controller = $"^({string.Join("|", controllerNames)})$" });
         }
 
         private static void RosterRoutes(AreaRegistrationContext context)
