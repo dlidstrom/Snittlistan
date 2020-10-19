@@ -348,6 +348,8 @@
     <Content Include="Content\css\images\hofvet.png" />
     <Content Include="Content\css\images\vartansik.ico" />
     <Content Include="Content\css\images\vartansik.png" />
+    <Content Include="Content\css\main-v2.css" />
+    <Content Include="Content\css\main-v2.min.css" />
     <Content Include="Content\css\main.css" />
     <Content Include="Content\css\print.css" />
     <Content Include="Content\external\air-datepicker\datepicker.css" />
@@ -582,6 +584,8 @@
     <Content Include="robots.txt" />
     <Content Include="Rotativa\help-wkhtmltoimage.txt" />
     <Content Include="Rotativa\help-wkhtmltopdf.txt" />
+    <Content Include="Content\main-v2.scss" />
+    <Content Include="Content\_style.scss" />
     <None Include="Rotativa\wkhtmltoimage.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

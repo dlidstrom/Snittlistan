@@ -44,10 +44,7 @@
     }
     <script src="@Url.ContentCacheBreak("~/Content/external/chatra/chatra.js")"></script>
 </head>
-<body class="d-flex bg-secondary text-center">
-    <form class="form-login">
-        <img src="/node_modules/bootstrap-icons/icons/bootstrap.svg" height="72" width="72" class="mb-4" />
-    </form>
+<body>
     <!--<div class="navbar">
         <div class="navbar-inner">
             <div class="container">
@@ -106,7 +103,9 @@
             </div>
         </div>
     </div>-->
-    @RenderBody()
+    <main class="container">
+        @RenderBody()
+    </main>
     <script>
         var logErrorUrl = '@Url.Action("LogJavaScriptError", "Error")';
     </script>
