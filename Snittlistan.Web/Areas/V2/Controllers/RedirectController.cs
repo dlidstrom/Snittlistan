@@ -11,7 +11,7 @@
 
         public ActionResult RedirectNewView(int? season, int? turn)
         {
-            return RedirectToActionPermanent("View", "Roster", new
+            return RedirectToAction("View", "Roster", new
             {
                 season,
                 turn

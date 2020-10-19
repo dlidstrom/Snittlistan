@@ -88,6 +88,21 @@
             RouteTable.Routes.Maps("GET", "~/Roster/2012/12", new { controller = "Redirect", action = "RedirectNewView", season = 2012, turn = (int?)12 });
             RouteTable.Routes.Maps("GET", "~/MatchResultAdmin/RegisterSerie", new { controller = "Redirect", Action = "Redirect" });
             RouteTable.Routes.Maps("GET", "~/App/LogOn2", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/admin/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/old-site/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/tmp/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/dev/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/demo/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/backup/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/home/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/site/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/main/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/blog/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/old/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/test/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/wordpress/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/new/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/wp/", new { controller = "Redirect", Action = "Redirect" });
         }
 
         [Test]

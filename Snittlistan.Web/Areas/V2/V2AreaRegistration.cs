@@ -65,6 +65,32 @@
                 name: "Redirects10",
                 url: "App/LogOn2",
                 defaults: new { controller = "Redirect", action = "Redirect" });
+            string[] urls = new[]
+            {
+                "admin",
+                "old-site",
+                "tmp",
+                "dev",
+                "demo",
+                "backup",
+                "home",
+                "site",
+                "main",
+                "blog",
+                "old",
+                "test",
+                "wordpress",
+                "new",
+                "wp",
+            };
+            for (int i = 0; i < urls.Length; i++)
+            {
+                string u = urls[i];
+                context.MapRoute(
+                name: $"Redirects{i + 11}",
+                url: u,
+                defaults: new { controller = "Redirect", action = "Redirect" });
+            }
 
             context.MapRoute(
                 name: "SearchTerms-Route",
