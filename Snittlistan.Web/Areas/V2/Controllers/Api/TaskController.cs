@@ -374,6 +374,7 @@
                 ErrorSignal
                     .FromCurrentContext()
                     .Raise(new Exception($"Unable to auto register match {pendingMatch.Id} ({pendingMatch.BitsMatchId})", e));
+                Log.Warn(e);
                 return Ok(e.ToString());
             }
 
