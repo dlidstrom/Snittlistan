@@ -359,7 +359,15 @@
                                     select player;
             Player p = q.SingleOrDefault();
             if (p == null)
-                throw new ApplicationException($"No player with name {name} was found");
+            {
+                var ex = new ApplicationException("Player not found");
+                ex.Data["name"] = name;
+                ex.Data["lastName"] = lastName;
+                ex.Data["initial"] = initial;
+                ex.Data["players"] = string.Join(",", players.Select(x => x.Name));
+                throw ex;
+            }
+
             return p;
         }
     }
