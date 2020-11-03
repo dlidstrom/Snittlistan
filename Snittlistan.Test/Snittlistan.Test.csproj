@@ -59,8 +59,6 @@
     <Compile Include="BitsGateway.cs" />
     <Compile Include="BitsParser4x4Test.cs" />
     <Compile Include="BitsParser_Header.cs" />
-    <Compile Include="BitsParser_MatchScheme.cs" />
-    <Compile Include="BitsParser_Standings.cs" />
     <Compile Include="Domain\MatchResult_MatchCommentary.cs" />
     <Compile Include="Domain\MatchResult_RegisterSeries.cs" />
     <Compile Include="MatchSchemeData.cs" />

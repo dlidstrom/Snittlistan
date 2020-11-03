@@ -3,9 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text.RegularExpressions;
-    using System.Web;
-    using HtmlAgilityPack;
     using Infrastructure;
     using Infrastructure.Bits.Contracts;
     using Snittlistan.Web.Areas.V2.ReadModels;
@@ -48,129 +45,6 @@
                     headInfo.MatchOilPatternName,
                     headInfo.MatchOilPatternId));
             return result;
-        }
-
-        public static ParseStandingsResult ParseStandings(string content)
-        {
-            var document = new HtmlDocument();
-            document.LoadHtml(content);
-            HtmlNode documentNode = document.DocumentNode;
-            HtmlNode directLinkNode = documentNode.SelectSingleNode("//span[@id=\"MainContentPlaceHolder_Standings1_LabelDirectLink\"]");
-
-            // table
-            int currentRow = 0;
-            var standings = new List<ParseStandingsResult.StandingsItem>();
-            string currentGroup = (string)null;
-            while (true)
-            {
-                HtmlNode trNode = documentNode.SelectSingleNode(
-                    $"//tr[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_TabelRowDivider_{currentRow}\"]");
-                if (trNode == null) break;
-
-                HtmlNode nameNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsTeamName_{currentRow}\"]");
-                if (nameNode.HasClass("GroupText"))
-                {
-                    currentGroup = nameNode.InnerText;
-                }
-                else
-                {
-                    HtmlNode matchesNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsMatches_{currentRow}\"]");
-                    HtmlNode winNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsWin_{currentRow}\"]");
-                    HtmlNode drawNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsDraw_{currentRow}\"]");
-                    HtmlNode lossNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsLoss_{currentRow}\"]");
-                    HtmlNode totalNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsTotal_{currentRow}\"]");
-                    HtmlNode diffNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsDiff_{currentRow}\"]");
-                    HtmlNode pointsNode = trNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_Standings1_ListViewBossStandings_LblStandingsPoints_{currentRow}\"]");
-                    bool dividerSolid = trNode.HasClass("DividerSolid");
-                    int matches = int.Parse(matchesNode.InnerText);
-                    int win = int.Parse(winNode.InnerText);
-                    int draw = int.Parse(drawNode.InnerText);
-                    int loss = int.Parse(lossNode.InnerText);
-                    int diff = int.Parse(diffNode.InnerText);
-                    int points = int.Parse(pointsNode.InnerText);
-                    standings.Add(new ParseStandingsResult.StandingsItem
-                    {
-                        Group = currentGroup,
-                        Name = nameNode.InnerText.Trim(),
-                        Matches = matches,
-                        Win = win,
-                        Draw = draw,
-                        Loss = loss,
-                        Total = totalNode.InnerText,
-                        Diff = diff,
-                        Points = points,
-                        DividerSolid = dividerSolid
-                    });
-                }
-
-                currentRow++;
-            }
-
-            var result = new ParseStandingsResult(
-                directLinkNode.InnerText,
-                standings.ToArray());
-            return result;
-        }
-
-        public static ParseMatchSchemeResult ParseMatchScheme(string content)
-        {
-            //
-            var document = new HtmlDocument();
-            document.LoadHtml(content);
-            HtmlNode documentNode = document.DocumentNode;
-            HtmlNode tableNode = documentNode.SelectSingleNode("//div[@id=\"MainContentPlaceHolder_MatchScheme1_PanelStandings\"]/table");
-
-            int currentRow = 0;
-            var matches = new List<ParseMatchSchemeResult.MatchItem>();
-            while (true)
-            {
-                HtmlNode matchFactNode = tableNode.SelectSingleNode($"//a[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HyperLinkMatchFakta_{currentRow}\"]");
-                if (matchFactNode == null) break;
-                HtmlNode matchDayNode = tableNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_LblMatchDayFormatted_{currentRow}\"]");
-                bool isTurnRow = matchDayNode.InnerText.IndexOf("Omgång", StringComparison.Ordinal) >= 0;
-                if (isTurnRow == false)
-                {
-                    HtmlNode turnNode = tableNode.SelectSingleNode($"//input[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HiddenRoundFormatted_{currentRow}\"]");
-                    HtmlNode matchTimeNode = tableNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_LblMatchTimeFormatted_{currentRow}\"]");
-                    HtmlNode matchDateNode = tableNode.SelectSingleNode($"//input[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HiddenFieldMatchDate_{currentRow}\"]");
-                    HtmlNode matchIdNode = tableNode.SelectSingleNode($"//input[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HiddenFieldMatchId_{currentRow}\"]");
-                    HtmlNode teamsNode = tableNode.SelectSingleNode($"//a[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HyperLinkMatchFakta_{currentRow}\"]");
-                    HtmlNode resultNode = tableNode.SelectSingleNode($"//span[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_LabelMatchResult_{currentRow}\"]");
-                    HtmlNode oilPatternNameNode = tableNode.SelectSingleNode($"//a[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_LabelMatchOilPattern_{currentRow}\"]");
-                    HtmlNode oilPatternIdNode = tableNode.SelectSingleNode($"//input[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HiddenOilPatternId_{currentRow}\"]");
-                    HtmlNode locationNode = tableNode.SelectSingleNode($"//a[@id=\"MainContentPlaceHolder_MatchScheme1_ListViewMatchScheme_HyperLinkHall_{currentRow}\"]");
-
-                    int turn = int.Parse(turnNode.Attributes["value"].Value.Replace("Omgång ", string.Empty));
-                    string formattedDate = Regex.Replace(
-                        matchDateNode.Attributes["value"].Value,
-                        @"(?<date>\d{4}-\d\d-\d\d) 00:00:00",
-                        @"${date}");
-                    var date = DateTime.Parse($"{formattedDate}T{matchTimeNode.InnerText}");
-                    bool dateChanged = matchTimeNode.Attributes["style"].Value.IndexOf("color:Red", StringComparison.OrdinalIgnoreCase) >= 0;
-                    int bitsMatchId = int.Parse(matchIdNode.Attributes["value"].Value);
-                    int oilPatternId = int.Parse(oilPatternIdNode.Attributes["value"].Value);
-                    string locationUrl = HttpUtility.HtmlDecode($"http://bits.swebowl.se/Matches/{locationNode.Attributes["href"].Value}");
-                    string location = HttpUtility.HtmlDecode(locationNode.InnerText);
-                    matches.Add(new ParseMatchSchemeResult.MatchItem
-                    {
-                        RowFromHtml = currentRow,
-                        Turn = turn,
-                        Date = date,
-                        DateChanged = dateChanged,
-                        BitsMatchId = bitsMatchId,
-                        Teams = teamsNode.InnerText,
-                        MatchResult = resultNode.InnerText,
-                        OilPatternName = oilPatternNameNode.InnerText,
-                        OilPatternId = oilPatternId,
-                        Location = location,
-                        LocationUrl = locationUrl
-                    });
-                }
-
-                currentRow++;
-            }
-
-            return new ParseMatchSchemeResult(matches.ToArray());
         }
 
         public ParseResult Parse(BitsMatchResult bitsMatchResult, int clubId)
