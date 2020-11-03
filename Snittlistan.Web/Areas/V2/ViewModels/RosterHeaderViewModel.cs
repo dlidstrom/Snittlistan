@@ -1,4 +1,4 @@
-namespace Snittlistan.Web.Areas.V2.ViewModels
+﻿namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using System;
     using Domain;
@@ -17,7 +17,8 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             string opponent,
             DateTime date,
             OilPatternInformation oilPattern,
-            string matchResultId)
+            string matchResultId,
+            bool matchTimeChanged)
         {
             RosterId = rosterId;
             Team = team;
@@ -27,6 +28,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             Date = date;
             OilPattern = oilPattern;
             MatchResultId = matchResultId;
+            MatchTimeChanged = matchTimeChanged;
         }
 
         public string RosterId { get; set; }
@@ -44,5 +46,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         public OilPatternInformation OilPattern { get; set; }
 
         public string MatchResultId { get; set; }
+
+        public bool MatchTimeChanged { get; set; }
     }
 }

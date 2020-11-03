@@ -1,4 +1,4 @@
-namespace Snittlistan.Web.Areas.V2.ViewModels
+﻿namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using Snittlistan.Web.Areas.V2.Domain;
     using System;
@@ -30,7 +30,8 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                 roster.Opponent,
                 roster.Date,
                 roster.OilPattern,
-                roster.MatchResultId);
+                roster.MatchResultId,
+                roster.MatchTimeChanged);
         }
 
         public RosterHeaderViewModel Header { get; set; }

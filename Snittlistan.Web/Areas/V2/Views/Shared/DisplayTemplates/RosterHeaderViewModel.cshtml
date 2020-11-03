@@ -32,5 +32,9 @@
                 @Model.Date.ToString("dddd d MMMM HH:mm")
             </time>
         </em>
+        @if (Model.MatchTimeChanged)
+        {
+            <span class="label label-important">FLYTTAD</span>
+        }
     </dd>
 </dl>
