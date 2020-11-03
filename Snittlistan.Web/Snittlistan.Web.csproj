@@ -63,9 +63,6 @@
     <PackageReference Include="Elmah.MVC">
       <Version>2.1.2</Version>
     </PackageReference>
-    <PackageReference Include="HtmlAgilityPack">
-      <Version>1.11.24</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.AspNet.Mvc">
       <Version>5.2.7</Version>
     </PackageReference>
