@@ -28,7 +28,8 @@
                         roster.Opponent,
                         roster.Date,
                         roster.OilPattern,
-                        roster.MatchResultId),
+                        roster.MatchResultId,
+                        roster.MatchTimeChanged),
                     Model = new ViewModel.PostModel
                     {
                         RosterId = rosterId,
