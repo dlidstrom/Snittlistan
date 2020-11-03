@@ -1,6 +1,5 @@
 ﻿namespace Snittlistan.Test
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using NUnit.Framework;
 
@@ -47,27 +46,6 @@
             // Assert
             Assert.That(matches, Has.Length.EqualTo(15));
             Assert.That(matches[0].MatchRoundId, Is.EqualTo(2));
-        }
-
-        [TestCaseSource(nameof(Players))]
-        public async Task ParsesPlayers(int clubId, int length, string licNbr)
-        {
-            // Act
-            Web.Infrastructure.Bits.Contracts.PlayerResult players = await BitsGateway.GetPlayers(clubId);
-
-            // Assert
-            Assert.That(players.Data, Has.Length.EqualTo(length));
-            Assert.That(players.Data[0].LicNbr, Is.EqualTo(licNbr));
-        }
-
-        private static IEnumerable<TestCaseData> Players
-        {
-            get
-            {
-                // may need updating, perhaps skip length entirely?
-                yield return new TestCaseData(51538, 40, "M010982KRI01");
-                yield return new TestCaseData(4494, 27, "K081082CAR01");
-            }
         }
     }
 }
