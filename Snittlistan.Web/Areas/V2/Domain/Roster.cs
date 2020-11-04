@@ -255,19 +255,25 @@
                                 string[] outOfTeam = change.Players.OldValue.Except(change.Players.NewValue).Select(PlayerName).ToArray();
                                 IEnumerable<string> intoTeam = change.Players.NewValue.Except(change.Players.OldValue).Select(PlayerName);
                                 if (outOfTeam.Any() == false)
-                                    changes.Add($"Tog ut lag {string.Join("+", intoTeam)}");
+                                    changes.Add($"Tog ut lag {string.Join(", ", intoTeam)}");
                                 else
-                                    changes.Add($"Ändrade spelare ({string.Join("+", outOfTeam)} byttes mot {string.Join("+", intoTeam)})");
+                                    changes.Add($"Ändrade spelare ({string.Join(", ", outOfTeam)} byttes mot {string.Join(", ", intoTeam)})");
+                            }
 
-                                string PlayerName(string playerId)
-                                {
-                                    return documentSession.Load<Player>(playerId).Nickname;
-                                }
+                            if (change.TeamLeader is object)
+                            {
+                                if (change.TeamLeader.NewValue is object)
+                                    changes.Add($"Valde {PlayerName(change.TeamLeader.NewValue)} till lagledare");
+                                else
+                                    changes.Add($"Tog bort {PlayerName(change.TeamLeader.OldValue)} som lagledare");
                             }
 
                             action = string.Join("; ", changes);
                             break;
                         }
+
+                        string PlayerName(string playerId) =>
+                            documentSession.Load<Player>(playerId)?.Nickname;
                 }
 
                 return new FormattedAuditLogEntry(
