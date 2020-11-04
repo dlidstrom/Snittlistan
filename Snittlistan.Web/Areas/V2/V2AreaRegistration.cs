@@ -82,6 +82,15 @@
                 "wordpress",
                 "new",
                 "wp",
+                "simpla",
+                "admin/content/sitetree",
+                "manager",
+                "web",
+                "cms",
+                "old-wp",
+                "admins",
+                "adminpanel",
+                "login",
             };
             for (int i = 0; i < urls.Length; i++)
             {
