@@ -4,13 +4,7 @@
     var hideControls = Convert.ToBoolean(ViewData["hideControls"]);
 }
 
-<div class="well well-small editable">
-    @if (User.IsInRole2(WebsiteRoles.Uk.UkTasks) && hideControls == false)
-    {
-        <a href="@Url.Action("EditPlayers", new { Model.Header.RosterId })" class="edit-right">
-            <i class="sprite-glyphicons_151_edit"></i>
-        </a>
-    }
+<div class="well well-small editable" id="@Model.Header.RosterId">
     @if (Model.Preliminary && User.IsInRole2(WebsiteRoles.Uk.UkTasks))
     {
         <div class="alert alert-info">
@@ -22,6 +16,14 @@
         @* Hide preliminaries for regular users *@
         Model.Players.Clear();
         Model.TeamLeader = null;
+    }
+    @if (User.IsInRole2(WebsiteRoles.Uk.UkTasks) && hideControls == false && Model.Header.Date.ToUniversalTime() > SystemTime.UtcNow)
+    {
+        @Html.ActionLink(
+             "Ändra laget",
+             "EditPlayers",
+             new { Model.Header.RosterId },
+             new { @class = "btn btn-primary btn-block" })
     }
     @if (Model.Preliminary == false
          && Model.Header.Date.ToUniversalTime() > SystemTime.UtcNow
@@ -41,7 +43,7 @@
                     Model.Turn
                 }))
             {
-                <button class="btn btn-success btn-small" type="submit">
+                <button class="btn btn-success btn-block" type="submit">
                     &#10004;
                     Jag kommer
                 </button>
@@ -63,7 +65,22 @@
                 },
                 new
                 {
-                    @class = "btn btn-success btn-small"
+                    @class = "btn btn-primary btn-block"
+                })
+        }
+        if (User.IsInRole2(WebsiteRoles.Uk.UkTasks))
+        {
+            @Html.ActionLink(
+                "Händelser",
+                "Index",
+                "AuditLogViewer",
+                new
+                {
+                    Id = Model.Header.RosterId
+                },
+                new
+                {
+                    @class = "btn btn-info btn-block"
                 })
         }
     }
@@ -230,20 +247,5 @@
                 </td>
             </tr>
         </table>
-    }
-    @if (User.IsInRole2(WebsiteRoles.Uk.UkTasks))
-    {
-        @Html.ActionLink(
-            "Visa historik",
-            "Index",
-            "AuditLogViewer",
-            new
-            {
-                Id = Model.Header.RosterId
-            },
-            new
-            {
-                @class = "btn btn-link"
-            })
     }
 </div>

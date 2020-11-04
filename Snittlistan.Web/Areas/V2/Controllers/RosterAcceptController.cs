@@ -19,7 +19,15 @@
                 PlayerAccepted = playerId
             };
             roster.UpdateWith(Trace.CorrelationManager.ActivityId, update);
-            return RedirectToAction("View", "Roster", new { season, turn });
+            return Redirect(
+                Url.RouteUrl(
+                    new
+                    {
+                        controller = "Roster",
+                        action = "View",
+                        season,
+                        turn
+                    }) + $"#{rosterId}");
         }
     }
 }
