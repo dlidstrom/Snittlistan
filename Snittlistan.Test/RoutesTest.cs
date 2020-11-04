@@ -103,6 +103,15 @@
             RouteTable.Routes.Maps("GET", "~/wordpress/", new { controller = "Redirect", Action = "Redirect" });
             RouteTable.Routes.Maps("GET", "~/new/", new { controller = "Redirect", Action = "Redirect" });
             RouteTable.Routes.Maps("GET", "~/wp/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/simpla/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/admin/content/sitetree/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/manager/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/web/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/cms/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/old-wp/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/admins/", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/adminpanel", new { controller = "Redirect", Action = "Redirect" });
+            RouteTable.Routes.Maps("GET", "~/login", new { controller = "Redirect", Action = "Redirect" });
         }
 
         [Test]

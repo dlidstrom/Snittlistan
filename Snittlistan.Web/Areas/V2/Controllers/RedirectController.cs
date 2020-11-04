@@ -6,16 +6,19 @@
     {
         public ActionResult Redirect()
         {
-            return RedirectToActionPermanent("Index", "Roster");
+            return RedirectToAction("Index", "Roster");
         }
 
         public ActionResult RedirectNewView(int? season, int? turn)
         {
-            return RedirectToAction("View", "Roster", new
-            {
-                season,
-                turn
-            });
+            return RedirectToAction(
+                "View",
+                "Roster",
+                new
+                {
+                    season,
+                    turn
+                });
         }
     }
 }
