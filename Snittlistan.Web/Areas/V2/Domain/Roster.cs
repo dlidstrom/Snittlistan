@@ -254,14 +254,14 @@
                             {
                                 string[] outOfTeam = change.Players.OldValue.Except(change.Players.NewValue).Select(PlayerName).ToArray();
                                 string[] intoTeam = change.Players.NewValue.Except(change.Players.OldValue).Select(PlayerName).ToArray();
-                                if (outOfTeam.Any() == false)
+                                if (outOfTeam.Length == 0)
                                 {
                                     if (intoTeam.Length == 1 || intoTeam.Length == 2)
                                         changes.Add($"Tog ut reserv {string.Join(", ", intoTeam)}");
                                     else
                                         changes.Add($"Tog ut lag {string.Join(", ", intoTeam)}");
                                 }
-                                else if (outOfTeam.Length == 1 || outOfTeam.Length == 2)
+                                else if ((outOfTeam.Length == 1 || outOfTeam.Length == 2) && intoTeam.Length == 0)
                                 {
                                     changes.Add($"Tog bort reserv {string.Join(", ", outOfTeam)}");
                                 }
