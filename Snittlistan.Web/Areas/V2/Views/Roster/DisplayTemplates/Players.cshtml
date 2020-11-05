@@ -69,7 +69,7 @@
                 })
         }
     }
-    @if (User.IsInRole2(WebsiteRoles.Uk.UkTasks))
+    @if (User.IsInRole2(WebsiteRoles.Uk.UkTasks) && hideControls == false)
     {
         @Html.ActionLink(
             "Händelser",
