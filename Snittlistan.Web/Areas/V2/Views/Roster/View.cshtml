@@ -49,15 +49,26 @@
     </div>
 </div>
 
-@if (User.CustomIdentity.PlayerId != null
-    && Model.RosterViewModels.Any(x => x.Preliminary == false
+@{ 
+    int n = Model.RosterViewModels.Count(x =>
+        x.Players.Find(y => y.PlayerId == User.CustomIdentity.PlayerId)?.Accepted == false);
+}
+@if (User.CustomIdentity.PlayerId != null && Model.RosterViewModels.Any(x =>
+    x.Preliminary == false
     && x.Header.Date.ToUniversalTime() > SystemTime.UtcNow
-    && x.Players.Find(y => y.Item1 == User.CustomIdentity.PlayerId)?.Item3 == false))
+    && n > 0))
 {
     <div class="row">
         <div class="span12">
             <div class="alert alert-success">
-                <strong>Du är uttagen!</strong> Vänligen bekräfta nedan.
+                @if (n > 1)
+                {
+                    <strong>Du är uttagen i @n matcher!</strong> <text>Vänligen bekräfta nedan.</text>
+                }
+                else
+                {
+                    <strong>Du är uttagen!</strong> <text>Vänligen bekräfta nedan.</text>
+                }
             </div>
         </div>
     </div>

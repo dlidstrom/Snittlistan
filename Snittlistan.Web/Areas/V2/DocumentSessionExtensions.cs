@@ -26,21 +26,20 @@
             Roster roster)
         {
             var accepted = new HashSet<string>(roster.AcceptedPlayers);
-            var players = new List<Tuple<string, string, bool>>();
+            var players = new List<RosterViewModel.PlayerItem>();
             foreach (Player player in roster.Players.Where(p => p != null).Select(session.Load<Player>))
             {
-                players.Add(Tuple.Create(player.Id, player.Name, accepted.Contains(player.Id)));
+                players.Add(new RosterViewModel.PlayerItem(player.Id, player.Name, accepted.Contains(player.Id)));
             }
 
-            Tuple<string, string, bool> teamLeaderTuple = null;
+            RosterViewModel.PlayerItem teamLeaderTuple = null;
             if (roster.TeamLeader != null)
             {
                 Player teamLeader = session.Load<Player>(roster.TeamLeader);
-                teamLeaderTuple =
-                    Tuple.Create(
-                        teamLeader.Id,
-                        teamLeader.Name,
-                        accepted.Contains(teamLeader.Id));
+                teamLeaderTuple = new RosterViewModel.PlayerItem(
+                    teamLeader.Id,
+                    teamLeader.Name,
+                    accepted.Contains(teamLeader.Id));
             }
 
             var vm = new RosterViewModel(roster, teamLeaderTuple, players);
