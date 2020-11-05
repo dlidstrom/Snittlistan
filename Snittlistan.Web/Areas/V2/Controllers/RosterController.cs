@@ -58,8 +58,8 @@
                         endDate: lastDate,
                         rosters: g.Select(x => new RosterViewModel(
                                        x,
-                                       Tuple.Create(string.Empty, string.Empty, false),
-                                       new List<Tuple<string, string, bool>>()))
+                                       new RosterViewModel.PlayerItem(string.Empty, string.Empty, false),
+                                       new List<RosterViewModel.PlayerItem>()))
                                    .SortRosters()
                                    .ToArray());
             InitialDataViewModel.TurnViewModel[] turns = q.ToArray();
@@ -211,8 +211,8 @@
                 throw new HttpException(400, "Can not delete registered rosters");
             return View(new RosterViewModel(
                 roster,
-                Tuple.Create(string.Empty, string.Empty, false),
-                new List<Tuple<string, string, bool>>()));
+                new RosterViewModel.PlayerItem(string.Empty, string.Empty, false),
+                new List<RosterViewModel.PlayerItem>()));
         }
 
         [HttpPost]
@@ -465,8 +465,8 @@
             {
                 var rosterViewModel = new RosterViewModel(
                     roster,
-                    Tuple.Create(string.Empty, string.Empty, false),
-                    new List<Tuple<string, string, bool>>());
+                    new RosterViewModel.PlayerItem(string.Empty, string.Empty, false),
+                    new List<RosterViewModel.PlayerItem>());
                 foreach (string player in roster.Players)
                 {
                     if (rostersForPlayers.TryGetValue(player, out List<RosterViewModel> rosterViewModels) == false)

@@ -30,7 +30,7 @@
          && hideControls == false)
     {
         if (User.CustomIdentity.PlayerId != null
-            && Model.Players.Find(x => x.Item1 == User.CustomIdentity.PlayerId)?.Item3 == false)
+            && Model.Players.Find(x => x.PlayerId == User.CustomIdentity.PlayerId)?.Accepted == false)
         {
             using (Html.BeginForm(
                 "Accept",
@@ -50,7 +50,7 @@
             }
         }
         else if (Model.Players.Any()
-                 && Model.Players.Any(x => x.Item3 == false)
+                 && Model.Players.Any(x => x.Accepted == false)
                  && User.IsInRole2(WebsiteRoles.Uk.UkTasks))
         {
             @Html.ActionLink(
@@ -68,21 +68,21 @@
                     @class = "btn btn-primary btn-block"
                 })
         }
-        if (User.IsInRole2(WebsiteRoles.Uk.UkTasks))
-        {
-            @Html.ActionLink(
-                "Händelser",
-                "Index",
-                "AuditLogViewer",
-                new
-                {
-                    Id = Model.Header.RosterId
-                },
-                new
-                {
-                    @class = "btn btn-info btn-block"
-                })
-        }
+    }
+    @if (User.IsInRole2(WebsiteRoles.Uk.UkTasks))
+    {
+        @Html.ActionLink(
+            "Händelser",
+            "Index",
+            "AuditLogViewer",
+            new
+            {
+                Id = Model.Header.RosterId
+            },
+            new
+            {
+                @class = "btn btn-info btn-block"
+            })
     }
     @if (Model.IsFourPlayer)
     {
@@ -101,11 +101,11 @@
                         }
                         @if (player != null)
                         {
-                            @player.Item2
+                            @player.PlayerName
                         }
                     </td>
                     <td>
-                        @if (player != null && player.Item3)
+                        @if (player != null && player.Accepted)
                         {
                             <span class="label label-success">&#10004;</span>
                         }
@@ -120,11 +120,11 @@
                     }
                     @if (reserve != null)
                     {
-                        @reserve.Item2
+                        @reserve.PlayerName
                     }
                 </td>
                 <td>
-                    @if (reserve != null && reserve.Item3)
+                    @if (reserve != null && reserve.Accepted)
                     {
                         <span class="label label-success">&#10004;</span>
                     }
@@ -137,11 +137,11 @@
                 <td>
                     @if (Model.TeamLeader != null)
                     {
-                        @Model.TeamLeader.Item2
+                        @Model.TeamLeader.PlayerName
                     }
                 </td>
                 <td>
-                    @if (Model.TeamLeader != null && Model.TeamLeader.Item3)
+                    @if (Model.TeamLeader != null && Model.TeamLeader.Accepted)
                     {
                         <span class="label label-success">&#10004;</span>
                     }
@@ -166,11 +166,11 @@
                         }
                         @if (first != null)
                         {
-                            @first.Item2
+                            @first.PlayerName
                         }
                     </td>
                     <td>
-                        @if (first != null && first.Item3)
+                        @if (first != null && first.Accepted)
                         {
                             <span class="label label-success">&#10004;</span>
                         }
@@ -183,11 +183,11 @@
                         }
                         @if (second != null)
                         {
-                            @second.Item2
+                            @second.PlayerName
                         }
                     </td>
                     <td>
-                        @if (second != null && second.Item3)
+                        @if (second != null && second.Accepted)
                         {
                             <span class="label label-success">&#10004;</span>
                         }
@@ -202,11 +202,11 @@
                     }
                     @if (reserve1 != null)
                     {
-                        @reserve1.Item2
+                        @reserve1.PlayerName
                     }
                 </td>
                 <td>
-                    @if (reserve1 != null && reserve1.Item3)
+                    @if (reserve1 != null && reserve1.Accepted)
                     {
                         <span class="label label-success">&#10004;</span>
                     }
@@ -219,11 +219,11 @@
                     }
                     @if (reserve2 != null)
                     {
-                        @reserve2.Item2
+                        @reserve2.PlayerName
                     }
                 </td>
                 <td>
-                    @if (reserve2 != null && reserve2.Item3)
+                    @if (reserve2 != null && reserve2.Accepted)
                     {
                         <span class="label label-success">&#10004;</span>
                     }
@@ -236,11 +236,11 @@
                 <td>
                     @if (Model.TeamLeader != null)
                     {
-                        @Model.TeamLeader.Item2
+                        @Model.TeamLeader.PlayerName
                     }
                 </td>
                 <td>
-                    @if (Model.TeamLeader != null && Model.TeamLeader.Item3)
+                    @if (Model.TeamLeader != null && Model.TeamLeader.Accepted)
                     {
                         <span class="label label-success">&#10004;</span>
                     }
