@@ -1,4 +1,3 @@
-[<RequireQualifiedAccessAttribute>]
 module Api
 
 open FSharp.Data

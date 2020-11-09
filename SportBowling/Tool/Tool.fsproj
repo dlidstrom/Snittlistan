@@ -7,9 +7,12 @@
     <Compile Include="Contracts.fs" />
     <Compile Include="Api.fs" />
     <Compile Include="Workflow.fs" />
+    <Compile Include="Workflows/FetchMatches.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Argu" Version="6.1.1" />
+    <PackageReference Include="FSharp.Data" Version="3.3.3" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
   </ItemGroup>
 </Project>
