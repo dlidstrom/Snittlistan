@@ -2,50 +2,37 @@ module Api
 
 open FSharp.Data
 open FSharp.Data.HttpRequestHeaders
-open Contracts
-
-let private buildMatchScoresUrl apiKey matchId =
-    let root = "https://api.swebowl.se/api/v1/matchResult/GetMatchScores"
-    let url = sprintf "%s?APIKey=%s&matchId=%d" root apiKey matchId
-    url
-
-let private buildMatchResultsUrl apiKey matchId =
-    let root = "https://api.swebowl.se/api/v1/matchResult/GetMatchResults"
-    let url = sprintf "%s?APIKey=%s&matchSchemeId=8M8BA&matchId=%d" root apiKey matchId
-    url
-
-let private buildRefererUrl matchId =
-    let root = "https://bits.swebowl.se/match-detail"
-    let url = sprintf "%s?matchid=%d" root matchId
-    url
 
 module Bits =
     type Client(apiKey) =
-        let matchScoresUrl =
-            buildMatchScoresUrl apiKey
-        let matchResultsUrl =
-            buildMatchResultsUrl apiKey
+        [<Literal>]
+        let root = "https://api.swebowl.se/api/v1"
+
+        let performRequest url httpMethod =
+            Http.RequestString
+                (url = url, httpMethod = httpMethod,
+                 headers = [
+                    Referer "https://bits.swebowl.se"
+                ])
 
         member _.GetMatchScores matchId =
-            let url = matchScoresUrl matchId
-            let referer = buildRefererUrl matchId
+            let url = $"%s{root}/matchResult/GetMatchScores?APIKey=%s{apiKey}&matchId=%d{matchId}"
             let matchScores =
-                Http.RequestString
-                    (url = url, httpMethod = HttpMethod.Get,
-                     headers = [
-                        Referer referer
-                    ])
-                |> Bits.MatchScores.Parse
+                performRequest url HttpMethod.Get
+                |> Contracts.Bits.MatchScores.Parse
             matchScores
 
-        member _.GetMatchResults matchId =
-            let matchResultsUrl = matchResultsUrl matchId
-            let referer = buildRefererUrl matchId
+        member _.GetMatchResults matchId matchSchemeId =
+            let url = $"%s{root}/matchResult/GetMatchResults?APIKey=%s{apiKey}&matchSchemeId=%s{matchSchemeId}&matchId=%d{matchId}"
             let matchResults =
-                Http.RequestString
-                    (url = matchResultsUrl, httpMethod = HttpMethod.Get,
-                     headers = [
-                        Referer referer
-                    ])
-                |> Bits.MatchResults.Parse
+                performRequest url HttpMethod.Get
+                |> Contracts.Bits.MatchResults.Parse
             matchResults
+
+        // member _.GetDivisions ...
+        (*
+                1. POST https://api.swebowl.se/api/v1/Division?APIKey=___&teamId=0&countyId=-1&seasonId=2006
+        GetDivision (all) - from 2006 ->
+        {"search":"","take":500,"skip":0,"page":1,"pageSize":500,"sort":[{"field":"clubName","dir":"asc"}]}
+
+        *)

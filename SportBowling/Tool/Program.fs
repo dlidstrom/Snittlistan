@@ -1,30 +1,29 @@
-﻿open Argu
+﻿// dotnet watch run --no-restore -- --apikey 123 --seasonid 2006
+open Argu
 open System
 
 type Arguments =
     | [<Mandatory>] ApiKey of apiKey : string
-    | [<Mandatory>] MatchId of matchId : int
+    | [<Mandatory>] SeasonId of seasonId : int
     with
         interface IArgParserTemplate with
             member this.Usage =
                 match this with
                 | ApiKey _ -> "Specifies the ApiKey"
-                | MatchId _ -> "specifies the match id"
+                | SeasonId _ -> "specifies the season id"
 
 let run argv =
     let parser = ArgumentParser.Create<Arguments>(programName = AppDomain.CurrentDomain.FriendlyName)
     let results = parser.Parse argv
     let apiKey = results.GetResult(ApiKey)
-    let matchId = results.GetResult(MatchId)
+    let seasonId = results.GetResult(SeasonId)
     let bitsClient = Api.Bits.Client(apiKey)
-    let x, y = Workflow.run bitsClient matchId
-    printfn "%s" x.Series.[0].Boards.[0].Scores.[0].PlayerName
-    0
+    FetchMatches.run bitsClient seasonId
 
 [<EntryPoint>]
 let main argv =
     try
-        FetchMatches.run argv
+        run argv
     with
         | :? ArguException as ex ->
             eprintfn "%s" ex.Message
