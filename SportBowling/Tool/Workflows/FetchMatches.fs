@@ -1,6 +1,8 @@
-module FetchMatches
+module Workflows
 
-let run (bitsClient : Api.Bits.Client) seasonId =
+type FetchMatches() =
+
+    member _.Run (bitsClient : Api.Bits.Client) seasonId =
     (*
 
         ERROR CHECKING ALL RESPONSES
@@ -28,4 +30,7 @@ let run (bitsClient : Api.Bits.Client) seasonId =
     4.
     *)
 
-    0
+        let divisions = bitsClient.GetDivisions seasonId
+        printfn "%A" divisions
+
+        0
