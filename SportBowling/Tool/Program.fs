@@ -29,7 +29,7 @@ let run argv =
     let _l = if debugHttp then Some (new Infrastructure.LoggingEventListener()) else None
     let bitsClient = Api.Bits.Client(apiKey, noCheckCertificate, proxy)
     let workflow = Workflows.FetchMatches()
-    workflow.Run bitsClient seasonId
+    workflow.Run bitsClient (Domain.SeasonId seasonId)
 
 [<EntryPoint>]
 let main argv =

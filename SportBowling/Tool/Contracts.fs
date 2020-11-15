@@ -1,7 +1,10 @@
 module Contracts
 
+open FSharp.Data
+
 module Bits =
-    open FSharp.Data
-    type MatchResults = JsonProvider<"Json/MatchResults.json">
-    type MatchScores = JsonProvider<"Json/MatchScores.json">
-    type Divisions = JsonProvider<"Json/Divisions.json">
+    type MatchResults = JsonProvider<"Json/MatchResults.json", InferTypesFromValues = true, RootName = "MatchResult">
+    type MatchScores = JsonProvider<"Json/MatchScores.json", InferTypesFromValues = true, RootName = "MatchScore">
+    type Divisions = JsonProvider<"Json/Division.json", InferTypesFromValues = true, RootName = "Division">
+    type Match = JsonProvider<"Json/Match.json", InferTypesFromValues = true, RootName = "Match">
+    type HeadInfo = JsonProvider<"Json/HeadInfo.json", InferTypesFromValues = true, RootName = "HeadInfo">

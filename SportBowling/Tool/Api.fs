@@ -40,21 +40,40 @@ module Bits =
                 ],
                 customizeHttpRequest = customizeRequest)
 
-        member _.GetMatchScores matchId =
-            let matchScores =
+        /// https://api.swebowl.se/api/v1/matchResult/GetMatchScores
+        member _.GetMatchScores (Domain.MatchId matchId) =
+            let matchScoresResponse =
                 performGet $"%s{root}/matchResult/GetMatchScores?APIKey=%s{apiKey}&matchId=%d{matchId}"
                 |> Contracts.Bits.MatchScores.Parse
-            matchScores
+            matchScoresResponse
 
-        member _.GetMatchResults matchId matchSchemeId =
-            let matchResults =
+        /// https://api.swebowl.se/api/v1/matchResult/GetMatchResults
+        member _.GetMatchResults (Domain.MatchId matchId) (Domain.MatchSchemeId matchSchemeId) =
+            let matchResultsResponse =
                 performGet $"%s{root}/matchResult/GetMatchResults?APIKey=%s{apiKey}&matchSchemeId=%s{matchSchemeId}&matchId=%d{matchId}"
                 |> Contracts.Bits.MatchResults.Parse
-            matchResults
+            matchResultsResponse
 
-        member _.GetDivisions seasonId =
-            let divisions =
+        /// https://api.swebowl.se/api/v1/Division
+        member _.GetDivision (Domain.SeasonId seasonId) =
+            let divisionResponse =
                 performGet
                     $"%s{root}/Division?APIKey=%s{apiKey}&teamId=0&countyId=-1&seasonId=%d{seasonId}"
                 |> Contracts.Bits.Divisions.Parse
-            divisions
+            divisionResponse
+
+        /// https://api.swebowl.se/api/v1/Match
+        member _.GetMatch (Domain.DivisionId divisionId) (Domain.SeasonId seasonId) =
+            let matchResponse =
+                performGet
+                    $"%s{root}/Match/?APIKey=%s{apiKey}&divisionId=%d{divisionId}&seasonId=%d{seasonId}"
+                |> Contracts.Bits.Match.Parse
+            matchResponse
+
+        /// https://api.swebowl.se/api/v1/matchResult/GetHeadInfo
+        member _.GetHeadInfo (Domain.MatchId matchId) =
+            let headInfoResponse =
+                performGet
+                    $"%s{root}/matchResult/GetHeadInfo?APIKey=%s{apiKey}&id=%d{matchId}"
+                |> Contracts.Bits.HeadInfo.Parse
+            headInfoResponse

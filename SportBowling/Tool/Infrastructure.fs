@@ -2,6 +2,7 @@ module Infrastructure
 
 open System.Diagnostics.Tracing
 
+// https://developers.redhat.com/blog/2019/12/23/tracing-net-core-applications/
 type LoggingEventListener() =
     inherit EventListener() with
         override this.OnEventSourceCreated(eventSource) =
