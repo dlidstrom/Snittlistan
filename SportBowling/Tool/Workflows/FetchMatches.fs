@@ -2,7 +2,7 @@ module Workflows
 
 type FetchMatches() =
 
-    member _.Run (bitsClient : Api.Bits.Client) seasonId =
+    member _.Run (bitsClient : Api.Bits.IClient) seasonId =
     (*
 
         ERROR CHECKING ALL RESPONSES
@@ -36,5 +36,6 @@ type FetchMatches() =
                 let headInfo = bitsClient.GetHeadInfo (Domain.MatchId matchItem.MatchId)
                 printfn "%s" headInfo.MatchSchemeId
                 // let matchScheme = bitsClient.GetHeadResultInfo headInfo.MatchScheme
+                failwith "Break here"
 
         0
