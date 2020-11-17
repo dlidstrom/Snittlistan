@@ -198,7 +198,7 @@
                 "enabled": true,
                 "config": {
                     "naming": "PascalCase",
-                    "underscores": "None"
+                    "underscores": "AllowAny"
                 }
             },
             "moduleNames": {

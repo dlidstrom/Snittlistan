@@ -1,4 +1,6 @@
 ﻿// dotnet watch run --no-restore -- --api-key 123 --season-id 2006
+// dotnet ef migrations script -- --host localhost --database prisma --username prisma --password prisma
+// dotnet ef database update -- --host localhost --database prisma --username prisma --password prisma
 open System
 open Argu
 
@@ -12,10 +14,10 @@ type Arguments =
         interface IArgParserTemplate with
             member this.Usage =
                 match this with
-                | Api_Key _ -> "Specifies the ApiKey"
-                | Season_Id _ -> "specifies the season id"
+                | Api_Key _ -> "Specifies the ApiKey."
+                | Season_Id _ -> "specifies the season id."
                 | No_Check_Certificate -> "Don't check the server certificate against the available certificate authorities."
-                | Debug_Http -> "Debug HTTP"
+                | Debug_Http -> "Debug HTTP."
                 | Proxy _ -> "Specifies the proxy to use."
 
 let run argv =
