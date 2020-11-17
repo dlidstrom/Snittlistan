@@ -16,7 +16,10 @@ type Context(connectionString) =
         and set value = x.cache <- value
 
     override _.OnConfiguring optionsBuilder =
-        optionsBuilder.UseNpgsql(connectionString, fun (x : NpgsqlDbContextOptionsBuilder) -> ()) |> ignore
+        optionsBuilder.UseNpgsql(
+            connectionString = connectionString,
+            //npgsqlOptionsAction = fun (x : Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.NpgsqlDbContextOptionsBuilder) -> ()) |> ignore
+            npgsqlOptionsAction = null) |> ignore<DbContextOptionsBuilder>
 
     // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //         => optionsBuilder.UseNpgsql("Host=my_host;Database=my_db;Username=my_user;Password=my_pw");
