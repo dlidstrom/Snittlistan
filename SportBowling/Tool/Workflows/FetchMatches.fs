@@ -1,4 +1,4 @@
-module Workflows
+namespace Workflows
 
 type FetchMatches() =
 

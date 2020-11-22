@@ -1,37 +1,74 @@
 ﻿// dotnet watch run --no-restore -- --api-key 123 --season-id 2006
-// dotnet ef migrations script -- --host localhost --database prisma --username prisma --password prisma
-// dotnet ef database update -- --host localhost --database prisma --username prisma --password prisma
+
 open System
 open Argu
 
 type Arguments =
+    | [<CliPrefix(CliPrefix.None)>] Fetch_Matches of ParseResults<FetchMatchesArguments>
+    | [<CliPrefix(CliPrefix.None)>] Migrate_Database of ParseResults<MigrateDatabaseArguments>
+    | Debug_Http
+    interface IArgParserTemplate with
+        member this.Usage =
+            match this with
+            | Fetch_Matches _ -> "Fetch matches."
+            | Migrate_Database _ -> "Migrate database."
+            | Debug_Http -> "Debug HTTP."
+and FetchMatchesArguments =
     | [<Mandatory>] Api_Key of apiKey : string
     | [<Mandatory>] Season_Id of seasonId : int
     | No_Check_Certificate
-    | Debug_Http
     | Proxy of proxy : string
-    with
-        interface IArgParserTemplate with
-            member this.Usage =
-                match this with
-                | Api_Key _ -> "Specifies the ApiKey."
-                | Season_Id _ -> "specifies the season id."
-                | No_Check_Certificate -> "Don't check the server certificate against the available certificate authorities."
-                | Debug_Http -> "Debug HTTP."
-                | Proxy _ -> "Specifies the proxy to use."
+    interface IArgParserTemplate with
+        member this.Usage =
+            match this with
+            | Api_Key _ -> "Specifies the ApiKey."
+            | Season_Id _ -> "specifies the season id."
+            | No_Check_Certificate -> "Don't check the server certificate against the available certificate authorities."
+            | Proxy _ -> "Specifies the proxy to use."
+and MigrateDatabaseArguments =
+    | [<Mandatory>] Host of host : string
+    | [<Mandatory>] Database of database : string
+    | [<Mandatory>] Username of username : string
+    | [<Mandatory>] Password of password : string
+    interface IArgParserTemplate with
+        member this.Usage =
+            match this with
+            | Host _ -> "Specifies the database host."
+            | Database _ -> "Specifies the database name."
+            | Username _ -> "Specifies the username"
+            | Password _ -> "Specifies the password."
 
-let run argv =
-    let parser = ArgumentParser.Create<Arguments>(programName = AppDomain.CurrentDomain.FriendlyName)
-    let results = parser.Parse argv
-    let apiKey = results.GetResult(Api_Key)
-    let seasonId = results.GetResult(Season_Id)
-    let noCheckCertificate = if results.Contains(No_Check_Certificate) then Some true else None
-    let debugHttp = results.Contains(Debug_Http)
-    let proxy = results.TryGetResult(Proxy)
-    let _l = if debugHttp then Some (new Infrastructure.LoggingEventListener()) else None
+let fetchMatches (args : ParseResults<FetchMatchesArguments>) =
+    let apiKey = args.GetResult Api_Key
+    let seasonId = args.GetResult Season_Id
+    let noCheckCertificate =
+        if args.Contains(No_Check_Certificate) then Some true else None
+    let proxy = args.TryGetResult(Proxy)
     let bitsClient = Api.Bits.Client(apiKey, noCheckCertificate, proxy)
     let workflow = Workflows.FetchMatches()
     workflow.Run bitsClient (Domain.SeasonId seasonId)
+
+let migrateDatabase (args : ParseResults<MigrateDatabaseArguments>) =
+    let host = args.GetResult Host
+    let database = args.GetResult Database
+    let username = args.GetResult Username
+    let password = args.GetResult Password
+    let workflow = Workflows.MigrateDatabase()
+    workflow.Run host database username password
+
+let run argv =
+    let parser = ArgumentParser.Create<Arguments>(
+                    programName = AppDomain.CurrentDomain.FriendlyName)
+    let results = parser.ParseCommandLine argv
+
+    let debugHttp = results.Contains(Debug_Http)
+    let _l =
+        if debugHttp then Some (new Infrastructure.LoggingEventListener()) else None
+
+    match results.GetSubCommand() with
+    | Fetch_Matches args -> fetchMatches args
+    | Migrate_Database args -> 1
+    | Debug_Http -> failwith "Unexpected"
 
 [<EntryPoint>]
 let main argv =
