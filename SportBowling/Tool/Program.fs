@@ -6,6 +6,7 @@ open Argu
 type Arguments =
     | [<CliPrefix(CliPrefix.None)>] Fetch_Matches of ParseResults<FetchMatchesArguments>
     | [<CliPrefix(CliPrefix.None)>] Migrate_Database of ParseResults<MigrateDatabaseArguments>
+    | [<CliPrefix(CliPrefix.None)>] Scratch of ParseResults<ScratchArguments>
     | Debug_Http
     interface IArgParserTemplate with
         member this.Usage =
@@ -13,6 +14,7 @@ type Arguments =
             | Fetch_Matches _ -> "Fetch matches."
             | Migrate_Database _ -> "Migrate database."
             | Debug_Http -> "Debug HTTP."
+            | Scratch _ -> "Scratch program."
 and FetchMatchesArguments =
     | [<Mandatory>] Api_Key of apiKey : string
     | [<Mandatory>] Season_Id of seasonId : int
@@ -37,6 +39,12 @@ and MigrateDatabaseArguments =
             | Database _ -> "Specifies the database name."
             | Username _ -> "Specifies the username"
             | Password _ -> "Specifies the password."
+and ScratchArguments =
+    | Verbose
+    interface IArgParserTemplate with
+        member this.Usage =
+            match this with
+            | Verbose -> "Verbose output."
 
 let fetchMatches (args : ParseResults<FetchMatchesArguments>) =
     let apiKey = args.GetResult Api_Key
@@ -56,6 +64,17 @@ let migrateDatabase (args : ParseResults<MigrateDatabaseArguments>) =
     let workflow = Workflows.MigrateDatabase()
     workflow.Run host database username password
 
+module Scratch =
+    open Hopac
+
+    let Run (_ : ParseResults<ScratchArguments>) =
+        let longerHelloWorldJob = job {
+          do! timeOutMillis 2000
+          printfn "Hello, World!"
+        }
+        run longerHelloWorldJob
+        0
+
 let run argv =
     let parser = ArgumentParser.Create<Arguments>(
                     programName = AppDomain.CurrentDomain.FriendlyName)
@@ -67,7 +86,8 @@ let run argv =
 
     match results.GetSubCommand() with
     | Fetch_Matches args -> fetchMatches args
-    | Migrate_Database args -> 1
+    | Migrate_Database args -> migrateDatabase args
+    | Scratch args -> Scratch.Run args
     | Debug_Http -> failwith "Unexpected"
 
 [<EntryPoint>]

@@ -4,6 +4,9 @@
     <TargetFramework>net5</TargetFramework>
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
+  <PropertyGroup>
+    <ServerGarbageCollection>true</ServerGarbageCollection>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Domain.fs" />
     <Compile Include="Contracts.fs" />
@@ -15,13 +18,14 @@
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
-      <EmbeddedResource Include="Sql/*.sql"></EmbeddedResource>
+    <EmbeddedResource Include="Sql/*.sql"></EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Argu" Version="6.1.1" />
     <PackageReference Include="DbUp-PostgreSQL" Version="4.4.0" />
     <PackageReference Include="FSharp.Data" Version="3.3.3" />
     <PackageReference Include="FSharp.Json" Version="0.4.0" />
+    <PackageReference Include="Hopac" Version="0.5.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.0" />
   </ItemGroup>
 </Project>
