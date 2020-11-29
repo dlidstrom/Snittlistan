@@ -66,13 +66,105 @@ let migrateDatabase (args : ParseResults<MigrateDatabaseArguments>) =
 
 module Scratch =
     open Hopac
+    open Hopac.Infixes
+
+    type Timing(s : string, ?formatEnd : float -> string) =
+        do printfn $"%s{s}"
+        let start = DateTime.Now
+        let defaultEndFormatter t = $"end: %.3f{t}s"
+        let endFormatter =
+            Option.defaultValue
+                defaultEndFormatter
+                formatEnd
+        interface IDisposable with
+            member _.Dispose() =
+                let totalSeconds = (DateTime.Now - start).TotalSeconds
+                let s = endFormatter totalSeconds
+                printfn $"%s{s}"
+
+    type Product = {
+        Id : int
+        Name : string
+    }
+
+    type Review = {
+        ProductId : int
+        Author : string
+        Comment : string
+    }
+
+    type ProductWithReviews = {
+        Id : int
+        Name : string
+        Reviews : (string * string) list
+    }
+
+    let getProductReviews id = job {
+
+        // Delay in the place of an external HTTP API call
+        do! timeOutMillis 3000
+
+        return [
+            {ProductId = id; Author = "John"; Comment = "It's awesome!"}
+            {ProductId = id; Author = "Sam"; Comment = "Great product"}
+        ]
+    }
+
+    let getProduct id = job {
+        do! timeOutMillis 2000
+        return {
+            Id = id
+            Name = "My Awesome Product"
+        }
+    }
+
+    let getProductWithReviews id = job {
+        let! product = getProduct id // 1
+        let! reviews = getProductReviews id // 2
+        return {  // 3
+            Id = id
+            Name = product.Name
+            Reviews = reviews |> List.map (fun r -> r.Author, r.Comment)
+        }
+    }
+
+    let getProductWithReviews2 id = job {
+        let! product, reviews =
+            getProduct id <*> getProductReviews id // 2
+        return {  // 3
+            Id = id
+            Name = product.Name
+            Reviews = reviews |> List.map (fun r -> r.Author, r.Comment)
+        }
+    }
+
+    let createJob jobId delayMillis = job {
+        use _t =
+            new Timing(
+                s = $"starting job: %d{jobId}",
+                formatEnd = fun t -> $"end of %d{jobId}: %.3f{t}s")
+        do! timeOutMillis delayMillis
+    }
 
     let Run (_ : ParseResults<ScratchArguments>) =
-        let longerHelloWorldJob = job {
-          do! timeOutMillis 2000
-          printfn "Hello, World!"
-        }
-        run longerHelloWorldJob
+
+        use _t = new Timing("start")
+        // let longerHelloWorldJob = job {
+        //   do! timeOutMillis 2000
+        //   printfn "Hello, World!"
+        // }
+        // run longerHelloWorldJob
+
+        // let jobs = [
+        //     createJob 1 4000
+        //     createJob 2 3000
+        //     createJob 3 2000
+        // ]
+
+        // run (Job.conIgnore jobs)
+
+        run (getProductWithReviews2 1) |> ignore
+
         0
 
 let run argv =
