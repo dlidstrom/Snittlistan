@@ -82,6 +82,10 @@ module Scratch =
                 let s = endFormatter totalSeconds
                 printfn $"%s{s}"
 
+    type JobStatus =
+        | Started of jobId : int
+        | Completed of jobId : int
+
     type Product = {
         Id : int
         Name : string
@@ -138,12 +142,19 @@ module Scratch =
         }
     }
 
-    let createJob jobId delayMillis = job {
-        use _t =
-            new Timing(
-                s = $"starting job: %d{jobId}",
-                formatEnd = fun t -> $"end of %d{jobId}: %.3f{t}s")
-        do! timeOutMillis delayMillis
+    let createJob channel jobId = job {
+        do! Ch.give channel (Started jobId)
+        do! timeOutMillis (jobId * 1000)
+        do! Ch.give channel (Completed jobId)
+    }
+
+    let printerJob channel = job {
+        let! status = Ch.take channel
+        match status with
+        | Started jobId ->
+            printfn $"starting job: %d{jobId}"
+        | Completed jobId ->
+            printfn $"completed job: %d{jobId}"
     }
 
     let Run (_ : ParseResults<ScratchArguments>) =
@@ -163,7 +174,15 @@ module Scratch =
 
         // run (Job.conIgnore jobs)
 
-        run (getProductWithReviews2 1) |> ignore
+        // run (getProductWithReviews2 1) |> ignore
+
+        let result = run <| job {
+            let channel = Ch<JobStatus>()
+            let statusPrinter = printerJob channel
+            do! Job.foreverServer statusPrinter
+            let myJobs = List.init 5 (createJob channel)
+            return! Job.conIgnore myJobs
+        }
 
         0
 
