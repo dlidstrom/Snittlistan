@@ -13,6 +13,7 @@
     <Compile Include="Api.fs" />
     <Compile Include="Entities.fs" />
     <Compile Include="Workflows/FetchMatches.fs" />
+    <Compile Include="Workflows/HopacTests.fs" />
     <Compile Include="Workflows/MigrateDatabase.fs" />
     <Compile Include="Infrastructure.fs" />
     <Compile Include="Program.fs" />
