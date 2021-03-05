@@ -1,0 +1,10 @@
+@startuml Database
+
+entity Division {
+    division_id [serial]
+    --
+    external_division_id [string]
+    division_name [string]
+}
+
+@enduml

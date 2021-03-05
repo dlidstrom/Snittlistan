@@ -2,19 +2,24 @@ namespace Workflows
 
 open System.Reflection
 open DbUp
+open DbUp.Engine
 
-type MigrateDatabase() =
-    member _.Run host database username password =
+type ConfirmAction = ResizeArray<SqlScript> -> bool
+
+type MigrateDatabase(confirmAction : ConfirmAction) =
+    member _.Run connection =
         let upgrader =
             DeployChanges.To
-                .PostgresqlDatabase($"Host=%s{host};Database=%s{database};Username=%s{username};Password=%s{password}")
+                .PostgresqlDatabase(connection.ToString())
                 .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
                 .Build()
-        let result = upgrader.PerformUpgrade()
-        if result.Successful
+        let scriptsToExecute = upgrader.GetScriptsToExecute()
+        if Seq.length scriptsToExecute > 0 && (confirmAction scriptsToExecute)
         then
-            printfn "Upgrade successful"
-            0
+            let result = upgrader.PerformUpgrade()
+            if result.Successful then
+                None
+            else
+                Some result.Error
         else
-            eprintfn "%A" result.Error
-            1
+            None

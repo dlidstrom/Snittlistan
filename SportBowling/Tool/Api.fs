@@ -86,3 +86,4 @@ module Bits =
                         $"%s{root}/matchResult/GetHeadInfo?APIKey=%s{apiKey}&id=%d{matchId}"
                     |> Contracts.Bits.HeadInfo.Parse
                 headInfoResponse
+

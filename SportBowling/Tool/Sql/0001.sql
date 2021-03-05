@@ -1,5 +1,5 @@
-CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
-    "MigrationId" character varying(150) NOT NULL,
-    "ProductVersion" character varying(32) NOT NULL,
-    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+CREATE TABLE division (
+    division_id SERIAL PRIMARY KEY,
+    external_division_id VARCHAR(10) NOT NULL,
+    division_name TEXT NOT NULL
 );

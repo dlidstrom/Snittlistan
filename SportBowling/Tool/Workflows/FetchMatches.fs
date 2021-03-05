@@ -1,8 +1,8 @@
 namespace Workflows
 
-type FetchMatches() =
+type FetchMatches(databaseGateway : Database.Gateway) =
 
-    member _.Run (bitsClient : Api.Bits.IClient) seasonId =
+    member _.Run (bitsClient : Api.Bits.IClient) seasonId : exn option =
     (*
 
         ERROR CHECKING ALL RESPONSES
@@ -16,7 +16,7 @@ type FetchMatches() =
         SINGLE INSTANCE
         - only allow a single instance to run (mutex)
 
-    1. GET https://api.swebowl.se/api/v1/Division?APIKey=___&teamId=0&countyId=-1&seasonId=2006
+    1. GET https://api.swebowl.se/api/v1/Division?APIKey=___seasonId=2006
         GetDivision (all) - from 2006 ->
     2. for each division in season, get the matches
         GET https://api.swebowl.se/api/v1/Match/?APIKey=___&divisionId=1&seasonId=2009
@@ -30,12 +30,15 @@ type FetchMatches() =
     *)
 
         let divisions = bitsClient.GetDivision seasonId
-        for division in divisions do
-            let matches = bitsClient.GetMatch (Domain.DivisionId division.DivisionId) seasonId
-            for matchItem in matches do
-                let headInfo = bitsClient.GetHeadInfo (Domain.MatchId matchItem.MatchId)
-                printfn "%s" headInfo.MatchSchemeId
-                // let matchScheme = bitsClient.GetHeadResultInfo headInfo.MatchScheme
-                failwith "Break here"
+        databaseGateway.StoreDivision (divisions)
 
-        0
+        // store all divisions
+        // for division in divisions do
+        //     let matches = bitsClient.GetMatch (Domain.DivisionId division.DivisionId) seasonId
+        //     for matchItem in matches do
+        //         let headInfo = bitsClient.GetHeadInfo (Domain.MatchId matchItem.MatchId)
+        //         printfn "%s" headInfo.MatchSchemeId
+        //         // let matchScheme = bitsClient.GetHeadResultInfo headInfo.MatchScheme
+        //         // Some (exn "Break here")
+
+        None
