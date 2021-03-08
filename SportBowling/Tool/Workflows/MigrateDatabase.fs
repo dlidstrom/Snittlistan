@@ -15,7 +15,7 @@ type MigrateDatabase(confirmAction : ConfirmAction) =
                 .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
                 .Build()
         let scriptsToExecute = upgrader.GetScriptsToExecute()
-        if Seq.length scriptsToExecute > 0 && (confirmAction scriptsToExecute)
+        if not (Seq.isEmpty scriptsToExecute) && (confirmAction scriptsToExecute)
         then
             let result = upgrader.PerformUpgrade()
             if result.Successful then

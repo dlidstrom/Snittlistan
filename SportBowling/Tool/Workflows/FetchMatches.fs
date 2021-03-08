@@ -32,6 +32,15 @@ type FetchMatches(databaseGateway : Database.Gateway) =
         let divisions = bitsClient.GetDivision seasonId
         databaseGateway.StoreDivision (divisions)
 
+        // get response from bits.response table first, check if recent
+        // if so, use stored response, otherwise fetch new, then continue
+        // recentness may need to be a configuration
+        // use config files to specify program configuration, instead of
+        // only commandline
+
+        // database queries are discriminated union
+        // requests are discriminated union, log request type (DU case type)
+
         // store all divisions
         // for division in divisions do
         //     let matches = bitsClient.GetMatch (Domain.DivisionId division.DivisionId) seasonId
