@@ -1,10 +1,35 @@
 @startuml Database
 
-entity Division {
-    division_id [serial]
-    --
-    external_division_id [string]
-    division_name [string]
+legend top
+Get divisions -> store as response from BITS (bits.responses ?)
+end legend
+
+package bits {
+    entity division {
+        division_id [serial]
+        --
+        external_division_id [string]
+        division_name [string]
+    }
+
+    entity request {
+        request_id [serial]
+        --
+        * url [varchar(255)]
+        * method [varchar(255)]
+        * body [text]
+        * created_utc [timestamp without time zone]
+    }
+
+    entity response {
+        response_id [serial]
+        --
+        * status_code [int]
+        * body [text]
+        * content_length [int]
+        * content_type [varchar(255)]
+        * created_utc [timestamp without time zone]
+    }
 }
 
 @enduml

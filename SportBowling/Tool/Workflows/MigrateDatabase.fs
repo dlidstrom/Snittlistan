@@ -11,6 +11,7 @@ type MigrateDatabase(confirmAction : ConfirmAction) =
         let upgrader =
             DeployChanges.To
                 .PostgresqlDatabase(connection.ToString())
+                .LogToConsole()
                 .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
                 .Build()
         let scriptsToExecute = upgrader.GetScriptsToExecute()
