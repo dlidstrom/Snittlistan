@@ -41,6 +41,23 @@ type FetchMatches(databaseGateway : Database.Gateway) =
         // database queries are discriminated union
         // requests are discriminated union, log request type (DU case type)
 
+        // use this instead of EF?
+        // https://github.com/Zaid-Ajaj/Npgsql.FSharp.Analyzer
+        (*
+            use connection = new NpgsqlConnection("YOUR CONNECTION STRING")
+connection.Open()
+
+let users =
+    connection
+    |> Sql.existingConnection
+    |> Sql.query "SELECT * FROM users"
+    |> Sql.execute (fun read ->
+        {
+            Id = read.int "user_id"
+            FirstName = read.text "first_name"
+        })
+        *)
+
         // store all divisions
         // for division in divisions do
         //     let matches = bitsClient.GetMatch (Domain.DivisionId division.DivisionId) seasonId
