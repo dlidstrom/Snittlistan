@@ -77,12 +77,30 @@ type Gateway(
             connection : NpgsqlConnection) =
 
     let run f =
-        connection
-        |> FSharp.Sql.existingConnection
-        |> f
+        use transaction = connection.BeginTransaction()
+        let result =
+            connection
+            |> FSharp.Sql.existingConnection
+            |> f
+        transaction.Commit()
+        result
 
     member _.StoreDivision
         (bitsDivisions : Contracts.Bits.Divisions.Division array) =
+
+        // how to do batch?
+        run
+        <| FSharp.Sql.query
+            "INSERT INTO bits.division \
+                (external_division_id, division_name)"
+        |> FSharp.Sql.parameters
+            [
+                "@external", Sql.int 1
+            ]
+        |> FSharp.Sql.executeNonQuery
+        |> function
+        | Ok items -> printf "Stored %d items" items
+        | Error err -> raise err
         use context = contextFactory()
 
         let divisions = context.Division.ToList()
@@ -95,9 +113,8 @@ type Gateway(
         url
         (method : Entities.HttpMethod)
         body =
-        connection
-        |> FSharp.Sql.existingConnection
-        |> FSharp.Sql.query
+        run
+        <| FSharp.Sql.query
             "INSERT INTO bits.request \
                 (url, method, body, created_utc) \
              VALUES (@url, @method, @body, @created_utc)"
