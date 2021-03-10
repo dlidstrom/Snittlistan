@@ -13,9 +13,15 @@ module Bits =
         abstract member GetMatch : Domain.DivisionId -> Domain.SeasonId -> Contracts.Bits.Match.Match array
         abstract member GetHeadInfo : Domain.MatchId -> Contracts.Bits.HeadInfo.HeadInfo
 
-    type Client(apiKey, noCheckCertificate : bool option, proxy : string option, database : Database.Gateway) =
+    type Client(
+                apiKey,
+                noCheckCertificate : bool option,
+                proxy : string option,
+                database : Database.Gateway) =
+
         [<Literal>]
         let root = "https://api.swebowl.se/api/v1"
+
         let customizeRequest (req : HttpWebRequest) =
             proxy |> function
             | Some s -> req.Proxy <- WebProxy(s, true)
@@ -28,7 +34,8 @@ module Bits =
             req
 
         let performGet url =
-            database.StoreRequest url Database.Entities.HttpMethod.Get None
+            database.StoreRequest
+                url Database.Entities.HttpMethod.Get ""
             Http.RequestString(
                 url = url,
                 httpMethod = HttpMethod.Get,

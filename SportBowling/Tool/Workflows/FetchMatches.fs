@@ -45,7 +45,7 @@ type FetchMatches(databaseGateway : Database.Gateway) =
         // https://github.com/Zaid-Ajaj/Npgsql.FSharp.Analyzer
         (*
             use connection = new NpgsqlConnection("YOUR CONNECTION STRING")
-connection.Open()
+            connection.Open()
 
 let users =
     connection

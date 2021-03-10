@@ -4,7 +4,7 @@ open System
 open Argu
 open DbUp.Engine
 open Microsoft.Extensions.Logging
-open Microsoft.Extensions.Logging.Console
+open Npgsql
 
 type Arguments =
     | [<CliPrefix(CliPrefix.None)>] Fetch_Matches of ParseResults<FetchMatchesArguments>
@@ -58,8 +58,10 @@ let fetchMatches (args : ParseResults<FetchMatchesArguments>) connection =
     let contextFactory() =
         let loggerFactory = LoggerFactory.Create(fun c -> c.AddConsole() |> ignore<ILoggingBuilder>)
         let context = new Database.Context(connection, loggerFactory)
-        context
-    let gateway = Database.Gateway(contextFactory)
+        contexts
+    use connection = new NpgsqlConnection(connection.Format())
+    connection.Open()
+    let gateway = Database.Gateway(contextFactory, connection)
     let bitsClient = Api.Bits.Client(apiKey, noCheckCertificate, proxy, gateway)
     let workflow = Workflows.FetchMatches(gateway)
     workflow.Run bitsClient (Domain.SeasonId seasonId)

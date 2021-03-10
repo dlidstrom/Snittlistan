@@ -4,6 +4,7 @@ open System
 open System.Linq
 open Microsoft.EntityFrameworkCore
 open Microsoft.EntityFrameworkCore.Storage.ValueConversion
+open Npgsql
 open Npgsql.NameTranslation
 open EntityFrameworkCore.FSharp
 
@@ -29,7 +30,7 @@ type DatabaseConnection = {
     Password : string
 }
 with
-    override this.ToString() =
+    member this.Format() =
         $"Host=%s{this.Host};Database=%s{this.Database};Username=%s{this.Username};Password=%s{this.Password}"
 
 type Context(databaseConnection : DatabaseConnection, loggerFactory) =
@@ -71,8 +72,17 @@ type Context(databaseConnection : DatabaseConnection, loggerFactory) =
 
 type ContextFactory = unit -> Context
 
-type Gateway(contextFactory : ContextFactory) =
-    member _.StoreDivision(bitsDivisions : Contracts.Bits.Divisions.Division array) =
+type Gateway(
+            contextFactory : ContextFactory,
+            connection : NpgsqlConnection) =
+
+    let run f =
+        connection
+        |> FSharp.Sql.existingConnection
+        |> f
+
+    member _.StoreDivision
+        (bitsDivisions : Contracts.Bits.Divisions.Division array) =
         use context = contextFactory()
 
         let divisions = context.Division.ToList()
@@ -81,9 +91,24 @@ type Gateway(contextFactory : ContextFactory) =
         // read divisions
         // division.data <- 1
 
-    member _.StoreRequest url method body =
-        use context = contextFactory()
-        context.Requests.Add({ RequestId = 0; Url = url; Method = method; Body = body })
-            |> ignore
-        if context.SaveChanges() <> 1
-        then failwith "Error"
+    member _.StoreRequest
+        url
+        (method : Entities.HttpMethod)
+        body =
+        connection
+        |> FSharp.Sql.existingConnection
+        |> FSharp.Sql.query
+            "INSERT INTO bits.request \
+                (url, method, body, created_utc) \
+             VALUES (@url, @method, @body, @created_utc)"
+        |> FSharp.Sql.parameters
+            [
+                "@url", Sql.string url
+                "@method", Sql.string (method.ToString())
+                "@body", Sql.string body
+                "@created_utc", Sql.timestamp DateTime.UtcNow
+            ]
+        |> FSharp.Sql.executeNonQuery
+        |> function
+        | Ok items -> printf "Stored %d items" items
+        | Error err -> raise err
