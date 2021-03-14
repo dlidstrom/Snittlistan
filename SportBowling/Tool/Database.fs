@@ -1,10 +1,10 @@
 module Database
 
 open System
-open System.Linq
 open Microsoft.EntityFrameworkCore
 open Microsoft.EntityFrameworkCore.Storage.ValueConversion
 open Npgsql
+open Npgsql.FSharp
 open Npgsql.NameTranslation
 open EntityFrameworkCore.FSharp
 
@@ -88,26 +88,26 @@ type Gateway(
     member _.StoreDivision
         (bitsDivisions : Contracts.Bits.Divisions.Division array) =
 
-        // how to do batch?
-        run
-        <| FSharp.Sql.query
-            "INSERT INTO bits.division \
-                (external_division_id, division_name)"
-        |> FSharp.Sql.parameters
-            [
-                "@external", Sql.int 1
+        let insertDivision connection (division : Contracts.Bits.Divisions.Division) =
+            connection
+            |> Sql.existingConnection
+            |> Sql.query "INSERT INTO bits.division \
+                    (external_division_id, division_name, created_utc) \
+                 VALUES (@external_division_id, @division_name, @created_utc)"
+            |> Sql.parameters [
+                "@external_division_id", Sql.int division.DivisionId
+                "@division_name", Sql.string division.DivisionName
+                "@created_utc", Sql.timestamp DateTime.UtcNow
             ]
-        |> FSharp.Sql.executeNonQuery
-        |> function
-        | Ok items -> printf "Stored %d items" items
-        | Error err -> raise err
-        use context = contextFactory()
+            |> Sql.executeNonQuery
+            |> function
+            | Ok items -> printfn "Stored %d items" items
+            | Error err -> raise err
 
-        let divisions = context.Division.ToList()
-        printfn "Number of divisions: %d" divisions.Count
-        // context.Division
-        // read divisions
-        // division.data <- 1
+        use transaction = connection.BeginTransaction()
+        bitsDivisions
+        |> Array.iter (insertDivision connection)
+        transaction.Commit()
 
     member _.StoreRequest
         url

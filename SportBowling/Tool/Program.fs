@@ -58,7 +58,7 @@ let fetchMatches (args : ParseResults<FetchMatchesArguments>) connection =
     let contextFactory() =
         let loggerFactory = LoggerFactory.Create(fun c -> c.AddConsole() |> ignore<ILoggingBuilder>)
         let context = new Database.Context(connection, loggerFactory)
-        contexts
+        context
     use connection = new NpgsqlConnection(connection.Format())
     connection.Open()
     let gateway = Database.Gateway(contextFactory, connection)
@@ -84,7 +84,7 @@ let run argv =
     let database = results.GetResult Database
     let username = results.GetResult Username
     let password = results.GetResult Password
-    let connection : Database.DatabaseConnection = {
+    let databaseConnection : Database.DatabaseConnection = {
         Host = host
         Database = database
         Username = username
@@ -95,8 +95,8 @@ let run argv =
         if debugHttp then Some (new Infrastructure.LoggingEventListener()) else None
 
     match results.GetSubCommand() with
-    | Fetch_Matches args -> fetchMatches args connection
-    | Migrate_Database _ -> migrateDatabase connection
+    | Fetch_Matches args -> fetchMatches args databaseConnection
+    | Migrate_Database _ -> migrateDatabase databaseConnection
     | Debug_Http -> failwith "Unexpected"
     | Host _ -> failwith "Unexpected"
     | Database _ -> failwith "Unexpected"

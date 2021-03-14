@@ -8,7 +8,7 @@ package bits {
     entity division {
         division_id [serial]
         --
-        external_division_id [string]
+        external_division_id [int]
         division_name [string]
     }
 
