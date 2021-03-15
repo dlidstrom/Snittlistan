@@ -1,16 +1,44 @@
 @startuml Database
 
 legend top
-Get divisions -> store as response from BITS (bits.responses ?)
+Every item that is processed is first pushed onto the stack.
+Sub-items are pushed onto the stack when the parent item is handled.
+1. Push the season onto the stack
+2. Handle the season, i.e. fetch the divisions by season
+3. Push the divisions onto the stack
+4. Handle the division (s), i.e. fetch next level by division id
+5. Repeat further until stack is empty...
+
+Every item that is fetched by API is first located in the request/response cache.
+The cache is keyed (season/division/...) and uses created_utc to determine if the
+item is fresh or stale. A parameter determines how recent an entry must be
+to be considered fresh. Perhaps different parameters for each kind of item.
 end legend
 
 package bits {
+    entity season {
+        season_id [serial]
+        --
+        start_year [int, U]
+        end_year [int]
+    }
+    note bottom
+    start_year is the unique index
+    end note
+
     entity division {
         division_id [serial]
+        season_id [int, U1]
         --
         external_division_id [int]
-        division_name [string]
+        division_name [string, U1]
     }
+
+    note bottom
+    (season_id, division_name) is the unique index.
+    end note
+
+    division }-|| season
 
     entity request {
         request_id [serial]
