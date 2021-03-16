@@ -3,7 +3,6 @@
 open System
 open Argu
 open DbUp.Engine
-open Microsoft.Extensions.Logging
 open Npgsql
 
 type Arguments =
@@ -49,19 +48,17 @@ and ScratchArguments =
             match this with
             | Verbose -> "Verbose output."
 
-let fetchMatches (args : ParseResults<FetchMatchesArguments>) connection =
+let fetchMatches
+    (args : ParseResults<FetchMatchesArguments>)
+    (connection : Database.DatabaseConnection) =
     let apiKey = args.GetResult Api_Key
     let seasonId = args.GetResult Season_Id
     let noCheckCertificate =
         if args.Contains(No_Check_Certificate) then Some true else None
     let proxy = args.TryGetResult(Proxy)
-    let contextFactory() =
-        let loggerFactory = LoggerFactory.Create(fun c -> c.AddConsole() |> ignore<ILoggingBuilder>)
-        let context = new Database.Context(connection, loggerFactory)
-        context
     use connection = new NpgsqlConnection(connection.Format())
     connection.Open()
-    let gateway = Database.Gateway(contextFactory, connection)
+    let gateway = Database.Gateway(connection)
     let bitsClient = Api.Bits.Client(apiKey, noCheckCertificate, proxy, gateway)
     let workflow = Workflows.FetchMatches(gateway)
     workflow.Run bitsClient (Domain.SeasonId seasonId)

@@ -8,7 +8,6 @@
     <ServerGarbageCollection>true</ServerGarbageCollection>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="OptionConverter.fs" />
     <Compile Include="Domain.fs" />
     <Compile Include="Contracts.fs" />
     <Compile Include="Database.fs" />
@@ -27,10 +26,6 @@
     <PackageReference Include="DbUp-PostgreSQL" Version="4.5.0" />
     <PackageReference Include="FSharp.Data" Version="3.3.3" />
     <PackageReference Include="FSharp.Json" Version="0.4.0" />
-    <PackageReference Include="Hopac" Version="0.5.0" />
-    <PackageReference Include="Http.Fs" Version="5.4.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.0" />
     <PackageReference Include="Npgsql.FSharp" Version="3.13.0" />
     <PackageReference Include="NpgsqlFSharpAnalyzer" Version="3.22.1" />
   </ItemGroup>

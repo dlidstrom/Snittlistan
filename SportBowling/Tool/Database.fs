@@ -1,22 +1,18 @@
 module Database
 
 open System
-open Microsoft.EntityFrameworkCore
-open Microsoft.EntityFrameworkCore.Storage.ValueConversion
 open Npgsql
 open Npgsql.FSharp
-open Npgsql.NameTranslation
-open EntityFrameworkCore.FSharp
 
 module Entities =
-    type [<CLIMutable>] Division = {
+    type Division = {
         DivisionId : int
         ExternalDivisionId : string
         DivisionName : string
     }
 
     type HttpMethod = Get | Post
-    type [<CLIMutable>] Request = {
+    type Request = {
         RequestId : int
         Url : string
         Method : HttpMethod
@@ -33,48 +29,7 @@ with
     member this.Format() =
         $"Host=%s{this.Host};Database=%s{this.Database};Username=%s{this.Username};Password=%s{this.Password}"
 
-type Context(databaseConnection : DatabaseConnection, loggerFactory) =
-    inherit DbContext()
-
-    [<DefaultValue>]
-    val mutable division : DbSet<Entities.Division>
-    member x.Division
-        with get() = x.division
-        and set value = x.division <- value
-
-    [<DefaultValue>]
-    val mutable requests : DbSet<Entities.Request>
-    member x.Requests
-        with get() = x.requests
-        and set value = x.requests <- value
-
-    override _.OnConfiguring optionsBuilder =
-        optionsBuilder
-            .UseNpgsql(connectionString = databaseConnection.ToString())
-            .UseLoggerFactory(loggerFactory)
-            |> ignore<DbContextOptionsBuilder>
-
-    override _.OnModelCreating modelBuilder =
-        let snakeCase s =
-            NpgsqlSnakeCaseNameTranslator.ConvertToSnakeCase s
-        let replaceColumnNames (entity : Metadata.IMutableEntityType) (property : Metadata.IMutableProperty) =
-            let x = Metadata.StoreObjectIdentifier.Table(entity.GetTableName(), entity.GetSchema())
-            property.SetColumnName(snakeCase(property.GetColumnName(&x)))
-        let replaceTableNames (entity : Metadata.IMutableEntityType) =
-            entity.SetTableName(snakeCase(entity.GetTableName()))
-            entity.GetProperties()
-            |> Seq.iter (fun t -> replaceColumnNames entity t)
-        modelBuilder.Model.GetEntityTypes()
-        |> Seq.iter replaceTableNames
-        let httpMethodConvert = ValueConverter<Entities.HttpMethod, string>((fun v -> v.ToString()), (fun v -> Enum.Parse(typedefof<Entities.HttpMethod>, v) :?> Entities.HttpMethod))
-        modelBuilder.Entity<Entities.Request>().Property(fun e -> e.Method).HasConversion(httpMethodConvert) |> ignore
-        modelBuilder.Entity<Entities.Request>().Property(fun e -> e.Body).HasConversion(OptionConverter()) |> ignore
-
-type ContextFactory = unit -> Context
-
-type Gateway(
-            contextFactory : ContextFactory,
-            connection : NpgsqlConnection) =
+type Gateway(connection : NpgsqlConnection) =
 
     let run f =
         use transaction = connection.BeginTransaction()
