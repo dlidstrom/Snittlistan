@@ -43,11 +43,12 @@ type Gateway(connection : NpgsqlConnection) =
     member _.StoreDivision
         (bitsDivisions : Contracts.Bits.Divisions.Division array) =
 
-        let insertDivision connection (division : Contracts.Bits.Divisions.Division) =
+        let insertDivision (division : Contracts.Bits.Divisions.Division) =
             connection
             |> Sql.existingConnection
-            |> Sql.query "INSERT INTO bits.division \
-                    (external_division_id, division_name, created_utc) \
+            |> Sql.query
+                "INSERT INTO bits.division \
+                 (external_division_id, division_name, created_utc) \
                  VALUES (@external_division_id, @division_name, @created_utc)"
             |> Sql.parameters [
                 "@external_division_id", Sql.int division.DivisionId
@@ -55,32 +56,34 @@ type Gateway(connection : NpgsqlConnection) =
                 "@created_utc", Sql.timestamp DateTime.UtcNow
             ]
             |> Sql.executeNonQuery
-            |> function
-            | Ok items -> printfn "Stored %d items" items
-            | Error err -> raise err
+            |> printfn "Stored %d items"
 
         use transaction = connection.BeginTransaction()
         bitsDivisions
-        |> Array.iter (insertDivision connection)
+        |> Array.iter insertDivision
         transaction.Commit()
 
     member _.StoreRequest
         url
         (method : Entities.HttpMethod)
         body =
-        run
-        <| FSharp.Sql.query
-            "INSERT INTO bits.request \
-                (url, method, body, created_utc) \
-             VALUES (@url, @method, @body, @created_utc)"
-        |> FSharp.Sql.parameters
-            [
-                "@url", Sql.string url
-                "@method", Sql.string (method.ToString())
-                "@body", Sql.string body
-                "@created_utc", Sql.timestamp DateTime.UtcNow
-            ]
-        |> FSharp.Sql.executeNonQuery
-        |> function
-        | Ok items -> printf "Stored %d items" items
-        | Error err -> raise err
+        let insertRequest() =
+            connection
+            |> Sql.existingConnection
+            |> Sql.query
+                "INSERT INTO bits.request \
+                 (url, method, body, created_utc) \
+                 VALUES (@url, @method, @body, @created_utc)"
+            |> Sql.parameters
+                [
+                    "@url", Sql.string url
+                    "@method", Sql.string (method.ToString())
+                    "@body", Sql.string body
+                    "@created_utc", Sql.timestamp DateTime.UtcNow
+                ]
+            |> Sql.executeNonQuery
+            |> printf "Stored %d items"
+
+        use transaction = connection.BeginTransaction()
+        insertRequest()
+        transaction.Commit()
