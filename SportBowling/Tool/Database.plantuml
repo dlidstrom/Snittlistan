@@ -40,6 +40,9 @@ package bits {
 
     division }-|| season
 
+}
+
+package Log {
     entity request {
         request_id [serial]
         --
