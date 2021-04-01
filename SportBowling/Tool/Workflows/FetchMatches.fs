@@ -1,4 +1,8 @@
 namespace Workflows
+open System.Collections.Generic
+
+type Operation =
+    | FetchDivision of seasonId : Domain.SeasonId
 
 type FetchMatches(databaseGateway : Database.Gateway) =
 
@@ -28,6 +32,22 @@ type FetchMatches(databaseGateway : Database.Gateway) =
             matchSchemeId comes from GetHeadInfo
     4.
     *)
+
+        let handle stack = function
+            | FetchDivision season -> ()
+            // todo: fetch and push next level onto stack
+            // fetching should automatically check for previous fetches (cache)
+
+        let rec processStack (stack : Stack<Operation>) =
+            match stack.TryPop() with
+            | (true, currentOperation) ->
+                handle stack currentOperation
+                processStack stack
+            | (false, _) -> ()
+
+        let operationStack = Stack<Operation>()
+        operationStack.Push(FetchDivision seasonId)
+        processStack operationStack
 
         let divisions = bitsClient.GetDivision seasonId
         databaseGateway.StoreDivision (divisions)
