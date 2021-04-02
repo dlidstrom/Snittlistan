@@ -40,18 +40,17 @@ type FetchMatches(databaseGateway : Database.Gateway) =
                 let divisions = bitsClient.GetDivision seasonId
 
                 // this is only used by cache (not visible here)
-                databaseGateway.StoreDivision (divisions)
+                databaseGateway.StoreDivision divisions
                 divisions
                 |> Seq.map (fun d -> FetchMatchesForDivision (Domain.DivisionId d.DivisionId))
                 |> Seq.toList
                 |> Some
-            | FetchMatchesForDivision divisionId ->
+            | FetchMatchesForDivision (Domain.DivisionId divisionId) ->
+                printfn "Fetching for %d" divisionId
                 None
 
         let handleOperationResult (stack : Stack<Operation>) = function
-            | Some operations ->
-                operations
-                |> List.iter stack.Push
+            | Some operations -> operations |> List.iter stack.Push
             | None -> ()
 
         let rec processStack (stack : Stack<Operation>) =

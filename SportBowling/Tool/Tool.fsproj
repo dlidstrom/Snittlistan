@@ -12,6 +12,7 @@
     <Compile Include="Contracts.fs" />
     <Compile Include="Database.fs" />
     <Compile Include="Api.fs" />
+    <Compile Include="CachedApi.fs" />
     <Compile Include="Workflows/FetchMatches.fs" />
     <Compile Include="Workflows/MigrateDatabase.fs" />
     <Compile Include="Infrastructure.fs" />
