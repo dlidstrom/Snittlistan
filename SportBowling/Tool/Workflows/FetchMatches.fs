@@ -3,6 +3,7 @@ open System.Collections.Generic
 
 type Operation =
     | FetchDivision of seasonId : Domain.SeasonId
+    | FetchMatchesForDivision of divisionId : Domain.DivisionId
 
 type FetchMatches(databaseGateway : Database.Gateway) =
 
@@ -33,15 +34,31 @@ type FetchMatches(databaseGateway : Database.Gateway) =
     4.
     *)
 
-        let handle stack = function
-            | FetchDivision season -> ()
-            // todo: fetch and push next level onto stack
-            // fetching should automatically check for previous fetches (cache)
+        let handle = function
+            | FetchDivision seasonId ->
+                // change to use cache
+                let divisions = bitsClient.GetDivision seasonId
+
+                // this is only used by cache (not visible here)
+                databaseGateway.StoreDivision (divisions)
+                divisions
+                |> Seq.map (fun d -> FetchMatchesForDivision (Domain.DivisionId d.DivisionId))
+                |> Seq.toList
+                |> Some
+            | FetchMatchesForDivision divisionId ->
+                None
+
+        let handleOperationResult (stack : Stack<Operation>) = function
+            | Some operations ->
+                operations
+                |> List.iter stack.Push
+            | None -> ()
 
         let rec processStack (stack : Stack<Operation>) =
             match stack.TryPop() with
             | (true, currentOperation) ->
-                handle stack currentOperation
+                handle currentOperation
+                |> handleOperationResult stack
                 processStack stack
             | (false, _) -> ()
 
@@ -49,8 +66,6 @@ type FetchMatches(databaseGateway : Database.Gateway) =
         operationStack.Push(FetchDivision seasonId)
         processStack operationStack
 
-        let divisions = bitsClient.GetDivision seasonId
-        databaseGateway.StoreDivision (divisions)
 
         // get response from bits.response table first, check if recent
         // if so, use stored response, otherwise fetch new, then continue
