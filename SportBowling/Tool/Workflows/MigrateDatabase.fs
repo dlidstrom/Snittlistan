@@ -6,8 +6,10 @@ open DbUp.Engine
 
 type ConfirmAction = ResizeArray<SqlScript> -> bool
 
-type MigrateDatabase(confirmAction : ConfirmAction) =
-    member _.Run (connectionString : Database.DatabaseConnection) =
+type MigrateDatabase(
+                     connectionString : Database.DatabaseConnection,
+                     confirmAction : ConfirmAction) =
+    member _.Run () =
         let upgrader =
             DeployChanges.To
                 .PostgresqlDatabase(connectionString.Format())
@@ -18,9 +20,4 @@ type MigrateDatabase(confirmAction : ConfirmAction) =
         if not (Seq.isEmpty scriptsToExecute) && (confirmAction scriptsToExecute)
         then
             let result = upgrader.PerformUpgrade()
-            if result.Successful then
-                None
-            else
-                Some result.Error
-        else
-            None
+            if not result.Successful then raise result.Error

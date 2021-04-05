@@ -15,3 +15,12 @@ module Bits =
     type Divisions = JsonProvider<"Json/Division.json", InferTypesFromValues = true, RootName = "Division">
     type Match = JsonProvider<"Json/Match.json", InferTypesFromValues = true, RootName = "Match">
     type HeadInfo = JsonProvider<"Json/HeadInfo.json", InferTypesFromValues = true, RootName = "HeadInfo">
+
+type Method = Post | Get
+type RequestDefinition = {
+    Url : string
+    Method : Method
+    Headers : (string * string) list
+    Body : string option
+}
+type RequestStringAsync = RequestDefinition -> Async<string>

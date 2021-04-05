@@ -5,9 +5,8 @@ type Operation =
     | FetchDivision of seasonId : Domain.SeasonId
     | FetchMatchesForDivision of divisionId : Domain.DivisionId
 
-type FetchMatches(databaseGateway : Database.Gateway) =
+type FetchMatches(bitsClient : Api.Bits.IClient) =
 
-    member _.Run (bitsClient : Api.Bits.IClient) seasonId : exn option =
     (*
 
         ERROR CHECKING ALL RESPONSES
@@ -34,37 +33,48 @@ type FetchMatches(databaseGateway : Database.Gateway) =
     4.
     *)
 
-        let handle = function
-            | FetchDivision seasonId ->
-                // change to use cache
-                let divisions = bitsClient.GetDivision seasonId
+    let fetchDivision seasonId = async {
+        let! divisions = bitsClient.GetDivision seasonId
 
-                // this is only used by cache (not visible here)
-                databaseGateway.StoreDivision divisions
-                divisions
-                |> Seq.map (fun d -> FetchMatchesForDivision (Domain.DivisionId d.DivisionId))
-                |> Seq.toList
-                |> Some
-            | FetchMatchesForDivision (Domain.DivisionId divisionId) ->
-                printfn "Fetching for %d" divisionId
-                None
+        return divisions
+               |> Seq.map (fun d -> FetchMatchesForDivision (Domain.DivisionId d.DivisionId))
+               |> Seq.toList
+               |> Some
+    }
 
-        let handleOperationResult (stack : Stack<Operation>) = function
-            | Some operations -> operations |> List.iter stack.Push
-            | None -> ()
+    let fetchMatchesForDivision (Domain.DivisionId divisionId) = async {
+        printfn "Fetching for %d" divisionId
+        return None
+    }
 
-        let rec processStack (stack : Stack<Operation>) =
-            match stack.TryPop() with
-            | (true, currentOperation) ->
-                handle currentOperation
-                |> handleOperationResult stack
-                processStack stack
-            | (false, _) -> ()
+    let handle = function
+        | FetchDivision seasonId ->
+            fetchDivision seasonId
+        | FetchMatchesForDivision divisionId ->
+            fetchMatchesForDivision divisionId
 
-        let operationStack = Stack<Operation>()
-        operationStack.Push(FetchDivision seasonId)
-        processStack operationStack
+    let handleOperationResult (stack : Stack<Operation>) = function
+        | Some operations -> operations |> List.iter stack.Push
+        | None -> ()
 
+    let rec processStack (stack : Stack<Operation>) =
+        match stack.TryPop() with
+        | (true, currentOperation) ->
+            async {
+                let! r = handle currentOperation
+                r |> handleOperationResult stack
+                do! processStack stack
+            }
+        | (false, _) ->
+            async {
+                return ()
+            }
+
+    member _.Run seasonId = async {
+            let operationStack = Stack<Operation>()
+            operationStack.Push(FetchDivision seasonId)
+            do! processStack operationStack
+        }
 
         // get response from bits.response table first, check if recent
         // if so, use stored response, otherwise fetch new, then continue
@@ -100,5 +110,3 @@ let users =
         //         printfn "%s" headInfo.MatchSchemeId
         //         // let matchScheme = bitsClient.GetHeadResultInfo headInfo.MatchScheme
         //         // Some (exn "Break here")
-
-        None

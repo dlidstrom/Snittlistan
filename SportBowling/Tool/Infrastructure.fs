@@ -34,3 +34,36 @@ let readFromResource name =
                 assembly.GetManifestResourceNames()
                 |> String.concat ", "
             raise (Exception($"Resource %s{name} not found. Available resources: %s{availableResources}", ex))
+
+module BitsHttp =
+    open System.Net
+    open FSharp.Data
+    open FSharp.Json
+
+    let create (proxy : string option) noCheckCertificate =
+        let customizeRequest (req : HttpWebRequest) =
+            proxy |> function
+            | Some s -> req.Proxy <- WebProxy(s, true)
+            | _ -> ()
+            noCheckCertificate |> function
+            | Some b when b ->
+                req.ServerCertificateValidationCallback <-
+                    fun _sender _certificate _chain _policyErrors -> true
+            | _ -> ()
+            req
+
+        fun (request : Contracts.RequestDefinition) ->
+            match request.Method with
+            | Contracts.Method.Get ->
+                Http.AsyncRequestString(
+                    url = request.Url,
+                    httpMethod = HttpMethod.Get,
+                    headers = request.Headers,
+                    customizeHttpRequest = customizeRequest)
+            | Contracts.Method.Post ->
+                Http.AsyncRequestString(
+                    url = request.Url,
+                    httpMethod = HttpMethod.Post,
+                    body = TextRequest (Json.serialize request.Body),
+                    headers = request.Headers,
+                    customizeHttpRequest = customizeRequest)

@@ -59,9 +59,11 @@ let fetchMatches
     use connection = new NpgsqlConnection(connection.Format())
     connection.Open()
     let gateway = Database.Gateway(connection)
-    let bitsClient = Api.Bits.Client(apiKey, noCheckCertificate, proxy, gateway)
-    let workflow = Workflows.FetchMatches(gateway)
-    workflow.Run bitsClient (Domain.SeasonId seasonId)
+    let http = Infrastructure.BitsHttp.create proxy noCheckCertificate
+    let bitsClient = Api.Bits.Client(apiKey, http)
+    let workflow = Workflows.FetchMatches(bitsClient)
+    workflow.Run (Domain.SeasonId seasonId)
+    |> Async.RunSynchronously
 
 let migrateDatabase connection =
     let confirmAction (lst : ResizeArray<SqlScript>) =
@@ -69,8 +71,8 @@ let migrateDatabase connection =
         Seq.map (fun (it : SqlScript) -> it.Name) lst |> Seq.iter (printfn "%s")
         printfn "Enter [y] to accept"
         Console.ReadLine() = "y"
-    let workflow = Workflows.MigrateDatabase(confirmAction)
-    workflow.Run connection
+    let workflow = Workflows.MigrateDatabase(connection, confirmAction)
+    workflow.Run()
 
 let run argv =
     let parser = ArgumentParser.Create<Arguments>(
@@ -103,9 +105,8 @@ let run argv =
 [<EntryPoint>]
 let main argv =
     try
-        match run argv with
-        | Some ex -> raise ex
-        | None -> 0
+        run argv
+        0
     with
         | :? ArguException as ex ->
             eprintfn "%s" ex.Message
