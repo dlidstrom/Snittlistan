@@ -8,6 +8,9 @@
     <ServerGarbageCollection>true</ServerGarbageCollection>
   </PropertyGroup>
   <ItemGroup>
+    <None Update="NLog.config" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Domain.fs" />
     <Compile Include="Contracts.fs" />
     <Compile Include="Database.fs" />
@@ -17,17 +20,16 @@
     <Compile Include="Workflows/MigrateDatabase.fs" />
     <Compile Include="Infrastructure.fs" />
     <Compile Include="Program.fs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Sql/*.sql">
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
+    <EmbeddedResource Include="Sql/*.sql" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <PackageReference Include="Argu" Version="6.1.1" />
     <PackageReference Include="DbUp-PostgreSQL" Version="4.5.0" />
     <PackageReference Include="FSharp.Data" Version="4.0.1" />
     <PackageReference Include="FSharp.Json" Version="0.4.0" />
+    <PackageReference Include="NLog.FSharp" Version="4.7.9" />
     <PackageReference Include="Npgsql.FSharp" Version="4.0.0" />
-    <PackageReference Include="NpgsqlFSharpAnalyzer" Version="3.22.1" />
+    <PackageReference Include="NpgsqlFSharpAnalyzer" Version="3.24.0" />
   </ItemGroup>
 </Project>

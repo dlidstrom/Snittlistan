@@ -4,6 +4,7 @@ open System
 open Argu
 open DbUp.Engine
 open Npgsql
+open NLog.FSharp
 
 type Arguments =
     | [<CliPrefix(CliPrefix.None)>] Fetch_Matches of ParseResults<FetchMatchesArguments>
@@ -65,16 +66,16 @@ let fetchMatches
     workflow.Run (Domain.SeasonId seasonId)
     |> Async.RunSynchronously
 
-let migrateDatabase connection =
+let migrateDatabase connection log =
     let confirmAction (lst : ResizeArray<SqlScript>) =
         printfn "Scripts to execute:"
         Seq.map (fun (it : SqlScript) -> it.Name) lst |> Seq.iter (printfn "%s")
         printfn "Enter [y] to accept"
         Console.ReadLine() = "y"
-    let workflow = Workflows.MigrateDatabase(connection, confirmAction)
+    let workflow = Workflows.MigrateDatabase(connection, confirmAction, log)
     workflow.Run()
 
-let run argv =
+let run argv log =
     let parser = ArgumentParser.Create<Arguments>(
                     programName = AppDomain.CurrentDomain.FriendlyName)
     let results = parser.ParseCommandLine argv
@@ -95,7 +96,7 @@ let run argv =
 
     match results.GetSubCommand() with
     | Fetch_Matches args -> fetchMatches args databaseConnection
-    | Migrate_Database _ -> migrateDatabase databaseConnection
+    | Migrate_Database _ -> migrateDatabase databaseConnection log
     | Debug_Http -> failwith "Unexpected"
     | Host _ -> failwith "Unexpected"
     | Database _ -> failwith "Unexpected"
@@ -105,7 +106,9 @@ let run argv =
 [<EntryPoint>]
 let main argv =
     try
-        run argv
+        let logger = Logger("main")
+        logger.Trace "Starting %s" "abc"
+        run argv logger
         0
     with
         | :? ArguException as ex ->
