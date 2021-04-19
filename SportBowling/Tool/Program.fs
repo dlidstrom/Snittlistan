@@ -53,7 +53,8 @@ and ScratchArguments =
 
 let fetchMatches
     (args : ParseResults<FetchMatchesArguments>)
-    (connection : Database.DatabaseConnection) =
+    (connection : Database.DatabaseConnection)
+    logger =
     let apiKey = args.GetResult Api_Key
     let seasonId = args.GetResult Season_Id
     let noCheckCertificate =
@@ -64,22 +65,22 @@ let fetchMatches
     // let gateway = Database.Gateway(connection) // TODO REMOVE
     let http = BitsHttp.create proxy noCheckCertificate
     let bitsClient = Api.Bits.Client(apiKey, http)
-    let workflow = Workflows.FetchMatches(bitsClient)
+    let workflow = Workflows.FetchMatches(bitsClient, logger)
     workflow.Run (Domain.SeasonId seasonId)
 
-let migrateDatabase connection log =
+let migrateDatabase connection logger =
     let confirmAction (lst : ResizeArray<SqlScript>) =
         printfn "Scripts to execute:"
         Seq.map (fun (it : SqlScript) -> it.Name) lst |> Seq.iter (printfn "%s")
         printfn "Enter [y] to accept"
         Console.ReadLine() = "y"
-    let workflow = Workflows.MigrateDatabase(connection, confirmAction, log)
+    let workflow = Workflows.MigrateDatabase(connection, confirmAction, logger)
     workflow.Run()
     async {
         return 0
     }
 
-let run argv log =
+let run argv logger =
     let parser = ArgumentParser.Create<Arguments>(
                     programName = AppDomain.CurrentDomain.FriendlyName)
     let results = parser.ParseCommandLine argv
@@ -99,8 +100,8 @@ let run argv log =
         if debugHttp then Some (new LoggingEventListener()) else None
 
     match results.GetSubCommand() with
-    | Fetch_Matches args -> fetchMatches args databaseConnection
-    | Migrate_Database _ -> migrateDatabase databaseConnection log
+    | Fetch_Matches args -> fetchMatches args databaseConnection logger
+    | Migrate_Database _ -> migrateDatabase databaseConnection logger
     | Debug_Http -> failwith "Unexpected"
     | Host _ -> failwith "Unexpected"
     | Database _ -> failwith "Unexpected"
@@ -110,9 +111,16 @@ let run argv log =
 [<EntryPoint>]
 let main argv =
     try
-        let logger = LogManager.GetLogger("main")
-        trace logger "Starting %s" "abc"
-        run argv (info logger)
+        let nlog = LogManager.GetLogger("main")
+        let logger = {
+            new Contracts.Logger
+            with
+                member _.Log s =
+                    info nlog s
+        }
+
+        trace nlog "Starting %s" "abc"
+        run argv logger
         |> Async.RunSynchronously
     with
         | :? ArguException as ex ->

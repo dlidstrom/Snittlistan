@@ -10,15 +10,15 @@ type ConfirmAction = ResizeArray<SqlScript> -> bool
 type MigrateDatabase(
                      connectionString : Database.DatabaseConnection,
                      confirmAction : ConfirmAction,
-                     logf : Contracts.LogF) =
+                     logger : Contracts.Logger) =
     member _.Run () =
         let log = { new IUpgradeLog with
             member _.WriteInformation(fmt, args) =
-                logf "%s" (System.String.Format(fmt, args))
+                logger.Log "%s" (System.String.Format(fmt, args))
             member _.WriteWarning(fmt, args) =
-                logf "%s" (System.String.Format(fmt, args))
+                logger.Log "%s" (System.String.Format(fmt, args))
             member _.WriteError(fmt, args) =
-                logf "%s" (System.String.Format(fmt, args)) }
+                logger.Log "%s" (System.String.Format(fmt, args)) }
         let upgrader =
             DeployChanges.To
                 .PostgresqlDatabase(connectionString.Format())

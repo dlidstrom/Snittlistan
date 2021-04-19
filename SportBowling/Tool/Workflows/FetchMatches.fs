@@ -5,7 +5,7 @@ type Operation =
     | FetchDivision of seasonId : Domain.SeasonId
     | FetchMatchesForDivision of divisionId : Domain.DivisionId
 
-type FetchMatches(bitsClient : Api.Bits.IClient) =
+type FetchMatches(bitsClient : Api.Bits.IClient, logger : Contracts.Logger) =
 
     (*
 
@@ -43,7 +43,8 @@ type FetchMatches(bitsClient : Api.Bits.IClient) =
     }
 
     let fetchMatchesForDivision (Domain.DivisionId divisionId) = async {
-        printfn "Fetching for %d" divisionId
+        logger.Log "Fetching for %d" divisionId
+        logger.Log "Fetching for %s" "divisionId"
         return None
     }
 

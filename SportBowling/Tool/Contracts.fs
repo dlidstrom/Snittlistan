@@ -24,5 +24,8 @@ type RequestDefinition = {
     Body : string option
 }
 type RequestStringAsync = RequestDefinition -> Async<string>
-type Log<'a> = Printf.StringFormat<'a, unit> -> 'a
-type LogF = Log<string -> unit>
+
+// https://stackoverflow.com/questions/5569909/how-do-i-create-an-f-function-with-a-printf-style-logging-argument
+type Logger =
+    abstract Log : fmt : Printf.StringFormat<'a, unit> -> 'a
+    // abstract LogException : e : System.Exception -> fmt : Printf.StringFormat<'a, unit> -> 'a
