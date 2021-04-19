@@ -3,8 +3,10 @@
 open System
 open Argu
 open DbUp.Engine
+open NLog
 open Npgsql
-open NLog.FSharp
+
+open Infrastructure
 
 type Arguments =
     | [<CliPrefix(CliPrefix.None)>] Fetch_Matches of ParseResults<FetchMatchesArguments>
@@ -59,12 +61,11 @@ let fetchMatches
     let proxy = args.TryGetResult(Proxy)
     use connection = new NpgsqlConnection(connection.Format())
     connection.Open()
-    let gateway = Database.Gateway(connection)
-    let http = Infrastructure.BitsHttp.create proxy noCheckCertificate
+    // let gateway = Database.Gateway(connection) // TODO REMOVE
+    let http = BitsHttp.create proxy noCheckCertificate
     let bitsClient = Api.Bits.Client(apiKey, http)
     let workflow = Workflows.FetchMatches(bitsClient)
     workflow.Run (Domain.SeasonId seasonId)
-    |> Async.RunSynchronously
 
 let migrateDatabase connection log =
     let confirmAction (lst : ResizeArray<SqlScript>) =
@@ -74,6 +75,9 @@ let migrateDatabase connection log =
         Console.ReadLine() = "y"
     let workflow = Workflows.MigrateDatabase(connection, confirmAction, log)
     workflow.Run()
+    async {
+        return 0
+    }
 
 let run argv log =
     let parser = ArgumentParser.Create<Arguments>(
@@ -92,7 +96,7 @@ let run argv log =
     }
     let debugHttp = results.Contains(Debug_Http)
     let _l =
-        if debugHttp then Some (new Infrastructure.LoggingEventListener()) else None
+        if debugHttp then Some (new LoggingEventListener()) else None
 
     match results.GetSubCommand() with
     | Fetch_Matches args -> fetchMatches args databaseConnection
@@ -106,10 +110,10 @@ let run argv log =
 [<EntryPoint>]
 let main argv =
     try
-        let logger = Logger("main")
-        logger.Trace "Starting %s" "abc"
-        run argv logger
-        0
+        let logger = LogManager.GetLogger("main")
+        trace logger "Starting %s" "abc"
+        run argv (info logger)
+        |> Async.RunSynchronously
     with
         | :? ArguException as ex ->
             eprintfn "%s" ex.Message

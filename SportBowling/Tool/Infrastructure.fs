@@ -67,3 +67,44 @@ module BitsHttp =
                     body = TextRequest (Json.serialize request.Body),
                     headers = request.Headers,
                     customizeHttpRequest = customizeRequest)
+
+[<AutoOpen>]
+module FSharpPrintfExtensions =
+    let trace (logger : NLog.ILogger) fmt =
+        Printf.kprintf (fun s -> logger.Trace(s)) fmt
+
+    let traceE (logger : NLog.ILogger) (exn : Exception) fmt =
+        Printf.kprintf (fun s -> logger.Trace(exn, s)) fmt
+
+    let debug (logger : NLog.ILogger) fmt =
+        Printf.kprintf (fun s -> logger.Debug(s)) fmt
+
+    let debugE (logger : NLog.ILogger) (exn : Exception) fmt =
+        Printf.kprintf (fun s -> logger.Debug(exn, s)) fmt
+
+    let info (logger : NLog.ILogger) fmt =
+        Printf.kprintf (fun s -> logger.Info(s)) fmt
+
+    let infoE (logger : NLog.ILogger) (exn : Exception) fmt =
+        Printf.kprintf (fun s -> logger.Info(exn, s)) fmt
+
+    let warn (logger : NLog.ILogger) fmt =
+        Printf.kprintf (fun s -> logger.Warn(s)) fmt
+
+    let warnE (logger : NLog.ILogger) (exn : Exception) fmt =
+        Printf.kprintf (fun s -> logger.Warn(exn, s)) fmt
+
+    let error (logger : NLog.ILogger) fmt =
+        Printf.kprintf (fun s -> logger.Error(s)) fmt
+
+    let errorE (logger : NLog.ILogger) (exn : Exception) fmt =
+        Printf.kprintf (fun s -> logger.Error(exn, s)) fmt
+
+    let fatal (logger : NLog.ILogger) fmt =
+        Printf.kprintf (fun s -> logger.Fatal(s)) fmt
+
+    let fatalE (logger : NLog.ILogger) (exn : Exception) fmt =
+        Printf.kprintf (fun s -> logger.Fatal(exn, s)) fmt
+
+    let log (logger : NLog.ILogger) (level : NLog.LogLevel) fmt =
+        Printf.kprintf (fun s -> logger.Log(level, s)) fmt

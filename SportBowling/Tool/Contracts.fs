@@ -24,3 +24,5 @@ type RequestDefinition = {
     Body : string option
 }
 type RequestStringAsync = RequestDefinition -> Async<string>
+type Log<'a> = Printf.StringFormat<'a, unit> -> 'a
+type LogF = Log<string -> unit>

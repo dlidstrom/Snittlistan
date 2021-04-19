@@ -74,6 +74,7 @@ type FetchMatches(bitsClient : Api.Bits.IClient) =
             let operationStack = Stack<Operation>()
             operationStack.Push(FetchDivision seasonId)
             do! processStack operationStack
+            return 0
         }
 
         // get response from bits.response table first, check if recent
