@@ -1,11 +1,45 @@
 namespace Workflows
+
 open System.Collections.Generic
 
 type Operation =
-    | FetchDivision of seasonId : Domain.SeasonId
-    | FetchMatchesForDivision of divisionId : Domain.DivisionId
+    | FetchDivision of seasonId: Domain.SeasonId
+    | FetchMatchesForDivision of seasonId: Domain.SeasonId * divisionId: Domain.DivisionId
 
-type FetchMatches(bitsClient : Api.Bits.IClient, logger : Contracts.Logger) =
+module private Handlers =
+    type Handler(logger: Contracts.Logger, bitsClient: Api.Bits.IClient) =
+        member this.handle =
+            function
+            | FetchDivision seasonId -> this.fetchDivision seasonId
+            | FetchMatchesForDivision (seasonId, divisionId) ->
+                this.fetchMatchesForDivision seasonId divisionId
+
+        member this.fetchDivision(seasonId: Domain.SeasonId) =
+            let (Domain.SeasonId i) = seasonId
+            logger.Log $"fetch division %d{i}"
+
+            async {
+                let! divisions = bitsClient.GetDivision seasonId
+
+                return
+                    divisions
+                    |> Seq.map
+                        (fun division ->
+                            FetchMatchesForDivision(seasonId, Domain.DivisionId division.DivisionId))
+                    |> Seq.toList
+                    |> Some
+            }
+
+        member this.fetchMatchesForDivision seasonId divisionId =
+            let (Domain.SeasonId s, Domain.DivisionId d) = (seasonId, divisionId)
+            logger.Log $"fetch matches for season %d{s} division %d{d}"
+
+            async {
+                let! matches = bitsClient.GetMatch divisionId seasonId
+                return None
+            }
+
+type FetchMatches(bitsClient: Api.Bits.IClient, logger: Contracts.Logger) =
 
     (*
 
@@ -33,82 +67,42 @@ type FetchMatches(bitsClient : Api.Bits.IClient, logger : Contracts.Logger) =
     4.
     *)
 
-    let fetchDivision seasonId = async {
-        let! divisions = bitsClient.GetDivision seasonId
-
-        return divisions
-               |> Seq.map (fun d -> FetchMatchesForDivision (Domain.DivisionId d.DivisionId))
-               |> Seq.toList
-               |> Some
-    }
-
-    let fetchMatchesForDivision (Domain.DivisionId divisionId) = async {
-        logger.Log "Fetching for %d" divisionId
-        logger.Log "Fetching for %s" "divisionId"
-        return None
-    }
-
-    let handle = function
-        | FetchDivision seasonId ->
-            fetchDivision seasonId
-        | FetchMatchesForDivision divisionId ->
-            fetchMatchesForDivision divisionId
-
-    let handleOperationResult (stack : Stack<Operation>) = function
-        | Some operations -> operations |> List.iter stack.Push
-        | None -> ()
-
-    let rec processStack (stack : Stack<Operation>) =
+    let rec processStack (handler: Handlers.Handler) (stack: Stack<Operation>) =
         match stack.TryPop() with
         | (true, currentOperation) ->
             async {
-                let! r = handle currentOperation
-                r |> handleOperationResult stack
-                do! processStack stack
-            }
-        | (false, _) ->
-            async {
-                return ()
-            }
+                match! handler.handle currentOperation with
+                | Some operations -> operations |> List.iter stack.Push
+                | None -> ()
 
-    member _.Run seasonId = async {
+                do! processStack handler stack
+            }
+        | (false, _) -> async { return () }
+
+    member _.Run seasonId =
+        let handler = Handlers.Handler(logger, bitsClient)
+
+        async {
             let operationStack = Stack<Operation>()
             operationStack.Push(FetchDivision seasonId)
-            do! processStack operationStack
+            do! processStack handler operationStack
             return 0
         }
 
-        // get response from bits.response table first, check if recent
-        // if so, use stored response, otherwise fetch new, then continue
-        // recentness may need to be a configuration
-        // use config files to specify program configuration, instead of
-        // only commandline
+// get response from bits.response table first, check if recent
+// if so, use stored response, otherwise fetch new, then continue
+// recentness may need to be a configuration
+// use config files to specify program configuration, instead of
+// only commandline
 
-        // database queries are discriminated union
-        // requests are discriminated union, log request type (DU case type)
+// database queries are discriminated union
+// requests are discriminated union, log request type (DU case type)
 
-        // use this instead of EF?
-        // https://github.com/Zaid-Ajaj/Npgsql.FSharp.Analyzer
-        (*
-            use connection = new NpgsqlConnection("YOUR CONNECTION STRING")
-            connection.Open()
-
-let users =
-    connection
-    |> Sql.existingConnection
-    |> Sql.query "SELECT * FROM users"
-    |> Sql.execute (fun read ->
-        {
-            Id = read.int "user_id"
-            FirstName = read.text "first_name"
-        })
-        *)
-
-        // store all divisions
-        // for division in divisions do
-        //     let matches = bitsClient.GetMatch (Domain.DivisionId division.DivisionId) seasonId
-        //     for matchItem in matches do
-        //         let headInfo = bitsClient.GetHeadInfo (Domain.MatchId matchItem.MatchId)
-        //         printfn "%s" headInfo.MatchSchemeId
-        //         // let matchScheme = bitsClient.GetHeadResultInfo headInfo.MatchScheme
-        //         // Some (exn "Break here")
+// store all divisions
+// for division in divisions do
+//     let matches = bitsClient.GetMatch (Domain.DivisionId division.DivisionId) seasonId
+//     for matchItem in matches do
+//         let headInfo = bitsClient.GetHeadInfo (Domain.MatchId matchItem.MatchId)
+//         printfn "%s" headInfo.MatchSchemeId
+//         // let matchScheme = bitsClient.GetHeadResultInfo headInfo.MatchScheme
+//         // Some (exn "Break here")
