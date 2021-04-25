@@ -21,7 +21,9 @@
     <Compile Include="Database.fs" />
     <Compile Include="Api.fs" />
     <Compile Include="CachedApi.fs" />
-    <Compile Include="Workflows/FetchMatches.fs" />
+    <Compile Include="Workflows/FetchMatches/Operations.fs" />
+    <Compile Include="Workflows/FetchMatches/Handlers.fs" />
+    <Compile Include="Workflows/FetchMatches/FetchMatches.fs" />
     <Compile Include="Workflows/MigrateDatabase.fs" />
     <Compile Include="Infrastructure.fs" />
     <Compile Include="Program.fs" />

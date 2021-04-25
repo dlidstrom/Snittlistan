@@ -89,7 +89,7 @@ let fetchMatches
     // cache impl
     let cachedHttp (request: Contracts.RequestDefinition) =
         let database = Database.Gateway connection
-        CachedApi.cachedHttp http database request
+        CachedApi.cachedHttp http database (TimeSpan.FromHours(1.0)) request
 
     let bitsClient = Api.Bits.Client(apiKey, cachedHttp)
 

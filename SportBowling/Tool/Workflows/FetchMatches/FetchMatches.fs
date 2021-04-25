@@ -2,43 +2,6 @@ namespace Workflows
 
 open System.Collections.Generic
 
-type Operation =
-    | FetchDivision of seasonId: Domain.SeasonId
-    | FetchMatchesForDivision of seasonId: Domain.SeasonId * divisionId: Domain.DivisionId
-
-module private Handlers =
-    type Handler(logger: Contracts.Logger, bitsClient: Api.Bits.IClient) =
-        member this.handle =
-            function
-            | FetchDivision seasonId -> this.fetchDivision seasonId
-            | FetchMatchesForDivision (seasonId, divisionId) ->
-                this.fetchMatchesForDivision seasonId divisionId
-
-        member this.fetchDivision(seasonId: Domain.SeasonId) =
-            let (Domain.SeasonId i) = seasonId
-            logger.Log $"fetch division %d{i}"
-
-            async {
-                let! divisions = bitsClient.GetDivision seasonId
-
-                return
-                    divisions
-                    |> Seq.map
-                        (fun division ->
-                            FetchMatchesForDivision(seasonId, Domain.DivisionId division.DivisionId))
-                    |> Seq.toList
-                    |> Some
-            }
-
-        member this.fetchMatchesForDivision seasonId divisionId =
-            let (Domain.SeasonId s, Domain.DivisionId d) = (seasonId, divisionId)
-            logger.Log $"fetch matches for season %d{s} division %d{d}"
-
-            async {
-                let! matches = bitsClient.GetMatch divisionId seasonId
-                return None
-            }
-
 type FetchMatches(bitsClient: Api.Bits.IClient, logger: Contracts.Logger) =
 
     (*
@@ -67,24 +30,22 @@ type FetchMatches(bitsClient: Api.Bits.IClient, logger: Contracts.Logger) =
     4.
     *)
 
-    let rec processStack (handler: Handlers.Handler) (stack: Stack<Operation>) =
-        match stack.TryPop() with
-        | (true, currentOperation) ->
-            async {
-                match! handler.handle currentOperation with
-                | Some operations -> operations |> List.iter stack.Push
-                | None -> ()
+    let rec processStack (handler: Handlers.Handler) (stack: Stack<Operations.Operation>) =
+        async {
+            match stack.TryPop() with
+            | (true, currentOperation) ->
+                let! subOperations = handler.handle currentOperation
+                subOperations |> List.iter stack.Push
 
                 do! processStack handler stack
-            }
-        | (false, _) -> async { return () }
+            | (false, _) -> return ()
+        }
 
     member _.Run seasonId =
-        let handler = Handlers.Handler(logger, bitsClient)
-
         async {
-            let operationStack = Stack<Operation>()
-            operationStack.Push(FetchDivision seasonId)
+            let handler = Handlers.Handler(logger, bitsClient)
+            let operationStack = Stack<Operations.Operation>()
+            operationStack.Push(Operations.Operation.FetchDivision seasonId)
             do! processStack handler operationStack
             return 0
         }
