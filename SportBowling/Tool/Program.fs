@@ -148,6 +148,47 @@ let run argv logger =
     | Username _ -> failwith "Unexpected"
     | Password _ -> failwith "Unexpected"
 
+module SqlTest =
+    open FSharp.Data.Sql
+    open FSharp.Data.Sql.Common
+
+    [<Literal>]
+    let DbVendor = Common.DatabaseProviderTypes.POSTGRESQL
+
+    [<Literal>]
+    let ConnString =
+        "Host=localhost;Port=5432;Database=prisma;Username=prisma;Password=prisma"
+
+    [<Literal>]
+    let Schema = "public, log, bits"
+
+    [<Literal>]
+    let ResPath = __SOURCE_DIRECTORY__ + @"./lib"
+
+    [<Literal>]
+    let IndivAmount = 1000
+
+    [<Literal>]
+    let UseOptTypes = true
+
+    type DB =
+        SqlDataProvider<DatabaseVendor=DbVendor, ConnectionString=ConnString, ResolutionPath=ResPath, IndividualsAmount=IndivAmount, UseOptionTypes=UseOptTypes, Owner=Schema>
+
+    let ctx =
+        DB.GetDataContext(selectOperations = SelectOperations.DatabaseSide)
+
+    QueryEvents.SqlQueryEvent
+    |> Event.add (printfn "Executing query: %O")
+
+    let queryBits s =
+        query {
+            for season in ctx.Bits.Season do
+                where (season.StartYear = s)
+                select (Some season)
+                headOrDefault
+                //exactlyOneOrDefault
+        }
+
 [<EntryPoint>]
 let main argv =
     try
@@ -158,6 +199,11 @@ let main argv =
                 member _.Log s = info nlogger s }
 
         logger.Log "starting"
+        let season = SqlTest.queryBits 2020
+        match season with
+        | Some s -> printfn "%d" s.StartYear
+        | None -> ()
+        season |> printfn "%A"
         run argv logger |> Async.RunSynchronously
     with
     | :? ArguException as ex ->

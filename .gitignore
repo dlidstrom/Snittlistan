@@ -40,3 +40,4 @@ SportBowling/Cms/Cms/Localization
 SportBowling/Cms/Cms/App_Data
 SportBowling/Cms/Cms/wwwroot/is-cache
 SportBowling/Tool/NPGSQL_FSHARP
+SportBowling/Tool/lib

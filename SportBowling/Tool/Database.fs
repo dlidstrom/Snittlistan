@@ -1,6 +1,8 @@
 module Database
 
 open System
+open FSharp.Data.Sql
+open FSharp.Data.Sql.Common
 open Npgsql
 open Npgsql.FSharp
 
@@ -26,11 +28,53 @@ type DatabaseConnection =
       Username: string
       Password: string }
     member this.Format() =
-        $"Host=%s{this.Host};Database=%s{this.Database};Username=%s{this.Username};Password=%s{
-                                                                                                   this.Password
-        }"
+        stringBuffer {
+            $"Host=%s{this.Host};"
+            $"Database=%s{this.Database};"
+            $"Username=%s{this.Username};"
+            $"Password=%s{this.Password}"
+        }
 
-type Gateway(connection: NpgsqlConnection) =
+[<Literal>]
+let DbVendor = DatabaseProviderTypes.POSTGRESQL
+
+[<Literal>]
+let ConnString =
+    "Host=localhost;Port=5432;Database=prisma;Username=prisma;Password=prisma"
+
+[<Literal>]
+let ResPath = __SOURCE_DIRECTORY__ + @"./lib"
+
+[<Literal>]
+let IndivAmount = 1000
+
+type LogProvider =
+    SqlDataProvider<DatabaseVendor=DbVendor, ConnectionString=ConnString, ResolutionPath=ResPath, IndividualsAmount=IndivAmount, UseOptionTypes=true, Owner="log">
+
+type BitsProvider =
+    SqlDataProvider<DatabaseVendor=DbVendor, ConnectionString=ConnString, ResolutionPath=ResPath, IndividualsAmount=IndivAmount, UseOptionTypes=true, Owner="bits">
+
+type Gateway(connection: NpgsqlConnection, databaseConnection: DatabaseConnection) =
+
+    member _.StoreDivision2
+        (seasonId: Domain.SeasonId)
+        (bitsDivisions: Contracts.Bits.Divisions.Division array)
+        =
+        let (Domain.SeasonId seasonIdUnwrapped) = seasonId
+        let ctx = BitsProvider.GetDataContext()
+
+        bitsDivisions
+        |> Array.map
+            (fun d ->
+                ctx.Bits.Division.Create(
+                    DateTime.UtcNow,
+                    d.DivisionName,
+                    d.DivisionId,
+                    seasonIdUnwrapped
+                ))
+        |> ignore
+
+        ctx.SubmitUpdates()
 
     member _.StoreDivision(bitsDivisions: Contracts.Bits.Divisions.Division array) =
 

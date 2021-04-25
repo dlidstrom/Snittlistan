@@ -16,6 +16,7 @@
     <None Update="NLog.config" CopyToOutputDirectory="Always" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Prelude.fs" />
     <Compile Include="Domain.fs" />
     <Compile Include="Contracts.fs" />
     <Compile Include="Database.fs" />
@@ -38,5 +39,9 @@
     <PackageReference Include="NLog" Version="4.7.9" />
     <PackageReference Include="Npgsql.FSharp" Version="4.0.0" />
     <PackageReference Include="NpgsqlFSharpAnalyzer" Version="3.24.0" />
+    <PackageReference Include="SQLProvider" Version="1.2.1" />
   </ItemGroup>
+  <Target Name="TypeProvidersSetup" BeforeTargets="Build">
+    <Exec Command="./prebuild.sh" />
+  </Target>
 </Project>
