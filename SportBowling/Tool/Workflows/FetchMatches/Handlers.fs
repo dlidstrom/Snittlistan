@@ -17,6 +17,8 @@ type Handler(logger: Contracts.Logger, bitsClient: Api.Bits.IClient) =
 
             let! divisions = bitsClient.GetDivision seasonId
 
+            // TODO store divisions, if any new
+
             return
                 divisions
                 |> Seq.map

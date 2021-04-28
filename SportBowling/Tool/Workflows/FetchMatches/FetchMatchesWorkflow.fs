@@ -2,7 +2,7 @@ namespace Workflows
 
 open System.Collections.Generic
 
-type FetchMatches(bitsClient: Api.Bits.IClient, logger: Contracts.Logger) =
+type FetchMatchesWorkflow(bitsClient: Api.Bits.IClient, logger: Contracts.Logger) =
 
     (*
 
@@ -37,8 +37,8 @@ type FetchMatches(bitsClient: Api.Bits.IClient, logger: Contracts.Logger) =
                 let! subOperations = handler.handle currentOperation
                 subOperations |> List.iter stack.Push
 
-                do! processStack handler stack
-            | (false, _) -> return ()
+                return! processStack handler stack
+            | (false, _) -> return 0
         }
 
     member _.Run seasonId =
@@ -46,8 +46,7 @@ type FetchMatches(bitsClient: Api.Bits.IClient, logger: Contracts.Logger) =
             let handler = Handlers.Handler(logger, bitsClient)
             let operationStack = Stack<Operations.Operation>()
             operationStack.Push(Operations.Operation.FetchDivision seasonId)
-            do! processStack handler operationStack
-            return 0
+            return! processStack handler operationStack
         }
 
 // get response from bits.response table first, check if recent
