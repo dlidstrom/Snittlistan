@@ -10,7 +10,6 @@ open Infrastructure
 
 type Arguments =
     | [<CliPrefix(CliPrefix.None)>] Fetch_Matches of ParseResults<FetchMatchesArguments>
-    | [<CliPrefix(CliPrefix.None)>] Migrate_Database of ParseResults<MigrateDatabaseArguments>
     | [<Mandatory>] Host of host: string
     | [<Mandatory>] Database of database: string
     | [<Mandatory>] Username of username: string
@@ -20,7 +19,6 @@ type Arguments =
         member this.Usage =
             match this with
             | Fetch_Matches _ -> "Fetch matches."
-            | Migrate_Database _ -> "Migrate database."
             | Host _ -> "Specifies the database host."
             | Database _ -> "Specifies the database name."
             | Username _ -> "Specifies the username"
@@ -41,13 +39,6 @@ and FetchMatchesArguments =
                 "Don't check the server certificate against \
                  the available certificate authorities."
             | Proxy _ -> "Specifies the proxy to use."
-
-and MigrateDatabaseArguments =
-    | Timeout of timeout: int
-    interface IArgParserTemplate with
-        member this.Usage =
-            match this with
-            | Timeout _ -> "Timeout in seconds"
 
 and ScratchArguments =
     | Verbose
@@ -72,11 +63,11 @@ let fetchMatches
 
     let proxy = args.TryGetResult(Proxy)
 
-    use connection =
+    use npgsqlConnection =
         new NpgsqlConnection(connection.Format())
 
-    connection.Open()
-    // let gateway = Database.Gateway(connection) // TODO REMOVE
+    npgsqlConnection.Open()
+    // let gateway = Database.Gateway(npgsqlConnection) // TODO REMOVE
     let http = BitsHttp.create proxy noCheckCertificate
 
     let logHttp (request: Contracts.RequestDefinition) =
@@ -88,31 +79,15 @@ let fetchMatches
 
     // cache impl
     let cachedHttp (request: Contracts.RequestDefinition) =
-        let database = Database.Gateway connection
+        let database = Database.Gateway(npgsqlConnection, connection)
         CachedApi.cachedHttp http database (TimeSpan.FromHours(1.0)) request
 
     let bitsClient = Api.Bits.Client(apiKey, cachedHttp)
 
     let workflow =
-        Workflows.FetchMatches(bitsClient, logger)
+        Workflows.FetchMatchesWorkflow(bitsClient, logger)
 
     workflow.Run(Domain.SeasonId seasonId)
-
-let migrateDatabase connection logger =
-    let confirmAction (lst: ResizeArray<SqlScript>) =
-        printfn "Scripts to execute:"
-
-        Seq.map (fun (it: SqlScript) -> it.Name) lst
-        |> Seq.iter (printfn "%s")
-
-        printfn "Enter [y] to accept"
-        Console.ReadLine() = "y"
-
-    let workflow =
-        Workflows.MigrateDatabase(connection, confirmAction, logger)
-
-    workflow.Run()
-    async { return 0 }
 
 let run argv logger =
     let parser =
@@ -141,7 +116,6 @@ let run argv logger =
 
     match results.GetSubCommand() with
     | Fetch_Matches args -> fetchMatches args databaseConnection logger
-    | Migrate_Database _ -> migrateDatabase databaseConnection logger
     | Debug_Http -> failwith "Unexpected"
     | Host _ -> failwith "Unexpected"
     | Database _ -> failwith "Unexpected"

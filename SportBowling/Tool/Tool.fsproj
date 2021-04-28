@@ -25,7 +25,6 @@
     <Compile Include="Workflows/FetchMatches/Operations.fs" />
     <Compile Include="Workflows/FetchMatches/Handlers.fs" />
     <Compile Include="Workflows/FetchMatches/FetchMatchesWorkflow.fs" />
-    <Compile Include="Workflows/MigrateDatabase.fs" />
     <Compile Include="Infrastructure.fs" />
     <Compile Include="Program.fs" />
     <EmbeddedResource Include="Sql/*.sql" />
