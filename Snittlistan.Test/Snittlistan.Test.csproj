@@ -159,7 +159,7 @@
       <Version>2.2.29</Version>
     </PackageReference>
     <PackageReference Include="Moq">
-      <Version>4.15.1</Version>
+      <Version>4.16.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
