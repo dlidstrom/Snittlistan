@@ -179,6 +179,7 @@
                 authenticationService.SetAuthCookie(player.Id, vm.RememberMe);
                 var builder = new StringBuilder();
                 builder.AppendLine($"User Agent: {Request.UserAgent}");
+                builder.AppendLine($"Referrer: {Request.UrlReferrer}");
                 matchingPassword.MarkUsed();
                 PublishMessage(
                     EmailTask.Create(
