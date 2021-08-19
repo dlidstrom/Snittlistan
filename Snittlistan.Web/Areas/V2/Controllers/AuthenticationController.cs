@@ -81,6 +81,7 @@
                     if (validExistingToken != null)
                     {
                         // reuse still valid token
+                        NotifyEvent($"{player.Name} - Återanvänd token");
                         return RedirectToAction(
                             "LogOnOneTimePassword",
                             new { id = player.Id, validExistingToken.OneTimeKey });
@@ -97,6 +98,7 @@
                             PublishMessage(new OneTimeKeyEvent(player.Email, oneTimePassword));
                         },
                         oneTimePassword);
+                    NotifyEvent($"{player.Name} entered email address");
                     DocumentSession.Store(token);
                     return RedirectToAction(
                         "LogOnOneTimePassword",
@@ -107,6 +109,7 @@
                     ViewBag.PlayerId = DocumentSession.CreatePlayerSelectList(
                         getPlayers: () => players,
                         textFormatter: p => $"{p.Name} ({p.Nickname})");
+                    NotifyEvent($"{vm.Email} - Select from multiple {string.Join(", ", players.Select(x => $"{x.Name} ({x.Email})"))}");
                     return View();
                 }
                 else
@@ -117,7 +120,10 @@
 
             // redisplay form if any errors at this point
             if (ModelState.IsValid == false)
+            {
+                NotifyEvent($"{vm.Email} - ModelState invalid: {string.Join(", ", ModelState.Values.Select(x => string.Join(", ", x.Errors.Select(y => y.ErrorMessage))))}");
                 return View(vm);
+            }
 
             return RedirectToAction("LogOnPassword", new { vm.Email, returnUrl });
         }
@@ -155,6 +161,7 @@
                     ModelState.AddModelError("Lösenord", "Prova igen");
                     vm.Password = string.Empty;
                     await Task.Delay(2000);
+                    NotifyEvent($"{player.Name} - Prova igen");
                     return View(vm);
                 }
 
@@ -165,27 +172,22 @@
                     ModelState.AddModelError("Lösenord", "Felaktigt lösenord");
                     vm.Password = string.Empty;
                     await Task.Delay(2000);
+                    NotifyEvent($"{player.Name} - Felaktigt lösenord");
                     return View(vm);
                 }
 
                 if (matchingPassword.UsedDate.HasValue)
                 {
                     Log.Info("Token already used");
-                    ModelState.AddModelError("Lösenord", "Koden har använts en gång, prova igen");
+                    ModelState.AddModelError("Lösenord", "Koden har redan använts, prova igen");
                     await Task.Delay(2000);
+                    NotifyEvent($"{player.Name} - Koden har redan använts, prova igen");
                     return RedirectToAction("LogOn");
                 }
 
                 authenticationService.SetAuthCookie(player.Id, vm.RememberMe);
-                var builder = new StringBuilder();
-                builder.AppendLine($"User Agent: {Request.UserAgent}");
-                builder.AppendLine($"Referrer: {Request.UrlReferrer}");
                 matchingPassword.MarkUsed();
-                PublishMessage(
-                    EmailTask.Create(
-                        ConfigurationManager.AppSettings["OwnerEmail"],
-                        $"{player.Name} logged in",
-                        builder.ToString()));
+                NotifyEvent($"{player.Name} logged in");
             }
             catch
             {
@@ -265,6 +267,21 @@
             public bool RememberMe { get; set; }
 
             public string OneTimeKey { get; set; }
+        }
+
+        private void NotifyEvent(string subject)
+        {
+            PublishMessage(
+                EmailTask.Create(
+                    ConfigurationManager.AppSettings["OwnerEmail"],
+                    subject,
+                    string.Join(
+                        Environment.NewLine,
+                        new[]
+                        {
+                            $"User Agent: {Request.UserAgent}",
+                            $"Referrer: {Request.UrlReferrer}"
+                        })));
         }
     }
 }
