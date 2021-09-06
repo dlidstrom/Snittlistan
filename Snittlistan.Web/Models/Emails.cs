@@ -115,7 +115,7 @@
             dynamic email = new Email(view);
             email.To = recipient;
             email.From = ConfigurationManager.AppSettings["OwnerEmail"];
-            email.Subject = $"=?UTF-8?B?{Convert.ToBase64String(Encoding.UTF8.GetBytes(subject))}?=";
+            email.Subject = subject;
 
             // add moderators
             string moderatorEmails = string.Join(", ", ConfigurationManager.AppSettings["OwnerEmail"].Split(';'));

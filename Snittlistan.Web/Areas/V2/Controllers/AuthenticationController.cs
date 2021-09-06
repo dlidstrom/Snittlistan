@@ -17,6 +17,7 @@
     using Raven.Abstractions;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Helpers;
+    using Snittlistan.Web.HtmlHelpers;
     using Snittlistan.Web.Infrastructure.Attributes;
     using Snittlistan.Web.Services;
 
@@ -74,14 +75,15 @@
                     // else create a new token
                     OneTimeToken[] existingTokens =
                         DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>()
-                                       .Where(x => x.PlayerId == player.Id && x.CreatedDate > SystemTime.UtcNow.AddDays(-1))
+                                       .Where(x => x.PlayerId == player.Id)
+                                       .OrderByDescending(x => x.CreatedDate)
                                        .Take(10)
                                        .ToArray();
-                    OneTimeToken validExistingToken = existingTokens.FirstOrDefault(x => x.IsExpired() == false && x.UsedDate.HasValue == false);
+                    OneTimeToken validExistingToken = existingTokens.FirstOrDefault(x => x.IsExpired() == false);
                     if (validExistingToken != null)
                     {
                         // reuse still valid token
-                        NotifyEvent($"{player.Name} - Återanvänd token");
+                        NotifyEvent($"{player.Name} - Samma token", validExistingToken.ToJson().ToString());
                         return RedirectToAction(
                             "LogOnOneTimePassword",
                             new { id = player.Id, validExistingToken.OneTimeKey });
@@ -172,21 +174,11 @@
                     ModelState.AddModelError("Lösenord", "Felaktigt lösenord");
                     vm.Password = string.Empty;
                     await Task.Delay(2000);
-                    NotifyEvent($"{player.Name} - Felaktigt lösenord");
+                    NotifyEvent($"{player.Name} - Felaktig kod ({vm.Password})");
                     return View(vm);
                 }
 
-                if (matchingPassword.UsedDate.HasValue)
-                {
-                    Log.Info("Token already used");
-                    ModelState.AddModelError("Lösenord", "Koden har redan använts, prova igen");
-                    await Task.Delay(2000);
-                    NotifyEvent($"{player.Name} - Koden har redan använts, prova igen");
-                    return RedirectToAction("LogOn");
-                }
-
                 authenticationService.SetAuthCookie(player.Id, vm.RememberMe);
-                matchingPassword.MarkUsed();
                 NotifyEvent($"{player.Name} logged in");
             }
             catch
@@ -269,7 +261,7 @@
             public string OneTimeKey { get; set; }
         }
 
-        private void NotifyEvent(string subject)
+        private void NotifyEvent(string subject, string body = null)
         {
             PublishMessage(
                 EmailTask.Create(
@@ -280,7 +272,8 @@
                         new[]
                         {
                             $"User Agent: {Request.UserAgent}",
-                            $"Referrer: {Request.UrlReferrer}"
+                            $"Referrer: {Request.UrlReferrer}",
+                            body ?? string.Empty
                         })));
         }
     }

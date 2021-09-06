@@ -260,7 +260,7 @@
 
         private async Task<IHttpActionResult> Handle(OneTimeKeyEvent @event)
         {
-            const string Subject = "Logga in på Snittlistan";
+            const string Subject = "Logga in till Snittlistan";
             await Emails.SendOneTimePassword(@event.Email, Subject, @event.OneTimePassword);
             return Ok();
         }

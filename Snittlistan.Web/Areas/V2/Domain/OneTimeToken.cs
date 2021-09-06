@@ -17,8 +17,6 @@
 
         public string OneTimeKey { get; private set; }
 
-        public DateTimeOffset? UsedDate { get; private set; }
-
         public DateTimeOffset CreatedDate { get; private set; }
 
         public string Payload { get; private set; }
@@ -27,11 +25,6 @@
         {
             TimeSpan span = SystemTime.UtcNow - CreatedDate;
             return span.TotalDays > 1;
-        }
-
-        public void MarkUsed()
-        {
-            UsedDate = SystemTime.UtcNow;
         }
 
         public void Activate(Action<string> action, string payload)
