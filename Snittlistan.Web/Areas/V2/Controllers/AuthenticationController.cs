@@ -149,7 +149,7 @@
             if (Request.IsAuthenticated) return RedirectToAction("Index", "Roster");
 
             OneTimeToken[] activeTokens = DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>()
-                .Where(x => x.PlayerId == id && x.CreatedDate > SystemTime.UtcNow.AddDays(-1))
+                .Where(x => x.PlayerId == id && x.CreatedDate > SystemTime.UtcNow.ToLocalTime().AddDays(-1))
                 .ToArray();
             Player player = DocumentSession.Load<Player>(id);
             if (player == null)

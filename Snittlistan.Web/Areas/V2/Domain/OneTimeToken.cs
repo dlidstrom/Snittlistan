@@ -8,7 +8,7 @@
         public OneTimeToken(string playerId)
         {
             PlayerId = playerId;
-            CreatedDate = SystemTime.UtcNow;
+            CreatedDate = SystemTime.UtcNow.ToLocalTime().Date;
         }
 
         public string Id { get; set; }
@@ -23,7 +23,7 @@
 
         public bool IsExpired()
         {
-            TimeSpan span = SystemTime.UtcNow - CreatedDate;
+            TimeSpan span = SystemTime.UtcNow.ToLocalTime() - CreatedDate;
             return span.TotalDays > 1;
         }
 
