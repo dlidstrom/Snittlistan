@@ -86,7 +86,7 @@
                         NotifyEvent($"{player.Name} - Samma token", validExistingToken.ToJson().ToString());
                         return RedirectToAction(
                             "LogOnOneTimePassword",
-                            new { id = player.Id, validExistingToken.OneTimeKey });
+                            new { id = player.Id, validExistingToken.OneTimeKey, reuseToken = true });
                     }
 
                     // no valid token, generate new
@@ -131,14 +131,15 @@
         }
 
         [RestoreModelStateFromTempData]
-        public ActionResult LogOnOneTimePassword(string id, string oneTimeKey)
+        public ActionResult LogOnOneTimePassword(string id, string oneTimeKey, bool? reuseToken)
         {
             Player player = DocumentSession.Load<Player>(id);
             return View(new PasswordViewModel
             {
                 Email = player.Email,
                 RememberMe = true,
-                OneTimeKey = oneTimeKey
+                OneTimeKey = oneTimeKey,
+                ReuseToken = reuseToken ?? false
             });
         }
 
@@ -259,6 +260,8 @@
             public bool RememberMe { get; set; }
 
             public string OneTimeKey { get; set; }
+
+            public bool ReuseToken { get; set; }
         }
 
         private void NotifyEvent(string subject, string body = null)
