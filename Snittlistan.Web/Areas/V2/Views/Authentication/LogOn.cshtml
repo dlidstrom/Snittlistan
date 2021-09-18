@@ -54,12 +54,13 @@
                 <div class="control-group">
                     @Html.LabelFor(x => x.Email, new { @class = "control-label" })
                     <div class="controls">
-                        @Html.EditorFor(
+                        @Html.TextBoxFor(
                             x => x.Email,
                             new
                             {
                                 autofocus = "autofocus",
-                                autocapitalization = "off"
+                                autocapitalization = "off",
+                                required = "required"
                             })
                     </div>
                 </div>
