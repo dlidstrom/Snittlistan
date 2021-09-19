@@ -9,6 +9,7 @@
         {
             PlayerId = playerId;
             CreatedDate = SystemTime.UtcNow.ToLocalTime().Date;
+            Timestamp = SystemTime.UtcNow.ToLocalTime();
         }
 
         public string Id { get; set; }
@@ -18,6 +19,8 @@
         public string OneTimeKey { get; private set; }
 
         public DateTimeOffset CreatedDate { get; private set; }
+
+        public DateTimeOffset Timestamp { get; set; }
 
         public string Payload { get; private set; }
 

@@ -133,13 +133,22 @@
         [RestoreModelStateFromTempData]
         public ActionResult LogOnOneTimePassword(string id, string oneTimeKey, bool? reuseToken)
         {
+            DateTimeOffset? tokenDate = null;
+            if (reuseToken ?? false)
+            {
+                OneTimeToken reusedToken = DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>()
+                    .SingleOrDefault(x => x.OneTimeKey == oneTimeKey);
+                tokenDate = reusedToken?.Timestamp;
+            }
+
             Player player = DocumentSession.Load<Player>(id);
             return View(new PasswordViewModel
             {
                 Email = player.Email,
                 RememberMe = true,
                 OneTimeKey = oneTimeKey,
-                ReuseToken = reuseToken ?? false
+                ReuseToken = reuseToken ?? false,
+                ReusedTokenDate = tokenDate
             });
         }
 
@@ -262,6 +271,8 @@
             public string OneTimeKey { get; set; }
 
             public bool ReuseToken { get; set; }
+
+            public DateTimeOffset? ReusedTokenDate { get; set; }
         }
 
         private void NotifyEvent(string subject, string body = null)
