@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Domain
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Domain
 {
     using System;
     using Raven.Abstractions;
@@ -28,8 +30,18 @@
         public Guid CorrelationId { get; }
         public DateTime? Date { get; }
         public object Change { get; }
-        public object Before { get; }
-        public object After { get; }
+        public object Before { get; private set; }
+        public object After { get; private set; }
+
+        public void SetBefore(object before)
+        {
+            Before = before;
+        }
+
+        public void SetAfter(object after)
+        {
+            After = after;
+        }
 
         public class PropertyChange<TPropertyType>
         {

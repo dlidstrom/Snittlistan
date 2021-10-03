@@ -7,8 +7,11 @@
     {
         public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
         {
-            if (!(actionExecutedContext.ActionContext.ControllerContext.Controller is AbstractApiController controller) || actionExecutedContext.Exception != null)
+            if (actionExecutedContext.ActionContext.ControllerContext.Controller is not AbstractApiController controller
+                || actionExecutedContext.Exception != null)
+            {
                 return;
+            }
 
             controller.SaveChanges();
         }

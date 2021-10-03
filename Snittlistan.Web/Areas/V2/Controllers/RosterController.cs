@@ -16,6 +16,7 @@
     using Raven.Client;
     using Rotativa;
     using Rotativa.Options;
+    using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Areas.V2.Domain;
     using Snittlistan.Web.Areas.V2.Indexes;
     using Snittlistan.Web.Areas.V2.ViewModels;
@@ -426,6 +427,11 @@
             }
 
             roster.UpdateWith(Trace.CorrelationManager.ActivityId, update);
+
+            if (vm.SendUpdateMail || true)
+            {
+                PublishMessage(new InitiateUpdateMailEvent(roster.Id, Trace.CorrelationManager.ActivityId));
+            }
 
             return RedirectToAction("View", new { season = roster.Season, turn = roster.Turn });
         }

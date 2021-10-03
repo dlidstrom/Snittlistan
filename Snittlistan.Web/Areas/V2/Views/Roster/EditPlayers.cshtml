@@ -13,7 +13,7 @@
             "Roster",
             new { Model.RosterViewModel.Header.RosterId },
             FormMethod.Post,
-            new { @class = "form-horizontal"}))
+            new { @class = "form-horizontal" }))
         {
             @Html.Hidden("IsFourPlayer", Model.RosterViewModel.IsFourPlayer)
             @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
@@ -95,7 +95,7 @@
                         <th>Bord</th>
                         <th>Namn</th>
                     </tr>
-                    @for (var i = 0; i < 4; i++ )
+                    @for (var i = 0; i < 4; i++)
                     {
                         <tr>
                             <td class="table-id" rowspan="2">@(i+1)</td>
@@ -202,6 +202,16 @@
                     <label class="checkbox">
                         @Html.CheckBox("preliminary", Model.RosterViewModel.Preliminary) Preliminär (visas inte)
                     </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <label class="checkbox">
+                        @Html.CheckBox("sendUpdateMail", false, new { disabled = true }) Skicka mail till spelarna
+                    </label>
+                    <span class="help-block">
+                        Ett mail kommer skickas till alla spelare som berörs av ändringen, dvs även de som eventuellt byts ut.
+                    </span>
                 </div>
             </div>
             <div class="form-actions">

@@ -1,18 +1,34 @@
-﻿namespace Snittlistan.Web.Models
+﻿#nullable enable
+
+namespace Snittlistan.Web.Models
 {
     using System;
     using System.Configuration;
-    using System.Runtime.CompilerServices;
-    using System.Text;
     using System.Threading.Tasks;
     using System.Web.Mvc;
     using JetBrains.Annotations;
     using Postal;
+    using Snittlistan.Web.Areas.V2.Domain;
     using Snittlistan.Web.Areas.V2.ReadModels;
 
     public static class Emails
     {
-        private static EmailService service;
+        private static EmailService? service;
+
+        public static async Task SendUpdateMail(
+            string recipient,
+            FormattedAuditLog formattedAuditLog)
+        {
+            await Send(
+                "UpdateMail",
+                recipient,
+                "Uttagning har uppdaterats",
+                o =>
+                {
+                    o.FormattedAuditLog = formattedAuditLog;
+                    o.Title = formattedAuditLog.Title;
+                });
+        }
 
         public static async Task SendOneTimePassword(
             string recipient,
@@ -99,7 +115,7 @@
 
         public static void Initialize(string viewsPath)
         {
-            var engines = new ViewEngineCollection
+            ViewEngineCollection engines = new()
             {
                 new FileSystemRazorViewEngine(viewsPath)
             };
@@ -122,7 +138,7 @@
             email.Bcc = moderatorEmails;
             action.Invoke(email);
 
-            await service.SendAsync(email);
+            await service!.SendAsync(email);
         }
     }
 }

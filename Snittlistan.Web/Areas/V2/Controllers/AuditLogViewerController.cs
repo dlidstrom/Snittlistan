@@ -12,7 +12,7 @@
             object model = DocumentSession.Load<object>(id);
             if (model is IAuditLogCapable capable)
             {
-                FormattedAuditLog history = capable.GetAuditLog(DocumentSession);
+                FormattedAuditLog history = capable.GetFormattedAuditLog(DocumentSession);
                 return View(history);
             }
 

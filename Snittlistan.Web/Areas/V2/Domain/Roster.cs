@@ -3,8 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using Raven.Abstractions;
+    using Raven.Abstractions.Linq;
     using Raven.Client;
 
     public class Roster : IAuditLogCapable
@@ -36,6 +36,24 @@
             IsFourPlayer = isFourPlayer;
             OilPattern = oilPattern ?? new OilPatternInformation(string.Empty, string.Empty);
             AuditLogEntries = auditLogEntries ?? new List<AuditLogEntry>();
+
+            // fixup the state
+            foreach (AuditLogEntry item in AuditLogEntries)
+            {
+                string[] playersBefore = ((dynamic)item.Before).Players;
+                string[] acceptedPlayersBefore = ((dynamic)item.Before).AcceptedPlayers;
+                RosterState before = new(
+                    playersBefore,
+                    acceptedPlayersBefore);
+                item.SetBefore(before);
+
+                string[] playersAfter = ((dynamic)item.After).Players;
+                string[] acceptedPlayersAfter = ((dynamic)item.After).AcceptedPlayers;
+                RosterState after = new(
+                    playersAfter,
+                    acceptedPlayersAfter);
+                item.SetAfter(after);
+            }
         }
 
         public string Id { get; set; }
@@ -222,11 +240,21 @@
             };
         }
 
-        public FormattedAuditLog GetAuditLog(IDocumentSession documentSession)
+        public FormattedAuditLog GetFormattedAuditLog(IDocumentSession documentSession, Guid correlationId)
+        {
+            return DoGetAuditLog(documentSession, AuditLogEntries.Where(x => x.CorrelationId == correlationId));
+        }
+
+        public FormattedAuditLog GetFormattedAuditLog(IDocumentSession documentSession)
+        {
+            return DoGetAuditLog(documentSession, AuditLogEntries);
+        }
+
+        private FormattedAuditLog DoGetAuditLog(IDocumentSession documentSession, IEnumerable<AuditLogEntry> auditLogEntries)
         {
             return new FormattedAuditLog(
                 $"{Team} - {Opponent}, Omgång {Turn}, {Date:yyyy-MM-dd HH:mm}",
-                AuditLogEntries.Select(Format).ToArray());
+                auditLogEntries.Select(Format).ToArray());
 
             FormattedAuditLogEntry Format(AuditLogEntry entry)
             {

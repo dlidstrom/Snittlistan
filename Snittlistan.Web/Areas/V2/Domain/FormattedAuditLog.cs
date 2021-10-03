@@ -11,6 +11,7 @@
         }
 
         public string Title { get; }
+
         public FormattedAuditLogEntry[] Entries { get; }
     }
 }

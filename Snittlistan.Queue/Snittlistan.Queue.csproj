@@ -63,6 +63,8 @@
     <Compile Include="Messages\OneTimeKeyEvent.cs" />
     <Compile Include="Messages\RegisterMatchesMessage.cs" />
     <Compile Include="Messages\RegisterMatchMessage.cs" />
+    <Compile Include="Messages\InitiateUpdateMailEvent.cs" />
+    <Compile Include="Messages\SendUpdateMailEvent.cs" />
     <Compile Include="Messages\TaskRequest.cs" />
     <Compile Include="Messages\UserInvitedEvent.cs" />
     <Compile Include="Messages\VerifyMatchesMessage.cs" />

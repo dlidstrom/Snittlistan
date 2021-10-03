@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers.Api
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Controllers.Api
 {
     using System;
     using System.Collections.Generic;
@@ -56,6 +58,10 @@
                 new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
             switch (taskObject)
             {
+                case InitiateUpdateMailEvent @event:
+                    return Handle(@event);
+                case SendUpdateMailEvent @event:
+                    return await Handle(@event);
                 case OneTimeKeyEvent @event:
                     return await Handle(@event);
                 case VerifyMatchMessage message:
@@ -83,6 +89,34 @@
             }
 
             Log.Error($"Unhandled task {taskObject.GetType()}");
+            return Ok();
+        }
+
+        private IHttpActionResult Handle(InitiateUpdateMailEvent initiateUpdateMailEvent)
+        {
+            Roster roster = DocumentSession.Load<Roster>(initiateUpdateMailEvent.RosterId);
+            AuditLogEntry auditLogEntry = roster.AuditLogEntries.Single(x => x.CorrelationId == initiateUpdateMailEvent.CorrelationId);
+            RosterState before = (RosterState)auditLogEntry.Before;
+            RosterState after = (RosterState)auditLogEntry.After;
+            IEnumerable<string> affectedPlayers = before.Players.Concat(after.Players);
+            foreach (string playerId in new HashSet<string>(affectedPlayers))
+            {
+                SendUpdateMailEvent message = new(
+                    initiateUpdateMailEvent.RosterId,
+                    playerId,
+                    initiateUpdateMailEvent.CorrelationId);
+                PublishMessage(message);
+            }
+
+            return Ok();
+        }
+
+        private async Task<IHttpActionResult> Handle(SendUpdateMailEvent sendUpdateMailEvent)
+        {
+            Player player = DocumentSession.Load<Player>(sendUpdateMailEvent.PlayerId);
+            Roster roster = DocumentSession.Load<Roster>(sendUpdateMailEvent.RosterId);
+            FormattedAuditLog formattedAuditLog = roster.GetFormattedAuditLog(DocumentSession, sendUpdateMailEvent.CorrelationId);
+            await Emails.SendUpdateMail(player.Email, formattedAuditLog);
             return Ok();
         }
 

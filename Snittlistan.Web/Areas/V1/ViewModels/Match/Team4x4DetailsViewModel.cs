@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V1.ViewModels.Match
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V1.ViewModels.Match
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;

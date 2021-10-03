@@ -1,0 +1,29 @@
+﻿@model dynamic
+To: @Model.Bcc
+From: @Model.From
+Subject: @Model.Subject
+Content-Type: text/html; charset=utf-8
+
+<p>
+    Skulle skickas till @Model.To
+</p>
+<p>
+    Laguttagningen har uppdaterats.
+</p>
+<p>
+    <h1>@Model.Title</h1>
+
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>Användare</th>
+            <th>Åtgärd</th>
+        </tr>
+        @foreach (var item in Model.FormattedAuditLog.Entries)
+        {
+            <tr>
+                <td>@item.UserId</td>
+                <td>@item.Action</td>
+            </tr>
+        }
+    </table>
+</p>

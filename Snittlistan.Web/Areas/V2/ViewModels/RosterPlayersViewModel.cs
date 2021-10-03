@@ -1,4 +1,4 @@
-namespace Snittlistan.Web.Areas.V2.ViewModels
+ï»¿namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -40,31 +40,33 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public string TeamLeader { get; set; }
 
+        public bool SendUpdateMail { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             HashSet<string> hash;
             if (IsFourPlayer)
             {
-                if (Player1 == null) yield return new ValidationResult("Ange namn på spelare 1");
-                if (Player2 == null) yield return new ValidationResult("Ange namn på spelare 2");
-                if (Player3 == null) yield return new ValidationResult("Ange namn på spelare 3");
-                if (Player4 == null) yield return new ValidationResult("Ange namn på spelare 4");
+                if (Player1 == null) yield return new ValidationResult("Ange namn pÃ¥ spelare 1");
+                if (Player2 == null) yield return new ValidationResult("Ange namn pÃ¥ spelare 2");
+                if (Player3 == null) yield return new ValidationResult("Ange namn pÃ¥ spelare 3");
+                if (Player4 == null) yield return new ValidationResult("Ange namn pÃ¥ spelare 4");
                 hash = new HashSet<string>(new[] { Player1, Player2, Player3, Player4 }.Where(x => x != null));
                 if (hash.Count != 4)
                 {
-                    yield return new ValidationResult("Någon spelare vald flera gånger");
+                    yield return new ValidationResult("NÃ¥gon spelare vald flera gÃ¥nger");
                 }
             }
             else
             {
-                if (Table1Player1 == null) yield return new ValidationResult("Ange namn på spelare 1");
-                if (Table1Player2 == null) yield return new ValidationResult("Ange namn på spelare 2");
-                if (Table2Player1 == null) yield return new ValidationResult("Ange namn på spelare 3");
-                if (Table2Player2 == null) yield return new ValidationResult("Ange namn på spelare 4");
-                if (Table3Player1 == null) yield return new ValidationResult("Ange namn på spelare 5");
-                if (Table3Player2 == null) yield return new ValidationResult("Ange namn på spelare 6");
-                if (Table4Player1 == null) yield return new ValidationResult("Ange namn på spelare 7");
-                if (Table4Player2 == null) yield return new ValidationResult("Ange namn på spelare 8");
+                if (Table1Player1 == null) yield return new ValidationResult("Ange namn pÃ¥ spelare 1");
+                if (Table1Player2 == null) yield return new ValidationResult("Ange namn pÃ¥ spelare 2");
+                if (Table2Player1 == null) yield return new ValidationResult("Ange namn pÃ¥ spelare 3");
+                if (Table2Player2 == null) yield return new ValidationResult("Ange namn pÃ¥ spelare 4");
+                if (Table3Player1 == null) yield return new ValidationResult("Ange namn pÃ¥ spelare 5");
+                if (Table3Player2 == null) yield return new ValidationResult("Ange namn pÃ¥ spelare 6");
+                if (Table4Player1 == null) yield return new ValidationResult("Ange namn pÃ¥ spelare 7");
+                if (Table4Player2 == null) yield return new ValidationResult("Ange namn pÃ¥ spelare 8");
                 hash = new HashSet<string>(new[]
                 {
                     Table1Player1,
@@ -78,7 +80,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                 }.Where(x => x != null));
                 if (hash.Count != 8)
                 {
-                    yield return new ValidationResult("Någon spelare vald flera gånger");
+                    yield return new ValidationResult("NÃ¥gon spelare vald flera gÃ¥nger");
                 }
             }
 
