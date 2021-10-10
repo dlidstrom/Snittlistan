@@ -1,4 +1,4 @@
-﻿@model dynamic
+﻿@model Emails.UpdateMailViewModel
 To: @Model.Bcc
 From: @Model.From
 Subject: @Model.Subject
@@ -11,7 +11,7 @@ Content-Type: text/html; charset=utf-8
     Laguttagningen har uppdaterats.
 </p>
 <p>
-    <h1>@Model.Title</h1>
+    <h1>@Model.FormattedAuditLog.Title</h1>
 
     <table class="table table-bordered table-striped">
         <tr>

@@ -19,15 +19,25 @@ namespace Snittlistan.Web.Models
             string recipient,
             FormattedAuditLog formattedAuditLog)
         {
-            await Send(
-                "UpdateMail",
-                recipient,
-                "Uttagning har uppdaterats",
-                o =>
-                {
-                    o.FormattedAuditLog = formattedAuditLog;
-                    o.Title = formattedAuditLog.Title;
-                });
+            await service!.SendAsync(
+                new UpdateMailViewModel(recipient, ConfigurationManager.AppSettings["OwnerEmail"], formattedAuditLog));
+        }
+
+        public class UpdateMailViewModel : Email
+        {
+            public UpdateMailViewModel(string to, string bcc, FormattedAuditLog formattedAuditLog)
+                : base("UpdateMail")
+            {
+                To = to;
+                Bcc = bcc;
+                FormattedAuditLog = formattedAuditLog;
+            }
+
+            public string Bcc { get; }
+            public string From { get; } = ConfigurationManager.AppSettings["OwnerEmail"];
+            public string Subject { get; } = "Uttagning har uppdaterats";
+            public string To { get; }
+            public FormattedAuditLog FormattedAuditLog { get; }
         }
 
         public static async Task SendOneTimePassword(
