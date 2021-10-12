@@ -1,10 +1,11 @@
-﻿namespace Snittlistan.Web.Areas.V2.Domain
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Domain
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using Raven.Abstractions;
-    using Raven.Abstractions.Linq;
     using Raven.Client;
 
     public class Roster : IAuditLogCapable
@@ -38,21 +39,52 @@
             AuditLogEntries = auditLogEntries ?? new List<AuditLogEntry>();
 
             // fixup the state
-            foreach (AuditLogEntry item in AuditLogEntries)
+            if (AuditLogEntries.Any(x => x.Before.GetType() != typeof(RosterState)))
             {
-                string[] playersBefore = ((dynamic)item.Before).Players;
-                string[] acceptedPlayersBefore = ((dynamic)item.Before).AcceptedPlayers;
-                RosterState before = new(
-                    playersBefore,
-                    acceptedPlayersBefore);
-                item.SetBefore(before);
+                foreach (AuditLogEntry item in AuditLogEntries)
+                {
+                    string[] playersBefore = Array.Empty<string>();
+                    try
+                    {
+                        playersBefore = ((dynamic)item.Before).Players;
+                    }
+                    catch (Exception)
+                    {
+                    }
 
-                string[] playersAfter = ((dynamic)item.After).Players;
-                string[] acceptedPlayersAfter = ((dynamic)item.After).AcceptedPlayers;
-                RosterState after = new(
-                    playersAfter,
-                    acceptedPlayersAfter);
-                item.SetAfter(after);
+                    string[] acceptedPlayersBefore = Array.Empty<string>();
+                    try
+                    {
+                        acceptedPlayersBefore = ((dynamic)item.Before).AcceptedPlayers;
+                    }
+                    catch (Exception)
+                    {
+                    }
+
+                    RosterState before = new(playersBefore, acceptedPlayersBefore);
+                    item.SetBefore(before);
+
+                    string[] playersAfter = Array.Empty<string>();
+                    try
+                    {
+                        playersAfter = ((dynamic)item.After).Players;
+                    }
+                    catch (Exception)
+                    {
+                    }
+
+                    string[] acceptedPlayersAfter = Array.Empty<string>();
+                    try
+                    {
+                        acceptedPlayersAfter = ((dynamic)item.After).AcceptedPlayers;
+                    }
+                    catch (Exception)
+                    {
+                    }
+
+                    RosterState after = new(playersAfter, acceptedPlayersAfter);
+                    item.SetAfter(after);
+                }
             }
         }
 
@@ -231,13 +263,9 @@
             AcceptedPlayers = new HashSet<string>(AcceptedPlayers.Concat(new[] { playerId })).ToList();
         }
 
-        private object GetState()
+        private RosterState GetState()
         {
-            return new
-            {
-                Players = Players.ToArray(),
-                AcceptedPlayers = AcceptedPlayers.ToArray()
-            };
+            return new RosterState(Players.ToArray(), AcceptedPlayers.ToArray());
         }
 
         public FormattedAuditLog GetFormattedAuditLog(IDocumentSession documentSession, Guid correlationId)

@@ -1,11 +1,10 @@
-namespace Snittlistan.Web.Areas.V2.Domain.Match
+﻿namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using Commentary;
     using EventStoreLite;
-    using JetBrains.Annotations;
     using Newtonsoft.Json;
     using Raven.Abstractions;
     using Snittlistan.Queue.Messages;
@@ -236,7 +235,6 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         }
 
         // events
-        [UsedImplicitly]
         private void Apply(MatchResult4Registered e)
         {
             RosterId = e.RosterId;
@@ -246,7 +244,6 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             rosterPlayers = new HashSet<string>(e.RosterPlayers);
         }
 
-        [UsedImplicitly]
         private void Apply(Serie4Registered e)
         {
             registeredSeries++;
@@ -265,24 +262,20 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             }
         }
 
-        [UsedImplicitly]
         private void Apply(MedalsAwarded e)
         {
             medalsAwarded = true;
         }
 
-        [UsedImplicitly]
         private void Apply(ClearMedals e)
         {
             medalsAwarded = false;
         }
 
-        [UsedImplicitly]
         private void Apply(AwardedMedal e)
         {
         }
 
-        [UsedImplicitly]
         private void Apply(MatchCommentaryEvent e)
         {
         }

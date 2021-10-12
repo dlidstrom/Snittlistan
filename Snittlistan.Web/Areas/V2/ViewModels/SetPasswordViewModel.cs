@@ -2,9 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
-    using JetBrains.Annotations;
 
-    [UsedImplicitly]
     public class SetPasswordViewModel
     {
         [HiddenInput]

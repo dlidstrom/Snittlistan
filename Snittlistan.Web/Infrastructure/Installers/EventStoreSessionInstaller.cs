@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure.Installers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Installers
 {
     using System;
     using Castle.Core;
@@ -25,7 +27,7 @@
 
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            container.Register(
+            _ = container.Register(
                 func.Invoke(
                     Component.For<IEventStoreSession>()
                         .UsingFactoryMethod(CreateEventStoreSession)));

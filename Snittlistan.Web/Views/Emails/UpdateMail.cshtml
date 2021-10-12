@@ -1,29 +1,71 @@
-﻿@model Emails.UpdateMailViewModel
+﻿@model Snittlistan.Web.Models.Emails.UpdateMailViewModel
 To: @Model.Bcc
 From: @Model.From
 Subject: @Model.Subject
 Content-Type: text/html; charset=utf-8
 
-<p>
-    Skulle skickas till @Model.To
-</p>
-<p>
-    Laguttagningen har uppdaterats.
-</p>
-<p>
-    <h1>@Model.FormattedAuditLog.Title</h1>
-
-    <table class="table table-bordered table-striped">
-        <tr>
-            <th>Användare</th>
-            <th>Åtgärd</th>
-        </tr>
-        @foreach (var item in Model.FormattedAuditLog.Entries)
-        {
+<html>
+<body>
+    <p>
+        Skulle skickas till @Model.To
+    </p>
+    <p>
+        Laguttagningen har uppdaterats.
+    </p>
+    <p>
+        <h1>@Model.FormattedAuditLog.Title</h1>
+        <table>
             <tr>
-                <td>@item.UserId</td>
-                <td>@item.Action</td>
+                <th>Bord</th>
+                <th>Namn</th>
             </tr>
-        }
-    </table>
-</p>
+            @for (int i = 0; i < 4; i++)
+            {
+                <tr>
+                    <td rowspan="2">@(i + 1)</td>
+                    <td>
+                        @(Model.Players.ElementAtOrDefault(2 * i))
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @(Model.Players.ElementAtOrDefault(2 * i + 1))
+                    </td>
+                </tr>
+            }
+
+            <tr>
+                <td rowspan="2">R</td>
+                <td>
+                    @{
+                        var reserve1 = Model.Players.ElementAtOrDefault(8);
+                    }
+                    @if (reserve1 != null)
+                    {
+                        @reserve1
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @{
+                        var reserve2 = Model.Players.ElementAtOrDefault(9);
+                    }
+                    @if (reserve2 != null)
+                    {
+                        @reserve2
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Lagledare
+                </td>
+                <td>
+                    @Model.TeamLeader
+                </td>
+            </tr>
+        </table>
+    </p>
+</body>
+</html>

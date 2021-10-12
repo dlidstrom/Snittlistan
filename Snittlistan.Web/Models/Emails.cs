@@ -5,7 +5,6 @@ namespace Snittlistan.Web.Models
     using System;
     using System.Configuration;
     using System.Threading.Tasks;
-    using System.Web.Mvc;
     using JetBrains.Annotations;
     using Postal;
     using Snittlistan.Web.Areas.V2.Domain;
@@ -13,39 +12,38 @@ namespace Snittlistan.Web.Models
 
     public static class Emails
     {
-        private static EmailService? service;
-
-        public static async Task SendUpdateMail(
-            string recipient,
-            FormattedAuditLog formattedAuditLog)
-        {
-            await service!.SendAsync(
-                new UpdateMailViewModel(recipient, ConfigurationManager.AppSettings["OwnerEmail"], formattedAuditLog));
-        }
-
         public class UpdateMailViewModel : Email
         {
-            public UpdateMailViewModel(string to, string bcc, FormattedAuditLog formattedAuditLog)
+            public UpdateMailViewModel(
+                string to,
+                FormattedAuditLog formattedAuditLog,
+                string[] players,
+                string? teamLeader)
                 : base("UpdateMail")
             {
                 To = to;
-                Bcc = bcc;
                 FormattedAuditLog = formattedAuditLog;
+                Players = players;
+                TeamLeader = teamLeader;
             }
 
-            public string Bcc { get; }
+            public string Bcc { get; } = ConfigurationManager.AppSettings["OwnerEmail"];
             public string From { get; } = ConfigurationManager.AppSettings["OwnerEmail"];
             public string Subject { get; } = "Uttagning har uppdaterats";
             public string To { get; }
             public FormattedAuditLog FormattedAuditLog { get; }
+            public string[] Players { get; }
+            public string? TeamLeader { get; }
         }
 
         public static async Task SendOneTimePassword(
+            IEmailService service,
             string recipient,
             string subject,
             string oneTimePassword)
         {
             await Send(
+                service,
                 "OneTimePassword",
                 recipient,
                 subject,
@@ -55,9 +53,14 @@ namespace Snittlistan.Web.Models
                 });
         }
 
-        public static async Task InviteUser(string recipient, string subject, string activationUri)
+        public static async Task InviteUser(
+            IEmailService service,
+            string recipient,
+            string subject,
+            string activationUri)
         {
             await Send(
+                service,
                 "InviteUser",
                 recipient,
                 subject,
@@ -67,9 +70,15 @@ namespace Snittlistan.Web.Models
                 });
         }
 
-        public static async Task UserRegistered(string recipient, string subject, string id, string activationKey)
+        public static async Task UserRegistered(
+            IEmailService service,
+            string recipient,
+            string subject,
+            string id,
+            string activationKey)
         {
             await Send(
+                service,
                 "UserRegistered",
                 recipient,
                 subject,
@@ -81,6 +90,7 @@ namespace Snittlistan.Web.Models
         }
 
         public static async Task MatchRegistered(
+            IEmailService service,
             string team,
             string opponent,
             int score,
@@ -90,6 +100,7 @@ namespace Snittlistan.Web.Models
         {
             string subject = $"{team} mot {opponent}: {score} - {opponentScore}";
             await Send(
+                service,
                 "MatchRegistered",
                 ConfigurationManager.AppSettings["OwnerEmail"],
                 subject,
@@ -105,35 +116,36 @@ namespace Snittlistan.Web.Models
                 });
         }
 
-        public static async Task SendAdminMail(string subject, string content)
+        public static async Task SendAdminMail(
+            IEmailService service,
+            string subject,
+            string content)
         {
             await Send(
+                service,
                 "Mail",
                 ConfigurationManager.AppSettings["OwnerEmail"],
                 subject,
                 o => o.Content = content);
         }
 
-        public static async Task SendMail(string email, string subject, string content)
+        public static async Task SendMail(
+            IEmailService service,
+            string email,
+            string subject,
+            string content)
         {
             await Send(
+                service,
                 "Mail",
                 email,
                 subject,
                 o => o.Content = content);
         }
 
-        public static void Initialize(string viewsPath)
-        {
-            ViewEngineCollection engines = new()
-            {
-                new FileSystemRazorViewEngine(viewsPath)
-            };
-            service = new EmailService(engines);
-        }
-
         private static async Task Send(
-            [AspMvcView] string view,
+            IEmailService service,
+            string view,
             string recipient,
             string subject,
             Action<dynamic> action)
@@ -148,7 +160,7 @@ namespace Snittlistan.Web.Models
             email.Bcc = moderatorEmails;
             action.Invoke(email);
 
-            await service!.SendAsync(email);
+            await service.SendAsync(email);
         }
     }
 }

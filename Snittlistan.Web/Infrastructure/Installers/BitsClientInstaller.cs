@@ -1,6 +1,7 @@
-﻿namespace Snittlistan.Web.Infrastructure.Installers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Installers
 {
-    using System;
     using System.Net.Http;
     using System.Runtime.Caching;
     using Bits;
@@ -21,11 +22,11 @@
 
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            var bitsClient = new BitsClient(
+            BitsClient bitsClient = new(
                 apiKey,
                 httpClient,
                 MemoryCache.Default);
-            container.Register(Component.For<IBitsClient>().Instance(bitsClient));
+            _ = container.Register(Component.For<IBitsClient>().Instance(bitsClient));
         }
     }
 }

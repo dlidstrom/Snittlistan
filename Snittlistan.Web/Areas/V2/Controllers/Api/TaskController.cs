@@ -16,6 +16,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
     using Infrastructure.Bits.Contracts;
     using Newtonsoft.Json;
     using NLog;
+    using Postal;
     using Raven.Abstractions;
     using Raven.Client;
     using Snittlistan.Queue.Messages;
@@ -36,10 +37,12 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private readonly IBitsClient bitsClient;
+        private readonly IEmailService emailService;
 
-        public TaskController(IBitsClient bitsClient)
+        public TaskController(IBitsClient bitsClient, IEmailService emailService)
         {
             this.bitsClient = bitsClient;
+            this.emailService = emailService;
         }
 
         public async Task<IHttpActionResult> Post(TaskRequest request)
@@ -52,8 +55,12 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
 
         private async Task<IHttpActionResult> HandleTask(TaskRequest request)
         {
-            if (ModelState.IsValid == false) return BadRequest(ModelState);
-            object taskObject = JsonConvert.DeserializeObject(
+            if (ModelState.IsValid == false)
+            {
+                return BadRequest(ModelState);
+            }
+
+            object? taskObject = JsonConvert.DeserializeObject(
                 request.TaskJson,
                 new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
             switch (taskObject)
@@ -86,9 +93,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                     return await Handle(message);
                 case GetPlayersFromBitsMessage message:
                     return await Handle(message);
+                default:
+                    break;
             }
 
-            Log.Error($"Unhandled task {taskObject.GetType()}");
+            Log.Error($"Unhandled task {taskObject?.GetType().ToString() ?? "unknown type"}");
             return Ok();
         }
 
@@ -114,9 +123,19 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
         private async Task<IHttpActionResult> Handle(SendUpdateMailEvent sendUpdateMailEvent)
         {
             Player player = DocumentSession.Load<Player>(sendUpdateMailEvent.PlayerId);
-            Roster roster = DocumentSession.Load<Roster>(sendUpdateMailEvent.RosterId);
+            Roster roster = DocumentSession.Include<Roster>(x => x.Players).Load<Roster>(sendUpdateMailEvent.RosterId);
             FormattedAuditLog formattedAuditLog = roster.GetFormattedAuditLog(DocumentSession, sendUpdateMailEvent.CorrelationId);
-            await Emails.SendUpdateMail(player.Email, formattedAuditLog);
+            Player[] players = DocumentSession.Load<Player>(roster.Players);
+            string teamLeader =
+                roster.TeamLeader != null
+                ? DocumentSession.Load<Player>(roster.TeamLeader).Name
+                : string.Empty;
+            Emails.UpdateMailViewModel email = new(
+                player.Email,
+                formattedAuditLog,
+                players.Select(x => x.Name).ToArray(),
+                teamLeader);
+            await emailService.SendAsync(email);
             return Ok();
         }
 
@@ -128,13 +147,13 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                 .ToArray();
 
             // update existing players by matching on license number
-            var playersByLicense = playersResult.Data.ToDictionary(x => x.LicNbr);
+            Dictionary<string, PlayerItem> playersByLicense = playersResult.Data.ToDictionary(x => x.LicNbr);
             foreach (Player player in players.Where(x => x.PlayerItem != null))
             {
                 if (playersByLicense.TryGetValue(player.PlayerItem.LicNbr, out PlayerItem playerItem))
                 {
                     player.PlayerItem = playerItem;
-                    playersByLicense.Remove(player.PlayerItem.LicNbr);
+                    _ = playersByLicense.Remove(player.PlayerItem.LicNbr);
                     Log.Info($"Updating player with existing PlayerItem: {player.PlayerItem.LicNbr}");
                 }
                 else
@@ -145,7 +164,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
 
             // add missing players, i.e. what is left from first step
             // try first to match on name, update those, add the rest
-            var playerNamesWithoutPlayerItem = players.Where(x => x.PlayerItem == null).ToDictionary(x => x.Name);
+            Dictionary<string, Player> playerNamesWithoutPlayerItem = players.Where(x => x.PlayerItem == null).ToDictionary(x => x.Name);
             foreach (PlayerItem playerItem in playersByLicense.Values)
             {
                 // look for name
@@ -158,7 +177,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                 else
                 {
                     // create new
-                    var newPlayer = new Player(
+                    Player newPlayer = new(
                         $"{playerItem.FirstName} {playerItem.SurName}",
                         playerItem.Email,
                         playerItem.Inactive ? Player.Status.Inactive : Player.Status.Active,
@@ -187,7 +206,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                     .ProjectFromIndexFieldsInto<RosterSearchTerms.Result>()
                     .ToArray();
             Roster[] rosters = DocumentSession.Load<Roster>(rosterSearchTerms.Select(x => x.Id));
-            var foundMatchIds = new HashSet<int>();
+            HashSet<int> foundMatchIds = new();
 
             // Team
             Log.Info($"Fetching teams");
@@ -199,12 +218,19 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                 DivisionResult[] divisionResults = await bitsClient.GetDivisions(teamResult.TeamId, websiteConfig.SeasonId);
 
                 // Match
-                if (divisionResults.Length != 1) throw new Exception($"Unexpected number of divisions: {divisionResults.Length}");
+                if (divisionResults.Length != 1)
+                {
+                    throw new Exception($"Unexpected number of divisions: {divisionResults.Length}");
+                }
+
                 DivisionResult divisionResult = divisionResults[0];
                 Log.Info($"Fetching match rounds");
                 MatchRound[] matchRounds = await bitsClient.GetMatchRounds(teamResult.TeamId, divisionResult.DivisionId, websiteConfig.SeasonId);
-                var dict = matchRounds.ToDictionary(x => x.MatchId);
-                foreach (int key in dict.Keys) foundMatchIds.Add(key);
+                Dictionary<int, MatchRound> dict = matchRounds.ToDictionary(x => x.MatchId);
+                foreach (int key in dict.Keys)
+                {
+                    _ = foundMatchIds.Add(key);
+                }
 
                 // update existing rosters
                 foreach (Roster roster in rosters.Where(x => dict.ContainsKey(x.BitsMatchId)))
@@ -238,7 +264,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                 }
 
                 // add missing rosters
-                var existingMatchIds = new HashSet<int>(rosters.Select(x => x.BitsMatchId));
+                HashSet<int> existingMatchIds = new(rosters.Select(x => x.BitsMatchId));
                 foreach (int matchId in dict.Keys.Where(x => existingMatchIds.Contains(x) == false))
                 {
                     Log.Info($"Adding match {matchId}");
@@ -260,7 +286,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                         throw new Exception($"Unknown clubs: {matchRound.HomeTeamClubId} {matchRound.AwayTeamClubId}");
                     }
 
-                    var roster = new Roster(
+                    Roster roster = new(
                         matchRound.MatchSeason,
                         matchRound.MatchRoundId,
                         matchRound.MatchId,
@@ -284,8 +310,15 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             {
                 string body = $"Rosters to remove: {string.Join(",", toRemove.Select(x => $"Id={x.Id} BitsMatchId={x.BitsMatchId}"))}";
                 Log.Info(body);
-                foreach (Roster roster in toRemove) DocumentSession.Delete(roster);
-                await Emails.SendAdminMail($"Removed rosters for {TenantConfiguration.FullTeamName}", body);
+                foreach (Roster roster in toRemove)
+                {
+                    DocumentSession.Delete(roster);
+                }
+
+                await Emails.SendAdminMail(
+                    emailService,
+                    $"Removed rosters for {TenantConfiguration.FullTeamName}",
+                    body);
             }
 
 
@@ -295,20 +328,28 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
         private async Task<IHttpActionResult> Handle(OneTimeKeyEvent @event)
         {
             const string Subject = "Logga in till Snittlistan";
-            await Emails.SendOneTimePassword(@event.Email, Subject, @event.OneTimePassword);
+            await Emails.SendOneTimePassword(
+                emailService,
+                @event.Email,
+                Subject,
+                @event.OneTimePassword);
             return Ok();
         }
 
         private async Task<IHttpActionResult> Handle(VerifyMatchMessage message)
         {
             Roster roster = DocumentSession.Load<Roster>(message.RosterId);
-            if (roster.IsVerified && message.Force == false) return Ok();
+            if (roster.IsVerified && message.Force == false)
+            {
+                return Ok();
+            }
+
             WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             HeadInfo result = await bitsClient.GetHeadInfo(roster.BitsMatchId);
             ParseHeaderResult header = BitsParser.ParseHeader(result, websiteConfig.ClubId);
 
             // chance to update roster values
-            var update = new Roster.Update(
+            Roster.Update update = new(
                 Roster.ChangeType.VerifyMatchMessage,
                 "system")
             {
@@ -325,7 +366,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                     .ToArray()
                     .Where(x => x.PlayerItem?.LicNbr != null)
                     .ToArray();
-                var parser = new BitsParser(players);
+                BitsParser parser = new(players);
                 if (roster.IsFourPlayer)
                 {
                     MatchResult4 matchResult = EventStoreSession.Load<MatchResult4>(roster.MatchResultId);
@@ -346,7 +387,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                     MatchResult matchResult = EventStoreSession.Load<MatchResult>(roster.MatchResultId);
                     ParseResult parseResult = parser.Parse(bitsMatchResult, websiteConfig.ClubId);
                     update.Players = GetPlayerIds(parseResult);
-                    var resultsForPlayer = DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
+                    Dictionary<string, ResultForPlayerIndex.Result> resultsForPlayer = DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
                         .Where(x => x.Season == roster.Season)
                         .ToArray()
                         .ToDictionary(x => x.PlayerId);
@@ -379,7 +420,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             Roster pendingMatch = DocumentSession.Load<Roster>(message.RosterId);
             try
             {
-                var parser = new BitsParser(players);
+                BitsParser parser = new(players);
                 BitsMatchResult bitsMatchResult = await bitsClient.GetBitsMatchResult(pendingMatch.BitsMatchId);
                 if (bitsMatchResult.HeadInfo.MatchFinished == false)
                 {
@@ -437,12 +478,12 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             IEnumerable<string> query = from game in parse4Result.Series.First().Games
                                         select game.Player;
             string[] playerIds = query.ToArray();
-            var playerIdsWithoutReserve = new HashSet<string>(playerIds);
+            HashSet<string> playerIdsWithoutReserve = new(playerIds);
             IEnumerable<string> restQuery = from serie in parse4Result.Series
                                             from game in serie.Games
                                             where playerIdsWithoutReserve.Contains(game.Player) == false
                                             select game.Player;
-            var allPlayerIds = playerIds.Concat(
+            List<string> allPlayerIds = playerIds.Concat(
                 new HashSet<string>(restQuery).Where(x => playerIdsWithoutReserve.Contains(x) == false)).ToList();
             return allPlayerIds;
         }
@@ -453,13 +494,13 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                                         from game in new[] { table.Game1, table.Game2 }
                                         select game.Player;
             string[] playerIds = query.ToArray();
-            var playerIdsWithoutReserve = new HashSet<string>(playerIds);
+            HashSet<string> playerIdsWithoutReserve = new(playerIds);
             IEnumerable<string> restQuery = from serie in parseResult.Series
                                             from table in serie.Tables
                                             from game in new[] { table.Game1, table.Game2 }
                                             where playerIdsWithoutReserve.Contains(game.Player) == false
                                             select game.Player;
-            var allPlayerIds = playerIds.Concat(
+            List<string> allPlayerIds = playerIds.Concat(
                 new HashSet<string>(restQuery).Where(x => playerIdsWithoutReserve.Contains(x) == false)).ToList();
             return allPlayerIds;
         }
@@ -494,7 +535,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             Roster[] rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
                 .Where(x => x.Season == season)
                 .ToArray();
-            var toVerify = new List<VerifyMatchMessage>();
+            List<VerifyMatchMessage> toVerify = new();
             foreach (Roster roster in rosters)
             {
                 if (roster.BitsMatchId == 0)
@@ -534,7 +575,12 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             string activationKey = @event.ActivationKey;
             string id = @event.UserId;
 
-            await Emails.UserRegistered(recipient, Subject, id, activationKey);
+            await Emails.UserRegistered(
+                emailService,
+                recipient,
+                Subject,
+                id,
+                activationKey);
 
             return Ok();
         }
@@ -545,7 +591,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             const string Subject = "Välkommen till Snittlistan!";
             string activationUri = @event.ActivationUri;
 
-            await Emails.InviteUser(recipient, Subject, activationUri);
+            await Emails.InviteUser(
+                emailService,
+                recipient,
+                Subject,
+                activationUri);
 
             return Ok();
         }
@@ -553,6 +603,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
         private async Task<IHttpActionResult> Handle(EmailTask task)
         {
             await Emails.SendMail(
+                emailService,
                 task.Recipient,
                 Encoding.UTF8.GetString(Convert.FromBase64String(task.Subject)),
                 Encoding.UTF8.GetString(Convert.FromBase64String(task.Content)));
@@ -563,12 +614,17 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
         private async Task<IHttpActionResult> Handle(MatchRegisteredEvent @event)
         {
             Roster roster = DocumentSession.Load<Roster>(@event.RosterId);
-            if (roster.IsFourPlayer) return Ok();
+            if (roster.IsFourPlayer)
+            {
+                return Ok();
+            }
+
             string resultSeriesReadModelId = ResultSeriesReadModel.IdFromBitsMatchId(roster.BitsMatchId, roster.Id);
             ResultSeriesReadModel resultSeriesReadModel = DocumentSession.Load<ResultSeriesReadModel>(resultSeriesReadModelId);
             string resultHeaderReadModelId = ResultHeaderReadModel.IdFromBitsMatchId(roster.BitsMatchId, roster.Id);
             ResultHeaderReadModel resultHeaderReadModel = DocumentSession.Load<ResultHeaderReadModel>(resultHeaderReadModelId);
             await Emails.MatchRegistered(
+                emailService,
                 roster.Team,
                 roster.Opponent,
                 @event.Score,

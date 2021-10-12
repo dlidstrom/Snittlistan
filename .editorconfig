@@ -19,3 +19,6 @@ dotnet_analyzer_diagnostic.severity = warning
 
 # IDE0065: Misplaced using directive
 csharp_using_directive_placement = inside_namespace:error
+
+# IDE0045: Convert to conditional expression
+dotnet_diagnostic.IDE0045.severity = silent

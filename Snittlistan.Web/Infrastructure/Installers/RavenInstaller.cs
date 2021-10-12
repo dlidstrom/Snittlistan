@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure.Installers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Installers
 {
     using System;
     using System.Reflection;
@@ -16,29 +18,19 @@
     public class RavenInstaller : IWindsorInstaller
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-        private readonly SiteWideConfiguration siteWideConfiguration;
+        private readonly SiteWideConfiguration? siteWideConfiguration;
         private readonly DocumentStoreMode mode;
 
         public RavenInstaller(SiteWideConfiguration siteWideConfiguration)
         {
             this.siteWideConfiguration = siteWideConfiguration;
-            switch (MvcApplication.Mode)
+            mode = MvcApplication.Mode switch
             {
-                case ApplicationMode.Debug:
-                    mode = DocumentStoreMode.Server;
-                    break;
-
-                case ApplicationMode.Release:
-                    mode = DocumentStoreMode.Server;
-                    break;
-
-                case ApplicationMode.Test:
-                    mode = DocumentStoreMode.InMemory;
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+                ApplicationMode.Debug => DocumentStoreMode.Server,
+                ApplicationMode.Release => DocumentStoreMode.Server,
+                ApplicationMode.Test => DocumentStoreMode.InMemory,
+                _ => throw new ArgumentOutOfRangeException(),
+            };
         }
 
         public RavenInstaller(DocumentStoreMode mode)
@@ -50,12 +42,12 @@
         {
             if (mode == DocumentStoreMode.InMemory)
             {
-                var store = new EmbeddableDocumentStore()
+                EmbeddableDocumentStore store = new()
                 {
                     RunInMemory = true
                 };
                 store.Configuration.Storage.Voron.AllowOn32Bits = true;
-                container.Register(Component.For<IDocumentStore>().Instance(store.Initialize()));
+                _ = container.Register(Component.For<IDocumentStore>().Instance(store.Initialize()));
 #pragma warning disable 618
                 store.Conventions.DefaultQueryingConsistency = ConsistencyOptions.AlwaysWaitForNonStaleResultsAsOfLastWrite;
 #pragma warning restore 618

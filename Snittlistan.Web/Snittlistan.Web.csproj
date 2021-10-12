@@ -293,6 +293,7 @@
     <Compile Include="Infrastructure\ICalFormatter.cs" />
     <Compile Include="Infrastructure\ICommand.cs" />
     <Compile Include="Infrastructure\Installers\ApiControllerInstaller.cs" />
+    <Compile Include="Infrastructure\Installers\EmailServiceInstaller.cs" />
     <Compile Include="Infrastructure\Installers\EventMigratorInstaller.cs" />
     <Compile Include="Infrastructure\Installers\EventStoreSessionInstaller.cs" />
     <Compile Include="Infrastructure\Installers\BitsClientInstaller.cs" />
@@ -302,7 +303,6 @@
     <Compile Include="Infrastructure\IoC\WindsorHttpDependencyResolver.cs" />
     <Compile Include="Infrastructure\HttpNotFoundAwareControllerActionSelector.cs" />
     <Compile Include="Infrastructure\IQuery.cs" />
-    <Compile Include="Infrastructure\JetBrains\Annotations.cs" />
     <Compile Include="Infrastructure\OutlookAgentMessageHandler.cs" />
     <Compile Include="Infrastructure\RateHandler.cs" />
     <Compile Include="Option.cs" />

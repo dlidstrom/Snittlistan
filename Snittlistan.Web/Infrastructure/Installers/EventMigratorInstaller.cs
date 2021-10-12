@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure.Installers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Installers
 {
     using Castle.MicroKernel.Registration;
     using Castle.MicroKernel.SubSystems.Configuration;
@@ -9,7 +11,7 @@
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            container.Register(
+            _ = container.Register(
                 Classes
                     .FromThisAssembly()
                     .BasedOn<IEventMigratorWithResults>()

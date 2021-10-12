@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using EventStoreLite;
-    using JetBrains.Annotations;
     using Newtonsoft.Json;
     using Raven.Abstractions;
     using Snittlistan.Queue.Messages;
@@ -267,7 +266,6 @@
         }
 
         // events
-        [UsedImplicitly]
         private void Apply(MatchResultRegistered e)
         {
             RosterId = e.RosterId;
@@ -279,7 +277,6 @@
             rosterPlayers = new HashSet<string>(e.RosterPlayers);
         }
 
-        [UsedImplicitly]
         private void Apply(SerieRegistered e)
         {
             registeredSeries++;
@@ -301,24 +298,20 @@
             }
         }
 
-        [UsedImplicitly]
         private void Apply(MedalsAwarded e)
         {
             medalsAwarded = true;
         }
 
-        [UsedImplicitly]
         private void Apply(ClearMedals e)
         {
             medalsAwarded = false;
         }
 
-        [UsedImplicitly]
         private void Apply(ScoreAwarded e)
         {
         }
 
-        [UsedImplicitly]
         private void Apply(MatchCommentaryEvent e)
         {
             matchCommentaryAsJson = JsonConvert.SerializeObject(
@@ -326,7 +319,6 @@
                 Formatting.Indented);
         }
 
-        [UsedImplicitly]
         private void Apply(AwardedMedal e)
         {
         }

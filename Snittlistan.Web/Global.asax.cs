@@ -76,7 +76,7 @@
 
         public static string GetAssemblyVersion()
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            Assembly assembly = Assembly.GetExecutingAssembly();
             Version version = assembly.GetName().Version;
             return version.ToString();
         }
@@ -84,6 +84,7 @@
         protected void Application_Start()
         {
             Log.Info("Application Starting");
+
             // site-wide config
             SiteWideDocumentStore = new DocumentStore
             {
@@ -119,10 +120,16 @@
         protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
         {
             HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
-            if (authCookie == null) return;
+            if (authCookie == null)
+            {
+                return;
+            }
 
             FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-            if (authTicket == null) return;
+            if (authTicket == null)
+            {
+                return;
+            }
 
             IDocumentSession session = Container.Resolve<IDocumentSession>();
 
@@ -185,12 +192,12 @@
             new RouteConfig(RouteTable.Routes).Configure();
             WebApiConfig.Register(configuration);
             if (Mode != ApplicationMode.Test)
+            {
                 AreaRegistration.RegisterAllAreas();
+            }
 
             // add model binders
             ModelBinders.Binders.Add(typeof(Guid), new GuidBinder());
-
-            Emails.Initialize(HostingEnvironment.MapPath("~/Views/Emails"));
 
             MsmqGateway.Initialize(ConfigurationManager.AppSettings["TaskQueue"]);
 
@@ -227,7 +234,7 @@
 
                 foreach (TenantConfiguration tenantConfiguration in siteWideConfiguration.TenantConfigurations)
                 {
-                    Container.Register(
+                    _ = Container.Register(
                         Component.For<TenantConfiguration>()
                                  .Instance(tenantConfiguration)
                                  .Named(tenantConfiguration.Hostname));
@@ -236,12 +243,13 @@
                 Container.Kernel.AddHandlerSelector(new HostBasedComponentSelector());
                 string apiKey = Environment.GetEnvironmentVariable("ApiKey");
                 Log.Info($"ApiKey: {apiKey}");
-                var httpClient = new HttpClient(
+                HttpClient httpClient = new(
                     new RateHandler(rate: 1.0, per: 1.0, maxTries: 60,
                         new LoggingHandler(
                             new HttpClientHandler())));
-                Container.Install(
+                _ = Container.Install(
                     new ApiControllerInstaller(),
+                    new EmailServiceInstaller(HostingEnvironment.MapPath("~/Views/Emails")),
                     new BitsClientInstaller(apiKey, httpClient),
                     new ControllerInstaller(),
                     new EventMigratorInstaller(),
