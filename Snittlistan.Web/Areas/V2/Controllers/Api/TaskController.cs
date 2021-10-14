@@ -7,9 +7,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
     using System.Linq;
+    using System.Reflection;
     using System.Text;
     using System.Threading.Tasks;
     using System.Web.Http;
+    using Castle.MicroKernel;
     using Elmah;
     using Infrastructure;
     using Infrastructure.Bits;
@@ -26,6 +28,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
     using Snittlistan.Web.Areas.V2.Indexes;
     using Snittlistan.Web.Areas.V2.Queries;
     using Snittlistan.Web.Areas.V2.ReadModels;
+    using Snittlistan.Web.Areas.V2.Tasks;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Helpers;
     using Snittlistan.Web.Infrastructure.Attributes;
@@ -38,16 +41,36 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private readonly IBitsClient bitsClient;
         private readonly IEmailService emailService;
+        private readonly IKernel kernel;
 
-        public TaskController(IBitsClient bitsClient, IEmailService emailService)
+        public TaskController(IBitsClient bitsClient, IEmailService emailService, IKernel kernel)
         {
             this.bitsClient = bitsClient;
             this.emailService = emailService;
+            this.kernel = kernel;
         }
 
         public async Task<IHttpActionResult> Post(TaskRequest request)
         {
             Log.Info($"Received task {request.TaskJson}");
+            if (ModelState.IsValid == false)
+            {
+                return BadRequest(ModelState);
+            }
+
+            object? taskObject = JsonConvert.DeserializeObject(
+                request.TaskJson,
+                new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+            if (taskObject is null)
+            {
+                return BadRequest("could not deserialize task json");
+            }
+
+            Type handlerType = typeof(ITaskHandler<>).MakeGenericType(taskObject.GetType());
+            object handler = kernel.Resolve(handlerType);
+            MethodInfo method = handler.GetType().GetMethod("Handle");
+            Task task = (Task)method.Invoke(handler, new[] { taskObject });
+            await task;
             IHttpActionResult result = await HandleTask(request);
             Log.Info("Done");
             return result;
@@ -55,11 +78,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
 
         private async Task<IHttpActionResult> HandleTask(TaskRequest request)
         {
-            if (ModelState.IsValid == false)
-            {
-                return BadRequest(ModelState);
-            }
-
             object? taskObject = JsonConvert.DeserializeObject(
                 request.TaskJson,
                 new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });

@@ -127,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="Areas\V2\Tasks\ITaskHandler.cs" />
     <Compile Include="Areas\V2\Controllers\AuditLogViewerController.cs" />
     <Compile Include="Areas\V2\Domain\AuditLogEntry.cs" />
     <Compile Include="Areas\V2\Domain\FormattedAuditLog.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="Areas\V2\Domain\RosterState.cs" />
     <Compile Include="Areas\V2\Extensions.cs" />
     <Compile Include="Areas\V2\IAuditLogCapable.cs" />
+    <Compile Include="Areas\V2\Tasks\SendUpdateMailEventHandler.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\PlayerResult.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\Converter.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\DivisionResult.cs" />
@@ -298,6 +300,7 @@
     <Compile Include="Infrastructure\Installers\EventStoreSessionInstaller.cs" />
     <Compile Include="Infrastructure\Installers\BitsClientInstaller.cs" />
     <Compile Include="Infrastructure\Installers\MsmqInstaller.cs" />
+    <Compile Include="Infrastructure\Installers\TaskHandlerInstaller.cs" />
     <Compile Include="Infrastructure\IoC\HostBasedComponentSelector.cs" />
     <Compile Include="Infrastructure\IoC\WindsorDependencyScope.cs" />
     <Compile Include="Infrastructure\IoC\WindsorHttpDependencyResolver.cs" />

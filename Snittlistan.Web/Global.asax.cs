@@ -250,6 +250,7 @@
                 _ = Container.Install(
                     new ApiControllerInstaller(),
                     new EmailServiceInstaller(HostingEnvironment.MapPath("~/Views/Emails")),
+                    new TaskHandlerInstaller(),
                     new BitsClientInstaller(apiKey, httpClient),
                     new ControllerInstaller(),
                     new EventMigratorInstaller(),
