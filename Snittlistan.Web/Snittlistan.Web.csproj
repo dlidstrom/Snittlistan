@@ -305,9 +305,15 @@
     <Compile Include="Infrastructure\IQuery.cs" />
     <Compile Include="Infrastructure\OutlookAgentMessageHandler.cs" />
     <Compile Include="Infrastructure\RateHandler.cs" />
+    <Compile Include="Models\EmailBase.cs" />
+    <Compile Include="Models\InviteUserEmail.cs" />
+    <Compile Include="Models\MatchRegisteredEmail.cs" />
+    <Compile Include="Models\OneTimePasswordEmail.cs" />
+    <Compile Include="Models\SendEmail.cs" />
+    <Compile Include="Models\UpdateRosterEmail.cs" />
+    <Compile Include="Models\UserRegisteredEmail.cs" />
     <Compile Include="Option.cs" />
     <Compile Include="ViewModels\QuillData.cs" />
-    <Compile Include="Models\Emails.cs" />
     <Compile Include="Models\WebsiteConfig.cs" />
     <Compile Include="ViewModels\UserInvitedViewModel.cs" />
     <Compile Include="Areas\V2\Controllers\UserController.cs" />
@@ -591,7 +597,7 @@
     <Content Include="Views\Emails\Web.config" />
     <Content Include="Views\Emails\_ViewStart.cshtml" />
     <Content Include="Views\Emails\OneTimePassword.cshtml" />
-    <Content Include="Views\Emails\UpdateMail.cshtml" />
+    <Content Include="Views\Emails\UpdateRoster.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

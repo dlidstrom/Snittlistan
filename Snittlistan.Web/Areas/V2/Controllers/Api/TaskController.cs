@@ -130,7 +130,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                 roster.TeamLeader != null
                 ? DocumentSession.Load<Player>(roster.TeamLeader).Name
                 : string.Empty;
-            Emails.UpdateMailViewModel email = new(
+            UpdateRosterEmail email = new(
                 player.Email,
                 formattedAuditLog,
                 players.Select(x => x.Name).ToArray(),
@@ -315,12 +315,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                     DocumentSession.Delete(roster);
                 }
 
-                await Emails.SendAdminMail(
-                    emailService,
+                SendEmail email = SendEmail.ToAdmin(
                     $"Removed rosters for {TenantConfiguration.FullTeamName}",
                     body);
+                await emailService.SendAsync(email);
             }
-
 
             return Ok();
         }
@@ -328,11 +327,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
         private async Task<IHttpActionResult> Handle(OneTimeKeyEvent @event)
         {
             const string Subject = "Logga in till Snittlistan";
-            await Emails.SendOneTimePassword(
-                emailService,
+            OneTimePasswordEmail email = new(
                 @event.Email,
                 Subject,
                 @event.OneTimePassword);
+            await emailService.SendAsync(email);
             return Ok();
         }
 
@@ -575,12 +574,12 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             string activationKey = @event.ActivationKey;
             string id = @event.UserId;
 
-            await Emails.UserRegistered(
-                emailService,
+            UserRegisteredEmail email = new(
                 recipient,
                 Subject,
                 id,
                 activationKey);
+            await emailService.SendAsync(email);
 
             return Ok();
         }
@@ -591,22 +590,22 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             const string Subject = "Välkommen till Snittlistan!";
             string activationUri = @event.ActivationUri;
 
-            await Emails.InviteUser(
-                emailService,
+            InviteUserEmail email = new(
                 recipient,
                 Subject,
                 activationUri);
+            await emailService.SendAsync(email);
 
             return Ok();
         }
 
         private async Task<IHttpActionResult> Handle(EmailTask task)
         {
-            await Emails.SendMail(
-                emailService,
+            SendEmail email = SendEmail.ToRecipient(
                 task.Recipient,
                 Encoding.UTF8.GetString(Convert.FromBase64String(task.Subject)),
                 Encoding.UTF8.GetString(Convert.FromBase64String(task.Content)));
+            await emailService.SendAsync(email);
 
             return Ok();
         }
@@ -623,14 +622,14 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             ResultSeriesReadModel resultSeriesReadModel = DocumentSession.Load<ResultSeriesReadModel>(resultSeriesReadModelId);
             string resultHeaderReadModelId = ResultHeaderReadModel.IdFromBitsMatchId(roster.BitsMatchId, roster.Id);
             ResultHeaderReadModel resultHeaderReadModel = DocumentSession.Load<ResultHeaderReadModel>(resultHeaderReadModelId);
-            await Emails.MatchRegistered(
-                emailService,
+            MatchRegisteredEmail email = new(
                 roster.Team,
                 roster.Opponent,
                 @event.Score,
                 @event.OpponentScore,
                 resultSeriesReadModel,
                 resultHeaderReadModel);
+            await emailService.SendAsync(email);
 
             return Ok();
         }
