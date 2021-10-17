@@ -17,7 +17,9 @@
         Model.Players.Clear();
         Model.TeamLeader = null;
     }
-    @if (User.IsInRole2(WebsiteRoles.Uk.UkTasks) && hideControls == false && Model.Header.Date.ToUniversalTime() > SystemTime.UtcNow)
+    @if (User.IsInRole2(WebsiteRoles.Uk.UkTasks)
+        && hideControls == false
+        && (Model.Header.Date.ToUniversalTime() > SystemTime.UtcNow || Request.IsAdmin(User)))
     {
         @Html.ActionLink(
              "Ändra laget",
