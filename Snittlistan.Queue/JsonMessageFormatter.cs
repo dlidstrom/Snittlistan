@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Queue
+﻿#nullable enable
+
+namespace Snittlistan.Queue
 {
     using System;
     using System.IO;
@@ -9,7 +11,7 @@
     public class JsonMessageFormatter : IMessageFormatter
     {
         private static readonly JsonSerializerSettings DefaultSerializerSettings =
-            new JsonSerializerSettings
+            new()
             {
                 TypeNameHandling = TypeNameHandling.Objects,
                 Formatting = Formatting.Indented
@@ -17,14 +19,14 @@
 
         private readonly JsonSerializerSettings _serializerSettings;
 
-        public JsonMessageFormatter(Encoding encoding = null)
+        public JsonMessageFormatter(Encoding? encoding = null)
             : this(encoding, null)
         {
         }
 
         public Encoding Encoding { get; set; }
 
-        internal JsonMessageFormatter(Encoding encoding, JsonSerializerSettings serializerSettings = null)
+        internal JsonMessageFormatter(Encoding? encoding, JsonSerializerSettings? serializerSettings = null)
         {
             Encoding = encoding ?? Encoding.UTF8;
             _serializerSettings = serializerSettings ?? DefaultSerializerSettings;
@@ -33,7 +35,9 @@
         public bool CanRead(Message message)
         {
             if (message == null)
+            {
                 throw new ArgumentNullException(nameof(message));
+            }
 
             Stream stream = message.BodyStream;
 
@@ -47,28 +51,34 @@
             return new JsonMessageFormatter(Encoding, _serializerSettings);
         }
 
-        public object Read(Message message)
+        public object? Read(Message message)
         {
             if (message == null)
+            {
                 throw new ArgumentNullException(nameof(message));
+            }
 
             if (CanRead(message) == false)
-                return null;
-
-            using (var reader = new StreamReader(message.BodyStream, Encoding))
             {
-                string json = reader.ReadToEnd();
-                return JsonConvert.DeserializeObject(json, _serializerSettings);
+                return null;
             }
+
+            using StreamReader reader = new(message.BodyStream, Encoding);
+            string json = reader.ReadToEnd();
+            return JsonConvert.DeserializeObject(json, _serializerSettings);
         }
 
         public void Write(Message message, object obj)
         {
             if (message == null)
+            {
                 throw new ArgumentNullException(nameof(message));
+            }
 
             if (obj == null)
+            {
                 throw new ArgumentNullException(nameof(obj));
+            }
 
             string json = JsonConvert.SerializeObject(obj, Formatting.None, _serializerSettings);
 

@@ -12,7 +12,7 @@
             {
                 foreach (Uri apiUrl in CommandLineTaskHelper.AllApiUrls())
                 {
-                    scope.PublishMessage(new MessageEnvelope(new GetPlayersFromBitsMessage(), apiUrl));
+                    scope.PublishMessage(new MessageEnvelope(new GetPlayersFromBitsTask(), apiUrl));
                 }
 
                 scope.Commit();

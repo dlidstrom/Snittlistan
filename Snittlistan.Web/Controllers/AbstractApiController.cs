@@ -54,21 +54,24 @@
 
         protected TResult ExecuteQuery<TResult>(IQuery<TResult> query)
         {
-            if (query == null) throw new ArgumentNullException(nameof(query));
-            return query.Execute(DocumentSession);
+            return query == null ? throw new ArgumentNullException(nameof(query)) : query.Execute(DocumentSession);
         }
 
         protected void ExecuteCommand(ICommand command)
         {
-            if (command == null) throw new ArgumentNullException(nameof(command));
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
             command.Execute(DocumentSession, EventStoreSession, PublishMessage);
         }
 
         protected void PublishMessage<TPayload>(TPayload payload)
         {
             string uriString = Url.Link("DefaultApi", new { controller = "Task" });
-            var uri = new Uri(uriString);
-            var envelope = new MessageEnvelope(payload, uri);
+            Uri uri = new(uriString);
+            MessageEnvelope envelope = new(payload, uri);
             MsmqTransaction.PublishMessage(envelope);
         }
     }

@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Queue
+﻿#nullable enable
+
+namespace Snittlistan.Queue
 {
     using System;
     using System.Messaging;
@@ -21,8 +23,7 @@
 
         public static MsmqTransactionScope AutoCommitScope()
         {
-            if (messageQueue == null) throw new Exception("Initialize MsmqGateway");
-            return new MsmqTransactionScope();
+            return messageQueue == null ? throw new Exception("Initialize MsmqGateway") : new MsmqTransactionScope();
         }
 
         public class MsmqTransactionScope : IMsmqTransaction, IDisposable

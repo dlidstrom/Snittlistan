@@ -6,6 +6,7 @@
     using Infrastructure;
     using Infrastructure.Bits.Contracts;
     using Snittlistan.Web.Areas.V2.ReadModels;
+    using Snittlistan.Web.Infrastructure.Bits;
 
     public class BitsParser
     {

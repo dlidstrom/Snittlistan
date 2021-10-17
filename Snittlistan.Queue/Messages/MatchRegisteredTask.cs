@@ -1,8 +1,8 @@
 namespace Snittlistan.Queue.Messages
 {
-    public class MatchRegisteredEvent
+    public class MatchRegisteredTask
     {
-        public MatchRegisteredEvent(string rosterId, int score, int opponentScore)
+        public MatchRegisteredTask(string rosterId, int score, int opponentScore)
         {
             RosterId = rosterId;
             Score = score;

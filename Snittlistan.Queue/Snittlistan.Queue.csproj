@@ -51,23 +51,23 @@
     <Compile Include="JsonMessageFormatter.cs" />
     <Compile Include="LoggingHandler.cs" />
     <Compile Include="Messages\EmailTask.cs" />
-    <Compile Include="Messages\GetPlayersFromBitsMessage.cs" />
-    <Compile Include="Messages\GetRostersFromBitsMessage.cs" />
-    <Compile Include="Messages\InitializeIndexesMessage.cs" />
-    <Compile Include="Messages\MatchRegisteredEvent.cs" />
+    <Compile Include="Messages\GetPlayersFromBitsTask.cs" />
+    <Compile Include="Messages\GetRostersFromBitsTask.cs" />
+    <Compile Include="Messages\InitializeIndexesTask.cs" />
+    <Compile Include="Messages\MatchRegisteredTask.cs" />
     <Compile Include="Messages\MessageEnvelope.cs" />
     <Compile Include="MessageQueueListenerBase.cs" />
     <Compile Include="MessageQueueProcessorSettings.cs" />
     <Compile Include="Config\MessagingConfigSection.cs" />
-    <Compile Include="Messages\NewUserCreatedEvent.cs" />
+    <Compile Include="Messages\NewUserCreatedTask.cs" />
     <Compile Include="Messages\OneTimeKeyEvent.cs" />
-    <Compile Include="Messages\RegisterMatchesMessage.cs" />
-    <Compile Include="Messages\RegisterMatchMessage.cs" />
+    <Compile Include="Messages\RegisterMatchesTask.cs" />
+    <Compile Include="Messages\RegisterMatchTask.cs" />
     <Compile Include="Messages\InitiateUpdateMailEvent.cs" />
     <Compile Include="Messages\SendUpdateMailEvent.cs" />
     <Compile Include="Messages\TaskRequest.cs" />
-    <Compile Include="Messages\UserInvitedEvent.cs" />
-    <Compile Include="Messages\VerifyMatchesMessage.cs" />
+    <Compile Include="Messages\UserInvitedTask.cs" />
+    <Compile Include="Messages\VerifyMatchesTask.cs" />
     <Compile Include="Models\SiteWideConfiguration.cs" />
     <Compile Include="Models\TenantConfiguration.cs" />
     <Compile Include="MsmqGateway.cs" />
@@ -75,7 +75,7 @@
     <Compile Include="Queries\GetTeamNamesQuery.cs" />
     <Compile Include="Queries\IQuery.cs" />
     <Compile Include="TaskQueueListener.cs" />
-    <Compile Include="Messages\VerifyMatchMessage.cs" />
+    <Compile Include="Messages\VerifyMatchTask.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -15,7 +15,7 @@
             {
                 foreach (System.Uri url in CommandLineTaskHelper.AllApiUrls())
                 {
-                    var envelope = new MessageEnvelope(new InitializeIndexesMessage(email, password), url);
+                    var envelope = new MessageEnvelope(new InitializeIndexesTask(email, password), url);
                     scope.PublishMessage(envelope);
                 }
 

@@ -1,8 +1,8 @@
 ﻿namespace Snittlistan.Queue.Messages
 {
-    public class VerifyMatchesMessage
+    public class VerifyMatchesTask
     {
-        public VerifyMatchesMessage(bool force)
+        public VerifyMatchesTask(bool force)
         {
             Force = force;
         }

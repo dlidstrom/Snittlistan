@@ -34,7 +34,7 @@
 
         public MatchSerie[] CreateMatchSeries()
         {
-            var matchSeries = new List<MatchSerie>();
+            List<MatchSerie> matchSeries = new();
             int serieNumber = 1;
             ResultSeriesReadModel.Serie[] series = new[]
             {
@@ -45,15 +45,15 @@
             };
             foreach (ResultSeriesReadModel.Serie serie in series.Where(x => x != null))
             {
-                var tables = new List<MatchTable>();
+                List<MatchTable> tables = new();
                 for (int i = 0; i < 4; i++)
                 {
-                    var game1 = new MatchGame(
+                    MatchGame game1 = new(
                         serie.Tables[i].Game1.Player,
                         serie.Tables[i].Game1.Pins,
                         serie.Tables[i].Game1.Strikes,
                         serie.Tables[i].Game1.Spares);
-                    var game2 = new MatchGame(
+                    MatchGame game2 = new(
                         serie.Tables[i].Game2.Player,
                         serie.Tables[i].Game2.Pins,
                         serie.Tables[i].Game2.Strikes,
@@ -65,6 +65,23 @@
             }
 
             return matchSeries.ToArray();
+        }
+
+        public List<string> GetPlayerIds()
+        {
+            IEnumerable<string> query = from table in Series.First().Tables
+                                        from game in new[] { table.Game1, table.Game2 }
+                                        select game.Player;
+            string[] playerIds = query.ToArray();
+            HashSet<string> playerIdsWithoutReserve = new(playerIds);
+            IEnumerable<string> restQuery = from serie in Series
+                                            from table in serie.Tables
+                                            from game in new[] { table.Game1, table.Game2 }
+                                            where playerIdsWithoutReserve.Contains(game.Player) == false
+                                            select game.Player;
+            List<string> allPlayerIds = playerIds.Concat(
+                new HashSet<string>(restQuery).Where(x => playerIdsWithoutReserve.Contains(x) == false)).ToList();
+            return allPlayerIds;
         }
     }
 }

@@ -11,7 +11,7 @@
             {
                 foreach (System.Uri apiUrl in CommandLineTaskHelper.AllApiUrls())
                 {
-                    scope.PublishMessage(new MessageEnvelope(new GetRostersFromBitsMessage(), apiUrl));
+                    scope.PublishMessage(new MessageEnvelope(new GetRostersFromBitsTask(), apiUrl));
                 }
 
                 scope.Commit();

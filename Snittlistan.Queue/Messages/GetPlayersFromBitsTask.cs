@@ -1,6 +1,6 @@
 ﻿namespace Snittlistan.Queue.Messages
 {
-    public class GetRostersFromBitsMessage
+    public class GetPlayersFromBitsTask
     {
     }
 }
