@@ -2,11 +2,19 @@
 From: @ViewBag.From
 Bcc: @ViewBag.Bcc
 Subject: @ViewBag.Subject
-Content-Type: text/html
+Content-Type: text/html; charset=utf-8
 
-<p>
-    Du får det här brevet för att du har försökt registrera dig på Snittlistan.se.</p>
-<p>
-    Klicka här för att aktivera ditt konto: <a href="@Url.Action("Verify", "Account", new { activationKey = ViewBag.ActivationKey }, Request.Url.Scheme)">
-        Aktivera mig</a>
-</p>
+<html>
+<head>
+</head>
+<body>
+    <p>
+        Du får det här brevet för att du har försökt registrera dig på Snittlistan.se.
+    </p>
+    <p>
+        Klicka här för att aktivera ditt konto: <a href="@Url.Action("Verify", "Account", new { activationKey = ViewBag.ActivationKey }, Request.Url.Scheme)">
+            Aktivera mig
+        </a>
+    </p>
+</body>
+</html>

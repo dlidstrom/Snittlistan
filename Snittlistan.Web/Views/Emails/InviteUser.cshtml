@@ -1,18 +1,24 @@
-﻿@model dynamic
+﻿@model Snittlistan.Web.Models.InviteUserEmail
 To: @Model.To
 From: @Model.From
 Bcc: @Model.Bcc
 Subject: @Model.Subject
-Content-Type: text/html
+Content-Type: text/html; charset=utf-8
 
-<p>
-    Du får det här brevet för att du har blivit inbjuden till Snittlistan.se. Det innebär att du kan
-    ta ut lag och registrera matchresultat. Du får också tillgång till alla medlemmarnas e-postadresser
-    och kan lätt skicka mail till alla aktiva och supportrar.
-</p>
-<p>
-    Klicka här för att aktivera ditt konto:
-    <a href="@Model.ActivationUri">
-        Aktivera mitt konto
-    </a>
-</p>
+<html>
+<head>
+</head>
+<body>
+    <p>
+        Du får det här brevet för att du har blivit inbjuden till Snittlistan.se. Det innebär att du kan
+        ta ut lag och registrera matchresultat. Du får också tillgång till alla medlemmarnas e-postadresser
+        och kan lätt skicka mail till alla aktiva och supportrar.
+    </p>
+    <p>
+        Klicka här för att aktivera ditt konto:
+        <a href="@Model.ActivationUri">
+            Aktivera mitt konto
+        </a>
+    </p>
+</body>
+</html>
