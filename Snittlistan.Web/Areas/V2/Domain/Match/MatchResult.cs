@@ -137,7 +137,7 @@
                 players.ToDictionary(x => x.Id),
                 resultsForPlayer);
             ApplyChange(matchCommentaryEvent);
-            publish.Invoke(new MatchRegisteredTask(RosterId, TeamScore, OpponentScore));
+            publish.Invoke(new MatchRegisteredTask(RosterId, BitsMatchId, TeamScore, OpponentScore));
         }
 
         public void RegisterSerie(MatchTable[] matchTables)

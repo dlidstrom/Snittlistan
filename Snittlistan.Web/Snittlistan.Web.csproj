@@ -129,7 +129,7 @@
     <Compile Include="Areas\V2\Tasks\GetPlayersFromBitsTaskHandler.cs" />
     <Compile Include="Areas\V2\Tasks\GetRostersFromBitsTaskHandler.cs" />
     <Compile Include="Areas\V2\Tasks\InitializeIndexesTaskHandler.cs" />
-    <Compile Include="Areas\V2\Tasks\InitiateUpdateMailEventHandler.cs" />
+    <Compile Include="Areas\V2\Tasks\InitiateUpdateMailTaskHandler.cs" />
     <Compile Include="Areas\V2\Tasks\ITaskHandler.cs" />
     <Compile Include="Areas\V2\Controllers\AuditLogViewerController.cs" />
     <Compile Include="Areas\V2\Domain\AuditLogEntry.cs" />
@@ -140,10 +140,10 @@
     <Compile Include="Areas\V2\IAuditLogCapable.cs" />
     <Compile Include="Areas\V2\Tasks\MatchRegisteredTaskHandler.cs" />
     <Compile Include="Areas\V2\Tasks\NewUserCreatedTaskHandler.cs" />
-    <Compile Include="Areas\V2\Tasks\OneTimeKeyEventHandler.cs" />
+    <Compile Include="Areas\V2\Tasks\OneTimeKeyTaskHandler.cs" />
     <Compile Include="Areas\V2\Tasks\RegisterMatchesTaskHandler.cs" />
     <Compile Include="Areas\V2\Tasks\RegisterMatchTaskHandler.cs" />
-    <Compile Include="Areas\V2\Tasks\SendUpdateMailEventHandler.cs" />
+    <Compile Include="Areas\V2\Tasks\SendUpdateMailTaskHandler.cs" />
     <Compile Include="Areas\V2\Tasks\UserInvitedTaskHandler.cs" />
     <Compile Include="Areas\V2\Tasks\VerifyMatchesTaskHandler.cs" />
     <Compile Include="Areas\V2\Tasks\VerifyMatchTaskHandler.cs" />

@@ -6,9 +6,9 @@ namespace Snittlistan.Web.Areas.V2.Tasks
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Models;
 
-    public class OneTimeKeyEventHandler : TaskHandler<OneTimeKeyEvent>
+    public class OneTimeKeyTaskHandler : TaskHandler<OneTimeKeyTask>
     {
-        public override async Task Handle(OneTimeKeyEvent task)
+        public override async Task Handle(OneTimeKeyTask task)
         {
             OneTimePasswordEmail email = new(
                 task.Email,

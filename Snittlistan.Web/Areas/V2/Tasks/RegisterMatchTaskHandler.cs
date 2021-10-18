@@ -40,6 +40,12 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                     Parse4Result parse4Result = parser.Parse4(bitsMatchResult, websiteConfig.ClubId);
                     if (parse4Result != null)
                     {
+                        if (parse4Result.Series.Length != 4 && parse4Result.Turn <= 20)
+                        {
+                            Log.Info($"detected unfinished match: {parse4Result.Series.Length} series have been registered");
+                            return;
+                        }
+
                         List<string> allPlayerIds = parse4Result.GetPlayerIds();
                         pendingMatch.SetPlayers(allPlayerIds);
                         ExecuteCommand(new RegisterMatch4Command(pendingMatch, parse4Result));
@@ -50,6 +56,12 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                     ParseResult parseResult = parser.Parse(bitsMatchResult, websiteConfig.ClubId);
                     if (parseResult != null)
                     {
+                        if (parseResult.Series.Length != 4 && parseResult.Turn <= 20)
+                        {
+                            Log.Info($"detected unfinished match: {parseResult.Series.Length} series have been registered");
+                            return;
+                        }
+
                         List<string> allPlayerIds = parseResult.GetPlayerIds();
                         pendingMatch.SetPlayers(allPlayerIds);
                         ExecuteCommand(new RegisterMatchCommand(pendingMatch, parseResult));

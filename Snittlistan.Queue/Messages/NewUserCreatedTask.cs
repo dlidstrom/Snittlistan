@@ -1,9 +1,6 @@
 ﻿namespace Snittlistan.Queue.Messages
 {
-    /// <summary>
-    /// Raised when a new user is created.
-    /// </summary>
-    public class NewUserCreatedTask
+    public class NewUserCreatedTask : ITask
     {
         public NewUserCreatedTask(string email, string activationKey, string userId)
         {
@@ -13,7 +10,11 @@
         }
 
         public string Email { get; }
+
         public string ActivationKey { get; }
+
         public string UserId { get; }
+
+        public BusinessKey BusinessKey => new(GetType(), $"{Email}/{UserId}");
     }
 }

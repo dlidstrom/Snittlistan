@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class VerifyMatchTask
+    public class VerifyMatchTask : ITask
     {
         public VerifyMatchTask(int bitsMatchId, string rosterId, bool force, Guid correlationId)
         {
@@ -19,6 +19,8 @@
         public bool Force { get; }
 
         public Guid CorrelationId { get; }
+
+        public BusinessKey BusinessKey => new(GetType(), $"{RosterId}/{BitsMatchId}");
 
         public override string ToString()
         {

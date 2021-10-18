@@ -1,6 +1,7 @@
 ﻿namespace Snittlistan.Queue.Messages
 {
-    public class RegisterMatchesTask
+    public class RegisterMatchesTask : ITask
     {
+        public BusinessKey BusinessKey => new(GetType(), string.Empty);
     }
 }

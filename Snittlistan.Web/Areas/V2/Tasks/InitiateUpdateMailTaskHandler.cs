@@ -8,9 +8,9 @@ namespace Snittlistan.Web.Areas.V2.Tasks
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Areas.V2.Domain;
 
-    public class InitiateUpdateMailEventHandler : TaskHandler<InitiateUpdateMailEvent>
+    public class InitiateUpdateMailTaskHandler : TaskHandler<InitiateUpdateMailTask>
     {
-        public override Task Handle(InitiateUpdateMailEvent task)
+        public override Task Handle(InitiateUpdateMailTask task)
         {
             Roster roster = DocumentSession.Load<Roster>(task.RosterId);
             AuditLogEntry auditLogEntry = roster.AuditLogEntries.Single(x => x.CorrelationId == task.CorrelationId);
@@ -19,7 +19,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
             IEnumerable<string> affectedPlayers = before.Players.Concat(after.Players);
             foreach (string playerId in new HashSet<string>(affectedPlayers))
             {
-                SendUpdateMailEvent message = new(
+                SendUpdateMailTask message = new(
                     task.RosterId,
                     playerId,
                     task.CorrelationId);

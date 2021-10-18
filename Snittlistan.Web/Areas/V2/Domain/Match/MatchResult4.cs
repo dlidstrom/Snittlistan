@@ -144,7 +144,7 @@
                         new[] { bodyText }));
             }
 
-            publish.Invoke(new MatchRegisteredTask(RosterId, TeamScore, OpponentScore));
+            publish.Invoke(new MatchRegisteredTask(RosterId, BitsMatchId, TeamScore, OpponentScore));
         }
 
         public void AwardMedals()

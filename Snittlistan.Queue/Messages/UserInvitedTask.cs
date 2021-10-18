@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class UserInvitedTask
+    public class UserInvitedTask : ITask
     {
         public UserInvitedTask(string activationUri, string email)
         {
@@ -11,6 +11,9 @@
         }
 
         public string ActivationUri { get; }
+
         public string Email { get; }
+
+        public BusinessKey BusinessKey => new(GetType(), Email);
     }
 }

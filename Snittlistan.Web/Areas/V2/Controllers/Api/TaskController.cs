@@ -10,6 +10,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
     using Castle.MicroKernel;
     using Newtonsoft.Json;
     using NLog;
+    using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Areas.V2.Tasks;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Infrastructure.Attributes;
@@ -33,7 +34,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                 return BadRequest(ModelState);
             }
 
-            object? taskObject = JsonConvert.DeserializeObject(
+            ITask? taskObject = JsonConvert.DeserializeObject<ITask>(
                 request.TaskJson,
                 new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
             if (taskObject is null)
@@ -52,9 +53,19 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             }
 
             MethodInfo handleMethod = handler.GetType().GetMethod("Handle");
-            Task task = (Task)handleMethod.Invoke(handler, new[] { taskObject });
-            await task;
-            Log.Info("Done");
+            IDisposable scope = NestedDiagnosticsLogicalContext.Push(taskObject.BusinessKey);
+            try
+            {
+                Log.Info("Begin");
+                Task task = (Task)handleMethod.Invoke(handler, new[] { taskObject });
+                await task;
+                Log.Info("End");
+            }
+            finally
+            {
+                scope.Dispose();
+            }
+
             return Ok();
         }
 

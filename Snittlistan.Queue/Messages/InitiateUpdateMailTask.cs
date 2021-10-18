@@ -2,9 +2,9 @@
 {
     using System;
 
-    public class InitiateUpdateMailEvent
+    public class InitiateUpdateMailTask : ITask
     {
-        public InitiateUpdateMailEvent(string rosterId, Guid correlationId)
+        public InitiateUpdateMailTask(string rosterId, Guid correlationId)
         {
             RosterId = rosterId;
             CorrelationId = correlationId;
@@ -13,5 +13,7 @@
         public string RosterId { get; }
 
         public Guid CorrelationId { get; }
+
+        public BusinessKey BusinessKey => new(GetType(), string.Empty);
     }
 }

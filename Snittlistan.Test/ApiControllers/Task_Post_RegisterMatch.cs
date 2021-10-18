@@ -8,7 +8,6 @@
     using Castle.MicroKernel.Registration;
     using Castle.Windsor;
     using Moq;
-    using Newtonsoft.Json;
     using NUnit.Framework;
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Areas.V2.Domain;
@@ -43,9 +42,9 @@
         protected override async Task Act()
         {
             // Act
-            var request = new TaskRequest(new MessageEnvelope(new RegisterMatchTask(rosterId), new Uri("http://temp.uri/")));
+            TaskRequest request = new(new MessageEnvelope(new RegisterMatchTask(rosterId, 123), new Uri("http://temp.uri/")));
             responseMessage = await Client.PostAsJsonAsync("http://temp.uri/api/task", request);
-            responseMessage.EnsureSuccessStatusCode();
+            _ = responseMessage.EnsureSuccessStatusCode();
         }
 
         protected override Task OnSetUp(IWindsorContainer container)
@@ -72,7 +71,7 @@
                     session.Store(player);
                 }
 
-                var roster = new Roster(
+                Roster roster = new(
                     2012,
                     1,
                     3048746,
@@ -91,19 +90,19 @@
             });
 
             IBitsClient bitsClient = Mock.Of<IBitsClient>();
-            Mock.Get(bitsClient)
+            _ = Mock.Get(bitsClient)
                 .Setup(x => x.GetMatchResults(3048746))
                 .Returns(BitsGateway.GetMatchResults(3048746));
-            Mock.Get(bitsClient)
+            _ = Mock.Get(bitsClient)
                 .Setup(x => x.GetMatchScores(3048746))
                 .Returns(BitsGateway.GetMatchScores(3048746));
-            Mock.Get(bitsClient)
+            _ = Mock.Get(bitsClient)
                 .Setup(x => x.GetHeadInfo(3048746))
                 .Returns(BitsGateway.GetHeadInfo(3048746));
-            Mock.Get(bitsClient)
+            _ = Mock.Get(bitsClient)
                 .Setup(x => x.GetHeadResultInfo(3048746))
                 .Returns(BitsGateway.GetHeadResultInfo(3048746));
-            container.Register(Component.For<IBitsClient>().Instance(bitsClient));
+            _ = container.Register(Component.For<IBitsClient>().Instance(bitsClient));
             return Task.CompletedTask;
         }
     }

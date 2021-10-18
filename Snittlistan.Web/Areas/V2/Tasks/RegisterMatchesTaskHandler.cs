@@ -17,7 +17,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
             Roster[] pendingMatches = ExecuteQuery(new GetPendingMatchesQuery(websiteConfig.SeasonId));
             foreach (Roster pendingMatch in pendingMatches.Where(x => x.SkipRegistration == false))
             {
-                PublishMessage(new RegisterMatchTask(pendingMatch.Id));
+                PublishMessage(new RegisterMatchTask(pendingMatch.Id, pendingMatch.BitsMatchId));
             }
 
             return Task.CompletedTask;

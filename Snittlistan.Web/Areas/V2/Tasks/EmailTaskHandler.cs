@@ -13,7 +13,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
         public override async Task Handle(EmailTask task)
         {
             SendEmail email = SendEmail.ToRecipient(
-                task.Recipient,
+                task.To,
                 Encoding.UTF8.GetString(Convert.FromBase64String(task.Subject)),
                 Encoding.UTF8.GetString(Convert.FromBase64String(task.Content)));
             await EmailService.SendAsync(email);

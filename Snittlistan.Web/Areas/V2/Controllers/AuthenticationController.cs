@@ -97,7 +97,7 @@
                     token.Activate(
                         oneTimeKey =>
                         {
-                            PublishMessage(new OneTimeKeyEvent(player.Email, oneTimePassword));
+                            PublishMessage(new OneTimeKeyTask(player.Email, oneTimePassword));
                         },
                         oneTimePassword);
                     NotifyEvent($"{player.Name} entered email address");

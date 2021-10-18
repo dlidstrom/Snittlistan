@@ -8,9 +8,9 @@ namespace Snittlistan.Web.Areas.V2.Tasks
     using Snittlistan.Web.Areas.V2.Domain;
     using Snittlistan.Web.Models;
 
-    public class SendUpdateMailEventHandler : TaskHandler<SendUpdateMailEvent>
+    public class SendUpdateMailTaskHandler : TaskHandler<SendUpdateMailTask>
     {
-        public override async Task Handle(SendUpdateMailEvent task)
+        public override async Task Handle(SendUpdateMailTask task)
         {
             Player player = DocumentSession.Load<Player>(task.PlayerId);
             Roster roster = DocumentSession.Include<Roster>(x => x.Players).Load<Roster>(task.RosterId);

@@ -1,6 +1,6 @@
 ﻿namespace Snittlistan.Queue.Messages
 {
-    public class VerifyMatchesTask
+    public class VerifyMatchesTask : ITask
     {
         public VerifyMatchesTask(bool force)
         {
@@ -8,5 +8,7 @@
         }
 
         public bool Force { get; }
+
+        public BusinessKey BusinessKey => new(GetType(), string.Empty);
     }
 }

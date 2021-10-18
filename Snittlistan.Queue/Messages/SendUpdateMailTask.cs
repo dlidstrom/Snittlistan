@@ -2,9 +2,9 @@
 {
     using System;
 
-    public class SendUpdateMailEvent
+    public class SendUpdateMailTask : ITask
     {
-        public SendUpdateMailEvent(string rosterId, string playerId, Guid correlationId)
+        public SendUpdateMailTask(string rosterId, string playerId, Guid correlationId)
         {
             RosterId = rosterId;
             PlayerId = playerId;
@@ -16,5 +16,7 @@
         public string PlayerId { get; }
 
         public Guid CorrelationId { get; }
+
+        public BusinessKey BusinessKey => new(GetType(), $"{RosterId}/{PlayerId}");
     }
 }

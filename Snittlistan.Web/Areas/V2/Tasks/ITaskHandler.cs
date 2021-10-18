@@ -15,12 +15,14 @@ namespace Snittlistan.Web.Areas.V2.Tasks
     using Snittlistan.Web.Infrastructure.Bits;
 
     public interface ITaskHandler<TTask>
+        where TTask : ITask
     {
         Task Handle(TTask task);
     }
 
     public abstract class TaskHandler<TTask>
         : ITaskHandler<TTask>
+        where TTask : ITask
     {
         protected static readonly Logger Log = LogManager.GetCurrentClassLogger();
 

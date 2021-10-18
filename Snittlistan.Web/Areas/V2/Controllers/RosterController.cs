@@ -430,7 +430,7 @@
 
             if (vm.SendUpdateMail || true)
             {
-                PublishMessage(new InitiateUpdateMailEvent(roster.Id, Trace.CorrelationManager.ActivityId));
+                PublishMessage(new InitiateUpdateMailTask(roster.Id, Trace.CorrelationManager.ActivityId));
             }
 
             return RedirectToAction("View", new { season = roster.Season, turn = roster.Turn });
