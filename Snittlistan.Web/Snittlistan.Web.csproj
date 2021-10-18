@@ -147,6 +147,7 @@
     <Compile Include="Areas\V2\Tasks\UserInvitedTaskHandler.cs" />
     <Compile Include="Areas\V2\Tasks\VerifyMatchesTaskHandler.cs" />
     <Compile Include="Areas\V2\Tasks\VerifyMatchTaskHandler.cs" />
+    <Compile Include="Infrastructure\Bits\BitsMatchResult.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\PlayerResult.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\Converter.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\DivisionResult.cs" />
@@ -197,7 +198,6 @@
     <Compile Include="Areas\V2\ViewModels\ActivityCalendarEvent.cs" />
     <Compile Include="Areas\V2\ViewModels\ActivityViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\FormattedMedal.cs" />
-    <Compile Include="Infrastructure\Bits\BitsMatchResult.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\TeamResult.cs" />
     <Compile Include="Infrastructure\CalendarEvent.cs" />
     <Compile Include="Areas\V2\WebsiteRoles.cs" />
