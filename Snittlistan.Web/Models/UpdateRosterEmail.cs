@@ -7,19 +7,19 @@ namespace Snittlistan.Web.Models
     public class UpdateRosterEmail : EmailBase
     {
         public UpdateRosterEmail(
-            string to,
+            string playerEmail,
             FormattedAuditLog formattedAuditLog,
             string[] players,
             string? teamLeader)
             : base("UpdateRoster", OwnerEmail, "Uttagning har uppdaterats")
         {
-            To = to;
+            PlayerEmail = playerEmail;
             FormattedAuditLog = formattedAuditLog;
             Players = players;
             TeamLeader = teamLeader;
         }
 
-        public string To { get; }
+        public string PlayerEmail { get; }
         public FormattedAuditLog FormattedAuditLog { get; }
         public string[] Players { get; }
         public string? TeamLeader { get; }

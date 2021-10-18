@@ -43,7 +43,7 @@
         protected override async Task Act()
         {
             // Act
-            var request = new TaskRequest(new MessageEnvelope(new RegisterMatchMessage(rosterId), new Uri("http://temp.uri/")));
+            var request = new TaskRequest(new MessageEnvelope(new RegisterMatchTask(rosterId), new Uri("http://temp.uri/")));
             responseMessage = await Client.PostAsJsonAsync("http://temp.uri/api/task", request);
             responseMessage.EnsureSuccessStatusCode();
         }

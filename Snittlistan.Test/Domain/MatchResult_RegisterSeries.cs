@@ -16,7 +16,7 @@
     {
         private Roster roster;
         private MatchResult matchResult;
-        private MatchRegisteredEvent ev;
+        private MatchRegisteredTask ev;
 
         [SetUp]
         public void SetUp()
@@ -143,7 +143,7 @@
             };
 
             matchResult.RegisterSeries(
-                e => ev = (MatchRegisteredEvent)e,
+                e => ev = (MatchRegisteredTask)e,
                 series,
                 opponentSeries,
                 players,

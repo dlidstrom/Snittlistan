@@ -1,8 +1,8 @@
 ﻿namespace Snittlistan.Queue.Messages
 {
-    public class InitializeIndexesMessage
+    public class InitializeIndexesTask
     {
-        public InitializeIndexesMessage(string email, string password)
+        public InitializeIndexesTask(string email, string password)
         {
             Email = email;
             Password = password;

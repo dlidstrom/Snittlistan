@@ -17,9 +17,9 @@
         [Test]
         public void ShouldRaiseEventWhenCreated()
         {
-            NewUserCreatedEvent createdEvent = null;
+            NewUserCreatedTask createdEvent = null;
             var user = new User("first name", "last name", "email", "password") { Id = "users-2" };
-            user.Initialize(e => createdEvent = (NewUserCreatedEvent)e);
+            user.Initialize(e => createdEvent = (NewUserCreatedTask)e);
 
             Assert.NotNull(createdEvent);
             Assert.That(createdEvent.Email, Is.EqualTo("email"));

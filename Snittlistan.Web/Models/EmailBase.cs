@@ -7,10 +7,10 @@ namespace Snittlistan.Web.Models
 
     public abstract class EmailBase : Email
     {
-        protected EmailBase(string viewName, string recipient, string subject)
+        protected EmailBase(string viewName, string to, string subject)
             : base(viewName)
         {
-            Recipient = recipient;
+            To = to;
             Subject = subject;
         }
 
@@ -18,7 +18,7 @@ namespace Snittlistan.Web.Models
 
         public string Bcc { get; protected set; } = OwnerEmail;
         public string From { get; protected set; } = OwnerEmail;
-        public string Recipient { get; }
+        public string To { get; }
         public string Subject { get; }
     }
 }

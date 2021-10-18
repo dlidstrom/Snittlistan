@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Domain
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Domain
 {
     using System;
     using System.Collections.Generic;
@@ -30,7 +32,7 @@
 
         public MatchSerie4[] CreateMatchSeries()
         {
-            var matchSeries = new List<MatchSerie4>();
+            List<MatchSerie4> matchSeries = new();
             ResultSeries4ReadModel.Serie[] series = new[]
             {
                 Series.ElementAtOrDefault(0),
@@ -41,11 +43,11 @@
             int serieNumber = 1;
             foreach (ResultSeries4ReadModel.Serie serie in series.Where(x => x != null))
             {
-                var games = new List<MatchGame4>();
+                List<MatchGame4> games = new();
                 for (int i = 0; i < 4; i++)
                 {
                     ResultSeries4ReadModel.Game game = serie.Games[i];
-                    var matchGame = new MatchGame4(game.Player, game.Score, game.Pins);
+                    MatchGame4 matchGame = new(game.Player, game.Score, game.Pins);
                     games.Add(matchGame);
                 }
 
@@ -54,5 +56,21 @@
 
             return matchSeries.ToArray();
         }
+
+        public List<string> GetPlayerIds()
+        {
+            IEnumerable<string> query = from game in Series.First().Games
+                                        select game.Player;
+            string[] playerIds = query.ToArray();
+            HashSet<string> playerIdsWithoutReserve = new(playerIds);
+            IEnumerable<string> restQuery = from serie in Series
+                                            from game in serie.Games
+                                            where playerIdsWithoutReserve.Contains(game.Player) == false
+                                            select game.Player;
+            List<string> allPlayerIds = playerIds.Concat(
+                new HashSet<string>(restQuery).Where(x => playerIdsWithoutReserve.Contains(x) == false)).ToList();
+            return allPlayerIds;
+        }
+
     }
 }

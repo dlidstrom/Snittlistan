@@ -1,10 +1,14 @@
-namespace Snittlistan.Web.Infrastructure
+﻿namespace Snittlistan.Web.Infrastructure.Bits
 {
     using Bits.Contracts;
 
     public class BitsMatchResult
     {
-        public BitsMatchResult(MatchResults matchResults, MatchScores matchScores, HeadResultInfo headResultInfo, HeadInfo headInfo)
+        public BitsMatchResult(
+            MatchResults matchResults,
+            MatchScores matchScores,
+            HeadResultInfo headResultInfo,
+            HeadInfo headInfo)
         {
             MatchResults = matchResults;
             MatchScores = matchScores;

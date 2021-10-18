@@ -1,8 +1,8 @@
 ﻿namespace Snittlistan.Queue.Messages
 {
-    public class RegisterMatchMessage
+    public class RegisterMatchTask
     {
-        public RegisterMatchMessage(string rosterId)
+        public RegisterMatchTask(string rosterId)
         {
             RosterId = rosterId;
         }

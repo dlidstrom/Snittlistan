@@ -5,10 +5,10 @@ namespace Snittlistan.Web.Models
     public class OneTimePasswordEmail : EmailBase
     {
         public OneTimePasswordEmail(
-            string recipient,
+            string to,
             string subject,
             string oneTimePassword)
-            : base("OneTimePassword", recipient, subject)
+            : base("OneTimePassword", to, subject)
         {
             OneTimePassword = oneTimePassword;
         }

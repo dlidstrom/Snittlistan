@@ -33,7 +33,6 @@
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,7 +40,6 @@
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
     <ExcludeApp_Data>true</ExcludeApp_Data>
   </PropertyGroup>
@@ -127,6 +125,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="Areas\V2\Tasks\EmailTaskHandler.cs" />
+    <Compile Include="Areas\V2\Tasks\GetPlayersFromBitsTaskHandler.cs" />
+    <Compile Include="Areas\V2\Tasks\GetRostersFromBitsTaskHandler.cs" />
+    <Compile Include="Areas\V2\Tasks\InitializeIndexesTaskHandler.cs" />
+    <Compile Include="Areas\V2\Tasks\InitiateUpdateMailEventHandler.cs" />
+    <Compile Include="Areas\V2\Tasks\ITaskHandler.cs" />
     <Compile Include="Areas\V2\Controllers\AuditLogViewerController.cs" />
     <Compile Include="Areas\V2\Domain\AuditLogEntry.cs" />
     <Compile Include="Areas\V2\Domain\FormattedAuditLog.cs" />
@@ -134,6 +138,16 @@
     <Compile Include="Areas\V2\Domain\RosterState.cs" />
     <Compile Include="Areas\V2\Extensions.cs" />
     <Compile Include="Areas\V2\IAuditLogCapable.cs" />
+    <Compile Include="Areas\V2\Tasks\MatchRegisteredTaskHandler.cs" />
+    <Compile Include="Areas\V2\Tasks\NewUserCreatedTaskHandler.cs" />
+    <Compile Include="Areas\V2\Tasks\OneTimeKeyEventHandler.cs" />
+    <Compile Include="Areas\V2\Tasks\RegisterMatchesTaskHandler.cs" />
+    <Compile Include="Areas\V2\Tasks\RegisterMatchTaskHandler.cs" />
+    <Compile Include="Areas\V2\Tasks\SendUpdateMailEventHandler.cs" />
+    <Compile Include="Areas\V2\Tasks\UserInvitedTaskHandler.cs" />
+    <Compile Include="Areas\V2\Tasks\VerifyMatchesTaskHandler.cs" />
+    <Compile Include="Areas\V2\Tasks\VerifyMatchTaskHandler.cs" />
+    <Compile Include="Infrastructure\Bits\BitsMatchResult.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\PlayerResult.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\Converter.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\DivisionResult.cs" />
@@ -184,7 +198,6 @@
     <Compile Include="Areas\V2\ViewModels\ActivityCalendarEvent.cs" />
     <Compile Include="Areas\V2\ViewModels\ActivityViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\FormattedMedal.cs" />
-    <Compile Include="Infrastructure\BitsMatchResult.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\TeamResult.cs" />
     <Compile Include="Infrastructure\CalendarEvent.cs" />
     <Compile Include="Areas\V2\WebsiteRoles.cs" />
@@ -298,6 +311,7 @@
     <Compile Include="Infrastructure\Installers\EventStoreSessionInstaller.cs" />
     <Compile Include="Infrastructure\Installers\BitsClientInstaller.cs" />
     <Compile Include="Infrastructure\Installers\MsmqInstaller.cs" />
+    <Compile Include="Infrastructure\Installers\TaskHandlerInstaller.cs" />
     <Compile Include="Infrastructure\IoC\HostBasedComponentSelector.cs" />
     <Compile Include="Infrastructure\IoC\WindsorDependencyScope.cs" />
     <Compile Include="Infrastructure\IoC\WindsorHttpDependencyResolver.cs" />

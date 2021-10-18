@@ -4,64 +4,70 @@
 To: @Model.To
 From: @Model.From
 Subject: @Model.Subject
-Content-Type: text/html
+Content-Type: text/html; charset=utf-8
 
-<p>
-    Matchen mellan @Model.Team och @Model.Opponent har registrerats med resultatet @Model.Score-@Model.OpponentScore.
-</p>
-<h3>Resultat</h3>
-<table class="table table-condensed table-bordered table-striped">
-    <tr>
-        <td>#</td>
-        <td>Namn</td>
-        <td>1</td>
-        <td>2</td>
-        <td>3</td>
-        <td>4</td>
-        <td>Tot</td>
-        <td>Banp</td>
-    </tr>
-    @{
-        var row = 1;
-    }
-    @foreach (KeyValuePair<string, List<ResultSeriesReadModel.PlayerGame>[]> player in Model.ResultSeriesReadModel.SortedPlayers())
-    {
-        <tr>
-            <td>@(row++)</td>
-            <td>@player.Key</td>
-            @for (var serie = 0; serie < 4; serie++)
-            {
-                <td>
-                    @{
-                        List<ResultSeriesReadModel.PlayerGame> game = player.Value[serie];
-                    }
-                    @string.Join("+", game.Select(x => x.Pins.ToString(CultureInfo.InvariantCulture)))
-                </td>
-            }
-            <td>
-                @player.Value.SelectMany(x => x).Sum(x => x.Pins)
-            </td>
-            <td>
-                @player.Value.SelectMany(x => x).Sum(x => x.Score)
-            </td>
-        </tr>
-    }
-    <tr>
-        <td colspan="2"></td>
-        <td>@Model.ResultSeriesReadModel.SerieSum(0)</td>
-        <td>@Model.ResultSeriesReadModel.SerieSum(1)</td>
-        <td>@Model.ResultSeriesReadModel.SerieSum(2)</td>
-        <td>@Model.ResultSeriesReadModel.SerieSum(3)</td>
-        <td>@Model.ResultSeriesReadModel.Total()</td>
-        <td></td>
-    </tr>
-</table>
-<p>
-    @Model.ResultHeaderReadModel.MatchCommentary
-</p>
-@foreach (dynamic bodyTextPart in Model.ResultHeaderReadModel.BodyText)
-{
+<html>
+<head>
+</head>
+<body>
     <p>
-        @bodyTextPart
+        Matchen mellan @Model.Team och @Model.Opponent har registrerats med resultatet @Model.Score-@Model.OpponentScore.
     </p>
-}
+    <h3>Resultat</h3>
+    <table class="table table-condensed table-bordered table-striped">
+        <tr>
+            <td>#</td>
+            <td>Namn</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>Tot</td>
+            <td>Banp</td>
+        </tr>
+        @{
+            var row = 1;
+        }
+        @foreach (KeyValuePair<string, List<ResultSeriesReadModel.PlayerGame>[]> player in Model.ResultSeriesReadModel.SortedPlayers())
+        {
+            <tr>
+                <td>@(row++)</td>
+                <td>@player.Key</td>
+                @for (var serie = 0; serie < 4; serie++)
+                {
+                    <td>
+                        @{
+                            List<ResultSeriesReadModel.PlayerGame> game = player.Value[serie];
+                        }
+                        @string.Join("+", game.Select(x => x.Pins.ToString(CultureInfo.InvariantCulture)))
+                    </td>
+                }
+                <td>
+                    @player.Value.SelectMany(x => x).Sum(x => x.Pins)
+                </td>
+                <td>
+                    @player.Value.SelectMany(x => x).Sum(x => x.Score)
+                </td>
+            </tr>
+        }
+        <tr>
+            <td colspan="2"></td>
+            <td>@Model.ResultSeriesReadModel.SerieSum(0)</td>
+            <td>@Model.ResultSeriesReadModel.SerieSum(1)</td>
+            <td>@Model.ResultSeriesReadModel.SerieSum(2)</td>
+            <td>@Model.ResultSeriesReadModel.SerieSum(3)</td>
+            <td>@Model.ResultSeriesReadModel.Total()</td>
+            <td></td>
+        </tr>
+    </table>
+    <p>
+        @Model.ResultHeaderReadModel.MatchCommentary
+    </p>
+    @foreach (dynamic bodyTextPart in Model.ResultHeaderReadModel.BodyText)
+    {
+        <p>
+            @bodyTextPart
+        </p>
+    }
+</body>
+</html>

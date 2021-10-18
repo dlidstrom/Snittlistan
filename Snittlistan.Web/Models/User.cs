@@ -122,7 +122,7 @@
         public void Initialize(Action<object> publish)
         {
             ActivationKey = Guid.NewGuid().ToString();
-            publish.Invoke(new NewUserCreatedEvent(Email, ActivationKey, Id));
+            publish.Invoke(new NewUserCreatedTask(Email, ActivationKey, Id));
         }
 
         /// <summary>
@@ -148,7 +148,7 @@
             },
             urlScheme);
             Debug.Assert(activationUri != null, "activationUri != null");
-            publish.Invoke(new UserInvitedEvent(activationUri, Email));
+            publish.Invoke(new UserInvitedTask(activationUri, Email));
         }
 
         /// <summary>
