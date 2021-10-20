@@ -244,10 +244,10 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 () => { });
 
             object after = GetState();
-            var auditLogEntry = new AuditLogEntry(
+            AuditLogEntry auditLogEntry = new(
                 change.UserId,
                 change.ChangeType.ToString(),
-                correlationId,
+                correlationId == default ? Guid.NewGuid() : correlationId,
                 change,
                 before,
                 after);
