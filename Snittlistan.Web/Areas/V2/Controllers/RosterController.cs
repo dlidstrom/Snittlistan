@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -43,26 +45,27 @@
                 selectAll = false;
             }
 
-            var rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
-                                         .Where(r => r.Season == season)
-                                         .ToList();
-            IEnumerable<InitialDataViewModel.TurnViewModel> q = from roster in rosters
-                    orderby roster.Turn
-                    group roster by roster.Turn
+            List<Roster>? rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
+                .Where(r => r.Season == season)
+                .ToList();
+            IEnumerable<InitialDataViewModel.TurnViewModel> q =
+                from roster in rosters
+                orderby roster.Turn
+                group roster by roster.Turn
                     into g
-                    let lastDate = g.Max(x => x.Date)
-                    where selectAll || lastDate >= SystemTime.UtcNow.Date
-                    select new InitialDataViewModel.TurnViewModel(
-                        seasonStart: season.Value,
-                        turn: g.Key,
-                        startDate: g.Min(x => x.Date),
-                        endDate: lastDate,
-                        rosters: g.Select(x => new RosterViewModel(
-                                       x,
-                                       new RosterViewModel.PlayerItem(string.Empty, string.Empty, false),
-                                       new List<RosterViewModel.PlayerItem>()))
-                                   .SortRosters()
-                                   .ToArray());
+                let lastDate = g.Max(x => x.Date)
+                where selectAll || lastDate >= SystemTime.UtcNow.Date
+                select new InitialDataViewModel.TurnViewModel(
+                    seasonStart: season.Value,
+                    turn: g.Key,
+                    startDate: g.Min(x => x.Date),
+                    endDate: lastDate,
+                    rosters: g.Select(x => new RosterViewModel(
+                                   x,
+                                   new RosterViewModel.PlayerItem(string.Empty, string.Empty, false),
+                                   new List<RosterViewModel.PlayerItem>()))
+                               .SortRosters()
+                               .ToArray());
             InitialDataViewModel.TurnViewModel[] turns = q.ToArray();
             IEnumerable<InitialDataViewModel.ScheduledItem> activities =
                 DocumentSession.Query<Activity, ActivityIndex>()
@@ -71,10 +74,9 @@
                                .Where(x => selectAll || x.Date >= SystemTime.UtcNow.Date.AddDays(-3))
                                .Select(x => new InitialDataViewModel.ScheduledActivityItem(x.Id, x.Title, x.Date, x.MessageHtml, string.IsNullOrEmpty(x.AuthorId) == false ? DocumentSession.Load<Player>(x.AuthorId)?.Name ?? string.Empty : string.Empty));
             bool isFiltered = rosters.Count != turns.Sum(x => x.Rosters.Length);
-            var vm = new InitialDataViewModel(turns.Concat(activities).OrderBy(x => x.Date).ToArray(), season.Value, isFiltered);
+            InitialDataViewModel vm = new(turns.Concat(activities).OrderBy(x => x.Date).ToArray(), season.Value, isFiltered);
 
-            if (turns.Length <= 0) return View("Unscheduled", vm);
-            return View(vm);
+            return turns.Length <= 0 ? View("Unscheduled", vm) : View(vm);
         }
 
         public ActionResult Results()
@@ -99,7 +101,9 @@
             }
 
             if (ModelState.IsValid == false)
+            {
                 return View("CreateBits");
+            }
 
             int season = DocumentSession.LatestSeasonOrDefault(DateTime.Now.Year);
             WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
@@ -127,7 +131,7 @@
         {
             WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             ViewBag.TeamNamesAndLevels = websiteConfig.TeamNamesAndLevels;
-            var vm = new CreateRosterViewModel
+            CreateRosterViewModel vm = new()
             {
                 Season = DocumentSession.LatestSeasonOrDefault(DateTime.Now.Year)
             };
@@ -138,9 +142,12 @@
         [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
         public ActionResult Create(CreateRosterViewModel vm)
         {
-            if (!ModelState.IsValid) return View(vm);
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
 
-            var roster = new Roster(
+            Roster roster = new(
                 vm.Season,
                 vm.Turn,
                 vm.BitsMatchId,
@@ -160,9 +167,15 @@
         {
             Roster roster = DocumentSession.Load<Roster>(id);
             if (roster == null)
+            {
                 throw new HttpException(404, "Roster not found");
+            }
+
             if (roster.MatchResultId != null)
+            {
                 throw new HttpException(400, "Can not modify registered rosters");
+            }
+
             WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             ViewBag.TeamNamesAndLevels = websiteConfig.TeamNamesAndLevels;
             return View(new CreateRosterViewModel(roster));
@@ -181,9 +194,14 @@
 
             Roster roster = DocumentSession.Load<Roster>(id);
             if (roster == null)
+            {
                 throw new HttpException(404, "Roster not found");
+            }
+
             if (roster.MatchResultId != null)
+            {
                 throw new HttpException(400, "Can not modify registered rosters");
+            }
 
             roster.Location = vm.Location;
             roster.Opponent = vm.Opponent;
@@ -207,9 +225,15 @@
         {
             Roster roster = DocumentSession.Load<Roster>(id);
             if (roster == null)
+            {
                 throw new HttpException(404, "Roster not found");
+            }
+
             if (roster.MatchResultId != null)
+            {
                 throw new HttpException(400, "Can not delete registered rosters");
+            }
+
             return View(new RosterViewModel(
                 roster,
                 new RosterViewModel.PlayerItem(string.Empty, string.Empty, false),
@@ -223,9 +247,15 @@
         {
             Roster roster = DocumentSession.Load<Roster>(id);
             if (roster == null)
+            {
                 throw new HttpException(404, "Roster not found");
+            }
+
             if (roster.MatchResultId != null)
+            {
                 throw new HttpException(400, "Can not delete registered rosters");
+            }
+
             DocumentSession.Delete(roster);
             return RedirectToAction("Index");
         }
@@ -242,33 +272,33 @@
             if (turn.HasValue == false)
             {
                 // find out next turn
-                var rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
-                                             .Where(x => x.Season == season)
-                                             .Where(x => x.Date > SystemTime.UtcNow.Date)
-                                             .OrderBy(x => x.Date)
-                                             .Take(1)
-                                             .ToList();
+                List<Roster> rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
+                    .Where(x => x.Season == season)
+                    .Where(x => x.Date > SystemTime.UtcNow.Date)
+                    .OrderBy(x => x.Date)
+                    .Take(1)
+                    .ToList();
                 turn = rosters.Select(x => x.Turn).FirstOrDefault();
             }
 
             Roster[] rostersForTurn = DocumentSession.Query<Roster, RosterSearchTerms>()
-                                                .Include(roster => roster.Players)
-                                                .Where(roster => roster.Turn == turn && roster.Season == season)
-                                                .ToArray();
+                .Include(roster => roster.Players)
+                .Where(roster => roster.Turn == turn && roster.Season == season)
+                .ToArray();
             RosterViewModel[] rosterViewModels = rostersForTurn.Select(DocumentSession.LoadRosterViewModel)
-                                                 .SortRosters()
-                                                 .ToArray();
+                .SortRosters()
+                .ToArray();
 
             if (rosterViewModels.Length <= 0)
             {
-                var vm = new InitialDataViewModel(
+                InitialDataViewModel vm = new(
                     new InitialDataViewModel.ScheduledItem[0],
                     season.Value,
                     true);
                 return View("Unscheduled", vm);
             }
 
-            var viewTurnViewModel = new ViewTurnViewModel(
+            ViewTurnViewModel viewTurnViewModel = new(
                 turn.Value,
                 season.Value,
                 rosterViewModels,
@@ -294,17 +324,17 @@
             bool excludePreliminary)
         {
             Roster[] rostersForTurn = DocumentSession.Query<Roster, RosterSearchTerms>()
-                                                .Include(roster => roster.Players)
-                                                .Where(roster => roster.Turn == turn && roster.Season == season)
-                                                .ToArray()
-                                                .Where(roster => (roster.Preliminary == false || excludePreliminary == false)
-                                                                 && (roster.Date.Date >= SystemTime.UtcNow || excludePast == false))
-                                                .ToArray();
+                .Include(roster => roster.Players)
+                .Where(roster => roster.Turn == turn && roster.Season == season)
+                .ToArray()
+                .Where(roster => (roster.Preliminary == false || excludePreliminary == false)
+                                    && (roster.Date.Date >= SystemTime.UtcNow || excludePast == false))
+                .ToArray();
             RosterViewModel[] rosterViewModels = rostersForTurn.Select(DocumentSession.LoadRosterViewModel)
-                                                 .SortRosters()
-                                                 .ToArray();
+                .SortRosters()
+                .ToArray();
 
-            var viewTurnViewModel = new ViewTurnViewModel(
+            ViewTurnViewModel viewTurnViewModel = new(
                 turn,
                 season,
                 rosterViewModels,
@@ -314,17 +344,18 @@
             if (pdf)
             {
                 string filename = $"Uttagningar-{season}-{turn}.pdf";
-                var customSwitchesBuilder = new StringBuilder();
-                customSwitchesBuilder.Append($"--footer-left \"Filnamn: {filename}\"");
-                customSwitchesBuilder.Append(" --footer-right \"Sida [page] av [toPage]\"");
-                customSwitchesBuilder.Append(" --footer-font-size \"8\"");
-                customSwitchesBuilder.Append(" --footer-line");
-                customSwitchesBuilder.Append(" --footer-spacing \"3\"");
-                customSwitchesBuilder.Append($" --header-left \"{TenantConfiguration.FullTeamName}\"");
-                customSwitchesBuilder.Append($" --header-center \"Omgång {turn}\"");
-                customSwitchesBuilder.Append($" --header-right \"{DateTime.Now.Date.ToShortDateString()}\"");
-                customSwitchesBuilder.Append(" --header-line");
-                string customSwitches = customSwitchesBuilder.ToString();
+                StringBuilder customSwitchesBuilder = new();
+                string customSwitches = customSwitchesBuilder
+                    .Append($"--footer-left \"Filnamn: {filename}\"")
+                    .Append(" --footer-right \"Sida [page] av [toPage]\"")
+                    .Append(" --footer-font-size \"8\"")
+                    .Append(" --footer-line")
+                    .Append(" --footer-spacing \"3\"")
+                    .Append($" --header-left \"{TenantConfiguration.FullTeamName}\"")
+                    .Append($" --header-center \"Omgång {turn}\"")
+                    .Append($" --header-right \"{DateTime.Now.Date.ToShortDateString()}\"")
+                    .Append(" --header-line")
+                    .ToString();
                 return new ViewAsPdf(viewTurnViewModel)
                 {
                     PageSize = Size.A4,
@@ -343,14 +374,16 @@
                 .Include<Roster>(r => r.Players)
                 .Load<Roster>(rosterId);
             if (roster == null)
+            {
                 throw new HttpException(404, "Roster not found");
+            }
 
-            var availablePlayers = DocumentSession.Query<Player, PlayerSearch>()
+            List<Player> availablePlayers = DocumentSession.Query<Player, PlayerSearch>()
                 .OrderBy(x => x.Name)
                 .Where(p => p.PlayerStatus == Player.Status.Active)
                 .ToList();
 
-            var vm = new EditRosterPlayersViewModel
+            EditRosterPlayersViewModel vm = new()
             {
                 RosterViewModel = DocumentSession.LoadRosterViewModel(roster),
                 AvailablePlayers = availablePlayers.Select(x => new PlayerViewModel(x, WebsiteRoles.UserGroup().ToDict())).ToArray()
@@ -362,17 +395,24 @@
         [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
         public ActionResult EditPlayers(string rosterId, RosterPlayersViewModel vm)
         {
-            if (ModelState.IsValid == false) return EditPlayers(rosterId);
-            Roster roster = DocumentSession.Load<Roster>(rosterId);
-            if (roster == null) throw new HttpException(404, "Roster not found");
+            if (ModelState.IsValid == false)
+            {
+                return EditPlayers(rosterId);
+            }
 
-            var update = new Roster.Update(
+            Roster roster = DocumentSession.Load<Roster>(rosterId);
+            if (roster == null)
+            {
+                throw new HttpException(404, "Roster not found");
+            }
+
+            Roster.Update update = new(
                 Roster.ChangeType.EditPlayers,
                 User.CustomIdentity.PlayerId ?? User.CustomIdentity.Email)
             {
                 Preliminary = vm.Preliminary
             };
-            List<string> players = null;
+            List<string>? players = null;
             if (roster.IsFourPlayer)
             {
                 players = new List<string>
@@ -423,7 +463,7 @@
             }
             else
             {
-                update.TeamLeader = new Some<string>(null);
+                update.TeamLeader = new Some<string?>(null);
             }
 
             roster.UpdateWith(Trace.CorrelationManager.ActivityId, update);
@@ -454,11 +494,11 @@
              *      3   3
              *     4 4
              */
-            var absences = DocumentSession.Query<AbsenceIndex.Result, AbsenceIndex>()
-                .Where(x => x.From <= from && to <= x.To
-                    || x.From <= from && from <= x.To
-                    || x.From <= to && to <= x.To
-                    || from <= x.From && x.To <= to)
+            Dictionary<string, List<AbsenceIndex.Result>> absences = DocumentSession.Query<AbsenceIndex.Result, AbsenceIndex>()
+                .Where(x => (x.From <= from && to <= x.To)
+                    || (x.From <= from && from <= x.To)
+                    || (x.From <= to && to <= x.To)
+                    || (from <= x.From && x.To <= to))
                 .ProjectFromIndexFieldsInto<AbsenceIndex.Result>()
                 .ToArray()
                 .ToLookup(x => x.Player)
@@ -466,10 +506,10 @@
 
             Player[] players = DocumentSession.Query<Player, PlayerSearch>()
                 .ToArray();
-            var rostersForPlayers = new Dictionary<string, List<RosterViewModel>>();
+            Dictionary<string, List<RosterViewModel>> rostersForPlayers = new();
             foreach (Roster roster in rosters)
             {
-                var rosterViewModel = new RosterViewModel(
+                RosterViewModel rosterViewModel = new(
                     roster,
                     new RosterViewModel.PlayerItem(string.Empty, string.Empty, false),
                     new List<RosterViewModel.PlayerItem>());
@@ -485,12 +525,12 @@
                 }
             }
 
-            var resultsForPlayer = DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
-                                                  .Where(x => x.Season == season)
-                                                  .ToArray()
-                                                  .ToDictionary(x => x.PlayerId);
+            Dictionary<string, ResultForPlayerIndex.Result> resultsForPlayer = DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
+                .Where(x => x.Season == season)
+                .ToArray()
+                .ToDictionary(x => x.PlayerId);
 
-            var activities = new List<PlayerStatusViewModel>();
+            List<PlayerStatusViewModel> activities = new();
             foreach (Player player in players)
             {
                 PlayerFormViewModel playerForm;
@@ -514,8 +554,7 @@
                     continue;
                 }
 
-                var activity = new PlayerStatusViewModel(player, playerForm, from, to);
-
+                PlayerStatusViewModel activity = new(player, playerForm, from, to);
                 if (rostersForPlayers.ContainsKey(player.Id))
                 {
                     List<RosterViewModel> rostersForPlayer = rostersForPlayers[player.Id];
@@ -676,9 +715,9 @@
 
             public bool IsFourPlayer { get; set; }
 
-            public string OilPatternName { get; set; }
+            public string? OilPatternName { get; set; }
 
-            public string OilPatternUrl { get; set; }
+            public string? OilPatternUrl { get; set; }
         }
     }
 }

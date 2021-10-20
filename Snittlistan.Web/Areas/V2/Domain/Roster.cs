@@ -397,7 +397,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
             public Option<bool> Preliminary { get; set; } = None.Value;
             public Option<List<string>> Players { get; set; } = None.Value;
             public Option<bool> IsVerified { get; set; } = None.Value;
-            public Option<string> TeamLeader { get; set; } = None.Value;
+            public Option<string?> TeamLeader { get; set; } = None.Value;
         }
 
         public enum ChangeType

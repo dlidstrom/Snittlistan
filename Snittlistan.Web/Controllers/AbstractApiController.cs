@@ -1,78 +1,40 @@
 ﻿namespace Snittlistan.Web.Controllers
 {
-    using System;
+    using System.Threading.Tasks;
     using System.Web.Http;
     using EventStoreLite;
     using Raven.Client;
     using Snittlistan.Queue;
-    using Snittlistan.Queue.Messages;
     using Snittlistan.Queue.Models;
-    using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Attributes;
+    using Snittlistan.Web.Infrastructure.Database;
 
     [SaveChanges]
     public abstract class AbstractApiController : ApiController
     {
-        /// <summary>
-        /// Gets the document store.
-        /// </summary>
         public IDocumentStore DocumentStore { get; set; }
 
-        /// <summary>
-        /// Gets the document session.
-        /// </summary>
         public IDocumentSession DocumentSession { get; set; }
 
-        /// <summary>
-        /// Gets the event store session.
-        /// </summary>
         public IEventStoreSession EventStoreSession { get; set; }
 
-        /// <summary>
-        /// Gets the event store.
-        /// </summary>
+        public DatabaseContext Database { get; set; }
+
         public EventStore EventStore { get; set; }
 
-        /// <summary>
-        /// Gets the tenant configuration.
-        /// </summary>
         public TenantConfiguration TenantConfiguration { get; set; }
 
-        /// <summary>
-        /// Gets the msmq transaction.
-        /// </summary>
         public IMsmqTransaction MsmqTransaction { get; set; }
 
         [NonAction]
-        public void SaveChanges()
+        public async Task SaveChangesAsync()
         {
             MsmqTransaction.Commit();
 
             // this commits the document session
             EventStoreSession.SaveChanges();
-        }
 
-        protected TResult ExecuteQuery<TResult>(IQuery<TResult> query)
-        {
-            return query == null ? throw new ArgumentNullException(nameof(query)) : query.Execute(DocumentSession);
-        }
-
-        protected void ExecuteCommand(ICommand command)
-        {
-            if (command == null)
-            {
-                throw new ArgumentNullException(nameof(command));
-            }
-
-            command.Execute(DocumentSession, EventStoreSession, PublishMessage);
-        }
-
-        protected void PublishMessage<TPayload>(TPayload payload)
-        {
-            string uriString = Url.Link("DefaultApi", new { controller = "Task" });
-            Uri uri = new(uriString);
-            MessageEnvelope envelope = new(payload, uri);
-            MsmqTransaction.PublishMessage(envelope);
+            _ = await Database.SaveChangesAsync();
         }
     }
 }

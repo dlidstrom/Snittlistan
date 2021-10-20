@@ -11,7 +11,7 @@ namespace Snittlistan.Queue
     public static class MsmqGateway
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private static MessageQueue messageQueue;
+        private static MessageQueue? messageQueue;
 
         public static void Initialize(string path)
         {
@@ -28,7 +28,7 @@ namespace Snittlistan.Queue
 
         public class MsmqTransactionScope : IMsmqTransaction, IDisposable
         {
-            private readonly MessageQueueTransaction transaction = new MessageQueueTransaction();
+            private readonly MessageQueueTransaction transaction = new();
 
             public MsmqTransactionScope()
             {
@@ -38,7 +38,7 @@ namespace Snittlistan.Queue
             public void PublishMessage(MessageEnvelope envelope)
             {
                 Log.InfoFormat("Sending {0}", envelope);
-                messageQueue.Send(envelope, transaction);
+                messageQueue!.Send(envelope, transaction);
             }
 
             public void Commit()

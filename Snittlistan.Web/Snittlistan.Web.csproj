@@ -56,6 +56,9 @@
     <PackageReference Include="Elmah.MVC">
       <Version>2.1.2</Version>
     </PackageReference>
+    <PackageReference Include="EntityFramework6.Npgsql">
+      <Version>6.4.3</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.AspNet.Mvc">
       <Version>5.2.7</Version>
     </PackageReference>
@@ -282,6 +285,9 @@
     <Compile Include="Infrastructure\Bits\BitsClient.cs" />
     <Compile Include="Infrastructure\CustomIdentity.cs" />
     <Compile Include="Infrastructure\CustomPrincipal.cs" />
+    <Compile Include="Infrastructure\Database\DatabaseContext.cs" />
+    <Compile Include="Infrastructure\Logging\NLogLogger.cs" />
+    <Compile Include="Infrastructure\Logging\NLogLoggingProvider.cs" />
     <Compile Include="Infrastructure\EventStoreLite\AggregateRoot.cs" />
     <Compile Include="Infrastructure\EventStoreLite\Event.cs" />
     <Compile Include="Infrastructure\EventStoreLite\EventDispatcher.cs" />
@@ -306,6 +312,7 @@
     <Compile Include="Infrastructure\ICalFormatter.cs" />
     <Compile Include="Infrastructure\ICommand.cs" />
     <Compile Include="Infrastructure\Installers\ApiControllerInstaller.cs" />
+    <Compile Include="Infrastructure\Installers\DatabaseContextInstaller.cs" />
     <Compile Include="Infrastructure\Installers\EmailServiceInstaller.cs" />
     <Compile Include="Infrastructure\Installers\EventMigratorInstaller.cs" />
     <Compile Include="Infrastructure\Installers\EventStoreSessionInstaller.cs" />

@@ -256,6 +256,7 @@
                     new EventMigratorInstaller(),
                     new EventStoreSessionInstaller(),
                     new RavenInstaller(siteWideConfiguration),
+                    new DatabaseContextInstaller(),
                     new ServicesInstaller(),
                     new MsmqInstaller(),
                     EventStoreInstaller.FromAssembly(

@@ -64,25 +64,25 @@ namespace Snittlistan.Web.Infrastructure.Installers
                         .Instance(documentStore)
                         .Named(nameOfComponent)
                         .LifestyleSingleton();
-                    container.Register(documentStoreComponent);
+                    _ = container.Register(documentStoreComponent);
                 }
             }
 
             if (mode == DocumentStoreMode.InMemory)
             {
-                container.Register(
+                _ = container.Register(
                     Component.For<IDocumentSession>().UsingFactoryMethod(GetDocumentSession).LifestyleScoped());
             }
             else
             {
-                container.Register(
+                _ = container.Register(
                     Component.For<IDocumentSession>().UsingFactoryMethod(GetDocumentSession).LifestylePerWebRequest());
             }
         }
 
         private static bool FindIdentityProperty(MemberInfo memberInfo)
         {
-            var attribute = Attribute.GetCustomAttribute(memberInfo, typeof(IdAttribute));
+            Attribute attribute = Attribute.GetCustomAttribute(memberInfo, typeof(IdAttribute));
             return attribute != null || memberInfo.Name == "Id";
         }
 
@@ -106,7 +106,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
 
         private static IDocumentStore InitializeStore(IDocumentStore store)
         {
-            store.Initialize();
+            _ = store.Initialize();
             store.Conventions.IdentityPartsSeparator = "-";
 #pragma warning disable 618
             store.Conventions.DefaultQueryingConsistency = ConsistencyOptions.AlwaysWaitForNonStaleResultsAsOfLastWrite;
@@ -125,7 +125,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
             {
                 case DocumentStoreMode.InMemory:
                     {
-                        var documentStore = new EmbeddableDocumentStore
+                        EmbeddableDocumentStore documentStore = new()
                         {
                             RunInMemory = true
                         };
@@ -138,7 +138,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
                 case DocumentStoreMode.Server:
                     store = new DocumentStore
                     {
-                        Url = siteWideConfiguration.DatabaseUrl,
+                        Url = siteWideConfiguration!.DatabaseUrl,
                         DefaultDatabase = tenantConfiguration.DatabaseName
                     };
                     break;

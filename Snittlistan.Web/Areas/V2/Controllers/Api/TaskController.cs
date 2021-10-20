@@ -4,6 +4,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Data.Entity;
+    using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
     using System.Web.Http;
@@ -24,6 +26,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
         public TaskController(IKernel kernel)
         {
             this.kernel = kernel;
+        }
+
+        public async Task<IHttpActionResult> Get()
+        {
+            return Ok(await Database.Queries.Take(10).ToListAsync());
         }
 
         public async Task<IHttpActionResult> Post(TaskRequest request)

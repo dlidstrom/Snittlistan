@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Queue
+﻿#nullable enable
+
+namespace Snittlistan.Queue
 {
     using System;
     using System.Diagnostics;
@@ -16,7 +18,7 @@
         private readonly string _importQueue;
         private readonly MessageQueue[] _importMessageQueues;
         private readonly MessageQueue _errorMessageQueue;
-        private readonly Counter _counter = new Counter();
+        private readonly Counter _counter = new();
         private volatile bool _isClosing;
 
         protected MessageQueueListenerBase(MessageQueueProcessorSettings settings)
@@ -46,7 +48,7 @@
             _importMessageQueues = Enumerable.Range(0, numberOfThreads).Select(
                 x =>
                 {
-                    var queue = new MessageQueue(settings.ReadQueue, QueueAccessMode.SendAndReceive);
+                    MessageQueue queue = new(settings.ReadQueue, QueueAccessMode.SendAndReceive);
                     queue.MessageReadPropertyFilter.SetAll();
                     return queue;
                 }).ToArray();
@@ -66,7 +68,7 @@
             foreach (MessageQueue importMessageQueue in _importMessageQueues)
             {
                 importMessageQueue.PeekCompleted += Queue_PeekCompleted;
-                importMessageQueue.BeginPeek();
+                _ = importMessageQueue.BeginPeek();
             }
         }
 
@@ -83,7 +85,7 @@
             _errorMessageQueue.Close();
 
             // wait (at most 10 seconds) for processor threads to finish working
-            var sw = Stopwatch.StartNew();
+            Stopwatch sw = Stopwatch.StartNew();
             while (_counter.Value > 0 && sw.ElapsedMilliseconds < 10000)
             {
                 Thread.Sleep(100);
@@ -121,7 +123,7 @@
             }
 
             Log.InfoFormat("Creating queue {0}", queueName);
-            var queue = MessageQueue.Create(queueName, true);
+            MessageQueue queue = MessageQueue.Create(queueName, true);
             queue.UseJournalQueue = true;
             queue.MaximumJournalSize = 10 * 1024;
             queue.SetPermissions("Everyone", MessageQueueAccessRights.FullControl, AccessControlEntryType.Allow);
@@ -130,12 +132,12 @@
         private void Queue_PeekCompleted(object sender, PeekCompletedEventArgs e)
         {
             // end peek operation
-            var queue = (MessageQueue)sender;
+            MessageQueue queue = (MessageQueue)sender;
 
-            queue.EndPeek(e.AsyncResult);
+            _ = queue.EndPeek(e.AsyncResult);
 
             // read message transactionally
-            MessageQueueTransaction transaction = null;
+            MessageQueueTransaction? transaction = null;
             try
             {
                 transaction = new MessageQueueTransaction();
@@ -173,7 +175,7 @@
                 // start new peek operation
                 if (_isClosing == false)
                 {
-                    queue.BeginPeek();
+                    _ = queue.BeginPeek();
                 }
             }
         }

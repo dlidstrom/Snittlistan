@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Controllers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Controllers
 {
     using System;
     using System.Diagnostics;
@@ -23,38 +25,42 @@
         /// <summary>
         /// Gets the document store.
         /// </summary>
-        public IDocumentStore DocumentStore { get; set; }
+        public IDocumentStore DocumentStore { get; set; } = null!;
 
         /// <summary>
         /// Gets the document session.
         /// </summary>
-        public IDocumentSession DocumentSession { get; set; }
+        public IDocumentSession DocumentSession { get; set; } = null!;
 
         /// <summary>
         /// Gets the event store session.
         /// </summary>
-        public IEventStoreSession EventStoreSession { get; set; }
+        public IEventStoreSession EventStoreSession { get; set; } = null!;
 
         /// <summary>
         /// Gets the event store.
         /// </summary>
-        public EventStore EventStore { get; set; }
+        public EventStore EventStore { get; set; } = null!;
 
         /// <summary>
         /// Gets the tenant configuration.
         /// </summary>
-        public TenantConfiguration TenantConfiguration { get; set; }
+        public TenantConfiguration TenantConfiguration { get; set; } = null!;
 
         /// <summary>
         /// Gets the msmq transaction.
         /// </summary>
-        public IMsmqTransaction MsmqTransaction { get; set; }
+        public IMsmqTransaction MsmqTransaction { get; set; } = null!;
 
-        protected new CustomPrincipal User => HttpContext.User as CustomPrincipal;
+        protected new CustomPrincipal User => (CustomPrincipal)HttpContext.User;
 
         protected void ExecuteCommand(ICommand command)
         {
-            if (command == null) throw new ArgumentNullException(nameof(command));
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
             command.Execute(DocumentSession, EventStoreSession, PublishMessage);
         }
 
@@ -62,9 +68,9 @@
         {
             string routeUrl = Url.HttpRouteUrl("DefaultApi", new { controller = "Task" });
             Debug.Assert(Request.Url != null, "Request.Url != null");
-            string uriString = $"{Request.Url.Scheme}://{Request.Url.Host}:{Request.Url.Port}{routeUrl}";
-            var uri = new Uri(uriString);
-            var envelope = new MessageEnvelope(payload, uri);
+            string uriString = $"{Request.Url?.Scheme}://{Request.Url?.Host}:{Request.Url?.Port}{routeUrl}";
+            Uri? uri = new(uriString);
+            MessageEnvelope envelope = new(payload, uri);
             MsmqTransaction.PublishMessage(envelope);
         }
 
@@ -78,7 +84,10 @@
             }
 
             // make sure there's an admin user
-            if (DocumentSession.Load<User>(Models.User.AdminId) != null) return;
+            if (DocumentSession.Load<User>(Models.User.AdminId) != null)
+            {
+                return;
+            }
 
             // first launch
             Response.Redirect("/v1/welcome");
@@ -87,7 +96,10 @@
 
         protected override void OnActionExecuted(ActionExecutedContext filterContext)
         {
-            if (filterContext.IsChildAction || filterContext.Exception != null) return;
+            if (filterContext.IsChildAction || filterContext.Exception != null)
+            {
+                return;
+            }
 
             MsmqTransaction.Commit();
 
