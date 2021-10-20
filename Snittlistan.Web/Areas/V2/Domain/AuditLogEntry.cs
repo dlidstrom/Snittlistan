@@ -57,11 +57,11 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         public static class PropertyChange
         {
-            public static PropertyChange<TPropertyType> Create<TPropertyType>(
-                TPropertyType oldValue,
+            public static PropertyChange<TPropertyType?> Create<TPropertyType>(
+                TPropertyType? oldValue,
                 TPropertyType newValue)
             {
-                return new PropertyChange<TPropertyType>(oldValue, newValue);
+                return new PropertyChange<TPropertyType?>(oldValue, newValue);
             }
         }
     }

@@ -145,7 +145,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public Guid UpdateWith(Guid correlationId, Update update)
         {
             Change change = new(update.ChangeType, update.UserId);
-            object before = GetState();
+            RosterState before = GetState();
 
             update.PlayerAccepted.Match(
                 x =>
@@ -243,7 +243,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 },
                 () => { });
 
-            object after = GetState();
+            RosterState after = GetState();
             AuditLogEntry auditLogEntry = new(
                 change.UserId,
                 change.ChangeType.ToString(),
