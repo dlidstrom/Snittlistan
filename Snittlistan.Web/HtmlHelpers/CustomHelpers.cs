@@ -17,7 +17,7 @@
 
         public static string GenerateBitsUrl(int bitsMatchId)
         {
-            return $"http://bits.swebowl.se/Matches/MatchFact.aspx?MatchId={bitsMatchId}";
+            return $"https://bits.swebowl.se/match-detail?matchid={bitsMatchId}";
         }
     }
 }
