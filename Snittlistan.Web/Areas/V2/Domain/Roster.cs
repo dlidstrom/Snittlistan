@@ -123,12 +123,12 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public void SetPlayers(List<string> players)
         {
             Players = players;
-            AcceptedPlayers.RemoveAll(x => players.Contains(x) == false);
+            _ = AcceptedPlayers.RemoveAll(x => players.Contains(x) == false);
         }
 
         public string MatchResultId { get; set; }
 
-        public string TeamLeader { get; set; }
+        public string? TeamLeader { get; set; }
 
         public bool IsVerified { get; set; }
 
@@ -142,9 +142,9 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         public bool MatchTimeChanged { get; set; }
 
-        public void UpdateWith(Guid correlationId, Update update)
+        public Guid UpdateWith(Guid correlationId, Update update)
         {
-            var change = new Change(update.ChangeType, update.UserId);
+            Change change = new(update.ChangeType, update.UserId);
             object before = GetState();
 
             update.PlayerAccepted.Match(
@@ -252,14 +252,31 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 before,
                 after);
             AuditLogEntries.Add(auditLogEntry);
+            return auditLogEntry.CorrelationId;
         }
 
         private void Accept(string playerId)
         {
-            if (playerId == null) throw new ArgumentNullException(nameof(playerId));
-            if (Preliminary) throw new Exception("Can not accept when preliminary");
-            if (SystemTime.UtcNow > Date.ToUniversalTime()) throw new Exception("Can not accept passed games");
-            if (Players.Contains(playerId) == false) throw new Exception("Can only accept players on the roster");
+            if (playerId == null)
+            {
+                throw new ArgumentNullException(nameof(playerId));
+            }
+
+            if (Preliminary)
+            {
+                throw new Exception("Can not accept when preliminary");
+            }
+
+            if (SystemTime.UtcNow > Date.ToUniversalTime())
+            {
+                throw new Exception("Can not accept passed games");
+            }
+
+            if (Players.Contains(playerId) == false)
+            {
+                throw new Exception("Can only accept players on the roster");
+            }
+
             AcceptedPlayers = new HashSet<string>(AcceptedPlayers.Concat(new[] { playerId })).ToList();
         }
 
@@ -366,15 +383,15 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
             public ChangeType ChangeType { get; }
             public string UserId { get; }
-            public AuditLogEntry.PropertyChange<string> PlayerAccepted { get; set; }
-            public AuditLogEntry.PropertyChange<OilPatternInformation> OilPattern { get; set; }
+            public AuditLogEntry.PropertyChange<string?> PlayerAccepted { get; set; }
+            public AuditLogEntry.PropertyChange<OilPatternInformation?> OilPattern { get; set; }
             public AuditLogEntry.PropertyChange<DateTime> Date { get; set; }
-            public AuditLogEntry.PropertyChange<string> Opponent { get; set; }
-            public AuditLogEntry.PropertyChange<string> Location { get; set; }
-            public AuditLogEntry.PropertyChange<List<string>> Players { get; set; }
+            public AuditLogEntry.PropertyChange<string?> Opponent { get; set; }
+            public AuditLogEntry.PropertyChange<string?> Location { get; set; }
+            public AuditLogEntry.PropertyChange<List<string>?> Players { get; set; }
             public AuditLogEntry.PropertyChange<bool> IsVerified { get; set; }
             public AuditLogEntry.PropertyChange<bool> Preliminary { get; set; }
-            public AuditLogEntry.PropertyChange<string> TeamLeader { get; set; }
+            public AuditLogEntry.PropertyChange<string?> TeamLeader { get; set; }
         }
 
         public class Update

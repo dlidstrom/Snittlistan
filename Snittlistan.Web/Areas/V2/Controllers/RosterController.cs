@@ -466,11 +466,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 update.TeamLeader = new Some<string?>(null);
             }
 
-            roster.UpdateWith(Trace.CorrelationManager.ActivityId, update);
+            Guid correlationId = roster.UpdateWith(Trace.CorrelationManager.ActivityId, update);
 
             if (vm.SendUpdateMail || true)
             {
-                PublishMessage(new InitiateUpdateMailTask(roster.Id, Trace.CorrelationManager.ActivityId));
+                PublishMessage(new InitiateUpdateMailTask(roster.Id, correlationId));
             }
 
             return RedirectToAction("View", new { season = roster.Season, turn = roster.Turn });
