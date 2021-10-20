@@ -253,8 +253,12 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         public ActionResult LogOff()
         {
-            NotifyEvent($"{User.CustomIdentity.Name} logged off");
-            authenticationService.SignOut();
+            if (Request.IsAuthenticated)
+            {
+                NotifyEvent($"{User.CustomIdentity.Name} logged off");
+                authenticationService.SignOut();
+            }
+
             return RedirectToAction("Index", "Roster");
         }
 
