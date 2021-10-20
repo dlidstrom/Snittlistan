@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Controllers
 {
     using System;
     using System.ComponentModel.DataAnnotations;
@@ -6,7 +8,6 @@
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
-    using System.Text;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
@@ -24,7 +25,7 @@
     public class AuthenticationController : AbstractController
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private static readonly Random Random = new Random();
+        private static readonly Random Random = new();
         private readonly IAuthenticationService authenticationService;
 
         public AuthenticationController(IAuthenticationService authenticationService)
@@ -57,10 +58,19 @@
                 }
                 else
                 {
-                    players = DocumentSession.Query<Player, PlayerSearch>()
-                                             .Where(x => x.Email == vm.Email
-                                                         && (x.PlayerStatus == Player.Status.Active || x.PlayerStatus == Player.Status.Supporter))
-                                             .ToArray();
+                    Player[] possiblePlayers = DocumentSession
+                        .Query<Player, PlayerSearch>()
+                        .Where(x => x.PlayerStatus == Player.Status.Active
+                            || x.PlayerStatus == Player.Status.Supporter)
+                        .ToArray();
+                    players = possiblePlayers
+                        .Select(x => new PossiblePlayer(x, x.Email.EditDistanceTo(vm.Email)))
+                        .Where(x => x.EditDistance <= 3)
+                        .OrderBy(x => x.EditDistance)
+                        .Take(1)
+                        .Select(x => x.Player)
+                        .ToArray()
+                        ?? Array.Empty<Player>();
                 }
 
                 if (players.Length == 0)
@@ -90,7 +100,7 @@
                     }
 
                     // no valid token, generate new
-                    var token = new OneTimeToken(player.Id);
+                    OneTimeToken token = new(player.Id);
                     Debug.Assert(Request.Url != null, "Request.Url != null");
                     string oneTimePassword =
                         string.Join("", Enumerable.Range(1, 6).Select(_ => Random.Next(10)));
@@ -156,14 +166,19 @@
         [SetTempModelState]
         public async Task<ActionResult> LogOnOneTimePassword(string id, PasswordViewModel vm)
         {
-            if (Request.IsAuthenticated) return RedirectToAction("Index", "Roster");
+            if (Request.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Roster");
+            }
 
             OneTimeToken[] activeTokens = DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>()
                 .Where(x => x.PlayerId == id && x.CreatedDate > SystemTime.UtcNow.ToLocalTime().AddDays(-1))
                 .ToArray();
             Player player = DocumentSession.Load<Player>(id);
             if (player == null)
+            {
                 throw new HttpException(404, "Player not found");
+            }
 
             try
             {
@@ -177,7 +192,7 @@
                     return View(vm);
                 }
 
-                OneTimeToken matchingPassword = activeTokens.FirstOrDefault(x => x.Payload == vm.Password);
+                OneTimeToken matchingPassword = activeTokens.FirstOrDefault(x => x.Payload.EditDistanceTo(vm.Password) <= 1);
                 if (matchingPassword == null)
                 {
                     Log.Info("No matching password token");
@@ -201,7 +216,7 @@
 
         public ActionResult LogOnPassword(string email, string returnUrl)
         {
-            return View(new PasswordViewModel { Email = email, RememberMe = true });
+            return View(new PasswordViewModel { Email = email, RememberMe = true, ReturnUrl = returnUrl });
         }
 
         [HttpPost]
@@ -221,61 +236,29 @@
 
             // redisplay form if any errors at this point
             if (!ModelState.IsValid)
+            {
                 return View(vm);
+            }
 
-            Debug.Assert(user != null, "user != null");
             authenticationService.SetAuthCookie(user.Email, vm.RememberMe);
 
-            if (Url.IsLocalUrl(returnUrl)
+            return Url.IsLocalUrl(returnUrl)
                 && returnUrl.Length > 1
                 && returnUrl.StartsWith("/")
                 && !returnUrl.StartsWith("//")
-                && !returnUrl.StartsWith("/\\"))
-            {
-                return Redirect(returnUrl);
-            }
-
-            return RedirectToAction("Index", "Roster");
+                && !returnUrl.StartsWith("/\\")
+                ? Redirect(returnUrl)
+                : RedirectToAction("Index", "Roster");
         }
 
         public ActionResult LogOff()
         {
+            NotifyEvent($"{User.CustomIdentity.Name} logged off");
             authenticationService.SignOut();
             return RedirectToAction("Index", "Roster");
         }
 
-        public class EmailViewModel
-        {
-            [Required(ErrorMessage = "Ange e-postadress")]
-            [DataType(DataType.EmailAddress)]
-            [Display(Name = "E-postadress")]
-            public string Email { get; set; }
-
-            public string PlayerId { get; set; }
-        }
-
-        public class PasswordViewModel
-        {
-            [Required(ErrorMessage = "Ange e-postadress")]
-            [DataType(DataType.EmailAddress)]
-            [Display(Name = "E-postadress")]
-            public string Email { get; set; }
-
-            [Required(ErrorMessage = "Ange lösenord")]
-            [DataType(DataType.Password)]
-            [Display(Name = "Lösenord")]
-            public string Password { get; set; }
-
-            public bool RememberMe { get; set; }
-
-            public string OneTimeKey { get; set; }
-
-            public bool ReuseToken { get; set; }
-
-            public DateTimeOffset? ReusedTokenDate { get; set; }
-        }
-
-        private void NotifyEvent(string subject, string body = null)
+        private void NotifyEvent(string subject, string? body = null)
         {
             PublishMessage(
                 EmailTask.Create(
@@ -290,5 +273,40 @@
                             body ?? string.Empty
                         })));
         }
+
+        public class EmailViewModel
+        {
+            [Required(ErrorMessage = "Ange e-postadress")]
+            [DataType(DataType.EmailAddress)]
+            [Display(Name = "E-postadress")]
+            public string Email { get; set; } = null!;
+
+            public string? PlayerId { get; set; }
+        }
+
+        public class PasswordViewModel
+        {
+            [Required(ErrorMessage = "Ange e-postadress")]
+            [DataType(DataType.EmailAddress)]
+            [Display(Name = "E-postadress")]
+            public string Email { get; set; } = null!;
+
+            [Required(ErrorMessage = "Ange lösenord")]
+            [DataType(DataType.Password)]
+            [Display(Name = "Lösenord")]
+            public string Password { get; set; } = null!;
+
+            public bool RememberMe { get; set; }
+
+            public string OneTimeKey { get; set; } = null!;
+
+            public bool ReuseToken { get; set; }
+
+            public DateTimeOffset? ReusedTokenDate { get; set; }
+
+            public string? ReturnUrl { get; set; }
+        }
+
+        public record PossiblePlayer(Player Player, int EditDistance);
     }
 }

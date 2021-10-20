@@ -1,8 +1,10 @@
 ﻿namespace Snittlistan.Web.Areas.V2.Domain
 {
     using System;
+    using System.Diagnostics;
     using Infrastructure.Bits.Contracts;
 
+    [DebuggerDisplay("{Id} {Name} {Email}")]
     public class Player
     {
         public Player(
