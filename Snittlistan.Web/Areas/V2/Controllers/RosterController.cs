@@ -468,7 +468,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
             Guid correlationId = roster.UpdateWith(Trace.CorrelationManager.ActivityId, update);
 
-            if (vm.SendUpdateMail || true)
+            if ((vm.SendUpdateMail && roster.Preliminary == false) || true)
             {
                 PublishMessage(new InitiateUpdateMailTask(roster.Id, correlationId));
             }

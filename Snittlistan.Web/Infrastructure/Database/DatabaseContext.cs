@@ -5,7 +5,6 @@
 
     public class DatabaseContext : DbContext
     {
-        public DbSet<Query> Queries { get; set; }
         public DbSet<DelayedTask> DelayedTasks { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -17,15 +16,5 @@
             modelBuilder.Properties().Configure(x => x.HasColumnName(mapper.TranslateMemberName(x.ClrPropertyInfo.Name)));
             modelBuilder.Types().Configure(x => x.ToTable(mapper.TranslateMemberName(x.ClrType.Name)));
         }
-    }
-
-    public class Query
-    {
-        public int QueryId { get; set; }
-    }
-
-    public class DelayedTask
-    {
-        public int DelayedTaskId { get; set; }
     }
 }

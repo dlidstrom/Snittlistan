@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Controllers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Controllers
 {
     using System.Threading.Tasks;
     using System.Web.Http;
@@ -12,19 +14,19 @@
     [SaveChanges]
     public abstract class AbstractApiController : ApiController
     {
-        public IDocumentStore DocumentStore { get; set; }
+        public IDocumentStore DocumentStore { get; set; } = null!;
 
-        public IDocumentSession DocumentSession { get; set; }
+        public IDocumentSession DocumentSession { get; set; } = null!;
 
-        public IEventStoreSession EventStoreSession { get; set; }
+        public IEventStoreSession EventStoreSession { get; set; } = null!;
 
-        public DatabaseContext Database { get; set; }
+        public DatabaseContext Database { get; set; } = null!;
 
-        public EventStore EventStore { get; set; }
+        public EventStore EventStore { get; set; } = null!;
 
-        public TenantConfiguration TenantConfiguration { get; set; }
+        public TenantConfiguration TenantConfiguration { get; set; } = null!;
 
-        public IMsmqTransaction MsmqTransaction { get; set; }
+        public IMsmqTransaction MsmqTransaction { get; set; } = null!;
 
         [NonAction]
         public async Task SaveChangesAsync()

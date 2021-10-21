@@ -11,48 +11,33 @@ namespace Snittlistan.Web.Controllers
     using Snittlistan.Queue.Messages;
     using Snittlistan.Queue.Models;
     using Snittlistan.Web.Infrastructure;
+    using Snittlistan.Web.Infrastructure.Database;
     using Snittlistan.Web.Models;
 
     public abstract class AbstractController : Controller
     {
-        public Action<object> PublishMessage;
-
         protected AbstractController()
         {
             PublishMessage = DefaultPublishMessage;
         }
 
-        /// <summary>
-        /// Gets the document store.
-        /// </summary>
         public IDocumentStore DocumentStore { get; set; } = null!;
 
-        /// <summary>
-        /// Gets the document session.
-        /// </summary>
         public IDocumentSession DocumentSession { get; set; } = null!;
 
-        /// <summary>
-        /// Gets the event store session.
-        /// </summary>
         public IEventStoreSession EventStoreSession { get; set; } = null!;
 
-        /// <summary>
-        /// Gets the event store.
-        /// </summary>
+        public DatabaseContext Database { get; set; } = null!;
+
         public EventStore EventStore { get; set; } = null!;
 
-        /// <summary>
-        /// Gets the tenant configuration.
-        /// </summary>
         public TenantConfiguration TenantConfiguration { get; set; } = null!;
 
-        /// <summary>
-        /// Gets the msmq transaction.
-        /// </summary>
         public IMsmqTransaction MsmqTransaction { get; set; } = null!;
 
         protected new CustomPrincipal User => (CustomPrincipal)HttpContext.User;
+
+        protected Action<object> PublishMessage { get; private set; }
 
         protected void ExecuteCommand(ICommand command)
         {
@@ -62,6 +47,11 @@ namespace Snittlistan.Web.Controllers
             }
 
             command.Execute(DocumentSession, EventStoreSession, PublishMessage);
+        }
+
+        protected void PublishDelayedTask(object task, TimeSpan sendAfter)
+        {
+            Database.DelayedTasks
         }
 
         protected void DefaultPublishMessage<TPayload>(TPayload payload)

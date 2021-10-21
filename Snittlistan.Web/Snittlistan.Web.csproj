@@ -286,6 +286,7 @@
     <Compile Include="Infrastructure\CustomIdentity.cs" />
     <Compile Include="Infrastructure\CustomPrincipal.cs" />
     <Compile Include="Infrastructure\Database\DatabaseContext.cs" />
+    <Compile Include="Infrastructure\Database\DelayedTask.cs" />
     <Compile Include="Infrastructure\Logging\NLogLogger.cs" />
     <Compile Include="Infrastructure\Logging\NLogLoggingProvider.cs" />
     <Compile Include="Infrastructure\EventStoreLite\AggregateRoot.cs" />
