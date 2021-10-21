@@ -393,7 +393,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         [HttpPost]
         [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
-        public ActionResult EditPlayers(string rosterId, RosterPlayersViewModel vm)
+        public async Task<ActionResult> EditPlayers(string rosterId, RosterPlayersViewModel vm)
         {
             if (ModelState.IsValid == false)
             {
@@ -470,7 +470,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
             if ((vm.SendUpdateMail && roster.Preliminary == false) || true)
             {
-                PublishMessage(new InitiateUpdateMailTask(roster.Id, correlationId));
+                await PublishDelayedTaskAsync(new InitiateUpdateMailTask(roster.Id, correlationId), TimeSpan.FromMinutes(10));
             }
 
             return RedirectToAction("View", new { season = roster.Season, turn = roster.Turn });

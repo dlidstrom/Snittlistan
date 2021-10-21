@@ -14,6 +14,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             NpgsqlLogManager.Provider = new NLogLoggingProvider();
+            NpgsqlLogManager.IsParameterLoggingEnabled = true;
 
             _ = container.Register(
                 Component.For<DatabaseContext>()

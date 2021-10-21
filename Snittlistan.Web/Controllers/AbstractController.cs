@@ -3,27 +3,39 @@
 namespace Snittlistan.Web.Controllers
 {
     using System;
+    using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Diagnostics;
+    using System.Linq;
+    using System.Threading.Tasks;
     using System.Web.Mvc;
     using EventStoreLite;
-    using Raven.Client;
+    using Newtonsoft.Json;
+    using NLog;
     using Snittlistan.Queue;
     using Snittlistan.Queue.Messages;
     using Snittlistan.Queue.Models;
+    using Snittlistan.Web.HtmlHelpers;
     using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Database;
     using Snittlistan.Web.Models;
 
     public abstract class AbstractController : Controller
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly JsonSerializerSettings serializerSettings = new()
+        {
+            TypeNameHandling = TypeNameHandling.All
+        };
+
         protected AbstractController()
         {
             PublishMessage = DefaultPublishMessage;
         }
 
-        public IDocumentStore DocumentStore { get; set; } = null!;
+        public Raven.Client.IDocumentStore DocumentStore { get; set; } = null!;
 
-        public IDocumentSession DocumentSession { get; set; } = null!;
+        public Raven.Client.IDocumentSession DocumentSession { get; set; } = null!;
 
         public IEventStoreSession EventStoreSession { get; set; } = null!;
 
@@ -49,9 +61,20 @@ namespace Snittlistan.Web.Controllers
             command.Execute(DocumentSession, EventStoreSession, PublishMessage);
         }
 
-        protected void PublishDelayedTask(object task, TimeSpan sendAfter)
+        protected async Task PublishDelayedTaskAsync(ITask task, TimeSpan sendAfter)
         {
-            Database.DelayedTasks
+            string businessKey = task.BusinessKey.ToString();
+            IList<DelayedTask> existingTasks = await Database.DelayedTasks
+                .Where(x => x.BusinessKey == businessKey && x.PublishedDate == null)
+                .ToListAsync();
+            if (existingTasks.Any())
+            {
+                return;
+            }
+
+            DelayedTask delayedTask = Database.DelayedTasks.Add(
+                new(businessKey, task.ToJson(serializerSettings), DateTime.Now.Add(sendAfter)));
+            Logger.Info("added delayed task: {@delayedTask}", delayedTask);
         }
 
         protected void DefaultPublishMessage<TPayload>(TPayload payload)
@@ -95,6 +118,12 @@ namespace Snittlistan.Web.Controllers
 
             // this commits the document session
             EventStoreSession.SaveChanges();
+
+            if (Database.ChangeTracker.HasChanges())
+            {
+                int changes = Database.SaveChanges();
+                Logger.Info("saved {changes} change(s) to database", changes);
+            }
         }
     }
 }

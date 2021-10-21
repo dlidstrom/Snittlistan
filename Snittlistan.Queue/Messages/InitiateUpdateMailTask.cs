@@ -14,6 +14,6 @@
 
         public Guid CorrelationId { get; }
 
-        public BusinessKey BusinessKey => new(GetType(), string.Empty);
+        public BusinessKey BusinessKey => new(GetType(), RosterId);
     }
 }

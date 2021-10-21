@@ -30,7 +30,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
 
         public async Task<IHttpActionResult> Get()
         {
-            return Ok(await Database.Queries.Take(10).ToListAsync());
+            return Ok(await Database.DelayedTasks.Take(10).ToListAsync());
         }
 
         public async Task<IHttpActionResult> Post(TaskRequest request)

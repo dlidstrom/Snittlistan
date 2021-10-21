@@ -1,25 +1,25 @@
-﻿namespace Snittlistan.Web.HtmlHelpers
+﻿#nullable enable
+
+namespace Snittlistan.Web.HtmlHelpers
 {
     using System;
-    using System.IO;
     using System.Text;
     using System.Web;
     using System.Web.Mvc;
-    using Raven.Imports.Newtonsoft.Json;
+    using Newtonsoft.Json;
 
     public static class HtmlHelperExtensions
     {
-        public static ApplicationMode ApplicationMode(this HtmlHelper helper)
+        private static readonly JsonSerializerSettings defaultSettings = new() { Formatting = Formatting.Indented };
+
+        public static ApplicationMode ApplicationMode(this HtmlHelper _)
         {
             return MvcApplication.Mode;
         }
 
-        public static HtmlString ToJson<T>(this T obj)
+        public static string ToJson<T>(this T obj, JsonSerializerSettings? settings = null)
         {
-            var serializer = new JsonSerializer { Formatting = Formatting.Indented };
-            var builder = new StringBuilder();
-            serializer.Serialize(new StringWriter(builder), obj);
-            return new HtmlString(builder.ToString());
+            return JsonConvert.SerializeObject(obj, settings ?? defaultSettings);
         }
 
         public static HtmlString ActionMenuLink(
@@ -38,13 +38,16 @@
                 liClass = "active";
             }
 
-            var tag = new TagBuilder("li");
+            TagBuilder tag = new("li");
             tag.MergeAttribute("class", liClass);
-            var anchor = new TagBuilder("a");
+            TagBuilder anchor = new("a");
             anchor.MergeAttribute("href", url);
-            var li = new TagBuilder("i");
+            TagBuilder li = new("i");
             if (string.IsNullOrWhiteSpace(icon) == false)
+            {
                 li.MergeAttribute("class", icon);
+            }
+
             anchor.InnerHtml = li + text;
             tag.InnerHtml = anchor.ToString();
             return new HtmlString(tag.ToString());
@@ -52,35 +55,35 @@
 
         public static HtmlString FormatDateSpan(this HtmlHelper helper, DateTime from, DateTime to)
         {
-            var builder = new StringBuilder();
+            StringBuilder builder = new();
             if (from.Date == to.Date)
             {
-                builder.AppendFormat(
+                _ = builder.AppendFormat(
                     @"<time datetime=""{0}"">{1}</time>",
                     from.ToString("s"),
                     from.ToString("d MMM"));
             }
             else if (from.Month == to.Month)
             {
-                builder.AppendFormat(
+                _ = builder.AppendFormat(
                     @"<time datetime=""{0}"">{1}</time>",
                     from.ToString("s"),
                     from.Day);
-                builder.Append("<text>&minus;</text>");
-                builder.AppendFormat(
+                _ = builder.Append("<text>&minus;</text>");
+                _ = builder.AppendFormat(
                     @"<time datetime=""{0}"">{1}</time>",
                     to.ToString("s"),
                     to.ToString("d MMM"));
             }
             else
             {
-                builder.AppendFormat(
+                _ = builder.AppendFormat(
                     @"<time datetime=""{0}"">{1}</time>",
                     from.ToString("s"),
                     from.ToString("d MMM"));
-                builder.AppendFormat(
+                _ = builder.AppendFormat(
                     "<text>&minus;</text>");
-                builder.AppendFormat(
+                _ = builder.AppendFormat(
                     @"<time datetime=""{0}"">{1}</time>",
                     to.ToString("s"),
                     to.ToString("d MMM"));

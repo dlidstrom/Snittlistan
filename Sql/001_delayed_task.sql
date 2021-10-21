@@ -4,5 +4,6 @@ CREATE TABLE delayed_task (
     business_key VARCHAR(255) NOT NULL,
     data JSONB NOT NULL,
     publish_date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    published_date TIMESTAMP WITHOUT TIME ZONE NULL,
     created_date TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
