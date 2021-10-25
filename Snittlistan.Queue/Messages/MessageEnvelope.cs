@@ -1,22 +1,33 @@
-﻿namespace Snittlistan.Queue.Messages
+﻿#nullable enable
+
+namespace Snittlistan.Queue.Messages
 {
     using System;
-    using Newtonsoft.Json;
 
     public class MessageEnvelope
     {
-        public MessageEnvelope(object payload, Uri uri)
+        public MessageEnvelope(
+            object payload,
+            int tenantId,
+            Guid correlationId,
+            Guid? causationId,
+            Guid messageId)
         {
             Payload = payload;
-            Uri = uri;
+            TenantId = tenantId;
+            CorrelationId = correlationId;
+            CausationId = causationId;
+            MessageId = messageId;
         }
 
         public object Payload { get; }
-        public Uri Uri { get; }
 
-        public override string ToString()
-        {
-            return $"{Uri}: {JsonConvert.SerializeObject(Payload)}";
-        }
+        public int TenantId { get; }
+
+        public Guid CorrelationId { get; }
+
+        public Guid? CausationId { get; }
+
+        public Guid MessageId { get; }
     }
 }

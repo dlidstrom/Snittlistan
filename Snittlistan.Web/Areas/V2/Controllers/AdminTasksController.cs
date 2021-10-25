@@ -98,14 +98,21 @@
         public ActionResult ActivateUserConfirmed(string id, bool? invite)
         {
             User user = DocumentSession.Load<User>(id);
-            if (user == null) throw new HttpException(404, "User not found");
-            if (user.IsActive) user.Deactivate();
+            if (user == null)
+            {
+                throw new HttpException(404, "User not found");
+            }
+
+            if (user.IsActive)
+            {
+                user.Deactivate();
+            }
             else
             {
                 if (invite.GetValueOrDefault())
                 {
                     Debug.Assert(Request.Url != null, "Request.Url != null");
-                    user.ActivateWithEmail(PublishMessage, Url, Request.Url.Scheme);
+                    user.ActivateWithEmail(PublishTask, Url, Request.Url.Scheme);
                 }
                 else
                 {
@@ -178,7 +185,7 @@
         {
             if (!ModelState.IsValid) return View(vm);
 
-            PublishMessage(EmailTask.Create(vm.Recipient, vm.Subject, vm.Content));
+            PublishTask(EmailTask.Create(vm.Recipient, vm.Subject, vm.Content));
 
             return RedirectToAction("Index");
         }

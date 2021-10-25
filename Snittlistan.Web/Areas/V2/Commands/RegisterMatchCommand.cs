@@ -1,10 +1,11 @@
-namespace Snittlistan.Web.Areas.V2.Commands
+﻿namespace Snittlistan.Web.Areas.V2.Commands
 {
     using System;
     using System.Linq;
     using EventStoreLite;
     using Raven.Client;
     using Raven.Client.Linq;
+    using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Areas.V2.Domain;
     using Snittlistan.Web.Areas.V2.Domain.Match;
     using Snittlistan.Web.Areas.V2.Indexes;
@@ -21,7 +22,7 @@ namespace Snittlistan.Web.Areas.V2.Commands
             this.result = result ?? throw new ArgumentNullException(nameof(result));
         }
 
-        public void Execute(IDocumentSession session, IEventStoreSession eventStoreSession, Action<object> publish)
+        public void Execute(IDocumentSession session, IEventStoreSession eventStoreSession, Action<ITask> publish)
         {
             var matchResult = new MatchResult(
                 roster,

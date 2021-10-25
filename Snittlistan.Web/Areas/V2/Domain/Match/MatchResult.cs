@@ -111,18 +111,37 @@
         }
 
         public void RegisterSeries(
-            Action<object> publish,
+            Action<ITask> publish,
             MatchSerie[] matchSeries,
             ResultSeriesReadModel.Serie[] opponentSeries,
             Player[] players,
             Dictionary<string, ResultForPlayerIndex.Result> resultsForPlayer)
         {
-            if (matchSeries == null) throw new ArgumentNullException(nameof(matchSeries));
-            if (opponentSeries == null) throw new ArgumentNullException(nameof(opponentSeries));
-            if (players == null) throw new ArgumentNullException(nameof(players));
-            if (resultsForPlayer == null) throw new ArgumentNullException(nameof(resultsForPlayer));
+            if (matchSeries == null)
+            {
+                throw new ArgumentNullException(nameof(matchSeries));
+            }
+
+            if (opponentSeries == null)
+            {
+                throw new ArgumentNullException(nameof(opponentSeries));
+            }
+
+            if (players == null)
+            {
+                throw new ArgumentNullException(nameof(players));
+            }
+
+            if (resultsForPlayer == null)
+            {
+                throw new ArgumentNullException(nameof(resultsForPlayer));
+            }
+
             if (rosterPlayers.Count != 8 && rosterPlayers.Count != 9 && rosterPlayers.Count != 10)
+            {
                 throw new MatchException("Roster must have 8, 9, or 10 players when registering results");
+            }
+
             foreach (MatchSerie matchSerie in matchSeries)
             {
                 VerifyPlayers(matchSerie);

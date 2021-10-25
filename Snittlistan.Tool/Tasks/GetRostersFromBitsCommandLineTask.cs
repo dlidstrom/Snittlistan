@@ -7,15 +7,13 @@
     {
         public void Run(string[] args)
         {
-            using (MsmqGateway.MsmqTransactionScope scope = MsmqGateway.AutoCommitScope())
+            using MsmqGateway.MsmqTransactionScope scope = MsmqGateway.AutoCommitScope();
+            foreach (System.Uri apiUrl in CommandLineTaskHelper.AllApiUrls())
             {
-                foreach (System.Uri apiUrl in CommandLineTaskHelper.AllApiUrls())
-                {
-                    scope.PublishMessage(new MessageEnvelope(new GetRostersFromBitsTask(), apiUrl));
-                }
-
-                scope.Commit();
+                scope.PublishMessage(new MessageEnvelope(new GetRostersFromBitsTask(), apiUrl));
             }
+
+            scope.Commit();
         }
 
         public string HelpText => "Gets rosters from BITS for the entire club.";

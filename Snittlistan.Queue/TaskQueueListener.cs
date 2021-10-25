@@ -33,6 +33,7 @@ namespace Snittlistan.Queue
             }
 
             TaskRequest request = new(envelope);
+
             HttpResponseMessage result = client.PostAsJsonAsync(
                 envelope.Uri,
                 request).Result;

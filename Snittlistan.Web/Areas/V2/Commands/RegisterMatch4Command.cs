@@ -1,8 +1,9 @@
-namespace Snittlistan.Web.Areas.V2.Commands
+﻿namespace Snittlistan.Web.Areas.V2.Commands
 {
     using System;
     using EventStoreLite;
     using Raven.Client;
+    using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Areas.V2.Domain;
     using Snittlistan.Web.Areas.V2.Domain.Match;
     using Snittlistan.Web.Infrastructure;
@@ -29,9 +30,9 @@ namespace Snittlistan.Web.Areas.V2.Commands
         public void Execute(
             IDocumentSession session,
             IEventStoreSession eventStoreSession,
-            Action<object> publish)
+            Action<ITask> publish)
         {
-            var matchResult = new MatchResult4(
+            MatchResult4 matchResult = new(
                 roster,
                 result.TeamScore,
                 result.OpponentScore,

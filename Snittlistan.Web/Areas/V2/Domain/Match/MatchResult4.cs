@@ -95,9 +95,16 @@
 
         public void RegisterSerie(MatchSerie4 matchSerie)
         {
-            if (matchSerie == null) throw new ArgumentNullException(nameof(matchSerie));
-            if (rosterPlayers.Count != 4 && rosterPlayers.Count != 5)
+            if (matchSerie == null)
+            {
+                throw new ArgumentNullException(nameof(matchSerie));
+            }
+
+            if (rosterPlayers.Count is not 4 and not 5)
+            {
                 throw new MatchException("Roster must have 4 or 5 players when registering results");
+            }
+
             VerifyPlayers(matchSerie);
 
             ApplyChange(new Serie4Registered(matchSerie, BitsMatchId, RosterId));
@@ -105,14 +112,17 @@
         }
 
         public void RegisterSeries(
-            Action<object> publish,
+            Action<ITask> publish,
             MatchSerie4[] matchSeries,
             Player[] players,
             string summaryText,
             string summaryHtml)
         {
             if (rosterPlayers.Count != 4 && rosterPlayers.Count != 5)
+            {
                 throw new MatchException("Roster must have 4 or 5 players when registering results");
+            }
+
             foreach (MatchSerie4 matchSerie in matchSeries)
             {
                 VerifyPlayers(matchSerie);

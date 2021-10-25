@@ -64,6 +64,12 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             try
             {
                 Log.Info("Begin");
+                MessageContext messageContext = new(
+                    taskObject,
+                    TenantConfiguration.TenantId,
+                    request.CorrelationId,
+                    request.CausationId,
+                    MsmqTransaction);
                 Task task = (Task)handleMethod.Invoke(handler, new[] { taskObject });
                 await task;
                 Log.Info("End");

@@ -3,19 +3,16 @@
 namespace Snittlistan.Web.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Data.Entity;
-    using System.Diagnostics;
-    using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
+    using System.Web.Hosting;
     using System.Web.Mvc;
     using EventStoreLite;
-    using Newtonsoft.Json;
     using NLog;
     using Snittlistan.Queue;
     using Snittlistan.Queue.Messages;
     using Snittlistan.Queue.Models;
-    using Snittlistan.Web.HtmlHelpers;
     using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Database;
     using Snittlistan.Web.Models;
@@ -23,15 +20,6 @@ namespace Snittlistan.Web.Controllers
     public abstract class AbstractController : Controller
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private static readonly JsonSerializerSettings serializerSettings = new()
-        {
-            TypeNameHandling = TypeNameHandling.All
-        };
-
-        protected AbstractController()
-        {
-            PublishMessage = DefaultPublishMessage;
-        }
 
         public Raven.Client.IDocumentStore DocumentStore { get; set; } = null!;
 
@@ -49,7 +37,20 @@ namespace Snittlistan.Web.Controllers
 
         protected new CustomPrincipal User => (CustomPrincipal)HttpContext.User;
 
-        protected Action<object> PublishMessage { get; private set; }
+        protected Guid CorrelationId
+        {
+            get
+            {
+                if (HttpContext.Items["CorrelationId"] is Guid correlationId)
+                {
+                    return correlationId;
+                }
+
+                correlationId = Guid.NewGuid();
+                HttpContext.Items["CorrelationId"] = correlationId;
+                return correlationId;
+            }
+        }
 
         protected void ExecuteCommand(ICommand command)
         {
@@ -58,33 +59,53 @@ namespace Snittlistan.Web.Controllers
                 throw new ArgumentNullException(nameof(command));
             }
 
-            command.Execute(DocumentSession, EventStoreSession, PublishMessage);
+            command.Execute(DocumentSession, EventStoreSession, PublishTask);
         }
 
-        protected async Task PublishDelayedTaskAsync(ITask task, TimeSpan sendAfter)
+        protected void PublishTask(ITask task)
+        {
+            DoPublishDelayedTask(task, DateTime.MinValue);
+        }
+
+        protected void PublishDelayedTask(ITask task, TimeSpan sendAfter)
+        {
+            DateTime publishDate = DateTime.Now.Add(sendAfter);
+            DoPublishDelayedTask(task, publishDate);
+        }
+
+        private void DoPublishDelayedTask(ITask task, DateTime publishDate)
         {
             string businessKey = task.BusinessKey.ToString();
-            IList<DelayedTask> existingTasks = await Database.DelayedTasks
-                .Where(x => x.BusinessKey == businessKey && x.PublishedDate == null)
-                .ToListAsync();
-            if (existingTasks.Any())
-            {
-                return;
-            }
-
-            DelayedTask delayedTask = Database.DelayedTasks.Add(
-                new(businessKey, task.ToJson(serializerSettings), DateTime.Now.Add(sendAfter)));
+            DelayedTask delayedTask = Database.DelayedTasks.Add(new(
+                task,
+                publishDate,
+                TenantConfiguration.TenantId,
+                CorrelationId,
+                null,
+                Guid.NewGuid()));
             Logger.Info("added delayed task: {@delayedTask}", delayedTask);
-        }
+            HostingEnvironment.QueueBackgroundWorkItem(async ct => await PublishMessage(businessKey, ct));
 
-        protected void DefaultPublishMessage<TPayload>(TPayload payload)
-        {
-            string routeUrl = Url.HttpRouteUrl("DefaultApi", new { controller = "Task" });
-            Debug.Assert(Request.Url != null, "Request.Url != null");
-            string uriString = $"{Request.Url?.Scheme}://{Request.Url?.Host}:{Request.Url?.Port}{routeUrl}";
-            Uri? uri = new(uriString);
-            MessageEnvelope envelope = new(payload, uri);
-            MsmqTransaction.PublishMessage(envelope);
+            async Task PublishMessage(string businessKey, CancellationToken ct)
+            {
+                try
+                {
+                    using MsmqGateway.MsmqTransactionScope scope = MsmqGateway.AutoCommitScope();
+                    using DatabaseContext context = new();
+                    DelayedTask delayedTask = await context.DelayedTasks.SingleOrDefaultAsync(x => x.BusinessKeyColumn == businessKey, ct);
+                    MessageEnvelope message = new(
+                        delayedTask.Task,
+                        delayedTask.TenantId,
+                        delayedTask.CorrelationId,
+                        delayedTask.CausationId,
+                        delayedTask.MessageId);
+                    scope.PublishMessage(message);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, "failed to publish message");
+                }
+            }
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)

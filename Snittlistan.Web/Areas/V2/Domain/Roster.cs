@@ -24,7 +24,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
             DateTime date,
             bool isFourPlayer,
             OilPatternInformation oilPattern,
-            List<AuditLogEntry> auditLogEntries = null)
+            List<AuditLogEntry>? auditLogEntries = null)
         {
             Season = season;
             Turn = turn;
@@ -102,8 +102,9 @@ namespace Snittlistan.Web.Areas.V2.Domain
         // Team.Substring(roster.Team.LastIndexOf(' ') + 1)
         public string TeamLevel
         {
-            get { return teamLevel; }
-            set { teamLevel = value.Trim(); }
+            get => teamLevel;
+
+            set => teamLevel = value.Trim();
         }
 
         public string Location { get; set; }
@@ -116,6 +117,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         public OilPatternInformation OilPattern { get; set; }
         public List<AuditLogEntry> AuditLogEntries { get; }
+        public int Version => AuditLogEntries.Count;
         public bool Preliminary { get; set; }
 
         public List<string> Players { get; set; } = new List<string>();
@@ -134,8 +136,9 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         public List<string> AcceptedPlayers
         {
-            get { return acceptedPlayers ?? new List<string>(); }
-            set { acceptedPlayers = value; }
+            get => acceptedPlayers ?? new List<string>();
+
+            set => acceptedPlayers = value;
         }
 
         public bool SkipRegistration { get; set; }

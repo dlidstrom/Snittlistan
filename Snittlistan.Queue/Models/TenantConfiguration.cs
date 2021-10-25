@@ -11,7 +11,8 @@
             string appleTouchIcon,
             string appleTouchIconSize,
             string webAppTitle,
-            string fullTeamName)
+            string fullTeamName,
+            int tenantId)
         {
             Hostname = hostname ?? throw new ArgumentNullException(nameof(hostname));
             DatabaseName = databaseName ?? throw new ArgumentNullException(nameof(databaseName));
@@ -20,6 +21,7 @@
             AppleTouchIconSize = appleTouchIconSize ?? throw new ArgumentNullException(nameof(appleTouchIconSize));
             WebAppTitle = webAppTitle ?? throw new ArgumentNullException(nameof(webAppTitle));
             FullTeamName = fullTeamName ?? throw new ArgumentNullException(nameof(fullTeamName));
+            TenantId = tenantId;
         }
 
         public string Hostname { get; }
@@ -35,5 +37,7 @@
         public string WebAppTitle { get; }
 
         public string FullTeamName { get; }
+
+        public int TenantId { get; }
     }
 }

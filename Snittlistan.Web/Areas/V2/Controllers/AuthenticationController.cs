@@ -107,7 +107,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     token.Activate(
                         oneTimeKey =>
                         {
-                            PublishMessage(new OneTimeKeyTask(player.Email, oneTimePassword));
+                            PublishTask(new OneTimeKeyTask(player.Email, oneTimePassword));
                         },
                         oneTimePassword);
                     NotifyEvent($"{player.Name} entered email address");
@@ -264,7 +264,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         private void NotifyEvent(string subject, string? body = null)
         {
-            PublishMessage(
+            PublishTask(
                 EmailTask.Create(
                     ConfigurationManager.AppSettings["OwnerEmail"],
                     subject,

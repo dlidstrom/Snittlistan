@@ -66,9 +66,9 @@
         /// </summary>
         public string ActivationKey
         {
-            get { return activationKey ?? (activationKey = Guid.NewGuid().ToString()); }
+            get => activationKey ??= Guid.NewGuid().ToString();
 
-            private set { activationKey = value; }
+            private set => activationKey = value;
         }
 
         public string FirstName { get; }
@@ -86,7 +86,10 @@
             get
             {
                 if (passwordSalt == default)
+                {
                     passwordSalt = Guid.NewGuid();
+                }
+
                 return passwordSalt;
             }
         }
@@ -104,8 +107,16 @@
 
         public void SetPassword(string password, string suppliedActivationKey)
         {
-            if (RequiresPasswordChange == false) throw new InvalidOperationException("Password change not allowed");
-            if (ActivationKey != suppliedActivationKey) throw new InvalidOperationException("Unknown activation key");
+            if (RequiresPasswordChange == false)
+            {
+                throw new InvalidOperationException("Password change not allowed");
+            }
+
+            if (ActivationKey != suppliedActivationKey)
+            {
+                throw new InvalidOperationException("Unknown activation key");
+            }
+
             HashedPassword = ComputeHashedPassword(password);
             RequiresPasswordChange = false;
         }
@@ -136,7 +147,7 @@
         /// <summary>
         /// Activates a user and sends an invite email. This allows them to log on.
         /// </summary>
-        public void ActivateWithEmail(Action<object> publish, UrlHelper urlHelper, string urlScheme)
+        public void ActivateWithEmail(Action<ITask> publish, UrlHelper urlHelper, string urlScheme)
         {
             IsActive = true;
             ActivationKey = Guid.NewGuid().ToString();
@@ -162,16 +173,13 @@
         private string ComputeHashedPassword(string password)
         {
             string hashedPassword;
-            using (var sha = SHA256.Create())
-            {
-                byte[] computedHash = sha.ComputeHash(
-                    PasswordSalt.ToByteArray().Concat(
-                        Encoding.Unicode.GetBytes(password + PasswordSalt + ConstantSalt))
-                        .ToArray());
+            using SHA256 sha = SHA256.Create();
+            byte[] computedHash = sha.ComputeHash(
+                PasswordSalt.ToByteArray().Concat(
+                    Encoding.Unicode.GetBytes(password + PasswordSalt + ConstantSalt))
+                    .ToArray());
 
-                hashedPassword = Convert.ToBase64String(computedHash);
-            }
-
+            hashedPassword = Convert.ToBase64String(computedHash);
             return hashedPassword;
         }
     }

@@ -4,7 +4,7 @@
 
     public class InitiateUpdateMailTask : ITask
     {
-        public InitiateUpdateMailTask(string rosterId, Guid correlationId)
+        public InitiateUpdateMailTask(string rosterId, int rosterVersion, Guid correlationId)
         {
             RosterId = rosterId;
             CorrelationId = correlationId;

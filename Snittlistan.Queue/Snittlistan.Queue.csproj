@@ -58,6 +58,7 @@
     <Compile Include="Messages\IsExternalInit.cs" />
     <Compile Include="Messages\ITask.cs" />
     <Compile Include="Messages\MatchRegisteredTask.cs" />
+    <Compile Include="Messages\MessageContext.cs" />
     <Compile Include="Messages\MessageEnvelope.cs" />
     <Compile Include="MessageQueueListenerBase.cs" />
     <Compile Include="MessageQueueProcessorSettings.cs" />

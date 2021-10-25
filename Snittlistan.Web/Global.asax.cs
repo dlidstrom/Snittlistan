@@ -101,7 +101,9 @@
 
         protected void Application_BeginRequest()
         {
-            Trace.CorrelationManager.ActivityId = Guid.NewGuid();
+            Guid correlationId = Guid.NewGuid();
+            HttpContext.Current.Session["CorrelationId"] = correlationId;
+            Trace.CorrelationManager.ActivityId = correlationId;
             if (Context.IsDebuggingEnabled || Context.Request.IsLocal)
             {
                 return;
