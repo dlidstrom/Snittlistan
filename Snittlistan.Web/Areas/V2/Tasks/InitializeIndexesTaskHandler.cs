@@ -9,24 +9,24 @@ namespace Snittlistan.Web.Areas.V2.Tasks
 
     public class InitializeIndexesTaskHandler : TaskHandler<InitializeIndexesTask>
     {
-        public override Task Handle(InitializeIndexesTask task)
+        public override Task Handle(MessageContext<InitializeIndexesTask> task)
         {
             IndexCreator.CreateIndexes(DocumentStore);
             User admin = DocumentSession.Load<User>(User.AdminId);
             if (admin == null)
             {
-                admin = new("", "", task.Email, task.Password)
+                admin = new("", "", task.Task.Email, task.Task.Password)
                 {
                     Id = User.AdminId
                 };
-                admin.Initialize(PublishMessage);
+                admin.Initialize(t => TaskPublisher.PublishTask(t));
                 admin.Activate();
                 DocumentSession.Store(admin);
             }
             else
             {
-                admin.SetEmail(task.Email);
-                admin.SetPassword(task.Password);
+                admin.SetEmail(task.Task.Email);
+                admin.SetPassword(task.Task.Password);
                 admin.Activate();
             }
 

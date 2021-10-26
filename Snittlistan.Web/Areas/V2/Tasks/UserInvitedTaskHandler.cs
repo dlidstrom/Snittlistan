@@ -8,11 +8,11 @@ namespace Snittlistan.Web.Areas.V2.Tasks
 
     public class UserInvitedTaskHandler : TaskHandler<UserInvitedTask>
     {
-        public override async Task Handle(UserInvitedTask task)
+        public override async Task Handle(MessageContext<UserInvitedTask> context)
         {
-            string recipient = task.Email;
+            string recipient = context.Task.Email;
             const string Subject = "Välkommen till Snittlistan!";
-            string activationUri = task.ActivationUri;
+            string activationUri = context.Task.ActivationUri;
 
             InviteUserEmail email = new(
                 recipient,

@@ -99,7 +99,7 @@
       <Version>1.2.0</Version>
     </PackageReference>
     <PackageReference Include="NLog">
-      <Version>4.7.9</Version>
+      <Version>4.7.12</Version>
     </PackageReference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -147,6 +147,7 @@
     <Compile Include="Areas\V2\Tasks\RegisterMatchesTaskHandler.cs" />
     <Compile Include="Areas\V2\Tasks\RegisterMatchTaskHandler.cs" />
     <Compile Include="Areas\V2\Tasks\SendUpdateMailTaskHandler.cs" />
+    <Compile Include="Areas\V2\Tasks\TaskPublisher.cs" />
     <Compile Include="Areas\V2\Tasks\UserInvitedTaskHandler.cs" />
     <Compile Include="Areas\V2\Tasks\VerifyMatchesTaskHandler.cs" />
     <Compile Include="Areas\V2\Tasks\VerifyMatchTaskHandler.cs" />
@@ -287,8 +288,6 @@
     <Compile Include="Infrastructure\CustomPrincipal.cs" />
     <Compile Include="Infrastructure\Database\DatabaseContext.cs" />
     <Compile Include="Infrastructure\Database\DelayedTask.cs" />
-    <Compile Include="Infrastructure\Logging\NLogLogger.cs" />
-    <Compile Include="Infrastructure\Logging\NLogLoggingProvider.cs" />
     <Compile Include="Infrastructure\EventStoreLite\AggregateRoot.cs" />
     <Compile Include="Infrastructure\EventStoreLite\Event.cs" />
     <Compile Include="Infrastructure\EventStoreLite\EventDispatcher.cs" />

@@ -1,27 +1,29 @@
-﻿namespace Snittlistan.Queue
+﻿#nullable enable
+
+namespace Snittlistan.Queue
 {
     using System.Collections.Generic;
-    using System.Configuration;
     using Snittlistan.Queue.Config;
 
     public class Application
     {
-        private readonly List<TaskQueueListener> taskQueueListeners = new List<TaskQueueListener>();
+        private readonly List<TaskQueueListener> taskQueueListeners = new();
+        private readonly MessagingConfigSection messagingConfigSection;
+        private readonly string urlScheme;
 
-        public Application()
+        public Application(MessagingConfigSection messagingConfigSection, string urlScheme)
         {
-            var messagingConfigSection = (MessagingConfigSection)ConfigurationManager.GetSection("messaging");
-            foreach (QueueListenerElement listener in messagingConfigSection.QueueListeners.Listeners)
-            {
-                taskQueueListeners.Add(new TaskQueueListener(listener.CreateSettings()));
-            }
+            this.messagingConfigSection = messagingConfigSection;
+            this.urlScheme = urlScheme;
         }
 
         public void Start()
         {
-            foreach (TaskQueueListener taskQueueListener in taskQueueListeners)
+            foreach (QueueListenerElement listener in messagingConfigSection.QueueListeners.Listeners)
             {
+                TaskQueueListener taskQueueListener = new(listener.CreateSettings(), urlScheme);
                 taskQueueListener.Start();
+                taskQueueListeners.Add(taskQueueListener);
             }
         }
 

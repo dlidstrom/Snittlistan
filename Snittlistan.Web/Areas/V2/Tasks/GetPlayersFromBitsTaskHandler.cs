@@ -13,7 +13,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
 
     public class GetPlayersFromBitsTaskHandler : TaskHandler<GetPlayersFromBitsTask>
     {
-        public override async Task Handle(GetPlayersFromBitsTask task)
+        public override async Task Handle(MessageContext<GetPlayersFromBitsTask> task)
         {
             WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             PlayerResult playersResult = await BitsClient.GetPlayers(websiteConfig.ClubId);

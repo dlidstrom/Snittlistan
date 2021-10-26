@@ -17,7 +17,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
     public interface ITaskHandler<TTask>
         where TTask : ITask
     {
-        Task Handle(MessageContext<TTask> task);
+        Task Handle(MessageContext<TTask> context);
     }
 
     public abstract class TaskHandler<TTask>
@@ -42,6 +42,10 @@ namespace Snittlistan.Web.Areas.V2.Tasks
 
         public TenantConfiguration TenantConfiguration { get; set; } = null!;
 
+        public TaskPublisher TaskPublisher { get; set; } = null!;
+
+        public abstract Task Handle(MessageContext<TTask> context);
+
         protected void ExecuteCommand(ICommand command)
         {
             if (command == null)
@@ -49,14 +53,12 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                 throw new ArgumentNullException(nameof(command));
             }
 
-            command.Execute(DocumentSession, EventStoreSession, PublishMessage);
+            command.Execute(DocumentSession, EventStoreSession, t => TaskPublisher.PublishTask(t));
         }
 
         protected TResult ExecuteQuery<TResult>(IQuery<TResult> query)
         {
             return query == null ? throw new ArgumentNullException(nameof(query)) : query.Execute(DocumentSession);
         }
-
-        public abstract Task Handle(MessageContext<TTask> task);
     }
 }

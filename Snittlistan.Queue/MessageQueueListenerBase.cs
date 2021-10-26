@@ -7,14 +7,14 @@ namespace Snittlistan.Queue
     using System.IO;
     using System.Linq;
     using System.Messaging;
-    using System.Reflection;
     using System.Text;
     using System.Threading;
-    using log4net;
+    using System.Threading.Tasks;
+    using NLog;
 
     public abstract class MessageQueueListenerBase : IDisposable
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly string _importQueue;
         private readonly MessageQueue[] _importMessageQueues;
         private readonly MessageQueue _errorMessageQueue;
@@ -41,8 +41,8 @@ namespace Snittlistan.Queue
             int maxThreads = Environment.ProcessorCount * 2;
             numberOfThreads = Math.Min(numberOfThreads, maxThreads);
 
-            Log.InfoFormat(
-                "Using {0} worker threads for {1}",
+            Logger.Info(
+                "Using {numberOfThreads} worker threads for {readQueue}",
                 numberOfThreads,
                 settings.ReadQueue);
             _importMessageQueues = Enumerable.Range(0, numberOfThreads).Select(
@@ -64,7 +64,7 @@ namespace Snittlistan.Queue
 
         public void Start()
         {
-            Log.Info("Starting msmq listener");
+            Logger.Info("Starting msmq listener");
             foreach (MessageQueue importMessageQueue in _importMessageQueues)
             {
                 importMessageQueue.PeekCompleted += Queue_PeekCompleted;
@@ -75,7 +75,7 @@ namespace Snittlistan.Queue
         public void Stop()
         {
             _isClosing = true;
-            Log.Info("Stopping msmq listener");
+            Logger.Info("Stopping msmq listener");
             foreach (MessageQueue importMessageQueue in _importMessageQueues)
             {
                 importMessageQueue.PeekCompleted -= Queue_PeekCompleted;
@@ -94,8 +94,8 @@ namespace Snittlistan.Queue
             int value = _counter.Value;
             if (value > 0)
             {
-                Log.ErrorFormat(
-                    "Failed to stop workers for {0} ({1} remaining)",
+                Logger.Error(
+                    "Failed to stop workers for {importQueue} ({count} remaining)",
                     _importQueue,
                     value);
             }
@@ -113,7 +113,7 @@ namespace Snittlistan.Queue
             _errorMessageQueue.Dispose();
         }
 
-        protected abstract void DoHandle(string contents);
+        protected abstract Task DoHandle(string contents);
 
         private static void CreateQueue(string queueName)
         {
@@ -122,14 +122,14 @@ namespace Snittlistan.Queue
                 return;
             }
 
-            Log.InfoFormat("Creating queue {0}", queueName);
+            Logger.Info("Creating queue {queueName}", queueName);
             MessageQueue queue = MessageQueue.Create(queueName, true);
             queue.UseJournalQueue = true;
             queue.MaximumJournalSize = 10 * 1024;
             queue.SetPermissions("Everyone", MessageQueueAccessRights.FullControl, AccessControlEntryType.Allow);
         }
 
-        private void Queue_PeekCompleted(object sender, PeekCompletedEventArgs e)
+        private async void Queue_PeekCompleted(object sender, PeekCompletedEventArgs e)
         {
             // end peek operation
             MessageQueue queue = (MessageQueue)sender;
@@ -148,7 +148,7 @@ namespace Snittlistan.Queue
                 // will be thrown and the transaction will be aborted
                 // leaving the message to be processed next time
                 Message message = queue.Receive(TimeSpan.Zero, transaction);
-                ProcessMessage(message, queue, transaction);
+                await ProcessMessage(message, queue, transaction);
                 transaction.Commit();
             }
             catch (MessageQueueException ex)
@@ -158,7 +158,7 @@ namespace Snittlistan.Queue
                 // timeout is expected here, sometimes
                 if (ex.MessageQueueErrorCode != MessageQueueErrorCode.IOTimeout)
                 {
-                    Log.Error(ex.GetType().ToString(), ex);
+                    Logger.Error(ex);
                 }
             }
             catch (Exception ex)
@@ -166,7 +166,7 @@ namespace Snittlistan.Queue
                 // something unexpected happened
                 transaction?.Abort();
 
-                Log.Error(ex.GetType().ToString(), ex);
+                Logger.Error(ex);
             }
             finally
             {
@@ -180,20 +180,23 @@ namespace Snittlistan.Queue
             }
         }
 
-        private void ProcessMessage(Message message, MessageQueue sourceQueue, MessageQueueTransaction messageQueueTransaction)
+        private async Task ProcessMessage(
+            Message message,
+            MessageQueue sourceQueue,
+            MessageQueueTransaction messageQueueTransaction)
         {
             try
             {
                 _counter.Increment();
-                IDisposable disposable = ThreadContext.Stacks["NDC"].Push(message.Id);
+                IDisposable disposable = NestedDiagnosticsLogicalContext.Push(message.Id);
                 try
                 {
-                    Log.InfoFormat("Start");
-                    TryProcessMessage(message, sourceQueue, messageQueueTransaction);
+                    Logger.Info("Start");
+                    await TryProcessMessage(message, sourceQueue, messageQueueTransaction);
                 }
                 finally
                 {
-                    Log.InfoFormat("End");
+                    Logger.Info("End");
                     disposable.Dispose();
                 }
             }
@@ -203,7 +206,7 @@ namespace Snittlistan.Queue
             }
         }
 
-        private void TryProcessMessage(Message message, MessageQueue sourceQueue, MessageQueueTransaction messageQueueTransaction)
+        private async Task TryProcessMessage(Message message, MessageQueue sourceQueue, MessageQueueTransaction messageQueueTransaction)
         {
             // get contents of message (don't dispose the reader
             // as that will dispose the stream and the message
@@ -214,13 +217,13 @@ namespace Snittlistan.Queue
             const int MaximumTries = 5;
             try
             {
-                DoHandle(contents);
+                await DoHandle(contents);
             }
             catch (Exception ex)
             {
-                Log.Warn(ex.GetType().ToString(), ex);
+                Logger.Warn(ex);
                 message.AppSpecific++;
-                Log.WarnFormat("Message retry #{0}", message.AppSpecific);
+                Logger.Warn("Message retry #{count}", message.AppSpecific);
                 if (message.AppSpecific >= MaximumTries)
                 {
                     MoveToErrorQueue(message, ex, messageQueueTransaction, MaximumTries);
@@ -235,8 +238,8 @@ namespace Snittlistan.Queue
 
         private void MoveToErrorQueue(Message message, Exception ex, MessageQueueTransaction messageQueueTransaction, int errorCount)
         {
-            Log.ErrorFormat(
-                "Message {0} reached error count {1}, moving to error queue.",
+            Logger.Error(
+                "Message {id} reached error count {count}, moving to error queue.",
                 message.Id,
                 errorCount);
 

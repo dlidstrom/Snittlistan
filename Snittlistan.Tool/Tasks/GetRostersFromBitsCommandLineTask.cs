@@ -1,16 +1,26 @@
-﻿namespace Snittlistan.Tool.Tasks
+﻿#nullable enable
+
+namespace Snittlistan.Tool.Tasks
 {
+    using System;
     using Queue;
     using Queue.Messages;
+    using Snittlistan.Queue.Infrastructure;
 
     public class GetRostersFromBitsCommandLineTask : ICommandLineTask
     {
         public void Run(string[] args)
         {
             using MsmqGateway.MsmqTransactionScope scope = MsmqGateway.AutoCommitScope();
-            foreach (System.Uri apiUrl in CommandLineTaskHelper.AllApiUrls())
+            foreach (Tenant tenant in CommandLineTaskHelper.Tenants())
             {
-                scope.PublishMessage(new MessageEnvelope(new GetRostersFromBitsTask(), apiUrl));
+                MessageEnvelope envelope = new(
+                    new GetRostersFromBitsTask(),
+                    tenant.TenantId,
+                    Guid.NewGuid(),
+                    null,
+                    Guid.NewGuid());
+                scope.PublishMessage(envelope);
             }
 
             scope.Commit();

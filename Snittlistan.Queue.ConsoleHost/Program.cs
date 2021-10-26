@@ -1,19 +1,27 @@
-﻿namespace Snittlistan.Queue.ConsoleHost
+﻿#nullable enable
+
+namespace Snittlistan.Queue.ConsoleHost
 {
     using System;
-    using log4net.Config;
+    using System.Configuration;
+    using Npgsql.Logging;
+    using Snittlistan.Queue.Config;
+    using Snittlistan.Queue.Infrastructure;
 
     public class Program
     {
-        static void Main(string[] args)
+        public static void Main()
         {
-            XmlConfigurator.Configure();
             Console.WriteLine("Press [ENTER] to start.");
-            Console.ReadLine();
-            var application = new Application();
+            _ = Console.ReadLine();
+            NpgsqlLogManager.Provider = new NLogLoggingProvider();
+            NpgsqlLogManager.IsParameterLoggingEnabled = true;
+            Application application = new(
+                (MessagingConfigSection)ConfigurationManager.GetSection("messaging"),
+                ConfigurationManager.AppSettings["UrlScheme"]);
             application.Start();
             Console.WriteLine("Press [ENTER] to stop.");
-            Console.ReadLine();
+            _ = Console.ReadLine();
             application.Stop();
         }
     }

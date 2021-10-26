@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Domain.Match
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
     using System;
     using System.Collections.Generic;
@@ -22,9 +24,16 @@
         public MatchResult4(Roster roster, int teamScore, int opponentScore, int bitsMatchId)
             : this()
         {
-            if (roster == null) throw new ArgumentNullException(nameof(roster));
+            if (roster == null)
+            {
+                throw new ArgumentNullException(nameof(roster));
+            }
+
             if (roster.MatchResultId != null)
+            {
                 throw new ApplicationException("Roster already has result registered");
+            }
+
             VerifyScores(teamScore, opponentScore);
 
             ApplyChange(
@@ -45,7 +54,7 @@
         private int TeamScore { get; set; }
 
         public bool Update(
-            Action<object> publish,
+            Action<ITask> publish,
             Roster roster,
             int teamScore,
             int opponentScore,
@@ -54,7 +63,7 @@
             Player[] players)
         {
             // check if anything has changed
-            var potentiallyNewPlayerPins = new SortedDictionary<string, List<PinsAndScoreResult>>();
+            SortedDictionary<string, List<PinsAndScoreResult>> potentiallyNewPlayerPins = new();
             foreach (MatchSerie4 matchSerie in matchSeries)
             {
                 foreach (MatchGame4 matchGame in new[] { matchSerie.Game1, matchSerie.Game2, matchSerie.Game3, matchSerie.Game4 })
@@ -79,7 +88,7 @@
             bool scoresDiffer = (teamScore, opponentScore).CompareTo((TeamScore, OpponentScore)) != 0;
             if (pinsOrPlayersDiffer || scoresDiffer)
             {
-                var @event = new MatchResult4Registered(
+                MatchResult4Registered @event = new(
                     roster.Id,
                     roster.Players,
                     teamScore,
@@ -115,10 +124,10 @@
             Action<ITask> publish,
             MatchSerie4[] matchSeries,
             Player[] players,
-            string summaryText,
-            string summaryHtml)
+            string? summaryText,
+            string? summaryHtml)
         {
-            if (rosterPlayers.Count != 4 && rosterPlayers.Count != 5)
+            if (rosterPlayers.Count is not 4 and not 5)
             {
                 throw new MatchException("Roster must have 4 or 5 players when registering results");
             }
@@ -131,7 +140,7 @@
                 DoAwardMedals(registeredSeries);
             }
 
-            var analyzer = new Match4Analyzer(matchSeries, players.ToDictionary(x => x.Id));
+            Match4Analyzer analyzer = new(matchSeries, players.ToDictionary(x => x.Id));
             string bodyText = analyzer.GetBodyText();
             if (string.IsNullOrWhiteSpace(summaryText))
             {
@@ -160,7 +169,10 @@
         public void AwardMedals()
         {
             if (medalsAwarded)
+            {
                 throw new ApplicationException("Medals have already been awarded");
+            }
+
             for (int i = 1; i <= registeredSeries; i++)
             {
                 DoAwardMedals(i);
@@ -176,12 +188,12 @@
 
         private static void VerifyScores(int teamScore, int opponentScore)
         {
-            if (teamScore < 0 || teamScore > 20)
+            if (teamScore is < 0 or > 20)
             {
                 throw new ArgumentOutOfRangeException(nameof(teamScore), "Team score must be between 0 and 20");
             }
 
-            if (opponentScore < 0 || opponentScore > 20)
+            if (opponentScore is < 0 or > 20)
             {
                 throw new ArgumentOutOfRangeException(nameof(opponentScore), "Opponent score must be between 0 and 20");
             }
@@ -200,7 +212,7 @@
 
                 if (pinsResult?.Pins >= 270)
                 {
-                    var medal = new AwardedMedal(
+                    AwardedMedal medal = new(
                         BitsMatchId,
                         RosterId,
                         key,
@@ -216,8 +228,12 @@
                 {
                     List<PinsAndScoreResult> list = playerPins[key];
                     int score = list.Sum(x => x.Score);
-                    if (score != 4) continue;
-                    var medal = new AwardedMedal(
+                    if (score != 4)
+                    {
+                        continue;
+                    }
+
+                    AwardedMedal medal = new(
                         BitsMatchId,
                         RosterId,
                         key,
@@ -232,10 +248,25 @@
         {
             do
             {
-                if (rosterPlayers.Contains(matchSerie.Game1.Player) == false) break;
-                if (rosterPlayers.Contains(matchSerie.Game2.Player) == false) break;
-                if (rosterPlayers.Contains(matchSerie.Game3.Player) == false) break;
-                if (rosterPlayers.Contains(matchSerie.Game4.Player) == false) break;
+                if (rosterPlayers.Contains(matchSerie.Game1.Player) == false)
+                {
+                    break;
+                }
+
+                if (rosterPlayers.Contains(matchSerie.Game2.Player) == false)
+                {
+                    break;
+                }
+
+                if (rosterPlayers.Contains(matchSerie.Game3.Player) == false)
+                {
+                    break;
+                }
+
+                if (rosterPlayers.Contains(matchSerie.Game4.Player) == false)
+                {
+                    break;
+                }
 
                 return;
             }

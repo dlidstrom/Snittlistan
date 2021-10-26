@@ -16,6 +16,9 @@ namespace Snittlistan.Web.Infrastructure.Installers
                     .BasedOn(typeof(ITaskHandler<>))
                     .WithServiceBase()
                     .LifestyleScoped());
+
+            _ = container.Register(
+                Component.For<TaskPublisher>().LifestyleTransient());
         }
     }
 }

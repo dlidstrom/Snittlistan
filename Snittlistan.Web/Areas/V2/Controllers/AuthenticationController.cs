@@ -7,13 +7,12 @@ namespace Snittlistan.Web.Areas.V2.Controllers
     using System.Configuration;
     using System.Diagnostics;
     using System.Linq;
-    using System.Reflection;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
     using Domain;
     using Indexes;
-    using log4net;
+    using NLog;
     using Queue.Messages;
     using Raven.Abstractions;
     using Snittlistan.Web.Controllers;
@@ -24,7 +23,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
     public class AuthenticationController : AbstractController
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private static readonly Random Random = new();
         private readonly IAuthenticationService authenticationService;
 
@@ -184,7 +183,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             {
                 if (activeTokens.Any() == false)
                 {
-                    Log.Info("No tokens");
+                    Logger.Info("No tokens");
                     ModelState.AddModelError("Lösenord", "Prova igen");
                     vm.Password = string.Empty;
                     await Task.Delay(2000);
@@ -195,7 +194,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 OneTimeToken matchingPassword = activeTokens.FirstOrDefault(x => x.Payload.EditDistanceTo(vm.Password) <= 1);
                 if (matchingPassword == null)
                 {
-                    Log.Info("No matching password token");
+                    Logger.Info("No matching password token");
                     ModelState.AddModelError("Lösenord", "Felaktigt lösenord");
                     vm.Password = string.Empty;
                     await Task.Delay(2000);

@@ -4,7 +4,9 @@ namespace Snittlistan.Queue
 {
     using System;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using Newtonsoft.Json;
+    using Snittlistan.Queue.Infrastructure;
     using Snittlistan.Queue.Messages;
 
     public class TaskQueueListener : MessageQueueListenerBase
@@ -18,25 +20,29 @@ namespace Snittlistan.Queue
         {
             Timeout = TimeSpan.FromSeconds(600)
         };
+        private readonly string urlScheme;
 
-        public TaskQueueListener(MessageQueueProcessorSettings settings)
+        public TaskQueueListener(MessageQueueProcessorSettings settings, string urlScheme)
             : base(settings)
         {
+            this.urlScheme = urlScheme;
         }
 
-        protected override void DoHandle(string contents)
+        protected override async Task DoHandle(string contents)
         {
             MessageEnvelope? envelope = JsonConvert.DeserializeObject<MessageEnvelope>(contents, SerializerSettings);
             if (envelope == null)
             {
-                throw new Exception("deserialiation failed");
+                throw new Exception("deserialization failed");
             }
 
             TaskRequest request = new(envelope);
 
-            HttpResponseMessage result = client.PostAsJsonAsync(
-                envelope.Uri,
-                request).Result;
+            using DatabaseContext context = new();
+            Tenant tenant = context.Tenants.Find(envelope.TenantId);
+            HttpResponseMessage result = await client.PostAsJsonAsync(
+                $"{urlScheme}://{tenant.Hostname}/api/task",
+                request);
             _ = result.EnsureSuccessStatusCode();
         }
     }

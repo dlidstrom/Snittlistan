@@ -15,10 +15,10 @@ namespace Snittlistan.Web.Areas.V2.Tasks
 
     public class VerifyMatchTaskHandler : TaskHandler<VerifyMatchTask>
     {
-        public override async Task Handle(VerifyMatchTask message)
+        public override async Task Handle(MessageContext<VerifyMatchTask> context)
         {
-            Roster roster = DocumentSession.Load<Roster>(message.RosterId);
-            if (roster.IsVerified && message.Force == false)
+            Roster roster = DocumentSession.Load<Roster>(context.Task.RosterId);
+            if (roster.IsVerified && context.Task.Force == false)
             {
                 return;
             }
@@ -52,7 +52,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                     Parse4Result parseResult = parser.Parse4(bitsMatchResult, websiteConfig.ClubId);
                     update.Players = parseResult.GetPlayerIds();
                     bool isVerified = matchResult.Update(
-                        PublishMessage,
+                        context.PublishMessage,
                         roster,
                         parseResult.TeamScore,
                         parseResult.OpponentScore,
@@ -73,7 +73,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                         .ToDictionary(x => x.PlayerId);
                     MatchSerie[] matchSeries = parseResult.CreateMatchSeries();
                     bool isVerified = matchResult.Update(
-                        PublishMessage,
+                        context.PublishMessage,
                         roster,
                         parseResult.TeamScore,
                         parseResult.OpponentScore,
@@ -85,7 +85,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                 }
             }
 
-            roster.UpdateWith(message.CorrelationId, update);
+            _ = roster.UpdateWith(context.CorrelationId, update);
         }
     }
 }

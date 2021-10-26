@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure.Logging
+﻿#nullable enable
+
+namespace Snittlistan.Queue.Infrastructure
 {
     using Npgsql.Logging;
 

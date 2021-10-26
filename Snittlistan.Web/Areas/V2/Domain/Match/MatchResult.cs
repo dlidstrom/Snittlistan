@@ -25,9 +25,16 @@
         public MatchResult(Roster roster, int teamScore, int opponentScore, int bitsMatchId)
             : this()
         {
-            if (roster == null) throw new ArgumentNullException(nameof(roster));
+            if (roster == null)
+            {
+                throw new ArgumentNullException(nameof(roster));
+            }
+
             if (roster.MatchResultId != null)
+            {
                 throw new ApplicationException("Roster already has result registered");
+            }
+
             VerifyScores(teamScore, opponentScore);
 
             ApplyChange(
@@ -48,7 +55,7 @@
         private int TeamScore { get; set; }
 
         public bool Update(
-            Action<object> publish,
+            Action<ITask> publish,
             Roster roster,
             int teamScore,
             int opponentScore,
@@ -58,7 +65,7 @@
             Dictionary<string, ResultForPlayerIndex.Result> resultsForPlayer)
         {
             // check if anything has changed
-            var potentiallyNewPlayerPins = new SortedDictionary<string, List<PinsAndScoreResult>>();
+            SortedDictionary<string, List<PinsAndScoreResult>> potentiallyNewPlayerPins = new();
             foreach (MatchSerie matchSerie in matchSeries)
             {
                 foreach (MatchTable matchTable in new[] { matchSerie.Table1, matchSerie.Table2, matchSerie.Table3, matchSerie.Table4 })
@@ -96,7 +103,7 @@
 
             if (pinsOrPlayersDiffer || scoresDiffer || commentaryDiffers)
             {
-                var @event = new MatchResultRegistered(
+                MatchResultRegistered @event = new(
                     roster.Id,
                     roster.Players,
                     teamScore,
@@ -137,7 +144,7 @@
                 throw new ArgumentNullException(nameof(resultsForPlayer));
             }
 
-            if (rosterPlayers.Count != 8 && rosterPlayers.Count != 9 && rosterPlayers.Count != 10)
+            if (rosterPlayers.Count is not 8 and not 9 and not 10)
             {
                 throw new MatchException("Roster must have 8, 9, or 10 players when registering results");
             }
@@ -147,7 +154,10 @@
                 VerifyPlayers(matchSerie);
                 ApplyChange(new SerieRegistered(matchSerie, BitsMatchId, RosterId));
                 DoAwardMedals(registeredSeries);
-                if (registeredSeries > 4) throw new ArgumentException("Can only register up to 4 series");
+                if (registeredSeries > 4)
+                {
+                    throw new ArgumentException("Can only register up to 4 series");
+                }
             }
 
             MatchCommentaryEvent matchCommentaryEvent = CreateMatchCommentary(
@@ -161,10 +171,17 @@
 
         public void RegisterSerie(MatchTable[] matchTables)
         {
-            if (matchTables == null) throw new ArgumentNullException(nameof(matchTables));
-            if (rosterPlayers.Count != 8 && rosterPlayers.Count != 9 && rosterPlayers.Count != 10)
+            if (matchTables == null)
+            {
+                throw new ArgumentNullException(nameof(matchTables));
+            }
+
+            if (rosterPlayers.Count is not 8 and not 9 and not 10)
+            {
                 throw new MatchException("Roster must have 8, 9, or 10 players when registering results");
-            var matchSerie = new MatchSerie(registeredSeries + 1, matchTables);
+            }
+
+            MatchSerie matchSerie = new(registeredSeries + 1, matchTables);
             VerifyPlayers(matchSerie);
 
             ApplyChange(new SerieRegistered(matchSerie, BitsMatchId, RosterId));
@@ -174,7 +191,10 @@
         public void AwardMedals()
         {
             if (medalsAwarded)
+            {
                 throw new ApplicationException("Medals have already been awarded");
+            }
+
             for (int i = 1; i <= registeredSeries; i++)
             {
                 DoAwardMedals(i);
@@ -190,7 +210,7 @@
 
         public void AwardScores()
         {
-            var dict = new Dictionary<string, int>();
+            Dictionary<string, int> dict = new();
             foreach (string key in playerPins.Keys)
             {
                 int totalScore = playerPins[key].Sum(x => x.Score);
@@ -202,14 +222,16 @@
 
         private static void VerifyScores(int teamScore, int opponentScore)
         {
-            if (teamScore < 0 || teamScore > 20)
+            if (teamScore is < 0 or > 20)
             {
                 throw new ArgumentOutOfRangeException(nameof(teamScore), "Team score must be between 0 and 20");
             }
-            if (opponentScore < 0 || opponentScore > 20)
+
+            if (opponentScore is < 0 or > 20)
             {
                 throw new ArgumentOutOfRangeException(nameof(opponentScore), "Opponent score must be between 0 and 20");
             }
+
             if (teamScore + opponentScore > 20)
             {
                 throw new ArgumentException("Team score and opponent score must be at most 20");
@@ -223,7 +245,11 @@
                 List<PinsAndScoreResult> list = playerPins[key];
                 foreach (PinsAndScoreResult pinsResult in list.Where(x => x.SerieNumber == serieNumber))
                 {
-                    if (pinsResult.Pins < 270) continue;
+                    if (pinsResult.Pins < 270)
+                    {
+                        continue;
+                    }
+
                     var medal = new AwardedMedal(
                         BitsMatchId,
                         RosterId,
@@ -240,7 +266,11 @@
                 {
                     List<PinsAndScoreResult> list = playerPins[key];
                     int score = list.Sum(x => x.Score);
-                    if (score != 4) continue;
+                    if (score != 4)
+                    {
+                        continue;
+                    }
+
                     var medal = new AwardedMedal(
                         BitsMatchId,
                         RosterId,
@@ -256,14 +286,45 @@
         {
             do
             {
-                if (rosterPlayers.Contains(matchSerie.Table1.Game1.Player) == false) break;
-                if (rosterPlayers.Contains(matchSerie.Table1.Game2.Player) == false) break;
-                if (rosterPlayers.Contains(matchSerie.Table2.Game1.Player) == false) break;
-                if (rosterPlayers.Contains(matchSerie.Table2.Game2.Player) == false) break;
-                if (rosterPlayers.Contains(matchSerie.Table3.Game1.Player) == false) break;
-                if (rosterPlayers.Contains(matchSerie.Table3.Game2.Player) == false) break;
-                if (rosterPlayers.Contains(matchSerie.Table4.Game1.Player) == false) break;
-                if (rosterPlayers.Contains(matchSerie.Table4.Game2.Player) == false) break;
+                if (rosterPlayers.Contains(matchSerie.Table1.Game1.Player) == false)
+                {
+                    break;
+                }
+
+                if (rosterPlayers.Contains(matchSerie.Table1.Game2.Player) == false)
+                {
+                    break;
+                }
+
+                if (rosterPlayers.Contains(matchSerie.Table2.Game1.Player) == false)
+                {
+                    break;
+                }
+
+                if (rosterPlayers.Contains(matchSerie.Table2.Game2.Player) == false)
+                {
+                    break;
+                }
+
+                if (rosterPlayers.Contains(matchSerie.Table3.Game1.Player) == false)
+                {
+                    break;
+                }
+
+                if (rosterPlayers.Contains(matchSerie.Table3.Game2.Player) == false)
+                {
+                    break;
+                }
+
+                if (rosterPlayers.Contains(matchSerie.Table4.Game1.Player) == false)
+                {
+                    break;
+                }
+
+                if (rosterPlayers.Contains(matchSerie.Table4.Game2.Player) == false)
+                {
+                    break;
+                }
 
                 return;
             }

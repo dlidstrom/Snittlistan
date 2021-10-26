@@ -130,7 +130,7 @@
         /// <summary>
         /// Initializes a new user. Must be done for new users.
         /// </summary>
-        public void Initialize(Action<object> publish)
+        public void Initialize(Action<ITask> publish)
         {
             ActivationKey = Guid.NewGuid().ToString();
             publish.Invoke(new NewUserCreatedTask(Email, ActivationKey, Id));

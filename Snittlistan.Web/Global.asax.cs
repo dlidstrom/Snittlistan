@@ -227,7 +227,7 @@
                     siteWideConfiguration = session.Load<SiteWideConfiguration>(SiteWideConfiguration.GlobalId);
                     if (siteWideConfiguration == null)
                     {
-                        siteWideConfiguration = new SiteWideConfiguration("", new[] { new TenantConfiguration("", "", "", "", "", "", "") });
+                        siteWideConfiguration = new SiteWideConfiguration("", new[] { new TenantConfiguration("", "", "", "", "", "", "", -1) });
                         session.Store(siteWideConfiguration);
                     }
 

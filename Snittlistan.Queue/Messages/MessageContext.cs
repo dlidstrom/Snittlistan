@@ -31,7 +31,13 @@ namespace Snittlistan.Queue.Messages
 
         public void PublishMessage(ITask task)
         {
-            msmqTransaction.PublishMessage(new MessageEnvelope(task, tenantId, CorrelationId, CausationId, Guid.NewGuid()));
+            MessageEnvelope envelope = new(
+                task,
+                tenantId,
+                CorrelationId,
+                CausationId,
+                Guid.NewGuid());
+            msmqTransaction.PublishMessage(envelope);
         }
     }
 }

@@ -1,14 +1,15 @@
-﻿namespace Snittlistan.Queue
+﻿#nullable enable
+
+namespace Snittlistan.Queue
 {
     using System.Net.Http;
-    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
-    using log4net;
+    using NLog;
 
     public class LoggingHandler : DelegatingHandler
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public LoggingHandler(HttpMessageHandler innerHandler)
             : base(innerHandler)
@@ -17,18 +18,18 @@
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            Log.Info(request.ToString());
+            Logger.Info(request.ToString());
             if (request.Content != null)
             {
-                Log.Info(await request.Content.ReadAsStringAsync());
+                Logger.Info(await request.Content.ReadAsStringAsync());
             }
 
             HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
 
-            Log.Info(response.ToString());
+            Logger.Info(response.ToString());
             if (response.Content != null)
             {
-                Log.Info(await response.Content.ReadAsStringAsync());
+                Logger.Info(await response.Content.ReadAsStringAsync());
             }
 
             return response;

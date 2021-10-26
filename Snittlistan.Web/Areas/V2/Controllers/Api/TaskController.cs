@@ -64,13 +64,14 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             try
             {
                 Log.Info("Begin");
-                MessageContext messageContext = new(
+                object messageContext = Activator.CreateInstance(
+                    typeof(MessageContext<>).MakeGenericType(taskObject.GetType()),
                     taskObject,
                     TenantConfiguration.TenantId,
                     request.CorrelationId,
                     request.CausationId,
                     MsmqTransaction);
-                Task task = (Task)handleMethod.Invoke(handler, new[] { taskObject });
+                Task task = (Task)handleMethod.Invoke(handler, new[] { messageContext });
                 await task;
                 Log.Info("End");
             }
@@ -84,13 +85,21 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
 
         public class TaskRequest
         {
-            public TaskRequest(string taskJson)
+            public TaskRequest(string taskJson, Guid? correlationId, Guid? causationId)
             {
                 TaskJson = taskJson;
+                CorrelationId = correlationId;
+                CausationId = causationId;
             }
 
             [Required]
             public string TaskJson { get; }
+
+            [Required]
+            public Guid? CorrelationId { get; }
+
+            [Required]
+            public Guid? CausationId { get; }
         }
     }
 }

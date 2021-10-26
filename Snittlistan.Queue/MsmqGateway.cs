@@ -4,13 +4,12 @@ namespace Snittlistan.Queue
 {
     using System;
     using System.Messaging;
-    using System.Reflection;
-    using log4net;
+    using NLog;
     using Snittlistan.Queue.Messages;
 
     public static class MsmqGateway
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private static MessageQueue? messageQueue;
 
         public static void Initialize(string path)
@@ -37,7 +36,7 @@ namespace Snittlistan.Queue
 
             public void PublishMessage(MessageEnvelope envelope)
             {
-                Log.InfoFormat("Sending {0}", envelope);
+                Logger.Info("Sending {@envelope}", envelope);
                 messageQueue!.Send(envelope, transaction);
             }
 

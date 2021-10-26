@@ -159,7 +159,7 @@
       <Version>13.0.1</Version>
     </PackageReference>
     <PackageReference Include="NLog">
-      <Version>4.7.9</Version>
+      <Version>4.7.12</Version>
     </PackageReference>
     <PackageReference Include="NUnit">
       <Version>3.13.2</Version>

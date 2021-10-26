@@ -15,7 +15,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
 
     public class GetRostersFromBitsTaskHandler : TaskHandler<GetRostersFromBitsTask>
     {
-        public override async Task Handle(GetRostersFromBitsTask task)
+        public override async Task Handle(MessageContext<GetRostersFromBitsTask> task)
         {
             WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
             Log.Info($"Importing BITS season {websiteConfig.SeasonId} for {TenantConfiguration.FullTeamName} (ClubId={websiteConfig.ClubId})");

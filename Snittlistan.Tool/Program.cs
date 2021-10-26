@@ -1,40 +1,41 @@
-﻿namespace Snittlistan.Tool
+﻿#nullable enable
+
+namespace Snittlistan.Tool
 {
     using System;
     using System.Configuration;
     using System.Linq;
-    using System.Reflection;
     using Castle.MicroKernel.Registration;
     using Castle.Windsor;
-    using log4net;
-    using log4net.Config;
-    using Raven.Client;
-    using Raven.Client.Document;
+    using NLog;
+    using Npgsql.Logging;
     using Snittlistan.Queue;
+    using Snittlistan.Queue.Infrastructure;
     using Snittlistan.Tool.Tasks;
 
     public static class Program
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public static void Main(string[] args)
         {
-            XmlConfigurator.Configure();
-            Log.Info("Starting");
+            Logger.Info("Starting");
+            NpgsqlLogManager.Provider = new NLogLoggingProvider();
+            NpgsqlLogManager.IsParameterLoggingEnabled = true;
             try
             {
                 Run(args);
             }
             finally
             {
-                Log.Info("Done");
+                Logger.Info("Done");
             }
         }
 
         private static void Run(string[] args)
         {
             IWindsorContainer container = new WindsorContainer();
-            container.Register(
+            _ = container.Register(
                 Classes.FromThisAssembly()
                        .BasedOn<ICommandLineTask>()
                        .Configure(x => x.LifeStyle.Transient.Named(x.Implementation.Name.Replace("CommandLineTask", string.Empty)))
@@ -49,19 +50,12 @@
             try
             {
                 MsmqGateway.Initialize(ConfigurationManager.AppSettings["TaskQueue"]);
-
-                // site-wide config
-                IDocumentStore siteWideDocumentStore = new DocumentStore
-                {
-                    ConnectionStringName = "Snittlistan-SiteWide"
-                }.Initialize(true);
-                CommandLineTaskHelper.DocumentStore = siteWideDocumentStore;
                 ICommandLineTask task = container.Resolve<ICommandLineTask>(args[0]);
                 task.Run(args);
             }
             catch (Exception e)
             {
-                Log.Error(e.GetType().ToString(), e);
+                Logger.Error(e, "Unhandled exception");
             }
         }
 

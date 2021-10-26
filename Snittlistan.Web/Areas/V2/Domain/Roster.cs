@@ -357,8 +357,10 @@ namespace Snittlistan.Web.Areas.V2.Domain
                             break;
                         }
 
-                        string PlayerName(string playerId) =>
-                            documentSession.Load<Player>(playerId)?.Nickname;
+                        string? PlayerName(string playerId)
+                        {
+                            return documentSession.Load<Player>(playerId)?.Nickname;
+                        }
                 }
 
                 return new FormattedAuditLogEntry(

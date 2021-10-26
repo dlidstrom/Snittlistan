@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure.Logging
+﻿#nullable enable
+
+namespace Snittlistan.Queue.Infrastructure
 {
     using System;
     using NLog;
@@ -8,7 +10,7 @@
     {
         private readonly Logger _log;
 
-        internal NLogLogger(string name)
+        public NLogLogger(string name)
         {
             _log = LogManager.GetLogger(name);
         }
@@ -18,7 +20,7 @@
             return _log.IsEnabled(ToNLogLogLevel(level));
         }
 
-        public override void Log(NpgsqlLogLevel level, int connectorId, string msg, Exception exception = null)
+        public override void Log(NpgsqlLogLevel level, int connectorId, string msg, Exception? exception = null)
         {
             LogEventInfo ev = new(ToNLogLogLevel(level), _log.Name, msg);
             if (exception != null)

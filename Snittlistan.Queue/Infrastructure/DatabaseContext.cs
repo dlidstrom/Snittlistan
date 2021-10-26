@@ -1,13 +1,13 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Web.Infrastructure.Database
+namespace Snittlistan.Queue.Infrastructure
 {
     using System.Data.Entity;
     using Npgsql.NameTranslation;
 
     public class DatabaseContext : DbContext
     {
-        public DbSet<DelayedTask> DelayedTasks { get; set; } = null!;
+        public DbSet<Tenant> Tenants { get; set; } = null!;
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

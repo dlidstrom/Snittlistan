@@ -62,6 +62,7 @@ namespace Snittlistan.Web.Controllers
             command.Execute(DocumentSession, EventStoreSession, PublishTask);
         }
 
+        // TODO Use TaskPublisher
         protected void PublishTask(ITask task)
         {
             DoPublishDelayedTask(task, DateTime.MinValue);
