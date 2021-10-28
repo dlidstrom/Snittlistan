@@ -21,11 +21,16 @@ namespace Snittlistan.Queue
             Timeout = TimeSpan.FromSeconds(600)
         };
         private readonly string urlScheme;
+        private readonly int port;
 
-        public TaskQueueListener(MessageQueueProcessorSettings settings, string urlScheme)
+        public TaskQueueListener(
+            MessageQueueProcessorSettings settings,
+            string urlScheme,
+            int port)
             : base(settings)
         {
             this.urlScheme = urlScheme;
+            this.port = port;
         }
 
         protected override async Task DoHandle(string contents)
@@ -41,7 +46,7 @@ namespace Snittlistan.Queue
             using DatabaseContext context = new();
             Tenant tenant = context.Tenants.Find(envelope.TenantId);
             HttpResponseMessage result = await client.PostAsJsonAsync(
-                $"{urlScheme}://{tenant.Hostname}/api/task",
+                $"{urlScheme}://{tenant.Hostname}:{port}/api/task",
                 request);
             _ = result.EnsureSuccessStatusCode();
         }

@@ -51,6 +51,10 @@
       <Link>App.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="..\Snittlistan.Queue.WindowsServiceHost\NLog.config">
+      <Link>NLog.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Snittlistan.Queue\Snittlistan.Queue.csproj">

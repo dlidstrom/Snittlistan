@@ -18,7 +18,8 @@ namespace Snittlistan.Queue.WindowsServiceHost
             InitializeComponent();
             application = new(
                 (MessagingConfigSection)ConfigurationManager.GetSection("messaging"),
-                ConfigurationManager.AppSettings["UrlScheme"]);
+                ConfigurationManager.AppSettings["UrlScheme"],
+                Convert.ToInt32(ConfigurationManager.AppSettings["UrlScheme"]));
         }
 
         protected override void OnStart(string[] args)
