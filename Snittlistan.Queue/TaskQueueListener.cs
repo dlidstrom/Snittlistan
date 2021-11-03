@@ -44,7 +44,14 @@ namespace Snittlistan.Queue
             TaskRequest request = new(envelope);
 
             using DatabaseContext context = new();
-            Tenant tenant = context.Tenants.Find(envelope.TenantId);
+            Tenant? tenant = context.Tenants.Find(envelope.TenantId);
+            if (tenant == null)
+            {
+                Exception exception = new("tenant not found");
+                exception.Data.Add("tenant_id", envelope.TenantId);
+                throw exception;
+            }
+
             HttpResponseMessage result = await client.PostAsJsonAsync(
                 $"{urlScheme}://{tenant.Hostname}:{port}/api/task",
                 request);

@@ -3,7 +3,6 @@
 namespace Snittlistan.Web.Areas.V2.Tasks
 {
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
     using Raven.Abstractions;
@@ -43,8 +42,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                     VerifyMatchTask verifyTask = new(
                         roster.BitsMatchId,
                         roster.Id,
-                        context.Task.Force,
-                        Trace.CorrelationManager.ActivityId);
+                        context.Task.Force);
                     toVerify.Add(verifyTask);
                 }
             }

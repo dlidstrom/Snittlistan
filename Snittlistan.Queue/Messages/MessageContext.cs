@@ -31,6 +31,7 @@ namespace Snittlistan.Queue.Messages
 
         public void PublishMessage(ITask task)
         {
+            // TODO save to database
             MessageEnvelope envelope = new(
                 task,
                 tenantId,

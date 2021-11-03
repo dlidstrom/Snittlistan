@@ -4,8 +4,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-    using System.Data.Entity;
-    using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
     using System.Web.Http;
@@ -26,11 +24,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
         public TaskController(IKernel kernel)
         {
             this.kernel = kernel;
-        }
-
-        public async Task<IHttpActionResult> Get()
-        {
-            return Ok(await Database.DelayedTasks.Take(10).ToListAsync());
         }
 
         public async Task<IHttpActionResult> Post(TaskRequest request)
@@ -69,7 +62,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                     taskObject,
                     TenantConfiguration.TenantId,
                     request.CorrelationId,
-                    request.CausationId,
+                    request.MessageId,
                     MsmqTransaction);
                 Task task = (Task)handleMethod.Invoke(handler, new[] { messageContext });
                 await task;
@@ -85,11 +78,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
 
         public class TaskRequest
         {
-            public TaskRequest(string taskJson, Guid? correlationId, Guid? causationId)
+            public TaskRequest(string taskJson, Guid? correlationId, Guid? messageId)
             {
                 TaskJson = taskJson;
                 CorrelationId = correlationId;
-                CausationId = causationId;
+                MessageId = messageId;
             }
 
             [Required]
@@ -99,7 +92,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             public Guid? CorrelationId { get; }
 
             [Required]
-            public Guid? CausationId { get; }
+            public Guid? MessageId { get; }
         }
     }
 }
