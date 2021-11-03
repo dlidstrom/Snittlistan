@@ -57,13 +57,40 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             try
             {
                 Log.Info("Begin");
-                object messageContext = Activator.CreateInstance(
+                IMessageContext messageContext = (IMessageContext)Activator.CreateInstance(
                     typeof(MessageContext<>).MakeGenericType(taskObject.GetType()),
                     taskObject,
                     TenantConfiguration.TenantId,
                     request.CorrelationId,
                     request.MessageId,
                     MsmqTransaction);
+                messageContext.PublishMessage = task =>
+                {
+                    // TODO save to database
+                    Guid correlationId = request.CorrelationId ?? default;
+                    MessageEnvelope envelope = new(
+                        task,
+                        TenantConfiguration.TenantId,
+                        correlationId,
+                        request.MessageId,
+                        Guid.NewGuid());
+                    MsmqTransaction.PublishMessage(envelope);
+                    _ = Database.PublishedTasks.Add(new(
+                        task,
+                        TenantConfiguration.TenantId,
+                        correlationId,
+                        request.MessageId,
+                        envelope.MessageId));
+
+                    // TODO
+                    /**
+                     * All task publishing must be done from this controller. Move this lambda to a method.
+                     * Tool exe must have access to command/query. No database access, no queue access from the tool.
+                     * Only handle tasks that have been published. Check that they are in the database, set a date timestamp
+                     * on successful handling.
+                     */
+                };
+
                 Task task = (Task)handleMethod.Invoke(handler, new[] { messageContext });
                 await task;
                 Log.Info("End");

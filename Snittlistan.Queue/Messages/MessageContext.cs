@@ -4,23 +4,21 @@ namespace Snittlistan.Queue.Messages
 {
     using System;
 
-    public class MessageContext<TTask> where TTask : ITask
+    public interface IMessageContext
     {
-        private readonly int tenantId;
-        private readonly IMsmqTransaction msmqTransaction;
+        Action<ITask>? PublishMessage { get; set; }
+    }
 
+    public class MessageContext<TTask> : IMessageContext where TTask : ITask
+    {
         public MessageContext(
             TTask task,
-            int tenantId,
             Guid correlationId,
-            Guid causationId,
-            IMsmqTransaction msmqTransaction)
+            Guid causationId)
         {
             Task = task;
-            this.tenantId = tenantId;
             CorrelationId = correlationId;
             CausationId = causationId;
-            this.msmqTransaction = msmqTransaction;
         }
 
         public TTask Task { get; }
@@ -29,16 +27,6 @@ namespace Snittlistan.Queue.Messages
 
         public Guid CausationId { get; }
 
-        public void PublishMessage(ITask task)
-        {
-            // TODO save to database
-            MessageEnvelope envelope = new(
-                task,
-                tenantId,
-                CorrelationId,
-                CausationId,
-                Guid.NewGuid());
-            msmqTransaction.PublishMessage(envelope);
-        }
+        public Action<ITask>? PublishMessage { get; set; }
     }
 }

@@ -1,3 +1,5 @@
+﻿#nullable enable
+
 namespace Snittlistan.Web.Infrastructure.Bits
 {
     using System;
@@ -37,7 +39,7 @@ namespace Snittlistan.Web.Infrastructure.Bits
 
         public async Task<MatchResults> GetMatchResults(int matchId)
         {
-            MatchResults result = await Get< MatchResults>($"https://api.swebowl.se/api/v1/matchResult/GetMatchResults?APIKey={apiKey}&matchId={matchId}&matchSchemeId=8M8BA");
+            MatchResults result = await Get<MatchResults>($"https://api.swebowl.se/api/v1/matchResult/GetMatchResults?APIKey={apiKey}&matchId={matchId}&matchSchemeId=8M8BA");
             return result;
         }
 
@@ -91,7 +93,14 @@ namespace Snittlistan.Web.Infrastructure.Bits
             }
 
             string response = await Request(HttpMethod.Get, url, _ => { });
-            TResult result = JsonConvert.DeserializeObject<TResult>(response);
+            TResult? result = JsonConvert.DeserializeObject<TResult>(response);
+            if (result == null)
+            {
+                Exception exception = new("failed to deserialize response");
+                exception.Data["response"] = response;
+                throw exception;
+            }
+
             memoryCache.Set(
                 url,
                 result,
@@ -120,7 +129,14 @@ namespace Snittlistan.Web.Infrastructure.Bits
                 HttpMethod.Post,
                 url,
                 x => x.Content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json"));
-            TResult result = JsonConvert.DeserializeObject<TResult>(response);
+            TResult? result = JsonConvert.DeserializeObject<TResult>(response);
+            if (result == null)
+            {
+                Exception exception = new("failed to deserialize response");
+                exception.Data["response"] = response;
+                throw exception;
+            }
+
             memoryCache.Set(
                 url,
                 result,
@@ -135,12 +151,11 @@ namespace Snittlistan.Web.Infrastructure.Bits
         private async Task<string> Request(HttpMethod method, string url, Action<HttpRequestMessage> action)
         {
             Logger.Info("Requesting {0}", url);
-            var request = new HttpRequestMessage(method, url);
+            HttpRequestMessage request = new(method, url);
             request.Headers.Referrer = new Uri("https://bits.swebowl.se");
             action.Invoke(request);
             HttpResponseMessage result = await client.SendAsync(request);
-            result.EnsureSuccessStatusCode();
-            string content = await result.Content.ReadAsStringAsync();
+            string content = await result.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
             return content;
         }
     }

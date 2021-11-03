@@ -9,6 +9,8 @@ namespace Snittlistan.Web.Infrastructure.Database
     {
         public DbSet<DelayedTask> DelayedTasks { get; set; } = null!;
 
+        public DbSet<PublishedTask> PublishedTasks { get; set; } = null!;
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
