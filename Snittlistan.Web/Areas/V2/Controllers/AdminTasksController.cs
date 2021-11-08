@@ -1,5 +1,8 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Controllers
 {
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
     using System.Web;
@@ -36,7 +39,7 @@
         /// <returns></returns>
         public ActionResult Users()
         {
-            var users = DocumentSession.Query<User>()
+            List<UserViewModel> users = DocumentSession.Query<User>()
                 .ToList()
                 .Select(x => new UserViewModel(x))
                 .OrderByDescending(x => x.IsActive)
@@ -56,12 +59,17 @@
         {
             // an existing user cannot be registered again
             if (DocumentSession.FindUserByEmail(vm.Email) != null)
+            {
                 ModelState.AddModelError("Email", "Användaren finns redan");
+            }
 
             // redisplay form if any errors at this point
-            if (!ModelState.IsValid) return View(vm);
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
 
-            var newUser = new User(string.Empty, string.Empty, vm.Email, string.Empty);
+            User newUser = new(string.Empty, string.Empty, vm.Email, string.Empty);
             DocumentSession.Store(newUser);
 
             return RedirectToAction("Users");
@@ -70,7 +78,10 @@
         public ActionResult DeleteUser(string id)
         {
             User user = DocumentSession.Load<User>(id);
-            if (user == null) throw new HttpException(404, "User not found");
+            if (user == null)
+            {
+                throw new HttpException(404, "User not found");
+            }
 
             return View(new UserViewModel(user));
         }
@@ -80,7 +91,11 @@
         public ActionResult DeleteUserConfirmed(string id)
         {
             User user = DocumentSession.Load<User>(id);
-            if (user == null) throw new HttpException(404, "User not found");
+            if (user == null)
+            {
+                throw new HttpException(404, "User not found");
+            }
+
             DocumentSession.Delete(user);
             return RedirectToAction("Users");
         }
@@ -88,7 +103,10 @@
         public ActionResult ActivateUser(string id)
         {
             User user = DocumentSession.Load<User>(id);
-            if (user == null) throw new HttpException(404, "User not found");
+            if (user == null)
+            {
+                throw new HttpException(404, "User not found");
+            }
 
             return View(new UserViewModel(user));
         }
@@ -112,7 +130,7 @@
                 if (invite.GetValueOrDefault())
                 {
                     Debug.Assert(Request.Url != null, "Request.Url != null");
-                    user.ActivateWithEmail(PublishTask, Url, Request.Url.Scheme);
+                    user.ActivateWithEmail(PublishTask, Url, Request.Url!.Scheme);
                 }
                 else
                 {
@@ -161,13 +179,13 @@
 
         public ActionResult MigrateEvents()
         {
-            return View("MigrateEvents", (HtmlString)null);
+            return View("MigrateEvents", (HtmlString?)null);
         }
 
         [HttpPost, ActionName("MigrateEvents")]
         public ActionResult MigrateEventsConfirmed()
         {
-            var eventMigrators = MvcApplication.Container.ResolveAll<IEventMigratorWithResults>()
+            List<IEventMigratorWithResults> eventMigrators = MvcApplication.Container!.ResolveAll<IEventMigratorWithResults>()
                 .ToList();
             EventStore.MigrateEvents(eventMigrators);
             string results = string.Join("", eventMigrators.Select(x => x.GetResults()));
@@ -183,7 +201,10 @@
         [HttpPost]
         public ActionResult SendMail(SendMailViewModel vm)
         {
-            if (!ModelState.IsValid) return View(vm);
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
 
             PublishTask(EmailTask.Create(vm.Recipient, vm.Subject, vm.Content));
 

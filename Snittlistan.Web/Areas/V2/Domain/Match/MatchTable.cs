@@ -9,11 +9,26 @@
     {
         public MatchTable(int tableNumber, MatchGame game1, MatchGame game2, int score)
         {
-            if (game1 == null) throw new ArgumentNullException(nameof(game1));
-            if (game2 == null) throw new ArgumentNullException(nameof(game2));
-            if (score != 0 && score != 1) throw new ArgumentOutOfRangeException(nameof(score), score, "Score out of range");
+            if (game1 == null)
+            {
+                throw new ArgumentNullException(nameof(game1));
+            }
+
+            if (game2 == null)
+            {
+                throw new ArgumentNullException(nameof(game2));
+            }
+
+            if (score != 0 && score != 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(score), score, "Score out of range");
+            }
+
             if (game1.Player == game2.Player)
+            {
                 throw new MatchException("Table must have different players");
+            }
+
             TableNumber = tableNumber;
             Score = score;
             Game1 = game1;

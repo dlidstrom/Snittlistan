@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
 {
     using System;
     using System.Linq;
@@ -14,11 +16,11 @@
 
         public MatchResultType MatchWon { get; set; }
 
-        public Func<int, int, SeriesScores[], bool> TeamScore { get; set; }
+        public Func<int, int, SeriesScores[], bool>? TeamScore { get; set; }
 
-        public Func<int, int, bool> OpponentScore { get; set; }
+        public Func<int, int, bool>? OpponentScore { get; set; }
 
-        public Func<SeriesScores[], string> Commentary { get; set; }
+        public Func<SeriesScores[], string>? Commentary { get; set; }
 
         public string Description { get; private set; }
 
@@ -34,8 +36,8 @@
 
             bool matches = numberOfSeries == NumberOfSeries
                           && matchWon == MatchWon
-                          && TeamScore.Invoke(teamScore, opponentScore, seriesScores)
-                          && OpponentScore.Invoke(teamScore, opponentScore);
+                          && TeamScore!.Invoke(teamScore, opponentScore, seriesScores)
+                          && OpponentScore!.Invoke(teamScore, opponentScore);
 
             return matches;
         }

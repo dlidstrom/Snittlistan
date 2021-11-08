@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure.Bits.Contracts
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Bits.Contracts
 {
     using Newtonsoft.Json;
 
@@ -23,10 +25,10 @@
         public int MatchHeadAwayTotalRp { get; set; }
 
         [JsonProperty("homeHeadDetails")]
-        public HeadDetail[] HomeHeadDetails { get; set; }
+        public HeadDetail[]? HomeHeadDetails { get; set; }
 
         [JsonProperty("awayHeadDetails")]
-        public HeadDetail[] AwayHeadDetails { get; set; }
+        public HeadDetail[]? AwayHeadDetails { get; set; }
 
         [JsonProperty("matchHeadHomeTeamScoreRound1")]
         public int MatchHeadHomeTeamScoreRound1 { get; set; }

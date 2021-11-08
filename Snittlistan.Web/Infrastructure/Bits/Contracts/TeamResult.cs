@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure.Bits.Contracts
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Bits.Contracts
 {
     public class TeamResult
     {

@@ -1,3 +1,5 @@
+﻿#nullable enable
+
 namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
 {
     using System;
@@ -12,7 +14,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
             int teamScore,
             int opponentScore,
             int bitsMatchId,
-            string[] previousPlayerIds = null)
+            string[]? previousPlayerIds = null)
         {
             RosterId = rosterId ?? throw new ArgumentNullException(nameof(rosterId));
             RosterPlayers = rosterPlayers ?? throw new ArgumentNullException(nameof(rosterPlayers));

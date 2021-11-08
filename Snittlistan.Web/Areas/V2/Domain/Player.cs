@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Domain
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Domain
 {
     using System;
     using System.Diagnostics;
@@ -12,10 +14,10 @@
             string email,
             Status playerStatus,
             int personalNumber,
-            string nickname,
+            string? nickname,
             string[] roles,
-            PlayerItem playerItem = null,
-            string uniqueId = null,
+            PlayerItem? playerItem = null,
+            string? uniqueId = null,
             bool? hidden = null)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
@@ -38,7 +40,7 @@
             Inactive
         }
 
-        public string Id { get; set; }
+        public string Id { get; set; } = null!;
 
         public string Name { get; private set; }
 
@@ -48,11 +50,11 @@
 
         public int PersonalNumber { get; private set; }
 
-        public string Nickname { get; private set; }
+        public string? Nickname { get; private set; }
 
         public string[] Roles { get; private set; }
 
-        public PlayerItem PlayerItem { get; set; }
+        public PlayerItem? PlayerItem { get; set; }
 
         public bool Hidden { get; }
 
@@ -78,7 +80,7 @@
             PersonalNumber = personalNumber;
         }
 
-        public void SetNickname(string nickname)
+        public void SetNickname(string? nickname)
         {
             Nickname = nickname ?? Name;
         }

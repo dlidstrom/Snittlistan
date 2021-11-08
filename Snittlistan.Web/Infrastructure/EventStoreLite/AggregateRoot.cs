@@ -1,4 +1,5 @@
-// ReSharper disable once CheckNamespace
+﻿#nullable enable
+
 namespace EventStoreLite
 {
     using System;
@@ -11,12 +12,12 @@ namespace EventStoreLite
     /// </summary>
     public abstract class AggregateRoot : IAggregate
     {
-        private List<IDomainEvent> uncommittedChanges = new List<IDomainEvent>();
+        private List<IDomainEvent> uncommittedChanges = new();
 
         /// <summary>
         /// Gets the id.
         /// </summary>
-        public string Id { get; private set; }
+        public string Id { get; private set; } = null!;
 
         /// <summary>
         /// Gets the uncommitted changes. These are events that
@@ -36,9 +37,16 @@ namespace EventStoreLite
 
         internal void LoadFromHistory(IEnumerable<IDomainEvent> history)
         {
-            if (history == null) throw new ArgumentNullException(nameof(history));
+            if (history == null)
+            {
+                throw new ArgumentNullException(nameof(history));
+            }
+
             uncommittedChanges = new List<IDomainEvent>();
-            foreach (IDomainEvent domainEvent in history) ApplyChange(domainEvent, false);
+            foreach (IDomainEvent domainEvent in history)
+            {
+                ApplyChange(domainEvent, false);
+            }
         }
 
         /// <summary>
@@ -58,7 +66,11 @@ namespace EventStoreLite
         [DebuggerStepThrough]
         protected void ApplyChange(Event @event)
         {
-            if (@event == null) throw new ArgumentNullException(nameof(@event));
+            if (@event == null)
+            {
+                throw new ArgumentNullException(nameof(@event));
+            }
+
             @event.SetTimeStamp(DateTimeOffset.Now);
             ApplyChange(@event, true);
         }
@@ -67,7 +79,10 @@ namespace EventStoreLite
         private void ApplyChange(IDomainEvent @event, bool isNew)
         {
             this.AsDynamic().Apply(@event);
-            if (isNew) uncommittedChanges.Add(@event);
+            if (isNew)
+            {
+                uncommittedChanges.Add(@event);
+            }
         }
     }
 }

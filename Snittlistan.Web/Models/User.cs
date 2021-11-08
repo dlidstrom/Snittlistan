@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Models
+﻿#nullable enable
+
+namespace Snittlistan.Web.Models
 {
     using System;
     using System.Diagnostics;

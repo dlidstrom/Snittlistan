@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -21,16 +23,18 @@
         public ActionResult Index(int? season)
         {
             if (season.HasValue == false)
+            {
                 season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+            }
 
             ResultHeaderReadModel[] headerReadModels = DocumentSession.Query<ResultHeaderReadModel, ResultHeaderIndex>()
                                                   .Where(x => x.Season == season)
                                                   .ToArray();
-            var rosters = DocumentSession.Load<Roster>(headerReadModels.Select(x => x.RosterId))
-                                         .ToDictionary(x => x.Id);
+            Dictionary<string?, Roster> rosters = DocumentSession.Load<Roster>(headerReadModels.Select(x => x.RosterId))
+                .ToDictionary(x => x.Id);
 
             IEnumerable<ResultHeaderViewModel> headerViewModels = headerReadModels.Select(x => new ResultHeaderViewModel(x, rosters[x.RosterId]));
-            var vm = new MatchResultViewModel
+            MatchResultViewModel vm = new()
             {
                 SeasonStart = season.Value,
                 Turns = headerViewModels.GroupBy(x => x.Turn)
@@ -43,10 +47,13 @@
         {
             string headerId = ResultHeaderReadModel.IdFromBitsMatchId(id, rosterId);
             ResultHeaderReadModel headerReadModel = DocumentSession.Load<ResultHeaderReadModel>(headerId);
-            if (headerReadModel == null) throw new HttpException(404, "Match result not found");
+            if (headerReadModel == null)
+            {
+                throw new HttpException(404, "Match result not found");
+            }
 
             Roster roster = DocumentSession.Load<Roster>(headerReadModel.RosterId);
-            var headerViewModel = new ResultHeaderViewModel(headerReadModel, roster);
+            ResultHeaderViewModel headerViewModel = new(headerReadModel, roster);
             if (roster.IsFourPlayer)
             {
                 string matchId = ResultSeries4ReadModel.IdFromBitsMatchId(id, rosterId);
@@ -68,20 +75,24 @@
         public ActionResult Turns(int? season)
         {
             if (season.HasValue == false)
+            {
                 season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+            }
 
             TeamOfWeek[] weeks = DocumentSession.Query<TeamOfWeek, TeamOfWeekIndex>()
                                        .Where(x => x.Season == season.Value)
                                        .ToArray();
-            var rostersDictionary = DocumentSession.Load<Roster>(weeks.Select(x => x.RosterId)).ToDictionary(x => x.Id);
-            var viewModel = new TeamOfWeekViewModel(season.Value, weeks, rostersDictionary);
+            Dictionary<string?, Roster> rostersDictionary = DocumentSession.Load<Roster>(weeks.Select(x => x.RosterId)).ToDictionary(x => x.Id);
+            TeamOfWeekViewModel viewModel = new(season.Value, weeks, rostersDictionary);
             return View(viewModel);
         }
 
         public ActionResult Form(int? season)
         {
             if (season.HasValue == false)
+            {
                 season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+            }
 
             Player[] players = DocumentSession.Query<Player, PlayerSearch>()
                 .ToArray();
@@ -89,16 +100,16 @@
             ResultForPlayerIndex.Result[] results = DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
                 .Where(x => x.Season == season.Value)
                 .ToArray();
-            var seasonAverages = results.ToDictionary(x => x.PlayerId);
+            Dictionary<string, ResultForPlayerIndex.Result> seasonAverages = results.ToDictionary(x => x.PlayerId);
 
-            var response = new List<PlayerFormViewModel>();
+            List<PlayerFormViewModel> response = new();
             foreach (Player player in players)
             {
                 string name = player.Name;
                 if (seasonAverages.TryGetValue(player.Id, out ResultForPlayerIndex.Result result)
                     && result.TotalSeries > 0)
                 {
-                    var playerForm = new PlayerFormViewModel(name)
+                    PlayerFormViewModel playerForm = new(name)
                     {
                         TotalSeries = result.TotalSeries,
                         TotalScore = result.TotalScore,
@@ -115,7 +126,7 @@
                 }
             }
 
-            var viewModel = new FormViewModel(
+            FormViewModel viewModel = new(
                 season.Value,
                 response.OrderByDescending(x => x.SeasonAverage).ThenBy(x => x.Name).ToArray());
             return View(viewModel);
@@ -129,7 +140,7 @@
                 season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
             }
 
-            var playersDict = DocumentSession.Query<Player, PlayerSearch>()
+            Dictionary<string, Player> playersDict = DocumentSession.Query<Player, PlayerSearch>()
                 .Where(p => p.PlayerStatus == Player.Status.Active)
                 .ToDictionary(x => x.Id);
             EliteMedals eliteMedals = DocumentSession.Load<EliteMedals>(Domain.EliteMedals.TheId);
@@ -146,7 +157,7 @@
                 DocumentSession.Store(seasonResults);
             }
 
-            var viewModel = new EliteMedalsViewModel(season.Value, playersDict, eliteMedals, seasonResults);
+            EliteMedalsViewModel viewModel = new(season.Value, playersDict, eliteMedals, seasonResults);
             return View(viewModel);
         }
 
@@ -156,7 +167,7 @@
             Player player = DocumentSession.Load<Player>(id);
             EliteMedals eliteMedals = DocumentSession.Load<EliteMedals>(Domain.EliteMedals.TheId);
             EliteMedals.EliteMedal eliteMedal = eliteMedals.GetExistingMedal(player.Id);
-            var viewModel = new EditMedalsViewModel(
+            EditMedalsViewModel viewModel = new(
                 player.Name,
                 eliteMedal.Value,
                 eliteMedal.CapturedSeason.GetValueOrDefault(),
@@ -176,7 +187,7 @@
 
             EliteMedals eliteMedals = DocumentSession.Load<EliteMedals>(Domain.EliteMedals.TheId);
             Debug.Assert(postModel.EliteMedal != null, "postModel.EliteMedal != null");
-            eliteMedals.AwardMedal("players-" + id, postModel.EliteMedal.Value, postModel.CapturedSeason);
+            eliteMedals.AwardMedal("players-" + id, postModel.EliteMedal!.Value, postModel.CapturedSeason);
             return RedirectToAction("EliteMedals");
         }
 

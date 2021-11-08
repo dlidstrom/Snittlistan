@@ -9,7 +9,9 @@
         public static string ShortenName(string name)
         {
             if (name == null)
+            {
                 return string.Empty;
+            }
 
             string shortenedName = name;
             System.Text.RegularExpressions.Match match = ForenameSurnameRegex.Match(shortenedName);

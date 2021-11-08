@@ -1,3 +1,5 @@
+﻿#nullable enable
+
 namespace Snittlistan.Web.Areas.V2.ReadModels
 {
     using System;
@@ -29,7 +31,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         {
             foreach (MatchTable matchTable in new[] { matchSerie.Table1, matchSerie.Table2, matchSerie.Table3, matchSerie.Table4 })
             {
-                var firstPlayerResult = new PlayerResult(
+                PlayerResult firstPlayerResult = new(
                     bitsMatchId,
                     rosterId,
                     date,
@@ -39,8 +41,8 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
                     matchTable.Game1.Player,
                     matchTable.Score,
                     matchTable.Game1.Pins);
-                PlayerResults.Add(firstPlayerResult);
-                var secondPlayerResult = new PlayerResult(
+                _ = PlayerResults.Add(firstPlayerResult);
+                PlayerResult secondPlayerResult = new(
                     bitsMatchId,
                     rosterId,
                     date,
@@ -50,7 +52,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
                     matchTable.Game2.Player,
                     matchTable.Score,
                     matchTable.Game2.Pins);
-                PlayerResults.Add(secondPlayerResult);
+                _ = PlayerResults.Add(secondPlayerResult);
             }
         }
 
@@ -65,7 +67,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             };
             foreach ((int tableNumber, MatchGame4 game) in games)
             {
-                var playerResult = new PlayerResult(
+                PlayerResult playerResult = new(
                     bitsMatchId,
                     rosterId,
                     date,
@@ -75,7 +77,7 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
                     game.Player,
                     game.Score,
                     game.Pins);
-                PlayerResults.Add(playerResult);
+                _ = PlayerResults.Add(playerResult);
             }
         }
 
@@ -92,8 +94,8 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
                 into grouping
                 where grouping.Count() == 4
                 let totalPins = grouping.Sum(x => x.Pins)
-                let validResult = existingMedal == EliteMedals.EliteMedal.EliteMedalValue.None && totalPins >= 760
-                    || existingMedal == EliteMedals.EliteMedal.EliteMedalValue.Bronze && totalPins >= 800
+                let validResult = (existingMedal == EliteMedals.EliteMedal.EliteMedalValue.None && totalPins >= 760)
+                    || (existingMedal == EliteMedals.EliteMedal.EliteMedalValue.Bronze && totalPins >= 800)
                     || totalPins >= 840
                 orderby totalPins descending
                 select new
@@ -105,16 +107,20 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
                 };
             var topThree = query.Take(3).ToArray();
             Tuple<PlayerResult, bool>[] playerResults = topThree.SelectMany(x => x.PlayerResults.Select(y => Tuple.Create(y, x.ValidResult))).ToArray();
-            var topThreeResults = new HashSet<Tuple<PlayerResult, bool>>(playerResults);
+            HashSet<Tuple<PlayerResult, bool>> topThreeResults = new(playerResults);
             return topThreeResults;
         }
 
         public void RemoveWhere(int bitsMatchId, string rosterId)
         {
             if (bitsMatchId != 0)
-                PlayerResults.RemoveWhere(x => x.BitsMatchId == bitsMatchId);
+            {
+                _ = PlayerResults.RemoveWhere(x => x.BitsMatchId == bitsMatchId);
+            }
             else
-                PlayerResults.RemoveWhere(x => x.RosterId == rosterId);
+            {
+                _ = PlayerResults.RemoveWhere(x => x.RosterId == rosterId);
+            }
         }
 
         [DebuggerDisplay("BitsMatchId={BitsMatchId} RosterId={RosterId} Date={Date} Turn={Turn} SerieNumber={SerieNumber} TableNumber={TableNumber} PlayerId={PlayerId} Score={Score} Pins={Pins}")]
@@ -169,9 +175,9 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
                 return Equals(obj as PlayerResult);
             }
 
-            public bool Equals(PlayerResult playerResult)
+            public bool Equals(PlayerResult? playerResult)
             {
-                bool eq = playerResult.BitsMatchId == BitsMatchId
+                bool eq = playerResult?.BitsMatchId == BitsMatchId
                     && string.Equals(playerResult.RosterId, RosterId)
                     && playerResult.SerieNumber == SerieNumber
                     && playerResult.TableNumber == TableNumber

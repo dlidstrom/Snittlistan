@@ -19,7 +19,9 @@
         public bool InvokeAction(ControllerContext controllerContext, string actionName)
         {
             if (actionInvoker.InvokeAction(controllerContext, actionName))
+            {
                 return true;
+            }
 
             // No action method was found.
             var controller = new NotFoundController();

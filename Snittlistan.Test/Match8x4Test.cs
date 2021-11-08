@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Test
+﻿#nullable enable
+
+namespace Snittlistan.Test
 {
     using NUnit.Framework;
     using Snittlistan.Web.Areas.V1.Models;
@@ -6,7 +8,7 @@
     [TestFixture]
     public class Match8x4Test : DbTest
     {
-        private Match8x4 match;
+        private Match8x4? match;
 
         protected override void OnSetUp()
         {
@@ -19,25 +21,25 @@
         [Test]
         public void PinscoreForPlayer()
         {
-            Assert.That(match.AwayTeam.PinsForPlayer("Peter Sjöberg"), Is.EqualTo(787));
+            Assert.That(match!.AwayTeam.PinsForPlayer("Peter Sjöberg"), Is.EqualTo(787));
         }
 
         [Test]
         public void VerifyValues()
         {
-            TestData.VerifyTeam(match.AwayTeam);
+            TestData.VerifyTeam(match!.AwayTeam);
         }
 
         [Test]
         public void LaneScores()
         {
-            Assert.That(match.HomeTeam.Score, Is.EqualTo(13));
+            Assert.That(match!.HomeTeam.Score, Is.EqualTo(13));
         }
 
         [Test]
         public void Teams()
         {
-            Assert.That(match.HomeTeam.Name, Is.EqualTo("Sollentuna Bwk"));
+            Assert.That(match!.HomeTeam.Name, Is.EqualTo("Sollentuna Bwk"));
             Assert.That(match.AwayTeam.Name, Is.EqualTo("Fredrikshof IF"));
         }
     }

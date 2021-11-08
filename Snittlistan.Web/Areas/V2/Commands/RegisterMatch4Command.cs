@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Commands
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Commands
 {
     using System;
     using EventStoreLite;
@@ -12,14 +14,14 @@
     {
         private readonly Roster roster;
         private readonly Parse4Result result;
-        private readonly string summaryText;
-        private readonly string summaryHtml;
+        private readonly string? summaryText;
+        private readonly string? summaryHtml;
 
         public RegisterMatch4Command(
             Roster roster,
             Parse4Result result,
-            string summaryText = null,
-            string summaryHtml = null)
+            string? summaryText = null,
+            string? summaryHtml = null)
         {
             this.roster = roster ?? throw new ArgumentNullException(nameof(roster));
             this.result = result ?? throw new ArgumentNullException(nameof(result));

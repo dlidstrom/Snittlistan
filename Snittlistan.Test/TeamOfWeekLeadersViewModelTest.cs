@@ -17,12 +17,12 @@
         public void SetUp()
         {
             // Arrange
-            var player1 = new Player("Daniel", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "9876" };
-            var player2 = new Player("Tomas", "s@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "8765" };
-            var teamOfWeek1 = new TeamOfWeek(1234, 2012, "roster-1");
+            Player player1 = new("Daniel", "e@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "9876" };
+            Player player2 = new("Tomas", "s@d.com", Player.Status.Active, 0, null, new string[0]) { Id = "8765" };
+            TeamOfWeek teamOfWeek1 = new(1234, 2012, "roster-1");
             teamOfWeek1.AddResultForPlayer(player1, 1, 210);
             teamOfWeek1.AddResultForPlayer(player2, 1, 190);
-            var teamOfWeek2 = new TeamOfWeek(5432, 2012, "roster-2");
+            TeamOfWeek teamOfWeek2 = new(5432, 2012, "roster-2");
             teamOfWeek2.AddResultForPlayer(player1, 0, 220);
             teamOfWeek2.AddResultForPlayer(player2, 1, 180);
 
@@ -68,7 +68,7 @@
         public void CalculatesLeaders()
         {
             // Assert
-            var top = viewModel.Leaders.Top9Total.ToList();
+            List<TeamOfWeekLeadersViewModel.NameCount> top = viewModel.Leaders.Top9Total.ToList();
             Assert.That(top, Has.Count.EqualTo(2));
             Assert.That(top[0], Has.Count.EqualTo(1));
             Assert.That(top[1], Has.Count.EqualTo(1));

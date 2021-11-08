@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Domain
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Domain
 {
     using System;
     using Raven.Imports.Newtonsoft.Json;
@@ -22,7 +24,7 @@
             AuthorId = authorId;
         }
 
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         public int Season { get; private set; }
 
@@ -44,8 +46,16 @@
             string messageHtml,
             string authorId)
         {
-            if (message.Length > 10*1024) throw new ArgumentOutOfRangeException(nameof(message));
-            if (messageHtml.Length > 10*1024) throw new ArgumentOutOfRangeException(nameof(messageHtml));
+            if (message.Length > 10 * 1024)
+            {
+                throw new ArgumentOutOfRangeException(nameof(message));
+            }
+
+            if (messageHtml.Length > 10 * 1024)
+            {
+                throw new ArgumentOutOfRangeException(nameof(messageHtml));
+            }
+
             Season = season;
             Title = title;
             Date = date;
@@ -62,8 +72,16 @@
             string messageHtml,
             string authorId)
         {
-            if (message.Length > 10*1024) throw new ArgumentOutOfRangeException(nameof(message));
-            if (messageHtml.Length > 10*1024) throw new ArgumentOutOfRangeException(nameof(messageHtml));
+            if (message.Length > 10 * 1024)
+            {
+                throw new ArgumentOutOfRangeException(nameof(message));
+            }
+
+            if (messageHtml.Length > 10 * 1024)
+            {
+                throw new ArgumentOutOfRangeException(nameof(messageHtml));
+            }
+
             return new Activity(season, title, date, message, messageHtml, authorId);
         }
     }

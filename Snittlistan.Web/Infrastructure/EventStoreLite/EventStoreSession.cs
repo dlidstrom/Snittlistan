@@ -13,16 +13,16 @@ namespace EventStoreLite
     internal class EventStoreSession : IEventStoreSession
     {
         private readonly Dictionary<string, EventStreamAndAggregateRoot> entitiesByKey =
-            new Dictionary<string, EventStreamAndAggregateRoot>();
+            new();
 
         private readonly HashSet<EventStreamAndAggregateRoot> unitOfWork
-            = new HashSet<EventStreamAndAggregateRoot>(ObjectReferenceEqualityComparer<object>.Default);
+            = new(ObjectReferenceEqualityComparer<object>.Default);
 
         private readonly IDocumentStore documentStore;
         private readonly IDocumentSession documentSession;
         private readonly EventDispatcher dispatcher;
-        private readonly HiLoKeyGenerator eventStreamsHiLoKeyGenerator = new HiLoKeyGenerator("EventStreams", 4);
-        private readonly HiLoKeyGenerator changeSequenceHiLoKeyGenerator = new HiLoKeyGenerator("ChangeSequence", 4);
+        private readonly HiLoKeyGenerator eventStreamsHiLoKeyGenerator = new("EventStreams", 4);
+        private readonly HiLoKeyGenerator changeSequenceHiLoKeyGenerator = new("ChangeSequence", 4);
 
         public EventStoreSession(IDocumentStore documentStore, IDocumentSession documentSession, EventDispatcher dispatcher)
         {
@@ -33,10 +33,16 @@ namespace EventStoreLite
 
         public TAggregate Load<TAggregate>(string id) where TAggregate : AggregateRoot
         {
-            if (id == null) throw new ArgumentNullException(nameof(id));
+            if (id == null)
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
 
             if (entitiesByKey.TryGetValue(id, out EventStreamAndAggregateRoot unitOfWorkInstance))
+            {
                 return (TAggregate)unitOfWorkInstance.AggregateRoot;
+            }
+
             EventStream stream = documentSession.Load<EventStream>(id);
             if (stream != null)
             {
@@ -50,12 +56,18 @@ namespace EventStoreLite
                         null,
                         Type.EmptyTypes,
                         null);
-                if (ctor != null) instance = (TAggregate)ctor.Invoke(null);
-                else instance = (TAggregate)FormatterServices.GetUninitializedObject(typeof(TAggregate));
+                if (ctor != null)
+                {
+                    instance = (TAggregate)ctor.Invoke(null);
+                }
+                else
+                {
+                    instance = (TAggregate)FormatterServices.GetUninitializedObject(typeof(TAggregate));
+                }
 
                 instance.LoadFromHistory(stream.History);
-                var eventStreamAndAggregateRoot = new EventStreamAndAggregateRoot(stream, instance);
-                unitOfWork.Add(eventStreamAndAggregateRoot);
+                EventStreamAndAggregateRoot eventStreamAndAggregateRoot = new(stream, instance);
+                _ = unitOfWork.Add(eventStreamAndAggregateRoot);
                 entitiesByKey.Add(id, eventStreamAndAggregateRoot);
                 return instance;
             }
@@ -65,14 +77,17 @@ namespace EventStoreLite
 
         public void Store(AggregateRoot aggregate)
         {
-            if (aggregate == null) throw new ArgumentNullException(nameof(aggregate));
+            if (aggregate == null)
+            {
+                throw new ArgumentNullException(nameof(aggregate));
+            }
 
-            var eventStream = new EventStream();
+            EventStream eventStream = new();
             GenerateId(eventStream, aggregate);
             documentSession.Store(eventStream);
             aggregate.SetId(eventStream.Id);
-            var eventStreamAndAggregateRoot = new EventStreamAndAggregateRoot(eventStream, aggregate);
-            unitOfWork.Add(eventStreamAndAggregateRoot);
+            EventStreamAndAggregateRoot eventStreamAndAggregateRoot = new(eventStream, aggregate);
+            _ = unitOfWork.Add(eventStreamAndAggregateRoot);
             entitiesByKey.Add(eventStream.Id, eventStreamAndAggregateRoot);
         }
 
@@ -89,7 +104,7 @@ namespace EventStoreLite
                                               EventStream = eventStream,
                                               Event = @event
                                           };
-            var currentChangeSequence = new Lazy<int>(GenerateChangeSequence);
+            Lazy<int> currentChangeSequence = new(GenerateChangeSequence);
             foreach (var aggregatesAndEvent in aggregatesAndEvents)
             {
                 IDomainEvent pendingEvent = aggregatesAndEvent.Event;

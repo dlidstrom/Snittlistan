@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Test
+﻿#nullable enable
+
+namespace Snittlistan.Test
 {
     using System;
     using System.Collections.Generic;
@@ -8,7 +10,7 @@
     {
         public static Match8x4 Create8x4Match()
         {
-            var series = new List<Serie8x4>
+            List<Serie8x4> series = new()
             {
                 new Serie8x4(new List<Table8x4>
                 {
@@ -126,7 +128,7 @@
                     }
                 }),
             };
-            var match = new Match8x4(
+            Match8x4 match = new(
                 location: "Sollentuna Bowlinghall",
                 date: new DateTime(2011, 03, 26),
                 bitsMatchId: 3003231,
@@ -138,7 +140,7 @@
 
         public static Match4x4 Create4x4Match()
         {
-            var series = new List<Serie4x4>
+            List<Serie4x4> series = new()
             {
                 new Serie4x4(new List<Game4x4>
                 {
@@ -170,7 +172,7 @@
                 })
             };
 
-            var match = new Match4x4(
+            Match4x4 match = new(
                 location: "Bowl-O-Rama",
                 date: new DateTime(2012, 01, 28),
                 homeTeam: new Team4x4("Fredrikshof C", 6, series),

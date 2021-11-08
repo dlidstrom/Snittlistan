@@ -15,8 +15,16 @@
 
         public static void ResetIndexes(IDocumentStore store, EventStore eventStore)
         {
-            if (store == null) throw new ArgumentNullException(nameof(store));
-            if (eventStore == null) throw new ArgumentNullException(nameof(eventStore));
+            if (store == null)
+            {
+                throw new ArgumentNullException(nameof(store));
+            }
+
+            if (eventStore == null)
+            {
+                throw new ArgumentNullException(nameof(eventStore));
+            }
+
             while (true)
             {
                 string[] indexNames = store.DatabaseCommands.GetIndexNames(0, 20);
@@ -29,7 +37,10 @@
                     }
                 }
 
-                if (indexNames.Length <= 1) break;
+                if (indexNames.Length <= 1)
+                {
+                    break;
+                }
             }
 
             // create indexes

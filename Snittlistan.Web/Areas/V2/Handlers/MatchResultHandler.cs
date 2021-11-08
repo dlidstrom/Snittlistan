@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Handlers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Handlers
 {
     using System.Web;
     using EventStoreLite;
@@ -12,7 +14,7 @@
         IEventHandler<MatchResult4Registered>,
         IEventHandler<MatchCommentaryEvent>
     {
-        public IDocumentSession DocumentSession { get; set; }
+        public IDocumentSession DocumentSession { get; set; } = null!;
 
         public void Handle(MatchResultRegistered e, string aggregateId)
         {
@@ -34,10 +36,13 @@
         private void DoRegister(string aggregateId, string rosterId, int teamScore, int opponentScore)
         {
             Roster roster = DocumentSession.Load<Roster>(rosterId);
-            if (roster == null) throw new HttpException(404, "Roster not found");
+            if (roster == null)
+            {
+                throw new HttpException(404, "Roster not found");
+            }
 
             roster.MatchResultId = aggregateId;
-            string id = ResultHeaderReadModel.IdFromBitsMatchId(roster.BitsMatchId, roster.Id);
+            string id = ResultHeaderReadModel.IdFromBitsMatchId(roster.BitsMatchId, roster.Id!);
 
             ResultHeaderReadModel readModel = DocumentSession.Load<ResultHeaderReadModel>(id);
             if (readModel == null)

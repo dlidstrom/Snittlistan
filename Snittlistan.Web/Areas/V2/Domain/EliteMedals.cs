@@ -1,3 +1,5 @@
+﻿#nullable enable
+
 namespace Snittlistan.Web.Areas.V2.Domain
 {
     using System;
@@ -22,21 +24,30 @@ namespace Snittlistan.Web.Areas.V2.Domain
         public EliteMedal GetExistingMedal(string playerId)
         {
             if (AwardedMedals.TryGetValue(playerId, out EliteMedal existingMedal) == false)
+            {
                 existingMedal = EliteMedal.None;
+            }
+
             return existingMedal;
         }
 
         public FormattedMedal GetFormattedExistingMedal(string playerId)
         {
             if (AwardedMedals.TryGetValue(playerId, out EliteMedal existingMedal) == false)
+            {
                 existingMedal = EliteMedal.None;
+            }
+
             return existingMedal.GetDescription();
         }
 
         public FormattedMedal GetNextMedal(string playerId)
         {
             if (AwardedMedals.TryGetValue(playerId, out EliteMedal existingMedal) == false)
+            {
                 existingMedal = EliteMedal.None;
+            }
+
             string nextMedal = string.Empty;
             string text = string.Empty;
             switch (existingMedal.Value)
@@ -89,10 +100,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
             public int? CapturedSeason { get; private set; }
 
-            public static EliteMedal None
-            {
-                get { return new EliteMedal(EliteMedalValue.None, 0); }
-            }
+            public static EliteMedal None => new(EliteMedalValue.None, 0);
 
             public enum EliteMedalValue
             {
@@ -116,7 +124,11 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
             public FormattedMedal GetDescription()
             {
-                if (Value == EliteMedalValue.None) return new FormattedMedal(string.Empty, "Saknar medalj");
+                if (Value == EliteMedalValue.None)
+                {
+                    return new FormattedMedal(string.Empty, "Saknar medalj");
+                }
+
                 return new FormattedMedal(GetDescription(Value), $"({CapturedSeason} - {CapturedSeason + 1})");
             }
 
@@ -124,10 +136,17 @@ namespace Snittlistan.Web.Areas.V2.Domain
             {
                 Type type = value.GetType();
                 string name = Enum.GetName(type, value);
-                if (name == null) return value.ToString();
+                if (name == null)
+                {
+                    return value.ToString();
+                }
 
                 System.Reflection.FieldInfo field = type.GetField(name);
-                if (field == null) return value.ToString();
+                if (field == null)
+                {
+                    return value.ToString();
+                }
+
                 string description = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) is DescriptionAttribute attr
                     ? attr.Description
                     : value.ToString();

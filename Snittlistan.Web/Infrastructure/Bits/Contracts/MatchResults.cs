@@ -1,23 +1,25 @@
-﻿namespace Snittlistan.Web.Infrastructure.Bits.Contracts
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Bits.Contracts
 {
     using Newtonsoft.Json;
 
     public class MatchResults
     {
         [JsonProperty("playerListHome")]
-        public PlayerList[] PlayerListHome { get; set; }
+        public PlayerList[]? PlayerListHome { get; set; }
 
         [JsonProperty("playerListAway")]
-        public PlayerList[] PlayerListAway { get; set; }
+        public PlayerList[]? PlayerListAway { get; set; }
     }
 
     public class PlayerList
     {
         [JsonProperty("player")]
-        public string Player { get; set; }
+        public string? Player { get; set; }
 
         [JsonProperty("licNbr")]
-        public string LicNbr { get; set; }
+        public string? LicNbr { get; set; }
 
         [JsonProperty("homeOrAwayTeam")]
         public HomeOrAwayTeam HomeOrAwayTeam { get; set; }

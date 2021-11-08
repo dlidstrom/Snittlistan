@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -69,7 +71,7 @@
                 return View(vm);
             }
 
-            var absence = Absence.Create(vm.From, vm.To, vm.Player, vm.Comment);
+            Absence absence = Absence.Create(vm.From, vm.To, vm.Player, vm.Comment);
             DocumentSession.Store(absence);
 
             return RedirectToAction("Index");
@@ -79,7 +81,11 @@
         public ActionResult Edit(int id)
         {
             Absence absence = DocumentSession.Load<Absence>(id);
-            if (absence == null) throw new HttpException(404, "Absence not found");
+            if (absence == null)
+            {
+                throw new HttpException(404, "Absence not found");
+            }
+
             ViewBag.Player = DocumentSession.CreatePlayerSelectList(absence.Player);
             return View(new CreateAbsenceViewModel(absence));
         }
@@ -88,7 +94,11 @@
         public ActionResult Delete(int id)
         {
             Absence absence = DocumentSession.Include<Absence>(x => x.Player).Load<Absence>(id);
-            if (absence == null) return RedirectToAction("Index");
+            if (absence == null)
+            {
+                return RedirectToAction("Index");
+            }
+
             Player player = DocumentSession.Load<Player>(absence.Player);
             return View(new AbsenceViewModel(absence, player));
         }
@@ -99,7 +109,11 @@
         public ActionResult DeleteConfirmed(int id)
         {
             Absence absence = DocumentSession.Load<Absence>(id);
-            if (absence == null) throw new HttpException(404, "Absence not found");
+            if (absence == null)
+            {
+                throw new HttpException(404, "Absence not found");
+            }
+
             DocumentSession.Delete(absence);
             return RedirectToAction("Index");
         }
@@ -127,9 +141,10 @@
 
             [Required]
             [Display(Name = "Datum:")]
-            public string DateRange { get; set; }
+            public string DateRange { get; set; } = null!;
 
-            public string Player { get; set; }
+            [Required]
+            public string Player { get; set; } = null!;
 
             public string Comment { get; set; }
 
@@ -140,18 +155,30 @@
                 {
                     From = To = DateTime.Parse(rangeSplit[0]);
                     if (rangeSplit.Length == 2)
+                    {
                         To = DateTime.Parse(rangeSplit[1]);
+                    }
                 }
 
                 if (To < SystemTime.UtcNow.Date)
+                {
                     yield return new ValidationResult("Till-datum kan inte vara passerade datum");
+                }
 
                 if (From > To)
+                {
                     yield return new ValidationResult("Från-datum kan inte vara före till-datum");
+                }
+
                 if (From.Year != To.Year)
+                {
                     yield return new ValidationResult("Frånvaro kan inte gå över flera år");
+                }
+
                 if (Comment != null && Comment.Length > 160)
+                {
                     yield return new ValidationResult("Kommentar kan vara högst 160 tecken");
+                }
             }
         }
     }

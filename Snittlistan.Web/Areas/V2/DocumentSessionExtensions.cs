@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2
 {
     using System;
     using System.Collections.Generic;
@@ -16,7 +18,7 @@
             this IDocumentSession session,
             int season,
             string rosterId = "",
-            Func<Roster, bool> pred = null)
+            Func<Roster, bool>? pred = null)
         {
             return GetRosterSelectList(session, season, rosterId, false, pred ?? (x => true));
         }
@@ -25,14 +27,14 @@
             this IDocumentSession session,
             Roster roster)
         {
-            var accepted = new HashSet<string>(roster.AcceptedPlayers);
-            var players = new List<RosterViewModel.PlayerItem>();
+            HashSet<string> accepted = new(roster.AcceptedPlayers);
+            List<RosterViewModel.PlayerItem> players = new();
             foreach (Player player in roster.Players.Where(p => p != null).Select(session.Load<Player>))
             {
                 players.Add(new RosterViewModel.PlayerItem(player.Id, player.Name, accepted.Contains(player.Id)));
             }
 
-            RosterViewModel.PlayerItem teamLeaderTuple = null;
+            RosterViewModel.PlayerItem? teamLeaderTuple = null;
             if (roster.TeamLeader != null)
             {
                 Player teamLeader = session.Load<Player>(roster.TeamLeader);
@@ -42,14 +44,17 @@
                     accepted.Contains(teamLeader.Id));
             }
 
-            var vm = new RosterViewModel(roster, teamLeaderTuple, players);
+            RosterViewModel vm = new(roster, teamLeaderTuple, players);
             return vm;
         }
 
         public static SelectListItem[] CreatePlayerSelectList(
-            this IDocumentSession documentSession, string player = "", Func<Player[]> getPlayers = null, Func<Player, string> textFormatter = null)
+            this IDocumentSession documentSession,
+            string player = "",
+            Func<Player[]>? getPlayers = null,
+            Func<Player, string>? textFormatter = null)
         {
-            var playerList = new List<SelectListItem>
+            List<SelectListItem> playerList = new()
             {
                 new SelectListItem
                 {

@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure.Indexes
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Indexes
 {
     using System;
     using System.ComponentModel.DataAnnotations;
@@ -69,23 +71,23 @@
                                     result.Team
                                 }
                                     into games
-                                    select new Result
-                                    {
-                                        Type = games.Key.Type,
-                                        Player = games.Key.Player,
-                                        MatchId = games.Key.MatchId,
-                                        BitsMatchId = games.Key.BitsMatchId,
-                                        Location = games.Key.Location,
-                                        Team = games.Key.Team,
-                                        Date = games.Key.Date,
-                                        Score = games.Sum(g => g.Score),
-                                        Pins = games.Sum(g => g.Pins),
-                                        Max = games.Max(g => g.Max),
-                                        HasStats = games.Sum(x => x.HasStats),
-                                        Series = games.Sum(g => g.Series),
-                                        Strikes = games.Sum(g => g.Strikes),
-                                        Misses = games.Sum(g => g.Misses)
-                                    };
+                                select new Result
+                                {
+                                    Type = games.Key.Type,
+                                    Player = games.Key.Player,
+                                    MatchId = games.Key.MatchId,
+                                    BitsMatchId = games.Key.BitsMatchId,
+                                    Location = games.Key.Location,
+                                    Team = games.Key.Team,
+                                    Date = games.Key.Date,
+                                    Score = games.Sum(g => g.Score),
+                                    Pins = games.Sum(g => g.Pins),
+                                    Max = games.Max(g => g.Max),
+                                    HasStats = games.Sum(x => x.HasStats),
+                                    Series = games.Sum(g => g.Series),
+                                    Strikes = games.Sum(g => g.Strikes),
+                                    Misses = games.Sum(g => g.Misses)
+                                };
         }
 
         /// <summary>
@@ -93,17 +95,17 @@
         /// </summary>
         public class Result
         {
-            public string Type { get; set; }
+            public string Type { get; set; } = null!;
 
-            public string Player { get; set; }
+            public string Player { get; set; } = null!;
 
-            public string MatchId { get; set; }
+            public string MatchId { get; set; } = null!;
 
             public int BitsMatchId { get; set; }
 
-            public string Location { get; set; }
+            public string Location { get; set; } = null!;
 
-            public string Team { get; set; }
+            public string Team { get; set; } = null!;
 
             [DataType(DataType.Date)]
             public DateTimeOffset Date { get; set; }

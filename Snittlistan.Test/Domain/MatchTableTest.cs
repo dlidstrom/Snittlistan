@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Test.Domain
+﻿#nullable enable
+
+namespace Snittlistan.Test.Domain
 {
     using System;
     using NUnit.Framework;
@@ -11,20 +13,20 @@
         public void MustHaveDifferentPlayers()
         {
             // Arrange
-            var game1 = new MatchGame("p1", 0, 0, 0);
-            var game2 = new MatchGame("p1", 0, 0, 0);
+            MatchGame game1 = new("p1", 0, 0, 0);
+            MatchGame game2 = new("p1", 0, 0, 0);
 
             // Act & Assert
-            MatchException ex = Assert.Throws<MatchException>(() => new MatchTable(1, game1, game2, 0));
-            Assert.That(ex.Message, Is.EqualTo("Table must have different players"));
+            MatchException? ex = Assert.Throws<MatchException>(() => new MatchTable(1, game1, game2, 0));
+            Assert.That(ex?.Message, Is.EqualTo("Table must have different players"));
         }
 
         [Test]
         public void ValidScore()
         {
             // Arrange
-            var game1 = new MatchGame("p1", 0, 0, 0);
-            var game2 = new MatchGame("p2", 0, 0, 0);
+            MatchGame game1 = new("p1", 0, 0, 0);
+            MatchGame game2 = new("p2", 0, 0, 0);
 
             // Act & Assert
             Assert.DoesNotThrow(() => new MatchTable(1, game1, game2, 0));
@@ -35,12 +37,12 @@
         public void InvalidScore()
         {
             // Arrange
-            var game1 = new MatchGame("p1", 0, 0, 0);
-            var game2 = new MatchGame("p2", 0, 0, 0);
+            MatchGame game1 = new("p1", 0, 0, 0);
+            MatchGame game2 = new("p2", 0, 0, 0);
 
             // Act & Assert
-            Assert.Throws<ArgumentOutOfRangeException>(() => new MatchTable(1, game1, game2, -1));
-            Assert.Throws<ArgumentOutOfRangeException>(() => new MatchTable(2, game1, game2, 2));
+            _ = Assert.Throws<ArgumentOutOfRangeException>(() => new MatchTable(1, game1, game2, -1));
+            _ = Assert.Throws<ArgumentOutOfRangeException>(() => new MatchTable(2, game1, game2, 2));
         }
     }
 }

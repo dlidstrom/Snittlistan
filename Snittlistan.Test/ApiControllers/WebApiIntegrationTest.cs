@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Test.ApiControllers
+﻿#nullable enable
+
+namespace Snittlistan.Test.ApiControllers
 {
     using System;
     using System.Diagnostics;
@@ -20,23 +22,23 @@
 
     public abstract class WebApiIntegrationTest
     {
-        protected HttpClient Client { get; private set; }
+        protected HttpClient Client { get; private set; } = null!;
 
-        private IWindsorContainer Container { get; set; }
+        private IWindsorContainer Container { get; set; } = null!;
 
         [SetUp]
         public void SetUp()
         {
-            var configuration = new HttpConfiguration();
+            HttpConfiguration configuration = new();
             Container = new WindsorContainer();
-            Container.Install(
+            _ = Container.Install(
                 new ControllerInstaller(),
                 new ApiControllerInstaller(),
                 new ControllerFactoryInstaller(),
                 new RavenInstaller(DocumentStoreMode.InMemory),
                 EventStoreInstaller.FromAssembly(typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),
                 new EventStoreSessionInstaller(LifestyleType.Scoped));
-            Container.Register(Component.For<IMsmqTransaction>().Instance(Mock.Of<IMsmqTransaction>()));
+            _ = Container.Register(Component.For<IMsmqTransaction>().Instance(Mock.Of<IMsmqTransaction>()));
             Task.Run(async () => await OnSetUp(Container)).Wait();
 
             MvcApplication.Bootstrap(Container, configuration);
@@ -82,7 +84,7 @@
             Task indexingTask = Task.Factory.StartNew(
                 () =>
                 {
-                    var sw = Stopwatch.StartNew();
+                    Stopwatch sw = Stopwatch.StartNew();
                     while (sw.Elapsed.TotalMilliseconds < Timeout)
                     {
                         string[] s = documentStore.DatabaseCommands.GetStatistics()
@@ -95,7 +97,7 @@
                         Task.Delay(500).Wait();
                     }
                 });
-            indexingTask.Wait(Timeout);
+            _ = indexingTask.Wait(Timeout);
         }
     }
 }

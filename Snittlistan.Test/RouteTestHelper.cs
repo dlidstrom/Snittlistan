@@ -1,4 +1,4 @@
-namespace Snittlistan.Test
+﻿namespace Snittlistan.Test
 {
     using System;
     using System.Collections.Generic;
@@ -34,9 +34,9 @@ namespace Snittlistan.Test
 
         private static RouteData RetrieveRouteData(RouteCollection routes, string httpVerb, string url)
         {
-            var httpContext = new Mock<HttpContextBase>();
-            httpContext.Setup(c => c.Request.AppRelativeCurrentExecutionFilePath).Returns(url);
-            httpContext.Setup(c => c.Request.HttpMethod).Returns(httpVerb);
+            Mock<HttpContextBase> httpContext = new();
+            _ = httpContext.Setup(c => c.Request.AppRelativeCurrentExecutionFilePath).Returns(url);
+            _ = httpContext.Setup(c => c.Request.HttpMethod).Returns(httpVerb);
 
             return routes.GetRouteData(httpContext.Object);
         }

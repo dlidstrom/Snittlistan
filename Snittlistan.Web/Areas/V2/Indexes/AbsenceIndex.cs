@@ -1,3 +1,5 @@
+﻿#nullable enable
+
 namespace Snittlistan.Web.Areas.V2.Indexes
 {
     using System;
@@ -28,17 +30,17 @@ namespace Snittlistan.Web.Areas.V2.Indexes
 
         public class Result
         {
-            public string Id { get; set; }
+            public string? Id { get; set; }
 
-            public string Player { get; set; }
+            public string? Player { get; set; }
 
             public DateTime From { get; set; }
 
             public DateTime To { get; set; }
 
-            public string PlayerName { get; set; }
+            public string? PlayerName { get; set; }
 
-            public string Comment { get; set; }
+            public string? Comment { get; set; }
         }
     }
 }

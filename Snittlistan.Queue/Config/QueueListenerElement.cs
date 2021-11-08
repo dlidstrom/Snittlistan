@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Queue.Config
+﻿#nullable enable
+
+namespace Snittlistan.Queue.Config
 {
     using System.Configuration;
 
@@ -68,7 +70,7 @@
             string errorQueue = ErrorQueue;
             int workerThreads = WorkerThreads;
             bool autoCreateQueues = AutoCreateQueues;
-            var settings = new MessageQueueProcessorSettings(readQueue, errorQueue, workerThreads, autoCreateQueues);
+            MessageQueueProcessorSettings settings = new(readQueue, errorQueue, workerThreads, autoCreateQueues);
             return settings;
         }
     }

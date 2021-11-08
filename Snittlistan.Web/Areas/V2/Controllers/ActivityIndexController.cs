@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Controllers
 {
     using System;
     using System.Linq;
@@ -27,7 +29,7 @@
                                .OrderBy(x => x.Date)
                                .ToArray();
 
-            var vm = new IndexViewModel(activities);
+            IndexViewModel vm = new(activities);
             return View(vm);
         }
 
@@ -45,7 +47,7 @@
         {
             public IndexItemViewModel(Activity activity)
             {
-                Id = activity.Id;
+                Id = activity.Id!;
                 Title = activity.Title;
                 Date = activity.Date;
                 MessageHtml = new HtmlString(activity.MessageHtml);

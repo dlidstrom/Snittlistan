@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.ViewModels
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using System;
     using Domain;
@@ -10,14 +12,14 @@
         }
 
         public RosterHeaderViewModel(
-            string rosterId,
-            string team,
-            string teamLevel,
-            string location,
-            string opponent,
+            string? rosterId,
+            string? team,
+            string? teamLevel,
+            string? location,
+            string? opponent,
             DateTime date,
             OilPatternInformation oilPattern,
-            string matchResultId,
+            string? matchResultId,
             bool matchTimeChanged)
         {
             RosterId = rosterId;
@@ -31,21 +33,21 @@
             MatchTimeChanged = matchTimeChanged;
         }
 
-        public string RosterId { get; set; }
+        public string? RosterId { get; set; }
 
-        public string Team { get; set; }
+        public string? Team { get; set; }
 
-        public string TeamLevel { get; set; }
+        public string? TeamLevel { get; set; }
 
-        public string Location { get; set; }
+        public string? Location { get; set; }
 
-        public string Opponent { get; set; }
+        public string? Opponent { get; set; }
 
         public DateTime Date { get; set; }
 
-        public OilPatternInformation OilPattern { get; set; }
+        public OilPatternInformation? OilPattern { get; set; }
 
-        public string MatchResultId { get; set; }
+        public string? MatchResultId { get; set; }
 
         public bool MatchTimeChanged { get; set; }
     }

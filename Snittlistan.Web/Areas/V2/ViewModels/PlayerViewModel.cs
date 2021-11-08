@@ -1,3 +1,5 @@
+﻿#nullable enable
+
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using System;
@@ -13,7 +15,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         {
             Id = player.Id;
             Name = player.Name;
-            Nickname = player.Nickname;
+            Nickname = player.Nickname!;
             Email = player.Email;
             Status = player.PlayerStatus;
             Roles = player.Roles
@@ -21,24 +23,13 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                           .Select(x => rolesDict[x].Description)
                           .OrderBy(x => x)
                           .ToArray();
-            switch (player.PlayerStatus)
+            StatusText = player.PlayerStatus switch
             {
-                case Player.Status.Active:
-                    StatusText = "Aktiv";
-                    break;
-
-                case Player.Status.Inactive:
-                    StatusText = "Inaktiv";
-                    break;
-
-                case Player.Status.Supporter:
-                    StatusText = "Supporter";
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
+                Player.Status.Active => "Aktiv",
+                Player.Status.Inactive => "Inaktiv",
+                Player.Status.Supporter => "Supporter",
+                _ => throw new ArgumentOutOfRangeException(),
+            };
             LicenseNumber = player.PlayerItem?.LicNbr ?? string.Empty;
         }
 

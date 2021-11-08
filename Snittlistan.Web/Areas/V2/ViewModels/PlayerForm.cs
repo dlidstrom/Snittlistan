@@ -23,7 +23,11 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public string FormattedSeasonAverage()
         {
-            if (HasResult == false) return string.Empty;
+            if (HasResult == false)
+            {
+                return string.Empty;
+            }
+
             return SeasonAverage.ToString("0.0");
         }
 
@@ -34,7 +38,11 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public string FormattedDiff()
         {
-            if (HasResult == false) return string.Empty;
+            if (HasResult == false)
+            {
+                return string.Empty;
+            }
+
             double diff = Last5Average - SeasonAverage;
             return diff.ToString("+0.0;-0.0;0");
         }
@@ -46,7 +54,11 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public string Class()
         {
-            if (HasResult == false) return string.Empty;
+            if (HasResult == false)
+            {
+                return string.Empty;
+            }
+
             double diff = Last5Average - SeasonAverage;
             string klass;
             if (diff <= -10)

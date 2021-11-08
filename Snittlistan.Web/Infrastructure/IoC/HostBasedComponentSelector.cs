@@ -34,7 +34,11 @@
             }
 
             IHandler selectedHandler = handlers.SingleOrDefault(h => h.ComponentModel.Name == hostname);
-            if (selectedHandler == null) throw new Exception($"No {service} configured with name {hostname}");
+            if (selectedHandler == null)
+            {
+                throw new Exception($"No {service} configured with name {hostname}");
+            }
+
             return selectedHandler;
         }
 

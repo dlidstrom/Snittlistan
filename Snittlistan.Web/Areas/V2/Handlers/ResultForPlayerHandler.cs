@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Handlers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Handlers
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -16,18 +18,20 @@
         IEventHandler<SerieRegistered>,
         IEventHandler<ScoreAwarded>
     {
-        public IDocumentSession DocumentSession { get; set; }
+        public IDocumentSession DocumentSession { get; set; } = null!;
 
         public void Handle(MatchResultRegistered e, string aggregateId)
         {
             // need to delete some entries
             ResultForPlayerReadModel[] modelsToDelete = DocumentSession.Load<ResultForPlayerReadModel>(
                 e.PreviousPlayerIds.Select(x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId, e.RosterId)));
-            var toKeep = new HashSet<string>(e.RosterPlayers.Select(x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId, e.RosterId)));
+            HashSet<string> toKeep = new(e.RosterPlayers.Select(x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId, e.RosterId)));
             foreach (ResultForPlayerReadModel modelToDelete in modelsToDelete)
             {
                 if (toKeep.Contains(modelToDelete.Id) == false)
+                {
                     DocumentSession.Delete(modelToDelete);
+                }
             }
 
             Roster roster = DocumentSession.Load<Roster>(e.RosterId);
@@ -61,11 +65,13 @@
         {
             // need to delete some entries
             ResultForPlayerReadModel[] modelsToDelete = DocumentSession.Load<ResultForPlayerReadModel>(e.PreviousPlayerIds.Select(x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId, e.RosterId)));
-            var toKeep = new HashSet<string>(e.RosterPlayers.Select(x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId, e.RosterId)));
+            HashSet<string> toKeep = new(e.RosterPlayers.Select(x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId, e.RosterId)));
             foreach (ResultForPlayerReadModel modelToDelete in modelsToDelete)
             {
                 if (toKeep.Contains(modelToDelete.Id) == false)
+                {
                     DocumentSession.Delete(modelToDelete);
+                }
             }
 
             Roster roster = DocumentSession.Load<Roster>(e.RosterId);

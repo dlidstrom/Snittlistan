@@ -12,7 +12,11 @@ namespace Snittlistan.Web.Areas.V2.Queries
 
         public GetPlayersQuery(Roster roster)
         {
-            if (roster == null) throw new ArgumentNullException(nameof(roster));
+            if (roster == null)
+            {
+                throw new ArgumentNullException(nameof(roster));
+            }
+
             playerIds = roster.Players;
         }
 

@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure.Validation
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Validation
 {
     using System;
     using System.Collections.Generic;
@@ -8,7 +10,7 @@
 
     public class RequiredIfExistsAttribute : ValidationAttribute, IClientValidatable
     {
-        private readonly RequiredAttribute innerAttribute = new RequiredAttribute();
+        private readonly RequiredAttribute innerAttribute = new();
 
         public RequiredIfExistsAttribute(string dependentProperty)
         {
@@ -19,13 +21,13 @@
 
         public IEnumerable<ModelClientValidationRule> GetClientValidationRules(ModelMetadata metadata, ControllerContext context)
         {
-            var rule = new ModelClientValidationRule
+            ModelClientValidationRule rule = new()
             {
                 ErrorMessage = FormatErrorMessage(metadata.GetDisplayName()),
                 ValidationType = "requiredifexists",
             };
 
-            string depProp = BuildDependentPropertyId(metadata, context as ViewContext);
+            string depProp = BuildDependentPropertyId(metadata, (ViewContext)context);
 
             rule.ValidationParameters.Add("dependentproperty", depProp);
 

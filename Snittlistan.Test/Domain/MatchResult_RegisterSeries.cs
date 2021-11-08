@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Test.Domain
+﻿#nullable enable
+
+namespace Snittlistan.Test.Domain
 {
     using System;
     using System.Collections.Generic;
@@ -14,9 +16,9 @@
     [TestFixture]
     public class MatchResult_RegisterSeries
     {
-        private Roster roster;
-        private MatchResult matchResult;
-        private MatchRegisteredTask ev;
+        private Roster? roster;
+        private MatchResult? matchResult;
+        private MatchRegisteredTask? ev;
 
         [SetUp]
         public void SetUp()
@@ -60,7 +62,7 @@
             roster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
             {
                 Id = "rosters-1",
-                Players = players.Select(x => x.Id).ToList()
+                Players = players.Select(x => x.Id!).ToList()
             };
             matchResult = new MatchResult(roster, 9, 11, 123);
 
@@ -154,7 +156,7 @@
         public void CanRegisterAllSeries()
         {
             // Assert
-            EventStoreLite.IDomainEvent[] changes = matchResult.GetUncommittedChanges();
+            EventStoreLite.IDomainEvent[] changes = matchResult!.GetUncommittedChanges();
             Assert.That(changes, Has.Length.EqualTo(4));
             Assert.IsAssignableFrom<SerieRegistered>(changes[1]);
         }

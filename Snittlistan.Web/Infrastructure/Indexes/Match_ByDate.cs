@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure.Indexes
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Indexes
 {
     using System;
     using System.ComponentModel.DataAnnotations;
@@ -47,35 +49,29 @@
 
         public class Result
         {
-            private string id;
+            private string id = null!;
 
             public string Id
             {
-                get
-                {
-                    return id;
-                }
+                get => id;
 
-                set
-                {
-                    id = value.Substring(value.LastIndexOf('-') + 1);
-                }
+                set => id = value.Substring(value.LastIndexOf('-') + 1);
             }
 
-            public string Type { get; set; }
+            public string Type { get; set; } = null!;
 
             [Display(Name = "Datum"), DataType(DataType.Date)]
             public DateTimeOffset Date { get; set; }
 
-            public string HomeTeamName { get; set; }
+            public string HomeTeamName { get; set; } = null!;
 
             public int HomeTeamScore { get; set; }
 
-            public string AwayTeamName { get; set; }
+            public string AwayTeamName { get; set; } = null!;
 
             public int AwayTeamScore { get; set; }
 
-            public string Location { get; set; }
+            public string Location { get; set; } = null!;
         }
     }
 }

@@ -1,3 +1,5 @@
+﻿#nullable enable
+
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using System;
@@ -9,10 +11,10 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
     {
         public ResultHeaderViewModel(ResultHeaderReadModel readModel, Roster roster)
         {
-            RosterId = roster.Id;
-            AggregateId = readModel.AggregateId;
+            RosterId = roster.Id!;
+            AggregateId = readModel.AggregateId!;
             Date = roster.Date;
-            TeamLevel = roster.TeamLevel;
+            TeamLevel = roster.TeamLevel!;
             Turn = roster.Turn;
             Team = roster.Team;
             Opponent = roster.Opponent;

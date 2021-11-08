@@ -1,3 +1,5 @@
+﻿#nullable enable
+
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using System;
@@ -8,13 +10,13 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
     public class ActivityCalendarEvent : CalendarEvent
     {
         private readonly string id;
-        private DateTime date;
+        private readonly DateTime date;
         private readonly string summary;
         private readonly string description;
 
         public ActivityCalendarEvent(Activity activity)
         {
-            id = activity.Id;
+            id = activity.Id!;
             date = activity.Date;
             summary = activity.Title;
             description = activity.Message;

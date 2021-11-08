@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Handlers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Handlers
 {
     using System.Collections.Generic;
     using System.Linq;

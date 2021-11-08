@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Test
+﻿#nullable enable
+
+namespace Snittlistan.Test
 {
     using System.Web;
     using System.Web.Mvc;
@@ -14,7 +16,7 @@
 
     public abstract class DbTest
     {
-        protected IDocumentStore Store;
+        protected IDocumentStore Store = null!;
 
         [SetUp]
         public void SetUp()
@@ -32,7 +34,7 @@
         {
         }
 
-        protected IDocumentSession Session { get; private set; }
+        protected IDocumentSession Session { get; private set; } = null!;
 
         [TearDown]
         public void TearDown()
@@ -45,7 +47,7 @@
         protected static UrlHelper CreateUrlHelper()
         {
             HttpContextBase context = Mock.Of<HttpContextBase>();
-            var routes = new RouteCollection();
+            RouteCollection routes = new();
             new RouteConfig(routes).Configure();
             return new UrlHelper(new RequestContext(Mock.Get(context).Object, new RouteData()), routes);
         }
@@ -56,7 +58,7 @@
 
         protected User CreateActivatedUser(string firstName, string lastName, string email, string password)
         {
-            var user = new User(firstName, lastName, email, password);
+            User user = new(firstName, lastName, email, password);
             user.Activate();
             Session.Store(user);
             Session.SaveChanges();

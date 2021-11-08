@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Test
+﻿#nullable enable
+
+namespace Snittlistan.Test
 {
     using System;
     using System.Collections.Generic;
@@ -57,7 +59,7 @@
             // Assert
             Assert.NotNull(stats);
             Debug.Assert(stats != null, "stats != null");
-            Assert.That(stats.Series, Is.EqualTo(4.0));
+            Assert.That(stats!.Series, Is.EqualTo(4.0));
             Assert.That(stats.Score, Is.EqualTo(4.0));
             Assert.That(stats.Pins, Is.EqualTo(717.0));
             Assert.That(stats.BestGame, Is.EqualTo(231));
@@ -120,7 +122,7 @@
             // Assert
             Assert.NotNull(stats);
             Debug.Assert(stats != null, "stats != null");
-            Assert.That(stats.Series, Is.EqualTo(8.0));
+            Assert.That(stats!.Series, Is.EqualTo(8.0));
             Assert.That(stats.Score, Is.EqualTo(2.0));
             Assert.That(stats.Pins, Is.EqualTo(1122.0));
             Assert.That(stats.BestGame, Is.EqualTo(160));

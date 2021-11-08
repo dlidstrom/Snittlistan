@@ -27,7 +27,10 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         public static string IdFromBitsMatchId(int bitsMatchId, string rosterId)
         {
             if (bitsMatchId != 0)
+            {
                 return "TeamOfWeek-" + bitsMatchId;
+            }
+
             return $"TeamOfWeek-R{rosterId.Substring(8)}";
         }
 
@@ -47,7 +50,9 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
         public void AddMedal(AwardedMedalReadModel awardedMedal)
         {
             if (PlayerScores.ContainsKey(awardedMedal.Player) == false)
+            {
                 throw new ApplicationException($"No player with id {awardedMedal.Player} found");
+            }
 
             PlayerScores[awardedMedal.Player].AddMedal(awardedMedal);
         }

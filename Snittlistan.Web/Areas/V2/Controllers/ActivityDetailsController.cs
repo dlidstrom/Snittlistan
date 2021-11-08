@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Controllers
 {
     using System.Web;
     using System.Web.Mvc;
@@ -11,17 +13,21 @@
         public ActionResult Index(string id)
         {
             Activity activity = DocumentSession.Load<Activity>(id);
-            if (activity == null) throw new HttpException(404, "Not found");
+            if (activity == null)
+            {
+                throw new HttpException(404, "Not found");
+            }
+
             ViewData["showComments"] = true;
-            Player player = null;
+            Player? player = null;
             if (activity.AuthorId != null)
             {
                 player = DocumentSession.Load<Player>(activity.AuthorId);
             }
 
-            var activityViewModel =
-                new ActivityViewModel(
-                    activity.Id,
+            ActivityViewModel activityViewModel =
+                new(
+                    activity.Id!,
                     activity.Title,
                     activity.Date,
                     activity.MessageHtml,

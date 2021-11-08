@@ -1,3 +1,5 @@
+﻿#nullable enable
+
 namespace Snittlistan.Test
 {
     using System;
@@ -6,7 +8,6 @@ namespace Snittlistan.Test
     using System.Runtime.Caching;
     using System.Threading.Tasks;
     using Newtonsoft.Json;
-    using Web.Infrastructure;
     using Web.Infrastructure.Bits;
     using Web.Infrastructure.Bits.Contracts;
 
@@ -95,14 +96,14 @@ namespace Snittlistan.Test
             string outputDirectory = Path.Combine(currentDirectory, "bits");
             if (Directory.Exists(outputDirectory) == false)
             {
-                Directory.CreateDirectory(outputDirectory);
+                _ = Directory.CreateDirectory(outputDirectory);
             }
 
             string path = Path.Combine(outputDirectory, filename);
             try
             {
                 string content = File.ReadAllText(path);
-                return JsonConvert.DeserializeObject<TResult>(content);
+                return JsonConvert.DeserializeObject<TResult>(content)!;
             }
             catch (Exception)
             {

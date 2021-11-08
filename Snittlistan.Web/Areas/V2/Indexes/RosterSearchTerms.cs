@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Indexes
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Indexes
 {
     using System;
     using System.Linq;
@@ -34,13 +36,13 @@
 
         public class Result
         {
-            public string Id { get; set; }
+            public string Id { get; set; } = null!;
 
-            public string Team { get; set; }
+            public string Team { get; set; } = null!;
 
-            public string Opponent { get; set; }
+            public string Opponent { get; set; } = null!;
 
-            public string Location { get; set; }
+            public string Location { get; set; } = null!;
 
             public int Turn { get; set; }
 
@@ -50,13 +52,13 @@
 
             public DateTime Date { get; set; }
 
-            public string MatchResultId { get; set; }
+            public string MatchResultId { get; set; } = null!;
 
             public bool Preliminary { get; set; }
 
             public int PlayerCount { get; set; }
 
-            public string OilPatternName { get; set; }
+            public string OilPatternName { get; set; } = null!;
         }
     }
 }

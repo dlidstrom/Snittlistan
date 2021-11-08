@@ -74,7 +74,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                                .Where(x => x.Season == season.Value)
                                .ToArray()
                                .Where(x => selectAll || x.Date >= SystemTime.UtcNow.Date.AddDays(-3))
-                               .Select(x => new InitialDataViewModel.ScheduledActivityItem(x.Id, x.Title, x.Date, x.MessageHtml, string.IsNullOrEmpty(x.AuthorId) == false ? DocumentSession.Load<Player>(x.AuthorId)?.Name ?? string.Empty : string.Empty));
+                               .Select(x => new InitialDataViewModel.ScheduledActivityItem(x.Id!, x.Title, x.Date, x.MessageHtml, string.IsNullOrEmpty(x.AuthorId) == false ? DocumentSession.Load<Player>(x.AuthorId)?.Name ?? string.Empty : string.Empty));
             bool isFiltered = rosters.Count != turns.Sum(x => x.Rosters.Length);
             InitialDataViewModel vm = new(turns.Concat(activities).OrderBy(x => x.Date).ToArray(), season.Value, isFiltered);
 
@@ -419,24 +419,24 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             {
                 players = new List<string>
                 {
-                    vm.Player1,
-                    vm.Player2,
-                    vm.Player3,
-                    vm.Player4
+                    vm.Player1!,
+                    vm.Player2!,
+                    vm.Player3!,
+                    vm.Player4!
                 };
             }
             else
             {
                 players = new List<string>
                 {
-                    vm.Table1Player1,
-                    vm.Table1Player2,
-                    vm.Table2Player1,
-                    vm.Table2Player2,
-                    vm.Table3Player1,
-                    vm.Table3Player2,
-                    vm.Table4Player1,
-                    vm.Table4Player2
+                    vm.Table1Player1!,
+                    vm.Table1Player2!,
+                    vm.Table2Player1!,
+                    vm.Table2Player2!,
+                    vm.Table3Player1!,
+                    vm.Table3Player2!,
+                    vm.Table4Player1!,
+                    vm.Table4Player2!
                 };
             }
 
@@ -515,7 +515,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     || (from <= x.From && x.To <= to))
                 .ProjectFromIndexFieldsInto<AbsenceIndex.Result>()
                 .ToArray()
-                .ToLookup(x => x.Player)
+                .ToLookup(x => x.Player!)
                 .ToDictionary(x => x.Key, x => x.ToList());
 
             Player[] players = DocumentSession.Query<Player, PlayerSearch>()

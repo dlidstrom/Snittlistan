@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure.Results
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Results
 {
     using System.Web;
     using System.Web.Mvc;
@@ -15,12 +17,12 @@
 
         public override void ExecuteResult(ControllerContext context)
         {
-            var url = new UrlHelper(HttpContext.Current.Request.RequestContext);
-            var factory = new ErrorLogPageFactory();
+            UrlHelper url = new(HttpContext.Current.Request.RequestContext);
+            ErrorLogPageFactory factory = new();
             if (!string.IsNullOrEmpty(resourceType))
             {
                 string pathInfo = "." + resourceType;
-                string action = url.Action("Index", "Elmah", new { type = (string)null });
+                string action = url.Action("Index", "Elmah", new { type = (string?)null });
                 HttpContext.Current.RewritePath(action, pathInfo, HttpContext.Current.Request.QueryString.ToString());
             }
 

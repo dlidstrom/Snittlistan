@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Test
+﻿#nullable enable
+
+namespace Snittlistan.Test
 {
     using System.IO;
     using System.Text;
@@ -16,7 +18,7 @@
         {
             // Arrange
             JsonSerializer serializer = Store.Conventions.CreateSerializer();
-            var builder = new StringBuilder();
+            StringBuilder builder = new();
 
             // Act
             serializer.Serialize(new StringWriter(builder), DbSeed.Create8x4Match());
@@ -32,7 +34,7 @@
         {
             // Arrange
             JsonSerializer serializer = Store.Conventions.CreateSerializer();
-            var builder = new StringBuilder();
+            StringBuilder builder = new();
 
             // Act
             serializer.Serialize(new StringWriter(builder), DbSeed.Create4x4Match());
@@ -47,7 +49,7 @@
         public void CanSerializeUser()
         {
             // Arrange
-            var user = new User("firstName", "lastName", "e@d.com", "some-pass");
+            User user = new("firstName", "lastName", "e@d.com", "some-pass");
 
             // Act
             using (IDocumentSession session = Store.OpenSession())

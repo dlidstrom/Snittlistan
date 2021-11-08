@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.ViewModels
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using System.Collections.Generic;
     using Snittlistan.Web.Areas.V2.Domain;
@@ -14,7 +16,7 @@
             Name = playerScore.Name;
             PinsAndSeries = playerScore.PinsAndSeries;
             Medals = playerScore.Medals;
-            TeamLevel = roster.TeamLevel;
+            TeamLevel = roster.TeamLevel!;
             Team = roster.Team;
         }
 

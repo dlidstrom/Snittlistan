@@ -9,7 +9,9 @@
         protected override void OnAuthorization(AuthorizationContext filterContext)
         {
             if (DocumentSession.Load<User>(Models.User.AdminId).Email != filterContext.HttpContext.User.Identity.Name)
+            {
                 filterContext.Result = new HttpUnauthorizedResult("Only Admin allowed");
+            }
         }
     }
 }

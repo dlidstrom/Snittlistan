@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V1.Models
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V1.Models
 {
     /// <summary>
     /// Simple indirection.
@@ -7,7 +9,7 @@
     {
         public override Team8x4 CreateTeam()
         {
-            return Team8x4.CreateHomeTeam(Name, Score, Series);
+            return Team8x4.CreateHomeTeam(Name!, Score, Series!);
         }
     }
 }

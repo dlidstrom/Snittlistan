@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure.Bits.Contracts
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Bits.Contracts
 {
     using System;
     using Newtonsoft.Json;
@@ -9,13 +11,13 @@
         public int MatchRoundId { get; set; }
 
         [JsonProperty("matchDate")]
-        public string MatchDate { get; set; }
+        public string? MatchDate { get; set; }
 
         [JsonProperty("matchTime")]
         public int MatchTime { get; set; }
 
         [JsonProperty("matchDateTime")]
-        public string MatchDateTime { get; set; }
+        public string? MatchDateTime { get; set; }
 
         [JsonProperty("matchId")]
         public int MatchId { get; set; }
@@ -24,19 +26,19 @@
         public int MatchHomeTeamId { get; set; }
 
         [JsonProperty("matchHomeTeamName")]
-        public string MatchHomeTeamName { get; set; }
+        public string? MatchHomeTeamName { get; set; }
 
         [JsonProperty("matchHomeTeamAlias")]
-        public string MatchHomeTeamAlias { get; set; }
+        public string? MatchHomeTeamAlias { get; set; }
 
         [JsonProperty("matchAwayTeamId")]
         public int MatchAwayTeamId { get; set; }
 
         [JsonProperty("matchAwayTeamName")]
-        public string MatchAwayTeamName { get; set; }
+        public string? MatchAwayTeamName { get; set; }
 
         [JsonProperty("matchAwayTeamAlias")]
-        public string MatchAwayTeamAlias { get; set; }
+        public string? MatchAwayTeamAlias { get; set; }
 
         [JsonProperty("matchHomeTeamScore")]
         public int MatchHomeTeamScore { get; set; }
@@ -54,16 +56,16 @@
         public int MatchOilPatternId { get; set; }
 
         [JsonProperty("matchOilPatternName")]
-        public string MatchOilPatternName { get; set; }
+        public string? MatchOilPatternName { get; set; }
 
         [JsonProperty("matchHallId")]
         public int MatchHallId { get; set; }
 
         [JsonProperty("matchHallName")]
-        public string MatchHallName { get; set; }
+        public string? MatchHallName { get; set; }
 
         [JsonProperty("matchHallCity")]
-        public string MatchHallCity { get; set; }
+        public string? MatchHallCity { get; set; }
 
         [JsonProperty("matchDivisionId")]
         public int MatchDivisionId { get; set; }
@@ -81,22 +83,22 @@
         public int MatchStatus { get; set; }
 
         [JsonProperty("matchVsTeams")]
-        public string MatchVsTeams { get; set; }
+        public string? MatchVsTeams { get; set; }
 
         [JsonProperty("matchVsResult")]
-        public string MatchVsResult { get; set; }
+        public string? MatchVsResult { get; set; }
 
         [JsonProperty("matchHasBeenPlayed")]
         public bool MatchHasBeenPlayed { get; set; }
 
         [JsonProperty("matchAlleyGroupName")]
-        public string MatchAlleyGroupName { get; set; }
+        public string? MatchAlleyGroupName { get; set; }
 
         [JsonProperty("matchDivisionName")]
-        public string MatchDivisionName { get; set; }
+        public string? MatchDivisionName { get; set; }
 
         [JsonProperty("matchLeagueName")]
-        public string MatchLeagueName { get; set; }
+        public string? MatchLeagueName { get; set; }
 
         [JsonProperty("matchLeagueId")]
         public int MatchLeagueId { get; set; }
@@ -114,7 +116,7 @@
         public bool MatchFinished { get; set; }
 
         [JsonProperty("matchSchemeId")]
-        public string MatchSchemeId { get; set; }
+        public string? MatchSchemeId { get; set; }
 
         [JsonProperty("matchSchemeNbrOfLanes")]
         public int MatchSchemeNbrOfLanes { get; set; }
@@ -129,7 +131,7 @@
         public bool MatchIsInNationalLeague { get; set; }
 
         [JsonProperty("matchLeagueSeasonLevelRankType")]
-        public string MatchLeagueSeasonLevelRankType { get; set; }
+        public string? MatchLeagueSeasonLevelRankType { get; set; }
 
         [JsonProperty("matchStrikeOut")]
         public bool MatchStrikeOut { get; set; }
@@ -153,13 +155,13 @@
         public int MatchLevelId { get; set; }
 
         [JsonProperty("matchDivisionSeasonRankType")]
-        public string MatchDivisionSeasonRankType { get; set; }
+        public string? MatchDivisionSeasonRankType { get; set; }
 
         [JsonProperty("matchDivisionSeasonLanePoints")]
         public bool MatchDivisionSeasonLanePoints { get; set; }
 
         [JsonProperty("matchCupId")]
-        public object MatchCupId { get; set; }
+        public object? MatchCupId { get; set; }
 
         [JsonProperty("matchFinishedHomeTeam")]
         public bool MatchFinishedHomeTeam { get; set; }
@@ -168,10 +170,10 @@
         public bool MatchFinishedAwayTeam { get; set; }
 
         [JsonProperty("matchHcpTypeId")]
-        public object MatchHcpTypeId { get; set; }
+        public object? MatchHcpTypeId { get; set; }
 
         [JsonProperty("matchHcpTypeDescription")]
-        public object MatchHcpTypeDescription { get; set; }
+        public object? MatchHcpTypeDescription { get; set; }
 
         [JsonProperty("matchDivisionSeasonAverageFrom")]
         public int MatchDivisionSeasonAverageFrom { get; set; }
@@ -195,10 +197,10 @@
         public DateTimeOffset AllowOilProfileUpdationTillDate { get; set; }
 
         [JsonProperty("matchOilProfile")]
-        public MatchOilProfile MatchOilProfile { get; set; }
+        public MatchOilProfile? MatchOilProfile { get; set; }
 
         [JsonProperty("matchHallOnlineScoringUrl")]
-        public string MatchHallOnlineScoringUrl { get; set; }
+        public string? MatchHallOnlineScoringUrl { get; set; }
 
         [JsonProperty("currentDate")]
         public DateTimeOffset CurrentDate { get; set; }

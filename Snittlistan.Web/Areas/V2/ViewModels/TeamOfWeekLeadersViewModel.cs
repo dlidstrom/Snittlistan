@@ -24,7 +24,9 @@
                     {
                         PlayerScore item = list.SingleOrDefault(x => x.PlayerId == value.PlayerId);
                         if (item == null)
+                        {
                             list.Add(value);
+                        }
                         else if (item.Pins < value.Pins)
                         {
                             list.Remove(item);
@@ -53,7 +55,10 @@
                         rankstep++;
                     }
 
-                    if (rank > 9) break;
+                    if (rank > 9)
+                    {
+                        break;
+                    }
 
                     current = playerScore.Pins;
                     bestOfBest.Add(Tuple.Create(playerScore.Name, turn));

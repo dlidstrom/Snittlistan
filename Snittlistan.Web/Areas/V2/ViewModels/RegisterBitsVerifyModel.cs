@@ -1,3 +1,5 @@
+﻿#nullable enable
+
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using System.ComponentModel.DataAnnotations;

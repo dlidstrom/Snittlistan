@@ -14,9 +14,13 @@
             int teamScore = 0;
             int opponentScore = 0;
             if (matchSerie.TeamTotal > opponentSerie.TeamTotal)
+            {
                 teamScore = 1;
+            }
             else if (matchSerie.TeamTotal < opponentSerie.TeamTotal)
+            {
                 opponentScore = 1;
+            }
 
             TeamScoreDelta = matchSerie.Table1.Score
                              + matchSerie.Table2.Score

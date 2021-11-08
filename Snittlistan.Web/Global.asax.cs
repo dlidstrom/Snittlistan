@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web
+﻿#nullable enable
+
+namespace Snittlistan.Web
 {
     using System;
     using System.Collections.Generic;
@@ -36,26 +38,24 @@
     public class MvcApplication : HttpApplication
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-        private static ApplicationMode applicationMode =
+
+        public static IWindsorContainer Container { get; private set; } = null!;
+
+        public static IWindsorContainer ChildContainer { get; private set; } = null!;
+
+        public static ApplicationMode Mode { get; private set; } =
 #if DEBUG
  ApplicationMode.Debug;
-
 #else
             ApplicationMode.Release;
 #endif
 
-        public static IWindsorContainer Container { get; private set; }
-
-        public static IWindsorContainer ChildContainer { get; private set; }
-
-        public static ApplicationMode Mode => applicationMode;
-
-        public static IDocumentStore SiteWideDocumentStore { get; private set; }
+        public static IDocumentStore? SiteWideDocumentStore { get; private set; }
 
         public static void Bootstrap(IWindsorContainer container, HttpConfiguration configuration)
         {
             Container = container;
-            applicationMode = ApplicationMode.Test;
+            Mode = ApplicationMode.Test;
             Bootstrap(configuration);
             IndexCreator.CreateIndexes(container.Resolve<IDocumentStore>());
         }
@@ -66,7 +66,7 @@
             RouteTable.Routes.Clear();
             if (ChildContainer != null)
             {
-                Container.RemoveChildContainer(ChildContainer);
+                Container!.RemoveChildContainer(ChildContainer);
                 ChildContainer.Dispose();
             }
 
@@ -132,7 +132,7 @@
                 return;
             }
 
-            IDocumentSession session = Container.Resolve<IDocumentSession>();
+            IDocumentSession session = Container!.Resolve<IDocumentSession>();
 
             // try the player first
             Player player = session.Load<Player>(authTicket.Name);
@@ -221,7 +221,7 @@
                 // load tenant configurations from master database
                 //var tenantConfigurations = 1;
                 SiteWideConfiguration siteWideConfiguration;
-                using (IDocumentSession session = SiteWideDocumentStore.OpenSession())
+                using (IDocumentSession session = SiteWideDocumentStore!.OpenSession())
                 {
                     siteWideConfiguration = session.Load<SiteWideConfiguration>(SiteWideConfiguration.GlobalId);
                     if (siteWideConfiguration == null)

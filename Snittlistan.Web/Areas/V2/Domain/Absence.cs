@@ -34,8 +34,16 @@
             string player,
             string comment)
         {
-            if (comment == null) comment = string.Empty;
-            if (comment.Length > 160) throw new ArgumentException("Comment can be at most 160 characters", nameof(comment));
+            if (comment == null)
+            {
+                comment = string.Empty;
+            }
+
+            if (comment.Length > 160)
+            {
+                throw new ArgumentException("Comment can be at most 160 characters", nameof(comment));
+            }
+
             return new Absence(from, to, player, comment);
         }
     }

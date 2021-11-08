@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure.Attributes
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Attributes
 {
     using System;
     using System.Linq;
@@ -14,7 +16,10 @@
 
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
-            if (filterContext.RequestContext.HttpContext.Request.IsAuthenticated == false) return;
+            if (filterContext.RequestContext.HttpContext.Request.IsAuthenticated == false)
+            {
+                return;
+            }
 
             ActionDescriptor actionDescriptor = filterContext.ActionDescriptor;
             string controllerName = actionDescriptor.ControllerDescriptor.ControllerName;
@@ -22,15 +27,20 @@
             string userName = filterContext.HttpContext.User.Identity.Name;
             string routeId = string.Empty;
             if (filterContext.RouteData.Values["id"] != null)
+            {
                 routeId = filterContext.RouteData.Values["id"].ToString();
+            }
 
-            var message = new StringBuilder();
-            message.AppendFormat("UserName={0}|", userName);
-            message.AppendFormat("RemoteIp={0}|", GetIp(filterContext.HttpContext.Request));
-            message.AppendFormat("Controller={0}|", controllerName);
-            message.AppendFormat("Action={0}|", actionName);
+            StringBuilder message = new();
+            _ = message
+                .AppendFormat("UserName={0}|", userName)
+                .AppendFormat("RemoteIp={0}|", GetIp(filterContext.HttpContext.Request))
+                .AppendFormat("Controller={0}|", controllerName)
+                .AppendFormat("Action={0}|", actionName);
             if (!string.IsNullOrEmpty(routeId))
-                message.AppendFormat("RouteId={0}|", routeId);
+            {
+                _ = message.AppendFormat("RouteId={0}|", routeId);
+            }
 
             Log.Info(message.ToString());
             base.OnActionExecuted(filterContext);
@@ -40,7 +50,7 @@
         /// Gets the IP address of the request.
         /// This method is more useful than built in because in
         /// some cases it may show real user IP address even under proxy.
-        /// The <see cref="System.Net.IPAddress.None" /> value
+        /// The <see cref="IPAddress.None" /> value
         /// will be returned if getting is failed.
         /// </summary>
         /// <param name="request">The HTTP request object.</param>
@@ -61,7 +71,9 @@
 
             IPAddress result = IPAddress.None;
             if (remoteAddress != null)
-                IPAddress.TryParse(remoteAddress, out result);
+            {
+                _ = IPAddress.TryParse(remoteAddress, out result);
+            }
 
             return result;
         }

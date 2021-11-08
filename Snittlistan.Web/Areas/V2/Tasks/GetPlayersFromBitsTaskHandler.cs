@@ -21,13 +21,13 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                 .ToArray();
 
             // update existing players by matching on license number
-            Dictionary<string, PlayerItem> playersByLicense = playersResult.Data.ToDictionary(x => x.LicNbr);
+            Dictionary<string, PlayerItem> playersByLicense = playersResult.Data.ToDictionary(x => x.LicNbr!);
             foreach (Player player in players.Where(x => x.PlayerItem != null))
             {
-                if (playersByLicense.TryGetValue(player.PlayerItem.LicNbr, out PlayerItem playerItem))
+                if (playersByLicense.TryGetValue(player.PlayerItem!.LicNbr!, out PlayerItem playerItem))
                 {
                     player.PlayerItem = playerItem;
-                    _ = playersByLicense.Remove(player.PlayerItem.LicNbr);
+                    _ = playersByLicense.Remove(player.PlayerItem.LicNbr!);
                     Log.Info($"Updating player with existing PlayerItem: {player.PlayerItem.LicNbr}");
                 }
                 else
@@ -53,7 +53,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                     // create new
                     Player newPlayer = new(
                         $"{playerItem.FirstName} {playerItem.SurName}",
-                        playerItem.Email,
+                        playerItem.Email!,
                         playerItem.Inactive ? Player.Status.Inactive : Player.Status.Active,
                         playerItem.GetPersonalNumber(),
                         string.Empty,

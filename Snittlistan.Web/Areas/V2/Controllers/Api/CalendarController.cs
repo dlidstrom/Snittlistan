@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers.Api
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Controllers.Api
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -24,15 +26,15 @@
             Roster[] rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
                                          .Where(r => r.Season == season)
                                          .ToArray();
-            IEnumerable<string> resultIds = rosters.Select(x => ResultHeaderReadModel.IdFromBitsMatchId(x.BitsMatchId, x.Id));
+            IEnumerable<string> resultIds = rosters.Select(x => ResultHeaderReadModel.IdFromBitsMatchId(x.BitsMatchId, x.Id!));
             ResultHeaderReadModel[] results = DocumentSession.Load<ResultHeaderReadModel>(resultIds);
-            var resultsDictionary = results.Where(x => x != null)
-                                           .ToDictionary(x => x.Id);
-            var calendarEvents = new List<CalendarEvent>();
+            Dictionary<string, ResultHeaderReadModel> resultsDictionary = results.Where(x => x != null)
+                                           .ToDictionary(x => x.Id!);
+            List<CalendarEvent> calendarEvents = new();
             foreach (Roster roster in rosters)
             {
-                resultsDictionary.TryGetValue(ResultHeaderReadModel.IdFromBitsMatchId(roster.BitsMatchId, roster.Id), out ResultHeaderReadModel resultHeaderReadModel);
-                var rosterCalendarEvent = new RosterCalendarEvent(roster, resultHeaderReadModel);
+                _ = resultsDictionary.TryGetValue(ResultHeaderReadModel.IdFromBitsMatchId(roster.BitsMatchId, roster.Id!), out ResultHeaderReadModel resultHeaderReadModel);
+                RosterCalendarEvent rosterCalendarEvent = new(roster, resultHeaderReadModel);
                 calendarEvents.Add(rosterCalendarEvent);
             }
 
@@ -43,7 +45,7 @@
 
             foreach (Activity activity in activities)
             {
-                var activityCalendarEvent = new ActivityCalendarEvent(activity);
+                ActivityCalendarEvent activityCalendarEvent = new(activity);
                 calendarEvents.Add(activityCalendarEvent);
             }
 

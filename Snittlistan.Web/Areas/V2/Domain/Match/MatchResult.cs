@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Domain.Match
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Domain.Match
 {
     using System;
     using System.Collections.Generic;
@@ -15,7 +17,7 @@
     public class MatchResult : AggregateRoot
     {
         private Dictionary<string, List<PinsAndScoreResult>> playerPins;
-        private HashSet<string> rosterPlayers;
+        private HashSet<string>? rosterPlayers;
         private bool medalsAwarded;
         private string matchCommentaryAsJson = string.Empty;
 
@@ -38,7 +40,7 @@
             VerifyScores(teamScore, opponentScore);
 
             ApplyChange(
-                new MatchResultRegistered(roster.Id, roster.Players, teamScore, opponentScore, bitsMatchId));
+                new MatchResultRegistered(roster.Id!, roster.Players, teamScore, opponentScore, bitsMatchId));
         }
 
         private MatchResult()
@@ -46,7 +48,7 @@
             playerPins = new Dictionary<string, List<PinsAndScoreResult>>();
         }
 
-        private string RosterId { get; set; }
+        private string? RosterId { get; set; }
 
         private int BitsMatchId { get; set; }
 
@@ -104,7 +106,7 @@
             if (pinsOrPlayersDiffer || scoresDiffer || commentaryDiffers)
             {
                 MatchResultRegistered @event = new(
-                    roster.Id,
+                    roster.Id!,
                     roster.Players,
                     teamScore,
                     opponentScore,
@@ -144,7 +146,7 @@
                 throw new ArgumentNullException(nameof(resultsForPlayer));
             }
 
-            if (rosterPlayers.Count is not 8 and not 9 and not 10)
+            if (rosterPlayers!.Count is not 8 and not 9 and not 10)
             {
                 throw new MatchException("Roster must have 8, 9, or 10 players when registering results");
             }
@@ -176,7 +178,7 @@
                 throw new ArgumentNullException(nameof(matchTables));
             }
 
-            if (rosterPlayers.Count is not 8 and not 9 and not 10)
+            if (rosterPlayers!.Count is not 8 and not 9 and not 10)
             {
                 throw new MatchException("Roster must have 8, 9, or 10 players when registering results");
             }
@@ -250,7 +252,7 @@
                         continue;
                     }
 
-                    var medal = new AwardedMedal(
+                    AwardedMedal medal = new(
                         BitsMatchId,
                         RosterId,
                         key,
@@ -271,7 +273,7 @@
                         continue;
                     }
 
-                    var medal = new AwardedMedal(
+                    AwardedMedal medal = new(
                         BitsMatchId,
                         RosterId,
                         key,
@@ -286,7 +288,7 @@
         {
             do
             {
-                if (rosterPlayers.Contains(matchSerie.Table1.Game1.Player) == false)
+                if (rosterPlayers!.Contains(matchSerie.Table1.Game1.Player) == false)
                 {
                     break;
                 }
@@ -339,7 +341,7 @@
             Dictionary<string, Player> players,
             Dictionary<string, ResultForPlayerIndex.Result> resultsForPlayer)
         {
-            var commentaryAnalyzer = new MatchAnalyzer(matchSeries, opponentSeries, players);
+            MatchAnalyzer commentaryAnalyzer = new(matchSeries, opponentSeries, players);
             string summaryText = commentaryAnalyzer.GetSummaryText();
             string[] bodyText = commentaryAnalyzer.GetBodyText(resultsForPlayer);
             return new MatchCommentaryEvent(BitsMatchId, RosterId, summaryText, summaryText, bodyText);

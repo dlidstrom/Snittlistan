@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.ViewModels
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using System.ComponentModel.DataAnnotations;
     using Snittlistan.Web.Areas.V2.ReadModels;

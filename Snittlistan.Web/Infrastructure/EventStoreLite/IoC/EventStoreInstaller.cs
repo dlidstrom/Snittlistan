@@ -1,3 +1,5 @@
+﻿#nullable enable
+
 // ReSharper disable once CheckNamespace
 namespace EventStoreLite.IoC
 {
@@ -17,8 +19,8 @@ namespace EventStoreLite.IoC
     /// </summary>
     public class EventStoreInstaller : IWindsorInstaller
     {
-        private readonly IEnumerable<IEventHandler> handlers;
-        private readonly IEnumerable<Type> handlerTypes;
+        private readonly IEnumerable<IEventHandler>? handlers;
+        private readonly IEnumerable<Type>? handlerTypes;
         private readonly DocumentStoreMode mode;
 
         private EventStoreInstaller(IEnumerable<Type> handlerTypes, DocumentStoreMode mode)
@@ -41,8 +43,9 @@ namespace EventStoreLite.IoC
         /// <exception cref="ArgumentNullException"></exception>
         public static EventStoreInstaller FromAssembly(Assembly assembly, DocumentStoreMode mode)
         {
-            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
-            return new EventStoreInstaller(assembly.GetTypes(), mode);
+            return assembly == null
+                ? throw new ArgumentNullException(nameof(assembly))
+                : new EventStoreInstaller(assembly.GetTypes(), mode);
         }
 
         /// <summary>
@@ -53,8 +56,9 @@ namespace EventStoreLite.IoC
         /// <exception cref="ArgumentNullException"></exception>
         public static EventStoreInstaller FromHandlerTypes(IEnumerable<Type> handlerTypes)
         {
-            if (handlerTypes == null) throw new ArgumentNullException(nameof(handlerTypes));
-            return new EventStoreInstaller(handlerTypes, DocumentStoreMode.Server);
+            return handlerTypes == null
+                ? throw new ArgumentNullException(nameof(handlerTypes))
+                : new EventStoreInstaller(handlerTypes, DocumentStoreMode.Server);
         }
 
         /// <summary>
@@ -65,8 +69,9 @@ namespace EventStoreLite.IoC
         /// <exception cref="ArgumentNullException"></exception>
         public static EventStoreInstaller FromHandlerInstances(IEnumerable<IEventHandler> handlers)
         {
-            if (handlers == null) throw new ArgumentNullException(nameof(handlers));
-            return new EventStoreInstaller(handlers);
+            return handlers == null
+                ? throw new ArgumentNullException(nameof(handlers))
+                : new EventStoreInstaller(handlers);
         }
 
         /// <summary>
@@ -79,7 +84,7 @@ namespace EventStoreLite.IoC
             if (mode == DocumentStoreMode.InMemory)
             {
                 IDocumentStore documentStore = container.Resolve<IDocumentStore>();
-                container.Register(Component.For<EventStore>().UsingFactoryMethod(x => CreateEventStore(documentStore, container)));
+                _ = container.Register(Component.For<EventStore>().UsingFactoryMethod(x => CreateEventStore(documentStore, container)));
             }
             else
             {
@@ -87,7 +92,7 @@ namespace EventStoreLite.IoC
                 foreach (TenantConfiguration tenantConfiguration in tenantConfigurations)
                 {
                     IDocumentStore documentStore = container.Resolve<IDocumentStore>($"DocumentStore-{tenantConfiguration.Hostname}");
-                    container.Register(
+                    _ = container.Register(
                         Component.For<EventStore>()
                                  .UsingFactoryMethod(x => CreateEventStore(documentStore, container))
                                  .Named($"EventStore-{tenantConfiguration.Hostname}")
@@ -112,41 +117,48 @@ namespace EventStoreLite.IoC
             }
         }
 
-        private static void RegisterEventTypes(IWindsorContainer container, Type type, object instance = null)
+        private static void RegisterEventTypes(IWindsorContainer container, Type type, object? instance = null)
         {
             Type[] interfaces = type.GetInterfaces();
             foreach (Type i in interfaces.Where(x => x.IsGenericType))
             {
                 Type genericTypeDefinition = i.GetGenericTypeDefinition();
-                if (!typeof(IEventHandler<>).IsAssignableFrom(genericTypeDefinition)) continue;
+                if (!typeof(IEventHandler<>).IsAssignableFrom(genericTypeDefinition))
+                {
+                    continue;
+                }
+
                 string genericArguments = string.Join(
                     ", ", i.GetGenericArguments().Select(x => x.ToString()));
                 ComponentRegistration<object> registration =
                     Component.For(i)
                              .Named($"{type.FullName}<{genericArguments}>");
-                if (instance != null) registration.Instance(instance);
+                if (instance != null)
+                {
+                    _ = registration.Instance(instance);
+                }
                 else
                 {
-                    registration.ImplementedBy(type).LifestyleTransient();
+                    _ = registration.ImplementedBy(type).LifestyleTransient();
                 }
 
-                container.Register(registration);
+                _ = container.Register(registration);
             }
         }
 
         private EventStore CreateEventStore(IDocumentStore documentStore, IWindsorContainer container)
         {
-            var eventStore = new EventStore(container);
+            EventStore eventStore = new(container);
             if (handlerTypes != null)
             {
-                eventStore.SetReadModelTypes(handlerTypes);
+                _ = eventStore.SetReadModelTypes(handlerTypes);
             }
             else
             {
-                eventStore.SetReadModelTypes(handlers.Select(x => x.GetType()));
+                _ = eventStore.SetReadModelTypes(handlers.Select(x => x.GetType()));
             }
 
-            eventStore.Initialize(documentStore);
+            _ = eventStore.Initialize(documentStore);
             return eventStore;
         }
     }

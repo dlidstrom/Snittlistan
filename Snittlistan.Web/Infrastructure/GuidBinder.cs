@@ -10,7 +10,9 @@
             ValueProviderResult value = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
 
             if (value != null && Guid.TryParse(value.AttemptedValue, out Guid guid))
+            {
                 return guid;
+            }
 
             return Guid.Empty;
         }

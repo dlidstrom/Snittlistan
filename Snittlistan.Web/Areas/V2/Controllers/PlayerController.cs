@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Controllers
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -14,13 +16,13 @@
     {
         public ActionResult Index()
         {
-            var players = DocumentSession.Query<Player, PlayerSearch>()
+            List<Player> players = DocumentSession.Query<Player, PlayerSearch>()
                 .OrderBy(p => p.PlayerStatus)
                 .ThenBy(p => p.Name)
                 .ToList();
-            var vm = players.Where(x => x.Hidden == false)
-                            .Select(x => new PlayerViewModel(x, WebsiteRoles.UserGroup().ToDict()))
-                            .ToList();
+            List<PlayerViewModel> vm = players.Where(x => x.Hidden == false)
+                .Select(x => new PlayerViewModel(x, WebsiteRoles.UserGroup().ToDict()))
+                .ToList();
             return View(vm);
         }
 
@@ -41,16 +43,18 @@
                 ModelState.AddModelError("namn", "Namnet är redan registrerat");
             }
 
-            if (!ModelState.IsValid) return View(vm);
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
 
-            var player =
-                new Player(
-                    vm.Name,
-                    vm.Email,
-                    vm.Status,
-                    vm.PersonalNumber.GetValueOrDefault(),
-                    vm.Nickname,
-                    vm.Roles);
+            Player player = new(
+                vm.Name,
+                vm.Email,
+                vm.Status,
+                vm.PersonalNumber.GetValueOrDefault(),
+                vm.Nickname,
+                vm.Roles);
             DocumentSession.Store(player);
             return RedirectToAction("Index");
         }
@@ -59,7 +63,11 @@
         public ActionResult Edit(int id)
         {
             Player player = DocumentSession.Load<Player>(id);
-            if (player == null) throw new HttpException(404, "Player not found");
+            if (player == null)
+            {
+                throw new HttpException(404, "Player not found");
+            }
+
             return View(new CreatePlayerViewModel(player));
         }
 
@@ -68,7 +76,10 @@
         public ActionResult Edit(int id, CreatePlayerViewModel vm)
         {
             Player player = DocumentSession.Load<Player>(id);
-            if (player == null) throw new HttpException(404, "Player not found");
+            if (player == null)
+            {
+                throw new HttpException(404, "Player not found");
+            }
 
             // prevent duplicates
             Player[] duplicates = DocumentSession.Query<Player, PlayerSearch>().Where(x => x.Name == vm.Name).ToArray();
@@ -78,14 +89,17 @@
             }
 
             if (!ModelState.IsValid)
+            {
                 return View(vm);
+            }
 
             player.SetName(vm.Name);
             player.SetEmail(vm.Email);
             player.SetStatus(vm.Status);
             player.SetPersonalNumber(vm.PersonalNumber.GetValueOrDefault());
             player.SetNickname(vm.Nickname);
-            var allowedRoles = new HashSet<string>(WebsiteRoles.UserGroup().Except(WebsiteRoles.PlayerGroup()).Select(x => x.Name));
+            HashSet<string> allowedRoles = new(
+                WebsiteRoles.UserGroup().Except(WebsiteRoles.PlayerGroup()).Select(x => x.Name));
             player.SetRoles(vm.Roles.Where(x => allowedRoles.Contains(x)).ToArray());
 
             return RedirectToAction("Index");
@@ -96,7 +110,10 @@
         {
             Player player = DocumentSession.Load<Player>(id);
             if (player == null)
+            {
                 throw new HttpException(404, "Player not found");
+            }
+
             return View(new PlayerViewModel(player, WebsiteRoles.UserGroup().ToDictionary(x => x.Name)));
         }
 
@@ -107,7 +124,10 @@
         {
             Player player = DocumentSession.Load<Player>(id);
             if (player == null)
+            {
                 throw new HttpException(404, "Player not found");
+            }
+
             DocumentSession.Delete(player);
             return RedirectToAction("Index");
         }
@@ -136,7 +156,7 @@
             [Required]
             public string Name { get; set; }
 
-            public string Nickname { get; set; }
+            public string? Nickname { get; set; }
 
             [Required]
             public string Email { get; set; }
@@ -154,11 +174,8 @@
                                             .Except(WebsiteRoles.PlayerGroup())
                                             .OrderBy(x => x.Description)
                                             .ToArray();
-                    var rolesList =
-                        new MultiSelectList(
-                            roles,
-                            "Name",
-                            "Description");
+                    MultiSelectList rolesList =
+                        new(roles, "Name", "Description");
                     return rolesList;
                 }
             }

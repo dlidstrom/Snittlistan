@@ -338,7 +338,6 @@
     <Compile Include="Option.cs" />
     <Compile Include="ViewModels\QuillData.cs" />
     <Compile Include="Models\WebsiteConfig.cs" />
-    <Compile Include="ViewModels\UserInvitedViewModel.cs" />
     <Compile Include="Areas\V2\Controllers\UserController.cs" />
     <Compile Include="Areas\V2\ViewModels\CreateUserViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\ExtensionMethods.cs" />
@@ -430,8 +429,6 @@
     <Compile Include="Infrastructure\Results\ElmahResult.cs" />
     <Compile Include="Infrastructure\Results\NotFoundViewResult.cs" />
     <Compile Include="Infrastructure\RouteCollectionExtension.cs" />
-    <Compile Include="Infrastructure\SessionProvider\RavenSessionStateStoreProvider.cs" />
-    <Compile Include="Infrastructure\SessionProvider\SessionState.cs" />
     <Compile Include="Infrastructure\Validation\RequiredIfExistsAttribute.cs" />
     <Compile Include="Areas\V1\Models\AwayTeamFactory.cs" />
     <Compile Include="Areas\V1\Models\Game4x4.cs" />

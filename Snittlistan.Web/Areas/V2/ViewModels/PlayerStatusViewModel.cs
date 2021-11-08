@@ -1,3 +1,5 @@
+﻿#nullable enable
+
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using System;
@@ -17,7 +19,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
     {
         private readonly DateTime from;
         private readonly DateTime to;
-        private readonly List<AbsenceIndex.Result> absences = new List<AbsenceIndex.Result>();
+        private readonly List<AbsenceIndex.Result> absences = new();
 
         public PlayerStatusViewModel(Player player, PlayerFormViewModel playerForm, DateTime from, DateTime to)
         {
@@ -56,9 +58,21 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
+            if (obj is null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+
             return Equals((PlayerStatusViewModel)obj);
         }
 
@@ -78,19 +92,12 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
             public Comparer(CompareMode compareMode)
             {
-                switch (compareMode)
+                comparer = compareMode switch
                 {
-                    case CompareMode.SeasonAverage:
-                        comparer = (left, right) => left.PlayerForm.SeasonAverage.CompareTo(right.PlayerForm.SeasonAverage);
-                        break;
-
-                    case CompareMode.PlayerForm:
-                        comparer = (left, right) => left.PlayerForm.Last5Average.CompareTo(right.PlayerForm.Last5Average);
-                        break;
-
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(compareMode), compareMode, null);
-                }
+                    CompareMode.SeasonAverage => (left, right) => left.PlayerForm.SeasonAverage.CompareTo(right.PlayerForm.SeasonAverage),
+                    CompareMode.PlayerForm => (left, right) => left.PlayerForm.Last5Average.CompareTo(right.PlayerForm.Last5Average),
+                    _ => throw new ArgumentOutOfRangeException(nameof(compareMode), compareMode, null),
+                };
             }
 
             public int Compare(PlayerStatusViewModel left, PlayerStatusViewModel right)
@@ -98,18 +105,24 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                 Debug.Assert(left != null, nameof(left) + " != null");
                 Debug.Assert(right != null, nameof(right) + " != null");
 
-                AbsenceIndex.Result[] leftCompleteAbsences = left.CompleteAbsences();
-                AbsenceIndex.Result[] rightCompleteAbsences = right.CompleteAbsences();
+                AbsenceIndex.Result[] leftCompleteAbsences = left!.CompleteAbsences();
+                AbsenceIndex.Result[] rightCompleteAbsences = right!.CompleteAbsences();
 
                 int a = CompareAbsences(
                     leftCompleteAbsences,
                     left.Name,
                     rightCompleteAbsences,
                     right.Name);
-                if (a != 0) return a;
+                if (a != 0)
+                {
+                    return a;
+                }
 
                 int f = CompareForm(left, right);
-                if (f != 0) return f;
+                if (f != 0)
+                {
+                    return f;
+                }
 
                 return comparer.Invoke(left, right);
             }
@@ -123,7 +136,10 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                 if (leftCompleteAbsences.Length > 0)
                 {
                     if (rightCompleteAbsences.Length > 0)
+                    {
                         return string.CompareOrdinal(rightName, leftName);
+                    }
+
                     return -1;
                 }
 
@@ -140,12 +156,17 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                 if (x.PlayerForm.HasResult == false)
                 {
                     if (y.PlayerForm.HasResult == false)
+                    {
                         return string.CompareOrdinal(y.Name, x.Name);
+                    }
+
                     return -1;
                 }
 
                 if (y.PlayerForm.HasResult == false)
+                {
                     return 1;
+                }
 
                 return 0;
             }

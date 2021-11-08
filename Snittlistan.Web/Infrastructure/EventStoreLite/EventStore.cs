@@ -1,3 +1,5 @@
+﻿#nullable enable
+
 // ReSharper disable once CheckNamespace
 namespace EventStoreLite
 {
@@ -18,10 +20,10 @@ namespace EventStoreLite
     /// </summary>
     public class EventStore
     {
-        private static readonly object InitLock = new object();
+        private static readonly object InitLock = new();
         private static bool initialized;
         private readonly IWindsorContainer container;
-        private IEnumerable<Type> readModelTypes;
+        private IEnumerable<Type>? readModelTypes;
 
         internal EventStore(IWindsorContainer container)
         {
@@ -33,8 +35,12 @@ namespace EventStoreLite
         /// </summary>
         public static void ReplayEvents(IWindsorContainer container)
         {
-            if (!initialized) throw new InvalidOperationException("The event store must be initialized before first usage.");
-            IDocumentStore documentStore = null;
+            if (!initialized)
+            {
+                throw new InvalidOperationException("The event store must be initialized before first usage.");
+            }
+
+            IDocumentStore? documentStore = null;
             try
             {
                 documentStore = container.Resolve<IDocumentStore>();
@@ -43,7 +49,9 @@ namespace EventStoreLite
             finally
             {
                 if (documentStore != null)
+                {
                     container.Release(documentStore);
+                }
             }
         }
 
@@ -56,7 +64,11 @@ namespace EventStoreLite
         /// <exception cref="ArgumentNullException"></exception>
         public EventStore Initialize(IDocumentStore documentStore)
         {
-            if (documentStore == null) throw new ArgumentNullException(nameof(documentStore));
+            if (documentStore == null)
+            {
+                throw new ArgumentNullException(nameof(documentStore));
+            }
+
             DoInitialize(documentStore);
             return this;
         }
@@ -71,9 +83,20 @@ namespace EventStoreLite
         /// <exception cref="InvalidOperationException"></exception>
         public IEventStoreSession OpenSession(IDocumentStore documentStore, IDocumentSession session)
         {
-            if (!initialized) throw new InvalidOperationException("The event store must be initialized before first usage.");
-            if (documentStore == null) throw new ArgumentNullException(nameof(documentStore));
-            if (session == null) throw new ArgumentNullException(nameof(session));
+            if (!initialized)
+            {
+                throw new InvalidOperationException("The event store must be initialized before first usage.");
+            }
+
+            if (documentStore == null)
+            {
+                throw new ArgumentNullException(nameof(documentStore));
+            }
+
+            if (session == null)
+            {
+                throw new ArgumentNullException(nameof(session));
+            }
 
             return new EventStoreSession(documentStore, session, new EventDispatcher(container));
         }
@@ -88,8 +111,15 @@ namespace EventStoreLite
         /// <exception cref="ArgumentNullException"></exception>
         public void MigrateEvents(IEnumerable<IEventMigrator> eventMigrators)
         {
-            if (!initialized) throw new InvalidOperationException("The event store must be initialized before first usage.");
-            if (eventMigrators == null) throw new ArgumentNullException(nameof(eventMigrators));
+            if (!initialized)
+            {
+                throw new InvalidOperationException("The event store must be initialized before first usage.");
+            }
+
+            if (eventMigrators == null)
+            {
+                throw new ArgumentNullException(nameof(eventMigrators));
+            }
 
             // order by defined date
             eventMigrators = eventMigrators.OrderBy(x => x.DefinedOn()).ToList();
@@ -97,7 +127,7 @@ namespace EventStoreLite
             int current = 0;
             while (true)
             {
-                var session = (IDocumentSession)container.Resolve(typeof(IDocumentSession));
+                IDocumentSession session = (IDocumentSession)container.Resolve(typeof(IDocumentSession));
                 try
                 {
                     // allow indexing to take its time
@@ -105,17 +135,21 @@ namespace EventStoreLite
                         session.Query<EventStream>()
                                .Customize(x => x.WaitForNonStaleResultsAsOf(DateTime.Now.AddSeconds(15)));
 
-                    var eventStreams = q.Skip(current).Take(128).ToList();
-                    if (eventStreams.Count == 0) break;
+                    List<EventStream> eventStreams = q.Skip(current).Take(128).ToList();
+                    if (eventStreams.Count == 0)
+                    {
+                        break;
+                    }
+
                     foreach (EventStream eventStream in eventStreams)
                     {
-                        var newHistory = new List<IDomainEvent>();
+                        List<IDomainEvent> newHistory = new();
                         foreach (IDomainEvent domainEvent in eventStream.History)
                         {
-                            var oldEvents = new List<IDomainEvent> { domainEvent };
+                            List<IDomainEvent> oldEvents = new() { domainEvent };
                             foreach (IEventMigrator eventMigrator in eventMigrators)
                             {
-                                var newEvents = new List<IDomainEvent>();
+                                List<IDomainEvent> newEvents = new();
                                 foreach (IDomainEvent migratedEvent in oldEvents)
                                 {
                                     newEvents.AddRange(eventMigrator.Migrate(migratedEvent, eventStream.Id));
@@ -153,15 +187,15 @@ namespace EventStoreLite
             WaitForIndexing(documentStore);
 
             // delete all read models
-            documentStore.DatabaseCommands.DeleteByIndex("ReadModelIndex", new IndexQuery());
+            _ = documentStore.DatabaseCommands.DeleteByIndex("ReadModelIndex", new IndexQuery());
 
             // load all event streams and dispatch events
-            var dispatcher = new EventDispatcher(container);
+            EventDispatcher dispatcher = new(container);
 
             int current = 0;
             while (true)
             {
-                IDocumentSession session = null;
+                IDocumentSession? session = null;
 
                 try
                 {
@@ -171,8 +205,12 @@ namespace EventStoreLite
                                .Customize(
                                    x => x.WaitForNonStaleResultsAsOf(DateTime.Now.AddSeconds(15)))
                                .OrderBy(x => x.ChangeSequence);
-                    var results = eventsQuery.Skip(current).Take(128).ToList();
-                    if (results.Count == 0) break;
+                    List<EventsIndex.Result> results = eventsQuery.Skip(current).Take(128).ToList();
+                    if (results.Count == 0)
+                    {
+                        break;
+                    }
+
                     foreach (EventsIndex.Result result in results)
                     {
                         int changeSequence = result.ChangeSequence;
@@ -196,7 +234,9 @@ namespace EventStoreLite
                 finally
                 {
                     if (session != null)
+                    {
                         container.Release(session);
+                    }
                 }
             }
         }
@@ -216,7 +256,7 @@ namespace EventStoreLite
                         Thread.Sleep(500);
                     }
                 });
-            indexingTask.Wait(15000);
+            _ = indexingTask.Wait(15000);
         }
 
         private void DoInitialize(IDocumentStore documentStore)

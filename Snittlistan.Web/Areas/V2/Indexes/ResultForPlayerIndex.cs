@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Indexes
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Indexes
 {
     using System;
     using System.Collections.Generic;

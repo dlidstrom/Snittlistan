@@ -1,4 +1,5 @@
-// ReSharper disable once CheckNamespace
+﻿#nullable enable
+
 namespace EventStoreLite
 {
     using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace EventStoreLite
             History = new List<IDomainEvent>();
         }
 
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         public List<IDomainEvent> History { get; internal set; }
     }

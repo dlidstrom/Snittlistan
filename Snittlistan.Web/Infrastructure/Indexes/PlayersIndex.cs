@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure.Indexes
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Indexes
 {
     using System.Linq;
     using Raven.Client.Indexes;
@@ -30,15 +32,15 @@
             Reduce = results => from result in results
                                 group result by result.Player
                                     into g
-                                    select new Result
-                                    {
-                                        Player = g.Key
-                                    };
+                                select new Result
+                                {
+                                    Player = g.Key
+                                };
         }
 
         public class Result
         {
-            public string Player { get; set; }
+            public string Player { get; set; } = null!;
         }
     }
 }

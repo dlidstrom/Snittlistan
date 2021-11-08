@@ -18,7 +18,9 @@
             if (!context.ExceptionHandled   // if unhandled, will be logged anyhow
                 || RaiseErrorSignal(e)      // prefer signaling, if possible
                 || IsFiltered(context))     // filtered?
+            {
                 return;
+            }
 
             ErrorLog.GetDefault(HttpContext.Current).Log(new Error(e, HttpContext.Current));
             Log.Error(e);
@@ -28,10 +30,16 @@
         {
             HttpContext context = HttpContext.Current;
             if (context == null)
+            {
                 return false;
+            }
+
             var signal = ErrorSignal.FromContext(context);
             if (signal == null)
+            {
                 return false;
+            }
+
             signal.Raise(e, context);
             return true;
         }
@@ -39,7 +47,9 @@
         private static bool IsFiltered(ExceptionContext context)
         {
             if (!(context.HttpContext.GetSection("elmah/errorFilter") is ErrorFilterConfiguration config))
+            {
                 return false;
+            }
 
             var testContext = new ErrorFilterModule.AssertionHelperContext(
                 context.Exception,

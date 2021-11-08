@@ -22,7 +22,9 @@ namespace Snittlistan.Web.Areas.V2.ReadModels
             if (MedalType == MedalType.PinsInSerie)
             {
                 if (Value == 300)
+                {
                     return @"<span class=""label label-300"">" + Value + "</span>";
+                }
 
                 return @"<span class=""label label-pins-accomplishment"">" + Value + "</span>";
             }

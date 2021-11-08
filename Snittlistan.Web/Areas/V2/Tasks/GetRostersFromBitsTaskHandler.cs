@@ -65,22 +65,22 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                     roster.MatchTimeChanged = matchRound.MatchStatus == 2;
                     if (matchRound.HomeTeamClubId == websiteConfig.ClubId)
                     {
-                        roster.Team = matchRound.MatchHomeTeamAlias;
+                        roster.Team = matchRound.MatchHomeTeamAlias!;
                         roster.TeamLevel = roster.Team.Substring(roster.Team.LastIndexOf(' ') + 1);
-                        roster.Opponent = matchRound.MatchAwayTeamAlias;
+                        roster.Opponent = matchRound.MatchAwayTeamAlias!;
                     }
                     else if (matchRound.AwayTeamClubId == websiteConfig.ClubId)
                     {
-                        roster.Team = matchRound.MatchAwayTeamAlias;
+                        roster.Team = matchRound.MatchAwayTeamAlias!;
                         roster.TeamLevel = roster.Team.Substring(roster.Team.LastIndexOf(' ') + 1);
-                        roster.Opponent = matchRound.MatchHomeTeamAlias;
+                        roster.Opponent = matchRound.MatchHomeTeamAlias!;
                     }
                     else
                     {
                         throw new Exception($"Unknown clubs: {matchRound.HomeTeamClubId} {matchRound.AwayTeamClubId}");
                     }
 
-                    roster.Location = matchRound.MatchHallName;
+                    roster.Location = matchRound.MatchHallName!;
                 }
 
                 // add missing rosters
@@ -93,13 +93,13 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                     string opponent;
                     if (matchRound.HomeTeamClubId == websiteConfig.ClubId)
                     {
-                        team = matchRound.MatchHomeTeamAlias;
-                        opponent = matchRound.MatchAwayTeamAlias;
+                        team = matchRound.MatchHomeTeamAlias!;
+                        opponent = matchRound.MatchAwayTeamAlias!;
                     }
                     else if (matchRound.AwayTeamClubId == websiteConfig.ClubId)
                     {
-                        team = matchRound.MatchAwayTeamAlias;
-                        opponent = matchRound.MatchHomeTeamAlias;
+                        team = matchRound.MatchAwayTeamAlias!;
+                        opponent = matchRound.MatchHomeTeamAlias!;
                     }
                     else
                     {
@@ -110,9 +110,9 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                         matchRound.MatchSeason,
                         matchRound.MatchRoundId,
                         matchRound.MatchId,
-                        team,
+                        team!,
                         team.Substring(team.LastIndexOf(' ') + 1),
-                        matchRound.MatchHallName,
+                        matchRound.MatchHallName!,
                         opponent,
                         matchRound.MatchDate.ToDateTime(matchRound.MatchTime),
                         matchRound.MatchNbrOfPlayers == 4,

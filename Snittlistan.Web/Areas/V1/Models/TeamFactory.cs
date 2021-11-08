@@ -1,12 +1,14 @@
-﻿namespace Snittlistan.Web.Areas.V1.Models
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V1.Models
 {
     using System.Collections.Generic;
 
     public abstract class TeamFactory
     {
-        public List<Serie8x4> Series { get; set; }
+        public List<Serie8x4>? Series { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         public int Score { get; set; }
 

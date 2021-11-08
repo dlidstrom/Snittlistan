@@ -9,8 +9,16 @@
     {
         public MatchSerie(int serieNumber, IReadOnlyList<MatchTable> tables)
         {
-            if (tables == null) throw new ArgumentNullException(nameof(tables));
-            if (tables.Count != 4) throw new ArgumentException("tables");
+            if (tables == null)
+            {
+                throw new ArgumentNullException(nameof(tables));
+            }
+
+            if (tables.Count != 4)
+            {
+                throw new ArgumentException("tables");
+            }
+
             if (tables[0].TableNumber != 1
                 || tables[1].TableNumber != 2
                 || tables[2].TableNumber != 3

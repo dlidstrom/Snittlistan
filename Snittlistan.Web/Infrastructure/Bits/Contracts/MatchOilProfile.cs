@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure.Bits.Contracts
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Bits.Contracts
 {
     using Newtonsoft.Json;
 
@@ -8,6 +10,6 @@
         public long OilPatternId { get; set; }
 
         [JsonProperty("oilPatternName")]
-        public string OilPatternName { get; set; }
+        public string? OilPatternName { get; set; }
     }
 }

@@ -23,15 +23,23 @@
         public override IController CreateController(RequestContext requestContext, string controllerName)
         {
             if (requestContext == null)
+            {
                 throw new ArgumentNullException(nameof(requestContext));
+            }
+
             if (controllerName == null)
+            {
                 throw new ArgumentNullException(nameof(controllerName));
+            }
 
             try
             {
                 IController controller = kernel.Resolve<IController>(controllerName + "Controller");
                 if (controller is Controller controllerWithInvoker)
+                {
                     controllerWithInvoker.ActionInvoker = new ActionInvokerWrapper(controllerWithInvoker.ActionInvoker);
+                }
+
                 return controller;
             }
             catch (ComponentNotFoundException)

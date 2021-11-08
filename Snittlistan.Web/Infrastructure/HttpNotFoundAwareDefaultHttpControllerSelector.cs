@@ -24,7 +24,10 @@
             {
                 HttpStatusCode code = ex.Response.StatusCode;
                 if (code != HttpStatusCode.NotFound)
+                {
                     throw;
+                }
+
                 System.Collections.Generic.IDictionary<string, object> routeValues = request.GetRouteData().Values;
                 routeValues["controller"] = "ApiError";
                 routeValues["action"] = "Handle404";

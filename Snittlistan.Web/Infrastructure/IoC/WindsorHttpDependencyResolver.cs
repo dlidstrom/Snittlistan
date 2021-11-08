@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure.IoC
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.IoC
 {
     using System;
     using System.Collections.Generic;
@@ -20,9 +22,9 @@
             return new WindsorDependencyScope(container);
         }
 
-        public object GetService(Type serviceType)
+        public object? GetService(Type serviceType)
         {
-            object service = null;
+            object? service = null;
             if (container.HasComponent(serviceType))
             {
                 service = container.Resolve(serviceType);

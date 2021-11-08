@@ -9,7 +9,10 @@
         public MatchGame4(string player, int score, int pins)
         {
             if (pins < 0 || pins > 300)
+            {
                 throw new ArgumentException("Pins out of range", nameof(pins));
+            }
+
             Player = player ?? throw new ArgumentNullException(nameof(player));
             Score = score;
             Pins = pins;

@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V1.Models
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V1.Models
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -9,7 +11,7 @@
     /// </summary>
     public class Team8x4
     {
-        private static readonly Dictionary<int, int[]> HomeScheme = new Dictionary<int, int[]>
+        private static readonly Dictionary<int, int[]> HomeScheme = new()
         {
             { 0, new[] { 0, 2, 3, 1 } },
             { 1, new[] { 1, 3, 2, 0 } },
@@ -17,7 +19,7 @@
             { 3, new[] { 3, 1, 0, 2 } },
         };
 
-        private static readonly Dictionary<int, int[]> AwayScheme = new Dictionary<int, int[]>
+        private static readonly Dictionary<int, int[]> AwayScheme = new()
         {
             { 0, new[] { 0, 3, 1, 2 } },
             { 1, new[] { 1, 2, 0, 3 } },
@@ -67,10 +69,7 @@
         /// <summary>
         /// Gets the series.
         /// </summary>
-        public IEnumerable<Serie8x4> Series
-        {
-            get { return series; }
-        }
+        public IEnumerable<Serie8x4> Series => series;
 
         [JsonProperty]
         private bool HomeTeam { get; set; }
@@ -87,7 +86,7 @@
         public static Team8x4 CreateHomeTeam(string name, int score, IEnumerable<Serie8x4> series)
         {
             List<Serie8x4> enumerable = series as List<Serie8x4> ?? series.ToList();
-            var seriesInOrder = new List<Serie8x4>
+            List<Serie8x4> seriesInOrder = new()
             {
                 CreateSerie(enumerable[0].Tables, 0, 1, 2, 3),
                 CreateSerie(enumerable[1].Tables, 2, 3, 0, 1),
@@ -110,7 +109,7 @@
         public static Team8x4 CreateAwayTeam(string name, int score, IEnumerable<Serie8x4> series)
         {
             List<Serie8x4> enumerable = series as List<Serie8x4> ?? series.ToList();
-            var seriesInOrder = new List<Serie8x4>
+            List<Serie8x4> seriesInOrder = new()
             {
                 CreateSerie(enumerable[0].Tables, 0, 1, 2, 3),
                 CreateSerie(enumerable[1].Tables, 3, 2, 1, 0),
@@ -172,7 +171,10 @@
         public Table8x4 TableAt(int serie, int pair)
         {
             if (HomeTeam)
+            {
                 return series[serie].Tables.ElementAt(HomeScheme[pair][serie]);
+            }
+
             return series[serie].Tables.ElementAt(AwayScheme[pair][serie]);
         }
 

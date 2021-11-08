@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure.Bits.Contracts
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Bits.Contracts
 {
     using Newtonsoft.Json;
 
@@ -8,55 +10,55 @@
         public long Total { get; set; }
 
         [JsonProperty("data")]
-        public PlayerItem[] Data { get; set; }
+        public PlayerItem[]? Data { get; set; }
     }
 
     public class PlayerItem
     {
         [JsonProperty("licNbr")]
-        public string LicNbr { get; set; }
+        public string? LicNbr { get; set; }
 
         [JsonProperty("pnr")]
-        public string Pnr { get; set; }
+        public string? Pnr { get; set; }
 
         [JsonProperty("firstName")]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         [JsonProperty("surName")]
-        public string SurName { get; set; }
+        public string? SurName { get; set; }
 
         [JsonProperty("adress")]
-        public string Adress { get; set; }
+        public string? Adress { get; set; }
 
         [JsonProperty("coAdress")]
-        public string CoAdress { get; set; }
+        public string? CoAdress { get; set; }
 
         [JsonProperty("zipCode")]
-        public string ZipCode { get; set; }
+        public string? ZipCode { get; set; }
 
         [JsonProperty("city")]
-        public string City { get; set; }
+        public string? City { get; set; }
 
         [JsonProperty("country")]
-        public string Country { get; set; }
+        public string? Country { get; set; }
 
         [JsonProperty("phoneHome")]
-        public string PhoneHome { get; set; }
+        public string? PhoneHome { get; set; }
 
         [JsonProperty("phoneWork")]
-        public string PhoneWork { get; set; }
+        public string? PhoneWork { get; set; }
 
         [JsonProperty("phoneMobile")]
-        public string PhoneMobile { get; set; }
+        public string? PhoneMobile { get; set; }
 
         [JsonProperty("fax")]
-        public string Fax { get; set; }
+        public string? Fax { get; set; }
 
         [JsonProperty("email")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [JsonProperty("age")]
-        public string Age { get; set; }
+        public string? Age { get; set; }
 
         [JsonProperty("countyId")]
         public long CountyId { get; set; }
@@ -77,31 +79,31 @@
         public Sex Sex { get; set; }
 
         [JsonProperty("hcpEstimateDate")]
-        public string HcpEstimateDate { get; set; }
+        public string? HcpEstimateDate { get; set; }
 
         [JsonProperty("hcpEstimate")]
         public long HcpEstimate { get; set; }
 
         [JsonProperty("licenceAgreementSeason")]
-        public object LicenceAgreementSeason { get; set; }
+        public object? LicenceAgreementSeason { get; set; }
 
         [JsonProperty("licenceAgreementLicNbr")]
-        public object LicenceAgreementLicNbr { get; set; }
+        public object? LicenceAgreementLicNbr { get; set; }
 
         [JsonProperty("clubName")]
-        public string ClubName { get; set; }
+        public string? ClubName { get; set; }
 
         [JsonProperty("county")]
-        public string County { get; set; }
+        public string? County { get; set; }
 
         [JsonProperty("licTypeId")]
         public long LicTypeId { get; set; }
 
         [JsonProperty("licTypeName")]
-        public string LicTypeName { get; set; }
+        public string? LicTypeName { get; set; }
 
         [JsonProperty("licenceHcpDate")]
-        public string LicenceHcpDate { get; set; }
+        public string? LicenceHcpDate { get; set; }
 
         [JsonProperty("licenceSkillLevel")]
         public double LicenceSkillLevel { get; set; }
@@ -117,10 +119,10 @@
     {
         public static int GetPersonalNumber(this PlayerItem playerItem)
         {
-            string asString = playerItem.LicNbr.Substring(5, 2)
+            string asString = playerItem.LicNbr!.Substring(5, 2)
                 + playerItem.LicNbr.Substring(3, 2)
                 + playerItem.LicNbr.Substring(1, 2);
-            int.TryParse(asString, out int personalNumber);
+            _ = int.TryParse(asString, out int personalNumber);
             return personalNumber;
         }
     }

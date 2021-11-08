@@ -1,4 +1,5 @@
-// ReSharper disable once CheckNamespace
+﻿#nullable enable
+
 namespace EventStoreLite.Infrastructure
 {
     using System;
@@ -10,13 +11,13 @@ namespace EventStoreLite.Infrastructure
     {
         private const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
-        private object RealObject { get; set; }
+        private object? RealObject { get; set; }
 
         // Called when a method is called
         [DebuggerStepThrough]
-        public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
+        public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object? result)
         {
-            result = InvokeMemberOnType(RealObject.GetType(), RealObject, binder.Name, args);
+            result = InvokeMemberOnType(RealObject!.GetType(), RealObject, binder.Name, args);
 
             // Wrap the sub object if necessary. This allows nested anonymous objects to work.
             result = WrapObjectIfNeeded(result);
@@ -25,17 +26,19 @@ namespace EventStoreLite.Infrastructure
         }
 
         [DebuggerStepThrough]
-        internal static object WrapObjectIfNeeded(object o)
+        internal static object? WrapObjectIfNeeded(object? o)
         {
             // Don't wrap primitive types, which don't have many interesting internal APIs
             if (o == null || o.GetType().IsPrimitive || o is string)
+            {
                 return o;
+            }
 
             return new PrivateReflectionDynamicObject { RealObject = o };
         }
 
         [DebuggerStepThrough]
-        private static object InvokeMemberOnType(Type type, object target, string name, object[] args)
+        private static object? InvokeMemberOnType(Type type, object target, string name, object[] args)
         {
             try
             {
@@ -54,6 +57,7 @@ namespace EventStoreLite.Infrastructure
                 {
                     return InvokeMemberOnType(type.BaseType, target, name, args);
                 }
+
                 //Don't care if the method don't exist.
                 return null;
             }

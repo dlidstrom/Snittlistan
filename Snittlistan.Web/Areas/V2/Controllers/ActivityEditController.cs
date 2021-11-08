@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Controllers
 {
     using System;
     using System.ComponentModel.DataAnnotations;
@@ -20,7 +22,10 @@
         public ActionResult Create(int? season)
         {
             if (season.HasValue == false)
+            {
                 season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+            }
+
             return View(ActivityEditViewModel.ForCreate(season.Value));
         }
 
@@ -34,11 +39,11 @@
 
             Debug.Assert(vm.Season != null, "vm.Season != null");
             Debug.Assert(vm.Date != null, "vm.Date != null");
-            var activity =
+            Activity activity =
                 Activity.Create(
-                    vm.Season.Value,
+                    vm.Season!.Value,
                     vm.Title,
-                    ParseDate(vm.Date),
+                    ParseDate(vm.Date!),
                     vm.Message,
                     vm.MessageHtml,
                     User.CustomIdentity.PlayerId);
@@ -50,22 +55,34 @@
         public ActionResult Edit(string id)
         {
             Activity activity = DocumentSession.Load<Activity>(id);
-            if (activity == null) throw new HttpException(404, "Activity not found");
+            if (activity == null)
+            {
+                throw new HttpException(404, "Activity not found");
+            }
+
             return View(ActivityEditViewModel.ForEdit(activity));
         }
 
         [HttpPost]
         public ActionResult Edit(string id, ActivityEditViewModel vm)
         {
-            if (ModelState.IsValid == false) return View(vm);
+            if (ModelState.IsValid == false)
+            {
+                return View(vm);
+            }
+
             Activity activity = DocumentSession.Load<Activity>(id);
-            if (activity == null) throw new HttpException(404, "Activity not found");
+            if (activity == null)
+            {
+                throw new HttpException(404, "Activity not found");
+            }
+
             Debug.Assert(vm.Season != null, "vm.Season != null");
             Debug.Assert(vm.Date != null, "vm.Date != null");
             activity.Update(
-                vm.Season.Value,
+                vm.Season!.Value,
                 vm.Title,
-                ParseDate(vm.Date),
+                ParseDate(vm.Date!),
                 vm.Message,
                 vm.MessageHtml,
                 User.CustomIdentity.PlayerId);
@@ -80,9 +97,13 @@
         public ActionResult Delete(string id)
         {
             Activity activity = DocumentSession.Load<Activity>(id);
-            if (activity == null) throw new HttpException(404, "Activity not found");
+            if (activity == null)
+            {
+                throw new HttpException(404, "Activity not found");
+            }
+
             Player player = DocumentSession.Load<Player>(activity.AuthorId);
-            return View(new ActivityViewModel(activity.Id, activity.Title, activity.Date, activity.Message, player?.Name ?? string.Empty));
+            return View(new ActivityViewModel(activity.Id!, activity.Title, activity.Date, activity.Message, player?.Name ?? string.Empty));
         }
 
         [HttpPost]
@@ -90,7 +111,11 @@
         public ActionResult DeleteActivity(string id)
         {
             Activity activity = DocumentSession.Load<Activity>(id);
-            if (activity != null) DocumentSession.Delete(activity);
+            if (activity != null)
+            {
+                DocumentSession.Delete(activity);
+            }
+
             return RedirectToAction("Index", "ActivityIndex");
         }
 
@@ -104,23 +129,23 @@
             [MaxLength(80)]
             [DataType(DataType.Text)]
             [Display(Name = "Titel")]
-            public string Title { get; set; }
+            public string Title { get; set; } = null!;
 
             [Required]
             [Display(Name = "Datum")]
-            public string Date { get; set; }
+            public string Date { get; set; } = null!;
 
             [Required]
-            [MaxLength(10*1024)]
-            public string Message { get; set; }
+            [MaxLength(10 * 1024)]
+            public string Message { get; set; } = null!;
 
             [Required]
-            [MaxLength(10*1024)]
+            [MaxLength(10 * 1024)]
             [AllowHtml]
-            public string MessageHtml { get; set; }
+            public string MessageHtml { get; set; } = null!;
 
             [Display(Name = "Meddelande")]
-            public IHtmlString MessageDisplay { get; set; }
+            public IHtmlString MessageDisplay { get; set; } = null!;
 
             public static ActivityEditViewModel ForCreate(int season)
             {

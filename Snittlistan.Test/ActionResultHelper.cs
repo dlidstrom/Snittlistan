@@ -9,7 +9,10 @@
         public static T AssertResultIs<T>(this ActionResult result) where T : ActionResult
         {
             if (!(result is T obj))
+            {
                 throw new Exception($"Expected result to be of type {(object)typeof(T).Name}. It is actually of type {(object)result.GetType().Name}.");
+            }
+
             return obj;
         }
 
@@ -48,38 +51,56 @@
             string name = ((MethodCallExpression)action.Body).Method.Name;
             string controller = typeof(TController).Name;
             if (controller.EndsWith("Controller", StringComparison.OrdinalIgnoreCase))
+            {
                 controller = controller.Substring(0, controller.Length - "Controller".Length);
+            }
+
             return ToAction(ToController(result, controller), name);
         }
 
         public static RedirectToRouteResult WithParameter(this RedirectToRouteResult result, string paramName, object value)
         {
             if (!result.RouteValues.ContainsKey(paramName))
+            {
                 throw new Exception($"Could not find a parameter named '{paramName}' in the result's Values collection.");
+            }
+
             object obj = result.RouteValues[paramName];
             if (!obj.Equals(value))
+            {
                 throw new Exception($"When looking for a parameter named '{paramName}', expected '{value}' but was '{obj}'.");
+            }
+
             return result;
         }
 
         public static ViewResult ForView(this ViewResult result, string viewName)
         {
             if (result.ViewName != viewName)
+            {
                 throw new Exception($"Expected view name '{viewName}', actual was '{result.ViewName}'");
+            }
+
             return result;
         }
 
         public static PartialViewResult ForView(this PartialViewResult result, string partialViewName)
         {
             if (result.ViewName != partialViewName)
+            {
                 throw new Exception($"Expected partial view name '{partialViewName}', actual was '{result.ViewName}'");
+            }
+
             return result;
         }
 
         public static RedirectResult ToUrl(this RedirectResult result, string url)
         {
             if (result.Url != url)
+            {
                 throw new Exception($"Expected redirect to '{url}', actual was '{result.Url}'");
+            }
+
             return result;
         }
 
@@ -88,9 +109,15 @@
             object model = actionResult.ViewData.Model;
             Type type = typeof(TViewData);
             if (model == null)
+            {
                 throw new Exception($"Expected view data of type '{type.Name}', actual was NULL");
+            }
+
             if (!(model is TViewData))
+            {
                 throw new Exception($"Expected view data of type '{typeof(TViewData).Name}', actual was '{model.GetType().Name}'");
+            }
+
             return (TViewData)model;
         }
     }

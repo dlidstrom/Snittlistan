@@ -6,7 +6,7 @@ namespace Snittlistan.Queue.Messages
 
     public interface IMessageContext
     {
-        Action<ITask>? PublishMessage { get; set; }
+        Action<ITask> PublishMessage { get; set; }
     }
 
     public class MessageContext<TTask> : IMessageContext where TTask : ITask
@@ -27,6 +27,6 @@ namespace Snittlistan.Queue.Messages
 
         public Guid CausationId { get; }
 
-        public Action<ITask>? PublishMessage { get; set; }
+        public Action<ITask> PublishMessage { get; set; } = null!;
     }
 }

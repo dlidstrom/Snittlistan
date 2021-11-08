@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -6,7 +8,7 @@
     public static class WebsiteRoles
     {
         // roles
-        private static readonly List<WebsiteRole> Roles = new List<WebsiteRole>();
+        private static readonly List<WebsiteRole> Roles = new();
 
         public static void Initialize()
         {

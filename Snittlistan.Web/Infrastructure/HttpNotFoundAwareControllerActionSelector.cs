@@ -18,7 +18,10 @@
             {
                 HttpStatusCode code = ex.Response.StatusCode;
                 if (code != HttpStatusCode.NotFound && code != HttpStatusCode.MethodNotAllowed)
+                {
                     throw;
+                }
+
                 System.Web.Http.Routing.IHttpRouteData routeData = controllerContext.RouteData;
                 routeData.Values["action"] = "Handle404";
                 IHttpController httpController = new ApiErrorController();

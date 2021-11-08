@@ -1,6 +1,9 @@
-﻿namespace Snittlistan.Web.Areas.V2.Commands
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Commands
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using EventStoreLite;
     using Raven.Client;
@@ -24,7 +27,7 @@
 
         public void Execute(IDocumentSession session, IEventStoreSession eventStoreSession, Action<ITask> publish)
         {
-            var matchResult = new MatchResult(
+            MatchResult matchResult = new(
                 roster,
                 result.TeamScore,
                 result.OpponentScore,
@@ -33,10 +36,10 @@
 
             MatchSerie[] matchSeries = result.CreateMatchSeries();
 
-            var resultsForPlayer = session.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
-                                          .Where(x => x.Season == roster.Season)
-                                          .ToArray()
-                                          .ToDictionary(x => x.PlayerId);
+            Dictionary<string, ResultForPlayerIndex.Result> resultsForPlayer = session.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
+                .Where(x => x.Season == roster.Season)
+                .ToArray()
+                .ToDictionary(x => x.PlayerId);
             matchResult.RegisterSeries(
                 publish,
                 matchSeries,

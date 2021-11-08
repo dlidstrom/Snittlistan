@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Controllers
 {
     using Indexes;
     using Raven.Abstractions;
@@ -22,7 +24,9 @@
         public ActionResult Register(int? season)
         {
             if (season.HasValue == false)
+            {
                 season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+            }
 
             // only support for 4-player as of now
             ViewBag.rosterid = DocumentSession.CreateRosterSelectList(season.Value, pred: x => x.IsFourPlayer);
@@ -35,9 +39,15 @@
         {
             Roster roster = DocumentSession.Load<Roster>(rosterId);
             if (roster == null)
+            {
                 throw new HttpException(404, "Roster not found");
+            }
+
             if (roster.IsFourPlayer)
+            {
                 return RedirectToAction("RegisterMatch4Editor", new { rosterId });
+            }
+
             return RedirectToAction("Index", "MatchResult");
         }
 
@@ -45,21 +55,26 @@
         {
             Roster roster = DocumentSession.Load<Roster>(rosterId);
             if (roster == null)
+            {
                 throw new HttpException(404, "Roster not found");
-            if (roster.MatchResultId != null)
-                throw new HttpException(500, "Roster already registered");
+            }
 
-            var availablePlayers = DocumentSession.Query<Player, PlayerSearch>()
-                                                  .OrderBy(x => x.Name)
-                                                  .Where(p => p.PlayerStatus == Player.Status.Active)
-                                                  .ToList();
+            if (roster.MatchResultId != null)
+            {
+                throw new HttpException(500, "Roster already registered");
+            }
+
+            List<Player> availablePlayers = DocumentSession.Query<Player, PlayerSearch>()
+                .OrderBy(x => x.Name)
+                .Where(p => p.PlayerStatus == Player.Status.Active)
+                .ToList();
             SelectListItem[] playerListItems = availablePlayers.Select(x => new SelectListItem
             {
                 Text = x.Name,
                 Value = x.Id
             }).ToArray();
 
-            var viewModel = new RegisterMatch4ViewModel(
+            RegisterMatch4ViewModel viewModel = new(
                     DocumentSession.LoadRosterViewModel(roster),
                     playerListItems,
                     RegisterMatch4ViewModel.PostModel.ForCreate());
@@ -72,13 +87,16 @@
         {
             Roster roster = DocumentSession.Load<Roster>(rosterId);
             if (roster == null)
+            {
                 throw new HttpException(404, "Roster not found");
+            }
+
             if (ModelState.IsValid == false)
             {
-                var availablePlayers = DocumentSession.Query<Player, PlayerSearch>()
-                                                      .OrderBy(x => x.Name)
-                                                      .Where(p => p.PlayerStatus == Player.Status.Active)
-                                                      .ToList();
+                List<Player> availablePlayers = DocumentSession.Query<Player, PlayerSearch>()
+                    .OrderBy(x => x.Name)
+                    .Where(p => p.PlayerStatus == Player.Status.Active)
+                    .ToList();
                 SelectListItem[] playerListItems = availablePlayers.Select(x => new SelectListItem
                 {
                     Text = x.Name,
@@ -98,21 +116,24 @@
                 { 4, 3, 2, 1 },
                 { 2, 1, 4, 3 }
             };
-            var series = new List<ResultSeries4ReadModel.Serie>();
+            List<ResultSeries4ReadModel.Serie> series = new();
 
             // keep track of who is the reserve
             int currentReserve = 4;
             int[] subs = new[] { 0, 1, 2, 3, 4 };
             for (int i = 0; i < 4; i++)
             {
-                var serie = new ResultSeries4ReadModel.Serie();
+                ResultSeries4ReadModel.Serie serie = new();
                 serie.Games.Clear();
-                var games = new List<PlayerGames>();
-                for (int j = 0; j < viewModel.Model.Players.Length; j++)
+                List<PlayerGames> games = new();
+                for (int j = 0; j < viewModel.Model!.Players!.Length; j++)
                 {
-                    if (games.Count == 4) break;
+                    if (games.Count == 4)
+                    {
+                        break;
+                    }
 
-                    if (viewModel.Model.Players[j].Games[i].Pins.HasValue == false
+                    if (viewModel.Model.Players[j].Games![i].Pins.HasValue == false
                         && currentReserve != j)
                     {
                         int temp = subs[j];
@@ -130,12 +151,12 @@
                 int rightPos = movement[i, 3] - 1;
                 foreach (int pos in new[] { leftPos, centerLeftPos, centerRightPos, rightPos })
                 {
-                    Debug.Assert(games[pos].Games[i].Pins != null, $"games[{pos}].Games[{i}].Pins != null");
-                    var game = new ResultSeries4ReadModel.Game
+                    Debug.Assert(games[pos].Games![i].Pins != null, $"games[{pos}].Games[{i}].Pins != null");
+                    ResultSeries4ReadModel.Game game = new()
                     {
-                        Player = games[pos].PlayerId,
-                        Score = games[pos].Games[i].Score ? 1 : 0,
-                        Pins = games[pos].Games[i].Pins.Value,
+                        Player = games[pos].PlayerId!,
+                        Score = games[pos].Games![i].Score ? 1 : 0,
+                        Pins = games[pos].Games![i].Pins!.Value,
                     };
                     serie.Games.Add(game);
                 }
@@ -144,15 +165,15 @@
             }
 
             roster.SetPlayers(
-                viewModel.Model
+                viewModel.Model!
                     .Players
                     .Where(x => x.PlayerId != null)
-                    .Select(x => x.PlayerId).ToList());
+                    .Select(x => x.PlayerId!).ToList());
             Debug.Assert(viewModel.Model.TeamScore != null, "viewModel.Model.TeamScore != null");
             Debug.Assert(viewModel.Model.OpponentScore != null, "viewModel.Model.OpponentScore != null");
-            var parse4Result = new Parse4Result(
-                viewModel.Model.TeamScore.Value,
-                viewModel.Model.OpponentScore.Value,
+            Parse4Result parse4Result = new(
+                viewModel.Model.TeamScore!.Value,
+                viewModel.Model.OpponentScore!.Value,
                 roster.Turn,
                 series.ToArray());
             ExecuteCommand(
@@ -188,11 +209,11 @@
                 Model = postModel;
             }
 
-            public RosterViewModel RosterViewModel { get; set; }
+            public RosterViewModel? RosterViewModel { get; set; }
 
-            public SelectListItem[] PlayerListItems { get; set; }
+            public SelectListItem[]? PlayerListItems { get; set; }
 
-            public PostModel Model { get; set; }
+            public PostModel? Model { get; set; }
 
             public class PostModel : IValidatableObject
             {
@@ -206,14 +227,14 @@
                 }
 
                 [MaxLength(1024)]
-                public string Commentary { get; set; }
+                public string? Commentary { get; set; }
 
                 [MaxLength(1024)]
                 [AllowHtml]
-                public string CommentaryHtml { get; set; }
+                public string? CommentaryHtml { get; set; }
 
                 [Display(Name = "Matchreferat")]
-                public IHtmlString CommentaryDisplay { get; set; }
+                public IHtmlString? CommentaryDisplay { get; set; }
 
                 [Required]
                 [Range(0, 20)]
@@ -225,7 +246,7 @@
                 [Display(Name = "Motståndarpoäng")]
                 public int? OpponentScore { get; set; }
 
-                public PlayerGames[] Players { get; set; }
+                public PlayerGames[]? Players { get; set; }
 
                 public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
                 {
@@ -236,13 +257,13 @@
 
                     for (int i = 0; i < 4; i++)
                     {
-                        if (Players.Count(x => x.Games[i].Pins.HasValue) != 4)
+                        if (Players.Count(x => x.Games![i].Pins.HasValue) != 4)
                         {
                             yield return new ValidationResult($"Ange 4 resultat i serie {i + 1}");
                         }
                     }
 
-                    if (Players[4].Games[0].Pins.HasValue)
+                    if (Players![4].Games![0].Pins.HasValue)
                     {
                         yield return new ValidationResult("Reserven spelar inte i första serien.");
                     }
@@ -323,9 +344,9 @@
                 Games = games;
             }
 
-            public string PlayerId { get; set; }
+            public string? PlayerId { get; set; }
 
-            public PlayerGame[] Games { get; set; }
+            public PlayerGame[]? Games { get; set; }
         }
 
         public class RegisterResult
@@ -343,10 +364,10 @@
             }
 
             [HiddenInput]
-            public string AggregateId { get; set; }
+            public string? AggregateId { get; set; }
 
             [Required]
-            public string RosterId { get; set; }
+            public string? RosterId { get; set; }
 
             [Range(0, 20), Required]
             public int? TeamScore { get; set; }
@@ -357,7 +378,7 @@
             [Required]
             public int? BitsMatchId { get; set; }
 
-            public RegisterSerie[] Series { get; set; }
+            public RegisterSerie[]? Series { get; set; }
         }
     }
 }

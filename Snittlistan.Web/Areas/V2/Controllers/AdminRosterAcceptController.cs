@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Controllers
 {
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
@@ -42,31 +44,31 @@
         [HttpPost]
         public ActionResult AcceptPlayer(ViewModel vm)
         {
-            Roster roster = DocumentSession.Load<Roster>(vm.Model.RosterId);
-            var update = new Roster.Update(
+            Roster roster = DocumentSession.Load<Roster>(vm.Model?.RosterId);
+            Roster.Update update = new(
                 Roster.ChangeType.PlayerAccepted,
                 User.Identity.Name)
             {
-                PlayerAccepted = vm.Model.PlayerId
+                PlayerAccepted = vm.Model?.PlayerId!
             };
-            roster.UpdateWith(Trace.CorrelationManager.ActivityId, update);
+            _ = roster.UpdateWith(Trace.CorrelationManager.ActivityId, update);
             return RedirectToAction("View", "Roster", new
             {
-                vm.Model.Season,
-                vm.Model.Turn
+                vm.Model?.Season,
+                vm.Model?.Turn
             });
         }
 
         public class ViewModel
         {
-            public RosterHeaderViewModel Header { get; set; }
+            public RosterHeaderViewModel? Header { get; set; }
 
-            public PostModel Model { get; set; }
+            public PostModel? Model { get; set; }
 
             public class PostModel
             {
                 [Required]
-                public string RosterId { get; set; }
+                public string? RosterId { get; set; }
 
                 [Required]
                 public int Season { get; set; }
@@ -76,7 +78,7 @@
 
                 [Required]
                 [Display(Name = "Spelare")]
-                public string PlayerId { get; set; }
+                public string? PlayerId { get; set; }
             }
         }
     }

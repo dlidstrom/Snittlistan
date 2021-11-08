@@ -1,7 +1,5 @@
 ﻿namespace Snittlistan.Queue.Messages
 {
-    using System;
-
     public class VerifyMatchTask : ITask
     {
         public VerifyMatchTask(int bitsMatchId, string rosterId, bool force)

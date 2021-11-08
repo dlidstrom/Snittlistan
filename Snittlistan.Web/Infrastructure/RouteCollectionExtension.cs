@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure
 {
     using System;
     using System.Web.Mvc;
@@ -11,7 +13,7 @@
             return routes.MapRouteLowerCase(name, url, defaults, null);
         }
 
-        public static Route MapRouteLowerCase(this RouteCollection routes, string name, string url, object defaults, object constraints)
+        public static Route MapRouteLowerCase(this RouteCollection routes, string name, string url, object defaults, object? constraints)
         {
             if (routes == null)
             {

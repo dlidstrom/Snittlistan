@@ -27,8 +27,16 @@
         public ActionResult SetPassword(string id, string activationKey)
         {
             User user = DocumentSession.Load<User>(id);
-            if (user == null) throw new HttpException(404, "User not found");
-            if (user.ActivationKey != activationKey) throw new InvalidOperationException("Unknown activation key");
+            if (user == null)
+            {
+                throw new HttpException(404, "User not found");
+            }
+
+            if (user.ActivationKey != activationKey)
+            {
+                throw new InvalidOperationException("Unknown activation key");
+            }
+
             return View(new SetPasswordViewModel { ActivationKey = activationKey });
         }
 
@@ -36,8 +44,16 @@
         public ActionResult SetPassword(string id, SetPasswordViewModel vm)
         {
             User user = DocumentSession.Load<User>(id);
-            if (user == null) throw new HttpException(404, "User not found");
-            if (ModelState.IsValid == false) return View(vm);
+            if (user == null)
+            {
+                throw new HttpException(404, "User not found");
+            }
+
+            if (ModelState.IsValid == false)
+            {
+                return View(vm);
+            }
+
             user.SetPassword(vm.Password, vm.ActivationKey);
             authenticationService.SetAuthCookie(user.Email, true);
             return RedirectToAction("Index", "Roster");

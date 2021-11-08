@@ -13,7 +13,7 @@
         IEventHandler<MatchResultRegistered>,
         IEventHandler<SerieRegistered>
     {
-        public IDocumentSession DocumentSession { get; set; }
+        public IDocumentSession DocumentSession { get; set; } = null!;
 
         public void Handle(MatchResultRegistered e, string aggregateId)
         {
@@ -34,7 +34,7 @@
             ResultSeriesReadModel results = DocumentSession.Load<ResultSeriesReadModel>(id);
 
             MatchSerie matchSerie = e.MatchSerie;
-            var playerIds = new HashSet<string>
+            HashSet<string> playerIds = new()
             {
                 matchSerie.Table1.Game1.Player,
                 matchSerie.Table1.Game2.Player,
@@ -46,57 +46,57 @@
                 matchSerie.Table4.Game2.Player
             };
 
-            var players = DocumentSession.Load<Player>(playerIds).ToDictionary(x => x.Id);
+            Dictionary<string, Player> players = DocumentSession.Load<Player>(playerIds).ToDictionary(x => x.Id);
             ResultSeriesReadModel.Table table1 = CreateTable(players, matchSerie.Table1);
             ResultSeriesReadModel.Table table2 = CreateTable(players, matchSerie.Table2);
             ResultSeriesReadModel.Table table3 = CreateTable(players, matchSerie.Table3);
             ResultSeriesReadModel.Table table4 = CreateTable(players, matchSerie.Table4);
 
             results.Series.Add(new ResultSeriesReadModel.Serie
-                               {
-                                   Tables = new List<ResultSeriesReadModel.Table>
+            {
+                Tables = new List<ResultSeriesReadModel.Table>
                                             {
                                                 table1,
                                                 table2,
                                                 table3,
                                                 table4
                                             }
-                               });
+            });
         }
 
         private static ResultSeriesReadModel.Table CreateTable(
             IReadOnlyDictionary<string, Player> players,
             MatchTable matchTable)
         {
-            var table = new ResultSeriesReadModel.Table
-                         {
-                             Score = matchTable.Score,
-                             Game1 = new ResultSeriesReadModel.Game
-                                     {
-                                         Player =
+            ResultSeriesReadModel.Table table = new()
+            {
+                Score = matchTable.Score,
+                Game1 = new ResultSeriesReadModel.Game
+                {
+                    Player =
                                              players[matchTable.Game1.Player].Name,
-                                         Pins =
+                    Pins =
                                              matchTable
                                              .Game1.Pins,
-                                         Strikes =
+                    Strikes =
                                              matchTable
                                              .Game1.Strikes,
-                                         Spares =
+                    Spares =
                                              matchTable
                                              .Game1.Spares
-                                     },
-                             Game2 = new ResultSeriesReadModel.Game
-                                     {
-                                         Player =
+                },
+                Game2 = new ResultSeriesReadModel.Game
+                {
+                    Player =
                                              players[matchTable.Game2.Player].Name,
-                                         Pins =
+                    Pins =
                                              matchTable.Game2.Pins,
-                                         Strikes =
+                    Strikes =
                                              matchTable.Game2.Strikes,
-                                         Spares =
+                    Spares =
                                              matchTable.Game2.Spares
-                                     }
-                         };
+                }
+            };
             return table;
         }
     }

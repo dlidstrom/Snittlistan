@@ -39,7 +39,10 @@
         public static string GetId(string playerId, int bitsMatchId, string rosterId)
         {
             if (bitsMatchId != 0)
+            {
                 return $"ResultForPlayer-{playerId}-{bitsMatchId}";
+            }
+
             return $"ResultForPlayer-{playerId}-R{rosterId.Substring(8)}";
         }
 

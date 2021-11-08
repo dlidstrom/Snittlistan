@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.ReadModels
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.ReadModels
 {
     using System.Collections.Generic;
     using System.Globalization;
@@ -19,14 +21,17 @@
             Series = series;
         }
 
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         public List<Serie> Series { get; private set; }
 
         public static string IdFromBitsMatchId(int bitsMatchId, string rosterId)
         {
             if (bitsMatchId != 0)
+            {
                 return $"ResultSeries4-{bitsMatchId}";
+            }
+
             return $"ResultSeries4-R{rosterId.Substring(8)}";
         }
 
@@ -35,19 +40,21 @@
             IEnumerable<string> players = Series.SelectMany(x => x.Games)
                 .Select(x => x.Player);
 
-            var dictionary = new Dictionary<string, List<PlayerGame>>();
+            Dictionary<string, List<PlayerGame?>> dictionary = new();
             foreach (string game in players)
             {
                 if (dictionary.ContainsKey(game) == false)
+                {
                     dictionary.Add(
                         game,
-                        new List<PlayerGame>
+                        new List<PlayerGame?>
                         {
                             null,
                             null,
                             null,
                             null
                         });
+                }
             }
 
             for (int i = 0; i < Series.Count; i++)
@@ -59,12 +66,13 @@
                 }
             }
 
-            IEnumerable<KeyValuePair<string, List<PlayerGame>>> q = from x in dictionary
-                    let value = dictionary[x.Key]
-                    let series = value.Where(y => y != null)
-                    let sum = series.Sum(z => z.Pins)
-                    orderby sum descending
-                    select x;
+            IEnumerable<KeyValuePair<string, List<PlayerGame>>> q =
+                from x in dictionary
+                let value = dictionary[x.Key]
+                let series = value.Where(y => y != null)
+                let sum = series.Sum(z => z.Pins)
+                orderby sum descending
+                select x;
             return q;
         }
 
@@ -81,7 +89,10 @@
 
         public string Total()
         {
-            if (!Series.Any()) return string.Empty;
+            if (!Series.Any())
+            {
+                return string.Empty;
+            }
 
             int total = Series.SelectMany(s => s.Games)
                 .Sum(t => t.Pins);

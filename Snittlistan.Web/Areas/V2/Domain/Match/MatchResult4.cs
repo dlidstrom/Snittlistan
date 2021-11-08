@@ -15,7 +15,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
     public class MatchResult4 : AggregateRoot
     {
         private readonly Dictionary<string, List<PinsAndScoreResult>> playerPins;
-        private HashSet<string> rosterPlayers;
+        private HashSet<string>? rosterPlayers;
         private bool medalsAwarded;
 
         // 1-based
@@ -37,7 +37,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             VerifyScores(teamScore, opponentScore);
 
             ApplyChange(
-                new MatchResult4Registered(roster.Id, roster.Players, teamScore, opponentScore, bitsMatchId));
+                new MatchResult4Registered(roster.Id!, roster.Players, teamScore, opponentScore, bitsMatchId));
         }
 
         private MatchResult4()
@@ -45,7 +45,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             playerPins = new Dictionary<string, List<PinsAndScoreResult>>();
         }
 
-        private string RosterId { get; set; }
+        private string? RosterId { get; set; }
 
         private int BitsMatchId { get; set; }
 
@@ -89,7 +89,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             if (pinsOrPlayersDiffer || scoresDiffer)
             {
                 MatchResult4Registered @event = new(
-                    roster.Id,
+                    roster.Id!,
                     roster.Players,
                     teamScore,
                     opponentScore,
@@ -109,7 +109,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                 throw new ArgumentNullException(nameof(matchSerie));
             }
 
-            if (rosterPlayers.Count is not 4 and not 5)
+            if (rosterPlayers!.Count is not 4 and not 5)
             {
                 throw new MatchException("Roster must have 4 or 5 players when registering results");
             }
@@ -127,7 +127,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             string? summaryText,
             string? summaryHtml)
         {
-            if (rosterPlayers.Count is not 4 and not 5)
+            if (rosterPlayers!.Count is not 4 and not 5)
             {
                 throw new MatchException("Roster must have 4 or 5 players when registering results");
             }
@@ -248,7 +248,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         {
             do
             {
-                if (rosterPlayers.Contains(matchSerie.Game1.Player) == false)
+                if (rosterPlayers!.Contains(matchSerie.Game1.Player) == false)
                 {
                     break;
                 }
@@ -295,7 +295,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                     playerPins.Add(game.Player, new List<PinsAndScoreResult>());
                 }
 
-                var pinsAndScoreResult = new PinsAndScoreResult(
+                PinsAndScoreResult pinsAndScoreResult = new(
                     game.Pins,
                     game.Score,
                     registeredSeries);
@@ -303,21 +303,21 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             }
         }
 
-        private void Apply(MedalsAwarded e)
+        private void Apply(MedalsAwarded _)
         {
             medalsAwarded = true;
         }
 
-        private void Apply(ClearMedals e)
+        private void Apply(ClearMedals _)
         {
             medalsAwarded = false;
         }
 
-        private void Apply(AwardedMedal e)
+        private void Apply(AwardedMedal _)
         {
         }
 
-        private void Apply(MatchCommentaryEvent e)
+        private void Apply(MatchCommentaryEvent _)
         {
         }
     }

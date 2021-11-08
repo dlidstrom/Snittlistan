@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure.Indexes
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Indexes
 {
     using System;
     using System.Collections.Generic;
@@ -100,13 +102,13 @@
 
         public class Result
         {
-            public string Player { get; set; }
+            public string Player { get; set; } = null!;
 
             public double Pins { get; set; }
 
             public DateTime MinDate { get; set; }
 
-            public IEnumerable<Game> Last20Games { get; set; }
+            public IEnumerable<Game> Last20Games { get; set; } = null!;
 
             public double Last20GamesAvg { get; set; }
 
@@ -128,17 +130,17 @@
 
             public int CoveredAll { get; set; }
 
-            public double AverageScore { get { return Score / Series; } }
+            public double AverageScore => Score / Series;
 
-            public double AveragePins { get { return Pins / Series; } }
+            public double AveragePins => Pins / Series;
 
-            public double AverageStrikes { get { return Strikes / Math.Max(1, GamesWithStats); } }
+            public double AverageStrikes => Strikes / Math.Max(1, GamesWithStats);
 
-            public double AverageMisses { get { return Misses / Math.Max(1, GamesWithStats); } }
+            public double AverageMisses => Misses / Math.Max(1, GamesWithStats);
 
-            public double AverageOnePinMisses { get { return OnePinMisses / Math.Max(1, GamesWithStats); } }
+            public double AverageOnePinMisses => OnePinMisses / Math.Max(1, GamesWithStats);
 
-            public double AverageSplits { get { return Splits / Math.Max(1, GamesWithStats); } }
+            public double AverageSplits => Splits / Math.Max(1, GamesWithStats);
         }
     }
 }

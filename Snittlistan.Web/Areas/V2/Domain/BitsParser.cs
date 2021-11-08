@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Infrastructure;
     using Infrastructure.Bits.Contracts;
     using Snittlistan.Web.Areas.V2.ReadModels;
     using Snittlistan.Web.Infrastructure.Bits;
@@ -36,7 +35,7 @@
                 throw new Exception($"Unmatched clubId: {clubId}");
             }
 
-            var result = new ParseHeaderResult(
+            ParseHeaderResult result = new(
                 homeTeamName,
                 awayTeamName,
                 headInfo.MatchRoundId,
@@ -50,7 +49,10 @@
 
         public ParseResult Parse(BitsMatchResult bitsMatchResult, int clubId)
         {
-            if (bitsMatchResult.HeadInfo.MatchFinished == false) return null;
+            if (bitsMatchResult.HeadInfo.MatchFinished == false)
+            {
+                return null;
+            }
 
             ParseResult parseResult;
             if (bitsMatchResult.HeadInfo.MatchHomeClubId == clubId)
@@ -98,31 +100,31 @@
 
             return parseResult;
 
-            List<ResultSeriesReadModel.Serie> CreateSeries(
+            static List<ResultSeriesReadModel.Serie> CreateSeries(
                 HeadDetail[] headDetails,
                 MatchScores matchScores,
                 Func<string, string> getPlayer,
                 int offset)
             {
-                var series = new List<ResultSeriesReadModel.Serie>();
+                List<ResultSeriesReadModel.Serie> series = new();
                 for (int i = 0; i < headDetails.Length; i++)
                 {
-                    var tables = new List<ResultSeriesReadModel.Table>();
+                    List<ResultSeriesReadModel.Table> tables = new();
                     for (int j = 0; j < 4; j++)
                     {
                         Score score1 = matchScores.Series[i].Boards[0 + offset].Scores[j];
                         Score score2 = matchScores.Series[i].Boards[1 + offset].Scores[j];
-                        var game1 = new ResultSeriesReadModel.Game
+                        ResultSeriesReadModel.Game game1 = new()
                         {
                             Pins = score1.ScoreScore,
                             Player = getPlayer.Invoke(score1.PlayerName)
                         };
-                        var game2 = new ResultSeriesReadModel.Game
+                        ResultSeriesReadModel.Game game2 = new()
                         {
                             Pins = score2.ScoreScore,
                             Player = getPlayer.Invoke(score2.PlayerName)
                         };
-                        var table = new ResultSeriesReadModel.Table
+                        ResultSeriesReadModel.Table table = new()
                         {
                             Score = score1.LaneScore,
                             Game1 = game1,
@@ -131,7 +133,7 @@
                         tables.Add(table);
                     }
 
-                    var serie = new ResultSeriesReadModel.Serie
+                    ResultSeriesReadModel.Serie serie = new()
                     {
                         Tables = tables
                     };
@@ -144,19 +146,22 @@
 
         public Parse4Result Parse4(BitsMatchResult bitsMatchResult, int clubId)
         {
-            if (bitsMatchResult.HeadInfo.MatchFinished == false) return null;
+            if (bitsMatchResult.HeadInfo.MatchFinished == false)
+            {
+                return null;
+            }
 
             Parse4Result parse4Result;
             if (bitsMatchResult.HeadInfo.MatchHomeClubId == clubId)
             {
-                var series = new List<ResultSeries4ReadModel.Serie>();
+                List<ResultSeries4ReadModel.Serie> series = new();
                 for (int i = 0; i < bitsMatchResult.HeadResultInfo.HomeHeadDetails.Length; i++)
                 {
                     HeadDetail homeHeadDetail = bitsMatchResult.HeadResultInfo.HomeHeadDetails[i];
-                    var games = new List<ResultSeries4ReadModel.Game>();
+                    List<ResultSeries4ReadModel.Game> games = new();
                     foreach (Score boardScore in bitsMatchResult.MatchScores.Series[i].Boards[0].Scores)
                     {
-                        var game = new ResultSeries4ReadModel.Game
+                        ResultSeries4ReadModel.Game game = new()
                         {
                             Player = GetPlayerId(boardScore.PlayerName).Id,
                             Pins = boardScore.ScoreScore,
@@ -167,7 +172,7 @@
                     }
 
                     int score = homeHeadDetail.TeamRp - games.Sum(x => x.Score);
-                    var serie = new ResultSeries4ReadModel.Serie
+                    ResultSeries4ReadModel.Serie serie = new()
                     {
                         Score = score,
                         Games = games
@@ -183,14 +188,14 @@
             }
             else if (bitsMatchResult.HeadInfo.MatchAwayClubId == clubId)
             {
-                var series = new List<ResultSeries4ReadModel.Serie>();
+                List<ResultSeries4ReadModel.Serie> series = new();
                 for (int i = 0; i < bitsMatchResult.HeadResultInfo.AwayHeadDetails.Length; i++)
                 {
                     HeadDetail awayHeadDetail = bitsMatchResult.HeadResultInfo.AwayHeadDetails[i];
-                    var games = new List<ResultSeries4ReadModel.Game>();
+                    List<ResultSeries4ReadModel.Game> games = new();
                     foreach (Score boardScore in bitsMatchResult.MatchScores.Series[i].Boards[1].Scores)
                     {
-                        var game = new ResultSeries4ReadModel.Game
+                        ResultSeries4ReadModel.Game game = new()
                         {
                             Player = GetPlayerId(boardScore.PlayerName).Id,
                             Pins = boardScore.ScoreScore,
@@ -201,7 +206,7 @@
                     }
 
                     int score = awayHeadDetail.TeamRp - games.Sum(x => x.Score);
-                    var serie = new ResultSeries4ReadModel.Serie
+                    ResultSeries4ReadModel.Serie serie = new()
                     {
                         Score = score,
                         Games = games
@@ -235,7 +240,7 @@
             Player p = q.SingleOrDefault();
             if (p == null)
             {
-                var ex = new ApplicationException("Player not found");
+                ApplicationException ex = new("Player not found");
                 ex.Data["name"] = name;
                 ex.Data["lastName"] = lastName;
                 ex.Data["initial"] = initial;

@@ -88,7 +88,10 @@
         public int PinsForPlayer(string player)
         {
             if (Game1.Player == player)
+            {
                 return Game1.Pins;
+            }
+
             return Game2.Player == player ? Game2.Pins : 0;
         }
 

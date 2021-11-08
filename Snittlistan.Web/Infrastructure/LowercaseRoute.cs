@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure
 {
     using System.Web.Routing;
 
@@ -18,12 +20,14 @@
         {
         }
 
-        public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
+        public override VirtualPathData? GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
         {
             VirtualPathData path = base.GetVirtualPath(requestContext, values);
 
             if (path != null)
+            {
                 path.VirtualPath = path.VirtualPath.ToLowerInvariant();
+            }
 
             return path;
         }

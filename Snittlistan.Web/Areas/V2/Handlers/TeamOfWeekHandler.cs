@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Handlers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Handlers
 {
     using System;
     using System.Collections.Generic;
@@ -17,7 +19,7 @@
         IEventHandler<AwardedMedal>,
         IEventHandler<ClearMedals>
     {
-        public IDocumentSession DocumentSession { get; set; }
+        public IDocumentSession DocumentSession { get; set; } = null!;
 
         public void Handle(MatchResultRegistered e, string aggregateId)
         {
@@ -73,7 +75,7 @@
                     matchSerie.Table4.Score,
                     matchSerie.Table4.Game2.Pins)
             };
-            var uniquePlayerIds = new HashSet<string>(playerIds.Select(x => x.Item1));
+            HashSet<string> uniquePlayerIds = new(playerIds.Select(x => x.Item1));
             Player[] players = DocumentSession.Load<Player>(uniquePlayerIds);
             foreach (Player player in players)
             {

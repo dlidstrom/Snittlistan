@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure
 {
     using System;
     using System.Diagnostics;
@@ -10,7 +12,7 @@
     public class RateHandler : DelegatingHandler
     {
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
-        private readonly object locker = new object();
+        private readonly object locker = new();
         private readonly double rate;
         private readonly double per;
         private readonly int maxTries;
@@ -36,7 +38,7 @@
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var sw = Stopwatch.StartNew();
+            Stopwatch sw = Stopwatch.StartNew();
             bool allowed = false;
             for (int currentTry = 0; currentTry < maxTries; currentTry++)
             {

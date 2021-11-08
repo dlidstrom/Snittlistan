@@ -10,8 +10,8 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
     public class Roster : IAuditLogCapable
     {
-        private string teamLevel;
-        private List<string> acceptedPlayers;
+        private string? teamLevel;
+        private List<string>? acceptedPlayers;
 
         public Roster(
             int season,
@@ -88,7 +88,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
             }
         }
 
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         public int Season { get; set; }
 
@@ -100,11 +100,11 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         // TODO: should this be calculated from Team?
         // Team.Substring(roster.Team.LastIndexOf(' ') + 1)
-        public string TeamLevel
+        public string? TeamLevel
         {
             get => teamLevel;
 
-            set => teamLevel = value.Trim();
+            set => teamLevel = value!.Trim();
         }
 
         public string Location { get; set; }
@@ -128,7 +128,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
             _ = AcceptedPlayers.RemoveAll(x => players.Contains(x) == false);
         }
 
-        public string MatchResultId { get; set; }
+        public string? MatchResultId { get; set; }
 
         public string? TeamLeader { get; set; }
 
@@ -306,13 +306,13 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
             FormattedAuditLogEntry Format(AuditLogEntry entry)
             {
-                var change = (Change)entry.Change;
-                string action = null;
+                Change change = (Change)entry.Change;
+                string? action = null;
                 switch (change.ChangeType)
                 {
                     case ChangeType.PlayerAccepted:
                         {
-                            Player player = documentSession.Load<Player>(change.PlayerAccepted.NewValue);
+                            Player player = documentSession.Load<Player>(change.PlayerAccepted?.NewValue);
                             action = $"{player.Name} accepterade";
                             break;
                         }
@@ -323,44 +323,60 @@ namespace Snittlistan.Web.Areas.V2.Domain
                         }
                     case ChangeType.EditPlayers:
                         {
-                            var changes = new List<string>();
+                            List<string> changes = new();
                             if (change.Preliminary is object)
+                            {
                                 changes.Add($"{(change.Preliminary.NewValue ? "Gjordes preliminär" : "Inte längre preliminär")}");
+                            }
+
                             if (change.Players is object)
                             {
-                                string[] outOfTeam = change.Players.OldValue.Except(change.Players.NewValue).Select(PlayerName).ToArray();
-                                string[] intoTeam = change.Players.NewValue.Except(change.Players.OldValue).Select(PlayerName).ToArray();
+                                string?[] outOfTeam = change.Players.OldValue.Except(change.Players.NewValue).Select(PlayerName).ToArray();
+                                string?[] intoTeam = change.Players.NewValue.Except(change.Players.OldValue).Select(PlayerName).ToArray();
                                 if (outOfTeam.Length == 0)
                                 {
-                                    if (intoTeam.Length == 1 || intoTeam.Length == 2)
+                                    if (intoTeam.Length is 1 or 2)
+                                    {
                                         changes.Add($"Tog ut reserv {string.Join(", ", intoTeam)}");
+                                    }
                                     else
+                                    {
                                         changes.Add($"Tog ut lag {string.Join(", ", intoTeam)}");
+                                    }
                                 }
                                 else if ((outOfTeam.Length == 1 || outOfTeam.Length == 2) && intoTeam.Length == 0)
                                 {
                                     changes.Add($"Tog bort reserv {string.Join(", ", outOfTeam)}");
                                 }
                                 else
+                                {
                                     changes.Add($"Ändrade spelare ({string.Join(", ", outOfTeam)} byttes mot {string.Join(", ", intoTeam)})");
+                                }
                             }
 
                             if (change.TeamLeader is object)
                             {
                                 if (change.TeamLeader.NewValue is object)
+                                {
                                     changes.Add($"Valde {PlayerName(change.TeamLeader.NewValue)} till lagledare");
+                                }
                                 else
-                                    changes.Add($"Tog bort {PlayerName(change.TeamLeader.OldValue)} som lagledare");
+                                {
+                                    changes.Add($"Tog bort {PlayerName(change.TeamLeader?.OldValue)} som lagledare");
+                                }
                             }
 
                             action = string.Join("; ", changes);
                             break;
                         }
 
-                        string? PlayerName(string playerId)
+                        string? PlayerName(string? playerId)
                         {
                             return documentSession.Load<Player>(playerId)?.Nickname;
                         }
+
+                    default:
+                        break;
                 }
 
                 return new FormattedAuditLogEntry(
@@ -388,15 +404,15 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
             public ChangeType ChangeType { get; }
             public string UserId { get; }
-            public AuditLogEntry.PropertyChange<string?> PlayerAccepted { get; set; }
-            public AuditLogEntry.PropertyChange<OilPatternInformation?> OilPattern { get; set; }
-            public AuditLogEntry.PropertyChange<DateTime> Date { get; set; }
-            public AuditLogEntry.PropertyChange<string?> Opponent { get; set; }
-            public AuditLogEntry.PropertyChange<string?> Location { get; set; }
-            public AuditLogEntry.PropertyChange<List<string>?> Players { get; set; }
-            public AuditLogEntry.PropertyChange<bool> IsVerified { get; set; }
-            public AuditLogEntry.PropertyChange<bool> Preliminary { get; set; }
-            public AuditLogEntry.PropertyChange<string?> TeamLeader { get; set; }
+            public AuditLogEntry.PropertyChange<string?>? PlayerAccepted { get; set; }
+            public AuditLogEntry.PropertyChange<OilPatternInformation?>? OilPattern { get; set; }
+            public AuditLogEntry.PropertyChange<DateTime>? Date { get; set; }
+            public AuditLogEntry.PropertyChange<string?>? Opponent { get; set; }
+            public AuditLogEntry.PropertyChange<string?>? Location { get; set; }
+            public AuditLogEntry.PropertyChange<List<string>?>? Players { get; set; }
+            public AuditLogEntry.PropertyChange<bool>? IsVerified { get; set; }
+            public AuditLogEntry.PropertyChange<bool>? Preliminary { get; set; }
+            public AuditLogEntry.PropertyChange<string?>? TeamLeader { get; set; }
         }
 
         public class Update

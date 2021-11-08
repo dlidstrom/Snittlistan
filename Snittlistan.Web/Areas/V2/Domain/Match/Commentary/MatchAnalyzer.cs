@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
 {
     using System;
     using System.Collections.Generic;
@@ -48,32 +50,36 @@
         public string[] GetBodyText(
             Dictionary<string, ResultForPlayerIndex.Result> resultsForPlayer)
         {
-            Func<Tuple<string, int>[], bool, string> nicknameFormatter = (ids, includeResult) =>
+            string nicknameFormatter(Tuple<string, int>[] ids, bool includeResult)
             {
-                Func<string, int, string> formatOne = (nickname, pins) =>
-                    includeResult
-                    ? $"{nickname} ({pins})"
-                    : nickname;
+                string formatOne(string nickname, int pins)
+                {
+                    return
+                        includeResult
+                        ? $"{nickname} ({pins})"
+                        : nickname;
+                }
+
                 if (ids.Length == 1)
                 {
-                    return formatOne(players[ids.First().Item1].Nickname, ids.First().Item2);
+                    return formatOne(players[ids.First().Item1].Nickname!, ids.First().Item2);
                 }
 
                 string firstNicknames = string.Join(
                     ", ",
                     ids.Take(ids.Length - 1)
-                       .Select(x => formatOne(players[x.Item1].Nickname, x.Item2)));
-                string nicknames = $"{firstNicknames} och {formatOne(players[ids.Last().Item1].Nickname, ids.Last().Item2)}";
+                       .Select(x => formatOne(players[x.Item1].Nickname!, x.Item2)));
+                string nicknames = $"{firstNicknames} och {formatOne(players[ids.Last().Item1].Nickname!, ids.Last().Item2)}";
                 return nicknames;
-            };
+            }
 
-            var bodyText = new List<string>();
+            List<string> bodyText = new();
             SeriesScores[] seriesScores = GetSeriesScores();
             foreach (SeriesScores seriesScore in seriesScores)
             {
-                var seriesText = new List<string>();
+                List<string> seriesText = new();
                 bool hasSerieNumber = false;
-                var playersContributingToWin = new HashSet<Tuple<string, int>>();
+                HashSet<Tuple<string, int>> playersContributingToWin = new();
                 int diff = seriesScore.TeamPins - seriesScore.OpponentPins;
                 if (diff <= 20 && seriesScore.MatchResult == MatchResultType.Win)
                 {
@@ -84,26 +90,26 @@
                     {
                         if ((seriesScore.TeamPins - playerResult.Pins) / 7 < playerResult.Pins - 20)
                         {
-                            playersContributingToWin.Add(Tuple.Create(playerResult.PlayerId, playerResult.Pins));
+                            _ = playersContributingToWin.Add(Tuple.Create(playerResult.PlayerId, playerResult.Pins));
                         }
                     }
 
                     if (playersContributingToWin.Any())
                     {
                         string joiner = playersContributingToWin.Count > 1 ? "sina" : "sitt";
-                        string nicknames = nicknameFormatter.Invoke(playersContributingToWin.OrderByDescending(x => x.Item2).ToArray(), true);
+                        string nicknames = nicknameFormatter(playersContributingToWin.OrderByDescending(x => x.Item2).ToArray(), true);
                         seriesText.Add(
                             $"{nicknames} låg bakom serievinsten med {joiner} fina resultat.");
                     }
                 }
 
-                var greatSeries = new HashSet<Tuple<string, int>>();
+                HashSet<Tuple<string, int>> greatSeries = new();
                 foreach (PlayerResult playerResult in seriesScore.PlayerResults)
                 {
-                    var lookingFor = Tuple.Create(playerResult.PlayerId, playerResult.Pins);
+                    Tuple<string, int> lookingFor = Tuple.Create(playerResult.PlayerId, playerResult.Pins);
                     if (playerResult.Pins >= 270 && playersContributingToWin.Contains(lookingFor) == false)
                     {
-                        greatSeries.Add(lookingFor);
+                        _ = greatSeries.Add(lookingFor);
                     }
                 }
 
@@ -116,12 +122,12 @@
                     {
                         if (!hasSerieNumber)
                         {
-                            string sentence = $"I serie {seriesScore.SerieNumber} stod {nicknameFormatter.Invoke(seriesExcept300.OrderByDescending(x => x.Item2).ToArray(), true)} för {trail}.";
+                            string sentence = $"I serie {seriesScore.SerieNumber} stod {nicknameFormatter(seriesExcept300.OrderByDescending(x => x.Item2).ToArray(), true)} för {trail}.";
                             seriesText.Add(sentence);
                         }
                         else
                         {
-                            string sentence = $"{nicknameFormatter.Invoke(seriesExcept300.OrderByDescending(x => x.Item2).ToArray(), true)} stod för bra {trail}.";
+                            string sentence = $"{nicknameFormatter(seriesExcept300.OrderByDescending(x => x.Item2).ToArray(), true)} stod för bra {trail}.";
                             seriesText.Add(sentence);
                         }
                     }
@@ -130,12 +136,12 @@
                     {
                         if (!hasSerieNumber)
                         {
-                            string sentence = $"I serie {seriesScore.SerieNumber} smällde {nicknameFormatter.Invoke(series300, false)} till med 300!";
+                            string sentence = $"I serie {seriesScore.SerieNumber} smällde {nicknameFormatter(series300, false)} till med 300!";
                             seriesText.Add(sentence);
                         }
                         else
                         {
-                            string sentence = $"{nicknameFormatter.Invoke(series300, false)} smällde till med 300!";
+                            string sentence = $"{nicknameFormatter(series300, false)} smällde till med 300!";
                             seriesText.Add(sentence);
                         }
                     }
@@ -147,14 +153,14 @@
                 }
             }
 
-            var bodySummaryText = new List<string>();
+            List<string> bodySummaryText = new();
             PlayerPin[] playerPins = seriesScores.SelectMany(x => x.PlayerResults)
                                          .GroupBy(x => x.PlayerId)
                                          .Select(x => new PlayerPin(x.Key, (double)x.Sum(y => y.Pins) / x.Count(), x.Sum(y => y.Score), x.Sum(y => y.Pins), x.Count()))
                                          .ToArray();
 
             // kolla om någon i playerPins är över senaste 20 (måste ha spelat minst 16 serier)
-            var aboveLast20Players = new HashSet<string>();
+            HashSet<string> aboveLast20Players = new();
             foreach (PlayerPin playerPin in playerPins)
             {
                 if (resultsForPlayer.TryGetValue(playerPin.PlayerId, out ResultForPlayerIndex.Result resultForPlayer))
@@ -165,18 +171,18 @@
                         && playerPin.SeriesPlayed >= 3
                         && playerPin.Average > last5Average + 2)
                     {
-                        aboveLast20Players.Add(playerPin.PlayerId);
+                        _ = aboveLast20Players.Add(playerPin.PlayerId);
                     }
                 }
             }
 
             // summera ihop alla som tagit 4 poäng och utmärk dom också
-            var fourPointPlayers = new HashSet<string>();
+            HashSet<string> fourPointPlayers = new();
             foreach (PlayerPin playerPin in playerPins)
             {
                 if (playerPin.Score == 4)
                 {
-                    fourPointPlayers.Add(playerPin.PlayerId);
+                    _ = fourPointPlayers.Add(playerPin.PlayerId);
                 }
             }
 
@@ -185,7 +191,7 @@
                 PlayerPin[] fourPoints = playerPins.Where(x => fourPointPlayers.Contains(x.PlayerId))
                                            .OrderByDescending(x => x.Pins)
                                            .ToArray();
-                string nicknames = nicknameFormatter.Invoke(fourPoints.Select(x => Tuple.Create(x.PlayerId, 0)).ToArray(), false);
+                string nicknames = nicknameFormatter(fourPoints.Select(x => Tuple.Create(x.PlayerId, 0)).ToArray(), false);
                 if (fourPoints.Length < 8)
                 {
                     string ending = fourPointPlayers.Count > 1 ? " vardera" : string.Empty;
@@ -201,7 +207,7 @@
             PlayerPin[] thousand = playerPins.Where(x => x.Pins >= 1000).ToArray();
             if (thousand.Any())
             {
-                string nicknames = nicknameFormatter.Invoke(thousand.Select(x => Tuple.Create(x.PlayerId, 0)).ToArray(), false);
+                string nicknames = nicknameFormatter(thousand.Select(x => Tuple.Create(x.PlayerId, 0)).ToArray(), false);
                 string sentence = $"Grattis till {nicknames} som uppnådde magiska 1000 poäng!";
                 bodySummaryText.Add(sentence);
             }
@@ -234,14 +240,14 @@
         private SeriesScores[] GetSeriesScores()
         {
             // calculate series scores
-            var seriesScores = new List<SeriesScores>();
+            List<SeriesScores> seriesScores = new();
             int cumulativeScore = 0;
             int cumulativeOpponentScore = 0;
             for (int i = 0; i < matchSeries.Length; i++)
             {
                 MatchSerie matchSerie = matchSeries[i];
                 ResultSeriesReadModel.Serie opponentSerie = opponentSeries[i];
-                var seriesScore = new SeriesScores(matchSerie, opponentSerie, cumulativeScore, cumulativeOpponentScore);
+                SeriesScores seriesScore = new(matchSerie, opponentSerie, cumulativeScore, cumulativeOpponentScore);
                 seriesScores.Add(seriesScore);
                 cumulativeScore = seriesScore.TeamScoreTotal;
                 cumulativeOpponentScore = seriesScore.OpponentScoreTotal;

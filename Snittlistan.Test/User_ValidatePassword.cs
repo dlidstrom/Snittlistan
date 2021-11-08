@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Test
+﻿#nullable enable
+
+namespace Snittlistan.Test
 {
     using NUnit.Framework;
     using Snittlistan.Web.Helpers;
@@ -10,7 +12,7 @@
         [Test]
         public void StoredCorrectly()
         {
-            var original = new User("F", "L", "e@d.com", "some pwd");
+            User original = new("F", "L", "e@d.com", "some pwd");
             original.Activate();
             Session.Store(original);
             Session.SaveChanges();
