@@ -4,7 +4,7 @@
     msbuild build.msbuild /property:Version=1.0.0
   -->
   <PropertyGroup>
-    <WixTasksPath>WixTasks.dll</WixTasksPath>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
     <!-- for AssemblyInfo element -->
     <MSBuildCommunityTasksPath>.\</MSBuildCommunityTasksPath>
     <OutputName>Snittlistan.Installer</OutputName>
@@ -13,7 +13,7 @@
     <InstallDirectory>_install</InstallDirectory>
   </PropertyGroup>
 
-  <Import Project="$(WIX_PATH)wix.targets" />
+  <Import Project="$(WixTargetsPath)" />
   <Import Project="Tools\MSBuild.Community.Tasks.v1.5.0.235\MSBuild.Community.Tasks.Targets" />
 
   <ItemGroup>
@@ -95,7 +95,7 @@
   </Target>
 
   <Target Name="Cop">
-    <Exec Command="Tools\wix311-binaries\WixCop.exe -indent:2 *.wxs" />
+    <Exec Command='"$(WIX_PATH)bin\WixCop.exe" -indent:2 *.wxs' />
   </Target>
 
   <!-- Generate components for libraries -->
@@ -104,7 +104,7 @@
                    SuppressRegistry="true"
                    Directory="$(OutputDirectory)\lib\Snittlistan.Web"
                    OutputFile="$(OutputDirectory)\tmp\Snittlistan.Web.lib.wxs"
-                   ToolPath="Tools\wix311-binaries"
+                   ToolPath="$(WIX_PATH)bin"
                    ComponentGroupName="SnittlistanWebLib"
                    AutogenerateGuids="true"
                    SuppressUniqueIds="true"
@@ -122,7 +122,7 @@
                    SuppressRegistry="true"
                    Directory="$(OutputDirectory)\lib\Snittlistan.Tool"
                    OutputFile="$(OutputDirectory)\tmp\Snittlistan.Tool.lib.wxs"
-                   ToolPath="Tools\wix311-binaries"
+                   ToolPath="$(WIX_PATH)bin"
                    ComponentGroupName="SnittlistanToolLib"
                    AutogenerateGuids="true"
                    SuppressUniqueIds="true"
@@ -140,7 +140,7 @@
                    SuppressRegistry="true"
                    Directory="$(OutputDirectory)\lib\Snittlistan.Queue"
                    OutputFile="$(OutputDirectory)\tmp\Snittlistan.Queue.lib.wxs"
-                   ToolPath="Tools\wix311-binaries"
+                   ToolPath="$(WIX_PATH)bin"
                    ComponentGroupName="SnittlistanQueueLib"
                    AutogenerateGuids="true"
                    SuppressUniqueIds="true"
@@ -166,9 +166,9 @@
     </ItemGroup>
     <Candle OutputFile="$(OutputDirectory)\tmp\"
             SourceFiles="%(WixSources.FullPath)"
-            ToolPath="Tools\wix311-binaries"
+            ToolPath="$(WIX_PATH)bin"
             DefineConstants="Snittlistan_App=$(OutputDirectory)\app\Snittlistan;SnittlistanWeb_Lib=$(OutputDirectory)\lib\Snittlistan.Web;SnittlistanTool_Lib=$(OutputDirectory)\lib\Snittlistan.Tool;SnittlistanQueue_Lib=$(OutputDirectory)\lib\Snittlistan.Queue;Version=$(Version)"
-            Extensions="Tools\wix311-binaries\WixUtilExtension.dll;Tools\wix311-binaries\WiXNetFxExtension.dll;Tools\wix311-binaries\WixIIsExtension.dll" />
+            Extensions="WixUtilExtension.dll;WiXNetFxExtension.dll;WixIIsExtension.dll" />
   </Target>
 
   <Target Name="Light">
@@ -178,8 +178,8 @@
     </ItemGroup>
     <Light ObjectFiles="@(WixObjects)"
            OutputFile="$(OutputDirectory)\Snittlistan.msi"
-           ToolPath="Tools/wix311-binaries"
-           Extensions="Tools/wix311-binaries/WixUtilExtension.dll;Tools/wix311-binaries/WiXNetFxExtension.dll;Tools\wix311-binaries\WixIIsExtension.dll"
+           ToolPath="$(WIX_PATH)bin"
+           Extensions="WixUtilExtension.dll;WiXNetFxExtension.dll;WixIIsExtension.dll"
            SuppressSpecificWarnings="1076" />
     <MakeDir Directories="$(InstallDirectory)\$(Version)" />
     <ItemGroup>
@@ -187,5 +187,8 @@
     </ItemGroup>
     <Copy SourceFiles="@(InstallFiles);SnittlistanInstall.ps1;Install.bat"
           DestinationFolder="$(InstallDirectory)\$(Version)" />
+    <ZipDirectory
+      SourceDirectory="$(InstallDirectory)\$(Version)"
+      DestinationFile="$(InstallDirectory)\$(Version).zip" />
   </Target>
 </Project>

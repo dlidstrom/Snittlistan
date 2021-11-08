@@ -20,29 +20,55 @@ jobs:
     - name: Set version
       run: |
         $d = Get-Date -UFormat "%u"
-        $v = "{0}.{1}.{2}{3}.0" -f
+        $v = "{0}.{1}.{2}.{3}" -f
           (Get-Date -UFormat "%y"),
           (Get-Date -UFormat "%V"),
           ($d -eq "0" ? "7" : $d),
           $env:GITHUB_RUN_NUMBER
         echo ("BUILD_VERSION=$v") >> $env:GITHUB_ENV
-        echo ("WIX_PATH=${env:wix}") >> $env:GITHUB_ENV
-        Get-ChildItem -Recurse $env:wix
-
-    - name: Print version
-      run: |
-        echo $env:BUILD_VERSION
-        echo $env:wix
-
-    - name: Restore
-      run: msbuild -t:restore Snittlistan.sln
+        echo $v
 
     - uses: actions/cache@v2
+      id: cache
       with:
-        path: ~/.nuget/packages
+        path: ${{ github.workspace }}/.nuget/packages
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
         restore-keys: |
           ${{ runner.os }}-nuget-
 
+    - name: Restore
+      #if: steps.cache.outputs.cache-hit != 'true'
+      run: msbuild -t:restore Snittlistan.sln
+
     - name: Build
       run: msbuild build.build -t:All -p:Version=$env:BUILD_VERSION -p:WIX_PATH=$env:wix
+
+    - name: Push tag
+      id: tag
+      uses: laputansoft/github-tag-action@v4.6
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        tag: ${{ env.BUILD_VERSION }}
+
+    - name: Create release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.tag.outputs.new_tag }}
+        release_name: Release v${{ steps.tag.outputs.new_tag }}
+        draft: false
+        prerelease: false
+
+    - name: Upload artifact
+      id: upload-artifact
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: _install\${{ env.BUILD_VERSION }}.zip
+        asset_name: ${{ env.BUILD_VERSION }}.zip
+        asset_content_type: application/zip
+
