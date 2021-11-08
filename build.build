@@ -13,7 +13,7 @@
     <InstallDirectory>_install</InstallDirectory>
   </PropertyGroup>
 
-  <Import Project="Tools\wix311-binaries\wix.targets" />
+  <Import Project="$(WIX_PATH)wix.targets" />
   <Import Project="Tools\MSBuild.Community.Tasks.v1.5.0.235\MSBuild.Community.Tasks.Targets" />
 
   <ItemGroup>

@@ -9,15 +9,40 @@ on:
 
 jobs:
   build-windows:
-    runs-on: windows-latest
+    runs-on: windows-2019
     steps:
     - uses: actions/checkout@v2
 
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.0.3
 
+    # 21.44.101.0
+    - name: Set version
+      run: |
+        $d = Get-Date -UFormat "%u"
+        $v = "{0}.{1}.{2}{3}.0" -f
+          (Get-Date -UFormat "%y"),
+          (Get-Date -UFormat "%V"),
+          ($d -eq "0" ? "7" : $d),
+          $env:GITHUB_RUN_NUMBER
+        echo ("BUILD_VERSION=$v") >> $env:GITHUB_ENV
+        echo ("WIX_PATH=${env:wix}") >> $env:GITHUB_ENV
+        Get-ChildItem -Recurse $env:wix
+
+    - name: Print version
+      run: |
+        echo $env:BUILD_VERSION
+        echo $env:wix
+
     - name: Restore
       run: msbuild -t:restore Snittlistan.sln
 
+    - uses: actions/cache@v2
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
     - name: Build
-      run: msbuild -t:Build -p:Configuration=Release Snittlistan.sln
+      run: msbuild build.build -t:All -p:Version=$env:BUILD_VERSION -p:WIX_PATH=$env:wix
