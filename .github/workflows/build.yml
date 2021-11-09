@@ -31,13 +31,13 @@ jobs:
     - uses: actions/cache@v2
       id: cache
       with:
-        path: packages
+        path: ${{ env.USERPROFILE }}\.nuget\packages
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
         restore-keys: |
           ${{ runner.os }}-nuget-
 
     - name: Restore
-      #if: steps.cache.outputs.cache-hit != 'true'
+      if: steps.cache.outputs.cache-hit != 'true'
       run: msbuild -t:restore Snittlistan.sln
 
     - name: Build
