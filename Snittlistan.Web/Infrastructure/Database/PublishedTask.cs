@@ -14,7 +14,8 @@ namespace Snittlistan.Web.Infrastructure.Database
             int tenantId,
             Guid correlationId,
             Guid? causationId,
-            Guid messageId)
+            Guid messageId,
+            string createdBy)
         {
             Task = task;
             BusinessKey = task.BusinessKey;
@@ -22,6 +23,7 @@ namespace Snittlistan.Web.Infrastructure.Database
             CorrelationId = correlationId;
             CausationId = causationId;
             MessageId = messageId;
+            CreatedBy = createdBy;
             CreatedDate = DateTime.Now;
         }
 
@@ -38,6 +40,8 @@ namespace Snittlistan.Web.Infrastructure.Database
         public Guid? CausationId { get; private set; }
 
         public Guid MessageId { get; private set; }
+
+        public string CreatedBy { get; private set; } = null!;
 
         [NotMapped]
         public BusinessKey BusinessKey

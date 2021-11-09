@@ -23,7 +23,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                     context.Task.RosterId,
                     playerId,
                     context.CorrelationId);
-                TaskPublisher.PublishTask(message);
+                TaskPublisher.PublishTask(message, "system");
             }
 
             return Task.CompletedTask;

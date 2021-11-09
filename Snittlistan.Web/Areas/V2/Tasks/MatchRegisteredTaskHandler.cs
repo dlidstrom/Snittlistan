@@ -24,7 +24,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
             ResultHeaderReadModel resultHeaderReadModel = DocumentSession.Load<ResultHeaderReadModel>(resultHeaderReadModelId);
             MatchRegisteredEmail email = new(
                 roster.Team,
-                roster.Opponent,
+                roster.Opponent!,
                 context.Task.Score,
                 context.Task.OpponentScore,
                 resultSeriesReadModel,

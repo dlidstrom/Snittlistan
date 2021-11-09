@@ -14,7 +14,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
         IEventHandler<SerieRegistered>,
         IEventHandler<Serie4Registered>
     {
-        public IDocumentSession DocumentSession { get; set; }
+        public IDocumentSession DocumentSession { get; set; } = null!;
 
         public void Handle(MatchResultRegistered e, string aggregateId)
         {
@@ -49,7 +49,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             Roster roster = DocumentSession.Load<Roster>(e.RosterId);
             string id = SeasonResults.GetId(roster.Season);
             SeasonResults seasonResults = DocumentSession.Load<SeasonResults>(id);
-            seasonResults.Add(roster.BitsMatchId, roster.Id, roster.Date, roster.Turn, e.MatchSerie);
+            seasonResults.Add(roster.BitsMatchId, roster.Id!, roster.Date, roster.Turn, e.MatchSerie);
         }
 
         public void Handle(Serie4Registered e, string aggregateId)
@@ -57,7 +57,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             Roster roster = DocumentSession.Load<Roster>(e.RosterId);
             string id = SeasonResults.GetId(roster.Season);
             SeasonResults seasonResults = DocumentSession.Load<SeasonResults>(id);
-            seasonResults.Add(roster.BitsMatchId, roster.Id, roster.Date, roster.Turn, e.MatchSerie);
+            seasonResults.Add(roster.BitsMatchId, roster.Id!, roster.Date, roster.Turn, e.MatchSerie);
         }
     }
 }

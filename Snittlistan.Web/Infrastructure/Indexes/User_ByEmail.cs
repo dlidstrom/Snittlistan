@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure.Indexes
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Indexes
 {
     using System.Linq;
     using Raven.Client.Indexes;

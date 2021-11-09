@@ -5,7 +5,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Diagnostics;
     using System.Globalization;
     using System.Linq;
     using System.Text;
@@ -159,7 +158,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 vm.Opponent,
                 ParseDate(vm.Date),
                 vm.IsFourPlayer,
-                new OilPatternInformation(vm.OilPatternName, vm.OilPatternUrl));
+                new OilPatternInformation(vm.OilPatternName!, vm.OilPatternUrl!));
             DocumentSession.Store(roster);
             return RedirectToAction("Index");
         }
@@ -216,7 +215,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             roster.Date = ParseDate(vm.Date);
             if (vm.BitsMatchId == 0)
             {
-                roster.OilPattern = new OilPatternInformation(vm.OilPatternName, string.Empty);
+                roster.OilPattern = new OilPatternInformation(vm.OilPatternName!, string.Empty);
             }
 
             return RedirectToAction("Index");
@@ -468,13 +467,13 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 update.TeamLeader = new Some<string?>(null);
             }
 
-            Guid correlationId = roster.UpdateWith(Trace.CorrelationManager.ActivityId, update);
+            roster.UpdateWith(CorrelationId, update);
 
             if (vm.SendUpdateMail || true)
             {
                 if (roster.Preliminary)
                 {
-                    logger.Warn("Roster is preliminayr, not sending requested update mail");
+                    logger.Warn("Roster is preliminary, not sending requested update mail");
                 }
                 else if (roster.Date < SystemTime.UtcNow.ToLocalTime())
                 {
@@ -482,8 +481,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 }
                 else
                 {
-                    InitiateUpdateMailTask task = new(roster.Id, roster.Version, CorrelationId);
-                    PublishDelayedTask(task, TimeSpan.FromMinutes(10));
+                    InitiateUpdateMailTask task = new(roster.Id!, roster.Version, CorrelationId);
+                    TaskPublisher.PublishDelayedTask(
+                        task,
+                        TimeSpan.FromMinutes(10),
+                        User.Identity.Name);
                 }
             }
 
@@ -718,10 +720,10 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             public string Team { get; set; }
 
             [Required]
-            public string Location { get; set; }
+            public string? Location { get; set; }
 
             [Required]
-            public string Opponent { get; set; }
+            public string? Opponent { get; set; }
 
             [Required]
             [Display(Name = "Datum:")]

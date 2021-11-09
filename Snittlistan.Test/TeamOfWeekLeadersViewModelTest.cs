@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Test
+﻿#nullable enable
+
+namespace Snittlistan.Test
 {
     using System;
     using System.Collections.Generic;
@@ -11,7 +13,7 @@
     [TestFixture]
     public class TeamOfWeekLeadersViewModelTest
     {
-        private TeamOfWeekViewModel viewModel;
+        private TeamOfWeekViewModel? viewModel;
 
         [SetUp]
         public void SetUp()
@@ -45,7 +47,7 @@
         public void GroupsByTurn()
         {
             // Assert
-            List<TeamOfWeekViewModel.Week> weeks = viewModel.Weeks;
+            List<TeamOfWeekViewModel.Week> weeks = viewModel!.Weeks;
             Assert.That(weeks, Has.Count.EqualTo(1));
             TeamOfWeekViewModel.Week week = weeks[0];
             Assert.That(week.Turn, Is.EqualTo(10));
@@ -68,7 +70,7 @@
         public void CalculatesLeaders()
         {
             // Assert
-            List<TeamOfWeekLeadersViewModel.NameCount> top = viewModel.Leaders.Top9Total.ToList();
+            List<TeamOfWeekLeadersViewModel.NameCount> top = viewModel!.Leaders.Top9Total.ToList();
             Assert.That(top, Has.Count.EqualTo(2));
             Assert.That(top[0], Has.Count.EqualTo(1));
             Assert.That(top[1], Has.Count.EqualTo(1));

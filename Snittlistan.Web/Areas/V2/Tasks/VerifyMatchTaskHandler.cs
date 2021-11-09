@@ -48,10 +48,10 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                 BitsParser parser = new(players);
                 if (roster.IsFourPlayer)
                 {
-                    MatchResult4 matchResult = EventStoreSession.Load<MatchResult4>(roster.MatchResultId);
-                    Parse4Result parseResult = parser.Parse4(bitsMatchResult, websiteConfig.ClubId);
-                    update.Players = parseResult.GetPlayerIds();
-                    bool isVerified = matchResult.Update(
+                    MatchResult4? matchResult = EventStoreSession.Load<MatchResult4>(roster.MatchResultId);
+                    Parse4Result? parseResult = parser.Parse4(bitsMatchResult, websiteConfig.ClubId);
+                    update.Players = parseResult!.GetPlayerIds();
+                    bool isVerified = matchResult!.Update(
                         context.PublishMessage,
                         roster,
                         parseResult.TeamScore,
@@ -63,16 +63,16 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                 }
                 else
                 {
-                    MatchResult matchResult = EventStoreSession.Load<MatchResult>(roster.MatchResultId);
-                    ParseResult parseResult = parser.Parse(bitsMatchResult, websiteConfig.ClubId);
-                    update.Players = parseResult.GetPlayerIds();
+                    MatchResult? matchResult = EventStoreSession.Load<MatchResult>(roster.MatchResultId);
+                    ParseResult? parseResult = parser.Parse(bitsMatchResult, websiteConfig.ClubId);
+                    update.Players = parseResult!.GetPlayerIds();
                     Dictionary<string, ResultForPlayerIndex.Result> resultsForPlayer =
                         DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
                         .Where(x => x.Season == roster.Season)
                         .ToArray()
                         .ToDictionary(x => x.PlayerId);
                     MatchSerie[] matchSeries = parseResult.CreateMatchSeries();
-                    bool isVerified = matchResult.Update(
+                    bool isVerified = matchResult!.Update(
                         context.PublishMessage,
                         roster,
                         parseResult.TeamScore,
@@ -85,7 +85,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                 }
             }
 
-            _ = roster.UpdateWith(context.CorrelationId, update);
+            roster.UpdateWith(context.CorrelationId, update);
         }
     }
 }

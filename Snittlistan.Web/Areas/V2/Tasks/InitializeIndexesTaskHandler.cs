@@ -19,7 +19,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                 {
                     Id = User.AdminId
                 };
-                admin.Initialize(t => TaskPublisher.PublishTask(t));
+                admin.Initialize(t => TaskPublisher.PublishTask(t, "system"));
                 admin.Activate();
                 DocumentSession.Store(admin);
             }

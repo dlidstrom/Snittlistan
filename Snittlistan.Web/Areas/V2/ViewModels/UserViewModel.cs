@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.ViewModels
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using System.ComponentModel.DataAnnotations;
     using Snittlistan.Web.Models;
@@ -7,7 +9,7 @@
     {
         public UserViewModel(User user)
         {
-            Id = user.Id;
+            Id = user.Id!;
             Name = $"{user.FirstName} {user.LastName}";
             Email = user.Email;
             IsActive = user.IsActive;

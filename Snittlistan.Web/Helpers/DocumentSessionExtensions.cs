@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Helpers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Helpers
 {
     using System.Linq;
     using Raven.Client;
@@ -19,13 +21,6 @@
         {
             return sess.Query<User>()
                        .FirstOrDefault(u => u.ActivationKey == key);
-        }
-
-        public static bool BitsIdExists(this IDocumentSession sess, int id)
-        {
-            return sess.Query<Match_ByBitsMatchId.Result, Match_ByBitsMatchId>()
-                       .ProjectFromIndexFieldsInto<Match_ByBitsMatchId.Result>()
-                       .SingleOrDefault(m => m.BitsMatchId == id) != null;
         }
 
         public static int LatestSeasonOrDefault(this IDocumentSession sess, int def)

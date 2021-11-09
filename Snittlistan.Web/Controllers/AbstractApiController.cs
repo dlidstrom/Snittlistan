@@ -20,7 +20,7 @@ namespace Snittlistan.Web.Controllers
 
         public IEventStoreSession EventStoreSession { get; set; } = null!;
 
-        public DatabaseContext Database { get; set; } = null!;
+        public Databases Databases { get; set; } = null!;
 
         public EventStore EventStore { get; set; } = null!;
 
@@ -36,7 +36,7 @@ namespace Snittlistan.Web.Controllers
             // this commits the document session
             EventStoreSession.SaveChanges();
 
-            _ = await Database.SaveChangesAsync();
+            _ = await Databases.Snittlistan.SaveChangesAsync();
         }
     }
 }

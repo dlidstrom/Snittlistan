@@ -1,6 +1,7 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Controllers
 {
-    using System.Diagnostics;
     using System.Web.Mvc;
     using Domain;
     using Web.Controllers;
@@ -12,13 +13,13 @@
         public ActionResult Accept(string rosterId, string playerId, int season, int turn)
         {
             Roster roster = DocumentSession.Load<Roster>(rosterId);
-            var update = new Roster.Update(
+            Roster.Update update = new(
                 Roster.ChangeType.PlayerAccepted,
-                User.CustomIdentity.PlayerId)
+                User.CustomIdentity.PlayerId!)
             {
                 PlayerAccepted = playerId
             };
-            roster.UpdateWith(Trace.CorrelationManager.ActivityId, update);
+            roster.UpdateWith(CorrelationId, update);
             return Redirect(
                 Url.RouteUrl(
                     new

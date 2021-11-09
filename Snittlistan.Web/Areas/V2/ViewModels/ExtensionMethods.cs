@@ -22,11 +22,11 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public static IEnumerable<RosterViewModel> SortRosters(this IEnumerable<RosterViewModel> rosters)
         {
-            return rosters.OrderBy(GetSortKey).ThenBy(r => r.Header.Date);
+            return rosters.OrderBy(GetSortKey).ThenBy(r => r.Header!.Date);
 
             static (int i, string s) GetSortKey(RosterViewModel vm)
             {
-                if (TeamLevelSortOrder.TryGetValue(vm.Header.TeamLevel!, out int i))
+                if (TeamLevelSortOrder.TryGetValue(vm.Header!.TeamLevel!, out int i))
                 {
                     return (i, string.Empty);
                 }

@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Test
+﻿#nullable enable
+
+namespace Snittlistan.Test
 {
     using System;
     using NUnit.Framework;
@@ -38,8 +40,8 @@
             const int ClubId = 1660;
 
             // Act
-            Parse4Result result = new BitsParser(homePlayers).Parse4(await BitsGateway.GetBitsMatchResult(3060835), ClubId);
-            Assert.That(result.TeamScore, Is.EqualTo(18));
+            Parse4Result? result = new BitsParser(homePlayers).Parse4(await BitsGateway.GetBitsMatchResult(3060835), ClubId);
+            Assert.That(result!.TeamScore, Is.EqualTo(18));
             Assert.That(result.OpponentScore, Is.EqualTo(1));
             Assert.That(result.Turn, Is.EqualTo(11));
             ResultSeries4ReadModel.Serie[] series = result.Series;
@@ -82,8 +84,8 @@
             const int ClubId = 34534;
 
             // Act
-            Parse4Result result = new BitsParser(awayPlayers).Parse4(await BitsGateway.GetBitsMatchResult(3060835), ClubId);
-            Assert.That(result.TeamScore, Is.EqualTo(1));
+            Parse4Result? result = new BitsParser(awayPlayers).Parse4(await BitsGateway.GetBitsMatchResult(3060835), ClubId);
+            Assert.That(result!.TeamScore, Is.EqualTo(1));
             Assert.That(result.OpponentScore, Is.EqualTo(18));
             Assert.That(result.Turn, Is.EqualTo(11));
             ResultSeries4ReadModel.Serie[] series = result.Series;

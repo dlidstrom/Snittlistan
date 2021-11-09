@@ -53,7 +53,10 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                 throw new ArgumentNullException(nameof(command));
             }
 
-            command.Execute(DocumentSession, EventStoreSession, t => TaskPublisher.PublishTask(t));
+            command.Execute(
+                DocumentSession,
+                EventStoreSession,
+                t => TaskPublisher.PublishTask(t, "system"));
         }
 
         protected TResult ExecuteQuery<TResult>(IQuery<TResult> query)

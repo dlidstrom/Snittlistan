@@ -15,7 +15,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
         IEventHandler<MatchResult4Registered>,
         IEventHandler<Serie4Registered>
     {
-        public IDocumentSession DocumentSession { get; set; }
+        public IDocumentSession DocumentSession { get; set; } = null!;
 
         public void Handle(MatchResult4Registered e, string aggregateId)
         {
@@ -44,7 +44,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
                 matchSerie.Game4.Player
             };
 
-            var players = DocumentSession.Load<Player>(playerIds).ToDictionary(x => x.Id);
+            Dictionary<string, Player> players = DocumentSession.Load<Player>(playerIds).ToDictionary(x => x.Id);
             ResultSeries4ReadModel.Game game1 = CreateGame(players, matchSerie.Game1);
             ResultSeries4ReadModel.Game game2 = CreateGame(players, matchSerie.Game2);
             ResultSeries4ReadModel.Game game3 = CreateGame(players, matchSerie.Game3);
@@ -66,7 +66,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             IReadOnlyDictionary<string, Player> players,
             MatchGame4 matchGame)
         {
-            var game = new ResultSeries4ReadModel.Game
+            ResultSeries4ReadModel.Game game = new()
             {
                 Score = matchGame.Score,
                 Player = players[matchGame.Player].Name,

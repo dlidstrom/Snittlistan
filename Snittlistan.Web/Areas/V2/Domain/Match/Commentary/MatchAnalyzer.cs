@@ -41,7 +41,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
             }
             else
             {
-                matchCommentary = matches[0].Commentary.Invoke(seriesScores);
+                matchCommentary = matches[0].Commentary!.Invoke(seriesScores);
             }
 
             return matchCommentary;

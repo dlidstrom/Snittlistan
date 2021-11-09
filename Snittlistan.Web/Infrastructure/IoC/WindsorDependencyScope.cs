@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure.IoC
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.IoC
 {
     using System;
     using System.Collections.Generic;
@@ -18,9 +20,9 @@
             scope = container.BeginScope();
         }
 
-        public object GetService(Type serviceType)
+        public object? GetService(Type serviceType)
         {
-            object service = container.HasComponent(serviceType) ? container.Resolve(serviceType) : null;
+            object? service = container.HasComponent(serviceType) ? container.Resolve(serviceType) : null;
             return service;
         }
 

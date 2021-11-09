@@ -82,7 +82,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             TeamOfWeek[] weeks = DocumentSession.Query<TeamOfWeek, TeamOfWeekIndex>()
                                        .Where(x => x.Season == season.Value)
                                        .ToArray();
-            Dictionary<string?, Roster> rostersDictionary = DocumentSession.Load<Roster>(weeks.Select(x => x.RosterId)).ToDictionary(x => x.Id);
+            Dictionary<string, Roster> rostersDictionary = DocumentSession.Load<Roster>(weeks.Select(x => x.RosterId)).ToDictionary(x => x.Id!);
             TeamOfWeekViewModel viewModel = new(season.Value, weeks, rostersDictionary);
             return View(viewModel);
         }

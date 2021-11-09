@@ -1,6 +1,5 @@
 ﻿#nullable enable
 
-// ReSharper disable once CheckNamespace
 namespace EventStoreLite
 {
     using System;
@@ -152,7 +151,7 @@ namespace EventStoreLite
                                 List<IDomainEvent> newEvents = new();
                                 foreach (IDomainEvent migratedEvent in oldEvents)
                                 {
-                                    newEvents.AddRange(eventMigrator.Migrate(migratedEvent, eventStream.Id));
+                                    newEvents.AddRange(eventMigrator.Migrate(migratedEvent, eventStream.Id!));
                                 }
 
                                 oldEvents = newEvents;
@@ -263,7 +262,7 @@ namespace EventStoreLite
         {
             lock (InitLock)
             {
-                new ReadModelIndex(readModelTypes).Execute(documentStore);
+                new ReadModelIndex(readModelTypes!).Execute(documentStore);
                 new EventsIndex().Execute(documentStore);
                 initialized = true;
             }

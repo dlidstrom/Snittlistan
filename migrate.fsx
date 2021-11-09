@@ -10,20 +10,20 @@ let connectionString =
 let conn = new NpgsqlConnection(connectionString)
 conn.Open()
 
-(*for schema in [ "" ] do
+for schema in [ "snittlistan" ] do
     let cmdText =
         $"CREATE SCHEMA IF NOT EXISTS %s{schema}"
 
     printfn $"%s{cmdText}"
     let cmd = new NpgsqlCommand(cmdText, conn)
 
-    cmd.ExecuteNonQuery() |> ignore<int>*)
+    cmd.ExecuteNonQuery() |> ignore<int>
 
 let upgradeEngine =
     DeployChanges
         .To
         .PostgresqlDatabase(connectionString)
-        .JournalToPostgresqlTable("public", "migrations")
+        .JournalToPostgresqlTable("snittlistan", "migrations")
         .WithScriptsFromFileSystem("Sql/")
         .LogToConsole()
         .Build()

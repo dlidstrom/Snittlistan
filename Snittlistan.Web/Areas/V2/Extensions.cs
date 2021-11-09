@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2
 {
     using System;
 

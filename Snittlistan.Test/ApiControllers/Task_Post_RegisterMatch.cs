@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Test.ApiControllers
+﻿#nullable enable
+
+namespace Snittlistan.Test.ApiControllers
 {
     using System;
     using System.Linq;
@@ -19,14 +21,14 @@
     [TestFixture]
     public class Task_Post_RegisterMatch : WebApiIntegrationTest
     {
-        private HttpResponseMessage responseMessage;
-        private string rosterId;
+        private HttpResponseMessage? responseMessage;
+        private string? rosterId;
 
         [Test]
         public void ShouldRegisterPendingResult()
         {
             // Assert
-            Assert.That(responseMessage.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            Assert.That(responseMessage!.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
 
         [Test]
@@ -42,7 +44,7 @@
         protected override async Task Act()
         {
             // Act
-            TaskRequest request = new(new MessageEnvelope(new RegisterMatchTask(rosterId, 123), -1, default, default, default));
+            TaskRequest request = new(new MessageEnvelope(new RegisterMatchTask(rosterId!, 123), -1, default, default, default));
             responseMessage = await Client.PostAsJsonAsync("http://temp.uri/api/task", request);
             _ = responseMessage.EnsureSuccessStatusCode();
         }

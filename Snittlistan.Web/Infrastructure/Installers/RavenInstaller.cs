@@ -13,7 +13,6 @@ namespace Snittlistan.Web.Infrastructure.Installers
     using Raven.Client.Document;
     using Raven.Client.Embedded;
     using Snittlistan.Queue.Models;
-    using Snittlistan.Web.Areas.V1.Models;
 
     public class RavenInstaller : IWindsorInstaller
     {
@@ -111,7 +110,6 @@ namespace Snittlistan.Web.Infrastructure.Installers
 #pragma warning disable 618
             store.Conventions.DefaultQueryingConsistency = ConsistencyOptions.AlwaysWaitForNonStaleResultsAsOfLastWrite;
 #pragma warning restore 618
-            store.Conventions.FindTypeTagName = type => type == typeof(Match8x4) ? "Matches" : DocumentConvention.DefaultTypeTagName(type);
             store.Conventions.FindIdentityProperty = FindIdentityProperty;
             store.Conventions.MaxNumberOfRequestsPerSession = 1024;
 

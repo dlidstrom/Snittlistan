@@ -41,7 +41,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                 {
                     VerifyMatchTask verifyTask = new(
                         roster.BitsMatchId,
-                        roster.Id,
+                        roster.Id!,
                         context.Task.Force);
                     toVerify.Add(verifyTask);
                 }

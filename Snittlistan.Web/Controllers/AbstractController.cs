@@ -3,16 +3,12 @@
 namespace Snittlistan.Web.Controllers
 {
     using System;
-    using System.Data.Entity;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Web.Hosting;
     using System.Web.Mvc;
     using EventStoreLite;
     using NLog;
     using Snittlistan.Queue;
-    using Snittlistan.Queue.Messages;
     using Snittlistan.Queue.Models;
+    using Snittlistan.Web.Areas.V2.Tasks;
     using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Database;
     using Snittlistan.Web.Models;
@@ -27,13 +23,15 @@ namespace Snittlistan.Web.Controllers
 
         public IEventStoreSession EventStoreSession { get; set; } = null!;
 
-        public DatabaseContext Database { get; set; } = null!;
+        public Databases Databases { get; set; } = null!;
 
         public EventStore EventStore { get; set; } = null!;
 
         public TenantConfiguration TenantConfiguration { get; set; } = null!;
 
         public IMsmqTransaction MsmqTransaction { get; set; } = null!;
+
+        public TaskPublisher TaskPublisher { get; set; } = null!;
 
         protected new CustomPrincipal User => (CustomPrincipal)HttpContext.User;
 
@@ -59,54 +57,10 @@ namespace Snittlistan.Web.Controllers
                 throw new ArgumentNullException(nameof(command));
             }
 
-            command.Execute(DocumentSession, EventStoreSession, PublishTask);
-        }
-
-        // TODO Use TaskPublisher
-        protected void PublishTask(ITask task)
-        {
-            DoPublishDelayedTask(task, DateTime.MinValue);
-        }
-
-        protected void PublishDelayedTask(ITask task, TimeSpan sendAfter)
-        {
-            DateTime publishDate = DateTime.Now.Add(sendAfter);
-            DoPublishDelayedTask(task, publishDate);
-        }
-
-        private void DoPublishDelayedTask(ITask task, DateTime publishDate)
-        {
-            string businessKey = task.BusinessKey.ToString();
-            DelayedTask delayedTask = Database.DelayedTasks.Add(new(
-                task,
-                publishDate,
-                TenantConfiguration.TenantId,
-                CorrelationId,
-                null,
-                Guid.NewGuid()));
-            Logger.Info("added delayed task: {@delayedTask}", delayedTask);
-            HostingEnvironment.QueueBackgroundWorkItem(async ct => await PublishMessage(businessKey, ct));
-
-            async Task PublishMessage(string businessKey, CancellationToken ct)
-            {
-                try
-                {
-                    using MsmqGateway.MsmqTransactionScope scope = MsmqGateway.AutoCommitScope();
-                    using DatabaseContext context = new();
-                    DelayedTask delayedTask = await context.DelayedTasks.SingleOrDefaultAsync(x => x.BusinessKeyColumn == businessKey, ct);
-                    MessageEnvelope message = new(
-                        delayedTask.Task,
-                        delayedTask.TenantId,
-                        delayedTask.CorrelationId,
-                        delayedTask.CausationId,
-                        delayedTask.MessageId);
-                    scope.PublishMessage(message);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex, "failed to publish message");
-                }
-            }
+            command.Execute(
+                DocumentSession,
+                EventStoreSession,
+                task => TaskPublisher.PublishTask(task, User.Identity.Name));
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -141,9 +95,9 @@ namespace Snittlistan.Web.Controllers
             // this commits the document session
             EventStoreSession.SaveChanges();
 
-            if (Database.ChangeTracker.HasChanges())
+            if (Databases.Snittlistan.ChangeTracker.HasChanges())
             {
-                int changes = Database.SaveChanges();
+                int changes = Databases.Snittlistan.SaveChanges();
                 Logger.Info("saved {changes} change(s) to database", changes);
             }
         }

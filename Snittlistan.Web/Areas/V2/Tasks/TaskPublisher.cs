@@ -18,25 +18,32 @@ namespace Snittlistan.Web.Areas.V2.Tasks
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public DatabaseContext Database { get; set; } = null!;
+        public Databases Databases { get; set; } = null!;
 
         public TenantConfiguration TenantConfiguration { get; set; } = null!;
 
-        public void PublishTask(ITask task)
+        public void PublishTask(ITask task, string createdBy)
         {
-            DoPublishDelayedTask(task, DateTime.MinValue);
+            DoPublishDelayedTask(task, DateTime.MinValue, createdBy);
         }
 
-        private void DoPublishDelayedTask(ITask task, DateTime publishDate)
+        public void PublishDelayedTask(ITask task, TimeSpan sendAfter, string createdBy)
+        {
+            DateTime publishDate = DateTime.Now.Add(sendAfter);
+            DoPublishDelayedTask(task, publishDate, createdBy);
+        }
+
+        private void DoPublishDelayedTask(ITask task, DateTime publishDate, string createdBy)
         {
             string businessKey = task.BusinessKey.ToString();
-            DelayedTask delayedTask = Database.DelayedTasks.Add(new(
+            DelayedTask delayedTask = Databases.Snittlistan.DelayedTasks.Add(new(
                 task,
                 publishDate,
                 TenantConfiguration.TenantId,
                 CorrelationId,
                 null,
-                Guid.NewGuid()));
+                Guid.NewGuid(),
+                createdBy));
             Logger.Info("added delayed task: {@delayedTask}", delayedTask);
             HostingEnvironment.QueueBackgroundWorkItem(async ct => await PublishMessage(businessKey, ct));
 
@@ -45,7 +52,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                 try
                 {
                     using MsmqGateway.MsmqTransactionScope scope = MsmqGateway.AutoCommitScope();
-                    using DatabaseContext context = new();
+                    using SnittlistanContext context = new();
                     DelayedTask delayedTask = await context.DelayedTasks.SingleOrDefaultAsync(x => x.BusinessKeyColumn == businessKey, ct);
                     MessageEnvelope message = new(
                         delayedTask.Task,

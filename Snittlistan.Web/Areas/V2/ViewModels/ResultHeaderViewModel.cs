@@ -17,10 +17,10 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             TeamLevel = roster.TeamLevel!;
             Turn = roster.Turn;
             Team = roster.Team;
-            Opponent = roster.Opponent;
+            Opponent = roster.Opponent!;
             BitsMatchId = roster.BitsMatchId;
             FormattedResult = new HtmlString($"{readModel.TeamScore}&minus;{readModel.OpponentScore}");
-            Location = roster.Location;
+            Location = roster.Location!;
             MatchCommentaryHtml = new HtmlString(readModel.MatchCommentaryHtml);
             BodyText = readModel.BodyText;
         }

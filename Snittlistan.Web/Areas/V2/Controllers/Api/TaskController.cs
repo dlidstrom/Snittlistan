@@ -64,32 +64,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                     request.CorrelationId,
                     request.MessageId,
                     MsmqTransaction);
-                messageContext.PublishMessage = task =>
-                {
-                    // TODO save to database
-                    Guid correlationId = request.CorrelationId ?? default;
-                    MessageEnvelope envelope = new(
-                        task,
-                        TenantConfiguration.TenantId,
-                        correlationId,
-                        request.MessageId,
-                        Guid.NewGuid());
-                    MsmqTransaction.PublishMessage(envelope);
-                    _ = Database.PublishedTasks.Add(new(
-                        task,
-                        TenantConfiguration.TenantId,
-                        correlationId,
-                        request.MessageId,
-                        envelope.MessageId));
-
-                    // TODO
-                    /**
-                     * All task publishing must be done from this controller. Move this lambda to a method.
-                     * Tool exe must have access to command/query. No database access, no queue access from the tool.
-                     * Only handle tasks that have been published. Check that they are in the database, set a date timestamp
-                     * on successful handling.
-                     */
-                };
+                messageContext.PublishMessage = task => DoPublishMessage(request, task);
 
                 Task task = (Task)handleMethod.Invoke(handler, new[] { messageContext });
                 await task;
@@ -103,23 +78,51 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             return Ok();
         }
 
-        public class TaskRequest
+        private void DoPublishMessage(TaskRequest request, ITask task)
         {
-            public TaskRequest(string taskJson, Guid? correlationId, Guid? messageId)
-            {
-                TaskJson = taskJson;
-                CorrelationId = correlationId;
-                MessageId = messageId;
-            }
+            // TODO save to database
+            Guid correlationId = request.CorrelationId ?? default;
+            MessageEnvelope envelope = new(
+                task,
+                TenantConfiguration.TenantId,
+                correlationId,
+                request.MessageId,
+                Guid.NewGuid());
+            MsmqTransaction.PublishMessage(envelope);
+            _ = Databases.Snittlistan.PublishedTasks.Add(new(
+                task,
+                TenantConfiguration.TenantId,
+                correlationId,
+                request.MessageId,
+                envelope.MessageId,
+                "system"));
 
-            [Required]
-            public string TaskJson { get; }
-
-            [Required]
-            public Guid? CorrelationId { get; }
-
-            [Required]
-            public Guid? MessageId { get; }
+            // TODO
+            /**
+             * All task publishing must be done from this controller. Move this lambda to a method.
+             * Tool exe must have access to command/query. No database access, no queue access from the tool.
+             * Only handle tasks that have been published. Check that they are in the database, set a date timestamp
+             * on successful handling.
+             */
         }
+    }
+
+    public class TaskRequest
+    {
+        public TaskRequest(string taskJson, Guid? correlationId, Guid? messageId)
+        {
+            TaskJson = taskJson;
+            CorrelationId = correlationId;
+            MessageId = messageId;
+        }
+
+        [Required]
+        public string TaskJson { get; }
+
+        [Required]
+        public Guid? CorrelationId { get; }
+
+        [Required]
+        public Guid? MessageId { get; }
     }
 }

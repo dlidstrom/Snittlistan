@@ -18,7 +18,7 @@ namespace Snittlistan.Web.Models
         private const string ConstantSalt = "CheFe2ra8en9SW";
 
         private Guid passwordSalt;
-        private string activationKey;
+        private string? activationKey;
 
         public User(string firstName, string lastName, string email, string password)
         {
@@ -51,7 +51,7 @@ namespace Snittlistan.Web.Models
         /// <summary>
         /// Gets or sets the user id.
         /// </summary>
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         /// <summary>
         /// Gets the email address.
@@ -66,7 +66,7 @@ namespace Snittlistan.Web.Models
         /// <summary>
         /// Gets the activation key.
         /// </summary>
-        public string ActivationKey
+        public string? ActivationKey
         {
             get => activationKey ??= Guid.NewGuid().ToString();
 
@@ -135,7 +135,7 @@ namespace Snittlistan.Web.Models
         public void Initialize(Action<ITask> publish)
         {
             ActivationKey = Guid.NewGuid().ToString();
-            publish.Invoke(new NewUserCreatedTask(Email, ActivationKey, Id));
+            publish.Invoke(new NewUserCreatedTask(Email, ActivationKey, Id!));
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace Snittlistan.Web.Models
             },
             urlScheme);
             Debug.Assert(activationUri != null, "activationUri != null");
-            publish.Invoke(new UserInvitedTask(activationUri, Email));
+            publish.Invoke(new UserInvitedTask(activationUri!, Email));
         }
 
         /// <summary>

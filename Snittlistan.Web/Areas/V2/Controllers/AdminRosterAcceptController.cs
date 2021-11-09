@@ -3,7 +3,6 @@
 namespace Snittlistan.Web.Areas.V2.Controllers
 {
     using System.ComponentModel.DataAnnotations;
-    using System.Diagnostics;
     using System.Linq;
     using System.Web.Mvc;
     using Domain;
@@ -51,7 +50,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             {
                 PlayerAccepted = vm.Model?.PlayerId!
             };
-            _ = roster.UpdateWith(Trace.CorrelationManager.ActivityId, update);
+            roster.UpdateWith(CorrelationId, update);
             return RedirectToAction("View", "Roster", new
             {
                 vm.Model?.Season,

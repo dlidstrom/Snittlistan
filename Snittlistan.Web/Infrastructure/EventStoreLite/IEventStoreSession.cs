@@ -1,4 +1,5 @@
- // ReSharper disable once CheckNamespace
+﻿#nullable enable
+
 namespace EventStoreLite
 {
     /// <summary>
@@ -12,7 +13,7 @@ namespace EventStoreLite
         /// <typeparam name="TAggregate">Type of aggregate root.</typeparam>
         /// <param name="id">Aggregate identifier.</param>
         /// <returns>Aggregate root instance.</returns>
-        TAggregate Load<TAggregate>(string id) where TAggregate : AggregateRoot;
+        TAggregate? Load<TAggregate>(string? id) where TAggregate : AggregateRoot;
 
         /// <summary>
         /// Persists the specified aggregate root to the event store.

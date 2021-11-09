@@ -6,8 +6,8 @@ namespace Snittlistan.Web.Infrastructure.Bits.Contracts
     {
         public int TeamId { get; set; }
 
-        public string TeamName { get; set; }
+        public string? TeamName { get; set; }
 
-        public string TeamAlias { get; set; }
+        public string? TeamAlias { get; set; }
     }
 }

@@ -37,7 +37,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
 
                 if (pendingMatch.IsFourPlayer)
                 {
-                    Parse4Result parse4Result = parser.Parse4(bitsMatchResult, websiteConfig.ClubId);
+                    Parse4Result? parse4Result = parser.Parse4(bitsMatchResult, websiteConfig.ClubId);
                     if (parse4Result != null)
                     {
                         if (parse4Result.Series.Length != 4 && parse4Result.Turn <= 20)
@@ -53,7 +53,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                 }
                 else
                 {
-                    ParseResult parseResult = parser.Parse(bitsMatchResult, websiteConfig.ClubId);
+                    ParseResult? parseResult = parser.Parse(bitsMatchResult, websiteConfig.ClubId);
                     if (parseResult != null)
                     {
                         if (parseResult.Series.Length != 4 && parseResult.Turn <= 20)

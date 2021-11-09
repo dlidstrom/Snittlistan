@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.ReadModels
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.ReadModels
 {
     using System;
     using EventStoreLite;
@@ -10,7 +12,7 @@
             int season,
             string playerId,
             int bitsMatchId,
-            string rosterId,
+            string? rosterId,
             DateTime date)
         {
             Season = season;
@@ -36,14 +38,14 @@
 
         public int TotalSeries { get; private set; }
 
-        public static string GetId(string playerId, int bitsMatchId, string rosterId)
+        public static string GetId(string playerId, int bitsMatchId, string? rosterId)
         {
             if (bitsMatchId != 0)
             {
                 return $"ResultForPlayer-{playerId}-{bitsMatchId}";
             }
 
-            return $"ResultForPlayer-{playerId}-R{rosterId.Substring(8)}";
+            return $"ResultForPlayer-{playerId}-R{rosterId!.Substring(8)}";
         }
 
         public void AddGame(MatchGame4 game)

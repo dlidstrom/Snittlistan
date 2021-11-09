@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.ViewModels
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using Snittlistan.Web.Areas.V2.Domain;
     using System.Collections.Generic;
@@ -12,7 +14,7 @@
 
         public RosterViewModel(
             Roster roster,
-            PlayerItem teamLeader,
+            PlayerItem? teamLeader,
             List<PlayerItem> players)
         {
             TeamLeader = teamLeader;
@@ -33,7 +35,7 @@
                 roster.MatchTimeChanged);
         }
 
-        public RosterHeaderViewModel Header { get; set; }
+        public RosterHeaderViewModel? Header { get; set; }
 
         public int Season { get; set; }
 
@@ -45,7 +47,7 @@
 
         public List<PlayerItem> Players { get; set; }
 
-        public PlayerItem TeamLeader { get; set; }
+        public PlayerItem? TeamLeader { get; set; }
 
         public class PlayerItem
         {

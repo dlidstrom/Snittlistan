@@ -7,6 +7,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
     using Castle.Windsor;
     using Npgsql.Logging;
     using Snittlistan.Queue.Infrastructure;
+    using Snittlistan.Web.Infrastructure.Database;
 
     public class DatabaseContextInstaller : IWindsorInstaller
     {
@@ -16,8 +17,8 @@ namespace Snittlistan.Web.Infrastructure.Installers
             NpgsqlLogManager.IsParameterLoggingEnabled = true;
 
             _ = container.Register(
-                Component.For<Database.DatabaseContext>()
-                    .UsingFactoryMethod(_ => new Database.DatabaseContext())
+                Component.For<Databases>()
+                    .UsingFactoryMethod(_ => new Databases(new(), new()))
                     .LifestylePerWebRequest());
         }
     }

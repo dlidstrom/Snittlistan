@@ -58,9 +58,9 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                     Log.Info($"Updating roster {roster.Id}");
                     MatchRound matchRound = dict[roster.BitsMatchId];
                     roster.OilPattern = OilPatternInformation.Create(
-                        matchRound.MatchOilPatternName,
+                        matchRound.MatchOilPatternName!,
                         matchRound.MatchOilPatternId);
-                    roster.Date = matchRound.MatchDate.ToDateTime(matchRound.MatchTime);
+                    roster.Date = matchRound.MatchDate!.ToDateTime(matchRound.MatchTime);
                     roster.Turn = matchRound.MatchRoundId;
                     roster.MatchTimeChanged = matchRound.MatchStatus == 2;
                     if (matchRound.HomeTeamClubId == websiteConfig.ClubId)
@@ -114,9 +114,9 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                         team.Substring(team.LastIndexOf(' ') + 1),
                         matchRound.MatchHallName!,
                         opponent,
-                        matchRound.MatchDate.ToDateTime(matchRound.MatchTime),
+                        matchRound.MatchDate!.ToDateTime(matchRound.MatchTime),
                         matchRound.MatchNbrOfPlayers == 4,
-                        OilPatternInformation.Create(matchRound.MatchOilPatternName, matchRound.MatchOilPatternId))
+                        OilPatternInformation.Create(matchRound.MatchOilPatternName!, matchRound.MatchOilPatternId))
                     {
                         MatchTimeChanged = matchRound.MatchStatus == 2
                     };

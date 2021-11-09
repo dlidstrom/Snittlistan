@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Queue.Messages
+﻿#nullable enable
+
+namespace Snittlistan.Queue.Messages
 {
     using System;
 

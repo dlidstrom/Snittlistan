@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Domain
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Domain
 {
     using System;
     using System.Collections.Generic;
@@ -6,7 +8,7 @@
     public class OilPatternInformation : IEqualityComparer<OilPatternInformation>
     {
         public static readonly OilPatternInformation Empty =
-            new OilPatternInformation(string.Empty, string.Empty);
+            new(string.Empty, string.Empty);
 
         public OilPatternInformation(string name, string url)
         {

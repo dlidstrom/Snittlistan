@@ -46,7 +46,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     ParseDate(vm.Date!),
                     vm.Message,
                     vm.MessageHtml,
-                    User.CustomIdentity.PlayerId);
+                    User.CustomIdentity.PlayerId!);
             DocumentSession.Store(activity);
 
             return RedirectToAction("Index", "ActivityIndex");
@@ -85,7 +85,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 ParseDate(vm.Date!),
                 vm.Message,
                 vm.MessageHtml,
-                User.CustomIdentity.PlayerId);
+                User.CustomIdentity.PlayerId!);
             return RedirectToAction("Index", "ActivityIndex");
         }
 

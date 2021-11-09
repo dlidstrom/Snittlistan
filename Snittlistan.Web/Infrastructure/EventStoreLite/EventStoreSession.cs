@@ -1,4 +1,5 @@
-﻿// ReSharper disable once CheckNamespace
+﻿#nullable enable
+
 namespace EventStoreLite
 {
     using System;
@@ -31,7 +32,7 @@ namespace EventStoreLite
             this.dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
         }
 
-        public TAggregate Load<TAggregate>(string id) where TAggregate : AggregateRoot
+        public TAggregate? Load<TAggregate>(string? id) where TAggregate : AggregateRoot
         {
             if (id == null)
             {
@@ -85,10 +86,10 @@ namespace EventStoreLite
             EventStream eventStream = new();
             GenerateId(eventStream, aggregate);
             documentSession.Store(eventStream);
-            aggregate.SetId(eventStream.Id);
+            aggregate.SetId(eventStream.Id!);
             EventStreamAndAggregateRoot eventStreamAndAggregateRoot = new(eventStream, aggregate);
             _ = unitOfWork.Add(eventStreamAndAggregateRoot);
-            entitiesByKey.Add(eventStream.Id, eventStreamAndAggregateRoot);
+            entitiesByKey.Add(eventStream.Id!, eventStreamAndAggregateRoot);
         }
 
         public void SaveChanges()
@@ -109,9 +110,9 @@ namespace EventStoreLite
             {
                 IDomainEvent pendingEvent = aggregatesAndEvent.Event;
                 EventStream eventStream = aggregatesAndEvent.EventStream;
-                dynamic asDynamic = pendingEvent.AsDynamic();
-                asDynamic.SetChangeSequence(currentChangeSequence.Value);
-                dispatcher.Dispatch(pendingEvent, eventStream.Id);
+                dynamic? asDynamic = pendingEvent.AsDynamic();
+                asDynamic!.SetChangeSequence(currentChangeSequence.Value);
+                dispatcher.Dispatch(pendingEvent, eventStream.Id!);
                 eventStream.History.Add(pendingEvent);
             }
 

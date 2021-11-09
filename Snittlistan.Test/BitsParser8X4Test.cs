@@ -50,10 +50,10 @@ namespace Snittlistan.Test
             const int ClubId = 1660;
 
             // Act
-            ParseResult result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetBitsMatchResult(3050651), ClubId);
+            ParseResult? result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetBitsMatchResult(3050651), ClubId);
 
             // Assert
-            Assert.That(result.TeamScore, Is.EqualTo(7));
+            Assert.That(result!.TeamScore, Is.EqualTo(7));
         }
 
         [Test]
@@ -63,10 +63,10 @@ namespace Snittlistan.Test
             const int ClubId = 1660;
 
             // Act
-            ParseResult result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetBitsMatchResult(3048746), ClubId);
+            ParseResult? result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetBitsMatchResult(3048746), ClubId);
 
             // Assert
-            Assert.That(result.TeamScore, Is.EqualTo(11));
+            Assert.That(result!.TeamScore, Is.EqualTo(11));
         }
 
         [Test]
@@ -76,10 +76,10 @@ namespace Snittlistan.Test
             const int ClubId = 1660;
 
             // Act
-            ParseResult result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetBitsMatchResult(3048747), ClubId);
+            ParseResult? result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetBitsMatchResult(3048747), ClubId);
 
             // Assert
-            Assert.That(result.TeamScore, Is.EqualTo(10));
+            Assert.That(result!.TeamScore, Is.EqualTo(10));
         }
 
         [Test]
@@ -89,10 +89,10 @@ namespace Snittlistan.Test
             const int ClubId = 1660;
 
             // Act
-            ParseResult result = new BitsParser(playersTeamF).Parse(await BitsGateway.GetBitsMatchResult(3048477), ClubId);
+            ParseResult? result = new BitsParser(playersTeamF).Parse(await BitsGateway.GetBitsMatchResult(3048477), ClubId);
 
             // Assert
-            Assert.That(result.TeamScore, Is.EqualTo(14));
+            Assert.That(result!.TeamScore, Is.EqualTo(14));
         }
 
         [Test]
@@ -102,8 +102,8 @@ namespace Snittlistan.Test
             const int ClubId = 1660;
 
             // Act
-            ParseResult result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetBitsMatchResult(3048746), ClubId);
-            Assert.That(result.TeamScore, Is.EqualTo(11));
+            ParseResult? result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetBitsMatchResult(3048746), ClubId);
+            Assert.That(result!.TeamScore, Is.EqualTo(11));
             Assert.That(result.OpponentScore, Is.EqualTo(9));
             ResultSeriesReadModel.Serie[] series = result.Series;
 
@@ -145,8 +145,8 @@ namespace Snittlistan.Test
             const int ClubId = 1660;
 
             // Act
-            ParseResult result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetBitsMatchResult(3048747), ClubId);
-            Assert.That(result.TeamScore, Is.EqualTo(10));
+            ParseResult? result = new BitsParser(playersTeamA).Parse(await BitsGateway.GetBitsMatchResult(3048747), ClubId);
+            Assert.That(result!.TeamScore, Is.EqualTo(10));
             Assert.That(result.OpponentScore, Is.EqualTo(9));
             ResultSeriesReadModel.Serie[] series = result.Series;
 
@@ -200,8 +200,8 @@ namespace Snittlistan.Test
             };
 
             // Act
-            ParseResult result = new BitsParser(players).Parse(await BitsGateway.GetBitsMatchResult(3067035), ClubId);
-            Assert.That(result.TeamScore, Is.EqualTo(10));
+            ParseResult? result = new BitsParser(players).Parse(await BitsGateway.GetBitsMatchResult(3067035), ClubId);
+            Assert.That(result!.TeamScore, Is.EqualTo(10));
             Assert.That(result.OpponentScore, Is.EqualTo(5));
             Assert.That(result.Turn, Is.EqualTo(24));
             ResultSeriesReadModel.Serie[] series = result.Series;

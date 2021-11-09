@@ -18,9 +18,9 @@ namespace Snittlistan.Web.Areas.V2.Domain
             int turn,
             int bitsMatchId,
             string team,
-            string teamLevel,
-            string location,
-            string opponent,
+            string? teamLevel,
+            string? location,
+            string? opponent,
             DateTime date,
             bool isFourPlayer,
             OilPatternInformation oilPattern,
@@ -107,9 +107,9 @@ namespace Snittlistan.Web.Areas.V2.Domain
             set => teamLevel = value!.Trim();
         }
 
-        public string Location { get; set; }
+        public string? Location { get; set; }
 
-        public string Opponent { get; set; }
+        public string? Opponent { get; set; }
 
         public DateTime Date { get; set; }
 
@@ -145,7 +145,7 @@ namespace Snittlistan.Web.Areas.V2.Domain
 
         public bool MatchTimeChanged { get; set; }
 
-        public Guid UpdateWith(Guid correlationId, Update update)
+        public void UpdateWith(Guid correlationId, Update update)
         {
             Change change = new(update.ChangeType, update.UserId);
             RosterState before = GetState();
@@ -255,7 +255,6 @@ namespace Snittlistan.Web.Areas.V2.Domain
                 before,
                 after);
             AuditLogEntries.Add(auditLogEntry);
-            return auditLogEntry.CorrelationId;
         }
 
         private void Accept(string playerId)

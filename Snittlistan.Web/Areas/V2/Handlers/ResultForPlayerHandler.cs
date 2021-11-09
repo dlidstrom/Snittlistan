@@ -41,7 +41,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
                 ResultForPlayerReadModel model = DocumentSession.Load<ResultForPlayerReadModel>(id);
                 if (model == null)
                 {
-                    model = new ResultForPlayerReadModel(roster.Season, playerId, e.BitsMatchId, roster.Id, roster.Date);
+                    model = new ResultForPlayerReadModel(roster.Season, playerId, e.BitsMatchId, roster.Id!, roster.Date);
                     DocumentSession.Store(model);
                 }
 
@@ -81,7 +81,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
                 ResultForPlayerReadModel model = DocumentSession.Load<ResultForPlayerReadModel>(id);
                 if (model == null)
                 {
-                    model = new ResultForPlayerReadModel(roster.Season, playerId, e.BitsMatchId, roster.Id, roster.Date);
+                    model = new ResultForPlayerReadModel(roster.Season, playerId, e.BitsMatchId, roster.Id!, roster.Date);
                     DocumentSession.Store(model);
                 }
 

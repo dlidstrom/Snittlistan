@@ -28,7 +28,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             TeamOfWeek teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
             if (teamOfWeek == null)
             {
-                teamOfWeek = new TeamOfWeek(e.BitsMatchId, roster.Season, roster.Id);
+                teamOfWeek = new TeamOfWeek(e.BitsMatchId, roster.Season, roster.Id!);
                 DocumentSession.Store(teamOfWeek);
             }
 
@@ -94,7 +94,7 @@ namespace Snittlistan.Web.Areas.V2.Handlers
             TeamOfWeek teamOfWeek = DocumentSession.Load<TeamOfWeek>(id);
             if (teamOfWeek == null)
             {
-                teamOfWeek = new TeamOfWeek(e.BitsMatchId, roster.Season, roster.Id);
+                teamOfWeek = new TeamOfWeek(e.BitsMatchId, roster.Season, roster.Id!);
                 DocumentSession.Store(teamOfWeek);
             }
 

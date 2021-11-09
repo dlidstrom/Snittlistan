@@ -130,7 +130,10 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 if (invite.GetValueOrDefault())
                 {
                     Debug.Assert(Request.Url != null, "Request.Url != null");
-                    user.ActivateWithEmail(PublishTask, Url, Request.Url!.Scheme);
+                    user.ActivateWithEmail(
+                        t => TaskPublisher.PublishTask(t, User.Identity.Name),
+                        Url,
+                        Request.Url!.Scheme);
                 }
                 else
                 {
@@ -206,7 +209,9 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 return View(vm);
             }
 
-            PublishTask(EmailTask.Create(vm.Recipient, vm.Subject, vm.Content));
+            TaskPublisher.PublishTask(
+                EmailTask.Create(vm.Recipient, vm.Subject, vm.Content),
+                User.Identity.Name);
 
             return RedirectToAction("Index");
         }

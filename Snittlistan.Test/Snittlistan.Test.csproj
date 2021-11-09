@@ -69,18 +69,13 @@
     <Compile Include="ActionResultHelper.cs" />
     <Compile Include="ControllerFactoryTest.cs" />
     <Compile Include="ControllersInstallerTest.cs" />
-    <Compile Include="DbSeed.cs" />
     <Compile Include="DbTest.cs" />
     <Compile Include="Domain\MatchGameTest.cs" />
     <Compile Include="Domain\MatchResultTest.cs" />
     <Compile Include="Domain\MatchSerieTest.cs" />
     <Compile Include="Domain\MatchTableTest.cs" />
     <Compile Include="InstallerTestHelper.cs" />
-    <Compile Include="Match4x4Test.cs" />
-    <Compile Include="Match8x4Test.cs" />
-    <Compile Include="Match_ByBitsMatchIdTest.cs" />
     <Compile Include="BitsParser8X4Test.cs" />
-    <Compile Include="PlayerStat_Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -90,9 +85,7 @@
     <Compile Include="RavenInstallerTest.cs" />
     <Compile Include="RoutesTest.cs" />
     <Compile Include="RouteTestHelper.cs" />
-    <Compile Include="SerializationTest.cs" />
     <Compile Include="ServicesInstallerTest.cs" />
-    <Compile Include="TestData.cs" />
     <Compile Include="UserTest.cs" />
     <Compile Include="User_ValidatePassword.cs" />
   </ItemGroup>

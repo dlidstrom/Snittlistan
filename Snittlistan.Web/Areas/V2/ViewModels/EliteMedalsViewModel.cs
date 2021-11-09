@@ -1,3 +1,5 @@
+﻿#nullable enable
+
 namespace Snittlistan.Web.Areas.V2.ViewModels
 {
     using System;
@@ -17,7 +19,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
             SeasonResults seasonResults)
         {
             this.season = season;
-            var players = new List<PlayerInfo>();
+            List<PlayerInfo> players = new();
             foreach (string playerId in playersDict.Keys)
             {
                 Player player = playersDict[playerId];
@@ -25,7 +27,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
                 HashSet<Tuple<SeasonResults.PlayerResult, bool>> topThreeResults = seasonResults.GetTopThreeResults(playerId, existingMedal.Value);
                 FormattedMedal formattedExistingMedal = eliteMedals.GetFormattedExistingMedal(playerId);
                 FormattedMedal nextMedal = eliteMedals.GetNextMedal(playerId);
-                var playerInfo = new PlayerInfo(
+                PlayerInfo playerInfo = new(
                     playerId,
                     player.Name,
                     player.PersonalNumber,

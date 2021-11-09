@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure
 {
     using System.Linq;
     using System.Security.Principal;
@@ -7,7 +9,7 @@
     {
         private readonly string[] roles;
 
-        public CustomPrincipal(string playerId, string name, string email, string uniqueId, string[] roles)
+        public CustomPrincipal(string? playerId, string name, string email, string uniqueId, string[] roles)
         {
             this.roles = roles;
             CustomIdentity = new CustomIdentity(playerId, name, email, uniqueId);

@@ -1,4 +1,5 @@
-﻿// ReSharper disable once CheckNamespace
+﻿#nullable enable
+
 namespace EventStoreLite
 {
     using System;
@@ -23,7 +24,7 @@ namespace EventStoreLite
             Array handlers = container.ResolveAll(type);
             foreach (object handler in handlers)
             {
-                handler.AsDynamic().Handle(e, aggregateId);
+                handler.AsDynamic()!.Handle(e, aggregateId);
             }
         }
     }

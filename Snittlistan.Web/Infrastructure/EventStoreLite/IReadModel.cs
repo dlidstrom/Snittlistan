@@ -1,4 +1,5 @@
-﻿ // ReSharper disable once CheckNamespace
+﻿#nullable enable
+
 namespace EventStoreLite
 {
     /// <summary>
@@ -9,6 +10,6 @@ namespace EventStoreLite
         /// <summary>
         /// Gets the read model id.
         /// </summary>
-        string Id { get; }
+        string? Id { get; }
     }
 }

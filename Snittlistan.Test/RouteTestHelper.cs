@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Test
+﻿#nullable enable
+
+namespace Snittlistan.Test
 {
     using System;
     using System.Collections.Generic;
@@ -19,7 +21,7 @@
             foreach (PropertyValue property in GetProperties(expectations))
             {
                 bool equal = string.Equals(
-                    property.Value.ToString(),
+                    property.Value!.ToString(),
                     routeData.Values[property.Name].ToString(),
                     StringComparison.OrdinalIgnoreCase);
                 string message = $"Expected '{property.Value}', not '{routeData.Values[property.Name]}' for '{property.Name}'.";
@@ -51,13 +53,13 @@
 
         private sealed class PropertyValue
         {
-            public string Name
+            public string? Name
             {
                 get;
                 set;
             }
 
-            public object Value
+            public object? Value
             {
                 get;
                 set;

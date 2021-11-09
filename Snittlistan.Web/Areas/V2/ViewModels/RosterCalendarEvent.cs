@@ -11,7 +11,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
     public class RosterCalendarEvent : CalendarEvent
     {
         private readonly string id;
-        private DateTime date;
+        private readonly DateTime date;
         private readonly string team;
         private readonly string opponent;
         private readonly string location;
@@ -19,11 +19,11 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
 
         public RosterCalendarEvent(Roster roster, ResultHeaderReadModel resultHeaderReadModel)
         {
-            id = roster.Id;
+            id = roster.Id!;
             date = roster.Date;
             team = roster.Team;
-            opponent = roster.Opponent;
-            location = roster.Location;
+            opponent = roster.Opponent!;
+            location = roster.Location!;
             description = string.Empty;
             if (resultHeaderReadModel != null)
             {

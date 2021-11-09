@@ -78,7 +78,7 @@ namespace EventStoreLite
         [DebuggerStepThrough]
         private void ApplyChange(IDomainEvent @event, bool isNew)
         {
-            this.AsDynamic().Apply(@event);
+            this.AsDynamic()!.Apply(@event);
             if (isNew)
             {
                 uncommittedChanges.Add(@event);

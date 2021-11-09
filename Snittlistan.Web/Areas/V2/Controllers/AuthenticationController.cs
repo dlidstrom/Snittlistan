@@ -105,9 +105,10 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                         string.Join("", Enumerable.Range(1, 6).Select(_ => Random.Next(10)));
                     token.Activate(
                         oneTimeKey =>
-                        {
-                            PublishTask(new OneTimeKeyTask(player.Email, oneTimePassword));
-                        },
+                            TaskPublisher.PublishTask(
+                                new OneTimeKeyTask(player.Email, oneTimePassword),
+                                User.Identity.Name)
+                        ,
                         oneTimePassword);
                     NotifyEvent($"{player.Name} entered email address");
                     DocumentSession.Store(token);
@@ -191,7 +192,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     return View(vm);
                 }
 
-                OneTimeToken matchingPassword = activeTokens.FirstOrDefault(x => x.Payload.EditDistanceTo(vm.Password) <= 1);
+                OneTimeToken matchingPassword = activeTokens.FirstOrDefault(x => x.Payload!.EditDistanceTo(vm.Password) <= 1);
                 if (matchingPassword == null)
                 {
                     Logger.Info("No matching password token");
@@ -263,18 +264,20 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         private void NotifyEvent(string subject, string? body = null)
         {
-            PublishTask(
-                EmailTask.Create(
-                    ConfigurationManager.AppSettings["OwnerEmail"],
-                    subject,
-                    string.Join(
-                        Environment.NewLine,
-                        new[]
-                        {
-                            $"User Agent: {Request.UserAgent}",
-                            $"Referrer: {Request.UrlReferrer}",
-                            body ?? string.Empty
-                        })));
+            EmailTask task = EmailTask.Create(
+                ConfigurationManager.AppSettings["OwnerEmail"],
+                subject,
+                string.Join(
+                    Environment.NewLine,
+                    new[]
+                    {
+                        $"User Agent: {Request.UserAgent}",
+                        $"Referrer: {Request.UrlReferrer}",
+                        body ?? string.Empty
+                    }));
+            TaskPublisher.PublishTask(
+                task,
+                User.Identity.Name);
         }
 
         public class EmailViewModel

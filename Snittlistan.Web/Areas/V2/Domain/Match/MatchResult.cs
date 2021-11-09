@@ -154,7 +154,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             foreach (MatchSerie matchSerie in matchSeries)
             {
                 VerifyPlayers(matchSerie);
-                ApplyChange(new SerieRegistered(matchSerie, BitsMatchId, RosterId));
+                ApplyChange(new SerieRegistered(matchSerie, BitsMatchId, RosterId!));
                 DoAwardMedals(registeredSeries);
                 if (registeredSeries > 4)
                 {
@@ -168,7 +168,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                 players.ToDictionary(x => x.Id),
                 resultsForPlayer);
             ApplyChange(matchCommentaryEvent);
-            publish.Invoke(new MatchRegisteredTask(RosterId, BitsMatchId, TeamScore, OpponentScore));
+            publish.Invoke(new MatchRegisteredTask(RosterId!, BitsMatchId, TeamScore, OpponentScore));
         }
 
         public void RegisterSerie(MatchTable[] matchTables)
@@ -186,7 +186,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             MatchSerie matchSerie = new(registeredSeries + 1, matchTables);
             VerifyPlayers(matchSerie);
 
-            ApplyChange(new SerieRegistered(matchSerie, BitsMatchId, RosterId));
+            ApplyChange(new SerieRegistered(matchSerie, BitsMatchId, RosterId!));
             DoAwardMedals(registeredSeries);
         }
 
@@ -207,7 +207,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
         public void ClearMedals()
         {
-            ApplyChange(new ClearMedals(BitsMatchId, RosterId));
+            ApplyChange(new ClearMedals(BitsMatchId, RosterId!));
         }
 
         public void AwardScores()
@@ -219,7 +219,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                 dict[key] = totalScore;
             }
 
-            ApplyChange(new ScoreAwarded(dict, BitsMatchId, RosterId));
+            ApplyChange(new ScoreAwarded(dict, BitsMatchId, RosterId!));
         }
 
         private static void VerifyScores(int teamScore, int opponentScore)
@@ -254,7 +254,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
                     AwardedMedal medal = new(
                         BitsMatchId,
-                        RosterId,
+                        RosterId!,
                         key,
                         MedalType.PinsInSerie,
                         pinsResult.Pins);
@@ -275,7 +275,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
                     AwardedMedal medal = new(
                         BitsMatchId,
-                        RosterId,
+                        RosterId!,
                         key,
                         MedalType.TotalScore,
                         4);
@@ -344,7 +344,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             MatchAnalyzer commentaryAnalyzer = new(matchSeries, opponentSeries, players);
             string summaryText = commentaryAnalyzer.GetSummaryText();
             string[] bodyText = commentaryAnalyzer.GetBodyText(resultsForPlayer);
-            return new MatchCommentaryEvent(BitsMatchId, RosterId, summaryText, summaryText, bodyText);
+            return new MatchCommentaryEvent(BitsMatchId, RosterId!, summaryText, summaryText, bodyText);
         }
 
         // events
@@ -380,17 +380,17 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             }
         }
 
-        private void Apply(MedalsAwarded e)
+        private void Apply(MedalsAwarded _)
         {
             medalsAwarded = true;
         }
 
-        private void Apply(ClearMedals e)
+        private void Apply(ClearMedals _)
         {
             medalsAwarded = false;
         }
 
-        private void Apply(ScoreAwarded e)
+        private void Apply(ScoreAwarded _)
         {
         }
 
@@ -401,7 +401,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                 Formatting.Indented);
         }
 
-        private void Apply(AwardedMedal e)
+        private void Apply(AwardedMedal _)
         {
         }
     }

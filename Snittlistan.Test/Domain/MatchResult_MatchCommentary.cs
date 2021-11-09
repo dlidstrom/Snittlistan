@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Test.Domain
+﻿#nullable enable
+
+namespace Snittlistan.Test.Domain
 {
     using System;
     using System.Collections.Generic;
@@ -61,10 +63,10 @@
             // Act
             BitsParser bitsParser = new(Players);
             Web.Infrastructure.Bits.BitsMatchResult content = await BitsGateway.GetBitsMatchResult(testCase.BitsMatchId);
-            ParseResult parseResult = bitsParser.Parse(content, testCase.ClubId);
+            ParseResult? parseResult = bitsParser.Parse(content, testCase.ClubId);
 
             // Assert
-            Assert.That(parseResult.Turn, Is.EqualTo(testCase.Turn));
+            Assert.That(parseResult?.Turn, Is.EqualTo(testCase.Turn));
         }
 
         [TestCaseSource(nameof(BitsMatchIdAndCommentaries))]
@@ -104,7 +106,7 @@
             BitsParser bitsParser = new(Players);
 
             Web.Infrastructure.Bits.BitsMatchResult content = await BitsGateway.GetBitsMatchResult(testCase.BitsMatchId);
-            ParseResult parseResult = bitsParser.Parse(content, testCase.ClubId);
+            ParseResult parseResult = bitsParser.Parse(content, testCase.ClubId)!;
             HashSet<string> rosterPlayerIds = new(
                 parseResult.Series.SelectMany(x => x.Tables.SelectMany(y => new[] { y.Game1.Player, y.Game2.Player })));
             Roster roster = new(2017, 1, testCase.BitsMatchId, "Fredrikshof", "A", string.Empty, string.Empty, DateTime.Now, false, OilPatternInformation.Empty)
@@ -117,7 +119,7 @@
             // prepare some results
             Transact(session =>
             {
-                Dictionary<string, Player> nicknameToId = Players.ToDictionary(x => x.Nickname);
+                Dictionary<string, Player> nicknameToId = Players.ToDictionary(x => x.Nickname!);
                 Dictionary<string, int[]> playerResults = new()
                 {
                     [nicknameToId["Ernest"].Id] = new[] { 205 },
@@ -146,7 +148,7 @@
             });
 
             // Act
-            MatchResult matchResult = null;
+            MatchResult? matchResult = null;
             Transact(session =>
             {
                 IEventStoreSession eventStoreSession = Mock.Of<IEventStoreSession>();
@@ -156,7 +158,7 @@
                 command.Execute(session, eventStoreSession, o => { });
             });
 
-            return matchResult;
+            return matchResult!;
         }
 
         private static IEnumerable<TestCase> BitsMatchIdAndCommentaries

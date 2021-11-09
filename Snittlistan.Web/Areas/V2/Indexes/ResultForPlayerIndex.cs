@@ -68,7 +68,7 @@ namespace Snittlistan.Web.Areas.V2.Indexes
 
         public class Result
         {
-            public string PlayerId { get; set; }
+            public string PlayerId { get; set; } = null!;
 
             public int Season { get; set; }
 
@@ -78,7 +78,7 @@ namespace Snittlistan.Web.Areas.V2.Indexes
 
             public int TotalScore { get; set; }
 
-            public IEnumerable<Game> Last5 { get; set; }
+            public IEnumerable<Game> Last5 { get; set; } = null!;
 
             public int Last5TotalSeries { get; set; }
 

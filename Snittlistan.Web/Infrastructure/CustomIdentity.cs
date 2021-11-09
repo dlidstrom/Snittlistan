@@ -1,10 +1,12 @@
-﻿namespace Snittlistan.Web.Infrastructure
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure
 {
     using System.Security.Principal;
 
     public class CustomIdentity : GenericIdentity
     {
-        public CustomIdentity(string playerId, string name, string email, string uniqueId)
+        public CustomIdentity(string? playerId, string name, string email, string uniqueId)
             : base(name)
         {
             PlayerId = playerId;
@@ -16,7 +18,6 @@
 
         public string UniqueId { get; }
 
-        // nullable => User
-        public string PlayerId { get; }
+        public string? PlayerId { get; }
     }
 }

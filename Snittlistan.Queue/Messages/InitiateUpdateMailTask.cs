@@ -1,10 +1,12 @@
-﻿namespace Snittlistan.Queue.Messages
+﻿#nullable enable
+
+namespace Snittlistan.Queue.Messages
 {
     using System;
 
     public class InitiateUpdateMailTask : ITask
     {
-        public InitiateUpdateMailTask(string rosterId, int rosterVersion, Guid correlationId)
+        public InitiateUpdateMailTask(string rosterId, int _, Guid correlationId)
         {
             RosterId = rosterId;
             CorrelationId = correlationId;

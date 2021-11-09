@@ -46,7 +46,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             Dictionary<string, Player> playersDict = DocumentSession.Query<Player, PlayerSearch>()
                 .Where(p => p.PlayerStatus == Player.Status.Active)
                 .ToDictionary(x => x.Id);
-            EliteMedalsViewModel viewModel = new(season, playersDict, eliteMedals, seasonResults);
+            EliteMedalsViewModel viewModel = new(season, playersDict, eliteMedals, seasonResults!);
 
             string templateFilename = ConfigurationManager.AppSettings["ElitemedalsTemplateFilename"];
             MemoryStream stream = new();

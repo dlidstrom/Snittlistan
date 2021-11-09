@@ -8,7 +8,7 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
     public class RegisterBitsResult4
     {
         [Required]
-        public string RosterId { get; set; }
+        public string RosterId { get; set; } = null!;
 
         public int TeamScore { get; set; }
 
@@ -17,12 +17,12 @@ namespace Snittlistan.Web.Areas.V2.ViewModels
         public int BitsMatchId { get; set; }
 
         [Required]
-        public ResultSeries4ReadModel.Serie Serie1 { get; set; }
+        public ResultSeries4ReadModel.Serie Serie1 { get; set; } = null!;
 
-        public ResultSeries4ReadModel.Serie Serie2 { get; set; }
+        public ResultSeries4ReadModel.Serie? Serie2 { get; set; }
 
-        public ResultSeries4ReadModel.Serie Serie3 { get; set; }
+        public ResultSeries4ReadModel.Serie? Serie3 { get; set; }
 
-        public ResultSeries4ReadModel.Serie Serie4 { get; set; }
+        public ResultSeries4ReadModel.Serie? Serie4 { get; set; }
     }
 }

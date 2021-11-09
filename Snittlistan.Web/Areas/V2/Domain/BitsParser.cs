@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.Domain
+﻿#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Domain
 {
     using System;
     using System.Collections.Generic;
@@ -22,13 +24,13 @@
             string awayTeamName;
             if (headInfo.MatchHomeClubId == clubId)
             {
-                homeTeamName = headInfo.MatchHomeTeamAlias;
-                awayTeamName = headInfo.MatchAwayTeamAlias;
+                homeTeamName = headInfo.MatchHomeTeamAlias!;
+                awayTeamName = headInfo.MatchAwayTeamAlias!;
             }
             else if (headInfo.MatchAwayClubId == clubId)
             {
-                homeTeamName = headInfo.MatchAwayTeamAlias;
-                awayTeamName = headInfo.MatchHomeTeamAlias;
+                homeTeamName = headInfo.MatchAwayTeamAlias!;
+                awayTeamName = headInfo.MatchHomeTeamAlias!;
             }
             else
             {
@@ -39,15 +41,15 @@
                 homeTeamName,
                 awayTeamName,
                 headInfo.MatchRoundId,
-                headInfo.MatchDate.ToDateTime(headInfo.MatchTime),
-                headInfo.MatchHallName,
+                headInfo.MatchDate!.ToDateTime(headInfo.MatchTime),
+                headInfo.MatchHallName!,
                 OilPatternInformation.Create(
-                    headInfo.MatchOilPatternName,
+                    headInfo.MatchOilPatternName!,
                     headInfo.MatchOilPatternId));
             return result;
         }
 
-        public ParseResult Parse(BitsMatchResult bitsMatchResult, int clubId)
+        public ParseResult? Parse(BitsMatchResult bitsMatchResult, int clubId)
         {
             if (bitsMatchResult.HeadInfo.MatchFinished == false)
             {
@@ -58,12 +60,12 @@
             if (bitsMatchResult.HeadInfo.MatchHomeClubId == clubId)
             {
                 List<ResultSeriesReadModel.Serie> homeSeries = CreateSeries(
-                    bitsMatchResult.HeadResultInfo.HomeHeadDetails,
+                    bitsMatchResult.HeadResultInfo.HomeHeadDetails!,
                     bitsMatchResult.MatchScores,
                     x => GetPlayerId(x).Id,
                     0);
                 List<ResultSeriesReadModel.Serie> awaySeries = CreateSeries(
-                    bitsMatchResult.HeadResultInfo.HomeHeadDetails,
+                    bitsMatchResult.HeadResultInfo.HomeHeadDetails!,
                     bitsMatchResult.MatchScores,
                     x => x,
                     2);
@@ -77,12 +79,12 @@
             else if (bitsMatchResult.HeadInfo.MatchAwayClubId == clubId)
             {
                 List<ResultSeriesReadModel.Serie> homeSeries = CreateSeries(
-                    bitsMatchResult.HeadResultInfo.HomeHeadDetails,
+                    bitsMatchResult.HeadResultInfo.HomeHeadDetails!,
                     bitsMatchResult.MatchScores,
                     x => GetPlayerId(x).Id,
                     2);
                 List<ResultSeriesReadModel.Serie> awaySeries = CreateSeries(
-                    bitsMatchResult.HeadResultInfo.HomeHeadDetails,
+                    bitsMatchResult.HeadResultInfo.HomeHeadDetails!,
                     bitsMatchResult.MatchScores,
                     x => x,
                     0);
@@ -112,17 +114,17 @@
                     List<ResultSeriesReadModel.Table> tables = new();
                     for (int j = 0; j < 4; j++)
                     {
-                        Score score1 = matchScores.Series[i].Boards[0 + offset].Scores[j];
-                        Score score2 = matchScores.Series[i].Boards[1 + offset].Scores[j];
+                        Score score1 = matchScores.Series![i].Boards![0 + offset].Scores![j];
+                        Score score2 = matchScores.Series[i].Boards![1 + offset].Scores![j];
                         ResultSeriesReadModel.Game game1 = new()
                         {
                             Pins = score1.ScoreScore,
-                            Player = getPlayer.Invoke(score1.PlayerName)
+                            Player = getPlayer.Invoke(score1.PlayerName!)
                         };
                         ResultSeriesReadModel.Game game2 = new()
                         {
                             Pins = score2.ScoreScore,
-                            Player = getPlayer.Invoke(score2.PlayerName)
+                            Player = getPlayer.Invoke(score2.PlayerName!)
                         };
                         ResultSeriesReadModel.Table table = new()
                         {
@@ -144,7 +146,7 @@
             }
         }
 
-        public Parse4Result Parse4(BitsMatchResult bitsMatchResult, int clubId)
+        public Parse4Result? Parse4(BitsMatchResult bitsMatchResult, int clubId)
         {
             if (bitsMatchResult.HeadInfo.MatchFinished == false)
             {
@@ -155,15 +157,15 @@
             if (bitsMatchResult.HeadInfo.MatchHomeClubId == clubId)
             {
                 List<ResultSeries4ReadModel.Serie> series = new();
-                for (int i = 0; i < bitsMatchResult.HeadResultInfo.HomeHeadDetails.Length; i++)
+                for (int i = 0; i < bitsMatchResult.HeadResultInfo.HomeHeadDetails!.Length; i++)
                 {
                     HeadDetail homeHeadDetail = bitsMatchResult.HeadResultInfo.HomeHeadDetails[i];
                     List<ResultSeries4ReadModel.Game> games = new();
-                    foreach (Score boardScore in bitsMatchResult.MatchScores.Series[i].Boards[0].Scores)
+                    foreach (Score boardScore in bitsMatchResult.MatchScores.Series![i].Boards![0].Scores!)
                     {
                         ResultSeries4ReadModel.Game game = new()
                         {
-                            Player = GetPlayerId(boardScore.PlayerName).Id,
+                            Player = GetPlayerId(boardScore.PlayerName!).Id,
                             Pins = boardScore.ScoreScore,
                             Score = boardScore.LaneScore
                         };
@@ -189,15 +191,15 @@
             else if (bitsMatchResult.HeadInfo.MatchAwayClubId == clubId)
             {
                 List<ResultSeries4ReadModel.Serie> series = new();
-                for (int i = 0; i < bitsMatchResult.HeadResultInfo.AwayHeadDetails.Length; i++)
+                for (int i = 0; i < bitsMatchResult.HeadResultInfo.AwayHeadDetails!.Length; i++)
                 {
                     HeadDetail awayHeadDetail = bitsMatchResult.HeadResultInfo.AwayHeadDetails[i];
                     List<ResultSeries4ReadModel.Game> games = new();
-                    foreach (Score boardScore in bitsMatchResult.MatchScores.Series[i].Boards[1].Scores)
+                    foreach (Score boardScore in bitsMatchResult.MatchScores.Series![i].Boards![1].Scores!)
                     {
                         ResultSeries4ReadModel.Game game = new()
                         {
-                            Player = GetPlayerId(boardScore.PlayerName).Id,
+                            Player = GetPlayerId(boardScore.PlayerName!).Id,
                             Pins = boardScore.ScoreScore,
                             Score = boardScore.LaneScore
                         };
