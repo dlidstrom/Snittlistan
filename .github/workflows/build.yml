@@ -40,7 +40,7 @@ jobs:
           ${{ runner.os }}-nuget-
 
     - name: Restore
-      if: steps.cache.outputs.cache-hit != 'true'
+      #if: steps.cache.outputs.cache-hit != 'true'
       run: nuget restore Snittlistan.sln
 
     - name: Build
