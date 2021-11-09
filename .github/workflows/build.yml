@@ -31,7 +31,7 @@ jobs:
     - uses: actions/cache@v2
       id: cache
       with:
-        path: ${{ github.workspace }}/.nuget/packages
+        path: packages
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
         restore-keys: |
           ${{ runner.os }}-nuget-
