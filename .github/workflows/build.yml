@@ -44,7 +44,7 @@ jobs:
       run: nuget restore Snittlistan.sln
 
     - name: Build
-      run: msbuild build.build -t:All -p:Version=$env:BUILD_VERSION -p:WIX_PATH=$env:wix
+      run: msbuild build.build -t:All -p:Version=$env:BUILD_VERSION -p:WIX_PATH=$env:wix -p:RunTests:true
 
     - name: Push tag
       id: tag
