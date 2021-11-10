@@ -64,7 +64,7 @@
   <!-- Build the application -->
   <Target Name="Build" DependsOnTargets="AssemblyVersion">
     <!-- web projects -->
-    <MSBuild Projects="@(SnittlistanWebProject)" Properties="Configuration=Release;UseWPP_CopyWebApplication=True;PipelineDependsOnBuild=False;OutDir=$(OutputDirectory)\SnittlistanWeb" />
+    <MSBuild Projects="@(SnittlistanWebProject)" Properties="Configuration=Release;UseWPP_CopyWebApplication=True;PipelineDependsOnBuild=False;OutDir=$(OutputDirectory)\SnittlistanWeb;RunTests=true" />
     <MSBuild Projects="@(SnittlistanToolProject)" Properties="Configuration=Release;OutDir=$(OutputDirectory)\SnittlistanTool" />
     <MSBuild Projects="@(SnittlistanQueueProject)" Properties="Configuration=Release;OutDir=$(OutputDirectory)\SnittlistanQueue" />
   </Target>
