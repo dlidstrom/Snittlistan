@@ -95,6 +95,12 @@
         "resolved": "3.13.2",
         "contentHash": "u+fz/lXyR4vlamySNAEMrXvh+GhAQiB6/aVZtU5WjivR5zF26Ui0tfteDtWqT90k9D8y6g8rFKYQC97Z7d195w=="
       },
+      "NUnit.ConsoleRunner": {
+        "type": "Direct",
+        "requested": "[3.12.0, )",
+        "resolved": "3.12.0",
+        "contentHash": "ZUtI8leU9ozCjLy4ZZ2X6ClU0hxfQtb95VOdmMA4SxIUvf62rIPxoHXS+jghvo5QxgRihGGcEp8xT3vCfgDdsA=="
+      },
       "Castle.Facilities.AspNet.SystemWeb": {
         "type": "Transitive",
         "resolved": "5.1.1",

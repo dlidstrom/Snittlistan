@@ -67,6 +67,7 @@
     <MSBuild Projects="@(SnittlistanWebProject)" Properties="Configuration=Release;UseWPP_CopyWebApplication=True;PipelineDependsOnBuild=False;OutDir=$(OutputDirectory)\SnittlistanWeb;RunTests=true" />
     <MSBuild Projects="@(SnittlistanToolProject)" Properties="Configuration=Release;OutDir=$(OutputDirectory)\SnittlistanTool" />
     <MSBuild Projects="@(SnittlistanQueueProject)" Properties="Configuration=Release;OutDir=$(OutputDirectory)\SnittlistanQueue" />
+    <Exec Command="$(NUnitConsoleRunnerPath)tools\nunit3-console.exe Snittlistan.Test\bin\Release\Snittlistan.Test.dll" />
   </Target>
 
   <!-- Preparations for WiX -->
