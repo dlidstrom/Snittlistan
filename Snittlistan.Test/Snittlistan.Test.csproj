@@ -47,7 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiControllers\Infrastructure\IdGenerator.cs" />
+    <Compile Include="ApiControllers\Infrastructure\InMemoryContext.cs" />
     <Compile Include="ApiControllers\Task_Post_RegisterMatch.cs" />
+    <Compile Include="ApiControllers\Infrastructure\InMemoryDbAsyncEnumerable.cs" />
+    <Compile Include="ApiControllers\Infrastructure\InMemoryDbAsyncEnumerator.cs" />
+    <Compile Include="ApiControllers\Infrastructure\InMemoryDbAsyncQueryProvider.cs" />
     <Compile Include="ApiControllers\WebApiIntegrationTest.cs" />
     <Compile Include="BitsClientTest.cs" />
     <Compile Include="BitsGateway.cs" />
