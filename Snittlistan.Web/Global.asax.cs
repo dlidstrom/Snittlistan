@@ -219,7 +219,6 @@ namespace Snittlistan.Web
             {
                 Container = new WindsorContainer();
 
-                SiteWideConfiguration siteWideConfiguration;
                 Databases databases = databasesFactory.Invoke();
                 Tenant[] tenants = databases.Snittlistan.Tenants.ToArray();
 
@@ -246,7 +245,7 @@ namespace Snittlistan.Web
                     new ControllerInstaller(),
                     new EventMigratorInstaller(),
                     new EventStoreSessionInstaller(),
-                    new RavenInstaller(siteWideConfiguration),
+                    new RavenInstaller(),
                     new DatabaseContextInstaller(databasesFactory),
                     new ServicesInstaller(),
                     new MsmqInstaller(),
