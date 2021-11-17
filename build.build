@@ -20,6 +20,7 @@
     <SnittlistanWebProject Include="Snittlistan.Web\Snittlistan.Web.csproj" />
     <SnittlistanToolProject Include="Snittlistan.Tool\Snittlistan.Tool.csproj" />
     <SnittlistanQueueProject Include="Snittlistan.Queue.WindowsServiceHost\Snittlistan.Queue.WindowsServiceHost.csproj" />
+    <SnittlistanTestProject Include="Snittlistan.Test\Snittlistan.Test.csproj" />
     <AssemblyVersionFiles Include="**\Properties\AssemblyInfo.cs" />
   </ItemGroup>
 
@@ -67,7 +68,8 @@
     <MSBuild Projects="@(SnittlistanWebProject)" Properties="Configuration=Release;UseWPP_CopyWebApplication=True;PipelineDependsOnBuild=False;OutDir=$(OutputDirectory)\SnittlistanWeb;RunTests=true" />
     <MSBuild Projects="@(SnittlistanToolProject)" Properties="Configuration=Release;OutDir=$(OutputDirectory)\SnittlistanTool" />
     <MSBuild Projects="@(SnittlistanQueueProject)" Properties="Configuration=Release;OutDir=$(OutputDirectory)\SnittlistanQueue" />
-    <Exec Command="$(NUnitConsoleRunnerPath)tools\nunit3-console.exe Snittlistan.Test\bin\Release\Snittlistan.Test.dll" />
+    <MSBuild Projects="@(SnittlistanTestProject)" Properties="Configurstion=Release;OutDir=$(OutputDirectory)\SnittlistanTest" />
+    <Exec Command="$(NUnitConsoleRunnerPath)tools\nunit3-console.exe $(OutputDirectory)\SnittlistanTest\Snittlistan.Test.dll" />
   </Target>
 
   <!-- Preparations for WiX -->
