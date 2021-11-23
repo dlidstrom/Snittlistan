@@ -15,8 +15,10 @@ namespace Snittlistan.Test.ApiControllers
     using NUnit.Framework;
     using Raven.Client;
     using Snittlistan.Queue;
+    using Snittlistan.Test.ApiControllers.Infrastructure;
     using Snittlistan.Web;
     using Snittlistan.Web.Infrastructure.Attributes;
+    using Snittlistan.Web.Infrastructure.Database;
     using Snittlistan.Web.Infrastructure.Installers;
     using Snittlistan.Web.Infrastructure.IoC;
 
@@ -24,24 +26,29 @@ namespace Snittlistan.Test.ApiControllers
     {
         protected HttpClient Client { get; private set; } = null!;
 
+        protected Databases Databases { get; private set; } = null!;
+
         private IWindsorContainer Container { get; set; } = null!;
 
         [SetUp]
-        public void SetUp()
+        public async Task SetUp()
         {
             HttpConfiguration configuration = new();
             Container = new WindsorContainer();
+            InMemoryContext inMemoryContext = new();
             _ = Container.Install(
                 new ControllerInstaller(),
                 new ApiControllerInstaller(),
                 new ControllerFactoryInstaller(),
                 new RavenInstaller(DocumentStoreMode.InMemory),
+                new TaskHandlerInstaller(),
+                new DatabaseContextInstaller(() => new(inMemoryContext, inMemoryContext)),
                 EventStoreInstaller.FromAssembly(typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),
                 new EventStoreSessionInstaller(LifestyleType.Scoped));
             _ = Container.Register(Component.For<IMsmqTransaction>().Instance(Mock.Of<IMsmqTransaction>()));
-            Task.Run(async () => await OnSetUp(Container)).Wait();
+            await OnSetUp(Container);
 
-            MvcApplication.Bootstrap(Container, configuration);
+            MvcApplication.Bootstrap(Container, configuration, () => new(inMemoryContext, inMemoryContext));
             Client = new HttpClient(new HttpServer(configuration));
             OnlyLocalAllowedAttribute.SkipValidation = true;
 

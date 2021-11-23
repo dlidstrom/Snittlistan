@@ -4,9 +4,8 @@
     using System.Linq;
     using System.Web;
     using Castle.MicroKernel;
-    using Models;
     using Raven.Client;
-    using Snittlistan.Queue.Models;
+    using Snittlistan.Queue.Infrastructure;
 
     public class HostBasedComponentSelector : IHandlerSelector
     {
@@ -14,8 +13,7 @@
         {
             try
             {
-                GetHostname();
-                bool result = service == typeof(TenantConfiguration)
+                bool result = service == typeof(Tenant)
                     || service == typeof(IDocumentStore);
                 return result;
             }

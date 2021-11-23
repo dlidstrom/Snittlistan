@@ -1,7 +1,7 @@
 <Project Name="Snittlistan" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!--
-    Version is required. Run like this:
-    msbuild build.msbuild /property:Version=1.0.0
+    Run like this:
+    msbuild build.msbuild -t:All -p:Version=1.0.0.0 -p:WIX_PATH=<path to wix binaries> [-p:WixTargetsPath=<path to wix.targets>]
   -->
   <PropertyGroup>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
@@ -20,6 +20,7 @@
     <SnittlistanWebProject Include="Snittlistan.Web\Snittlistan.Web.csproj" />
     <SnittlistanToolProject Include="Snittlistan.Tool\Snittlistan.Tool.csproj" />
     <SnittlistanQueueProject Include="Snittlistan.Queue.WindowsServiceHost\Snittlistan.Queue.WindowsServiceHost.csproj" />
+    <SnittlistanTestProject Include="Snittlistan.Test\Snittlistan.Test.csproj" />
     <AssemblyVersionFiles Include="**\Properties\AssemblyInfo.cs" />
   </ItemGroup>
 
@@ -45,7 +46,7 @@
     <RemoveDir Directories="$(OutputDirectory)" />
   </Target>
 
-  <Target Name="AssemblyVersion" Inputs="@(AssemblyVersionFiles)" Outputs="UpdatedAssemblyVersionFiles" DependsOnTargets="Initialize">
+  <Target Name="AssemblyVersion" DependsOnTargets="Initialize" Inputs="@(AssemblyVersionFiles)" Outputs="UpdatedAssemblyVersionFiles">
     <Attrib Files="%(AssemblyVersionFiles.FullPath)" Normal="true"/>
     <AssemblyInfo CodeLanguage="CS"
                   OutputFile="%(AssemblyVersionFiles.FullPath)"
@@ -67,7 +68,12 @@
     <MSBuild Projects="@(SnittlistanWebProject)" Properties="Configuration=Release;UseWPP_CopyWebApplication=True;PipelineDependsOnBuild=False;OutDir=$(OutputDirectory)\SnittlistanWeb;RunTests=true" />
     <MSBuild Projects="@(SnittlistanToolProject)" Properties="Configuration=Release;OutDir=$(OutputDirectory)\SnittlistanTool" />
     <MSBuild Projects="@(SnittlistanQueueProject)" Properties="Configuration=Release;OutDir=$(OutputDirectory)\SnittlistanQueue" />
-    <Exec Command="$(NUnitConsoleRunnerPath)tools\nunit3-console.exe Snittlistan.Test\bin\Release\Snittlistan.Test.dll" />
+    <MSBuild Projects="@(SnittlistanTestProject)" Properties="Configurstion=Release;OutDir=$(OutputDirectory)\SnittlistanTest" />
+    <Exec Command="$(NUnitConsoleRunnerPath)tools\nunit3-console.exe $(OutputDirectory)\SnittlistanTest\Snittlistan.Test.dll"
+          IgnoreExitCode="true" />
+    <XslTransformation XmlInputPaths="TestResult.xml"
+                       OutputPaths="$(OutputDirectory)\TestResult.html"
+                       XslInputPath="nunit.xsl" />
   </Target>
 
   <!-- Preparations for WiX -->

@@ -5,11 +5,11 @@ namespace Snittlistan.Web.Infrastructure.Database
     using System.Data.Entity;
     using Npgsql.NameTranslation;
 
-    public class BitsContext : DbContext
+    public class BitsContext : DbContext, IBitsContext
     {
-        public DbSet<Bits_Team> Teams { get; set; } = null!;
+        public IDbSet<Bits_Team> Teams { get; set; } = null!;
 
-        public DbSet<Bits_Hall> Hallar { get; set; } = null!;
+        public IDbSet<Bits_Hall> Hallar { get; set; } = null!;
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
