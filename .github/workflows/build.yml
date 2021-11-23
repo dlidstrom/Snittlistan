@@ -60,13 +60,13 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         tag: ${{ env.BUILD_VERSION }}
 
-    - name: Comment pull request
-      uses: machine-learning-apps/pr-comment@master
-      if: ${{ github.event_name == 'pull_request' }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        path: Build\_build\TestResult.html
+    #- name: Comment pull request
+    #  uses: machine-learning-apps/pr-comment@master
+    #  if: ${{ github.event_name == 'pull_request' }}
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  with:
+    #    path: Build\_build\TestResult.html
 
     - name: Create release
       id: create_release
