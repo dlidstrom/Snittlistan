@@ -54,7 +54,7 @@ namespace Snittlistan.Test.ApiControllers
             OnlyLocalAllowedAttribute.SkipValidation = true;
 
             LoggingExceptionLogger.ExceptionHandler += ExceptionHandler;
-            Task.Run(async () => await Act()).Wait();
+            await Act();
         }
 
         [TearDown]
