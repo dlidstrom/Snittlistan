@@ -3,7 +3,7 @@
   <xsl:output omit-xml-declaration="yes" indent="yes" />
   <xsl:template match="/test-run">
     <html>
-    <style type="text/css">
+    <!--<style type="text/css">
 
       .strong {
       font-weight: bold;
@@ -31,7 +31,7 @@
       border-collapse: collapse;
       }
 
-    </style>
+    </style>-->
 
     <body>
 
