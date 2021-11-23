@@ -17,6 +17,7 @@ namespace Snittlistan.Test.ApiControllers
     using Snittlistan.Queue;
     using Snittlistan.Test.ApiControllers.Infrastructure;
     using Snittlistan.Web;
+    using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Attributes;
     using Snittlistan.Web.Infrastructure.Database;
     using Snittlistan.Web.Infrastructure.Installers;
@@ -52,6 +53,7 @@ namespace Snittlistan.Test.ApiControllers
             Client = new HttpClient(new HttpServer(configuration));
             OnlyLocalAllowedAttribute.SkipValidation = true;
 
+            LoggingExceptionLogger.ExceptionHandler += ExceptionHandler;
             Task.Run(async () => await Act()).Wait();
         }
 
@@ -82,6 +84,11 @@ namespace Snittlistan.Test.ApiControllers
         protected virtual Task OnSetUp(IWindsorContainer container)
         {
             return Task.CompletedTask;
+        }
+
+        private static void ExceptionHandler(object sender, Exception exception)
+        {
+            Assert.Fail(exception.Demystify().ToString());
         }
 
         private void WaitForIndexing()
