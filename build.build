@@ -69,9 +69,9 @@
     <MSBuild Projects="@(SnittlistanToolProject)" Properties="Configuration=Release;OutDir=$(OutputDirectory)\SnittlistanTool" />
     <MSBuild Projects="@(SnittlistanQueueProject)" Properties="Configuration=Release;OutDir=$(OutputDirectory)\SnittlistanQueue" />
     <MSBuild Projects="@(SnittlistanTestProject)" Properties="Configurstion=Release;OutDir=$(OutputDirectory)\SnittlistanTest" />
-    <Exec Command="$(NUnitConsoleRunnerPath)tools\nunit3-console.exe --out=$(OutputDirectory)\TestResult.xml $(OutputDirectory)\SnittlistanTest\Snittlistan.Test.dll"
+    <Exec Command="$(NUnitConsoleRunnerPath)tools\nunit3-console.exe $(OutputDirectory)\SnittlistanTest\Snittlistan.Test.dll"
           IgnoreExitCode="true" />
-    <XslTransformation XmlInputPaths="$(OutputDirectory)\TestResult.xml"
+    <XslTransformation XmlInputPaths="TestResult.xml"
                        OutputPaths="$(OutputDirectory)\TestResult.html"
                        XslInputPath="nunit.xsl" />
   </Target>
