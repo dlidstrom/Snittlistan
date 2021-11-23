@@ -57,10 +57,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             try
             {
                 Log.Info("Begin");
+                int tenantId = TenantConfiguration.TenantId;
                 IMessageContext messageContext = (IMessageContext)Activator.CreateInstance(
                     typeof(MessageContext<>).MakeGenericType(taskObject.GetType()),
                     taskObject,
-                    TenantConfiguration.TenantId,
+                    tenantId,
                     request.CorrelationId,
                     request.MessageId,
                     MsmqTransaction);
@@ -82,16 +83,17 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
         {
             // TODO save to database
             Guid correlationId = request.CorrelationId ?? default;
+            int tenantId = TenantConfiguration.TenantId;
             MessageEnvelope envelope = new(
                 task,
-                TenantConfiguration.TenantId,
+                tenantId,
                 correlationId,
                 request.MessageId,
                 Guid.NewGuid());
             MsmqTransaction.PublishMessage(envelope);
             _ = Databases.Snittlistan.PublishedTasks.Add(new(
                 task,
-                TenantConfiguration.TenantId,
+                tenantId,
                 correlationId,
                 request.MessageId,
                 envelope.MessageId,

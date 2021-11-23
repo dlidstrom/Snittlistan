@@ -5,15 +5,15 @@ namespace Snittlistan.Web.Infrastructure.Database
     public class Databases
     {
         public Databases(
-            SnittlistanContext snittlistanContext,
-            BitsContext bitsContext)
+            ISnittlistanContext snittlistanContext,
+            IBitsContext bitsContext)
         {
             Snittlistan = snittlistanContext;
             Bits = bitsContext;
         }
 
-        public SnittlistanContext Snittlistan { get; }
+        public ISnittlistanContext Snittlistan { get; }
 
-        public BitsContext Bits { get; }
+        public IBitsContext Bits { get; }
     }
 }

@@ -17,12 +17,10 @@ namespace Snittlistan.Web.Infrastructure.Installers
     public class RavenInstaller : IWindsorInstaller
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-        private readonly SiteWideConfiguration? siteWideConfiguration;
         private readonly DocumentStoreMode mode;
 
-        public RavenInstaller(SiteWideConfiguration siteWideConfiguration)
+        public RavenInstaller()
         {
-            this.siteWideConfiguration = siteWideConfiguration;
             mode = MvcApplication.Mode switch
             {
                 ApplicationMode.Debug => DocumentStoreMode.Server,
@@ -136,7 +134,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
                 case DocumentStoreMode.Server:
                     store = new DocumentStore
                     {
-                        Url = siteWideConfiguration!.DatabaseUrl,
+                        Url = "http://localhost:8080",
                         DefaultDatabase = tenantConfiguration.DatabaseName
                     };
                     break;
