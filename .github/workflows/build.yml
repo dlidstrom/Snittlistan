@@ -40,7 +40,7 @@ jobs:
           ${{ runner.os }}-nuget-
 
     - name: Restore
-      if: steps.cache.outputs.cache-hit != 'true'
+      #if: steps.cache.outputs.cache-hit != 'true'
       run: |
         nuget restore Snittlistan.sln
 
@@ -74,8 +74,11 @@ jobs:
       with:
         #github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
-          github.issues.createComment({ issue_number, owner, repo, body: 'Hello world ! 👋' });
+          const fs = require('fs');
+          const filename = "TestResult.html";
+          const contents = fs.readFileSync(filename, "utf8");
+          const { issue: { number: issue_number }, repo: { owner, repo } } = context;
+          github.issues.createComment({ issue_number, owner, repo, body: contents });
 
     - name: Create release
       id: create_release
