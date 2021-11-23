@@ -48,7 +48,7 @@ namespace Snittlistan.Test.ApiControllers
             _ = Container.Register(Component.For<IMsmqTransaction>().Instance(Mock.Of<IMsmqTransaction>()));
             await OnSetUp(Container);
 
-            MvcApplication.Bootstrap(Container, configuration);
+            MvcApplication.Bootstrap(Container, configuration, () => new(inMemoryContext, inMemoryContext));
             Client = new HttpClient(new HttpServer(configuration));
             OnlyLocalAllowedAttribute.SkipValidation = true;
 
