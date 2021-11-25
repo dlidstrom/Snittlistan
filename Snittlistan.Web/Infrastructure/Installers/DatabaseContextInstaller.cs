@@ -2,6 +2,7 @@
 
 namespace Snittlistan.Web.Infrastructure.Installers
 {
+    using System;
     using Castle.MicroKernel.Registration;
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
@@ -11,6 +12,13 @@ namespace Snittlistan.Web.Infrastructure.Installers
 
     public class DatabaseContextInstaller : IWindsorInstaller
     {
+        private readonly Func<Databases> databases;
+
+        public DatabaseContextInstaller(Func<Databases> databases)
+        {
+            this.databases = databases;
+        }
+
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             NpgsqlLogManager.Provider = new NLogLoggingProvider();
@@ -18,7 +26,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
 
             _ = container.Register(
                 Component.For<Databases>()
-                    .UsingFactoryMethod(_ => new Databases(new(), new()))
+                    .UsingFactoryMethod(databases)
                     .LifestylePerWebRequest());
         }
     }
