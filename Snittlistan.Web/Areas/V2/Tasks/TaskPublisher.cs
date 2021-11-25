@@ -11,7 +11,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
     using Raven.Client;
     using Snittlistan.Queue;
     using Snittlistan.Queue.Messages;
-    using Snittlistan.Queue.Models;
+    using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Database;
 
     public class TaskPublisher
@@ -20,26 +20,37 @@ namespace Snittlistan.Web.Areas.V2.Tasks
 
         public Databases Databases { get; set; } = null!;
 
-        public TenantConfiguration TenantConfiguration { get; set; } = null!;
-
-        public void PublishTask(ITask task, string createdBy)
+        public async Task PublishTask(ITask task, string createdBy)
         {
-            DoPublishDelayedTask(task, DateTime.MinValue, createdBy);
+            await DoPublishDelayedTask(task, DateTime.MinValue, createdBy);
         }
 
-        public void PublishDelayedTask(ITask task, TimeSpan sendAfter, string createdBy)
+        public async Task PublishDelayedTask(ITask task, TimeSpan sendAfter, string createdBy)
         {
             DateTime publishDate = DateTime.Now.Add(sendAfter);
-            DoPublishDelayedTask(task, publishDate, createdBy);
+            await DoPublishDelayedTask(task, publishDate, createdBy);
         }
 
-        private void DoPublishDelayedTask(ITask task, DateTime publishDate, string createdBy)
+        protected async Task<Tenant> GetCurrentTenant()
+        {
+            string hostname = CurrentHttpContext.Instance().Request.ServerVariables["SERVER_NAME"];
+            Tenant tenant = await Databases.Snittlistan.Tenants.SingleOrDefaultAsync(x => x.Hostname == hostname);
+            if (tenant == null)
+            {
+                throw new Exception($"No tenant found for hostname '{hostname}'");
+            }
+
+            return tenant;
+        }
+
+        private async Task DoPublishDelayedTask(ITask task, DateTime publishDate, string createdBy)
         {
             string businessKey = task.BusinessKey.ToString();
+            Tenant tenant = await GetCurrentTenant();
             DelayedTask delayedTask = Databases.Snittlistan.DelayedTasks.Add(new(
                 task,
                 publishDate,
-                TenantConfiguration.TenantId,
+                tenant.TenantId,
                 CorrelationId,
                 null,
                 Guid.NewGuid(),

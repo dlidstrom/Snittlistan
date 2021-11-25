@@ -51,7 +51,7 @@
     <Compile Include="Infrastructure\DatabaseContext.cs" />
     <Compile Include="IMsmqTransaction.cs" />
     <Compile Include="Infrastructure\NLogLoggingProvider.cs" />
-    <Compile Include="Infrastructure\TenantConfiguration.cs" />
+    <Compile Include="Infrastructure\Tenant.cs" />
     <Compile Include="JsonMessageFormatter.cs" />
     <Compile Include="LoggingHandler.cs" />
     <Compile Include="Messages\BusinessKey.cs" />

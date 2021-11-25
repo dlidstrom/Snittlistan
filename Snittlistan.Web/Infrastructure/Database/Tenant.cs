@@ -7,7 +7,6 @@ namespace Snittlistan.Web.Infrastructure.Database
     public class Tenant
     {
         public Tenant(
-            int tenantId,
             string hostname,
             string favicon,
             string appleTouchIcon,
@@ -15,7 +14,6 @@ namespace Snittlistan.Web.Infrastructure.Database
             string webAppTitle,
             int clubId)
         {
-            TenantId = tenantId;
             ClubId = clubId;
             Hostname = hostname;
             Favicon = favicon;

@@ -130,12 +130,12 @@ namespace Snittlistan.Test.ApiControllers.Infrastructure
 
         public int SaveChanges()
         {
-            throw new NotImplementedException();
+            return 0;
         }
 
         public Task<int> SaveChangesAsync()
         {
-            throw new NotImplementedException();
+            return Task.FromResult(0);
         }
     }
 }

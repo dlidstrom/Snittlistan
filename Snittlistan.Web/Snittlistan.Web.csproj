@@ -285,6 +285,7 @@
     <Compile Include="Infrastructure\Attributes\UnhandledExceptionFilter.cs" />
     <Compile Include="Infrastructure\BaseViewPage.cs" />
     <Compile Include="Infrastructure\Bits\BitsClient.cs" />
+    <Compile Include="Infrastructure\CurrentHttpContext.cs" />
     <Compile Include="Infrastructure\LoggingExceptionLogger.cs" />
     <Compile Include="Infrastructure\CustomIdentity.cs" />
     <Compile Include="Infrastructure\CustomPrincipal.cs" />

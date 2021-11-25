@@ -3,9 +3,11 @@
 namespace Snittlistan.Test.ApiControllers
 {
     using System;
+    using System.Collections.Specialized;
     using System.Diagnostics;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using System.Web;
     using System.Web.Http;
     using Castle.Core;
     using Castle.MicroKernel.Registration;
@@ -43,10 +45,16 @@ namespace Snittlistan.Test.ApiControllers
                 new ControllerFactoryInstaller(),
                 new RavenInstaller(DocumentStoreMode.InMemory),
                 new TaskHandlerInstaller(),
-                new DatabaseContextInstaller(() => new(inMemoryContext, inMemoryContext)),
+                new DatabaseContextInstaller(() => new(inMemoryContext, inMemoryContext), LifestyleType.Scoped),
                 EventStoreInstaller.FromAssembly(typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),
                 new EventStoreSessionInstaller(LifestyleType.Scoped));
             _ = Container.Register(Component.For<IMsmqTransaction>().Instance(Mock.Of<IMsmqTransaction>()));
+            HttpRequestBase requestMock =
+                Mock.Of<HttpRequestBase>(x => x.ServerVariables == new NameValueCollection() { { "SERVER_NAME", "TEST" } });
+            HttpContextBase httpContextMock =
+                Mock.Of<HttpContextBase>(x => x.Request == requestMock);
+            _ = inMemoryContext.Tenants.Add(new("TEST", "favicon", "touchicon", "touchiconsize", "title", 51538));
+            CurrentHttpContext.Instance = () => httpContextMock;
             await OnSetUp(Container);
 
             MvcApplication.Bootstrap(Container, configuration, () => new(inMemoryContext, inMemoryContext));
@@ -68,13 +76,13 @@ namespace Snittlistan.Test.ApiControllers
             return Task.CompletedTask;
         }
 
-        protected void Transact(Action<IDocumentSession> action)
+        protected async Task Transact(Func<IDocumentSession, Task> action)
         {
             WaitForIndexing();
 
             using (IDocumentSession session = Container.Resolve<IDocumentStore>().OpenSession())
             {
-                action.Invoke(session);
+                await action.Invoke(session);
                 session.SaveChanges();
             }
 
