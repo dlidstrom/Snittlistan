@@ -44,6 +44,9 @@ jobs:
       run: |
         nuget restore Snittlistan.sln
 
+    - name: Directories
+      run: Get-ChildItem -Directory -Recurse | % { $_.FullName }
+
     - name: Build
       run: msbuild build.build -t:All -p:Version=$env:BUILD_VERSION -p:WIX_PATH=$env:wix -p:NUnitConsoleRunnerPath=packages\nunit.consolerunner\3.12.0\
 
