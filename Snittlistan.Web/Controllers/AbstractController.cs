@@ -40,13 +40,13 @@ namespace Snittlistan.Web.Controllers
         {
             get
             {
-                if (HttpContext.Items["CorrelationId"] is Guid correlationId)
+                if (CurrentHttpContext.Instance().Items["CorrelationId"] is Guid correlationId)
                 {
                     return correlationId;
                 }
 
                 correlationId = Guid.NewGuid();
-                HttpContext.Items["CorrelationId"] = correlationId;
+                CurrentHttpContext.Instance().Items["CorrelationId"] = correlationId;
                 return correlationId;
             }
         }

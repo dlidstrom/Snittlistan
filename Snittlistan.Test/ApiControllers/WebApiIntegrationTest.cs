@@ -3,6 +3,7 @@
 namespace Snittlistan.Test.ApiControllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Diagnostics;
     using System.Net.Http;
@@ -52,7 +53,7 @@ namespace Snittlistan.Test.ApiControllers
             HttpRequestBase requestMock =
                 Mock.Of<HttpRequestBase>(x => x.ServerVariables == new NameValueCollection() { { "SERVER_NAME", "TEST" } });
             HttpContextBase httpContextMock =
-                Mock.Of<HttpContextBase>(x => x.Request == requestMock);
+                Mock.Of<HttpContextBase>(x => x.Request == requestMock && x.Items == new Dictionary<object, object>());
             _ = inMemoryContext.Tenants.Add(new("TEST", "favicon", "touchicon", "touchiconsize", "title", 51538));
             CurrentHttpContext.Instance = () => httpContextMock;
             await OnSetUp(Container);

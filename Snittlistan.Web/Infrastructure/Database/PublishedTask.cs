@@ -9,6 +9,11 @@ namespace Snittlistan.Web.Infrastructure.Database
 
     public class PublishedTask
     {
+        private readonly JsonSerializerSettings settings = new()
+        {
+            TypeNameHandling = TypeNameHandling.All
+        };
+
         public PublishedTask(
             ITask task,
             int tenantId,
@@ -46,16 +51,15 @@ namespace Snittlistan.Web.Infrastructure.Database
         [NotMapped]
         public BusinessKey BusinessKey
         {
-            get => JsonConvert.DeserializeObject<BusinessKey>(BusinessKeyColumn)!;
-            private set => BusinessKeyColumn = JsonConvert.SerializeObject(value);
+            get => JsonConvert.DeserializeObject<BusinessKey>(BusinessKeyColumn, settings)!;
+            private set => BusinessKeyColumn = JsonConvert.SerializeObject(value, settings);
         }
 
         [NotMapped]
         public ITask Task
         {
-            get => (ITask)JsonConvert.DeserializeObject(DataColumn)!;
-
-            private set => DataColumn = JsonConvert.SerializeObject(value);
+            get => (ITask)JsonConvert.DeserializeObject(DataColumn, settings)!;
+            private set => DataColumn = JsonConvert.SerializeObject(value, settings);
         }
 
         [Column("BusinessKey")]

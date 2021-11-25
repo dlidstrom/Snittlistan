@@ -3,12 +3,12 @@
 namespace Snittlistan.Web.Areas.V2.Tasks
 {
     using System;
+    using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Web;
     using System.Web.Hosting;
     using NLog;
-    using Raven.Client;
     using Snittlistan.Queue;
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Infrastructure;
@@ -19,6 +19,8 @@ namespace Snittlistan.Web.Areas.V2.Tasks
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public Databases Databases { get; set; } = null!;
+
+        public List<Task> FallbackTasks { get; set; } = new();
 
         public async Task PublishTask(ITask task, string createdBy)
         {
@@ -56,7 +58,19 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                 Guid.NewGuid(),
                 createdBy));
             Logger.Info("added delayed task: {@delayedTask}", delayedTask);
-            HostingEnvironment.QueueBackgroundWorkItem(async ct => await PublishMessage(businessKey, ct));
+
+            try
+            {
+                HostingEnvironment.QueueBackgroundWorkItem(async ct => await PublishMessage(businessKey, ct));
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "QueueBackgroundWorkItem failed, using fallback");
+                CancellationTokenSource tokenSource = new(10000);
+                CancellationToken cancellationToken = tokenSource.Token;
+                Task fallbackTask = Task.Run(() => PublishMessage(businessKey, cancellationToken));
+                FallbackTasks.Add(fallbackTask);
+            }
 
             async Task PublishMessage(string businessKey, CancellationToken ct)
             {
@@ -72,6 +86,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                         delayedTask.CausationId,
                         delayedTask.MessageId);
                     scope.PublishMessage(message);
+                    Logger.Info("published message {@message}", message);
                 }
                 catch (Exception ex)
                 {
@@ -84,13 +99,13 @@ namespace Snittlistan.Web.Areas.V2.Tasks
         {
             get
             {
-                if (HttpContext.Current.Items["CorrelationId"] is Guid correlationId)
+                if (CurrentHttpContext.Instance().Items["CorrelationId"] is Guid correlationId)
                 {
                     return correlationId;
                 }
 
                 correlationId = Guid.NewGuid();
-                HttpContext.Current.Items["CorrelationId"] = correlationId;
+                CurrentHttpContext.Instance().Items["CorrelationId"] = correlationId;
                 return correlationId;
             }
         }
