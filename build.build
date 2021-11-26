@@ -4,7 +4,7 @@
     msbuild build.msbuild -t:All -p:Version=1.0.0.0 -p:WIX_PATH=<path to wix binaries> [-p:WixTargetsPath=<path to wix.targets>]
   -->
   <PropertyGroup>
-    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <!--<WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>-->
     <!-- for AssemblyInfo element -->
     <MSBuildCommunityTasksPath>.\</MSBuildCommunityTasksPath>
     <OutputName>Snittlistan.Installer</OutputName>
@@ -13,7 +13,8 @@
     <InstallDirectory>_install</InstallDirectory>
   </PropertyGroup>
 
-  <Import Project="$(WixTargetsPath)" />
+  <Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets')" />
   <Import Project="Tools\MSBuild.Community.Tasks.v1.5.0.235\MSBuild.Community.Tasks.Targets" />
 
   <ItemGroup>
@@ -25,7 +26,11 @@
   </ItemGroup>
 
   <Target Name="All">
-    <CallTarget Targets="Initialize;Build;WixPrepare;Wix" />
+    <CallTarget Targets="EnsureWixToolsetInstalled;Initialize;Build;WixPrepare;Wix" />
+  </Target>
+
+  <Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
+     <Error Text="The WiX Toolset v3.11 (or newer) build tools must be installed to build this project." />
   </Target>
 
   <Target Name="Wix">
