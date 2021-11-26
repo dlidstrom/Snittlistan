@@ -10,7 +10,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
 
     public class InitiateUpdateMailTaskHandler : TaskHandler<InitiateUpdateMailTask>
     {
-        public override Task Handle(MessageContext<InitiateUpdateMailTask> context)
+        public override async Task Handle(MessageContext<InitiateUpdateMailTask> context)
         {
             Roster roster = DocumentSession.Load<Roster>(context.Task.RosterId);
             AuditLogEntry auditLogEntry = roster.AuditLogEntries.Single(x => x.CorrelationId == context.CorrelationId);
@@ -23,10 +23,8 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                     context.Task.RosterId,
                     playerId,
                     context.CorrelationId);
-                TaskPublisher.PublishTask(message, "system");
+                await TaskPublisher.PublishTask(message, "system");
             }
-
-            return Task.CompletedTask;
         }
     }
 }

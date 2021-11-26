@@ -51,7 +51,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                     MatchResult4? matchResult = EventStoreSession.Load<MatchResult4>(roster.MatchResultId);
                     Parse4Result? parseResult = parser.Parse4(bitsMatchResult, websiteConfig.ClubId);
                     update.Players = parseResult!.GetPlayerIds();
-                    bool isVerified = matchResult!.Update(
+                    bool isVerified = await matchResult!.Update(
                         context.PublishMessage,
                         roster,
                         parseResult.TeamScore,
@@ -72,7 +72,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                         .ToArray()
                         .ToDictionary(x => x.PlayerId);
                     MatchSerie[] matchSeries = parseResult.CreateMatchSeries();
-                    bool isVerified = matchResult!.Update(
+                    bool isVerified = await matchResult!.Update(
                         context.PublishMessage,
                         roster,
                         parseResult.TeamScore,

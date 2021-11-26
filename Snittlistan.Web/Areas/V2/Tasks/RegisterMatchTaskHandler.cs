@@ -48,7 +48,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
 
                         List<string> allPlayerIds = parse4Result.GetPlayerIds();
                         pendingMatch.SetPlayers(allPlayerIds);
-                        ExecuteCommand(new RegisterMatch4Command(pendingMatch, parse4Result));
+                        await ExecuteCommand(new RegisterMatch4Command(pendingMatch, parse4Result));
                     }
                 }
                 else
@@ -64,7 +64,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
 
                         List<string> allPlayerIds = parseResult.GetPlayerIds();
                         pendingMatch.SetPlayers(allPlayerIds);
-                        ExecuteCommand(new RegisterMatchCommand(pendingMatch, parseResult));
+                        await ExecuteCommand(new RegisterMatchCommand(pendingMatch, parseResult));
                     }
                 }
             }

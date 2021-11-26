@@ -7,6 +7,7 @@ namespace Snittlistan.Web.Models
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
+    using System.Threading.Tasks;
     using System.Web.Mvc;
     using Raven.Imports.Newtonsoft.Json;
     using Snittlistan.Queue.Messages;
@@ -132,10 +133,10 @@ namespace Snittlistan.Web.Models
         /// <summary>
         /// Initializes a new user. Must be done for new users.
         /// </summary>
-        public void Initialize(Action<ITask> publish)
+        public async Task Initialize(Func<ITask, Task> publish)
         {
             ActivationKey = Guid.NewGuid().ToString();
-            publish.Invoke(new NewUserCreatedTask(Email, ActivationKey, Id!));
+            await publish.Invoke(new NewUserCreatedTask(Email, ActivationKey, Id!));
         }
 
         /// <summary>
@@ -149,7 +150,7 @@ namespace Snittlistan.Web.Models
         /// <summary>
         /// Activates a user and sends an invite email. This allows them to log on.
         /// </summary>
-        public void ActivateWithEmail(Action<ITask> publish, UrlHelper urlHelper, string urlScheme)
+        public async Task ActivateWithEmail(Func<ITask, Task> publish, UrlHelper urlHelper, string urlScheme)
         {
             IsActive = true;
             ActivationKey = Guid.NewGuid().ToString();
@@ -161,7 +162,7 @@ namespace Snittlistan.Web.Models
             },
             urlScheme);
             Debug.Assert(activationUri != null, "activationUri != null");
-            publish.Invoke(new UserInvitedTask(activationUri!, Email));
+            await publish.Invoke(new UserInvitedTask(activationUri!, Email));
         }
 
         /// <summary>
