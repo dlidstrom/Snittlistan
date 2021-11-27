@@ -394,7 +394,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         [HttpPost]
         [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
-        public ActionResult EditPlayers(string rosterId, RosterPlayersViewModel vm)
+        public async Task<ActionResult> EditPlayers(string rosterId, RosterPlayersViewModel vm)
         {
             if (ModelState.IsValid == false)
             {
@@ -482,7 +482,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 else
                 {
                     InitiateUpdateMailTask task = new(roster.Id!, roster.Version, CorrelationId);
-                    TaskPublisher.PublishDelayedTask(
+                    await TaskPublisher.PublishDelayedTask(
                         task,
                         TimeSpan.FromMinutes(10),
                         User.Identity.Name);

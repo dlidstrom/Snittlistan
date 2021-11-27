@@ -3,6 +3,7 @@
 namespace Snittlistan.Web.Areas.V2.Commands
 {
     using System;
+    using System.Threading.Tasks;
     using EventStoreLite;
     using Raven.Client;
     using Snittlistan.Queue.Messages;
@@ -29,10 +30,10 @@ namespace Snittlistan.Web.Areas.V2.Commands
             this.summaryHtml = summaryHtml;
         }
 
-        public void Execute(
+        public async Task Execute(
             IDocumentSession session,
             IEventStoreSession eventStoreSession,
-            Action<ITask> publish)
+            Func<ITask, Task> publish)
         {
             MatchResult4 matchResult = new(
                 roster,
@@ -42,7 +43,7 @@ namespace Snittlistan.Web.Areas.V2.Commands
             Player[] players = session.Load<Player>(roster.Players);
 
             MatchSerie4[] matchSeries = result.CreateMatchSeries();
-            matchResult.RegisterSeries(
+            await matchResult.RegisterSeries(
                 publish,
                 matchSeries,
                 players,

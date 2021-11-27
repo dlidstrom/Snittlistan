@@ -5,6 +5,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using Commentary;
     using EventStoreLite;
     using Newtonsoft.Json;
@@ -53,8 +54,8 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
 
         private int TeamScore { get; set; }
 
-        public bool Update(
-            Action<ITask> publish,
+        public async Task<bool> Update(
+            Func<ITask, Task> publish,
             Roster roster,
             int teamScore,
             int opponentScore,
@@ -96,7 +97,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                     bitsMatchId,
                     playerPins.Keys.AsEnumerable().ToArray());
                 ApplyChange(@event);
-                RegisterSeries(publish, matchSeries, players, null, null);
+                await RegisterSeries(publish, matchSeries, players, null, null);
             }
 
             return roster.Date.AddDays(5) < SystemTime.UtcNow;
@@ -120,8 +121,8 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
             DoAwardMedals(registeredSeries);
         }
 
-        public void RegisterSeries(
-            Action<ITask> publish,
+        public async Task RegisterSeries(
+            Func<ITask, Task> publish,
             MatchSerie4[] matchSeries,
             Player[] players,
             string? summaryText,
@@ -163,7 +164,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
                         new[] { bodyText }));
             }
 
-            publish.Invoke(new MatchRegisteredTask(RosterId!, BitsMatchId, TeamScore, OpponentScore));
+            await publish.Invoke(new MatchRegisteredTask(RosterId!, BitsMatchId, TeamScore, OpponentScore));
         }
 
         public void AwardMedals()

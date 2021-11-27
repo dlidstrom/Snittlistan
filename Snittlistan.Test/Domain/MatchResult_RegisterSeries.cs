@@ -5,6 +5,7 @@ namespace Snittlistan.Test.Domain
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using NUnit.Framework;
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Areas.V2.Domain;
@@ -21,7 +22,7 @@ namespace Snittlistan.Test.Domain
         private MatchRegisteredTask? ev;
 
         [SetUp]
-        public void SetUp()
+        public async Task SetUp()
         {
             // Arrange
             Player[] players = new[]
@@ -144,8 +145,8 @@ namespace Snittlistan.Test.Domain
                 }
             };
 
-            matchResult.RegisterSeries(
-                e => ev = (MatchRegisteredTask)e,
+            await matchResult.RegisterSeries(
+                async e => ev = await Task.FromResult((MatchRegisteredTask)e),
                 series,
                 opponentSeries,
                 players,
