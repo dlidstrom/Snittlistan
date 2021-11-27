@@ -46,17 +46,17 @@ namespace Snittlistan.Web.Areas.V2.Tasks
 
         public abstract Task Handle(MessageContext<TTask> context);
 
-        protected void ExecuteCommand(ICommand command)
+        protected async Task ExecuteCommand(ICommand command)
         {
             if (command == null)
             {
                 throw new ArgumentNullException(nameof(command));
             }
 
-            command.Execute(
+            await command.Execute(
                 DocumentSession,
                 EventStoreSession,
-                t => TaskPublisher.PublishTask(t, "system"));
+                async t => await TaskPublisher.PublishTask(t, "system"));
         }
 
         protected TResult ExecuteQuery<TResult>(IQuery<TResult> query)

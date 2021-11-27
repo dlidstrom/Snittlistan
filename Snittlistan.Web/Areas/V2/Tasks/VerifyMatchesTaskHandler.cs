@@ -13,7 +13,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
 
     public class VerifyMatchesTaskHandler : TaskHandler<VerifyMatchesTask>
     {
-        public override Task Handle(MessageContext<VerifyMatchesTask> context)
+        public override async Task Handle(MessageContext<VerifyMatchesTask> context)
         {
             int season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
             Roster[] rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
@@ -50,10 +50,8 @@ namespace Snittlistan.Web.Areas.V2.Tasks
             foreach (VerifyMatchTask verifyMatchMessage in toVerify)
             {
                 Log.Info("Scheduling verification of {bitsMatchId}", verifyMatchMessage.BitsMatchId);
-                context.PublishMessage(verifyMatchMessage);
+                await context.PublishMessage(verifyMatchMessage);
             }
-
-            return Task.CompletedTask;
         }
     }
 }
