@@ -7,24 +7,19 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
     using System.Reflection;
     using System.Threading.Tasks;
     using System.Web.Http;
-    using Castle.MicroKernel;
     using Newtonsoft.Json;
     using NLog;
+    using Snittlistan.Queue;
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Areas.V2.Tasks;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Infrastructure.Attributes;
+    using Snittlistan.Web.Infrastructure.Database;
 
     [OnlyLocalAllowed]
     public class TaskController : AbstractApiController
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-        private readonly IKernel kernel;
-
-        public TaskController(IKernel kernel)
-        {
-            this.kernel = kernel;
-        }
 
         public async Task<IHttpActionResult> Post(TaskRequest request)
         {
@@ -43,7 +38,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             }
 
             Type handlerType = typeof(ITaskHandler<>).MakeGenericType(taskObject.GetType());
-            object handler = kernel.Resolve(handlerType);
+            object handler = Kernel.Resolve(handlerType);
             PropertyInfo? uriInfo = handler.GetType().GetProperty("TaskApiUri");
             if (uriInfo != null)
             {
@@ -57,14 +52,18 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             try
             {
                 Log.Info("Begin");
+                Tenant tenant = await GetCurrentTenant();
+                Guid correlationId = request.CorrelationId ?? default;
+                Guid messageId = request.MessageId ?? default;
                 IMessageContext messageContext = (IMessageContext)Activator.CreateInstance(
                     typeof(MessageContext<>).MakeGenericType(taskObject.GetType()),
                     taskObject,
-                    TenantConfiguration.TenantId,
-                    request.CorrelationId,
-                    request.MessageId,
+                    tenant.TenantId,
+                    correlationId,
+                    messageId,
                     MsmqTransaction);
-                messageContext.PublishMessage = task => DoPublishMessage(request, task);
+                messageContext.PublishMessageDelegate = async (task, tenantId, causationId, msmqTransaction) =>
+                    await DoPublishMessage(request, task, tenantId, causationId, msmqTransaction);
 
                 Task task = (Task)handleMethod.Invoke(handler, new[] { messageContext });
                 await task;
@@ -78,24 +77,29 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             return Ok();
         }
 
-        private void DoPublishMessage(TaskRequest request, ITask task)
+        private Task DoPublishMessage(
+            TaskRequest request,
+            ITask task,
+            int tenantId,
+            Guid causationId,
+            IMsmqTransaction msmqTransaction)
         {
-            // TODO save to database
             Guid correlationId = request.CorrelationId ?? default;
             MessageEnvelope envelope = new(
                 task,
-                TenantConfiguration.TenantId,
+                tenantId,
                 correlationId,
-                request.MessageId,
+                causationId,
                 Guid.NewGuid());
-            MsmqTransaction.PublishMessage(envelope);
+            msmqTransaction.PublishMessage(envelope);
             _ = Databases.Snittlistan.PublishedTasks.Add(new(
                 task,
-                TenantConfiguration.TenantId,
+                tenantId,
                 correlationId,
-                request.MessageId,
+                causationId,
                 envelope.MessageId,
                 "system"));
+            return Task.CompletedTask;
 
             // TODO
             /**

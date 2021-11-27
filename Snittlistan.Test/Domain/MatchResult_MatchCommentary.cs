@@ -96,12 +96,14 @@ namespace Snittlistan.Test.Domain
         private async Task<MatchResult> Act(TestCase testCase)
         {
             // Arrange
-            Transact(session =>
+            await Transact(session =>
             {
                 foreach (Player player in Players)
                 {
                     session.Store(player);
                 }
+
+                return Task.CompletedTask;
             });
             BitsParser bitsParser = new(Players);
 
@@ -117,7 +119,7 @@ namespace Snittlistan.Test.Domain
             RegisterMatchCommand command = new(roster, parseResult);
 
             // prepare some results
-            Transact(session =>
+            await Transact(session =>
             {
                 Dictionary<string, Player> nicknameToId = Players.ToDictionary(x => x.Nickname!);
                 Dictionary<string, int[]> playerResults = new()
@@ -145,17 +147,19 @@ namespace Snittlistan.Test.Domain
                         session.Store(resultForPlayer);
                     }
                 }
+
+                return Task.CompletedTask;
             });
 
             // Act
             MatchResult? matchResult = null;
-            Transact(session =>
+            await Transact(async session =>
             {
                 IEventStoreSession eventStoreSession = Mock.Of<IEventStoreSession>();
                 _ = Mock.Get(eventStoreSession)
                     .Setup(x => x.Store(It.IsAny<AggregateRoot>()))
                     .Callback((AggregateRoot ar) => matchResult = (MatchResult)ar);
-                command.Execute(session, eventStoreSession, o => { });
+                await command.Execute(session, eventStoreSession, o => { return Task.CompletedTask; });
             });
 
             return matchResult!;

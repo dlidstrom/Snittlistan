@@ -5,6 +5,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
+    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
     using EventStoreLite;
@@ -113,7 +114,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         [HttpPost]
         [ActionName("ActivateUser")]
-        public ActionResult ActivateUserConfirmed(string id, bool? invite)
+        public async Task<ActionResult> ActivateUserConfirmed(string id, bool? invite)
         {
             User user = DocumentSession.Load<User>(id);
             if (user == null)
@@ -130,8 +131,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 if (invite.GetValueOrDefault())
                 {
                     Debug.Assert(Request.Url != null, "Request.Url != null");
-                    user.ActivateWithEmail(
-                        t => TaskPublisher.PublishTask(t, User.Identity.Name),
+                    await user.ActivateWithEmail(
+                        async t => await TaskPublisher.PublishTask(t, User.Identity.Name),
                         Url,
                         Request.Url!.Scheme);
                 }
@@ -202,14 +203,14 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         }
 
         [HttpPost]
-        public ActionResult SendMail(SendMailViewModel vm)
+        public async Task<ActionResult> SendMail(SendMailViewModel vm)
         {
             if (!ModelState.IsValid)
             {
                 return View(vm);
             }
 
-            TaskPublisher.PublishTask(
+            await TaskPublisher.PublishTask(
                 EmailTask.Create(vm.Recipient, vm.Subject, vm.Content),
                 User.Identity.Name);
 

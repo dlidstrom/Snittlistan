@@ -3,6 +3,7 @@
 namespace Snittlistan.Web.Controllers
 {
     using System;
+    using System.Threading.Tasks;
     using System.Web.Mvc;
     using EventStoreLite;
     using NLog;
@@ -39,28 +40,28 @@ namespace Snittlistan.Web.Controllers
         {
             get
             {
-                if (HttpContext.Items["CorrelationId"] is Guid correlationId)
+                if (CurrentHttpContext.Instance().Items["CorrelationId"] is Guid correlationId)
                 {
                     return correlationId;
                 }
 
                 correlationId = Guid.NewGuid();
-                HttpContext.Items["CorrelationId"] = correlationId;
+                CurrentHttpContext.Instance().Items["CorrelationId"] = correlationId;
                 return correlationId;
             }
         }
 
-        protected void ExecuteCommand(ICommand command)
+        protected async Task ExecuteCommand(ICommand command)
         {
             if (command == null)
             {
                 throw new ArgumentNullException(nameof(command));
             }
 
-            command.Execute(
+            await command.Execute(
                 DocumentSession,
                 EventStoreSession,
-                task => TaskPublisher.PublishTask(task, User.Identity.Name));
+                async task => await TaskPublisher.PublishTask(task, User.Identity.Name));
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)

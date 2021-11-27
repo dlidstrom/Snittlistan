@@ -1,28 +1,18 @@
-﻿namespace Snittlistan.Web.Infrastructure.IoC
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.IoC
 {
     using System;
     using System.Linq;
-    using System.Web;
     using Castle.MicroKernel;
-    using Models;
     using Raven.Client;
-    using Snittlistan.Queue.Models;
 
     public class HostBasedComponentSelector : IHandlerSelector
     {
         public bool HasOpinionAbout(string key, Type service)
         {
-            try
-            {
-                GetHostname();
-                bool result = service == typeof(TenantConfiguration)
-                    || service == typeof(IDocumentStore);
-                return result;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            bool result = service == typeof(IDocumentStore);
+            return result;
         }
 
         public IHandler SelectHandler(string key, Type service, IHandler[] handlers)
@@ -44,7 +34,7 @@
 
         private static string GetHostname()
         {
-            return HttpContext.Current.Request.ServerVariables["SERVER_NAME"];
+            return CurrentHttpContext.Instance().Request.ServerVariables["SERVER_NAME"];
         }
     }
 }
