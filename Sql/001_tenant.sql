@@ -10,5 +10,6 @@ CREATE TABLE snittlistan.tenant (
     apple_touch_icon_size VARCHAR(255) NOT NULL,
     web_app_title VARCHAR(255) NOT NULL,
     created_date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    created_by VARCHAR(255) NOT NULL
+    created_by VARCHAR(255) NOT NULL,
+    handled_date TIMESTAMP WITHOUT TIME ZONE NULL
 );

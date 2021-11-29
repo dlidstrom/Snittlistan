@@ -4,6 +4,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Data.Entity;
     using System.Reflection;
     using System.Threading.Tasks;
     using System.Web.Http;
@@ -34,6 +35,18 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                 return BadRequest("could not deserialize task json");
             }
 
+            // check for published task
+            PublishedTask? publishedTask = await Databases.Snittlistan.PublishedTasks.SingleOrDefaultAsync(x => x.MessageId == request.MessageId);
+            if (publishedTask is null)
+            {
+                return BadRequest($"No published task found with message id {request.MessageId}");
+            }
+
+            if (publishedTask.HandledDate.HasValue)
+            {
+                return Ok($"task with message id {publishedTask.MessageId} already handled");
+            }
+
             Type handlerType = typeof(ITaskHandler<>).MakeGenericType(taskObject.GetType());
             object handler = Kernel.Resolve(handlerType);
             PropertyInfo? uriInfo = handler.GetType().GetProperty("TaskApiUri");
@@ -59,12 +72,13 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                     correlationId,
                     messageId,
                     MsmqTransaction);
-                messageContext.PublishMessageDelegate = async (task, tenant, causationId, msmqTransaction) =>
-                    await DoPublishMessage(request, task, tenant, causationId, msmqTransaction);
+                messageContext.PublishMessageDelegate = (task, tenant, causationId, msmqTransaction) =>
+                    DoPublishMessage(request, task, tenant, causationId, msmqTransaction);
 
                 Task task = (Task)handleMethod.Invoke(handler, new[] { messageContext });
                 await task;
                 Log.Info("End");
+                publishedTask.MarkHandled(DateTime.Now);
             }
             finally
             {
@@ -74,7 +88,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             return Ok();
         }
 
-        private Task DoPublishMessage(
+        private void DoPublishMessage(
             TaskRequest request,
             TaskBase task,
             Tenant tenant,
@@ -97,15 +111,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                 causationId,
                 envelope.MessageId,
                 "system"));
-            return Task.CompletedTask;
-
-            // TODO
-            /**
-             * All task publishing must be done from this controller. Move this lambda to a method.
-             * Tool exe must have access to command/query. No database access, no queue access from the tool.
-             * Only handle tasks that have been published. Check that they are in the database, set a date timestamp
-             * on successful handling.
-             */
         }
     }
 

@@ -159,7 +159,7 @@ namespace Snittlistan.Test.Domain
                 _ = Mock.Get(eventStoreSession)
                     .Setup(x => x.Store(It.IsAny<AggregateRoot>()))
                     .Callback((AggregateRoot ar) => matchResult = (MatchResult)ar);
-                await command.Execute(session, eventStoreSession, o => { return Task.CompletedTask; });
+                await command.Execute(session, eventStoreSession, o => { });
             });
 
             return matchResult!;

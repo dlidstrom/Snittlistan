@@ -69,5 +69,12 @@ namespace Snittlistan.Web.Infrastructure.Database
         public string DataColumn { get; private set; } = null!;
 
         public DateTime CreatedDate { get; private set; }
+
+        public DateTime? HandledDate { get; private set; }
+
+        public void MarkHandled(DateTime when)
+        {
+            HandledDate = when;
+        }
     }
 }

@@ -30,10 +30,10 @@ namespace Snittlistan.Web.Areas.V2.Commands
             this.summaryHtml = summaryHtml;
         }
 
-        public async Task Execute(
+        public Task Execute(
             IDocumentSession session,
             IEventStoreSession eventStoreSession,
-            Func<TaskBase, Task> publish)
+            Action<TaskBase> publish)
         {
             MatchResult4 matchResult = new(
                 roster,
@@ -43,13 +43,15 @@ namespace Snittlistan.Web.Areas.V2.Commands
             Player[] players = session.Load<Player>(roster.Players);
 
             MatchSerie4[] matchSeries = result.CreateMatchSeries();
-            await matchResult.RegisterSeries(
+            matchResult.RegisterSeries(
                 publish,
                 matchSeries,
                 players,
                 summaryText ?? string.Empty,
                 summaryHtml ?? string.Empty);
             eventStoreSession.Store(matchResult);
+
+            return Task.CompletedTask;
         }
     }
 }

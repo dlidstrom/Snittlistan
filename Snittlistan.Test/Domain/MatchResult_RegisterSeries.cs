@@ -22,7 +22,7 @@ namespace Snittlistan.Test.Domain
         private MatchRegisteredTask? ev;
 
         [SetUp]
-        public async Task SetUp()
+        public Task SetUp()
         {
             // Arrange
             Player[] players = new[]
@@ -145,12 +145,14 @@ namespace Snittlistan.Test.Domain
                 }
             };
 
-            await matchResult.RegisterSeries(
-                async e => ev = await Task.FromResult((MatchRegisteredTask)e),
+            matchResult.RegisterSeries(
+                e => ev = (MatchRegisteredTask)e,
                 series,
                 opponentSeries,
                 players,
                 new Dictionary<string, ResultForPlayerIndex.Result>());
+
+            return Task.CompletedTask;
         }
 
         [Test]

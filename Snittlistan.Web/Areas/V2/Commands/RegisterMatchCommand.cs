@@ -26,7 +26,10 @@ namespace Snittlistan.Web.Areas.V2.Commands
             this.result = result ?? throw new ArgumentNullException(nameof(result));
         }
 
-        public async Task Execute(IDocumentSession session, IEventStoreSession eventStoreSession, Func<TaskBase, Task> publish)
+        public Task Execute(
+            IDocumentSession session,
+            IEventStoreSession eventStoreSession,
+            Action<TaskBase> publish)
         {
             MatchResult matchResult = new(
                 roster,
@@ -41,13 +44,15 @@ namespace Snittlistan.Web.Areas.V2.Commands
                 .Where(x => x.Season == roster.Season)
                 .ToArray()
                 .ToDictionary(x => x.PlayerId);
-            await matchResult.RegisterSeries(
+            matchResult.RegisterSeries(
                 publish,
                 matchSeries,
                 result.OpponentSeries,
                 players,
                 resultsForPlayer);
             eventStoreSession.Store(matchResult);
+
+            return Task.CompletedTask;
         }
     }
 }

@@ -3,12 +3,11 @@
 namespace Snittlistan.Web.Infrastructure
 {
     using System;
-    using System.Threading.Tasks;
     using Snittlistan.Queue;
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Infrastructure.Database;
 
-    public delegate Task PublishMessageDelegate(
+    public delegate void PublishMessageDelegate(
         TaskBase task,
         Tenant tenant,
         Guid causationId,
@@ -40,9 +39,9 @@ namespace Snittlistan.Web.Infrastructure
 
         public IMsmqTransaction MsmqTransaction { get; }
 
-        public async Task PublishMessage(TaskBase task)
+        public void PublishMessage(TaskBase task)
         {
-            await PublishMessageDelegate(task, Tenant, CausationId, MsmqTransaction);
+            PublishMessageDelegate(task, Tenant, CausationId, MsmqTransaction);
         }
 
         public PublishMessageDelegate PublishMessageDelegate { get; set; } = null!;
