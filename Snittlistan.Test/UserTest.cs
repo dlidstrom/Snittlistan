@@ -2,6 +2,7 @@
 
 namespace Snittlistan.Test
 {
+    using System.Threading.Tasks;
     using NUnit.Framework;
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Models;
@@ -17,11 +18,11 @@ namespace Snittlistan.Test
         }
 
         [Test]
-        public void ShouldRaiseEventWhenCreated()
+        public async Task ShouldRaiseEventWhenCreated()
         {
             NewUserCreatedTask? createdEvent = null;
             User user = new("first name", "last name", "email", "password") { Id = "users-2" };
-            user.Initialize(e => createdEvent = (NewUserCreatedTask)e);
+            await user.Initialize(async e => createdEvent = await Task.FromResult((NewUserCreatedTask)e));
 
             Assert.NotNull(createdEvent);
             Assert.That(createdEvent!.Email, Is.EqualTo("email"));

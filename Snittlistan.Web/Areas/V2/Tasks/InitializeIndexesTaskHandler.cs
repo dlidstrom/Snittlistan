@@ -4,12 +4,13 @@ namespace Snittlistan.Web.Areas.V2.Tasks
 {
     using System.Threading.Tasks;
     using Snittlistan.Queue.Messages;
+    using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Indexes;
     using Snittlistan.Web.Models;
 
     public class InitializeIndexesTaskHandler : TaskHandler<InitializeIndexesTask>
     {
-        public override Task Handle(MessageContext<InitializeIndexesTask> task)
+        public override async Task Handle(MessageContext<InitializeIndexesTask> task)
         {
             IndexCreator.CreateIndexes(DocumentStore);
             User admin = DocumentSession.Load<User>(User.AdminId);
@@ -19,7 +20,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                 {
                     Id = User.AdminId
                 };
-                admin.Initialize(t => TaskPublisher.PublishTask(t, "system"));
+                await admin.Initialize(async t => await TaskPublisher.PublishTask(t, "system"));
                 admin.Activate();
                 DocumentSession.Store(admin);
             }
@@ -29,8 +30,6 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                 admin.SetPassword(task.Task.Password);
                 admin.Activate();
             }
-
-            return Task.CompletedTask;
         }
     }
 }

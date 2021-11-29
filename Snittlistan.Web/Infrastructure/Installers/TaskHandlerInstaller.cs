@@ -18,7 +18,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
                     .LifestyleScoped());
 
             _ = container.Register(
-                Component.For<TaskPublisher>().LifestyleTransient());
+                Component.For<TaskPublisher>().LifestyleScoped());
         }
     }
 }

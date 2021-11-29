@@ -1,12 +1,18 @@
-﻿namespace Snittlistan.Web.Infrastructure
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure
 {
     using System;
+    using System.Threading.Tasks;
     using EventStoreLite;
     using Raven.Client;
     using Snittlistan.Queue.Messages;
 
     public interface ICommand
     {
-        void Execute(IDocumentSession session, IEventStoreSession eventStoreSession, Action<ITask> publish);
+        Task Execute(
+            IDocumentSession session,
+            IEventStoreSession eventStoreSession,
+            Func<TaskBase, Task> publish);
     }
 }

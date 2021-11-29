@@ -1,4 +1,5 @@
-// ReSharper disable once CheckNamespace
+﻿#nullable enable
+
 namespace EventStoreLite
 {
     using System;

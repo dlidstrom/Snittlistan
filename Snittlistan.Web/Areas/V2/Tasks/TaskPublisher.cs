@@ -3,15 +3,15 @@
 namespace Snittlistan.Web.Areas.V2.Tasks
 {
     using System;
+    using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Web;
     using System.Web.Hosting;
     using NLog;
-    using Raven.Client;
     using Snittlistan.Queue;
     using Snittlistan.Queue.Messages;
-    using Snittlistan.Queue.Models;
+    using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Database;
 
     public class TaskPublisher
@@ -20,32 +20,57 @@ namespace Snittlistan.Web.Areas.V2.Tasks
 
         public Databases Databases { get; set; } = null!;
 
-        public TenantConfiguration TenantConfiguration { get; set; } = null!;
+        public List<Task> FallbackTasks { get; set; } = new();
 
-        public void PublishTask(ITask task, string createdBy)
+        public async Task PublishTask(TaskBase task, string createdBy)
         {
-            DoPublishDelayedTask(task, DateTime.MinValue, createdBy);
+            await DoPublishDelayedTask(task, DateTime.MinValue, createdBy);
         }
 
-        public void PublishDelayedTask(ITask task, TimeSpan sendAfter, string createdBy)
+        public async Task PublishDelayedTask(TaskBase task, TimeSpan sendAfter, string createdBy)
         {
             DateTime publishDate = DateTime.Now.Add(sendAfter);
-            DoPublishDelayedTask(task, publishDate, createdBy);
+            await DoPublishDelayedTask(task, publishDate, createdBy);
         }
 
-        private void DoPublishDelayedTask(ITask task, DateTime publishDate, string createdBy)
+        protected async Task<Tenant> GetCurrentTenant()
+        {
+            string hostname = CurrentHttpContext.Instance().Request.ServerVariables["SERVER_NAME"];
+            Tenant tenant = await Databases.Snittlistan.Tenants.SingleOrDefaultAsync(x => x.Hostname == hostname);
+            if (tenant == null)
+            {
+                throw new Exception($"No tenant found for hostname '{hostname}'");
+            }
+
+            return tenant;
+        }
+
+        private async Task DoPublishDelayedTask(TaskBase task, DateTime publishDate, string createdBy)
         {
             string businessKey = task.BusinessKey.ToString();
+            Tenant tenant = await GetCurrentTenant();
             DelayedTask delayedTask = Databases.Snittlistan.DelayedTasks.Add(new(
                 task,
                 publishDate,
-                TenantConfiguration.TenantId,
+                tenant.TenantId,
                 CorrelationId,
                 null,
                 Guid.NewGuid(),
                 createdBy));
             Logger.Info("added delayed task: {@delayedTask}", delayedTask);
-            HostingEnvironment.QueueBackgroundWorkItem(async ct => await PublishMessage(businessKey, ct));
+
+            try
+            {
+                HostingEnvironment.QueueBackgroundWorkItem(async ct => await PublishMessage(businessKey, ct));
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "QueueBackgroundWorkItem failed, using fallback");
+                CancellationTokenSource tokenSource = new(10000);
+                CancellationToken cancellationToken = tokenSource.Token;
+                Task fallbackTask = Task.Run(() => PublishMessage(businessKey, cancellationToken));
+                FallbackTasks.Add(fallbackTask);
+            }
 
             async Task PublishMessage(string businessKey, CancellationToken ct)
             {
@@ -54,13 +79,16 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                     using MsmqGateway.MsmqTransactionScope scope = MsmqGateway.AutoCommitScope();
                     using SnittlistanContext context = new();
                     DelayedTask delayedTask = await context.DelayedTasks.SingleOrDefaultAsync(x => x.BusinessKeyColumn == businessKey, ct);
+                    Tenant tenant = await context.Tenants.SingleAsync(x => x.TenantId == delayedTask.TenantId);
                     MessageEnvelope message = new(
                         delayedTask.Task,
                         delayedTask.TenantId,
+                        tenant.Hostname,
                         delayedTask.CorrelationId,
                         delayedTask.CausationId,
                         delayedTask.MessageId);
                     scope.PublishMessage(message);
+                    Logger.Info("published message {@message}", message);
                 }
                 catch (Exception ex)
                 {
@@ -73,13 +101,13 @@ namespace Snittlistan.Web.Areas.V2.Tasks
         {
             get
             {
-                if (HttpContext.Current.Items["CorrelationId"] is Guid correlationId)
+                if (CurrentHttpContext.Instance().Items["CorrelationId"] is Guid correlationId)
                 {
                     return correlationId;
                 }
 
                 correlationId = Guid.NewGuid();
-                HttpContext.Current.Items["CorrelationId"] = correlationId;
+                CurrentHttpContext.Instance().Items["CorrelationId"] = correlationId;
                 return correlationId;
             }
         }
