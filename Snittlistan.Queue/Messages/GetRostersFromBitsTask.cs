@@ -2,8 +2,11 @@
 
 namespace Snittlistan.Queue.Messages
 {
-    public class GetRostersFromBitsTask : ITask
+    public class GetRostersFromBitsTask : TaskBase
     {
-        public BusinessKey BusinessKey => new(GetType(), string.Empty);
+        public GetRostersFromBitsTask()
+            : base(new(typeof(GetRostersFromBitsTask), string.Empty))
+        {
+        }
     }
 }

@@ -4,9 +4,7 @@ namespace Snittlistan.Queue.ConsoleHost
 {
     using System;
     using System.Configuration;
-    using Npgsql.Logging;
     using Snittlistan.Queue.Config;
-    using Snittlistan.Queue.Infrastructure;
 
     public class Program
     {
@@ -14,8 +12,6 @@ namespace Snittlistan.Queue.ConsoleHost
         {
             Console.WriteLine("Press [ENTER] to start.");
             _ = Console.ReadLine();
-            NpgsqlLogManager.Provider = new NLogLoggingProvider();
-            NpgsqlLogManager.IsParameterLoggingEnabled = true;
             Application application = new(
                 (MessagingConfigSection)ConfigurationManager.GetSection("messaging"),
                 ConfigurationManager.AppSettings["UrlScheme"],

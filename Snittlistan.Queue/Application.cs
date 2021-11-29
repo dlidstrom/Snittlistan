@@ -26,7 +26,10 @@ namespace Snittlistan.Queue
         {
             foreach (QueueListenerElement listener in messagingConfigSection.QueueListeners.Listeners)
             {
-                TaskQueueListener taskQueueListener = new(listener.CreateSettings(), urlScheme, port);
+                TaskQueueListener taskQueueListener = new(
+                    listener.CreateSettings(),
+                    urlScheme,
+                    port);
                 taskQueueListener.Start();
                 taskQueueListeners.Add(taskQueueListener);
             }
