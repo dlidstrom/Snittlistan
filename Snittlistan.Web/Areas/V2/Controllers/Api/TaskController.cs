@@ -59,7 +59,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                     correlationId,
                     messageId,
                     MsmqTransaction);
-                messageContext.PublishMessageDelegate = async (task, tenantId, causationId, msmqTransaction) =>
+                messageContext.PublishMessageDelegate = async (task, tenant, causationId, msmqTransaction) =>
                     await DoPublishMessage(request, task, tenant, causationId, msmqTransaction);
 
                 Task task = (Task)handleMethod.Invoke(handler, new[] { messageContext });
