@@ -8,6 +8,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Areas.V2.Domain;
     using Snittlistan.Web.Areas.V2.Indexes;
+    using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Bits.Contracts;
     using Snittlistan.Web.Models;
 

@@ -54,7 +54,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         private int TeamScore { get; set; }
 
         public bool Update(
-            Action<ITask> publish,
+            Action<TaskBase> publish,
             Roster roster,
             int teamScore,
             int opponentScore,
@@ -121,7 +121,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         }
 
         public void RegisterSeries(
-            Action<ITask> publish,
+            Action<TaskBase> publish,
             MatchSerie4[] matchSeries,
             Player[] players,
             string? summaryText,

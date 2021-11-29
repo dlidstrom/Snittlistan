@@ -2,23 +2,17 @@
 
 namespace Snittlistan.Queue.Messages
 {
-    using System;
-
-    public class SendUpdateMailTask : ITask
+    public class SendUpdateMailTask : TaskBase
     {
-        public SendUpdateMailTask(string rosterId, string playerId, Guid correlationId)
+        public SendUpdateMailTask(string rosterId, string playerId)
+            : base(new(typeof(SendUpdateMailTask), $"{rosterId}/{playerId}"))
         {
             RosterId = rosterId;
             PlayerId = playerId;
-            CorrelationId = correlationId;
         }
 
         public string RosterId { get; }
 
         public string PlayerId { get; }
-
-        public Guid CorrelationId { get; }
-
-        public BusinessKey BusinessKey => new(GetType(), $"{RosterId}/{PlayerId}");
     }
 }

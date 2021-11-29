@@ -9,6 +9,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
+    using System.Threading.Tasks;
     using System.Web.Mvc;
     using Domain;
     using Helpers;
@@ -18,7 +19,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
     using PdfSharp.Pdf.IO;
     using Raven.Abstractions;
     using ReadModels;
-    using Snittlistan.Queue.Models;
+    using Snittlistan.Web.Infrastructure.Database;
     using ViewModels;
     using Web.Controllers;
 
@@ -27,7 +28,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
     {
         [HttpPost]
         [SetTempModelState]
-        public ActionResult GeneratePdf(PostModel postModel)
+        public async Task<ActionResult> GeneratePdf(PostModel postModel)
         {
             // find out current season
             int season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
@@ -50,7 +51,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
             string templateFilename = ConfigurationManager.AppSettings["ElitemedalsTemplateFilename"];
             MemoryStream stream = new();
-            string archiveFileName = $"Elitmedaljer_{TenantConfiguration.FullTeamName}_{season}-{season + 1}.zip";
+            Tenant tenant = await GetCurrentTenant();
+            string archiveFileName = $"Elitmedaljer_{tenant.TeamFullName}_{season}-{season + 1}.zip";
             using (ZipArchive zip = new(stream, ZipArchiveMode.Create, true))
             {
                 EliteMedalsViewModel.PlayerInfo[] playersThatHaveMedalsToAchieve =
@@ -71,7 +73,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                         zip,
                         templateFilename,
                         playerMedalInfo,
-                        TenantConfiguration,
+                        tenant,
                         postModel);
                     if (result == CreateFileEntryResult.MissingPersonalNumber)
                     {
@@ -105,7 +107,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             ZipArchive zip,
             string templateFilename,
             PlayerMedalInfo playerMedalInfo,
-            TenantConfiguration tenantConfiguration,
+            Tenant tenant,
             PostModel postModel)
         {
             var top3ValidResults = playerMedalInfo.PlayerTopThreeResults
@@ -166,7 +168,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             //document.AcroForm.Fields["12"].Value = new PdfString("Poäng fjärde matchen");
             document.AcroForm.Fields["Text10"].Value = new PdfString(postModel.Location);
             document.AcroForm.Fields["Text11"].Value = new PdfString(DateTime.Now.Date.ToString("yyyy-MM-dd"));
-            document.AcroForm.Fields["Text12"].Value = new PdfString(tenantConfiguration.FullTeamName);
+            document.AcroForm.Fields["Text12"].Value = new PdfString(tenant.TeamFullName);
             //document.AcroForm.Fields["Text14"].Value = new PdfString("OrtBestyrkes");
             //document.AcroForm.Fields["Text15"].Value = new PdfString("DatumBestyrkes");
             //document.AcroForm.Fields["Text16"].Value = new PdfString("Distriktförbund");
