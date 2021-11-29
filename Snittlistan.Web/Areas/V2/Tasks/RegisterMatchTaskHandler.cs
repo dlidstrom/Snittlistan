@@ -11,6 +11,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
     using Snittlistan.Web.Areas.V2.Commands;
     using Snittlistan.Web.Areas.V2.Domain;
     using Snittlistan.Web.Areas.V2.Indexes;
+    using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Bits;
     using Snittlistan.Web.Models;
 

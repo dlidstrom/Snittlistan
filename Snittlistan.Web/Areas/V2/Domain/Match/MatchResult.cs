@@ -58,7 +58,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         private int TeamScore { get; set; }
 
         public async Task<bool> Update(
-            Func<ITask, Task> publish,
+            Func<TaskBase, Task> publish,
             Roster roster,
             int teamScore,
             int opponentScore,
@@ -121,7 +121,7 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match
         }
 
         public async Task RegisterSeries(
-            Func<ITask, Task> publish,
+            Func<TaskBase, Task> publish,
             MatchSerie[] matchSeries,
             ResultSeriesReadModel.Serie[] opponentSeries,
             Player[] players,

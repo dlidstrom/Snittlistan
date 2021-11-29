@@ -45,7 +45,7 @@ namespace Snittlistan.Test.ApiControllers
         protected override async Task Act()
         {
             // Act
-            TaskRequest request = new(new MessageEnvelope(new RegisterMatchTask(rosterId!, 123), -1, default, default, default));
+            TaskRequest request = new(new MessageEnvelope(new RegisterMatchTask(rosterId!, 123), -1, "", default, default, default));
             responseMessage = await Client.PostAsJsonAsync("http://temp.uri/api/task", request);
             _ = responseMessage.EnsureSuccessStatusCode();
         }

@@ -15,7 +15,7 @@ namespace Snittlistan.Web.Infrastructure.Database
         };
 
         public PublishedTask(
-            ITask task,
+            TaskBase task,
             int tenantId,
             Guid correlationId,
             Guid? causationId,
@@ -56,9 +56,9 @@ namespace Snittlistan.Web.Infrastructure.Database
         }
 
         [NotMapped]
-        public ITask Task
+        public TaskBase Task
         {
-            get => (ITask)JsonConvert.DeserializeObject(DataColumn, settings)!;
+            get => (TaskBase)JsonConvert.DeserializeObject(DataColumn, settings)!;
             private set => DataColumn = JsonConvert.SerializeObject(value, settings);
         }
 

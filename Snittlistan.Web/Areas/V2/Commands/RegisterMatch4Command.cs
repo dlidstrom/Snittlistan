@@ -33,7 +33,7 @@ namespace Snittlistan.Web.Areas.V2.Commands
         public async Task Execute(
             IDocumentSession session,
             IEventStoreSession eventStoreSession,
-            Func<ITask, Task> publish)
+            Func<TaskBase, Task> publish)
         {
             MatchResult4 matchResult = new(
                 roster,

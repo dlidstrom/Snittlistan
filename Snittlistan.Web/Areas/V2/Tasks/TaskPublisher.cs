@@ -22,12 +22,12 @@ namespace Snittlistan.Web.Areas.V2.Tasks
 
         public List<Task> FallbackTasks { get; set; } = new();
 
-        public async Task PublishTask(ITask task, string createdBy)
+        public async Task PublishTask(TaskBase task, string createdBy)
         {
             await DoPublishDelayedTask(task, DateTime.MinValue, createdBy);
         }
 
-        public async Task PublishDelayedTask(ITask task, TimeSpan sendAfter, string createdBy)
+        public async Task PublishDelayedTask(TaskBase task, TimeSpan sendAfter, string createdBy)
         {
             DateTime publishDate = DateTime.Now.Add(sendAfter);
             await DoPublishDelayedTask(task, publishDate, createdBy);
@@ -45,7 +45,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
             return tenant;
         }
 
-        private async Task DoPublishDelayedTask(ITask task, DateTime publishDate, string createdBy)
+        private async Task DoPublishDelayedTask(TaskBase task, DateTime publishDate, string createdBy)
         {
             string businessKey = task.BusinessKey.ToString();
             Tenant tenant = await GetCurrentTenant();
@@ -79,9 +79,11 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                     using MsmqGateway.MsmqTransactionScope scope = MsmqGateway.AutoCommitScope();
                     using SnittlistanContext context = new();
                     DelayedTask delayedTask = await context.DelayedTasks.SingleOrDefaultAsync(x => x.BusinessKeyColumn == businessKey, ct);
+                    Tenant tenant = await context.Tenants.SingleAsync(x => x.TenantId == delayedTask.TenantId);
                     MessageEnvelope message = new(
                         delayedTask.Task,
                         delayedTask.TenantId,
+                        tenant.Hostname,
                         delayedTask.CorrelationId,
                         delayedTask.CausationId,
                         delayedTask.MessageId);

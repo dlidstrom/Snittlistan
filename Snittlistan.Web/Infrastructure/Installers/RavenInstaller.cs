@@ -12,14 +12,15 @@ namespace Snittlistan.Web.Infrastructure.Installers
     using Raven.Client;
     using Raven.Client.Document;
     using Raven.Client.Embedded;
-    using Snittlistan.Queue.Models;
+    using Snittlistan.Web.Infrastructure.Database;
 
     public class RavenInstaller : IWindsorInstaller
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private readonly DocumentStoreMode mode;
+        private readonly Tenant[] tenants;
 
-        public RavenInstaller()
+        public RavenInstaller(Tenant[] tenants)
         {
             mode = MvcApplication.Mode switch
             {
@@ -28,10 +29,12 @@ namespace Snittlistan.Web.Infrastructure.Installers
                 ApplicationMode.Test => DocumentStoreMode.InMemory,
                 _ => throw new ArgumentOutOfRangeException(),
             };
+            this.tenants = tenants;
         }
 
-        public RavenInstaller(DocumentStoreMode mode)
+        public RavenInstaller(Tenant[] tenants, DocumentStoreMode mode)
         {
+            this.tenants = tenants;
             this.mode = mode;
         }
 
@@ -51,11 +54,10 @@ namespace Snittlistan.Web.Infrastructure.Installers
             }
             else
             {
-                TenantConfiguration[] tenantConfigurations = container.ResolveAll<TenantConfiguration>();
-                foreach (TenantConfiguration tenantConfiguration in tenantConfigurations)
+                foreach (Tenant tenant in tenants)
                 {
-                    IDocumentStore documentStore = InitializeStore(CreateDocumentStore(tenantConfiguration));
-                    string nameOfComponent = $"DocumentStore-{tenantConfiguration.Hostname}";
+                    IDocumentStore documentStore = InitializeStore(CreateDocumentStore(tenant));
+                    string nameOfComponent = $"DocumentStore-{tenant.Hostname}";
                     Log.Info($"Registering document store named {nameOfComponent}");
                     ComponentRegistration<IDocumentStore> documentStoreComponent = Component.For<IDocumentStore>()
                         .Instance(documentStore)
@@ -114,7 +116,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
             return store;
         }
 
-        private IDocumentStore CreateDocumentStore(TenantConfiguration tenantConfiguration)
+        private IDocumentStore CreateDocumentStore(Tenant tenant)
         {
             IDocumentStore store;
             switch (mode)
@@ -135,7 +137,7 @@ namespace Snittlistan.Web.Infrastructure.Installers
                     store = new DocumentStore
                     {
                         Url = "http://localhost:8080",
-                        DefaultDatabase = tenantConfiguration.DatabaseName
+                        DefaultDatabase = tenant.DatabaseName
                     };
                     break;
 

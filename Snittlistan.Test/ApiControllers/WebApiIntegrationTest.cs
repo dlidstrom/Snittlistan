@@ -40,21 +40,23 @@ namespace Snittlistan.Test.ApiControllers
             HttpConfiguration configuration = new();
             Container = new WindsorContainer();
             InMemoryContext inMemoryContext = new();
+            Tenant tenant = new("TEST", "favicon", "touchicon", "touchiconsize", "title", 51538, "Hofvet");
             _ = Container.Install(
                 new ControllerInstaller(),
                 new ApiControllerInstaller(),
                 new ControllerFactoryInstaller(),
-                new RavenInstaller(DocumentStoreMode.InMemory),
+                new RavenInstaller(new[] { tenant }, DocumentStoreMode.InMemory),
                 new TaskHandlerInstaller(),
+                new CommandHandlerInstaller(),
                 new DatabaseContextInstaller(() => new(inMemoryContext, inMemoryContext), LifestyleType.Scoped),
-                EventStoreInstaller.FromAssembly(typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),
+                EventStoreInstaller.FromAssembly(new[] { tenant }, typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),
                 new EventStoreSessionInstaller(LifestyleType.Scoped));
             _ = Container.Register(Component.For<IMsmqTransaction>().Instance(Mock.Of<IMsmqTransaction>()));
             HttpRequestBase requestMock =
                 Mock.Of<HttpRequestBase>(x => x.ServerVariables == new NameValueCollection() { { "SERVER_NAME", "TEST" } });
             HttpContextBase httpContextMock =
                 Mock.Of<HttpContextBase>(x => x.Request == requestMock && x.Items == new Dictionary<object, object>());
-            _ = inMemoryContext.Tenants.Add(new("TEST", "favicon", "touchicon", "touchiconsize", "title", 51538));
+            _ = inMemoryContext.Tenants.Add(tenant);
             CurrentHttpContext.Instance = () => httpContextMock;
             await OnSetUp(Container);
 

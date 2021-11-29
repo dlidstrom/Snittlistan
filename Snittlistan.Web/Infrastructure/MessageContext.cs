@@ -1,32 +1,30 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Queue.Messages
+namespace Snittlistan.Web.Infrastructure
 {
     using System;
     using System.Threading.Tasks;
+    using Snittlistan.Queue;
+    using Snittlistan.Queue.Messages;
+    using Snittlistan.Web.Infrastructure.Database;
 
     public delegate Task PublishMessageDelegate(
-        ITask task,
-        int tenantId,
+        TaskBase task,
+        Tenant tenant,
         Guid causationId,
         IMsmqTransaction msmqTransaction);
 
-    public interface IMessageContext
-    {
-        PublishMessageDelegate PublishMessageDelegate { get; set; }
-    }
-
-    public class MessageContext<TTask> : IMessageContext where TTask : ITask
+    public class MessageContext<TTask> : IMessageContext where TTask : TaskBase
     {
         public MessageContext(
             TTask task,
-            int tenantId,
+            Tenant tenant,
             Guid correlationId,
             Guid causationId,
             IMsmqTransaction msmqTransaction)
         {
             Task = task;
-            TenantId = tenantId;
+            Tenant = tenant;
             CorrelationId = correlationId;
             CausationId = causationId;
             MsmqTransaction = msmqTransaction;
@@ -34,7 +32,7 @@ namespace Snittlistan.Queue.Messages
 
         public TTask Task { get; }
 
-        public int TenantId { get; }
+        public Tenant Tenant { get; }
 
         public Guid CorrelationId { get; }
 
@@ -42,9 +40,9 @@ namespace Snittlistan.Queue.Messages
 
         public IMsmqTransaction MsmqTransaction { get; }
 
-        public async Task PublishMessage(ITask task)
+        public async Task PublishMessage(TaskBase task)
         {
-            await PublishMessageDelegate(task, TenantId, CausationId, MsmqTransaction);
+            await PublishMessageDelegate(task, Tenant, CausationId, MsmqTransaction);
         }
 
         public PublishMessageDelegate PublishMessageDelegate { get; set; } = null!;

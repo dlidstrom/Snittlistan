@@ -133,7 +133,7 @@ namespace Snittlistan.Web.Models
         /// <summary>
         /// Initializes a new user. Must be done for new users.
         /// </summary>
-        public async Task Initialize(Func<ITask, Task> publish)
+        public async Task Initialize(Func<TaskBase, Task> publish)
         {
             ActivationKey = Guid.NewGuid().ToString();
             await publish.Invoke(new NewUserCreatedTask(Email, ActivationKey, Id!));
@@ -150,7 +150,7 @@ namespace Snittlistan.Web.Models
         /// <summary>
         /// Activates a user and sends an invite email. This allows them to log on.
         /// </summary>
-        public async Task ActivateWithEmail(Func<ITask, Task> publish, UrlHelper urlHelper, string urlScheme)
+        public async Task ActivateWithEmail(Func<TaskBase, Task> publish, UrlHelper urlHelper, string urlScheme)
         {
             IsActive = true;
             ActivationKey = Guid.NewGuid().ToString();

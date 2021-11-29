@@ -1,6 +1,6 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Queue.Infrastructure
+namespace Snittlistan.Web.Infrastructure
 {
     using System;
     using NLog;

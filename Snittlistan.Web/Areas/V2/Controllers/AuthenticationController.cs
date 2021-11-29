@@ -19,6 +19,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
     using Snittlistan.Web.Helpers;
     using Snittlistan.Web.HtmlHelpers;
     using Snittlistan.Web.Infrastructure.Attributes;
+    using Snittlistan.Web.Infrastructure.Database;
     using Snittlistan.Web.Services;
 
     public class AuthenticationController : AbstractController
@@ -103,6 +104,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     Debug.Assert(Request.Url != null, "Request.Url != null");
                     string oneTimePassword =
                         string.Join("", Enumerable.Range(1, 6).Select(_ => Random.Next(10)));
+                    Tenant tenant = await GetCurrentTenant();
                     await token.Activate(
                         async oneTimeKey =>
                             await TaskPublisher.PublishTask(
@@ -121,7 +123,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     ViewBag.PlayerId = DocumentSession.CreatePlayerSelectList(
                         getPlayers: () => players,
                         textFormatter: p => $"{p.Name} ({p.Nickname})");
-                    await NotifyEvent ($"{vm.Email} - Select from multiple {string.Join(", ", players.Select(x => $"{x.Name} ({x.Email})"))}");
+                    await NotifyEvent($"{vm.Email} - Select from multiple {string.Join(", ", players.Select(x => $"{x.Name} ({x.Email})"))}");
                     return View();
                 }
                 else
@@ -133,7 +135,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             // redisplay form if any errors at this point
             if (ModelState.IsValid == false)
             {
-                await NotifyEvent ($"{vm.Email} - ModelState invalid: {string.Join(", ", ModelState.Values.Select(x => string.Join(", ", x.Errors.Select(y => y.ErrorMessage))))}");
+                await NotifyEvent($"{vm.Email} - ModelState invalid: {string.Join(", ", ModelState.Values.Select(x => string.Join(", ", x.Errors.Select(y => y.ErrorMessage))))}");
                 return View(vm);
             }
 
@@ -204,7 +206,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 }
 
                 authenticationService.SetAuthCookie(player.Id, vm.RememberMe);
-                await NotifyEvent ($"{player.Name} logged in");
+                await NotifyEvent($"{player.Name} logged in");
             }
             catch
             {

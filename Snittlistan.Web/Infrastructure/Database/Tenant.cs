@@ -12,9 +12,11 @@ namespace Snittlistan.Web.Infrastructure.Database
             string appleTouchIcon,
             string appleTouchIconSize,
             string webAppTitle,
-            int clubId)
+            int clubId,
+            string teamFullName)
         {
             ClubId = clubId;
+            TeamFullName = teamFullName;
             Hostname = hostname;
             Favicon = favicon;
             AppleTouchIcon = appleTouchIcon;
@@ -29,19 +31,21 @@ namespace Snittlistan.Web.Infrastructure.Database
 
         public int TenantId { get; set; }
 
-        public int ClubId { get; }
+        public int ClubId { get; private set; }
 
-        public string Hostname { get; set; } = null!;
+        public string TeamFullName { get; private set; } = null!;
 
-        public string DatabaseName { get; set; } = null!;
+        public string Hostname { get; private set; } = null!;
 
-        public string Favicon { get; set; } = null!;
+        public string DatabaseName { get; private set; } = null!;
 
-        public string AppleTouchIcon { get; set; } = null!;
+        public string Favicon { get; private set; } = null!;
 
-        public string AppleTouchIconSize { get; set; } = null!;
+        public string AppleTouchIcon { get; private set; } = null!;
 
-        public string WebAppTitle { get; set; } = null!;
+        public string AppleTouchIconSize { get; private set; } = null!;
+
+        public string WebAppTitle { get; private set; } = null!;
 
         public DateTime CreatedDate { get; private set; }
     }

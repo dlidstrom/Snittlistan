@@ -7,6 +7,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Areas.V2.Domain;
     using Snittlistan.Web.Areas.V2.Queries;
+    using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Models;
 
     public class RegisterMatchesTaskHandler : TaskHandler<RegisterMatchesTask>

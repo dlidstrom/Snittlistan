@@ -15,7 +15,7 @@ namespace Snittlistan.Web.Infrastructure.Database
         };
 
         public DelayedTask(
-            ITask task,
+            TaskBase task,
             DateTime publishDate,
             int tenantId,
             Guid correlationId,
@@ -58,9 +58,9 @@ namespace Snittlistan.Web.Infrastructure.Database
         }
 
         [NotMapped]
-        public ITask Task
+        public TaskBase Task
         {
-            get => (ITask)JsonConvert.DeserializeObject(DataColumn, settings)!;
+            get => (TaskBase)JsonConvert.DeserializeObject(DataColumn, settings)!;
             private set => DataColumn = JsonConvert.SerializeObject(value, settings);
         }
 

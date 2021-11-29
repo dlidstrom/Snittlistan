@@ -10,7 +10,9 @@ namespace Snittlistan.Web.Areas.V2.Tasks
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Areas.V2.Domain;
     using Snittlistan.Web.Areas.V2.Indexes;
+    using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Bits.Contracts;
+    using Snittlistan.Web.Infrastructure.Database;
     using Snittlistan.Web.Models;
 
     public class GetRostersFromBitsTaskHandler : TaskHandler<GetRostersFromBitsTask>
@@ -18,7 +20,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
         public override async Task Handle(MessageContext<GetRostersFromBitsTask> task)
         {
             WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
-            Log.Info($"Importing BITS season {websiteConfig.SeasonId} for {TenantConfiguration.FullTeamName} (ClubId={websiteConfig.ClubId})");
+            Log.Info($"Importing BITS season {websiteConfig.SeasonId} for {task.Tenant.TeamFullName} (ClubId={websiteConfig.ClubId})");
             RosterSearchTerms.Result[] rosterSearchTerms =
                 DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
                     .Where(x => x.Season == websiteConfig.SeasonId)
@@ -136,7 +138,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
                 }
 
                 SendEmail email = SendEmail.ToAdmin(
-                    $"Removed rosters for {TenantConfiguration.FullTeamName}",
+                    $"Removed rosters for {task.Tenant.TeamFullName}",
                     body);
                 await EmailService.SendAsync(email);
             }

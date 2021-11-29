@@ -20,6 +20,8 @@ namespace Snittlistan.Queue.Messages
             MessageId = envelope.MessageId;
         }
 
+        public int TenantId { get; }
+
         public string TaskJson { get; }
 
         public Guid CorrelationId { get; }

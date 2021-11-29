@@ -16,6 +16,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
     using Snittlistan.Web.Areas.V2.ViewModels;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Helpers;
+    using Snittlistan.Web.Infrastructure.Database;
     using Snittlistan.Web.Infrastructure.Indexes;
     using Snittlistan.Web.Models;
     using Snittlistan.Web.Services;

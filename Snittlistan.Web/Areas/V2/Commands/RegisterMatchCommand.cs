@@ -26,7 +26,7 @@ namespace Snittlistan.Web.Areas.V2.Commands
             this.result = result ?? throw new ArgumentNullException(nameof(result));
         }
 
-        public async Task Execute(IDocumentSession session, IEventStoreSession eventStoreSession, Func<ITask, Task> publish)
+        public async Task Execute(IDocumentSession session, IEventStoreSession eventStoreSession, Func<TaskBase, Task> publish)
         {
             MatchResult matchResult = new(
                 roster,

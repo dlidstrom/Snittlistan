@@ -8,7 +8,6 @@ namespace Snittlistan.Web.Infrastructure.Installers
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
     using Npgsql.Logging;
-    using Snittlistan.Queue.Infrastructure;
     using Snittlistan.Web.Infrastructure.Database;
 
     public class DatabaseContextInstaller : IWindsorInstaller

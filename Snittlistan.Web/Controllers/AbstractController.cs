@@ -3,12 +3,12 @@
 namespace Snittlistan.Web.Controllers
 {
     using System;
+    using System.Data.Entity;
     using System.Threading.Tasks;
     using System.Web.Mvc;
     using EventStoreLite;
     using NLog;
     using Snittlistan.Queue;
-    using Snittlistan.Queue.Models;
     using Snittlistan.Web.Areas.V2.Tasks;
     using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Database;
@@ -28,13 +28,23 @@ namespace Snittlistan.Web.Controllers
 
         public EventStore EventStore { get; set; } = null!;
 
-        public TenantConfiguration TenantConfiguration { get; set; } = null!;
-
         public IMsmqTransaction MsmqTransaction { get; set; } = null!;
 
         public TaskPublisher TaskPublisher { get; set; } = null!;
 
         protected new CustomPrincipal User => (CustomPrincipal)HttpContext.User;
+
+        protected async Task<Tenant> GetCurrentTenant()
+        {
+            string hostname = CurrentHttpContext.Instance().Request.ServerVariables["SERVER_NAME"];
+            Tenant tenant = await Databases.Snittlistan.Tenants.SingleOrDefaultAsync(x => x.Hostname == hostname);
+            if (tenant == null)
+            {
+                throw new Exception($"No tenant found for hostname '{hostname}'");
+            }
+
+            return tenant;
+        }
 
         protected Guid CorrelationId
         {

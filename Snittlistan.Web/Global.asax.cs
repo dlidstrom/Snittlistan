@@ -26,7 +26,6 @@ namespace Snittlistan.Web
     using NLog;
     using Raven.Client;
     using Snittlistan.Queue;
-    using Snittlistan.Queue.Models;
     using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Attributes;
     using Snittlistan.Web.Infrastructure.Database;
@@ -241,15 +240,17 @@ namespace Snittlistan.Web
                     new ApiControllerInstaller(),
                     new EmailServiceInstaller(HostingEnvironment.MapPath("~/Views/Emails")),
                     new TaskHandlerInstaller(),
+                    new CommandHandlerInstaller(),
                     new BitsClientInstaller(apiKey, httpClient),
                     new ControllerInstaller(),
                     new EventMigratorInstaller(),
                     new EventStoreSessionInstaller(),
-                    new RavenInstaller(),
+                    new RavenInstaller(tenants),
                     new DatabaseContextInstaller(databasesFactory),
                     new ServicesInstaller(),
                     new MsmqInstaller(),
                     EventStoreInstaller.FromAssembly(
+                        tenants,
                         Assembly.GetExecutingAssembly(),
                         DocumentStoreMode.Server));
             }

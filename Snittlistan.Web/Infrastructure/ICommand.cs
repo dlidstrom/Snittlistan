@@ -13,6 +13,6 @@ namespace Snittlistan.Web.Infrastructure
         Task Execute(
             IDocumentSession session,
             IEventStoreSession eventStoreSession,
-            Func<ITask, Task> publish);
+            Func<TaskBase, Task> publish);
     }
 }

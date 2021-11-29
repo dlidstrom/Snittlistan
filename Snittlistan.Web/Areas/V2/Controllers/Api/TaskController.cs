@@ -13,6 +13,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Areas.V2.Tasks;
     using Snittlistan.Web.Controllers;
+    using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Attributes;
     using Snittlistan.Web.Infrastructure.Database;
 
@@ -24,12 +25,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
         public async Task<IHttpActionResult> Post(TaskRequest request)
         {
             Log.Info($"Received task {request.TaskJson}");
-            if (ModelState.IsValid == false)
-            {
-                return BadRequest(ModelState);
-            }
 
-            ITask? taskObject = JsonConvert.DeserializeObject<ITask>(
+            TaskBase? taskObject = JsonConvert.DeserializeObject<TaskBase>(
                 request.TaskJson,
                 new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
             if (taskObject is null)
@@ -63,7 +60,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                     messageId,
                     MsmqTransaction);
                 messageContext.PublishMessageDelegate = async (task, tenantId, causationId, msmqTransaction) =>
-                    await DoPublishMessage(request, task, tenantId, causationId, msmqTransaction);
+                    await DoPublishMessage(request, task, tenant, causationId, msmqTransaction);
 
                 Task task = (Task)handleMethod.Invoke(handler, new[] { messageContext });
                 await task;
@@ -79,22 +76,23 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
 
         private Task DoPublishMessage(
             TaskRequest request,
-            ITask task,
-            int tenantId,
+            TaskBase task,
+            Tenant tenant,
             Guid causationId,
             IMsmqTransaction msmqTransaction)
         {
             Guid correlationId = request.CorrelationId ?? default;
             MessageEnvelope envelope = new(
                 task,
-                tenantId,
+                tenant.TenantId,
+                tenant.Hostname,
                 correlationId,
                 causationId,
                 Guid.NewGuid());
             msmqTransaction.PublishMessage(envelope);
             _ = Databases.Snittlistan.PublishedTasks.Add(new(
                 task,
-                tenantId,
+                tenant.TenantId,
                 correlationId,
                 causationId,
                 envelope.MessageId,
