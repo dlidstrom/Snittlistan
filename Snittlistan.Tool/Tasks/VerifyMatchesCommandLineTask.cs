@@ -1,30 +1,16 @@
 ﻿namespace Snittlistan.Tool.Tasks
 {
-    using System;
-    using Queue;
-    using Queue.Messages;
-    using Snittlistan.Queue.Infrastructure;
+    using System.Threading.Tasks;
+    using Snittlistan.Queue.Commands;
 
-    public class VerifyMatchesCommandLineTask : ICommandLineTask
+    public class VerifyMatchesCommandLineTask : CommandLineTask
     {
-        public void Run(string[] args)
+        public override async Task Run(string[] args)
         {
             bool force = args.Length == 2 && args[1] == "--force";
-            using MsmqGateway.MsmqTransactionScope scope = MsmqGateway.AutoCommitScope();
-            foreach (Tenant tenant in CommandLineTaskHelper.Tenants())
-            {
-                MessageEnvelope envelope = new(
-                    new VerifyMatchesTask(force),
-                    tenant.TenantId,
-                    Guid.NewGuid(),
-                    null,
-                    Guid.NewGuid());
-                scope.PublishMessage(envelope);
-            }
-
-            scope.Commit();
+            await ExecuteCommand(new VerifyMatchesCommand(force));
         }
 
-        public string HelpText => "Verifies registered matches. Supply --force to force all.";
+        public override string HelpText => "Verifies registered matches. Supply --force to force all.";
     }
 }

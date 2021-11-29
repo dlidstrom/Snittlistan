@@ -32,27 +32,28 @@ namespace Snittlistan.Test.ApiControllers
         }
 
         [Test]
-        public void ShouldStoreMatchResult()
+        public async Task ShouldStoreMatchResult()
         {
-            Transact(session =>
+            await Transact(session =>
                 {
                     ResultHeaderReadModel resultReadModel = session.Load<ResultHeaderReadModel>("ResultHeader-3048746");
                     Assert.That(resultReadModel, Is.Not.Null);
+                    return Task.CompletedTask;
                 });
         }
 
         protected override async Task Act()
         {
             // Act
-            TaskRequest request = new(new MessageEnvelope(new RegisterMatchTask(rosterId!, 123), -1, default, default, default));
+            TaskRequest request = new(new MessageEnvelope(new RegisterMatchTask(rosterId!, 123), -1, "", default, default, default));
             responseMessage = await Client.PostAsJsonAsync("http://temp.uri/api/task", request);
             _ = responseMessage.EnsureSuccessStatusCode();
         }
 
-        protected override Task OnSetUp(IWindsorContainer container)
+        protected override async Task OnSetUp(IWindsorContainer container)
         {
             // Arrange
-            Transact(session =>
+            await Transact(session =>
             {
                 session.Store(new WebsiteConfig(new[] { new WebsiteConfig.TeamNameAndLevel("FIF", "A") }, false, 1660, 2012));
                 Player[] players = new[]
@@ -89,6 +90,7 @@ namespace Snittlistan.Test.ApiControllers
                 };
                 session.Store(roster);
                 rosterId = roster.Id;
+                return Task.CompletedTask;
             });
 
             IBitsClient bitsClient = Mock.Of<IBitsClient>();
@@ -105,7 +107,6 @@ namespace Snittlistan.Test.ApiControllers
                 .Setup(x => x.GetHeadResultInfo(3048746))
                 .Returns(BitsGateway.GetHeadResultInfo(3048746));
             _ = container.Register(Component.For<IBitsClient>().Instance(bitsClient));
-            return Task.CompletedTask;
         }
     }
 }

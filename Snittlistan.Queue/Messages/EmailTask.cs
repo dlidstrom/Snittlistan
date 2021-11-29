@@ -6,10 +6,11 @@ namespace Snittlistan.Queue.Messages
     using System.Text;
     using Newtonsoft.Json;
 
-    public class EmailTask : ITask
+    public class EmailTask : TaskBase
     {
         [JsonConstructor]
         private EmailTask(string to, string subject, string content)
+            : base(new(typeof(EmailTask), to))
         {
             To = to;
             Subject = subject;
@@ -41,8 +42,6 @@ namespace Snittlistan.Queue.Messages
         public string Subject { get; }
 
         public string Content { get; }
-
-        public BusinessKey BusinessKey => new(GetType(), To);
 
         public override string ToString()
         {
