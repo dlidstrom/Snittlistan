@@ -40,6 +40,7 @@ namespace Snittlistan.Test.ApiControllers
             HttpConfiguration configuration = new();
             Container = new WindsorContainer();
             InMemoryContext inMemoryContext = new();
+            Databases = new(inMemoryContext, inMemoryContext);
             Tenant tenant = new("TEST", "favicon", "touchicon", "touchiconsize", "title", 51538, "Hofvet");
             _ = Container.Install(
                 new ControllerInstaller(),
@@ -48,7 +49,7 @@ namespace Snittlistan.Test.ApiControllers
                 new RavenInstaller(new[] { tenant }, DocumentStoreMode.InMemory),
                 new TaskHandlerInstaller(),
                 new CommandHandlerInstaller(),
-                new DatabaseContextInstaller(() => new(inMemoryContext, inMemoryContext), LifestyleType.Scoped),
+                new DatabaseContextInstaller(() => Databases, LifestyleType.Scoped),
                 EventStoreInstaller.FromAssembly(new[] { tenant }, typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),
                 new EventStoreSessionInstaller(LifestyleType.Scoped));
             _ = Container.Register(Component.For<IMsmqTransaction>().Instance(Mock.Of<IMsmqTransaction>()));
