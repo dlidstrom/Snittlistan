@@ -25,11 +25,10 @@ namespace Snittlistan.Web
     using Helpers;
     using NLog;
     using Raven.Client;
-    using Raven.Client.Document;
     using Snittlistan.Queue;
-    using Snittlistan.Queue.Models;
     using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Attributes;
+    using Snittlistan.Web.Infrastructure.Database;
     using Snittlistan.Web.Infrastructure.Indexes;
     using Snittlistan.Web.Infrastructure.Installers;
     using Snittlistan.Web.Infrastructure.IoC;
@@ -50,13 +49,14 @@ namespace Snittlistan.Web
             ApplicationMode.Release;
 #endif
 
-        public static IDocumentStore? SiteWideDocumentStore { get; private set; }
-
-        public static void Bootstrap(IWindsorContainer container, HttpConfiguration configuration)
+        public static void Bootstrap(
+            IWindsorContainer container,
+            HttpConfiguration configuration,
+            Func<Databases> databasesFactory)
         {
             Container = container;
             Mode = ApplicationMode.Test;
-            Bootstrap(configuration);
+            Bootstrap(configuration, databasesFactory);
             IndexCreator.CreateIndexes(container.Resolve<IDocumentStore>());
         }
 
@@ -71,7 +71,6 @@ namespace Snittlistan.Web
             }
 
             Container?.Dispose();
-            SiteWideDocumentStore?.Dispose();
         }
 
         public static string GetAssemblyVersion()
@@ -84,13 +83,12 @@ namespace Snittlistan.Web
         protected void Application_Start()
         {
             Log.Info("Application Starting");
+            Bootstrap(GlobalConfiguration.Configuration, DatabasesFactory);
 
-            // site-wide config
-            SiteWideDocumentStore = new DocumentStore
+            static Databases DatabasesFactory()
             {
-                ConnectionStringName = "Snittlistan-SiteWide"
-            }.Initialize(true);
-            Bootstrap(GlobalConfiguration.Configuration);
+                return new(new SnittlistanContext(), new BitsContext());
+            }
         }
 
         protected void Application_End()
@@ -182,12 +180,12 @@ namespace Snittlistan.Web
             FormsAuthentication.SignOut();
         }
 
-        private static void Bootstrap(HttpConfiguration configuration)
+        private static void Bootstrap(HttpConfiguration configuration, Func<Databases> databasesFactory)
         {
             RegisterGlobalFilters(GlobalFilters.Filters);
 
             // initialize container and controller factory
-            InitializeContainer(configuration);
+            InitializeContainer(configuration, databasesFactory);
 
             // register routes
             new RouteConfig(RouteTable.Routes).Configure();
@@ -212,33 +210,23 @@ namespace Snittlistan.Web
             filters.Add(new UserTrackerLogAttribute());
         }
 
-        private static void InitializeContainer(HttpConfiguration configuration)
+        private static void InitializeContainer(
+            HttpConfiguration configuration,
+            Func<Databases> databasesFactory)
         {
             if (Container == null)
             {
                 Container = new WindsorContainer();
 
-                // load tenant configurations from master database
-                //var tenantConfigurations = 1;
-                SiteWideConfiguration siteWideConfiguration;
-                using (IDocumentSession session = SiteWideDocumentStore!.OpenSession())
-                {
-                    siteWideConfiguration = session.Load<SiteWideConfiguration>(SiteWideConfiguration.GlobalId);
-                    if (siteWideConfiguration == null)
-                    {
-                        siteWideConfiguration = new SiteWideConfiguration("", new[] { new TenantConfiguration("", "", "", "", "", "", "", -1) });
-                        session.Store(siteWideConfiguration);
-                    }
+                Databases databases = databasesFactory.Invoke();
+                Tenant[] tenants = databases.Snittlistan.Tenants.ToArray();
 
-                    session.SaveChanges();
-                }
-
-                foreach (TenantConfiguration tenantConfiguration in siteWideConfiguration.TenantConfigurations)
+                foreach (Tenant tenant in tenants)
                 {
                     _ = Container.Register(
-                        Component.For<TenantConfiguration>()
-                                 .Instance(tenantConfiguration)
-                                 .Named(tenantConfiguration.Hostname));
+                        Component.For<Tenant>()
+                                 .Instance(tenant)
+                                 .Named(tenant.Hostname));
                 }
 
                 Container.Kernel.AddHandlerSelector(new HostBasedComponentSelector());
@@ -252,15 +240,17 @@ namespace Snittlistan.Web
                     new ApiControllerInstaller(),
                     new EmailServiceInstaller(HostingEnvironment.MapPath("~/Views/Emails")),
                     new TaskHandlerInstaller(),
+                    new CommandHandlerInstaller(),
                     new BitsClientInstaller(apiKey, httpClient),
                     new ControllerInstaller(),
                     new EventMigratorInstaller(),
                     new EventStoreSessionInstaller(),
-                    new RavenInstaller(siteWideConfiguration),
-                    new DatabaseContextInstaller(),
+                    new RavenInstaller(tenants),
+                    new DatabaseContextInstaller(databasesFactory),
                     new ServicesInstaller(),
                     new MsmqInstaller(),
                     EventStoreInstaller.FromAssembly(
+                        tenants,
                         Assembly.GetExecutingAssembly(),
                         DocumentStoreMode.Server));
             }

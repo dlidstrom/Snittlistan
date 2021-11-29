@@ -2,6 +2,7 @@
 
 namespace Snittlistan.Test
 {
+    using System;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
@@ -10,6 +11,7 @@ namespace Snittlistan.Test
     using NUnit.Framework;
     using Raven.Client;
     using Snittlistan.Web;
+    using Snittlistan.Web.Infrastructure.Database;
     using Snittlistan.Web.Infrastructure.Indexes;
     using Snittlistan.Web.Infrastructure.Installers;
     using Snittlistan.Web.Models;
@@ -22,7 +24,7 @@ namespace Snittlistan.Test
         public void SetUp()
         {
             IWindsorContainer container = new WindsorContainer().Install(
-                new RavenInstaller(DocumentStoreMode.InMemory));
+                new RavenInstaller(Array.Empty<Tenant>(), DocumentStoreMode.InMemory));
 
             Store = container.Resolve<IDocumentStore>();
             IndexCreator.CreateIndexes(Store);

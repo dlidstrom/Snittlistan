@@ -4,9 +4,10 @@ namespace Snittlistan.Queue.Messages
 {
     using System;
 
-    public class UserInvitedTask : ITask
+    public class UserInvitedTask : TaskBase
     {
         public UserInvitedTask(string activationUri, string email)
+            : base(new(typeof(UserInvitedTask), email))
         {
             ActivationUri = activationUri ?? throw new ArgumentNullException(nameof(activationUri));
             Email = email;
@@ -15,7 +16,5 @@ namespace Snittlistan.Queue.Messages
         public string ActivationUri { get; }
 
         public string Email { get; }
-
-        public BusinessKey BusinessKey => new(GetType(), Email);
     }
 }

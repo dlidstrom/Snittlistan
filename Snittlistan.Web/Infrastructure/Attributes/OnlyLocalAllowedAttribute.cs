@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure.Attributes
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Attributes
 {
     using System.Net;
     using System.Net.Http;
@@ -7,7 +9,6 @@
 
     public class OnlyLocalAllowedAttribute : ActionFilterAttribute
     {
-        // ReSharper disable once UnassignedField.Global
         public static bool SkipValidation;
 
         public override void OnActionExecuting(HttpActionContext actionContext)

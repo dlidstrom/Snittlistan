@@ -2,9 +2,10 @@
 
 namespace Snittlistan.Queue.Messages
 {
-    public class NewUserCreatedTask : ITask
+    public class NewUserCreatedTask : TaskBase
     {
         public NewUserCreatedTask(string email, string activationKey, string userId)
+            : base(new(typeof(NewUserCreatedTask), $"{email}/{userId}"))
         {
             Email = email;
             ActivationKey = activationKey;
@@ -16,7 +17,5 @@ namespace Snittlistan.Queue.Messages
         public string ActivationKey { get; }
 
         public string UserId { get; }
-
-        public BusinessKey BusinessKey => new(GetType(), $"{Email}/{UserId}");
     }
 }

@@ -6,6 +6,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
     using System.Text;
     using System.Threading.Tasks;
     using Snittlistan.Queue.Messages;
+    using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Models;
 
     public class EmailTaskHandler : TaskHandler<EmailTask>

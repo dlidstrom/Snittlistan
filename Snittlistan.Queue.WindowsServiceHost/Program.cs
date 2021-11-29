@@ -5,8 +5,6 @@ namespace Snittlistan.Queue.WindowsServiceHost
     using System;
     using System.ServiceProcess;
     using NLog;
-    using Npgsql.Logging;
-    using Snittlistan.Queue.Infrastructure;
 
     public static class Program
     {
@@ -17,8 +15,6 @@ namespace Snittlistan.Queue.WindowsServiceHost
             try
             {
                 Logger.Info("Starting queue service host");
-                NpgsqlLogManager.Provider = new NLogLoggingProvider();
-                NpgsqlLogManager.IsParameterLoggingEnabled = true;
                 Run();
             }
             catch (Exception ex)

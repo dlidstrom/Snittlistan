@@ -2,30 +2,16 @@
 
 namespace Snittlistan.Tool.Tasks
 {
-    using System;
-    using Queue;
-    using Queue.Messages;
-    using Snittlistan.Queue.Infrastructure;
+    using System.Threading.Tasks;
+    using Snittlistan.Queue.Commands;
 
-    public class GetRostersFromBitsCommandLineTask : ICommandLineTask
+    public class GetRostersFromBitsCommandLineTask : CommandLineTask
     {
-        public void Run(string[] args)
+        public override async Task Run(string[] args)
         {
-            using MsmqGateway.MsmqTransactionScope scope = MsmqGateway.AutoCommitScope();
-            foreach (Tenant tenant in CommandLineTaskHelper.Tenants())
-            {
-                MessageEnvelope envelope = new(
-                    new GetRostersFromBitsTask(),
-                    tenant.TenantId,
-                    Guid.NewGuid(),
-                    null,
-                    Guid.NewGuid());
-                scope.PublishMessage(envelope);
-            }
-
-            scope.Commit();
+            await ExecuteCommand(new GetRostersFromBitsCommand());
         }
 
-        public string HelpText => "Gets rosters from BITS for the entire club.";
+        public override string HelpText => "Gets rosters from BITS for the entire club.";
     }
 }

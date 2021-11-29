@@ -2,9 +2,10 @@
 
 namespace Snittlistan.Queue.Messages
 {
-    public class VerifyMatchTask : ITask
+    public class VerifyMatchTask : TaskBase
     {
         public VerifyMatchTask(int bitsMatchId, string rosterId, bool force)
+            : base(new(typeof(VerifyMatchTask), $"{rosterId}/{bitsMatchId}"))
         {
             BitsMatchId = bitsMatchId;
             RosterId = rosterId;
@@ -16,8 +17,6 @@ namespace Snittlistan.Queue.Messages
         public string RosterId { get; }
 
         public bool Force { get; }
-
-        public BusinessKey BusinessKey => new(GetType(), $"{RosterId}/{BitsMatchId}");
 
         public override string ToString()
         {

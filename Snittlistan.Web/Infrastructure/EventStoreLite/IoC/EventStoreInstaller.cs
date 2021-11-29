@@ -1,6 +1,5 @@
 ﻿#nullable enable
 
-// ReSharper disable once CheckNamespace
 namespace EventStoreLite.IoC
 {
     using System;
@@ -11,7 +10,7 @@ namespace EventStoreLite.IoC
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
     using Raven.Client;
-    using Snittlistan.Queue.Models;
+    using Snittlistan.Web.Infrastructure.Database;
     using Snittlistan.Web.Infrastructure.Installers;
 
     /// <summary>
@@ -19,19 +18,18 @@ namespace EventStoreLite.IoC
     /// </summary>
     public class EventStoreInstaller : IWindsorInstaller
     {
-        private readonly IEnumerable<IEventHandler>? handlers;
-        private readonly IEnumerable<Type>? handlerTypes;
+        private readonly IEnumerable<Type> handlerTypes;
         private readonly DocumentStoreMode mode;
+        private readonly Tenant[] tenants;
 
-        private EventStoreInstaller(IEnumerable<Type> handlerTypes, DocumentStoreMode mode)
+        private EventStoreInstaller(
+            Tenant[] tenants,
+            IEnumerable<Type> handlerTypes,
+            DocumentStoreMode mode)
         {
-            this.handlerTypes = handlerTypes ?? throw new ArgumentNullException(nameof(handlerTypes));
+            this.tenants = tenants;
+            this.handlerTypes = handlerTypes;
             this.mode = mode;
-        }
-
-        private EventStoreInstaller(IEnumerable<IEventHandler> handlers)
-        {
-            this.handlers = handlers ?? throw new ArgumentNullException(nameof(handlers));
         }
 
         /// <summary>
@@ -41,37 +39,11 @@ namespace EventStoreLite.IoC
         /// <param name="mode">In memory or server mode.</param>
         /// <returns>Event store installer for Castle Windsor.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static EventStoreInstaller FromAssembly(Assembly assembly, DocumentStoreMode mode)
+        public static EventStoreInstaller FromAssembly(Tenant[] tenants, Assembly assembly, DocumentStoreMode mode)
         {
             return assembly == null
                 ? throw new ArgumentNullException(nameof(assembly))
-                : new EventStoreInstaller(assembly.GetTypes(), mode);
-        }
-
-        /// <summary>
-        /// Installs the specified event handler types.
-        /// </summary>
-        /// <param name="handlerTypes">Event handler types.</param>
-        /// <returns>Event store installer for Castle Windsor.</returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static EventStoreInstaller FromHandlerTypes(IEnumerable<Type> handlerTypes)
-        {
-            return handlerTypes == null
-                ? throw new ArgumentNullException(nameof(handlerTypes))
-                : new EventStoreInstaller(handlerTypes, DocumentStoreMode.Server);
-        }
-
-        /// <summary>
-        /// Installs the specified event handler instances.
-        /// </summary>
-        /// <param name="handlers">Event handler instances.</param>
-        /// <returns>Event store installer for Castle Windsor.</returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static EventStoreInstaller FromHandlerInstances(IEnumerable<IEventHandler> handlers)
-        {
-            return handlers == null
-                ? throw new ArgumentNullException(nameof(handlers))
-                : new EventStoreInstaller(handlers);
+                : new EventStoreInstaller(tenants, assembly.GetTypes(), mode);
         }
 
         /// <summary>
@@ -88,32 +60,20 @@ namespace EventStoreLite.IoC
             }
             else
             {
-                TenantConfiguration[] tenantConfigurations = container.ResolveAll<TenantConfiguration>();
-                foreach (TenantConfiguration tenantConfiguration in tenantConfigurations)
+                foreach (Tenant tenant in tenants)
                 {
-                    IDocumentStore documentStore = container.Resolve<IDocumentStore>($"DocumentStore-{tenantConfiguration.Hostname}");
+                    IDocumentStore documentStore = container.Resolve<IDocumentStore>($"DocumentStore-{tenant.Hostname}");
                     _ = container.Register(
                         Component.For<EventStore>()
                                  .UsingFactoryMethod(x => CreateEventStore(documentStore, container))
-                                 .Named($"EventStore-{tenantConfiguration.Hostname}")
+                                 .Named($"EventStore-{tenant.Hostname}")
                                  .LifestyleSingleton());
                 }
             }
 
-            if (handlerTypes != null)
+            foreach (Type type in handlerTypes.Where(x => x.IsClass && x.IsAbstract == false))
             {
-                foreach (Type type in handlerTypes.Where(x => x.IsClass && x.IsAbstract == false))
-                {
-                    RegisterEventTypes(container, type);
-                }
-            }
-
-            if (handlers != null)
-            {
-                foreach (IEventHandler handler in handlers)
-                {
-                    RegisterEventTypes(container, handler.GetType(), handler);
-                }
+                RegisterEventTypes(container, type);
             }
         }
 
@@ -149,15 +109,7 @@ namespace EventStoreLite.IoC
         private EventStore CreateEventStore(IDocumentStore documentStore, IWindsorContainer container)
         {
             EventStore eventStore = new(container);
-            if (handlerTypes != null)
-            {
-                _ = eventStore.SetReadModelTypes(handlerTypes);
-            }
-            else
-            {
-                _ = eventStore.SetReadModelTypes(handlers.Select(x => x.GetType()));
-            }
-
+            _ = eventStore.SetReadModelTypes(handlerTypes);
             _ = eventStore.Initialize(documentStore);
             return eventStore;
         }
