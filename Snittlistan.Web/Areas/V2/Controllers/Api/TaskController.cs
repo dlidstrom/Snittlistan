@@ -55,7 +55,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
                 IMessageContext messageContext = (IMessageContext)Activator.CreateInstance(
                     typeof(MessageContext<>).MakeGenericType(taskObject.GetType()),
                     taskObject,
-                    tenant.TenantId,
+                    tenant,
                     correlationId,
                     messageId,
                     MsmqTransaction);
