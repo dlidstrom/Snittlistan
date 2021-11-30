@@ -2,9 +2,10 @@
 
 namespace Snittlistan.Queue.Messages
 {
-    public class RegisterMatchTask : ITask
+    public class RegisterMatchTask : TaskBase
     {
         public RegisterMatchTask(string rosterId, int bitsMatchId)
+            : base(new(typeof(RegisterMatchTask), $"{rosterId}/{bitsMatchId}"))
         {
             RosterId = rosterId;
             BitsMatchId = bitsMatchId;
@@ -13,7 +14,5 @@ namespace Snittlistan.Queue.Messages
         public string RosterId { get; }
 
         public int BitsMatchId { get; }
-
-        public BusinessKey BusinessKey => new(GetType(), $"{RosterId}/{BitsMatchId}");
     }
 }

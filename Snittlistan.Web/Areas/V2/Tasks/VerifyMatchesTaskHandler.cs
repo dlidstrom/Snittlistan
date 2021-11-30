@@ -10,6 +10,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
     using Snittlistan.Web.Areas.V2.Domain;
     using Snittlistan.Web.Areas.V2.Indexes;
     using Snittlistan.Web.Helpers;
+    using Snittlistan.Web.Infrastructure;
 
     public class VerifyMatchesTaskHandler : TaskHandler<VerifyMatchesTask>
     {

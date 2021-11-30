@@ -3,9 +3,12 @@
 namespace Snittlistan.Test.ApiControllers
 {
     using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
     using System.Diagnostics;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using System.Web;
     using System.Web.Http;
     using Castle.Core;
     using Castle.MicroKernel.Registration;
@@ -15,8 +18,11 @@ namespace Snittlistan.Test.ApiControllers
     using NUnit.Framework;
     using Raven.Client;
     using Snittlistan.Queue;
+    using Snittlistan.Test.ApiControllers.Infrastructure;
     using Snittlistan.Web;
+    using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Attributes;
+    using Snittlistan.Web.Infrastructure.Database;
     using Snittlistan.Web.Infrastructure.Installers;
     using Snittlistan.Web.Infrastructure.IoC;
 
@@ -24,28 +30,43 @@ namespace Snittlistan.Test.ApiControllers
     {
         protected HttpClient Client { get; private set; } = null!;
 
+        protected Databases Databases { get; private set; } = null!;
+
         private IWindsorContainer Container { get; set; } = null!;
 
         [SetUp]
-        public void SetUp()
+        public async Task SetUp()
         {
             HttpConfiguration configuration = new();
             Container = new WindsorContainer();
+            InMemoryContext inMemoryContext = new();
+            Databases = new(inMemoryContext, inMemoryContext);
+            Tenant tenant = new("TEST", "favicon", "touchicon", "touchiconsize", "title", 51538, "Hofvet");
             _ = Container.Install(
                 new ControllerInstaller(),
                 new ApiControllerInstaller(),
                 new ControllerFactoryInstaller(),
-                new RavenInstaller(DocumentStoreMode.InMemory),
-                EventStoreInstaller.FromAssembly(typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),
+                new RavenInstaller(new[] { tenant }, DocumentStoreMode.InMemory),
+                new TaskHandlerInstaller(),
+                new CommandHandlerInstaller(),
+                new DatabaseContextInstaller(() => Databases, LifestyleType.Scoped),
+                EventStoreInstaller.FromAssembly(new[] { tenant }, typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),
                 new EventStoreSessionInstaller(LifestyleType.Scoped));
             _ = Container.Register(Component.For<IMsmqTransaction>().Instance(Mock.Of<IMsmqTransaction>()));
-            Task.Run(async () => await OnSetUp(Container)).Wait();
+            HttpRequestBase requestMock =
+                Mock.Of<HttpRequestBase>(x => x.ServerVariables == new NameValueCollection() { { "SERVER_NAME", "TEST" } });
+            HttpContextBase httpContextMock =
+                Mock.Of<HttpContextBase>(x => x.Request == requestMock && x.Items == new Dictionary<object, object>());
+            _ = inMemoryContext.Tenants.Add(tenant);
+            CurrentHttpContext.Instance = () => httpContextMock;
+            await OnSetUp(Container);
 
-            MvcApplication.Bootstrap(Container, configuration);
+            MvcApplication.Bootstrap(Container, configuration, () => new(inMemoryContext, inMemoryContext));
             Client = new HttpClient(new HttpServer(configuration));
             OnlyLocalAllowedAttribute.SkipValidation = true;
 
-            Task.Run(async () => await Act()).Wait();
+            LoggingExceptionLogger.ExceptionHandler += ExceptionHandler;
+            await Act();
         }
 
         [TearDown]
@@ -59,13 +80,13 @@ namespace Snittlistan.Test.ApiControllers
             return Task.CompletedTask;
         }
 
-        protected void Transact(Action<IDocumentSession> action)
+        protected async Task Transact(Func<IDocumentSession, Task> action)
         {
             WaitForIndexing();
 
             using (IDocumentSession session = Container.Resolve<IDocumentStore>().OpenSession())
             {
-                action.Invoke(session);
+                await action.Invoke(session);
                 session.SaveChanges();
             }
 
@@ -75,6 +96,11 @@ namespace Snittlistan.Test.ApiControllers
         protected virtual Task OnSetUp(IWindsorContainer container)
         {
             return Task.CompletedTask;
+        }
+
+        private static void ExceptionHandler(object sender, Exception exception)
+        {
+            Assert.Fail(exception.Demystify().ToString());
         }
 
         private void WaitForIndexing()

@@ -16,11 +16,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
     {
         public IHttpActionResult Post(QueryRequest request)
         {
-            if (ModelState.IsValid == false)
-            {
-                return BadRequest(ModelState);
-            }
-
             dynamic? query = JsonConvert.DeserializeObject(
                 request.QueryJson,
                 new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });

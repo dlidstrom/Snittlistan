@@ -2,6 +2,7 @@
 
 namespace Snittlistan.Test
 {
+    using System.Threading.Tasks;
     using NUnit.Framework;
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Models;

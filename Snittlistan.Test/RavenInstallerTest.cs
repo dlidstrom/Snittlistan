@@ -1,8 +1,10 @@
 ﻿namespace Snittlistan.Test
 {
+    using System;
     using Castle.Windsor;
     using NUnit.Framework;
     using Raven.Client;
+    using Snittlistan.Web.Infrastructure.Database;
     using Snittlistan.Web.Infrastructure.Installers;
 
     [TestFixture]
@@ -12,7 +14,7 @@
 
         public RavenInstallerTest()
         {
-            container = new WindsorContainer().Install(new RavenInstaller(DocumentStoreMode.InMemory));
+            container = new WindsorContainer().Install(new RavenInstaller(Array.Empty<Tenant>(), DocumentStoreMode.InMemory));
         }
 
         [Test]

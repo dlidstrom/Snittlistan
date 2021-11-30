@@ -9,8 +9,13 @@ namespace Snittlistan.Web.Infrastructure.Database
 
     public class PublishedTask
     {
+        private readonly JsonSerializerSettings settings = new()
+        {
+            TypeNameHandling = TypeNameHandling.All
+        };
+
         public PublishedTask(
-            ITask task,
+            TaskBase task,
             int tenantId,
             Guid correlationId,
             Guid? causationId,
@@ -46,16 +51,15 @@ namespace Snittlistan.Web.Infrastructure.Database
         [NotMapped]
         public BusinessKey BusinessKey
         {
-            get => JsonConvert.DeserializeObject<BusinessKey>(BusinessKeyColumn)!;
-            private set => BusinessKeyColumn = JsonConvert.SerializeObject(value);
+            get => JsonConvert.DeserializeObject<BusinessKey>(BusinessKeyColumn, settings)!;
+            private set => BusinessKeyColumn = JsonConvert.SerializeObject(value, settings);
         }
 
         [NotMapped]
-        public ITask Task
+        public TaskBase Task
         {
-            get => (ITask)JsonConvert.DeserializeObject(DataColumn)!;
-
-            private set => DataColumn = JsonConvert.SerializeObject(value);
+            get => (TaskBase)JsonConvert.DeserializeObject(DataColumn, settings)!;
+            private set => DataColumn = JsonConvert.SerializeObject(value, settings);
         }
 
         [Column("BusinessKey")]
@@ -65,5 +69,12 @@ namespace Snittlistan.Web.Infrastructure.Database
         public string DataColumn { get; private set; } = null!;
 
         public DateTime CreatedDate { get; private set; }
+
+        public DateTime? HandledDate { get; private set; }
+
+        public void MarkHandled(DateTime when)
+        {
+            HandledDate = when;
+        }
     }
 }

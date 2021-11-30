@@ -2,9 +2,10 @@
 
 namespace Snittlistan.Queue.Messages
 {
-    public class OneTimeKeyTask : ITask
+    public class OneTimeKeyTask : TaskBase
     {
         public OneTimeKeyTask(string email, string oneTimePassword)
+            : base(new(typeof(OneTimeKeyTask), email))
         {
             Subject = "Logga in till Snittlistan";
             Email = email;
@@ -16,7 +17,5 @@ namespace Snittlistan.Queue.Messages
         public string Email { get; }
 
         public string OneTimePassword { get; }
-
-        public BusinessKey BusinessKey => new(GetType(), $"{Email}");
     }
 }

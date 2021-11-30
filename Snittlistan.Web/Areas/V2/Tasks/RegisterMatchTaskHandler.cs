@@ -11,6 +11,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
     using Snittlistan.Web.Areas.V2.Commands;
     using Snittlistan.Web.Areas.V2.Domain;
     using Snittlistan.Web.Areas.V2.Indexes;
+    using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Bits;
     using Snittlistan.Web.Models;
 
@@ -48,7 +49,10 @@ namespace Snittlistan.Web.Areas.V2.Tasks
 
                         List<string> allPlayerIds = parse4Result.GetPlayerIds();
                         pendingMatch.SetPlayers(allPlayerIds);
-                        ExecuteCommand(new RegisterMatch4Command(pendingMatch, parse4Result));
+                        await context.ExecuteCommand(
+                            new RegisterMatch4Command(pendingMatch, parse4Result),
+                            DocumentSession,
+                            EventStoreSession);
                     }
                 }
                 else
@@ -64,7 +68,10 @@ namespace Snittlistan.Web.Areas.V2.Tasks
 
                         List<string> allPlayerIds = parseResult.GetPlayerIds();
                         pendingMatch.SetPlayers(allPlayerIds);
-                        ExecuteCommand(new RegisterMatchCommand(pendingMatch, parseResult));
+                        await context.ExecuteCommand(
+                            new RegisterMatchCommand(pendingMatch, parseResult),
+                            DocumentSession,
+                            EventStoreSession);
                     }
                 }
             }

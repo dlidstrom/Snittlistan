@@ -3,12 +3,13 @@
 namespace Snittlistan.Web.Controllers
 {
     using System;
+    using System.Threading.Tasks;
     using System.Web.Mvc;
     using EventStoreLite;
     using NLog;
     using Snittlistan.Queue;
-    using Snittlistan.Queue.Models;
     using Snittlistan.Web.Areas.V2.Tasks;
+    using Snittlistan.Web.Helpers;
     using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Database;
     using Snittlistan.Web.Models;
@@ -27,11 +28,13 @@ namespace Snittlistan.Web.Controllers
 
         public EventStore EventStore { get; set; } = null!;
 
-        public TenantConfiguration TenantConfiguration { get; set; } = null!;
-
         public IMsmqTransaction MsmqTransaction { get; set; } = null!;
 
-        public TaskPublisher TaskPublisher { get; set; } = null!;
+        public async Task<TaskPublisher> GetTaskPublisher()
+        {
+            Tenant currentTenant = await Databases.GetCurrentTenant();
+            return new TaskPublisher(currentTenant, Databases, CorrelationId, null);
+        }
 
         protected new CustomPrincipal User => (CustomPrincipal)HttpContext.User;
 
@@ -39,28 +42,29 @@ namespace Snittlistan.Web.Controllers
         {
             get
             {
-                if (HttpContext.Items["CorrelationId"] is Guid correlationId)
+                if (CurrentHttpContext.Instance().Items["CorrelationId"] is Guid correlationId)
                 {
                     return correlationId;
                 }
 
                 correlationId = Guid.NewGuid();
-                HttpContext.Items["CorrelationId"] = correlationId;
+                CurrentHttpContext.Instance().Items["CorrelationId"] = correlationId;
                 return correlationId;
             }
         }
 
-        protected void ExecuteCommand(ICommand command)
+        protected async Task ExecuteCommand(ICommand command)
         {
             if (command == null)
             {
                 throw new ArgumentNullException(nameof(command));
             }
 
-            command.Execute(
+            TaskPublisher taskPublisher = await GetTaskPublisher();
+            await command.Execute(
                 DocumentSession,
                 EventStoreSession,
-                task => TaskPublisher.PublishTask(task, User.Identity.Name));
+                task => taskPublisher.PublishTask(task, User.Identity.Name));
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
