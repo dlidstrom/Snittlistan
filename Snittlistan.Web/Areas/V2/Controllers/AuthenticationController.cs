@@ -15,10 +15,12 @@ namespace Snittlistan.Web.Areas.V2.Controllers
     using NLog;
     using Queue.Messages;
     using Raven.Abstractions;
+    using Snittlistan.Web.Areas.V2.Tasks;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Helpers;
     using Snittlistan.Web.HtmlHelpers;
     using Snittlistan.Web.Infrastructure.Attributes;
+    using Snittlistan.Web.Infrastructure.Database;
     using Snittlistan.Web.Services;
 
     public class AuthenticationController : AbstractController
@@ -39,7 +41,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         }
 
         [HttpPost]
-        public ActionResult LogOn(EmailViewModel vm, string returnUrl)
+        public async Task<ActionResult> LogOn(EmailViewModel vm, string returnUrl)
         {
             // find the user in question
             Models.User user = DocumentSession.FindUserByEmail(vm.Email);
@@ -92,7 +94,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     if (validExistingToken != null)
                     {
                         // reuse still valid token
-                        NotifyEvent($"{player.Name} - Samma token", validExistingToken.ToJson().ToString());
+                        await NotifyEvent($"{player.Name} - Samma token", validExistingToken.ToJson().ToString());
                         return RedirectToAction(
                             "LogOnOneTimePassword",
                             new { id = player.Id, validExistingToken.OneTimeKey, reuseToken = true });
@@ -103,14 +105,16 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     Debug.Assert(Request.Url != null, "Request.Url != null");
                     string oneTimePassword =
                         string.Join("", Enumerable.Range(1, 6).Select(_ => Random.Next(10)));
+                    Tenant tenant = await Databases.GetCurrentTenant();
+                    TaskPublisher taskPublisher = await GetTaskPublisher();
                     token.Activate(
                         oneTimeKey =>
-                            TaskPublisher.PublishTask(
+                            taskPublisher.PublishTask(
                                 new OneTimeKeyTask(player.Email, oneTimePassword),
                                 User.Identity.Name)
                         ,
                         oneTimePassword);
-                    NotifyEvent($"{player.Name} entered email address");
+                    await NotifyEvent($"{player.Name} entered email address");
                     DocumentSession.Store(token);
                     return RedirectToAction(
                         "LogOnOneTimePassword",
@@ -121,7 +125,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     ViewBag.PlayerId = DocumentSession.CreatePlayerSelectList(
                         getPlayers: () => players,
                         textFormatter: p => $"{p.Name} ({p.Nickname})");
-                    NotifyEvent($"{vm.Email} - Select from multiple {string.Join(", ", players.Select(x => $"{x.Name} ({x.Email})"))}");
+                    await NotifyEvent($"{vm.Email} - Select from multiple {string.Join(", ", players.Select(x => $"{x.Name} ({x.Email})"))}");
                     return View();
                 }
                 else
@@ -133,7 +137,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
             // redisplay form if any errors at this point
             if (ModelState.IsValid == false)
             {
-                NotifyEvent($"{vm.Email} - ModelState invalid: {string.Join(", ", ModelState.Values.Select(x => string.Join(", ", x.Errors.Select(y => y.ErrorMessage))))}");
+                await NotifyEvent($"{vm.Email} - ModelState invalid: {string.Join(", ", ModelState.Values.Select(x => string.Join(", ", x.Errors.Select(y => y.ErrorMessage))))}");
                 return View(vm);
             }
 
@@ -188,7 +192,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     ModelState.AddModelError("Lösenord", "Prova igen");
                     vm.Password = string.Empty;
                     await Task.Delay(2000);
-                    NotifyEvent($"{player.Name} - Prova igen");
+                    await NotifyEvent($"{player.Name} - Prova igen");
                     return View(vm);
                 }
 
@@ -199,12 +203,12 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     ModelState.AddModelError("Lösenord", "Felaktigt lösenord");
                     vm.Password = string.Empty;
                     await Task.Delay(2000);
-                    NotifyEvent($"{player.Name} - Felaktig kod ({vm.Password})");
+                    await NotifyEvent($"{player.Name} - Felaktig kod ({vm.Password})");
                     return View(vm);
                 }
 
                 authenticationService.SetAuthCookie(player.Id, vm.RememberMe);
-                NotifyEvent($"{player.Name} logged in");
+                await NotifyEvent($"{player.Name} logged in");
             }
             catch
             {
@@ -251,18 +255,18 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 : RedirectToAction("Index", "Roster");
         }
 
-        public ActionResult LogOff()
+        public async Task<ActionResult> LogOff()
         {
             if (Request.IsAuthenticated)
             {
-                NotifyEvent($"{User.CustomIdentity.Name} logged off");
+                await NotifyEvent($"{User.CustomIdentity.Name} logged off");
                 authenticationService.SignOut();
             }
 
             return RedirectToAction("Index", "Roster");
         }
 
-        private void NotifyEvent(string subject, string? body = null)
+        private async Task NotifyEvent(string subject, string? body = null)
         {
             EmailTask task = EmailTask.Create(
                 ConfigurationManager.AppSettings["OwnerEmail"],
@@ -275,7 +279,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                         $"Referrer: {Request.UrlReferrer}",
                         body ?? string.Empty
                     }));
-            TaskPublisher.PublishTask(
+            TaskPublisher taskPublisher = await GetTaskPublisher();
+            taskPublisher.PublishTask(
                 task,
                 User.Identity.Name);
         }

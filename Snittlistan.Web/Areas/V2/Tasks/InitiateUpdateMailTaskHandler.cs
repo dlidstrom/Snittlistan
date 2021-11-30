@@ -7,6 +7,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
     using System.Threading.Tasks;
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Infrastructure;
 
     public class InitiateUpdateMailTaskHandler : TaskHandler<InitiateUpdateMailTask>
     {
@@ -21,9 +22,8 @@ namespace Snittlistan.Web.Areas.V2.Tasks
             {
                 SendUpdateMailTask message = new(
                     context.Task.RosterId,
-                    playerId,
-                    context.CorrelationId);
-                TaskPublisher.PublishTask(message, "system");
+                    playerId);
+                context.PublishMessageDelegate(message);
             }
 
             return Task.CompletedTask;

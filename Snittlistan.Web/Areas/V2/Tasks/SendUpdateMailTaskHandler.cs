@@ -6,6 +6,7 @@ namespace Snittlistan.Web.Areas.V2.Tasks
     using System.Threading.Tasks;
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Areas.V2.Domain;
+    using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Models;
 
     public class SendUpdateMailTaskHandler : TaskHandler<SendUpdateMailTask>

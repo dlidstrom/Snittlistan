@@ -128,6 +128,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="Areas\V2\Controllers\Api\CommandController.cs" />
+    <Compile Include="Areas\V2\Tasks\TaskHandler.cs" />
+    <Compile Include="Commands\CommandHandler.cs" />
+    <Compile Include="Commands\GetPlayersFromBitsCommandHandler.cs" />
+    <Compile Include="Commands\GetRostersFromBitsCommandHandler.cs" />
+    <Compile Include="Commands\ICommandHandler.cs" />
+    <Compile Include="Commands\InitializeIndexesCommandHandler.cs" />
+    <Compile Include="Commands\RegisterMatchesCommandHandler.cs" />
+    <Compile Include="Commands\VerifyMatchesCommandHandler.cs" />
+    <Compile Include="Infrastructure\Attributes\ValidateModelAttributeMvc.cs" />
+    <Compile Include="Infrastructure\Attributes\ValidateModelAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\CorrelationIdFilterAttribute.cs" />
     <Compile Include="Areas\V2\Tasks\EmailTaskHandler.cs" />
     <Compile Include="Areas\V2\Tasks\GetPlayersFromBitsTaskHandler.cs" />
@@ -285,15 +296,23 @@
     <Compile Include="Infrastructure\Attributes\UnhandledExceptionFilter.cs" />
     <Compile Include="Infrastructure\BaseViewPage.cs" />
     <Compile Include="Infrastructure\Bits\BitsClient.cs" />
+    <Compile Include="Infrastructure\IMessageContext.cs" />
+    <Compile Include="Infrastructure\NLogLoggingProvider.cs" />
+    <Compile Include="Infrastructure\CurrentHttpContext.cs" />
+    <Compile Include="Infrastructure\Installers\CommandHandlerInstaller.cs" />
+    <Compile Include="Infrastructure\LoggingExceptionLogger.cs" />
     <Compile Include="Infrastructure\CustomIdentity.cs" />
     <Compile Include="Infrastructure\CustomPrincipal.cs" />
     <Compile Include="Infrastructure\Database\Bits_Hall.cs" />
     <Compile Include="Infrastructure\Database\Bits_Team.cs" />
-    <Compile Include="Infrastructure\Database\DatabaseContext.cs" />
+    <Compile Include="Infrastructure\Database\SnittlistanContext.cs" />
     <Compile Include="Infrastructure\Database\Databases.cs" />
     <Compile Include="Infrastructure\Database\DelayedTask.cs" />
+    <Compile Include="Infrastructure\Database\IBitsContext.cs" />
+    <Compile Include="Infrastructure\Database\ISnittlistanContext.cs" />
     <Compile Include="Infrastructure\Database\PublishedTask.cs" />
     <Compile Include="Infrastructure\Database\BitsContext.cs" />
+    <Compile Include="Infrastructure\Database\Tenant.cs" />
     <Compile Include="Infrastructure\EventStoreLite\AggregateRoot.cs" />
     <Compile Include="Infrastructure\EventStoreLite\Event.cs" />
     <Compile Include="Infrastructure\EventStoreLite\EventDispatcher.cs" />
@@ -330,6 +349,8 @@
     <Compile Include="Infrastructure\IoC\WindsorHttpDependencyResolver.cs" />
     <Compile Include="Infrastructure\HttpNotFoundAwareControllerActionSelector.cs" />
     <Compile Include="Infrastructure\IQuery.cs" />
+    <Compile Include="Infrastructure\MessageContext.cs" />
+    <Compile Include="Infrastructure\NLogLogger.cs" />
     <Compile Include="Infrastructure\OutlookAgentMessageHandler.cs" />
     <Compile Include="Infrastructure\RateHandler.cs" />
     <Compile Include="Models\EmailBase.cs" />
@@ -398,7 +419,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\DocumentSessionExtensions.cs" />
+    <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\InputError.cs" />
     <Compile Include="HtmlHelpers\CssType.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />

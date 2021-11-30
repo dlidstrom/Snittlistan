@@ -9,12 +9,14 @@ namespace Snittlistan.Queue.Messages
         public MessageEnvelope(
             object payload,
             int tenantId,
+            string hostname,
             Guid correlationId,
             Guid? causationId,
             Guid messageId)
         {
             Payload = payload;
             TenantId = tenantId;
+            Hostname = hostname;
             CorrelationId = correlationId;
             CausationId = causationId;
             MessageId = messageId;
@@ -23,6 +25,8 @@ namespace Snittlistan.Queue.Messages
         public object Payload { get; }
 
         public int TenantId { get; }
+
+        public string Hostname { get; }
 
         public Guid CorrelationId { get; }
 

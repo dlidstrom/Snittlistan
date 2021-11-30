@@ -4,9 +4,10 @@ namespace Snittlistan.Queue.Messages
 {
     using System;
 
-    public class InitiateUpdateMailTask : ITask
+    public class InitiateUpdateMailTask : TaskBase
     {
         public InitiateUpdateMailTask(string rosterId, int _, Guid correlationId)
+            : base(new(typeof(InitiateUpdateMailTask), rosterId))
         {
             RosterId = rosterId;
             CorrelationId = correlationId;
@@ -15,7 +16,5 @@ namespace Snittlistan.Queue.Messages
         public string RosterId { get; }
 
         public Guid CorrelationId { get; }
-
-        public BusinessKey BusinessKey => new(GetType(), RosterId);
     }
 }

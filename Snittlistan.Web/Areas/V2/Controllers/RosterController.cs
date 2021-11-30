@@ -21,9 +21,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Areas.V2.Domain;
     using Snittlistan.Web.Areas.V2.Indexes;
+    using Snittlistan.Web.Areas.V2.Tasks;
     using Snittlistan.Web.Areas.V2.ViewModels;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Helpers;
+    using Snittlistan.Web.Infrastructure.Database;
     using Snittlistan.Web.Models;
 
     public class RosterController : AbstractController
@@ -262,7 +264,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
         }
 
         [Authorize]
-        public ActionResult View(int? season, int? turn, bool? print)
+        public async Task<ActionResult> View(int? season, int? turn, bool? print)
         {
             if (season.HasValue == false)
             {
@@ -299,12 +301,13 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 return View("Unscheduled", vm);
             }
 
+            Tenant tenant = await Databases.GetCurrentTenant();
             ViewTurnViewModel viewTurnViewModel = new(
                 turn.Value,
                 season.Value,
                 rosterViewModels,
                 true,
-                TenantConfiguration.AppleTouchIcon);
+                tenant.AppleTouchIcon);
 
             if (print.GetValueOrDefault())
             {
@@ -316,7 +319,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
         [HttpPost]
-        public ActionResult Print(
+        public async Task<ActionResult> Print(
             int season,
             int turn,
             bool pdf,
@@ -335,12 +338,13 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 .SortRosters()
                 .ToArray();
 
+            Tenant tenant = await Databases.GetCurrentTenant();
             ViewTurnViewModel viewTurnViewModel = new(
                 turn,
                 season,
                 rosterViewModels,
                 withAbsence,
-                TenantConfiguration.AppleTouchIcon);
+                tenant.AppleTouchIcon);
 
             if (pdf)
             {
@@ -352,7 +356,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     .Append(" --footer-font-size \"8\"")
                     .Append(" --footer-line")
                     .Append(" --footer-spacing \"3\"")
-                    .Append($" --header-left \"{TenantConfiguration.FullTeamName}\"")
+                    .Append($" --header-left \"{tenant.TeamFullName}\"")
                     .Append($" --header-center \"Omgång {turn}\"")
                     .Append($" --header-right \"{DateTime.Now.Date.ToShortDateString()}\"")
                     .Append(" --header-line")
@@ -394,7 +398,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         [HttpPost]
         [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
-        public ActionResult EditPlayers(string rosterId, RosterPlayersViewModel vm)
+        public async Task<ActionResult> EditPlayers(string rosterId, RosterPlayersViewModel vm)
         {
             if (ModelState.IsValid == false)
             {
@@ -482,7 +486,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 else
                 {
                     InitiateUpdateMailTask task = new(roster.Id!, roster.Version, CorrelationId);
-                    TaskPublisher.PublishDelayedTask(
+                    TaskPublisher taskPublisher = await GetTaskPublisher();
+                    taskPublisher.PublishDelayedTask(
                         task,
                         TimeSpan.FromMinutes(10),
                         User.Identity.Name);

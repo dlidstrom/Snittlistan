@@ -1,4 +1,5 @@
-﻿// ReSharper disable UseNameofExpression
+﻿#nullable enable
+
 namespace Snittlistan.Queue
 {
     using System.Diagnostics;
@@ -16,12 +17,12 @@ namespace Snittlistan.Queue
 
         public void Increment()
         {
-            Interlocked.Increment(ref _value);
+            _ = Interlocked.Increment(ref _value);
         }
 
         public void Decrement()
         {
-            Interlocked.Decrement(ref _value);
+            _ = Interlocked.Decrement(ref _value);
         }
     }
 }

@@ -2,15 +2,14 @@
 
 namespace Snittlistan.Queue.Messages
 {
-    public class VerifyMatchesTask : ITask
+    public class VerifyMatchesTask : TaskBase
     {
         public VerifyMatchesTask(bool force)
+            : base(new(typeof(VerifyMatchesTask), string.Empty))
         {
             Force = force;
         }
 
         public bool Force { get; }
-
-        public BusinessKey BusinessKey => new(GetType(), string.Empty);
     }
 }

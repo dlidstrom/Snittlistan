@@ -13,3 +13,4 @@ CREATE TABLE snittlistan.delayed_task (
     created_by VARCHAR(255) NOT NULL
 );
 CREATE INDEX delayed_task_tenant_idx ON snittlistan.delayed_task(tenant_id);
+CREATE UNIQUE INDEX delayed_task_published_date_uk ON snittlistan.delayed_task(business_key) WHERE published_date IS NULL;

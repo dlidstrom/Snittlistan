@@ -5,6 +5,7 @@ namespace Snittlistan.Web.Areas.V2.Commands
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using EventStoreLite;
     using Raven.Client;
     using Raven.Client.Linq;
@@ -25,7 +26,10 @@ namespace Snittlistan.Web.Areas.V2.Commands
             this.result = result ?? throw new ArgumentNullException(nameof(result));
         }
 
-        public void Execute(IDocumentSession session, IEventStoreSession eventStoreSession, Action<ITask> publish)
+        public Task Execute(
+            IDocumentSession session,
+            IEventStoreSession eventStoreSession,
+            Action<TaskBase> publish)
         {
             MatchResult matchResult = new(
                 roster,
@@ -47,6 +51,8 @@ namespace Snittlistan.Web.Areas.V2.Commands
                 players,
                 resultsForPlayer);
             eventStoreSession.Store(matchResult);
+
+            return Task.CompletedTask;
         }
     }
 }

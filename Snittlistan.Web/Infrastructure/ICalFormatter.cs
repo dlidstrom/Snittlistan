@@ -1,4 +1,6 @@
-﻿namespace Snittlistan.Web.Infrastructure
+﻿#nullable enable
+
+namespace Snittlistan.Web.Infrastructure
 {
     using System;
     using System.Collections.Generic;
@@ -7,7 +9,6 @@
     using System.Net.Http.Formatting;
     using System.Net.Http.Headers;
 
-    // ReSharper disable once InconsistentNaming
     public class ICalFormatter
         : BufferedMediaTypeFormatter
     {
@@ -47,7 +48,7 @@
 
         public override void WriteToStream(Type type, object value, Stream writeStream, HttpContent content)
         {
-            using (var writer = new StreamWriter(writeStream))
+            using (StreamWriter writer = new(writeStream))
             {
                 writer.WriteLine("BEGIN:VCALENDAR");
                 writer.WriteLine("PRODID:-//Daniel Lidstrom AB//Snittlistan//EN");
@@ -63,7 +64,7 @@
                 }
                 else
                 {
-                    if (!(value is CalendarEvent calendarEvent))
+                    if (value is not CalendarEvent calendarEvent)
                     {
                         throw new InvalidOperationException("Cannot serialize type");
                     }

@@ -15,6 +15,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
     using System.Linq;
+    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
 
@@ -83,7 +84,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
         [HttpPost]
         [ActionName("RegisterMatch4Editor")]
-        public ActionResult RegisterMatchEditorStore(string rosterId, RegisterMatch4ViewModel viewModel)
+        public async Task<ActionResult> RegisterMatchEditorStore(string rosterId, RegisterMatch4ViewModel viewModel)
         {
             Roster roster = DocumentSession.Load<Roster>(rosterId);
             if (roster == null)
@@ -176,7 +177,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 viewModel.Model.OpponentScore!.Value,
                 roster.Turn,
                 series.ToArray());
-            ExecuteCommand(
+            await ExecuteCommand(
                 new RegisterMatch4Command(
                     roster,
                     parse4Result,

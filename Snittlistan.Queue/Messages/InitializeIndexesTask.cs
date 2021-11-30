@@ -2,9 +2,10 @@
 
 namespace Snittlistan.Queue.Messages
 {
-    public class InitializeIndexesTask : ITask
+    public class InitializeIndexesTask : TaskBase
     {
         public InitializeIndexesTask(string email, string password)
+            : base(new(typeof(InitializeIndexesTask), string.Empty))
         {
             Email = email;
             Password = password;
@@ -13,7 +14,5 @@ namespace Snittlistan.Queue.Messages
         public string Email { get; }
 
         public string Password { get; }
-
-        public BusinessKey BusinessKey => new(GetType(), string.Empty);
     }
 }
