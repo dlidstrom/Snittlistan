@@ -1,53 +1,50 @@
-﻿#nullable enable
+﻿using NLog;
+using Npgsql.Logging;
 
-namespace Snittlistan.Web.Infrastructure
+#nullable enable
+
+namespace Snittlistan.Web.Infrastructure;
+public class NLogLogger : NpgsqlLogger
 {
-    using System;
-    using NLog;
-    using Npgsql.Logging;
+    private readonly Logger _log;
 
-    public class NLogLogger : NpgsqlLogger
+    public NLogLogger(string name)
     {
-        private readonly Logger _log;
+        _log = LogManager.GetLogger(name);
+    }
 
-        public NLogLogger(string name)
+    public override bool IsEnabled(NpgsqlLogLevel level)
+    {
+        return _log.IsEnabled(ToNLogLogLevel(level));
+    }
+
+    public override void Log(NpgsqlLogLevel level, int connectorId, string msg, Exception? exception = null)
+    {
+        LogEventInfo ev = new(ToNLogLogLevel(level), _log.Name, msg);
+        if (exception != null)
         {
-            _log = LogManager.GetLogger(name);
+            ev.Exception = exception;
         }
 
-        public override bool IsEnabled(NpgsqlLogLevel level)
+        if (connectorId != 0)
         {
-            return _log.IsEnabled(ToNLogLogLevel(level));
+            ev.Properties["ConnectorId"] = connectorId;
         }
 
-        public override void Log(NpgsqlLogLevel level, int connectorId, string msg, Exception? exception = null)
+        _log.Log(ev);
+    }
+
+    private static LogLevel ToNLogLogLevel(NpgsqlLogLevel level)
+    {
+        return level switch
         {
-            LogEventInfo ev = new(ToNLogLogLevel(level), _log.Name, msg);
-            if (exception != null)
-            {
-                ev.Exception = exception;
-            }
-
-            if (connectorId != 0)
-            {
-                ev.Properties["ConnectorId"] = connectorId;
-            }
-
-            _log.Log(ev);
-        }
-
-        private static LogLevel ToNLogLogLevel(NpgsqlLogLevel level)
-        {
-            return level switch
-            {
-                NpgsqlLogLevel.Trace => LogLevel.Trace,
-                NpgsqlLogLevel.Debug => LogLevel.Debug,
-                NpgsqlLogLevel.Info => LogLevel.Info,
-                NpgsqlLogLevel.Warn => LogLevel.Warn,
-                NpgsqlLogLevel.Error => LogLevel.Error,
-                NpgsqlLogLevel.Fatal => LogLevel.Fatal,
-                _ => throw new ArgumentOutOfRangeException("level"),
-            };
-        }
+            NpgsqlLogLevel.Trace => LogLevel.Trace,
+            NpgsqlLogLevel.Debug => LogLevel.Debug,
+            NpgsqlLogLevel.Info => LogLevel.Info,
+            NpgsqlLogLevel.Warn => LogLevel.Warn,
+            NpgsqlLogLevel.Error => LogLevel.Error,
+            NpgsqlLogLevel.Fatal => LogLevel.Fatal,
+            _ => throw new ArgumentOutOfRangeException("level"),
+        };
     }
 }

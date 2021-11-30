@@ -1,12 +1,11 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Queue.Messages
+namespace Snittlistan.Queue.Messages;
+
+public class RegisterMatchesTask : TaskBase
 {
-    public class RegisterMatchesTask : TaskBase
+    public RegisterMatchesTask()
+        : base(new(typeof(RegisterMatchesTask), string.Empty))
     {
-        public RegisterMatchesTask()
-            : base(new(typeof(RegisterMatchesTask), string.Empty))
-        {
-        }
     }
 }

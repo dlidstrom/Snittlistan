@@ -1,19 +1,18 @@
-﻿#nullable enable
+﻿
+using EventStoreLite;
 
-namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
+#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Domain.Match.Events;
+public class ClearMedals : Event
 {
-    using EventStoreLite;
-
-    public class ClearMedals : Event
+    public ClearMedals(int bitsMatchId, string rosterId)
     {
-        public ClearMedals(int bitsMatchId, string rosterId)
-        {
-            BitsMatchId = bitsMatchId;
-            RosterId = rosterId;
-        }
-
-        public int BitsMatchId { get; private set; }
-
-        public string RosterId { get; private set; }
+        BitsMatchId = bitsMatchId;
+        RosterId = rosterId;
     }
+
+    public int BitsMatchId { get; private set; }
+
+    public string RosterId { get; private set; }
 }

@@ -1,21 +1,20 @@
-﻿#nullable enable
+﻿
+using System.Net;
+using System.Net.Http;
+using System.Web.Http.Controllers;
+using System.Web.Http.Filters;
 
-namespace Snittlistan.Web.Infrastructure.Attributes
+#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Attributes;
+public class ValidateModelAttribute : ActionFilterAttribute
 {
-    using System.Net;
-    using System.Net.Http;
-    using System.Web.Http.Controllers;
-    using System.Web.Http.Filters;
-
-    public class ValidateModelAttribute : ActionFilterAttribute
+    public override void OnActionExecuting(HttpActionContext actionContext)
     {
-        public override void OnActionExecuting(HttpActionContext actionContext)
+        if (!actionContext.ModelState.IsValid)
         {
-            if (!actionContext.ModelState.IsValid)
-            {
-                actionContext.Response = actionContext.Request.CreateErrorResponse(
-                    HttpStatusCode.BadRequest, actionContext.ModelState);
-            }
+            actionContext.Response = actionContext.Request.CreateErrorResponse(
+                HttpStatusCode.BadRequest, actionContext.ModelState);
         }
     }
 }

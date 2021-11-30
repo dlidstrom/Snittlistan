@@ -1,32 +1,28 @@
-﻿#nullable enable
+﻿using System.Data.Entity.Infrastructure;
+using System.Linq.Expressions;
 
-namespace Snittlistan.Test.ApiControllers.Infrastructure
+#nullable enable
+
+namespace Snittlistan.Test.ApiControllers.Infrastructure;
+public class InMemoryDbAsyncEnumerable<T> : EnumerableQuery<T>, IDbAsyncEnumerable<T>, IQueryable<T>
 {
-    using System.Collections.Generic;
-    using System.Data.Entity.Infrastructure;
-    using System.Linq;
-    using System.Linq.Expressions;
+    public InMemoryDbAsyncEnumerable(IEnumerable<T> enumerable)
+        : base(enumerable)
+    { }
 
-    public class InMemoryDbAsyncEnumerable<T> : EnumerableQuery<T>, IDbAsyncEnumerable<T>, IQueryable<T>
+    public InMemoryDbAsyncEnumerable(Expression expression)
+        : base(expression)
+    { }
+
+    public IQueryProvider Provider => new InMemoryDbAsyncQueryProvider<T>(this);
+
+    public IDbAsyncEnumerator<T> GetAsyncEnumerator()
     {
-        public InMemoryDbAsyncEnumerable(IEnumerable<T> enumerable)
-            : base(enumerable)
-        { }
+        return new InMemoryDbAsyncEnumerator<T>(this.AsEnumerable().GetEnumerator());
+    }
 
-        public InMemoryDbAsyncEnumerable(Expression expression)
-            : base(expression)
-        { }
-
-        public IQueryProvider Provider => new InMemoryDbAsyncQueryProvider<T>(this);
-
-        public IDbAsyncEnumerator<T> GetAsyncEnumerator()
-        {
-            return new InMemoryDbAsyncEnumerator<T>(this.AsEnumerable().GetEnumerator());
-        }
-
-        IDbAsyncEnumerator IDbAsyncEnumerable.GetAsyncEnumerator()
-        {
-            return GetAsyncEnumerator();
-        }
+    IDbAsyncEnumerator IDbAsyncEnumerable.GetAsyncEnumerator()
+    {
+        return GetAsyncEnumerator();
     }
 }

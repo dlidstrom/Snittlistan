@@ -1,57 +1,53 @@
-﻿#nullable enable
+﻿using EventStoreLite;
+using Raven.Client;
+using Snittlistan.Queue.Messages;
+using Snittlistan.Web.Areas.V2.Domain;
+using Snittlistan.Web.Areas.V2.Domain.Match;
+using Snittlistan.Web.Infrastructure;
 
-namespace Snittlistan.Web.Areas.V2.Commands
+#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Commands;
+public class RegisterMatch4Command : ICommand
 {
-    using System;
-    using System.Threading.Tasks;
-    using EventStoreLite;
-    using Raven.Client;
-    using Snittlistan.Queue.Messages;
-    using Snittlistan.Web.Areas.V2.Domain;
-    using Snittlistan.Web.Areas.V2.Domain.Match;
-    using Snittlistan.Web.Infrastructure;
+    private readonly Roster roster;
+    private readonly Parse4Result result;
+    private readonly string? summaryText;
+    private readonly string? summaryHtml;
 
-    public class RegisterMatch4Command : ICommand
+    public RegisterMatch4Command(
+        Roster roster,
+        Parse4Result result,
+        string? summaryText = null,
+        string? summaryHtml = null)
     {
-        private readonly Roster roster;
-        private readonly Parse4Result result;
-        private readonly string? summaryText;
-        private readonly string? summaryHtml;
+        this.roster = roster ?? throw new ArgumentNullException(nameof(roster));
+        this.result = result ?? throw new ArgumentNullException(nameof(result));
+        this.summaryText = summaryText;
+        this.summaryHtml = summaryHtml;
+    }
 
-        public RegisterMatch4Command(
-            Roster roster,
-            Parse4Result result,
-            string? summaryText = null,
-            string? summaryHtml = null)
-        {
-            this.roster = roster ?? throw new ArgumentNullException(nameof(roster));
-            this.result = result ?? throw new ArgumentNullException(nameof(result));
-            this.summaryText = summaryText;
-            this.summaryHtml = summaryHtml;
-        }
+    public Task Execute(
+        IDocumentSession session,
+        IEventStoreSession eventStoreSession,
+        Action<TaskBase> publish)
+    {
+        MatchResult4 matchResult = new(
+            roster,
+            result.TeamScore,
+            result.OpponentScore,
+            roster.BitsMatchId);
+        Player[] players = session.Load<Player>(roster.Players);
 
-        public Task Execute(
-            IDocumentSession session,
-            IEventStoreSession eventStoreSession,
-            Action<TaskBase> publish)
-        {
-            MatchResult4 matchResult = new(
-                roster,
-                result.TeamScore,
-                result.OpponentScore,
-                roster.BitsMatchId);
-            Player[] players = session.Load<Player>(roster.Players);
+        MatchSerie4[] matchSeries = result.CreateMatchSeries();
+        matchResult.RegisterSeries(
+            publish,
+            matchSeries,
+            players,
+            summaryText ?? string.Empty,
+            summaryHtml ?? string.Empty);
+        eventStoreSession.Store(matchResult);
 
-            MatchSerie4[] matchSeries = result.CreateMatchSeries();
-            matchResult.RegisterSeries(
-                publish,
-                matchSeries,
-                players,
-                summaryText ?? string.Empty,
-                summaryHtml ?? string.Empty);
-            eventStoreSession.Store(matchResult);
-
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

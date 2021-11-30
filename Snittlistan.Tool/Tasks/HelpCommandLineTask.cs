@@ -1,27 +1,23 @@
-﻿#nullable enable
+﻿using Castle.MicroKernel;
 
-namespace Snittlistan.Tool.Tasks
+#nullable enable
+
+namespace Snittlistan.Tool.Tasks;
+public class HelpCommandLineTask : ICommandLineTask
 {
-    using System;
-    using System.Threading.Tasks;
-    using Castle.MicroKernel;
+    private readonly IKernel kernel;
 
-    public class HelpCommandLineTask : ICommandLineTask
+    public HelpCommandLineTask(IKernel kernel)
     {
-        private readonly IKernel kernel;
-
-        public HelpCommandLineTask(IKernel kernel)
-        {
-            this.kernel = kernel;
-        }
-
-        public Task Run(string[] args)
-        {
-            ICommandLineTask task = kernel.Resolve<ICommandLineTask>(args[1]);
-            Console.WriteLine(task.HelpText);
-            return Task.CompletedTask;
-        }
-
-        public string HelpText => "Shows command help text";
+        this.kernel = kernel;
     }
+
+    public Task Run(string[] args)
+    {
+        ICommandLineTask task = kernel.Resolve<ICommandLineTask>(args[1]);
+        Console.WriteLine(task.HelpText);
+        return Task.CompletedTask;
+    }
+
+    public string HelpText => "Shows command help text";
 }

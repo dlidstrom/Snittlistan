@@ -1,22 +1,17 @@
-﻿#nullable enable
+﻿using System.Web.Http.ExceptionHandling;
+using NLog;
 
-namespace Snittlistan.Web.Infrastructure
+#nullable enable
+
+namespace Snittlistan.Web.Infrastructure;
+public class LoggingExceptionLogger : IExceptionLogger
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Web.Http.ExceptionHandling;
-    using NLog;
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    public static EventHandler<Exception> ExceptionHandler = (sender, exception) => Logger.Error(exception);
 
-    public class LoggingExceptionLogger : IExceptionLogger
+    public Task LogAsync(ExceptionLoggerContext context, CancellationToken cancellationToken)
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        public static EventHandler<Exception> ExceptionHandler = (sender, exception) => Logger.Error(exception);
-
-        public Task LogAsync(ExceptionLoggerContext context, CancellationToken cancellationToken)
-        {
-            ExceptionHandler.Invoke(this, context.Exception);
-            return Task.FromResult(0);
-        }
+        ExceptionHandler.Invoke(this, context.Exception);
+        return Task.FromResult(0);
     }
 }

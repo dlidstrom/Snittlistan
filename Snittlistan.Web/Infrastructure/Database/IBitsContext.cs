@@ -1,13 +1,12 @@
-﻿#nullable enable
+﻿
+using System.Data.Entity;
 
-namespace Snittlistan.Web.Infrastructure.Database
+#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Database;
+public interface IBitsContext
 {
-    using System.Data.Entity;
+    public IDbSet<Bits_Team> Teams { get; }
 
-    public interface IBitsContext
-    {
-        public IDbSet<Bits_Team> Teams { get; }
-
-        public IDbSet<Bits_Hall> Hallar { get; }
-    }
+    public IDbSet<Bits_Hall> Hallar { get; }
 }

@@ -1,14 +1,13 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Queue.Messages
-{
-    public abstract class TaskBase
-    {
-        protected TaskBase(BusinessKey businessKey)
-        {
-            BusinessKey = businessKey;
-        }
+namespace Snittlistan.Queue.Messages;
 
-        public BusinessKey BusinessKey { get; }
+public abstract class TaskBase
+{
+    protected TaskBase(BusinessKey businessKey)
+    {
+        BusinessKey = businessKey;
     }
+
+    public BusinessKey BusinessKey { get; }
 }

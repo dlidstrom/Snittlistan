@@ -1,40 +1,36 @@
-﻿#nullable enable
+﻿using Castle.MicroKernel;
+using Raven.Client;
 
-namespace Snittlistan.Web.Infrastructure.IoC
+#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.IoC;
+public class HostBasedComponentSelector : IHandlerSelector
 {
-    using System;
-    using System.Linq;
-    using Castle.MicroKernel;
-    using Raven.Client;
-
-    public class HostBasedComponentSelector : IHandlerSelector
+    public bool HasOpinionAbout(string key, Type service)
     {
-        public bool HasOpinionAbout(string key, Type service)
+        bool result = service == typeof(IDocumentStore);
+        return result;
+    }
+
+    public IHandler SelectHandler(string key, Type service, IHandler[] handlers)
+    {
+        string hostname = GetHostname();
+        if (service == typeof(IDocumentStore))
         {
-            bool result = service == typeof(IDocumentStore);
-            return result;
+            hostname = $"DocumentStore-{hostname}";
         }
 
-        public IHandler SelectHandler(string key, Type service, IHandler[] handlers)
+        IHandler selectedHandler = handlers.SingleOrDefault(h => h.ComponentModel.Name == hostname);
+        if (selectedHandler == null)
         {
-            string hostname = GetHostname();
-            if (service == typeof(IDocumentStore))
-            {
-                hostname = $"DocumentStore-{hostname}";
-            }
-
-            IHandler selectedHandler = handlers.SingleOrDefault(h => h.ComponentModel.Name == hostname);
-            if (selectedHandler == null)
-            {
-                throw new Exception($"No {service} configured with name {hostname}");
-            }
-
-            return selectedHandler;
+            throw new Exception($"No {service} configured with name {hostname}");
         }
 
-        private static string GetHostname()
-        {
-            return CurrentHttpContext.Instance().Request.ServerVariables["SERVER_NAME"];
-        }
+        return selectedHandler;
+    }
+
+    private static string GetHostname()
+    {
+        return CurrentHttpContext.Instance().Request.ServerVariables["SERVER_NAME"];
     }
 }

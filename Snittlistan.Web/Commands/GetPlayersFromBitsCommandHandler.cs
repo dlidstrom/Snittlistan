@@ -1,16 +1,13 @@
-﻿#nullable enable
+﻿using Snittlistan.Queue.Commands;
+using Snittlistan.Queue.Messages;
 
-namespace Snittlistan.Web.Commands
+#nullable enable
+
+namespace Snittlistan.Web.Commands;
+public class GetPlayersFromBitsCommandHandler : CommandHandler<GetPlayersFromBitsCommand>
 {
-    using System.Threading.Tasks;
-    using Snittlistan.Queue.Commands;
-    using Snittlistan.Queue.Messages;
-
-    public class GetPlayersFromBitsCommandHandler : CommandHandler<GetPlayersFromBitsCommand>
+    protected override Task<TaskBase> CreateMessage(GetPlayersFromBitsCommand command)
     {
-        protected override Task<TaskBase> CreateMessage(GetPlayersFromBitsCommand command)
-        {
-            return Task.FromResult((TaskBase)new GetPlayersFromBitsTask());
-        }
+        return Task.FromResult((TaskBase)new GetPlayersFromBitsTask());
     }
 }

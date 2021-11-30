@@ -1,23 +1,19 @@
-﻿namespace Snittlistan.Tool.Tasks
+﻿using Snittlistan.Queue.Commands;
+
+namespace Snittlistan.Tool.Tasks;
+public class InitializeCommandLineTask : CommandLineTask
 {
-    using System;
-    using System.Threading.Tasks;
-    using Snittlistan.Queue.Commands;
-
-    public class InitializeCommandLineTask : CommandLineTask
+    public override async Task Run(string[] args)
     {
-        public override async Task Run(string[] args)
+        if (args.Length != 3)
         {
-            if (args.Length != 3)
-            {
-                throw new Exception("Specify email and password");
-            }
-
-            string email = args[1];
-            string password = args[2];
-            await ExecuteCommand(new InitializeIndexesCommand(email, password));
+            throw new Exception("Specify email and password");
         }
 
-        public override string HelpText => "Initializes indexes and migrates WebsiteConfig for all sites.";
+        string email = args[1];
+        string password = args[2];
+        await ExecuteCommand(new InitializeIndexesCommand(email, password));
     }
+
+    public override string HelpText => "Initializes indexes and migrates WebsiteConfig for all sites.";
 }

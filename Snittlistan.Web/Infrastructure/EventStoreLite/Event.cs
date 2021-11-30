@@ -1,32 +1,28 @@
 ﻿#nullable enable
 
-namespace EventStoreLite
+namespace EventStoreLite;
+/// <summary>
+/// Event base class type.
+/// </summary>
+public abstract class Event : IDomainEvent
 {
-    using System;
+    /// <summary>
+    /// Gets the event time stamp.
+    /// </summary>
+    public DateTimeOffset TimeStamp { get; private set; }
 
     /// <summary>
-    /// Event base class type.
+    /// Gets the change sequence.
     /// </summary>
-    public abstract class Event : IDomainEvent
+    public int ChangeSequence { get; private set; }
+
+    internal void SetTimeStamp(DateTimeOffset dateTimeOffset)
     {
-        /// <summary>
-        /// Gets the event time stamp.
-        /// </summary>
-        public DateTimeOffset TimeStamp { get; private set; }
+        TimeStamp = dateTimeOffset;
+    }
 
-        /// <summary>
-        /// Gets the change sequence.
-        /// </summary>
-        public int ChangeSequence { get; private set; }
-
-        internal void SetTimeStamp(DateTimeOffset dateTimeOffset)
-        {
-            TimeStamp = dateTimeOffset;
-        }
-
-        internal void SetChangeSequence(int changeSequence)
-        {
-            ChangeSequence = changeSequence;
-        }
+    internal void SetChangeSequence(int changeSequence)
+    {
+        ChangeSequence = changeSequence;
     }
 }

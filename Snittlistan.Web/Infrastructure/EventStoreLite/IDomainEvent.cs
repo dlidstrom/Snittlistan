@@ -1,22 +1,18 @@
 ﻿#nullable enable
 
-namespace EventStoreLite
+namespace EventStoreLite;
+/// <summary>
+/// Represents a domain event.
+/// </summary>
+public interface IDomainEvent
 {
-    using System;
+    /// <summary>
+    /// Gets the event time stamp.
+    /// </summary>
+    DateTimeOffset TimeStamp { get; }
 
     /// <summary>
-    /// Represents a domain event.
+    /// Gets the change sequence.
     /// </summary>
-    public interface IDomainEvent
-    {
-        /// <summary>
-        /// Gets the event time stamp.
-        /// </summary>
-        DateTimeOffset TimeStamp { get; }
-
-        /// <summary>
-        /// Gets the change sequence.
-        /// </summary>
-        int ChangeSequence { get; }
-    }
+    int ChangeSequence { get; }
 }

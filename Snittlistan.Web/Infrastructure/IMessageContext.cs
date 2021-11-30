@@ -1,9 +1,8 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Web.Infrastructure
+namespace Snittlistan.Web.Infrastructure;
+
+public interface IMessageContext
 {
-    public interface IMessageContext
-    {
-        PublishMessageDelegate PublishMessageDelegate { get; set; }
-    }
+    PublishMessageDelegate PublishMessageDelegate { get; set; }
 }

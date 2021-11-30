@@ -1,16 +1,13 @@
-﻿#nullable enable
+﻿using Snittlistan.Queue.Commands;
+using Snittlistan.Queue.Messages;
 
-namespace Snittlistan.Web.Commands
+#nullable enable
+
+namespace Snittlistan.Web.Commands;
+public class InitializeIndexesCommandHandler : CommandHandler<InitializeIndexesCommand>
 {
-    using System.Threading.Tasks;
-    using Snittlistan.Queue.Commands;
-    using Snittlistan.Queue.Messages;
-
-    public class InitializeIndexesCommandHandler : CommandHandler<InitializeIndexesCommand>
+    protected override Task<TaskBase> CreateMessage(InitializeIndexesCommand command)
     {
-        protected override Task<TaskBase> CreateMessage(InitializeIndexesCommand command)
-        {
-            return Task.FromResult((TaskBase)new InitializeIndexesTask(command.Email, command.Password));
-        }
+        return Task.FromResult((TaskBase)new InitializeIndexesTask(command.Email, command.Password));
     }
 }

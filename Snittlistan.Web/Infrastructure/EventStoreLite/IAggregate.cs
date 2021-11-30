@@ -1,11 +1,10 @@
 ﻿#nullable enable
 
-namespace EventStoreLite
-{
-    internal interface IAggregate
-    {
-        string Id { get; }
+namespace EventStoreLite;
 
-        IDomainEvent[] GetUncommittedChanges();
-    }
+internal interface IAggregate
+{
+    string Id { get; }
+
+    IDomainEvent[] GetUncommittedChanges();
 }

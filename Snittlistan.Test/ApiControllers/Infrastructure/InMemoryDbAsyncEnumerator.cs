@@ -1,33 +1,28 @@
-﻿#nullable enable
+﻿using System.Data.Entity.Infrastructure;
 
-namespace Snittlistan.Test.ApiControllers.Infrastructure
+#nullable enable
+
+namespace Snittlistan.Test.ApiControllers.Infrastructure;
+public class InMemoryDbAsyncEnumerator<T> : IDbAsyncEnumerator<T>
 {
-    using System.Collections.Generic;
-    using System.Data.Entity.Infrastructure;
-    using System.Threading;
-    using System.Threading.Tasks;
+    private readonly IEnumerator<T> _inner;
 
-    public class InMemoryDbAsyncEnumerator<T> : IDbAsyncEnumerator<T>
+    public InMemoryDbAsyncEnumerator(IEnumerator<T> inner)
     {
-        private readonly IEnumerator<T> _inner;
+        _inner = inner;
+    }
 
-        public InMemoryDbAsyncEnumerator(IEnumerator<T> inner)
-        {
-            _inner = inner;
-        }
+    public T Current => _inner.Current;
 
-        public T Current => _inner.Current;
+    object? IDbAsyncEnumerator.Current => Current;
 
-        object? IDbAsyncEnumerator.Current => Current;
+    public void Dispose()
+    {
+        _inner.Dispose();
+    }
 
-        public void Dispose()
-        {
-            _inner.Dispose();
-        }
-
-        public Task<bool> MoveNextAsync(CancellationToken cancellationToken)
-        {
-            return Task.FromResult(_inner.MoveNext());
-        }
+    public Task<bool> MoveNextAsync(CancellationToken cancellationToken)
+    {
+        return Task.FromResult(_inner.MoveNext());
     }
 }

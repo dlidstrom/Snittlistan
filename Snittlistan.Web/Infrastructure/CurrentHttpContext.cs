@@ -1,12 +1,9 @@
-﻿#nullable enable
+﻿using System.Web;
 
-namespace Snittlistan.Web.Infrastructure
+#nullable enable
+
+namespace Snittlistan.Web.Infrastructure;
+public static class CurrentHttpContext
 {
-    using System;
-    using System.Web;
-
-    public static class CurrentHttpContext
-    {
-        public static Func<HttpContextBase> Instance = () => new HttpContextWrapper(HttpContext.Current);
-    }
+    public static Func<HttpContextBase> Instance = () => new HttpContextWrapper(HttpContext.Current);
 }

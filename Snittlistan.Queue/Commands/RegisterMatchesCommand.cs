@@ -1,8 +1,7 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Queue.Commands
+namespace Snittlistan.Queue.Commands;
+
+public class RegisterMatchesCommand : CommandBase
 {
-    public class RegisterMatchesCommand : CommandBase
-    {
-    }
 }

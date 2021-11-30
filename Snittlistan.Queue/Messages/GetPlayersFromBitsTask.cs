@@ -1,12 +1,11 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Queue.Messages
+namespace Snittlistan.Queue.Messages;
+
+public class GetPlayersFromBitsTask : TaskBase
 {
-    public class GetPlayersFromBitsTask : TaskBase
+    public GetPlayersFromBitsTask()
+        : base(new(typeof(GetPlayersFromBitsTask), string.Empty))
     {
-        public GetPlayersFromBitsTask()
-            : base(new(typeof(GetPlayersFromBitsTask), string.Empty))
-        {
-        }
     }
 }

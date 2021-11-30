@@ -1,17 +1,16 @@
-﻿#nullable enable
+﻿
+using System.Web.Mvc;
+using Snittlistan.Web.Infrastructure.Attributes;
 
-namespace Snittlistan.Web
+#nullable enable
+
+namespace Snittlistan.Web;
+public class FilterConfig
 {
-    using System.Web.Mvc;
-    using Snittlistan.Web.Infrastructure.Attributes;
-
-    public class FilterConfig
+    public static void RegisterGlobalFilters(GlobalFilterCollection filters)
     {
-        public static void RegisterGlobalFilters(GlobalFilterCollection filters)
-        {
-            filters.Add(new HandleErrorAttribute());
-            filters.Add(new CorrelationIdFilterAttribute());
-            filters.Add(new ValidateModelAttributeMvc());
-        }
+        filters.Add(new HandleErrorAttribute());
+        filters.Add(new CorrelationIdFilterAttribute());
+        filters.Add(new ValidateModelAttributeMvc());
     }
 }

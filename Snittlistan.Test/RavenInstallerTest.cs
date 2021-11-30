@@ -1,28 +1,25 @@
-﻿namespace Snittlistan.Test
+﻿using Castle.Windsor;
+using NUnit.Framework;
+using Raven.Client;
+using Snittlistan.Web.Infrastructure.Database;
+using Snittlistan.Web.Infrastructure.Installers;
+
+namespace Snittlistan.Test;
+[TestFixture]
+public class RavenInstallerTest
 {
-    using System;
-    using Castle.Windsor;
-    using NUnit.Framework;
-    using Raven.Client;
-    using Snittlistan.Web.Infrastructure.Database;
-    using Snittlistan.Web.Infrastructure.Installers;
+    private readonly IWindsorContainer container;
 
-    [TestFixture]
-    public class RavenInstallerTest
+    public RavenInstallerTest()
     {
-        private readonly IWindsorContainer container;
+        container = new WindsorContainer().Install(new RavenInstaller(Array.Empty<Tenant>(), DocumentStoreMode.InMemory));
+    }
 
-        public RavenInstallerTest()
-        {
-            container = new WindsorContainer().Install(new RavenInstaller(Array.Empty<Tenant>(), DocumentStoreMode.InMemory));
-        }
-
-        [Test]
-        public void InstallsDocumentStore()
-        {
-            IDocumentStore store = container.Resolve<IDocumentStore>();
-            Assert.NotNull(store);
-            container.Release(store);
-        }
+    [Test]
+    public void InstallsDocumentStore()
+    {
+        IDocumentStore store = container.Resolve<IDocumentStore>();
+        Assert.NotNull(store);
+        container.Release(store);
     }
 }

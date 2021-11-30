@@ -1,14 +1,13 @@
-﻿#nullable enable
+﻿
+using Npgsql.Logging;
 
-namespace Snittlistan.Web.Infrastructure
+#nullable enable
+
+namespace Snittlistan.Web.Infrastructure;
+public class NLogLoggingProvider : INpgsqlLoggingProvider
 {
-    using Npgsql.Logging;
-
-    public class NLogLoggingProvider : INpgsqlLoggingProvider
+    public NpgsqlLogger CreateLogger(string name)
     {
-        public NpgsqlLogger CreateLogger(string name)
-        {
-            return new NLogLogger(name);
-        }
+        return new NLogLogger(name);
     }
 }

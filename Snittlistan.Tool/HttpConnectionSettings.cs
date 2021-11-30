@@ -1,17 +1,16 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Tool
+namespace Snittlistan.Tool;
+
+public class HttpConnectionSettings
 {
-    public class HttpConnectionSettings
+    public HttpConnectionSettings(string scheme, int port)
     {
-        public HttpConnectionSettings(string scheme, int port)
-        {
-            UrlScheme = scheme;
-            Port = port;
-        }
-
-        public string UrlScheme { get; }
-
-        public int Port { get; }
+        UrlScheme = scheme;
+        Port = port;
     }
+
+    public string UrlScheme { get; }
+
+    public int Port { get; }
 }

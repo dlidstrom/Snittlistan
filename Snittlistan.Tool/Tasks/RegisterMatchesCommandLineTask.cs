@@ -1,17 +1,14 @@
-﻿#nullable enable
+﻿using Snittlistan.Queue.Commands;
 
-namespace Snittlistan.Tool.Tasks
+#nullable enable
+
+namespace Snittlistan.Tool.Tasks;
+public class RegisterMatchesCommandLineTask : CommandLineTask
 {
-    using System.Threading.Tasks;
-    using Snittlistan.Queue.Commands;
-
-    public class RegisterMatchesCommandLineTask : CommandLineTask
+    public override async Task Run(string[] args)
     {
-        public override async Task Run(string[] args)
-        {
-            await ExecuteCommand(new RegisterMatchesCommand());
-        }
-
-        public override string HelpText => "Registers matches from Bits";
+        await ExecuteCommand(new RegisterMatchesCommand());
     }
+
+    public override string HelpText => "Registers matches from Bits";
 }

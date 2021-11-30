@@ -1,22 +1,21 @@
-﻿#nullable enable
+﻿
+using System.Net;
+using System.Net.Http;
+using System.Web.Http.Controllers;
+using System.Web.Http.Filters;
 
-namespace Snittlistan.Web.Infrastructure.Attributes
+#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Attributes;
+public class OnlyLocalAllowedAttribute : ActionFilterAttribute
 {
-    using System.Net;
-    using System.Net.Http;
-    using System.Web.Http.Controllers;
-    using System.Web.Http.Filters;
+    public static bool SkipValidation;
 
-    public class OnlyLocalAllowedAttribute : ActionFilterAttribute
+    public override void OnActionExecuting(HttpActionContext actionContext)
     {
-        public static bool SkipValidation;
-
-        public override void OnActionExecuting(HttpActionContext actionContext)
+        if (SkipValidation == false && actionContext.Request.IsLocal() == false)
         {
-            if (SkipValidation == false && actionContext.Request.IsLocal() == false)
-            {
-                actionContext.Response = new HttpResponseMessage(HttpStatusCode.NotFound);
-            }
+            actionContext.Response = new HttpResponseMessage(HttpStatusCode.NotFound);
         }
     }
 }

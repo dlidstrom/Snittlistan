@@ -1,16 +1,13 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Queue.Commands
+namespace Snittlistan.Queue.Commands;
+
+public abstract class CommandBase
 {
-    using System;
-
-    public abstract class CommandBase
+    public CommandBase()
     {
-        public CommandBase()
-        {
-            CorrelationId = Guid.NewGuid();
-        }
-
-        public Guid CorrelationId { get; }
+        CorrelationId = Guid.NewGuid();
     }
+
+    public Guid CorrelationId { get; }
 }

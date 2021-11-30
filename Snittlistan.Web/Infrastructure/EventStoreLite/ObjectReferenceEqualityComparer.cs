@@ -1,22 +1,19 @@
-﻿#nullable enable
+﻿using System.Runtime.CompilerServices;
 
-namespace EventStoreLite
+#nullable enable
+
+namespace EventStoreLite;
+internal class ObjectReferenceEqualityComparer<T> : EqualityComparer<T> where T : class
 {
-    using System.Collections.Generic;
-    using System.Runtime.CompilerServices;
+    public static new readonly IEqualityComparer<T> Default = new ObjectReferenceEqualityComparer<T>();
 
-    internal class ObjectReferenceEqualityComparer<T> : EqualityComparer<T> where T : class
+    public override bool Equals(T x, T y)
     {
-        public static new readonly IEqualityComparer<T> Default = new ObjectReferenceEqualityComparer<T>();
+        return ReferenceEquals(x, y);
+    }
 
-        public override bool Equals(T x, T y)
-        {
-            return ReferenceEquals(x, y);
-        }
-
-        public override int GetHashCode(T obj)
-        {
-            return RuntimeHelpers.GetHashCode(obj);
-        }
+    public override int GetHashCode(T obj)
+    {
+        return RuntimeHelpers.GetHashCode(obj);
     }
 }
