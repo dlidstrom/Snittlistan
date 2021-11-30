@@ -8,9 +8,9 @@ namespace Snittlistan.Web.Commands
 
     public class RegisterMatchesCommandHandler : CommandHandler<RegisterMatchesCommand>
     {
-        protected override Task<object> CreateMessage(RegisterMatchesCommand command)
+        protected override Task<TaskBase> CreateMessage(RegisterMatchesCommand command)
         {
-            return Task.FromResult((object)new RegisterMatchesTask());
+            return Task.FromResult((TaskBase)new RegisterMatchesTask());
         }
     }
 }

@@ -3,7 +3,6 @@
 namespace Snittlistan.Web.Areas.V2.Domain
 {
     using System;
-    using System.Threading.Tasks;
     using Raven.Abstractions;
 
     public class OneTimeToken
@@ -33,11 +32,11 @@ namespace Snittlistan.Web.Areas.V2.Domain
             return span.TotalDays > 1;
         }
 
-        public async Task Activate(Func<string, Task> action, string payload)
+        public void Activate(Action<string> action, string payload)
         {
             OneTimeKey = Guid.NewGuid().ToString();
             Payload = payload;
-            await action.Invoke(OneTimeKey);
+            action.Invoke(OneTimeKey);
         }
     }
 }

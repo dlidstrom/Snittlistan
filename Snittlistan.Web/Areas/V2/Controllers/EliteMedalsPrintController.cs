@@ -51,7 +51,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
 
             string templateFilename = ConfigurationManager.AppSettings["ElitemedalsTemplateFilename"];
             MemoryStream stream = new();
-            Tenant tenant = await GetCurrentTenant();
+            Tenant tenant = await Databases.GetCurrentTenant();
             string archiveFileName = $"Elitmedaljer_{tenant.TeamFullName}_{season}-{season + 1}.zip";
             using (ZipArchive zip = new(stream, ZipArchiveMode.Create, true))
             {

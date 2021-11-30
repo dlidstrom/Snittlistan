@@ -8,9 +8,9 @@ namespace Snittlistan.Web.Commands
 
     public class InitializeIndexesCommandHandler : CommandHandler<InitializeIndexesCommand>
     {
-        protected override Task<object> CreateMessage(InitializeIndexesCommand command)
+        protected override Task<TaskBase> CreateMessage(InitializeIndexesCommand command)
         {
-            return Task.FromResult((object)new InitializeIndexesTask(command.Email, command.Password));
+            return Task.FromResult((TaskBase)new InitializeIndexesTask(command.Email, command.Password));
         }
     }
 }

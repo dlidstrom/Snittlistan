@@ -6,10 +6,9 @@ namespace Snittlistan.Web.Commands
     using System.Data.Entity;
     using System.Linq;
     using System.Threading.Tasks;
-    using Snittlistan.Queue;
     using Snittlistan.Queue.Commands;
     using Snittlistan.Queue.Messages;
-    using Snittlistan.Web.Infrastructure;
+    using Snittlistan.Web.Areas.V2.Tasks;
     using Snittlistan.Web.Infrastructure.Database;
 
     public abstract class CommandHandler<TCommand> : ICommandHandler<TCommand>
@@ -17,21 +16,16 @@ namespace Snittlistan.Web.Commands
     {
         public Databases Databases { get; set; } = null!;
 
-        public IMsmqTransaction MsmqTransaction { get; set; } = null!;
-
         public async Task Handle(TCommand command)
         {
-            object task = await CreateMessage(command);
-            var query =
-                    from tenant in Databases.Snittlistan.Tenants
-                    select new
-                    {
-                        tenant.TenantId,
-                        tenant.Hostname
-                    };
-            var tenants = await query.ToArrayAsync();
-            foreach (var tenant in tenants)
+            TaskBase task = await CreateMessage(command);
+            IQueryable<Tenant> query =
+                from tenant in Databases.Snittlistan.Tenants
+                select tenant;
+            Tenant[] tenants = await query.ToArrayAsync();
+            foreach (Tenant tenant in tenants)
             {
+                TaskPublisher taskPublisher = new(tenant, Databases, command.CorrelationId, null);
                 MessageEnvelope envelope = new(
                     task,
                     tenant.TenantId,
@@ -39,10 +33,10 @@ namespace Snittlistan.Web.Commands
                     command.CorrelationId,
                     null,
                     Guid.NewGuid());
-                MsmqTransaction.PublishMessage(envelope);
+                taskPublisher.PublishTask(task, "system");
             }
         }
 
-        protected abstract Task<object> CreateMessage(TCommand command);
+        protected abstract Task<TaskBase> CreateMessage(TCommand command);
     }
 }

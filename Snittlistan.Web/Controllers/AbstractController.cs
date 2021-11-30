@@ -3,13 +3,13 @@
 namespace Snittlistan.Web.Controllers
 {
     using System;
-    using System.Data.Entity;
     using System.Threading.Tasks;
     using System.Web.Mvc;
     using EventStoreLite;
     using NLog;
     using Snittlistan.Queue;
     using Snittlistan.Web.Areas.V2.Tasks;
+    using Snittlistan.Web.Helpers;
     using Snittlistan.Web.Infrastructure;
     using Snittlistan.Web.Infrastructure.Database;
     using Snittlistan.Web.Models;
@@ -30,21 +30,13 @@ namespace Snittlistan.Web.Controllers
 
         public IMsmqTransaction MsmqTransaction { get; set; } = null!;
 
-        public TaskPublisher TaskPublisher { get; set; } = null!;
+        public async Task<TaskPublisher> GetTaskPublisher()
+        {
+            Tenant currentTenant = await Databases.GetCurrentTenant();
+            return new TaskPublisher(currentTenant, Databases, CorrelationId, null);
+        }
 
         protected new CustomPrincipal User => (CustomPrincipal)HttpContext.User;
-
-        protected async Task<Tenant> GetCurrentTenant()
-        {
-            string hostname = CurrentHttpContext.Instance().Request.ServerVariables["SERVER_NAME"];
-            Tenant tenant = await Databases.Snittlistan.Tenants.SingleOrDefaultAsync(x => x.Hostname == hostname);
-            if (tenant == null)
-            {
-                throw new Exception($"No tenant found for hostname '{hostname}'");
-            }
-
-            return tenant;
-        }
 
         protected Guid CorrelationId
         {
@@ -68,10 +60,11 @@ namespace Snittlistan.Web.Controllers
                 throw new ArgumentNullException(nameof(command));
             }
 
+            TaskPublisher taskPublisher = await GetTaskPublisher();
             await command.Execute(
                 DocumentSession,
                 EventStoreSession,
-                async task => await TaskPublisher.PublishTask(task, User.Identity.Name));
+                task => taskPublisher.PublishTask(task, User.Identity.Name));
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)

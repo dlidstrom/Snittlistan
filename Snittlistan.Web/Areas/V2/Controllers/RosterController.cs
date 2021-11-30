@@ -21,6 +21,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Areas.V2.Domain;
     using Snittlistan.Web.Areas.V2.Indexes;
+    using Snittlistan.Web.Areas.V2.Tasks;
     using Snittlistan.Web.Areas.V2.ViewModels;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Helpers;
@@ -300,7 +301,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 return View("Unscheduled", vm);
             }
 
-            Tenant tenant = await GetCurrentTenant();
+            Tenant tenant = await Databases.GetCurrentTenant();
             ViewTurnViewModel viewTurnViewModel = new(
                 turn.Value,
                 season.Value,
@@ -337,7 +338,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 .SortRosters()
                 .ToArray();
 
-            Tenant tenant = await GetCurrentTenant();
+            Tenant tenant = await Databases.GetCurrentTenant();
             ViewTurnViewModel viewTurnViewModel = new(
                 turn,
                 season,
@@ -485,7 +486,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 else
                 {
                     InitiateUpdateMailTask task = new(roster.Id!, roster.Version, CorrelationId);
-                    await TaskPublisher.PublishDelayedTask(
+                    TaskPublisher taskPublisher = await GetTaskPublisher();
+                    taskPublisher.PublishDelayedTask(
                         task,
                         TimeSpan.FromMinutes(10),
                         User.Identity.Name);

@@ -8,9 +8,9 @@ namespace Snittlistan.Web.Commands
 
     public class GetRostersFromBitsCommandHandler : CommandHandler<GetRostersFromBitsCommand>
     {
-        protected override Task<object> CreateMessage(GetRostersFromBitsCommand command)
+        protected override Task<TaskBase> CreateMessage(GetRostersFromBitsCommand command)
         {
-            return Task.FromResult((object)new GetRostersFromBitsTask());
+            return Task.FromResult((TaskBase)new GetRostersFromBitsTask());
         }
     }
 }

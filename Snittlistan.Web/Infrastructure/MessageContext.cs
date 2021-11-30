@@ -3,15 +3,12 @@
 namespace Snittlistan.Web.Infrastructure
 {
     using System;
-    using Snittlistan.Queue;
+    using System.Threading.Tasks;
+    using EventStoreLite;
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Infrastructure.Database;
 
-    public delegate void PublishMessageDelegate(
-        TaskBase task,
-        Tenant tenant,
-        Guid causationId,
-        IMsmqTransaction msmqTransaction);
+    public delegate void PublishMessageDelegate(TaskBase task);
 
     public class MessageContext<TTask> : IMessageContext where TTask : TaskBase
     {
@@ -19,14 +16,12 @@ namespace Snittlistan.Web.Infrastructure
             TTask task,
             Tenant tenant,
             Guid correlationId,
-            Guid causationId,
-            IMsmqTransaction msmqTransaction)
+            Guid causationId)
         {
             Task = task;
             Tenant = tenant;
             CorrelationId = correlationId;
             CausationId = causationId;
-            MsmqTransaction = msmqTransaction;
         }
 
         public TTask Task { get; }
@@ -37,13 +32,22 @@ namespace Snittlistan.Web.Infrastructure
 
         public Guid CausationId { get; }
 
-        public IMsmqTransaction MsmqTransaction { get; }
-
         public void PublishMessage(TaskBase task)
         {
-            PublishMessageDelegate(task, Tenant, CausationId, MsmqTransaction);
+            PublishMessageDelegate(task);
         }
 
         public PublishMessageDelegate PublishMessageDelegate { get; set; } = null!;
+
+        internal async Task ExecuteCommand(
+            ICommand command,
+            Raven.Client.IDocumentSession documentSession,
+            IEventStoreSession eventStoreSession)
+        {
+            await command.Execute(
+                documentSession,
+                eventStoreSession,
+                t => PublishMessageDelegate(t));
+        }
     }
 }

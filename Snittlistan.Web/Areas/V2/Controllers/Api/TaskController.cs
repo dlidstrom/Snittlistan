@@ -10,7 +10,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
     using System.Web.Http;
     using Newtonsoft.Json;
     using NLog;
-    using Snittlistan.Queue;
     using Snittlistan.Queue.Messages;
     using Snittlistan.Web.Areas.V2.Tasks;
     using Snittlistan.Web.Controllers;
@@ -48,62 +47,30 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api
             }
 
             Type handlerType = typeof(ITaskHandler<>).MakeGenericType(taskObject.GetType());
-            object handler = Kernel.Resolve(handlerType);
-            PropertyInfo? uriInfo = handler.GetType().GetProperty("TaskApiUri");
-            if (uriInfo != null)
-            {
-                string uriString = Url.Link("DefaultApi", new { controller = "Task" });
-                Uri uri = new(uriString);
-                uriInfo.SetValue(handler, uri);
-            }
 
-            MethodInfo handleMethod = handler.GetType().GetMethod("Handle");
+            MethodInfo handleMethod = handlerType.GetMethod("Handle");
             using IDisposable scope = NestedDiagnosticsLogicalContext.Push(taskObject.BusinessKey);
             Log.Info("Begin");
             Tenant tenant = await GetCurrentTenant();
             Guid correlationId = request.CorrelationId ?? default;
-            Guid messageId = request.MessageId ?? default;
+            Guid causationId = request.MessageId ?? default;
+            TaskPublisher taskPublisher = new(tenant, Databases, correlationId, causationId);
             IMessageContext messageContext = (IMessageContext)Activator.CreateInstance(
                 typeof(MessageContext<>).MakeGenericType(taskObject.GetType()),
                 taskObject,
                 tenant,
                 correlationId,
-                messageId,
-                MsmqTransaction);
-            messageContext.PublishMessageDelegate = (task, tenant, causationId, msmqTransaction) =>
-                DoPublishMessage(request, task, tenant, causationId, msmqTransaction);
+                causationId);
+            messageContext.PublishMessageDelegate = task =>
+                taskPublisher.PublishTask(task, "system");
 
+            object handler = Kernel.Resolve(handlerType);
             Task task = (Task)handleMethod.Invoke(handler, new[] { messageContext });
             await task;
             Log.Info("End");
             publishedTask.MarkHandled(DateTime.Now);
 
             return Ok();
-        }
-
-        private void DoPublishMessage(
-            TaskRequest request,
-            TaskBase task,
-            Tenant tenant,
-            Guid causationId,
-            IMsmqTransaction msmqTransaction)
-        {
-            Guid correlationId = request.CorrelationId ?? default;
-            MessageEnvelope envelope = new(
-                task,
-                tenant.TenantId,
-                tenant.Hostname,
-                correlationId,
-                causationId,
-                Guid.NewGuid());
-            msmqTransaction.PublishMessage(envelope);
-            _ = Databases.Snittlistan.PublishedTasks.Add(new(
-                task,
-                tenant.TenantId,
-                correlationId,
-                causationId,
-                envelope.MessageId,
-                "system"));
         }
     }
 

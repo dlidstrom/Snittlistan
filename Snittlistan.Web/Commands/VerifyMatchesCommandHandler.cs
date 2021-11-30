@@ -8,9 +8,9 @@ namespace Snittlistan.Web.Commands
 
     public class VerifyMatchesCommandHandler : CommandHandler<VerifyMatchesCommand>
     {
-        protected override Task<object> CreateMessage(VerifyMatchesCommand command)
+        protected override Task<TaskBase> CreateMessage(VerifyMatchesCommand command)
         {
-            return Task.FromResult((object)new VerifyMatchesTask(command.Force));
+            return Task.FromResult((TaskBase)new VerifyMatchesTask(command.Force));
         }
     }
 }

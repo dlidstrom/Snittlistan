@@ -15,6 +15,7 @@ namespace Snittlistan.Web.Areas.V2.Controllers
     using NLog;
     using Queue.Messages;
     using Raven.Abstractions;
+    using Snittlistan.Web.Areas.V2.Tasks;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Helpers;
     using Snittlistan.Web.HtmlHelpers;
@@ -104,10 +105,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                     Debug.Assert(Request.Url != null, "Request.Url != null");
                     string oneTimePassword =
                         string.Join("", Enumerable.Range(1, 6).Select(_ => Random.Next(10)));
-                    Tenant tenant = await GetCurrentTenant();
-                    await token.Activate(
-                        async oneTimeKey =>
-                            await TaskPublisher.PublishTask(
+                    Tenant tenant = await Databases.GetCurrentTenant();
+                    TaskPublisher taskPublisher = await GetTaskPublisher();
+                    token.Activate(
+                        oneTimeKey =>
+                            taskPublisher.PublishTask(
                                 new OneTimeKeyTask(player.Email, oneTimePassword),
                                 User.Identity.Name)
                         ,
@@ -277,7 +279,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                         $"Referrer: {Request.UrlReferrer}",
                         body ?? string.Empty
                     }));
-            await TaskPublisher.PublishTask(
+            TaskPublisher taskPublisher = await GetTaskPublisher();
+            taskPublisher.PublishTask(
                 task,
                 User.Identity.Name);
         }

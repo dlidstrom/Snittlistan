@@ -18,11 +18,11 @@ namespace Snittlistan.Test
         }
 
         [Test]
-        public async Task ShouldRaiseEventWhenCreated()
+        public void ShouldRaiseEventWhenCreated()
         {
             NewUserCreatedTask? createdEvent = null;
             User user = new("first name", "last name", "email", "password") { Id = "users-2" };
-            await user.Initialize(async e => createdEvent = await Task.FromResult((NewUserCreatedTask)e));
+            user.Initialize(e => createdEvent = (NewUserCreatedTask)e);
 
             Assert.NotNull(createdEvent);
             Assert.That(createdEvent!.Email, Is.EqualTo("email"));

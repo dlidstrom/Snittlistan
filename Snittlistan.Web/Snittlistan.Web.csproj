@@ -419,7 +419,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\DocumentSessionExtensions.cs" />
+    <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\InputError.cs" />
     <Compile Include="HtmlHelpers\CssType.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />

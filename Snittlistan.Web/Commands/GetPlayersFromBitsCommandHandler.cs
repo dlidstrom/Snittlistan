@@ -8,9 +8,9 @@ namespace Snittlistan.Web.Commands
 
     public class GetPlayersFromBitsCommandHandler : CommandHandler<GetPlayersFromBitsCommand>
     {
-        protected override Task<object> CreateMessage(GetPlayersFromBitsCommand command)
+        protected override Task<TaskBase> CreateMessage(GetPlayersFromBitsCommand command)
         {
-            return Task.FromResult((object)new GetPlayersFromBitsTask());
+            return Task.FromResult((TaskBase)new GetPlayersFromBitsTask());
         }
     }
 }

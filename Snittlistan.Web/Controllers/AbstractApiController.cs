@@ -28,13 +28,9 @@ namespace Snittlistan.Web.Controllers
 
         public EventStore EventStore { get; set; } = null!;
 
-        public IMsmqTransaction MsmqTransaction { get; set; } = null!;
-
         [NonAction]
         public async Task SaveChangesAsync()
         {
-            MsmqTransaction.Commit();
-
             // this commits the document session
             EventStoreSession.SaveChanges();
 

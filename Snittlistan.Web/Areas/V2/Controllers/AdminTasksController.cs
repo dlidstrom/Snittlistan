@@ -13,10 +13,10 @@ namespace Snittlistan.Web.Areas.V2.Controllers
     using Snittlistan.Web.Areas.V2.Domain;
     using Snittlistan.Web.Areas.V2.Indexes;
     using Snittlistan.Web.Areas.V2.Migration;
+    using Snittlistan.Web.Areas.V2.Tasks;
     using Snittlistan.Web.Areas.V2.ViewModels;
     using Snittlistan.Web.Controllers;
     using Snittlistan.Web.Helpers;
-    using Snittlistan.Web.Infrastructure.Database;
     using Snittlistan.Web.Infrastructure.Indexes;
     using Snittlistan.Web.Models;
     using Snittlistan.Web.Services;
@@ -132,8 +132,9 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 if (invite.GetValueOrDefault())
                 {
                     Debug.Assert(Request.Url != null, "Request.Url != null");
-                    await user.ActivateWithEmail(
-                        async t => await TaskPublisher.PublishTask(t, User.Identity.Name),
+                    TaskPublisher taskPublisher = await GetTaskPublisher();
+                    user.ActivateWithEmail(
+                        t => taskPublisher.PublishTask(t, User.Identity.Name),
                         Url,
                         Request.Url!.Scheme);
                 }
@@ -211,7 +212,8 @@ namespace Snittlistan.Web.Areas.V2.Controllers
                 return View(vm);
             }
 
-            await TaskPublisher.PublishTask(
+            TaskPublisher taskPublisher = await GetTaskPublisher();
+            taskPublisher.PublishTask(
                 EmailTask.Create(vm.Recipient, vm.Subject, vm.Content),
                 User.Identity.Name);
 
