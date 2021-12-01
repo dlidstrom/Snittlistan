@@ -42,6 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Globals.cs">
+      <Link>Globals.cs</Link>
+    </Compile>
     <Compile Include="Application.cs" />
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\GetPlayersFromBitsCommand.cs" />

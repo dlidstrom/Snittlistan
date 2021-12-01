@@ -49,6 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Globals.cs">
+      <Link>Globals.cs</Link>
+    </Compile>
     <Compile Include="HttpConnectionSettings.cs" />
     <Compile Include="Tasks\CommandLineTask.cs" />
     <Compile Include="Tasks\GetPlayersFromBitsCommandLineTask.cs" />

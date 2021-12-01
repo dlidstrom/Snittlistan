@@ -1,7 +1,4 @@
-﻿global using System;
-global using System.Linq;
-global using System.Threading.Tasks;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 

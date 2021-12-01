@@ -127,6 +127,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Globals.cs">
+      <Link>Globals.cs</Link>
+    </Compile>
     <Compile Include="ApplicationMode.cs" />
     <Compile Include="Areas\V2\Controllers\Api\CommandController.cs" />
     <Compile Include="Areas\V2\Tasks\TaskHandler.cs" />
