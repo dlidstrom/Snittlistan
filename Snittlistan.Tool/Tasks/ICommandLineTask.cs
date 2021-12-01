@@ -1,8 +1,9 @@
-﻿namespace Snittlistan.Tool.Tasks
+﻿#nullable enable
+
+namespace Snittlistan.Tool.Tasks;
+public interface ICommandLineTask
 {
-    public interface ICommandLineTask
-    {
-        void Run(string[] args);
-        string HelpText { get; }
-    }
+    Task Run(string[] args);
+
+    string HelpText { get; }
 }

@@ -1,27 +1,26 @@
-﻿#nullable enable
+﻿
+using Snittlistan.Web.Areas.V2.Domain;
 
-namespace Snittlistan.Web.Models
+#nullable enable
+
+namespace Snittlistan.Web.Models;
+public class UpdateRosterEmail : EmailBase
 {
-    using Snittlistan.Web.Areas.V2.Domain;
-
-    public class UpdateRosterEmail : EmailBase
+    public UpdateRosterEmail(
+        string playerEmail,
+        FormattedAuditLog formattedAuditLog,
+        string[] players,
+        string? teamLeader)
+        : base("UpdateRoster", OwnerEmail, "Uttagning har uppdaterats")
     {
-        public UpdateRosterEmail(
-            string playerEmail,
-            FormattedAuditLog formattedAuditLog,
-            string[] players,
-            string? teamLeader)
-            : base("UpdateRoster", OwnerEmail, "Uttagning har uppdaterats")
-        {
-            PlayerEmail = playerEmail;
-            FormattedAuditLog = formattedAuditLog;
-            Players = players;
-            TeamLeader = teamLeader;
-        }
-
-        public string PlayerEmail { get; }
-        public FormattedAuditLog FormattedAuditLog { get; }
-        public string[] Players { get; }
-        public string? TeamLeader { get; }
+        PlayerEmail = playerEmail;
+        FormattedAuditLog = formattedAuditLog;
+        Players = players;
+        TeamLeader = teamLeader;
     }
+
+    public string PlayerEmail { get; }
+    public FormattedAuditLog FormattedAuditLog { get; }
+    public string[] Players { get; }
+    public string? TeamLeader { get; }
 }

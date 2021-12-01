@@ -1,9 +1,5 @@
-namespace Snittlistan.Web.Infrastructure
+namespace Snittlistan.Web.Infrastructure;
+[AttributeUsage(AttributeTargets.Property)]
+public sealed class IdAttribute : Attribute
 {
-    using System;
-
-    [AttributeUsage(AttributeTargets.Property)]
-    public sealed class IdAttribute : Attribute
-    {
-    }
 }

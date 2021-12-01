@@ -47,7 +47,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Globals.cs">
+      <Link>Globals.cs</Link>
+    </Compile>
+    <Compile Include="ApiControllers\Infrastructure\IdGenerator.cs" />
+    <Compile Include="ApiControllers\Infrastructure\InMemoryContext.cs" />
     <Compile Include="ApiControllers\Task_Post_RegisterMatch.cs" />
+    <Compile Include="ApiControllers\Infrastructure\InMemoryDbAsyncEnumerable.cs" />
+    <Compile Include="ApiControllers\Infrastructure\InMemoryDbAsyncEnumerator.cs" />
+    <Compile Include="ApiControllers\Infrastructure\InMemoryDbAsyncQueryProvider.cs" />
     <Compile Include="ApiControllers\WebApiIntegrationTest.cs" />
     <Compile Include="BitsClientTest.cs" />
     <Compile Include="BitsGateway.cs" />
@@ -122,6 +130,9 @@
     <EmbeddedResource Include="BitsResult\VärtansIK-standings.html" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Ben.Demystifier">
+      <Version>0.4.1</Version>
+    </PackageReference>
     <PackageReference Include="Castle.Core">
       <Version>4.4.1</Version>
     </PackageReference>

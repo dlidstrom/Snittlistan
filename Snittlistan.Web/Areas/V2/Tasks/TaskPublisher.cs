@@ -1,87 +1,88 @@
-﻿#nullable enable
+﻿using System.Web.Hosting;
+using NLog;
+using Snittlistan.Queue;
+using Snittlistan.Queue.Messages;
+using Snittlistan.Web.Infrastructure.Database;
 
-namespace Snittlistan.Web.Areas.V2.Tasks
+#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Tasks;
+public class TaskPublisher
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Web;
-    using System.Web.Hosting;
-    using NLog;
-    using Raven.Client;
-    using Snittlistan.Queue;
-    using Snittlistan.Queue.Messages;
-    using Snittlistan.Queue.Models;
-    using Snittlistan.Web.Infrastructure.Database;
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private readonly Tenant currentTenant;
+    private readonly Databases databases;
+    private readonly Guid correlationId;
+    private readonly Guid? causationId;
 
-    public class TaskPublisher
+    public TaskPublisher(
+        Tenant currentTenant,
+        Databases databases,
+        Guid correlationId,
+        Guid? causationId)
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        this.currentTenant = currentTenant;
+        this.databases = databases;
+        this.correlationId = correlationId;
+        this.causationId = causationId;
+    }
 
-        public Databases Databases { get; set; } = null!;
+    public void PublishTask(TaskBase task, string createdBy)
+    {
+        PublishedTask publishedTask = databases.Snittlistan.PublishedTasks.Add(new(
+            task,
+            currentTenant.TenantId,
+            correlationId,
+            causationId,
+            Guid.NewGuid(),
+            createdBy));
 
-        public TenantConfiguration TenantConfiguration { get; set; } = null!;
-
-        public void PublishTask(ITask task, string createdBy)
+        try
         {
-            DoPublishDelayedTask(task, DateTime.MinValue, createdBy);
+            HostingEnvironment.QueueBackgroundWorkItem(ct => PublishMessage(currentTenant, publishedTask, ct));
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "QueueBackgroundWorkItem failed, using fallback");
+            CancellationTokenSource tokenSource = new(10000);
+            CancellationToken cancellationToken = tokenSource.Token;
+            PublishMessage(currentTenant, publishedTask, cancellationToken);
         }
 
-        public void PublishDelayedTask(ITask task, TimeSpan sendAfter, string createdBy)
+        static void PublishMessage(Tenant tenant, PublishedTask publishedTask, CancellationToken ct)
         {
-            DateTime publishDate = DateTime.Now.Add(sendAfter);
-            DoPublishDelayedTask(task, publishDate, createdBy);
-        }
-
-        private void DoPublishDelayedTask(ITask task, DateTime publishDate, string createdBy)
-        {
-            string businessKey = task.BusinessKey.ToString();
-            DelayedTask delayedTask = Databases.Snittlistan.DelayedTasks.Add(new(
-                task,
-                publishDate,
-                TenantConfiguration.TenantId,
-                CorrelationId,
-                null,
-                Guid.NewGuid(),
-                createdBy));
-            Logger.Info("added delayed task: {@delayedTask}", delayedTask);
-            HostingEnvironment.QueueBackgroundWorkItem(async ct => await PublishMessage(businessKey, ct));
-
-            async Task PublishMessage(string businessKey, CancellationToken ct)
+            try
             {
-                try
-                {
-                    using MsmqGateway.MsmqTransactionScope scope = MsmqGateway.AutoCommitScope();
-                    using SnittlistanContext context = new();
-                    DelayedTask delayedTask = await context.DelayedTasks.SingleOrDefaultAsync(x => x.BusinessKeyColumn == businessKey, ct);
-                    MessageEnvelope message = new(
-                        delayedTask.Task,
-                        delayedTask.TenantId,
-                        delayedTask.CorrelationId,
-                        delayedTask.CausationId,
-                        delayedTask.MessageId);
-                    scope.PublishMessage(message);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex, "failed to publish message");
-                }
+                using MsmqGateway.MsmqTransactionScope scope = MsmqGateway.AutoCommitScope();
+                MessageEnvelope message = new(
+                    publishedTask.Task,
+                    publishedTask.TenantId,
+                    tenant.Hostname,
+                    publishedTask.CorrelationId,
+                    publishedTask.CausationId,
+                    publishedTask.MessageId);
+                scope.PublishMessage(message);
+                scope.Commit();
+                Logger.Info("published message {@message}", message);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "failed to publish message");
             }
         }
+    }
 
-        private Guid CorrelationId
-        {
-            get
-            {
-                if (HttpContext.Current.Items["CorrelationId"] is Guid correlationId)
-                {
-                    return correlationId;
-                }
-
-                correlationId = Guid.NewGuid();
-                HttpContext.Current.Items["CorrelationId"] = correlationId;
-                return correlationId;
-            }
-        }
+    public void PublishDelayedTask(TaskBase task, TimeSpan sendAfter, string createdBy)
+    {
+        DateTime publishDate = DateTime.Now.Add(sendAfter);
+        DelayedTask delayedTask = databases.Snittlistan.DelayedTasks.Add(new(
+            task,
+            publishDate,
+            currentTenant.TenantId,
+            correlationId,
+            null,
+            Guid.NewGuid(),
+            createdBy));
+        Logger.Info("added delayed task: {@delayedTask}", delayedTask);
     }
 }
