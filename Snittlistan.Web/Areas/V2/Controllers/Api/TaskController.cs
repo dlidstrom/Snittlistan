@@ -1,128 +1,91 @@
-﻿#nullable enable
+﻿using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
+using System.Reflection;
+using System.Web.Http;
+using Newtonsoft.Json;
+using NLog;
+using Snittlistan.Queue.Messages;
+using Snittlistan.Web.Areas.V2.Tasks;
+using Snittlistan.Web.Controllers;
+using Snittlistan.Web.Infrastructure;
+using Snittlistan.Web.Infrastructure.Attributes;
+using Snittlistan.Web.Infrastructure.Database;
 
-namespace Snittlistan.Web.Areas.V2.Controllers.Api
+#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Controllers.Api;
+[OnlyLocalAllowed]
+public class TaskController : AbstractApiController
 {
-    using System;
-    using System.ComponentModel.DataAnnotations;
-    using System.Reflection;
-    using System.Threading.Tasks;
-    using System.Web.Http;
-    using Castle.MicroKernel;
-    using Newtonsoft.Json;
-    using NLog;
-    using Snittlistan.Queue.Messages;
-    using Snittlistan.Web.Areas.V2.Tasks;
-    using Snittlistan.Web.Controllers;
-    using Snittlistan.Web.Infrastructure.Attributes;
+    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-    [OnlyLocalAllowed]
-    public class TaskController : AbstractApiController
+    public async Task<IHttpActionResult> Post(TaskRequest request)
     {
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-        private readonly IKernel kernel;
+        Log.Info($"Received task {request.TaskJson}");
 
-        public TaskController(IKernel kernel)
+        TaskBase? taskObject = JsonConvert.DeserializeObject<TaskBase>(
+            request.TaskJson,
+            new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+        if (taskObject is null)
         {
-            this.kernel = kernel;
+            return BadRequest("could not deserialize task json");
         }
 
-        public async Task<IHttpActionResult> Post(TaskRequest request)
+        // check for published task
+        PublishedTask? publishedTask = await Databases.Snittlistan.PublishedTasks.SingleOrDefaultAsync(x => x.MessageId == request.MessageId);
+        if (publishedTask is null)
         {
-            Log.Info($"Received task {request.TaskJson}");
-            if (ModelState.IsValid == false)
-            {
-                return BadRequest(ModelState);
-            }
-
-            ITask? taskObject = JsonConvert.DeserializeObject<ITask>(
-                request.TaskJson,
-                new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
-            if (taskObject is null)
-            {
-                return BadRequest("could not deserialize task json");
-            }
-
-            Type handlerType = typeof(ITaskHandler<>).MakeGenericType(taskObject.GetType());
-            object handler = kernel.Resolve(handlerType);
-            PropertyInfo? uriInfo = handler.GetType().GetProperty("TaskApiUri");
-            if (uriInfo != null)
-            {
-                string uriString = Url.Link("DefaultApi", new { controller = "Task" });
-                Uri uri = new(uriString);
-                uriInfo.SetValue(handler, uri);
-            }
-
-            MethodInfo handleMethod = handler.GetType().GetMethod("Handle");
-            IDisposable scope = NestedDiagnosticsLogicalContext.Push(taskObject.BusinessKey);
-            try
-            {
-                Log.Info("Begin");
-                IMessageContext messageContext = (IMessageContext)Activator.CreateInstance(
-                    typeof(MessageContext<>).MakeGenericType(taskObject.GetType()),
-                    taskObject,
-                    TenantConfiguration.TenantId,
-                    request.CorrelationId,
-                    request.MessageId,
-                    MsmqTransaction);
-                messageContext.PublishMessage = task => DoPublishMessage(request, task);
-
-                Task task = (Task)handleMethod.Invoke(handler, new[] { messageContext });
-                await task;
-                Log.Info("End");
-            }
-            finally
-            {
-                scope.Dispose();
-            }
-
-            return Ok();
+            return BadRequest($"No published task found with message id {request.MessageId}");
         }
 
-        private void DoPublishMessage(TaskRequest request, ITask task)
+        if (publishedTask.HandledDate.HasValue)
         {
-            // TODO save to database
-            Guid correlationId = request.CorrelationId ?? default;
-            MessageEnvelope envelope = new(
-                task,
-                TenantConfiguration.TenantId,
-                correlationId,
-                request.MessageId,
-                Guid.NewGuid());
-            MsmqTransaction.PublishMessage(envelope);
-            _ = Databases.Snittlistan.PublishedTasks.Add(new(
-                task,
-                TenantConfiguration.TenantId,
-                correlationId,
-                request.MessageId,
-                envelope.MessageId,
-                "system"));
-
-            // TODO
-            /**
-             * All task publishing must be done from this controller. Move this lambda to a method.
-             * Tool exe must have access to command/query. No database access, no queue access from the tool.
-             * Only handle tasks that have been published. Check that they are in the database, set a date timestamp
-             * on successful handling.
-             */
+            return Ok($"task with message id {publishedTask.MessageId} already handled");
         }
+
+        Type handlerType = typeof(ITaskHandler<>).MakeGenericType(taskObject.GetType());
+
+        MethodInfo handleMethod = handlerType.GetMethod("Handle");
+        using IDisposable scope = NestedDiagnosticsLogicalContext.Push(taskObject.BusinessKey);
+        Log.Info("Begin");
+        Tenant tenant = await GetCurrentTenant();
+        Guid correlationId = request.CorrelationId ?? default;
+        Guid causationId = request.MessageId ?? default;
+        TaskPublisher taskPublisher = new(tenant, Databases, correlationId, causationId);
+        IMessageContext messageContext = (IMessageContext)Activator.CreateInstance(
+            typeof(MessageContext<>).MakeGenericType(taskObject.GetType()),
+            taskObject,
+            tenant,
+            correlationId,
+            causationId);
+        messageContext.PublishMessageDelegate = task =>
+            taskPublisher.PublishTask(task, "system");
+
+        object handler = Kernel.Resolve(handlerType);
+        Task task = (Task)handleMethod.Invoke(handler, new[] { messageContext });
+        await task;
+        Log.Info("End");
+        publishedTask.MarkHandled(DateTime.Now);
+
+        return Ok();
+    }
+}
+
+public class TaskRequest
+{
+    public TaskRequest(string taskJson, Guid? correlationId, Guid? messageId)
+    {
+        TaskJson = taskJson;
+        CorrelationId = correlationId;
+        MessageId = messageId;
     }
 
-    public class TaskRequest
-    {
-        public TaskRequest(string taskJson, Guid? correlationId, Guid? messageId)
-        {
-            TaskJson = taskJson;
-            CorrelationId = correlationId;
-            MessageId = messageId;
-        }
+    [Required]
+    public string TaskJson { get; }
 
-        [Required]
-        public string TaskJson { get; }
+    [Required]
+    public Guid? CorrelationId { get; }
 
-        [Required]
-        public Guid? CorrelationId { get; }
-
-        [Required]
-        public Guid? MessageId { get; }
-    }
+    [Required]
+    public Guid? MessageId { get; }
 }

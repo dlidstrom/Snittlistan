@@ -1,13 +1,11 @@
-﻿#nullable enable
+﻿using Snittlistan.Queue.Messages;
 
-namespace Snittlistan.Queue
+#nullable enable
+
+namespace Snittlistan.Queue;
+public interface IMsmqTransaction
 {
-    using Snittlistan.Queue.Messages;
+    void PublishMessage(MessageEnvelope envelope);
 
-    public interface IMsmqTransaction
-    {
-        void PublishMessage(MessageEnvelope envelope);
-
-        void Commit();
-    }
+    void Commit();
 }

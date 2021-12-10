@@ -1,8 +1,4 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Queue.Messages
-{
-    using System;
-
-    public record BusinessKey(Type MessageType, string Key);
-}
+namespace Snittlistan.Queue.Messages;
+public record BusinessKey(Type MessageType, string Key);

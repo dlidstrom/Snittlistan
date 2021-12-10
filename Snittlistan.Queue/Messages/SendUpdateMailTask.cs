@@ -1,24 +1,17 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Queue.Messages
+namespace Snittlistan.Queue.Messages;
+
+public class SendUpdateMailTask : TaskBase
 {
-    using System;
-
-    public class SendUpdateMailTask : ITask
+    public SendUpdateMailTask(string rosterId, string playerId)
+        : base(new(typeof(SendUpdateMailTask), $"{rosterId}/{playerId}"))
     {
-        public SendUpdateMailTask(string rosterId, string playerId, Guid correlationId)
-        {
-            RosterId = rosterId;
-            PlayerId = playerId;
-            CorrelationId = correlationId;
-        }
-
-        public string RosterId { get; }
-
-        public string PlayerId { get; }
-
-        public Guid CorrelationId { get; }
-
-        public BusinessKey BusinessKey => new(GetType(), $"{RosterId}/{PlayerId}");
+        RosterId = rosterId;
+        PlayerId = playerId;
     }
+
+    public string RosterId { get; }
+
+    public string PlayerId { get; }
 }

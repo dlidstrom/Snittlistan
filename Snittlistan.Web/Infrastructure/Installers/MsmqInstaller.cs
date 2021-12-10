@@ -1,20 +1,19 @@
-﻿#nullable enable
+﻿
+using Castle.MicroKernel.Registration;
+using Castle.MicroKernel.SubSystems.Configuration;
+using Castle.Windsor;
+using Snittlistan.Queue;
 
-namespace Snittlistan.Web.Infrastructure.Installers
+#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Installers;
+public class MsmqInstaller : IWindsorInstaller
 {
-    using Castle.MicroKernel.Registration;
-    using Castle.MicroKernel.SubSystems.Configuration;
-    using Castle.Windsor;
-    using Snittlistan.Queue;
-
-    public class MsmqInstaller : IWindsorInstaller
+    public void Install(IWindsorContainer container, IConfigurationStore store)
     {
-        public void Install(IWindsorContainer container, IConfigurationStore store)
-        {
-            _ = container.Register(
-                Component.For<IMsmqTransaction>()
-                         .UsingFactoryMethod(k => MsmqGateway.AutoCommitScope())
-                         .LifestylePerWebRequest());
-        }
+        _ = container.Register(
+            Component.For<IMsmqTransaction>()
+                     .UsingFactoryMethod(k => MsmqGateway.AutoCommitScope())
+                     .LifestylePerWebRequest());
     }
 }

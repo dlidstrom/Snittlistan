@@ -1,33 +1,33 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Queue.Messages
+namespace Snittlistan.Queue.Messages;
+public class MessageEnvelope
 {
-    using System;
-
-    public class MessageEnvelope
+    public MessageEnvelope(
+        object payload,
+        int tenantId,
+        string hostname,
+        Guid correlationId,
+        Guid? causationId,
+        Guid messageId)
     {
-        public MessageEnvelope(
-            object payload,
-            int tenantId,
-            Guid correlationId,
-            Guid? causationId,
-            Guid messageId)
-        {
-            Payload = payload;
-            TenantId = tenantId;
-            CorrelationId = correlationId;
-            CausationId = causationId;
-            MessageId = messageId;
-        }
-
-        public object Payload { get; }
-
-        public int TenantId { get; }
-
-        public Guid CorrelationId { get; }
-
-        public Guid? CausationId { get; }
-
-        public Guid MessageId { get; }
+        Payload = payload;
+        TenantId = tenantId;
+        Hostname = hostname;
+        CorrelationId = correlationId;
+        CausationId = causationId;
+        MessageId = messageId;
     }
+
+    public object Payload { get; }
+
+    public int TenantId { get; }
+
+    public string Hostname { get; }
+
+    public Guid CorrelationId { get; }
+
+    public Guid? CausationId { get; }
+
+    public Guid MessageId { get; }
 }

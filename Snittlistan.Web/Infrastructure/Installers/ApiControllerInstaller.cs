@@ -1,18 +1,17 @@
-﻿#nullable enable
+﻿
+using System.Web.Http;
+using Castle.MicroKernel.Registration;
+using Castle.MicroKernel.SubSystems.Configuration;
+using Castle.Windsor;
 
-namespace Snittlistan.Web.Infrastructure.Installers
+#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Installers;
+public class ApiControllerInstaller : IWindsorInstaller
 {
-    using System.Web.Http;
-    using Castle.MicroKernel.Registration;
-    using Castle.MicroKernel.SubSystems.Configuration;
-    using Castle.Windsor;
-
-    public class ApiControllerInstaller : IWindsorInstaller
+    public void Install(IWindsorContainer container, IConfigurationStore store)
     {
-        public void Install(IWindsorContainer container, IConfigurationStore store)
-        {
-            _ = container.Register(
-                Classes.FromThisAssembly().BasedOn<ApiController>().LifestyleTransient());
-        }
+        _ = container.Register(
+            Classes.FromThisAssembly().BasedOn<ApiController>().LifestyleTransient());
     }
 }
