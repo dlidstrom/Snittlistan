@@ -139,6 +139,7 @@
     <Compile Include="Commands\ICommandHandler.cs" />
     <Compile Include="Commands\InitializeIndexesCommandHandler.cs" />
     <Compile Include="Commands\RegisterMatchesCommandHandler.cs" />
+    <Compile Include="Commands\SendDelayedMailCommandHandler.cs" />
     <Compile Include="Commands\VerifyMatchesCommandHandler.cs" />
     <Compile Include="Infrastructure\Attributes\ValidateModelAttributeMvc.cs" />
     <Compile Include="Infrastructure\Attributes\ValidateModelAttribute.cs" />

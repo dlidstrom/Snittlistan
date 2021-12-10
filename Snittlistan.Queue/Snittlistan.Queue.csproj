@@ -51,6 +51,7 @@
     <Compile Include="Commands\GetRostersFromBitsCommand.cs" />
     <Compile Include="Commands\InitializeIndexesCommand.cs" />
     <Compile Include="Commands\RegisterMatchesCommand.cs" />
+    <Compile Include="Commands\SendDelayedMailCommand.cs" />
     <Compile Include="Commands\VerifyMatchesCommand.cs" />
     <Compile Include="Config\QueueListenerElement.cs" />
     <Compile Include="Config\QueueListenersCollection.cs" />

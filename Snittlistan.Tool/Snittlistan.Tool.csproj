@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="HttpConnectionSettings.cs" />
     <Compile Include="Tasks\CommandLineTask.cs" />
+    <Compile Include="Tasks\DelayedMailCommandLineTask.cs" />
     <Compile Include="Tasks\GetPlayersFromBitsCommandLineTask.cs" />
     <Compile Include="Tasks\GetRostersFromBitsCommandLineTask.cs" />
     <Compile Include="Tasks\HelpCommandLineTask.cs" />
@@ -111,9 +112,7 @@
       <Version>4.7.12</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
