@@ -45,4 +45,6 @@ public class Tenant
     public string WebAppTitle { get; private set; } = null!;
 
     public DateTime CreatedDate { get; private set; }
+
+    public string Version { get; private set; } = null!;
 }

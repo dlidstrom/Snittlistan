@@ -70,6 +70,8 @@ public class PublishedTask
 
     public DateTime? HandledDate { get; private set; }
 
+    public string Version { get; private set; } = null!;
+
     public void MarkHandled(DateTime when)
     {
         HandledDate = when;

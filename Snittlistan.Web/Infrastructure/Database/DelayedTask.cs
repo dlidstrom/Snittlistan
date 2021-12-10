@@ -48,6 +48,8 @@ public class DelayedTask
 
     public string CreatedBy { get; private set; } = null!;
 
+    public string Version { get; private set; } = null!;
+
     [NotMapped]
     public BusinessKey BusinessKey
     {
