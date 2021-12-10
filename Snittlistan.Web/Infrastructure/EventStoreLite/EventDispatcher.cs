@@ -1,31 +1,28 @@
-﻿#nullable enable
+﻿using Castle.Windsor;
+using EventStoreLite.Infrastructure;
 
-namespace EventStoreLite
+#nullable enable
+
+namespace EventStoreLite;
+/// <summary>
+/// Used to dispatch events to event handlers.
+/// </summary>
+internal class EventDispatcher
 {
-    using System;
-    using Castle.Windsor;
-    using EventStoreLite.Infrastructure;
+    private readonly IWindsorContainer container;
 
-    /// <summary>
-    /// Used to dispatch events to event handlers.
-    /// </summary>
-    internal class EventDispatcher
+    public EventDispatcher(IWindsorContainer container)
     {
-        private readonly IWindsorContainer container;
+        this.container = container ?? throw new ArgumentNullException(nameof(container));
+    }
 
-        public EventDispatcher(IWindsorContainer container)
+    public void Dispatch(IDomainEvent e, string aggregateId)
+    {
+        Type type = typeof(IEventHandler<>).MakeGenericType(e.GetType());
+        Array handlers = container.ResolveAll(type);
+        foreach (object handler in handlers)
         {
-            this.container = container ?? throw new ArgumentNullException(nameof(container));
-        }
-
-        public void Dispatch(IDomainEvent e, string aggregateId)
-        {
-            Type type = typeof(IEventHandler<>).MakeGenericType(e.GetType());
-            Array handlers = container.ResolveAll(type);
-            foreach (object handler in handlers)
-            {
-                handler.AsDynamic()!.Handle(e, aggregateId);
-            }
+            handler.AsDynamic()!.Handle(e, aggregateId);
         }
     }
 }

@@ -1,49 +1,45 @@
-﻿namespace Snittlistan.Web.Areas.V1.Controllers
+﻿using System.Web.Mvc;
+using Raven.Client.Linq;
+using Snittlistan.Web.Controllers;
+
+namespace Snittlistan.Web.Areas.V1.Controllers;
+public class SearchController : AbstractController
 {
-    using System;
-    using System.Linq;
-    using System.Web.Mvc;
-    using Raven.Client.Linq;
-    using Snittlistan.Web.Controllers;
-
-    public class SearchController : AbstractController
+    public JsonResult TeamsQuickSearch(string term)
     {
-        public JsonResult TeamsQuickSearch(string term)
+        if (term.Length < 3)
         {
-            if (term.Length < 3)
-            {
-                return Json(Array.Empty<string>(), JsonRequestBehavior.AllowGet);
-            }
-
-            var query =
-                from team in Databases.Bits.Teams
-                where team.TeamAlias.StartsWith(term)
-                orderby team.TeamAlias
-                select new
-                {
-                    label = team.TeamAlias
-                };
-
-            return Json(query, JsonRequestBehavior.AllowGet);
+            return Json(Array.Empty<string>(), JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult LocationsQuickSearch(string term)
-        {
-            if (term.Length < 3)
+        var query =
+            from team in Databases.Bits.Teams
+            where team.TeamAlias.StartsWith(term)
+            orderby team.TeamAlias
+            select new
             {
-                return Json(Array.Empty<string>(), JsonRequestBehavior.AllowGet);
-            }
+                label = team.TeamAlias
+            };
 
-            var query =
-                from hall in Databases.Bits.Hallar
-                where hall.HallName.StartsWith(term)
-                orderby hall.HallName
-                select new
-                {
-                    label = hall.HallName
-                };
+        return Json(query, JsonRequestBehavior.AllowGet);
+    }
 
-            return Json(term, JsonRequestBehavior.AllowGet);
+    public JsonResult LocationsQuickSearch(string term)
+    {
+        if (term.Length < 3)
+        {
+            return Json(Array.Empty<string>(), JsonRequestBehavior.AllowGet);
         }
+
+        var query =
+            from hall in Databases.Bits.Hallar
+            where hall.HallName.StartsWith(term)
+            orderby hall.HallName
+            select new
+            {
+                label = hall.HallName
+            };
+
+        return Json(term, JsonRequestBehavior.AllowGet);
     }
 }
