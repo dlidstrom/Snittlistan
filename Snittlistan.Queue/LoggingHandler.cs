@@ -1,10 +1,10 @@
-﻿
+﻿#nullable enable
+
 using System.Net.Http;
 using NLog;
 
-#nullable enable
-
 namespace Snittlistan.Queue;
+
 public class LoggingHandler : DelegatingHandler
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

@@ -1,9 +1,9 @@
-﻿
+﻿#nullable enable
+
 using System.Configuration;
 
-#nullable enable
-
 namespace Snittlistan.Queue.Config;
+
 public class QueueListenerElement : ConfigurationElement
 {
     [ConfigurationProperty("name", IsRequired = true)]

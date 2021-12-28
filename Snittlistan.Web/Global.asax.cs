@@ -26,6 +26,7 @@ using Snittlistan.Web.Infrastructure.Indexes;
 using Snittlistan.Web.Infrastructure.Installers;
 using Snittlistan.Web.Infrastructure.IoC;
 using Snittlistan.Web.Models;
+using Npgsql.Logging;
 
 #nullable enable
 
@@ -180,6 +181,9 @@ public class MvcApplication : HttpApplication
     {
         RegisterGlobalFilters(GlobalFilters.Filters);
 
+        NpgsqlLogManager.Provider = new NLogLoggingProvider();
+        NpgsqlLogManager.IsParameterLoggingEnabled = true;
+
         // initialize container and controller factory
         InitializeContainer(configuration, databasesFactory);
 
@@ -234,17 +238,17 @@ public class MvcApplication : HttpApplication
                         new HttpClientHandler())));
             _ = Container.Install(
                 new ApiControllerInstaller(),
-                new EmailServiceInstaller(HostingEnvironment.MapPath("~/Views/Emails")),
-                new TaskHandlerInstaller(),
-                new CommandHandlerInstaller(),
                 new BitsClientInstaller(apiKey, httpClient),
+                new CommandHandlerInstaller(),
                 new ControllerInstaller(),
+                new DatabaseContextInstaller(databasesFactory),
+                new EmailServiceInstaller(HostingEnvironment.MapPath("~/Views/Emails")),
                 new EventMigratorInstaller(),
                 new EventStoreSessionInstaller(),
-                new RavenInstaller(tenants),
-                new DatabaseContextInstaller(databasesFactory),
-                new ServicesInstaller(),
                 new MsmqInstaller(),
+                new RavenInstaller(tenants),
+                new ServicesInstaller(),
+                new TaskHandlerInstaller(),
                 EventStoreInstaller.FromAssembly(
                     tenants,
                     Assembly.GetExecutingAssembly(),

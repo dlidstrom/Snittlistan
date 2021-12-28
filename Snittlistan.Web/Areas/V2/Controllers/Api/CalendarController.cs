@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿#nullable enable
+
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Snittlistan.Web.Infrastructure;
@@ -10,19 +12,20 @@ using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Helpers;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Controllers.Api;
+
 public class CalendarController : AbstractApiController
 {
+    public Raven.Client.IDocumentSession DocumentSession { get; set; } = null!;
+
     public HttpResponseMessage Get()
     {
         int season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
 
         // rosters
         Roster[] rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
-                                     .Where(r => r.Season == season)
-                                     .ToArray();
+            .Where(r => r.Season == season)
+            .ToArray();
         IEnumerable<string> resultIds = rosters.Select(x => ResultHeaderReadModel.IdFromBitsMatchId(x.BitsMatchId, x.Id!));
         ResultHeaderReadModel[] results = DocumentSession.Load<ResultHeaderReadModel>(resultIds);
         Dictionary<string, ResultHeaderReadModel> resultsDictionary = results.Where(x => x != null)

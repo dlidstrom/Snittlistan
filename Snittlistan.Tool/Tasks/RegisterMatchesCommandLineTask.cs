@@ -3,6 +3,7 @@
 #nullable enable
 
 namespace Snittlistan.Tool.Tasks;
+
 public class RegisterMatchesCommandLineTask : CommandLineTask
 {
     public override async Task Run(string[] args)

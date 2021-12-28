@@ -1,12 +1,13 @@
-﻿using System.Data.Entity;
+﻿#nullable enable
+
+using System.Data.Entity;
 using Snittlistan.Queue.Commands;
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Tasks;
 using Snittlistan.Web.Infrastructure.Database;
 
-#nullable enable
-
 namespace Snittlistan.Web.Commands;
+
 public abstract class CommandHandler<TCommand> : ICommandHandler<TCommand>
     where TCommand : CommandBase
 {

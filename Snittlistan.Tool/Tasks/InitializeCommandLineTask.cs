@@ -1,6 +1,7 @@
 ﻿using Snittlistan.Queue.Commands;
 
 namespace Snittlistan.Tool.Tasks;
+
 public class InitializeCommandLineTask : CommandLineTask
 {
     public override async Task Run(string[] args)

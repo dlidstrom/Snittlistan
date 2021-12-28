@@ -70,10 +70,10 @@ public class DelayedTask
 
     public DateTime CreatedDate { get; private set; }
 
-    [Column("BusinessKey")]
+    [Column("business_key")]
     public string BusinessKeyColumn { get; private set; } = null!;
 
-    [Column("Data")]
+    [Column("data")]
     public string DataColumn { get; private set; } = null!;
 
     public void MarkAsPublished(DateTime timestamp)

@@ -1,4 +1,5 @@
-﻿
+﻿#nullable enable
+
 using System.ComponentModel.DataAnnotations;
 using System.Web.Http;
 using Snittlistan.Web.Infrastructure.Attributes;
@@ -7,12 +8,13 @@ using Newtonsoft.Json;
 using Snittlistan.Queue.Queries;
 using Snittlistan.Web.Controllers;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Controllers.Api;
+
 [OnlyLocalAllowed]
 public class QueryController : AbstractApiController
 {
+    public Raven.Client.IDocumentSession DocumentSession { get; set; } = null!;
+
     public IHttpActionResult Post(QueryRequest request)
     {
         dynamic? query = JsonConvert.DeserializeObject(

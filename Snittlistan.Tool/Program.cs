@@ -62,13 +62,14 @@ public static class Program
         Console.WriteLine();
         Console.WriteLine("Available tasks:");
         string[] names = container.Kernel
-                             .GetAssignableHandlers(typeof(ICommandLineTask))
-                             .Select(x => x.ComponentModel.ComponentName.Name)
-                             .OrderBy(x => x)
-                             .ToArray();
+            .GetAssignableHandlers(typeof(ICommandLineTask))
+            .Select(x => x.ComponentModel.ComponentName.Name)
+            .OrderBy(x => x)
+            .ToArray();
+        int indent = names.Max(x => x.Length);
         foreach (string name in names)
         {
-            Console.WriteLine("{0,30}", name);
+            Console.WriteLine("{0," + indent + "}", name);
         }
 
         Console.WriteLine();

@@ -132,12 +132,14 @@
     </Compile>
     <Compile Include="ApplicationMode.cs" />
     <Compile Include="Areas\V2\Controllers\Api\CommandController.cs" />
+    <Compile Include="Areas\V2\Tasks\PublishExpiredTasksTaskHandler.cs" />
     <Compile Include="Areas\V2\Tasks\TaskHandler.cs" />
     <Compile Include="Commands\CommandHandler.cs" />
     <Compile Include="Commands\GetPlayersFromBitsCommandHandler.cs" />
     <Compile Include="Commands\GetRostersFromBitsCommandHandler.cs" />
     <Compile Include="Commands\ICommandHandler.cs" />
     <Compile Include="Commands\InitializeIndexesCommandHandler.cs" />
+    <Compile Include="Commands\PublishExpiredTasksCommandHandler.cs" />
     <Compile Include="Commands\RegisterMatchesCommandHandler.cs" />
     <Compile Include="Commands\SendDelayedMailCommandHandler.cs" />
     <Compile Include="Commands\VerifyMatchesCommandHandler.cs" />

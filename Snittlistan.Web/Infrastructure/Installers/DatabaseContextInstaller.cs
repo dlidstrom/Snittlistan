@@ -1,13 +1,13 @@
-﻿using Castle.Core;
+﻿#nullable enable
+
+using Castle.Core;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using Npgsql.Logging;
 using Snittlistan.Web.Infrastructure.Database;
 
-#nullable enable
-
 namespace Snittlistan.Web.Infrastructure.Installers;
+
 public class DatabaseContextInstaller : IWindsorInstaller
 {
     private readonly Func<Databases> databases;
@@ -28,9 +28,6 @@ public class DatabaseContextInstaller : IWindsorInstaller
 
     public void Install(IWindsorContainer container, IConfigurationStore store)
     {
-        NpgsqlLogManager.Provider = new NLogLoggingProvider();
-        NpgsqlLogManager.IsParameterLoggingEnabled = true;
-
         _ = container.Register(
             func.Invoke(
                 Component.For<Databases>()

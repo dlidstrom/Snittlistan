@@ -1,9 +1,10 @@
-﻿using System.Text;
+﻿#nullable enable
+
+using System.Text;
 using Newtonsoft.Json;
 
-#nullable enable
-
 namespace Snittlistan.Queue.Messages;
+
 public class EmailTask : TaskBase
 {
     [JsonConstructor]

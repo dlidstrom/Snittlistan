@@ -50,6 +50,7 @@
     <Compile Include="Commands\GetPlayersFromBitsCommand.cs" />
     <Compile Include="Commands\GetRostersFromBitsCommand.cs" />
     <Compile Include="Commands\InitializeIndexesCommand.cs" />
+    <Compile Include="Commands\PublishExpiredTasksCommand.cs" />
     <Compile Include="Commands\RegisterMatchesCommand.cs" />
     <Compile Include="Commands\SendDelayedMailCommand.cs" />
     <Compile Include="Commands\VerifyMatchesCommand.cs" />
@@ -74,7 +75,6 @@
     <Compile Include="Config\MessagingConfigSection.cs" />
     <Compile Include="Messages\NewUserCreatedTask.cs" />
     <Compile Include="Messages\OneTimeKeyTask.cs" />
-    <Compile Include="Messages\RegisterMatchesTask.cs" />
     <Compile Include="Messages\RegisterMatchTask.cs" />
     <Compile Include="Messages\InitiateUpdateMailTask.cs" />
     <Compile Include="Messages\SendUpdateMailTask.cs" />

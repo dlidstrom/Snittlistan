@@ -10,7 +10,7 @@ public class DelayedMailCommandLineTask : CommandLineTask
 
     public override async Task Run(string[] args)
     {
-        if (args.Length != 3)
+        if (args.Length != 6)
         {
             throw new Exception("Specify recipient, delay (in seconds), hostname, subject, and content");
         }

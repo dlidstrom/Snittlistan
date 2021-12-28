@@ -1,13 +1,14 @@
-﻿using Snittlistan.Queue.Messages;
+﻿#nullable enable
+
+using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Queries;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Models;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Tasks;
-public class RegisterMatchesTaskHandler : TaskHandler<RegisterMatchesTask>
+
+public class RegisterMatchesTaskHandler : TaskHandler<RegisterMatchesTaskHandler.RegisterMatchesTask>
 {
     public override Task Handle(MessageContext<RegisterMatchesTask> context)
     {
@@ -19,5 +20,13 @@ public class RegisterMatchesTaskHandler : TaskHandler<RegisterMatchesTask>
         }
 
         return Task.CompletedTask;
+    }
+
+    public class RegisterMatchesTask : TaskBase
+    {
+        public RegisterMatchesTask()
+            : base(new(typeof(RegisterMatchesTask), string.Empty))
+        {
+        }
     }
 }

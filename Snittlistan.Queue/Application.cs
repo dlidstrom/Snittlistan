@@ -1,9 +1,9 @@
-﻿
+﻿#nullable enable
+
 using Snittlistan.Queue.Config;
 
-#nullable enable
-
 namespace Snittlistan.Queue;
+
 public class Application
 {
     private readonly List<TaskQueueListener> taskQueueListeners = new();

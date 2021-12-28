@@ -1,12 +1,13 @@
-﻿using System.Diagnostics;
+﻿#nullable enable
+
+using System.Diagnostics;
 using System.IO;
 using System.Messaging;
 using System.Text;
 using NLog;
 
-#nullable enable
-
 namespace Snittlistan.Queue;
+
 public abstract class MessageQueueListenerBase : IDisposable
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

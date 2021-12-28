@@ -1,9 +1,9 @@
-﻿
+﻿#nullable enable
+
 using System.Diagnostics;
 
-#nullable enable
-
 namespace Snittlistan.Queue;
+
 /// <summary>
 /// Implements a thread-safe counter.
 /// </summary>

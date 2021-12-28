@@ -1,11 +1,12 @@
-﻿using System.IO;
+﻿#nullable enable
+
+using System.IO;
 using System.Messaging;
 using System.Text;
 using Newtonsoft.Json;
 
-#nullable enable
-
 namespace Snittlistan.Queue;
+
 public class JsonMessageFormatter : IMessageFormatter
 {
     private static readonly JsonSerializerSettings DefaultSerializerSettings =

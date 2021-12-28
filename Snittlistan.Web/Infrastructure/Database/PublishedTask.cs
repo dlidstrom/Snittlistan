@@ -60,10 +60,10 @@ public class PublishedTask
         private set => DataColumn = JsonConvert.SerializeObject(value, settings);
     }
 
-    [Column("BusinessKey")]
+    [Column("business_key")]
     public string BusinessKeyColumn { get; private set; } = null!;
 
-    [Column("Data")]
+    [Column("data")]
     public string DataColumn { get; private set; } = null!;
 
     public DateTime CreatedDate { get; private set; }

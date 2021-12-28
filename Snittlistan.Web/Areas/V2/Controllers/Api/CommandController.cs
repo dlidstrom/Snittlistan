@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿#nullable enable
+
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Web.Http;
 using Snittlistan.Web.Infrastructure.Attributes;
@@ -6,9 +8,8 @@ using Newtonsoft.Json;
 using Snittlistan.Web.Commands;
 using Snittlistan.Web.Controllers;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Controllers.Api;
+
 [OnlyLocalAllowed]
 public class CommandController : AbstractApiController
 {

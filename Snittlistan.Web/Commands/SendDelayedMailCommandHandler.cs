@@ -1,10 +1,10 @@
-﻿using Snittlistan.Queue.Commands;
+﻿#nullable enable
+
+using Snittlistan.Queue.Commands;
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Tasks;
 using Snittlistan.Web.Infrastructure.Database;
 using System.Data.Entity;
-
-#nullable enable
 
 namespace Snittlistan.Web.Commands;
 

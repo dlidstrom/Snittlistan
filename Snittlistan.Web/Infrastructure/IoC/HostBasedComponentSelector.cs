@@ -1,15 +1,24 @@
-﻿using Castle.MicroKernel;
+﻿#nullable enable
+
+using Castle.MicroKernel;
 using Raven.Client;
 
-#nullable enable
-
 namespace Snittlistan.Web.Infrastructure.IoC;
+
 public class HostBasedComponentSelector : IHandlerSelector
 {
     public bool HasOpinionAbout(string key, Type service)
     {
-        bool result = service == typeof(IDocumentStore);
-        return result;
+        try
+        {
+            _ = GetHostname();
+            bool result = service == typeof(IDocumentStore);
+            return result;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     public IHandler SelectHandler(string key, Type service, IHandler[] handlers)

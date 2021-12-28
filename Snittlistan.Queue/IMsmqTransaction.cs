@@ -1,8 +1,9 @@
-﻿using Snittlistan.Queue.Messages;
+﻿#nullable enable
 
-#nullable enable
+using Snittlistan.Queue.Messages;
 
 namespace Snittlistan.Queue;
+
 public interface IMsmqTransaction
 {
     void PublishMessage(MessageEnvelope envelope);

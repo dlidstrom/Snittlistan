@@ -1,6 +1,7 @@
 ﻿using Snittlistan.Queue.Commands;
 
 namespace Snittlistan.Tool.Tasks;
+
 public class VerifyMatchesCommandLineTask : CommandLineTask
 {
     public override async Task Run(string[] args)

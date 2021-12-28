@@ -1,4 +1,6 @@
-﻿using System.Data.Entity;
+﻿#nullable enable
+
+using System.Data.Entity;
 using System.Web.Http;
 using Castle.MicroKernel;
 using EventStoreLite;
@@ -6,19 +8,12 @@ using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Attributes;
 using Snittlistan.Web.Infrastructure.Database;
 
-#nullable enable
-
 namespace Snittlistan.Web.Controllers;
+
 [SaveChanges]
 public abstract class AbstractApiController : ApiController
 {
     public IKernel Kernel { get; set; } = null!;
-
-    public Raven.Client.IDocumentStore DocumentStore { get; set; } = null!;
-
-    public Raven.Client.IDocumentSession DocumentSession { get; set; } = null!;
-
-    public IEventStoreSession EventStoreSession { get; set; } = null!;
 
     public Databases Databases { get; set; } = null!;
 
@@ -27,9 +22,6 @@ public abstract class AbstractApiController : ApiController
     [NonAction]
     public async Task SaveChangesAsync()
     {
-        // this commits the document session
-        EventStoreSession.SaveChanges();
-
         _ = await Databases.Snittlistan.SaveChangesAsync();
     }
 
