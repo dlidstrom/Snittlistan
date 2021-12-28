@@ -1,8 +1,7 @@
-namespace Snittlistan.Web.Areas.V2.Domain.Match.Events
+namespace Snittlistan.Web.Areas.V2.Domain.Match.Events;
+
+public enum MedalType
 {
-    public enum MedalType
-    {
-        TotalScore,
-        PinsInSerie
-    }
+    TotalScore,
+    PinsInSerie
 }

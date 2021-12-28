@@ -1,12 +1,11 @@
-﻿namespace Snittlistan.Web.Infrastructure.Attributes
-{
-    using System.Web.Mvc;
+﻿
+using System.Web.Mvc;
 
-    public class SetTempModelStateAttribute : ActionFilterAttribute
+namespace Snittlistan.Web.Infrastructure.Attributes;
+public class SetTempModelStateAttribute : ActionFilterAttribute
+{
+    public override void OnActionExecuted(ActionExecutedContext filterContext)
     {
-        public override void OnActionExecuted(ActionExecutedContext filterContext)
-        {
-            filterContext.Controller.TempData["ModelState"] = filterContext.Controller.ViewData.ModelState;
-        }
+        filterContext.Controller.TempData["ModelState"] = filterContext.Controller.ViewData.ModelState;
     }
 }

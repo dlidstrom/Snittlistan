@@ -1,25 +1,36 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Web.Infrastructure.Installers
+using Castle.Core;
+using Castle.MicroKernel.Registration;
+using Castle.MicroKernel.SubSystems.Configuration;
+using Castle.Windsor;
+using Snittlistan.Web.Infrastructure.Database;
+
+namespace Snittlistan.Web.Infrastructure.Installers;
+
+public class DatabaseContextInstaller : IWindsorInstaller
 {
-    using Castle.MicroKernel.Registration;
-    using Castle.MicroKernel.SubSystems.Configuration;
-    using Castle.Windsor;
-    using Npgsql.Logging;
-    using Snittlistan.Queue.Infrastructure;
-    using Snittlistan.Web.Infrastructure.Database;
+    private readonly Func<Databases> databases;
 
-    public class DatabaseContextInstaller : IWindsorInstaller
+    private readonly Func<ComponentRegistration<Databases>, ComponentRegistration<Databases>> func;
+
+    public DatabaseContextInstaller(Func<Databases> databases)
     {
-        public void Install(IWindsorContainer container, IConfigurationStore store)
-        {
-            NpgsqlLogManager.Provider = new NLogLoggingProvider();
-            NpgsqlLogManager.IsParameterLoggingEnabled = true;
+        func = x => x.LifestylePerWebRequest();
+        this.databases = databases;
+    }
 
-            _ = container.Register(
+    public DatabaseContextInstaller(Func<Databases> databases, LifestyleType lifestyleType)
+    {
+        func = x => x.LifeStyle.Is(lifestyleType);
+        this.databases = databases;
+    }
+
+    public void Install(IWindsorContainer container, IConfigurationStore store)
+    {
+        _ = container.Register(
+            func.Invoke(
                 Component.For<Databases>()
-                    .UsingFactoryMethod(_ => new Databases(new(), new()))
-                    .LifestylePerWebRequest());
-        }
+                    .UsingFactoryMethod(databases)));
     }
 }

@@ -1,29 +1,15 @@
-﻿namespace Snittlistan.Tool.Tasks
+﻿using Snittlistan.Queue.Commands;
+
+#nullable enable
+
+namespace Snittlistan.Tool.Tasks;
+
+public class RegisterMatchesCommandLineTask : CommandLineTask
 {
-    using System;
-    using Snittlistan.Queue;
-    using Snittlistan.Queue.Infrastructure;
-    using Snittlistan.Queue.Messages;
-
-    public class RegisterMatchesCommandLineTask : ICommandLineTask
+    public override async Task Run(string[] args)
     {
-        public void Run(string[] args)
-        {
-            using MsmqGateway.MsmqTransactionScope scope = MsmqGateway.AutoCommitScope();
-            foreach (Tenant tenant in CommandLineTaskHelper.Tenants())
-            {
-                MessageEnvelope envelope = new(
-                    new RegisterMatchesTask(),
-                    tenant.TenantId,
-                    Guid.NewGuid(),
-                    null,
-                    Guid.NewGuid());
-                scope.PublishMessage(envelope);
-            }
-
-            scope.Commit();
-        }
-
-        public string HelpText => "Registers matches from Bits";
+        await ExecuteCommand(new RegisterMatchesCommand());
     }
+
+    public override string HelpText => "Registers matches from Bits";
 }

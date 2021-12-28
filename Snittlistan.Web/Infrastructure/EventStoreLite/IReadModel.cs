@@ -1,15 +1,14 @@
 ﻿#nullable enable
 
-namespace EventStoreLite
+namespace EventStoreLite;
+
+/// <summary>
+/// Marker interface.
+/// </summary>
+public interface IReadModel
 {
     /// <summary>
-    /// Marker interface.
+    /// Gets the read model id.
     /// </summary>
-    public interface IReadModel
-    {
-        /// <summary>
-        /// Gets the read model id.
-        /// </summary>
-        string? Id { get; }
-    }
+    string? Id { get; }
 }

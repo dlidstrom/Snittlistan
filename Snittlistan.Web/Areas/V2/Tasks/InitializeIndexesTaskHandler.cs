@@ -1,36 +1,34 @@
-﻿#nullable enable
+﻿using Snittlistan.Queue.Messages;
+using Snittlistan.Web.Infrastructure;
+using Snittlistan.Web.Infrastructure.Indexes;
+using Snittlistan.Web.Models;
 
-namespace Snittlistan.Web.Areas.V2.Tasks
+#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Tasks;
+public class InitializeIndexesTaskHandler : TaskHandler<InitializeIndexesTask>
 {
-    using System.Threading.Tasks;
-    using Snittlistan.Queue.Messages;
-    using Snittlistan.Web.Infrastructure.Indexes;
-    using Snittlistan.Web.Models;
-
-    public class InitializeIndexesTaskHandler : TaskHandler<InitializeIndexesTask>
+    public override Task Handle(MessageContext<InitializeIndexesTask> context)
     {
-        public override Task Handle(MessageContext<InitializeIndexesTask> task)
+        IndexCreator.CreateIndexes(DocumentStore);
+        User admin = DocumentSession.Load<User>(User.AdminId);
+        if (admin == null)
         {
-            IndexCreator.CreateIndexes(DocumentStore);
-            User admin = DocumentSession.Load<User>(User.AdminId);
-            if (admin == null)
+            admin = new("", "", context.Task.Email, context.Task.Password)
             {
-                admin = new("", "", task.Task.Email, task.Task.Password)
-                {
-                    Id = User.AdminId
-                };
-                admin.Initialize(t => TaskPublisher.PublishTask(t, "system"));
-                admin.Activate();
-                DocumentSession.Store(admin);
-            }
-            else
-            {
-                admin.SetEmail(task.Task.Email);
-                admin.SetPassword(task.Task.Password);
-                admin.Activate();
-            }
-
-            return Task.CompletedTask;
+                Id = User.AdminId
+            };
+            admin.Initialize(t => context.PublishMessageDelegate(t));
+            admin.Activate();
+            DocumentSession.Store(admin);
         }
+        else
+        {
+            admin.SetEmail(context.Task.Email);
+            admin.SetPassword(context.Task.Password);
+            admin.Activate();
+        }
+
+        return Task.CompletedTask;
     }
 }

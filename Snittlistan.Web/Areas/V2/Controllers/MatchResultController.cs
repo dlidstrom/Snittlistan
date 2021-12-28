@@ -1,201 +1,196 @@
-﻿#nullable enable
+﻿using System.Diagnostics;
+using System.Web;
+using System.Web.Mvc;
+using Snittlistan.Web.Areas.V2.Domain;
+using Snittlistan.Web.Helpers;
+using Snittlistan.Web.HtmlHelpers;
+using Snittlistan.Web.Areas.V2.Indexes;
+using Snittlistan.Web.Infrastructure.Attributes;
+using Raven.Abstractions;
+using Snittlistan.Web.Areas.V2.ReadModels;
+using Snittlistan.Web.Areas.V2.ViewModels;
+using Snittlistan.Web.Controllers;
 
-namespace Snittlistan.Web.Areas.V2.Controllers
+#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Controllers;
+public class MatchResultController : AbstractController
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
-    using System.Web;
-    using System.Web.Mvc;
-    using Domain;
-    using Helpers;
-    using HtmlHelpers;
-    using Indexes;
-    using Infrastructure.Attributes;
-    using Raven.Abstractions;
-    using ReadModels;
-    using ViewModels;
-    using Web.Controllers;
-
-    public class MatchResultController : AbstractController
+    public ActionResult Index(int? season)
     {
-        public ActionResult Index(int? season)
+        if (season.HasValue == false)
         {
-            if (season.HasValue == false)
-            {
-                season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
-            }
-
-            ResultHeaderReadModel[] headerReadModels = DocumentSession.Query<ResultHeaderReadModel, ResultHeaderIndex>()
-                                                  .Where(x => x.Season == season)
-                                                  .ToArray();
-            Dictionary<string?, Roster> rosters = DocumentSession.Load<Roster>(headerReadModels.Select(x => x.RosterId))
-                .ToDictionary(x => x.Id);
-
-            IEnumerable<ResultHeaderViewModel> headerViewModels = headerReadModels.Select(x => new ResultHeaderViewModel(x, rosters[x.RosterId]));
-            MatchResultViewModel vm = new()
-            {
-                SeasonStart = season.Value,
-                Turns = headerViewModels.GroupBy(x => x.Turn)
-                                        .ToDictionary(x => x.Key, x => x.ToList())
-            };
-            return View(vm);
+            season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
         }
 
-        public ActionResult Details(int id, string rosterId)
+        ResultHeaderReadModel[] headerReadModels = DocumentSession.Query<ResultHeaderReadModel, ResultHeaderIndex>()
+                                              .Where(x => x.Season == season)
+                                              .ToArray();
+        Dictionary<string?, Roster> rosters = DocumentSession.Load<Roster>(headerReadModels.Select(x => x.RosterId))
+            .ToDictionary(x => x.Id);
+
+        IEnumerable<ResultHeaderViewModel> headerViewModels = headerReadModels.Select(x => new ResultHeaderViewModel(x, rosters[x.RosterId]));
+        MatchResultViewModel vm = new()
         {
-            string headerId = ResultHeaderReadModel.IdFromBitsMatchId(id, rosterId);
-            ResultHeaderReadModel headerReadModel = DocumentSession.Load<ResultHeaderReadModel>(headerId);
-            if (headerReadModel == null)
-            {
-                throw new HttpException(404, "Match result not found");
-            }
+            SeasonStart = season.Value,
+            Turns = headerViewModels.GroupBy(x => x.Turn)
+                                    .ToDictionary(x => x.Key, x => x.ToList())
+        };
+        return View(vm);
+    }
 
-            Roster roster = DocumentSession.Load<Roster>(headerReadModel.RosterId);
-            ResultHeaderViewModel headerViewModel = new(headerReadModel, roster);
-            if (roster.IsFourPlayer)
-            {
-                string matchId = ResultSeries4ReadModel.IdFromBitsMatchId(id, rosterId);
-                ResultSeries4ReadModel resultReadModel = DocumentSession.Load<ResultSeries4ReadModel>(matchId)
-                    ?? new ResultSeries4ReadModel();
-
-                return View("Details4", new Result4ViewModel(headerViewModel, resultReadModel));
-            }
-            else
-            {
-                string matchId = ResultSeriesReadModel.IdFromBitsMatchId(id, rosterId);
-                ResultSeriesReadModel resultReadModel = DocumentSession.Load<ResultSeriesReadModel>(matchId)
-                    ?? new ResultSeriesReadModel();
-
-                return View(new ResultViewModel(headerViewModel, resultReadModel));
-            }
+    public ActionResult Details(int id, string rosterId)
+    {
+        string headerId = ResultHeaderReadModel.IdFromBitsMatchId(id, rosterId);
+        ResultHeaderReadModel headerReadModel = DocumentSession.Load<ResultHeaderReadModel>(headerId);
+        if (headerReadModel == null)
+        {
+            throw new HttpException(404, "Match result not found");
         }
 
-        public ActionResult Turns(int? season)
+        Roster roster = DocumentSession.Load<Roster>(headerReadModel.RosterId);
+        ResultHeaderViewModel headerViewModel = new(headerReadModel, roster);
+        if (roster.IsFourPlayer)
         {
-            if (season.HasValue == false)
-            {
-                season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
-            }
+            string matchId = ResultSeries4ReadModel.IdFromBitsMatchId(id, rosterId);
+            ResultSeries4ReadModel resultReadModel = DocumentSession.Load<ResultSeries4ReadModel>(matchId)
+                ?? new ResultSeries4ReadModel();
 
-            TeamOfWeek[] weeks = DocumentSession.Query<TeamOfWeek, TeamOfWeekIndex>()
-                                       .Where(x => x.Season == season.Value)
-                                       .ToArray();
-            Dictionary<string, Roster> rostersDictionary = DocumentSession.Load<Roster>(weeks.Select(x => x.RosterId)).ToDictionary(x => x.Id!);
-            TeamOfWeekViewModel viewModel = new(season.Value, weeks, rostersDictionary);
-            return View(viewModel);
+            return View("Details4", new Result4ViewModel(headerViewModel, resultReadModel));
+        }
+        else
+        {
+            string matchId = ResultSeriesReadModel.IdFromBitsMatchId(id, rosterId);
+            ResultSeriesReadModel resultReadModel = DocumentSession.Load<ResultSeriesReadModel>(matchId)
+                ?? new ResultSeriesReadModel();
+
+            return View(new ResultViewModel(headerViewModel, resultReadModel));
+        }
+    }
+
+    public ActionResult Turns(int? season)
+    {
+        if (season.HasValue == false)
+        {
+            season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
         }
 
-        public ActionResult Form(int? season)
+        TeamOfWeek[] weeks = DocumentSession.Query<TeamOfWeek, TeamOfWeekIndex>()
+                                   .Where(x => x.Season == season.Value)
+                                   .ToArray();
+        Dictionary<string, Roster> rostersDictionary = DocumentSession.Load<Roster>(weeks.Select(x => x.RosterId)).ToDictionary(x => x.Id!);
+        TeamOfWeekViewModel viewModel = new(season.Value, weeks, rostersDictionary);
+        return View(viewModel);
+    }
+
+    public ActionResult Form(int? season)
+    {
+        if (season.HasValue == false)
         {
-            if (season.HasValue == false)
+            season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+        }
+
+        Player[] players = DocumentSession.Query<Player, PlayerSearch>()
+            .ToArray();
+
+        ResultForPlayerIndex.Result[] results = DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
+            .Where(x => x.Season == season.Value)
+            .ToArray();
+        Dictionary<string, ResultForPlayerIndex.Result> seasonAverages = results.ToDictionary(x => x.PlayerId);
+
+        List<PlayerFormViewModel> response = new();
+        foreach (Player player in players)
+        {
+            string name = player.Name;
+            if (seasonAverages.TryGetValue(player.Id, out ResultForPlayerIndex.Result result)
+                && result.TotalSeries > 0)
             {
-                season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
-            }
-
-            Player[] players = DocumentSession.Query<Player, PlayerSearch>()
-                .ToArray();
-
-            ResultForPlayerIndex.Result[] results = DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
-                .Where(x => x.Season == season.Value)
-                .ToArray();
-            Dictionary<string, ResultForPlayerIndex.Result> seasonAverages = results.ToDictionary(x => x.PlayerId);
-
-            List<PlayerFormViewModel> response = new();
-            foreach (Player player in players)
-            {
-                string name = player.Name;
-                if (seasonAverages.TryGetValue(player.Id, out ResultForPlayerIndex.Result result)
-                    && result.TotalSeries > 0)
+                PlayerFormViewModel playerForm = new(name)
                 {
-                    PlayerFormViewModel playerForm = new(name)
-                    {
-                        TotalSeries = result.TotalSeries,
-                        TotalScore = result.TotalScore,
-                        ScoreAverage = (double)result.TotalScore / Math.Max(1, result.TotalSeries),
-                        SeasonAverage = (double)result.TotalPins / Math.Max(1, result.TotalSeries),
-                        Last5Average = (double)result.Last5TotalPins / Math.Max(1, result.Last5TotalSeries),
-                        HasResult = true
-                    };
-                    response.Add(playerForm);
-                }
-                else if (player.PlayerStatus == Player.Status.Active)
-                {
-                    response.Add(new PlayerFormViewModel(name));
-                }
+                    TotalSeries = result.TotalSeries,
+                    TotalScore = result.TotalScore,
+                    ScoreAverage = (double)result.TotalScore / Math.Max(1, result.TotalSeries),
+                    SeasonAverage = (double)result.TotalPins / Math.Max(1, result.TotalSeries),
+                    Last5Average = (double)result.Last5TotalPins / Math.Max(1, result.Last5TotalSeries),
+                    HasResult = true
+                };
+                response.Add(playerForm);
             }
-
-            FormViewModel viewModel = new(
-                season.Value,
-                response.OrderByDescending(x => x.SeasonAverage).ThenBy(x => x.Name).ToArray());
-            return View(viewModel);
-        }
-
-        [RestoreModelStateFromTempData]
-        public ActionResult EliteMedals(int? season)
-        {
-            if (season.HasValue == false)
+            else if (player.PlayerStatus == Player.Status.Active)
             {
-                season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+                response.Add(new PlayerFormViewModel(name));
             }
-
-            Dictionary<string, Player> playersDict = DocumentSession.Query<Player, PlayerSearch>()
-                .Where(p => p.PlayerStatus == Player.Status.Active)
-                .ToDictionary(x => x.Id);
-            EliteMedals eliteMedals = DocumentSession.Load<EliteMedals>(Domain.EliteMedals.TheId);
-            if (eliteMedals == null)
-            {
-                eliteMedals = new EliteMedals();
-                DocumentSession.Store(eliteMedals);
-            }
-
-            SeasonResults seasonResults = DocumentSession.Load<SeasonResults>(SeasonResults.GetId(season.Value));
-            if (seasonResults == null)
-            {
-                seasonResults = new SeasonResults(season.Value);
-                DocumentSession.Store(seasonResults);
-            }
-
-            EliteMedalsViewModel viewModel = new(season.Value, playersDict, eliteMedals, seasonResults);
-            return View(viewModel);
         }
 
-        [Authorize(Roles = WebsiteRoles.EliteMedals.EditMedals)]
-        public ActionResult EditMedals(int id)
+        FormViewModel viewModel = new(
+            season.Value,
+            response.OrderByDescending(x => x.SeasonAverage).ThenBy(x => x.Name).ToArray());
+        return View(viewModel);
+    }
+
+    [RestoreModelStateFromTempData]
+    public ActionResult EliteMedals(int? season)
+    {
+        if (season.HasValue == false)
         {
-            Player player = DocumentSession.Load<Player>(id);
-            EliteMedals eliteMedals = DocumentSession.Load<EliteMedals>(Domain.EliteMedals.TheId);
-            EliteMedals.EliteMedal eliteMedal = eliteMedals.GetExistingMedal(player.Id);
-            EditMedalsViewModel viewModel = new(
-                player.Name,
-                eliteMedal.Value,
-                eliteMedal.CapturedSeason.GetValueOrDefault(),
-                DocumentSession.LatestSeasonOrDefault(DateTime.Now.Year));
-            return View(viewModel);
+            season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
         }
 
-        [HttpPost]
-        [Authorize(Roles = WebsiteRoles.EliteMedals.EditMedals)]
-        [ActionName("EditMedals")]
-        public ActionResult EditMedalsPost(int id, EditMedalsPostModel postModel)
+        Dictionary<string, Player> playersDict = DocumentSession.Query<Player, PlayerSearch>()
+            .Where(p => p.PlayerStatus == Player.Status.Active)
+            .ToDictionary(x => x.Id);
+        EliteMedals eliteMedals = DocumentSession.Load<EliteMedals>(Domain.EliteMedals.TheId);
+        if (eliteMedals == null)
         {
-            if (ModelState.IsValid == false)
-            {
-                return EditMedals(id);
-            }
-
-            EliteMedals eliteMedals = DocumentSession.Load<EliteMedals>(Domain.EliteMedals.TheId);
-            Debug.Assert(postModel.EliteMedal != null, "postModel.EliteMedal != null");
-            eliteMedals.AwardMedal("players-" + id, postModel.EliteMedal!.Value, postModel.CapturedSeason);
-            return RedirectToAction("EliteMedals");
+            eliteMedals = new EliteMedals();
+            DocumentSession.Store(eliteMedals);
         }
 
-        public ActionResult BitsMatchResult(string id)
+        SeasonResults seasonResults = DocumentSession.Load<SeasonResults>(SeasonResults.GetId(season.Value));
+        if (seasonResults == null)
         {
-            Roster roster = DocumentSession.Load<Roster>(id);
-            ViewBag.Url = CustomHtmlHelpers.GenerateBitsUrl(roster.BitsMatchId);
-            return View();
+            seasonResults = new SeasonResults(season.Value);
+            DocumentSession.Store(seasonResults);
         }
+
+        EliteMedalsViewModel viewModel = new(season.Value, playersDict, eliteMedals, seasonResults);
+        return View(viewModel);
+    }
+
+    [Authorize(Roles = WebsiteRoles.EliteMedals.EditMedals)]
+    public ActionResult EditMedals(int id)
+    {
+        Player player = DocumentSession.Load<Player>(id);
+        EliteMedals eliteMedals = DocumentSession.Load<EliteMedals>(Domain.EliteMedals.TheId);
+        EliteMedals.EliteMedal eliteMedal = eliteMedals.GetExistingMedal(player.Id);
+        EditMedalsViewModel viewModel = new(
+            player.Name,
+            eliteMedal.Value,
+            eliteMedal.CapturedSeason.GetValueOrDefault(),
+            DocumentSession.LatestSeasonOrDefault(DateTime.Now.Year));
+        return View(viewModel);
+    }
+
+    [HttpPost]
+    [Authorize(Roles = WebsiteRoles.EliteMedals.EditMedals)]
+    [ActionName("EditMedals")]
+    public ActionResult EditMedalsPost(int id, EditMedalsPostModel postModel)
+    {
+        if (ModelState.IsValid == false)
+        {
+            return EditMedals(id);
+        }
+
+        EliteMedals eliteMedals = DocumentSession.Load<EliteMedals>(Domain.EliteMedals.TheId);
+        Debug.Assert(postModel.EliteMedal != null, "postModel.EliteMedal != null");
+        eliteMedals.AwardMedal("players-" + id, postModel.EliteMedal!.Value, postModel.CapturedSeason);
+        return RedirectToAction("EliteMedals");
+    }
+
+    public ActionResult BitsMatchResult(string id)
+    {
+        Roster roster = DocumentSession.Load<Roster>(id);
+        ViewBag.Url = CustomHtmlHelpers.GenerateBitsUrl(roster.BitsMatchId);
+        return View();
     }
 }
