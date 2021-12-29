@@ -23,13 +23,6 @@ public abstract class CommandHandler<TCommand> : ICommandHandler<TCommand>
         foreach (Tenant tenant in tenants)
         {
             TaskPublisher taskPublisher = new(tenant, Databases, command.CorrelationId, null);
-            MessageEnvelope envelope = new(
-                task,
-                tenant.TenantId,
-                tenant.Hostname,
-                command.CorrelationId,
-                null,
-                Guid.NewGuid());
             taskPublisher.PublishTask(task, "system");
         }
     }

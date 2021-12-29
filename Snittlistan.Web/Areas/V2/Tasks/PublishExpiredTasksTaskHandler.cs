@@ -6,7 +6,7 @@ using Snittlistan.Web.Infrastructure.Database;
 
 namespace Snittlistan.Web.Areas.V2.Tasks;
 
-public class PublishExpiredTasksTaskHandler : TaskHandler<PublishExpiredTasksTaskHandler.PublishExpiredTasksTask>
+public class PublishExpiredTasksTaskHandler : TaskHandler<PublishExpiredTasksTask>
 {
     public override Task Handle(MessageContext<PublishExpiredTasksTask> context)
     {
@@ -22,13 +22,5 @@ public class PublishExpiredTasksTaskHandler : TaskHandler<PublishExpiredTasksTas
         }
 
         return Task.CompletedTask;
-    }
-
-    public class PublishExpiredTasksTask : TaskBase
-    {
-        public PublishExpiredTasksTask()
-            : base(new(typeof(PublishExpiredTasksTask), string.Empty))
-        {
-        }
     }
 }

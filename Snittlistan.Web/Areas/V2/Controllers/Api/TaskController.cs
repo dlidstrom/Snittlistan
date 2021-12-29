@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿#nullable enable
+
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Reflection;
 using System.Web.Http;
@@ -11,9 +13,8 @@ using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Attributes;
 using Snittlistan.Web.Infrastructure.Database;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Controllers.Api;
+
 [OnlyLocalAllowed]
 public class TaskController : AbstractApiController
 {

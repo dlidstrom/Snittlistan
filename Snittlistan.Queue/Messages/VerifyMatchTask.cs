@@ -5,7 +5,7 @@ namespace Snittlistan.Queue.Messages;
 public class VerifyMatchTask : TaskBase
 {
     public VerifyMatchTask(int bitsMatchId, string rosterId, bool force)
-        : base(new(typeof(VerifyMatchTask), $"{rosterId}/{bitsMatchId}"))
+        : base(new(typeof(VerifyMatchTask).FullName, $"{rosterId}/{bitsMatchId}"))
     {
         BitsMatchId = bitsMatchId;
         RosterId = rosterId;

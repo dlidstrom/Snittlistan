@@ -9,7 +9,7 @@ public class EmailTask : TaskBase
 {
     [JsonConstructor]
     private EmailTask(string to, string subject, string content)
-        : base(new(typeof(EmailTask), to))
+        : base(new(typeof(EmailTask).FullName, to))
     {
         To = to;
         Subject = subject;

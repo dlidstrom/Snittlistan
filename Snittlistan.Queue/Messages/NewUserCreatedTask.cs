@@ -5,7 +5,7 @@ namespace Snittlistan.Queue.Messages;
 public class NewUserCreatedTask : TaskBase
 {
     public NewUserCreatedTask(string email, string activationKey, string userId)
-        : base(new(typeof(NewUserCreatedTask), $"{email}/{userId}"))
+        : base(new(typeof(NewUserCreatedTask).FullName, $"{email}/{userId}"))
     {
         Email = email;
         ActivationKey = activationKey;

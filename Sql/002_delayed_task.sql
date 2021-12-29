@@ -5,7 +5,7 @@ CREATE TABLE snittlistan.delayed_task (
     correlation_id UUID NOT NULL,
     causation_id UUID NULL,
     message_id UUID NOT NULL,
-    business_key VARCHAR(255) NOT NULL,
+    business_key VARCHAR(1024) NOT NULL,
     data JSONB NOT NULL,
     publish_date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     published_date TIMESTAMP WITHOUT TIME ZONE NULL,
@@ -14,7 +14,3 @@ CREATE TABLE snittlistan.delayed_task (
 );
 CREATE INDEX delayed_task_tenant_idx ON
 snittlistan.delayed_task(tenant_id);
-CREATE UNIQUE INDEX delayed_task_published_date_uk ON
-snittlistan.delayed_task(business_key)
-WHERE
-published_date IS NULL;

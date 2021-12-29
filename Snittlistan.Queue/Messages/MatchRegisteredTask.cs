@@ -5,7 +5,7 @@ namespace Snittlistan.Queue.Messages;
 public class MatchRegisteredTask : TaskBase
 {
     public MatchRegisteredTask(string rosterId, int bitsMatchId, int score, int opponentScore)
-        : base(new(typeof(MatchRegisteredTask), $"{rosterId}/{bitsMatchId}"))
+        : base(new(typeof(MatchRegisteredTask).FullName, $"{rosterId}/{bitsMatchId}"))
     {
         RosterId = rosterId;
         BitsMatchId = bitsMatchId;

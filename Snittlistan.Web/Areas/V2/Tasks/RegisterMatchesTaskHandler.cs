@@ -25,7 +25,7 @@ public class RegisterMatchesTaskHandler : TaskHandler<RegisterMatchesTaskHandler
     public class RegisterMatchesTask : TaskBase
     {
         public RegisterMatchesTask()
-            : base(new(typeof(RegisterMatchesTask), string.Empty))
+            : base(new(typeof(RegisterMatchesTask).FullName, string.Empty))
         {
         }
     }

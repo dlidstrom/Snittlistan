@@ -5,7 +5,7 @@ namespace Snittlistan.Queue.Messages;
 public class OneTimeKeyTask : TaskBase
 {
     public OneTimeKeyTask(string email, string oneTimePassword)
-        : base(new(typeof(OneTimeKeyTask), email))
+        : base(new(typeof(OneTimeKeyTask).FullName, email))
     {
         Subject = "Logga in till Snittlistan";
         Email = email;

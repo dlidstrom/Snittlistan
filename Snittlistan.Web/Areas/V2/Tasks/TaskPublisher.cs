@@ -1,12 +1,13 @@
-﻿using System.Web.Hosting;
+﻿#nullable enable
+
+using System.Web.Hosting;
 using NLog;
 using Snittlistan.Queue;
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Infrastructure.Database;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Tasks;
+
 public class TaskPublisher
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

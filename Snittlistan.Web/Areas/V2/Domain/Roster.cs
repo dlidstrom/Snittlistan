@@ -319,12 +319,12 @@ public class Roster : IAuditLogCapable
                 case ChangeType.EditPlayers:
                     {
                         List<string> changes = new();
-                        if (change.Preliminary is object)
+                        if (change.Preliminary is not null)
                         {
                             changes.Add($"{(change.Preliminary.NewValue ? "Gjordes preliminär" : "Inte längre preliminär")}");
                         }
 
-                        if (change.Players is object)
+                        if (change.Players is not null)
                         {
                             string?[] outOfTeam = change.Players.OldValue.Except(change.Players.NewValue).Select(PlayerName).ToArray();
                             string?[] intoTeam = change.Players.NewValue.Except(change.Players.OldValue).Select(PlayerName).ToArray();
@@ -349,9 +349,9 @@ public class Roster : IAuditLogCapable
                             }
                         }
 
-                        if (change.TeamLeader is object)
+                        if (change.TeamLeader is not null)
                         {
-                            if (change.TeamLeader.NewValue is object)
+                            if (change.TeamLeader.NewValue is not null)
                             {
                                 changes.Add($"Valde {PlayerName(change.TeamLeader.NewValue)} till lagledare");
                             }

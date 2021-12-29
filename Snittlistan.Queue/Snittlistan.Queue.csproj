@@ -67,6 +67,7 @@
     <Compile Include="Messages\GetRostersFromBitsTask.cs" />
     <Compile Include="Messages\InitializeIndexesTask.cs" />
     <Compile Include="IsExternalInit.cs" />
+    <Compile Include="Messages\PublishExpiredTasksTask.cs" />
     <Compile Include="Messages\TaskBase.cs" />
     <Compile Include="Messages\MatchRegisteredTask.cs" />
     <Compile Include="Messages\MessageEnvelope.cs" />

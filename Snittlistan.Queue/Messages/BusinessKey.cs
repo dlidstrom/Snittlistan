@@ -2,4 +2,4 @@
 
 namespace Snittlistan.Queue.Messages;
 
-public record BusinessKey(Type MessageType, string Key);
+public record BusinessKey(string MessageType, string Key);

@@ -5,7 +5,7 @@ namespace Snittlistan.Queue.Messages;
 public class InitializeIndexesTask : TaskBase
 {
     public InitializeIndexesTask(string email, string password)
-        : base(new(typeof(InitializeIndexesTask), string.Empty))
+        : base(new(typeof(InitializeIndexesTask).FullName, string.Empty))
     {
         Email = email;
         Password = password;

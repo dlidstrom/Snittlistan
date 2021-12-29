@@ -1,10 +1,10 @@
-﻿
+﻿#nullable enable
+
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 
-#nullable enable
-
 namespace Snittlistan.Web.Infrastructure.Database;
+
 public interface ISnittlistanContext
 {
     IDbSet<DelayedTask> DelayedTasks { get; }
