@@ -1,39 +1,38 @@
-﻿namespace Snittlistan.Web.Infrastructure
+﻿
+using System.Collections;
+using System.Configuration;
+using System.Web;
+using System.Web.Caching;
+
+namespace Snittlistan.Web.Infrastructure;
+public class MailHttpContext : HttpContextBase
 {
-    using System.Collections;
-    using System.Configuration;
-    using System.Web;
-    using System.Web.Caching;
+    private readonly IDictionary items = new Hashtable();
 
-    public class MailHttpContext : HttpContextBase
+    public override IDictionary Items
     {
-        private readonly IDictionary items = new Hashtable();
+        get { return items; }
+    }
 
-        public override IDictionary Items
+    public override Cache Cache
+    {
+        get { return HttpRuntime.Cache; }
+    }
+
+    public override HttpResponseBase Response
+    {
+        get
         {
-            get { return items; }
+            return new MailHttpResponse();
         }
+    }
 
-        public override Cache Cache
+    public override HttpRequestBase Request
+    {
+        get
         {
-            get { return HttpRuntime.Cache; }
-        }
-
-        public override HttpResponseBase Response
-        {
-            get
-            {
-                return new MailHttpResponse();
-            }
-        }
-
-        public override HttpRequestBase Request
-        {
-            get
-            {
-                return new HttpRequestWrapper(
-                    new HttpRequest(string.Empty, ConfigurationManager.AppSettings["MainUrl"], string.Empty));
-            }
+            return new HttpRequestWrapper(
+                new HttpRequest(string.Empty, ConfigurationManager.AppSettings["MainUrl"], string.Empty));
         }
     }
 }

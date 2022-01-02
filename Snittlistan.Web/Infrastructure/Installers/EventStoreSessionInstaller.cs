@@ -1,42 +1,39 @@
-﻿#nullable enable
+﻿using Castle.Core;
+using Castle.MicroKernel;
+using Castle.MicroKernel.Registration;
+using Castle.MicroKernel.SubSystems.Configuration;
+using Castle.Windsor;
+using EventStoreLite;
+using Raven.Client;
 
-namespace Snittlistan.Web.Infrastructure.Installers
+#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Installers;
+public class EventStoreSessionInstaller : IWindsorInstaller
 {
-    using System;
-    using Castle.Core;
-    using Castle.MicroKernel;
-    using Castle.MicroKernel.Registration;
-    using Castle.MicroKernel.SubSystems.Configuration;
-    using Castle.Windsor;
-    using EventStoreLite;
-    using Raven.Client;
+    private readonly Func<ComponentRegistration<IEventStoreSession>, ComponentRegistration<IEventStoreSession>> func;
 
-    public class EventStoreSessionInstaller : IWindsorInstaller
+    public EventStoreSessionInstaller()
     {
-        private readonly Func<ComponentRegistration<IEventStoreSession>, ComponentRegistration<IEventStoreSession>> func;
+        func = x => x.LifestylePerWebRequest();
+    }
 
-        public EventStoreSessionInstaller()
-        {
-            func = x => x.LifestylePerWebRequest();
-        }
+    public EventStoreSessionInstaller(LifestyleType lifestyleType)
+    {
+        func = x => x.LifeStyle.Is(lifestyleType);
+    }
 
-        public EventStoreSessionInstaller(LifestyleType lifestyleType)
-        {
-            func = x => x.LifeStyle.Is(lifestyleType);
-        }
+    public void Install(IWindsorContainer container, IConfigurationStore store)
+    {
+        _ = container.Register(
+            func.Invoke(
+                Component.For<IEventStoreSession>()
+                    .UsingFactoryMethod(CreateEventStoreSession)));
+    }
 
-        public void Install(IWindsorContainer container, IConfigurationStore store)
-        {
-            _ = container.Register(
-                func.Invoke(
-                    Component.For<IEventStoreSession>()
-                        .UsingFactoryMethod(CreateEventStoreSession)));
-        }
-
-        private static IEventStoreSession CreateEventStoreSession(IKernel kernel)
-        {
-            return kernel.Resolve<EventStore>()
-                .OpenSession(kernel.Resolve<IDocumentStore>(), kernel.Resolve<IDocumentSession>());
-        }
+    private static IEventStoreSession CreateEventStoreSession(IKernel kernel)
+    {
+        return kernel.Resolve<EventStore>()
+            .OpenSession(kernel.Resolve<IDocumentStore>(), kernel.Resolve<IDocumentSession>());
     }
 }
