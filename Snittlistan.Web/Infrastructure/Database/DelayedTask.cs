@@ -1,15 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿#nullable enable
+
+using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 using Snittlistan.Queue.Messages;
 
-#nullable enable
-
 namespace Snittlistan.Web.Infrastructure.Database;
+
 public class DelayedTask
 {
     private readonly JsonSerializerSettings settings = new()
     {
-        TypeNameHandling = TypeNameHandling.All
+        TypeNameHandling = TypeNameHandling.All,
+        MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead
     };
 
     public DelayedTask(

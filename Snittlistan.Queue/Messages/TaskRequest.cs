@@ -1,14 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿#nullable enable
 
-#nullable enable
+using Newtonsoft.Json;
 
 namespace Snittlistan.Queue.Messages;
+
 public class TaskRequest
 {
     private static readonly JsonSerializerSettings SerializerSettings = new()
     {
         Formatting = Formatting.Indented,
-        TypeNameHandling = TypeNameHandling.All
+        TypeNameHandling = TypeNameHandling.All,
+        MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead
     };
 
     public TaskRequest(MessageEnvelope envelope)

@@ -13,11 +13,17 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api;
 [OnlyLocalAllowed]
 public class CommandController : AbstractApiController
 {
+    private readonly JsonSerializerSettings settings = new()
+    {
+        TypeNameHandling = TypeNameHandling.All,
+        MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead
+    };
+
     public async Task<IHttpActionResult> Post(CommandRequest request)
     {
         object? commandObject = JsonConvert.DeserializeObject(
             request.CommandJson,
-            new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+            settings);
         if (commandObject is null)
         {
             return BadRequest("failed to deserialize");

@@ -1,16 +1,18 @@
-﻿using System.Net.Http;
+﻿#nullable enable
+
+using System.Net.Http;
 using Newtonsoft.Json;
 using Snittlistan.Queue;
 using Snittlistan.Queue.Commands;
 
-#nullable enable
-
 namespace Snittlistan.Tool.Tasks;
+
 public abstract class CommandLineTask : ICommandLineTask
 {
     private static readonly JsonSerializerSettings SerializerSettings = new()
     {
-        TypeNameHandling = TypeNameHandling.All
+        TypeNameHandling = TypeNameHandling.All,
+        MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead
     };
     private readonly HttpClient client = new(new LoggingHandler(new HttpClientHandler()))
     {

@@ -1,15 +1,17 @@
-﻿using System.Net.Http;
+﻿#nullable enable
+
+using System.Net.Http;
 using Newtonsoft.Json;
 using Snittlistan.Queue.Messages;
 
-#nullable enable
-
 namespace Snittlistan.Queue;
+
 public class TaskQueueListener : MessageQueueListenerBase
 {
     private static readonly JsonSerializerSettings SerializerSettings = new()
     {
-        TypeNameHandling = TypeNameHandling.All
+        TypeNameHandling = TypeNameHandling.All,
+        MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead
     };
 
     private readonly HttpClient client = new(new LoggingHandler(new HttpClientHandler()))

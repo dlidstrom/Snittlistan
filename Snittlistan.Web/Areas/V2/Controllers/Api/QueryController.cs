@@ -13,13 +13,19 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api;
 [OnlyLocalAllowed]
 public class QueryController : AbstractApiController
 {
+    private readonly JsonSerializerSettings settings = new()
+    {
+        TypeNameHandling = TypeNameHandling.All,
+        MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead
+    };
+
     public Raven.Client.IDocumentSession DocumentSession { get; set; } = null!;
 
     public IHttpActionResult Post(QueryRequest request)
     {
         dynamic? query = JsonConvert.DeserializeObject(
             request.QueryJson,
-            new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+            settings);
         dynamic result = Handle(query);
         return result;
     }

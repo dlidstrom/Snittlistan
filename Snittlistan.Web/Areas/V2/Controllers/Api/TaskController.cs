@@ -19,6 +19,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api;
 public class TaskController : AbstractApiController
 {
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+    private readonly JsonSerializerSettings settings = new()
+    {
+        TypeNameHandling = TypeNameHandling.All,
+        MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead
+    };
 
     public async Task<IHttpActionResult> Post(TaskRequest request)
     {
@@ -26,7 +31,7 @@ public class TaskController : AbstractApiController
 
         TaskBase? taskObject = JsonConvert.DeserializeObject<TaskBase>(
             request.TaskJson,
-            new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+            settings);
         if (taskObject is null)
         {
             return BadRequest("could not deserialize task json");

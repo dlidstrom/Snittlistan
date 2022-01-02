@@ -2,6 +2,7 @@
   <!--
     Run like this:
     msbuild build.msbuild -t:All -p:Version=1.0.0.0 -p:WIX_PATH=<path to wix binaries> [-p:WixTargetsPath=<path to wix.targets>]
+    msbuild build.build -t:Test -p:Version=1.0.0.0 -p:WixTargetsPath=Tools\wix311-binaries\wix.targets -p:NUnitConsoleRunnerPath=c:\users\Daniel\.nuget\packages\nunit.consolerunner\3.12.0
   -->
   <PropertyGroup>
     <!--<WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>-->
