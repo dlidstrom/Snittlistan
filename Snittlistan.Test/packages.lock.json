@@ -111,6 +111,12 @@
         "resolved": "3.12.0",
         "contentHash": "ZUtI8leU9ozCjLy4ZZ2X6ClU0hxfQtb95VOdmMA4SxIUvf62rIPxoHXS+jghvo5QxgRihGGcEp8xT3vCfgDdsA=="
       },
+      "NUnit3TestAdapter": {
+        "type": "Direct",
+        "requested": "[4.2.0, )",
+        "resolved": "4.2.0",
+        "contentHash": "srJGb2SExp0Y77p85cDYl/OlfMjxN/jXPh/CQpQOQWiWpnSSPV9I/jtMNJWr1uzqed23rLYYetGgUrwSZUHgfg=="
+      },
       "Castle.Facilities.AspNet.SystemWeb": {
         "type": "Transitive",
         "resolved": "5.1.1",

@@ -22,6 +22,8 @@ public abstract class AbstractApiController : ApiController
 
     public EventStore EventStore { get; set; } = null!;
 
+    public IEventStoreSession EventStoreSession { get; set; } = null!;
+
     [NonAction]
     public async Task SaveChangesAsync()
     {
@@ -30,6 +32,8 @@ public abstract class AbstractApiController : ApiController
         {
             Logger.Info("saved {changesSaved} to database", changesSaved);
         }
+
+        EventStoreSession.SaveChanges();
     }
 
     protected async Task<Tenant> GetCurrentTenant()

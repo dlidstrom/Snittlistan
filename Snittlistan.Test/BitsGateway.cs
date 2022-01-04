@@ -1,13 +1,15 @@
-﻿using System.IO;
+﻿#nullable enable
+
+using System.IO;
 using System.Net.Http;
 using System.Runtime.Caching;
 using Newtonsoft.Json;
+using NUnit.Framework;
 using Snittlistan.Web.Infrastructure.Bits;
 using Snittlistan.Web.Infrastructure.Bits.Contracts;
 
-#nullable enable
-
 namespace Snittlistan.Test;
+
 public static class BitsGateway
 {
     private static readonly IBitsClient Client = new BitsClient(
@@ -89,7 +91,18 @@ public static class BitsGateway
 
     private static async Task<TResult> Try<TResult>(string filename, Func<Task<TResult>> func)
     {
-        string currentDirectory = Directory.GetCurrentDirectory();
+        string currentDirectory = TestContext.CurrentContext.TestDirectory;
+        while (Directory.Exists(Path.Combine(currentDirectory, "bits")) == false)
+        {
+            DirectoryInfo directoryInfo = Directory.GetParent(currentDirectory);
+            if (directoryInfo.Exists == false)
+            {
+                throw new Exception($"Unable to find bits directory, started search in {TestContext.CurrentContext.TestDirectory}");
+            }
+
+            currentDirectory = directoryInfo.FullName;
+        }
+
         string outputDirectory = Path.Combine(currentDirectory, "bits");
         if (Directory.Exists(outputDirectory) == false)
         {
