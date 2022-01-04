@@ -1,19 +1,17 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Queue.Messages
+namespace Snittlistan.Queue.Messages;
+
+public class RegisterMatchTask : TaskBase
 {
-    public class RegisterMatchTask : ITask
+    public RegisterMatchTask(string rosterId, int bitsMatchId)
+        : base(new(typeof(RegisterMatchTask).FullName, $"{rosterId}/{bitsMatchId}"))
     {
-        public RegisterMatchTask(string rosterId, int bitsMatchId)
-        {
-            RosterId = rosterId;
-            BitsMatchId = bitsMatchId;
-        }
-
-        public string RosterId { get; }
-
-        public int BitsMatchId { get; }
-
-        public BusinessKey BusinessKey => new(GetType(), $"{RosterId}/{BitsMatchId}");
+        RosterId = rosterId;
+        BitsMatchId = bitsMatchId;
     }
+
+    public string RosterId { get; }
+
+    public int BitsMatchId { get; }
 }

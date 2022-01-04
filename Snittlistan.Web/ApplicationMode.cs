@@ -1,9 +1,8 @@
-﻿namespace Snittlistan.Web
+﻿namespace Snittlistan.Web;
+
+public enum ApplicationMode
 {
-    public enum ApplicationMode
-    {
-        Debug,
-        Release,
-        Test
-    }
+    Debug,
+    Release,
+    Test
 }
