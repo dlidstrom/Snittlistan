@@ -1,4 +1,6 @@
-﻿using System.Configuration;
+﻿#nullable enable
+
+using System.Configuration;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Reflection;
@@ -28,9 +30,8 @@ using Snittlistan.Web.Infrastructure.IoC;
 using Snittlistan.Web.Models;
 using Npgsql.Logging;
 
-#nullable enable
-
 namespace Snittlistan.Web;
+
 public class MvcApplication : HttpApplication
 {
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();

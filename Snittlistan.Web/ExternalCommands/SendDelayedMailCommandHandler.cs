@@ -1,12 +1,12 @@
 ﻿#nullable enable
 
-using Snittlistan.Queue.Commands;
+using Snittlistan.Queue.ExternalCommands;
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Tasks;
 using Snittlistan.Web.Infrastructure.Database;
 using System.Data.Entity;
 
-namespace Snittlistan.Web.Commands;
+namespace Snittlistan.Web.ExternalCommands;
 
 public class SendDelayedMailCommandHandler : ICommandHandler<SendDelayedMailCommand>
 {

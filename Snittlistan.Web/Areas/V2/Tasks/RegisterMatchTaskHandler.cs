@@ -1,13 +1,13 @@
-﻿using Elmah;
+﻿#nullable enable
+
+using Elmah;
 using Snittlistan.Queue.Messages;
-using Snittlistan.Web.Areas.V2.Commands;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
+using Snittlistan.Web.Commands;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Bits;
 using Snittlistan.Web.Models;
-
-#nullable enable
 
 namespace Snittlistan.Web.Areas.V2.Tasks;
 public class RegisterMatchTaskHandler : TaskHandler<RegisterMatchTask>
@@ -45,9 +45,7 @@ public class RegisterMatchTaskHandler : TaskHandler<RegisterMatchTask>
                     List<string> allPlayerIds = parse4Result.GetPlayerIds();
                     pendingMatch.SetPlayers(allPlayerIds);
                     await context.ExecuteCommand(
-                        new RegisterMatch4Command(pendingMatch, parse4Result),
-                        DocumentSession,
-                        EventStoreSession);
+                        new RegisterMatch4CommandHandler.Command(pendingMatch.Id!, parse4Result));
                 }
             }
             else
@@ -64,9 +62,7 @@ public class RegisterMatchTaskHandler : TaskHandler<RegisterMatchTask>
                     List<string> allPlayerIds = parseResult.GetPlayerIds();
                     pendingMatch.SetPlayers(allPlayerIds);
                     await context.ExecuteCommand(
-                        new RegisterMatchCommand(pendingMatch, parseResult),
-                        DocumentSession,
-                        EventStoreSession);
+                        new RegisterMatchCommandHandler.Command(pendingMatch.Id!, parseResult));
                 }
             }
         }

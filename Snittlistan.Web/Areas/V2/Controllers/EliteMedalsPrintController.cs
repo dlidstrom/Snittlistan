@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿#nullable enable
+
+using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.IO;
 using System.IO.Compression;
@@ -15,9 +17,8 @@ using Snittlistan.Web.Infrastructure.Database;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Controllers;
+
 [Authorize(Roles = WebsiteRoles.EliteMedals.EditMedals)]
 public class EliteMedalsPrintController : AbstractController
 {

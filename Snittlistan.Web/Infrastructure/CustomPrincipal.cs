@@ -1,8 +1,9 @@
-﻿using System.Security.Principal;
+﻿#nullable enable
 
-#nullable enable
+using System.Security.Principal;
 
 namespace Snittlistan.Web.Infrastructure;
+
 public class CustomPrincipal : IPrincipal
 {
     private readonly string[] roles;

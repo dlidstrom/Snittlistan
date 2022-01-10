@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿#nullable enable
+
+using System.Diagnostics;
 using System.Web;
 using System.Web.Mvc;
 using Snittlistan.Web.Areas.V2.Domain;
@@ -11,9 +13,8 @@ using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Controllers;
+
 public class MatchResultController : AbstractController
 {
     public ActionResult Index(int? season)

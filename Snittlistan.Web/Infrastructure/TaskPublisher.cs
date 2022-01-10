@@ -6,7 +6,7 @@ using Snittlistan.Queue;
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Infrastructure.Database;
 
-namespace Snittlistan.Web.Areas.V2.Tasks;
+namespace Snittlistan.Web.Infrastructure;
 
 public class TaskPublisher
 {

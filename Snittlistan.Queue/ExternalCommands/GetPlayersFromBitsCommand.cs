@@ -1,6 +1,6 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Queue.Commands;
+namespace Snittlistan.Queue.ExternalCommands;
 
 public class GetPlayersFromBitsCommand : CommandBase
 {

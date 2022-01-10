@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿#nullable enable
+
+using System.Net;
 using System.Net.Http;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
@@ -11,9 +13,8 @@ using Snittlistan.Web.Infrastructure.Bits;
 using Snittlistan.Web.Infrastructure.Bits.Contracts;
 using Snittlistan.Web.Models;
 
-#nullable enable
-
 namespace Snittlistan.Test.ApiControllers;
+
 [TestFixture]
 public class Task_Post_RegisterMatch : WebApiIntegrationTest
 {

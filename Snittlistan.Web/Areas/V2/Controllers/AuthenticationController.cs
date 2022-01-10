@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿#nullable enable
+
+using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Diagnostics;
 using System.Web;
@@ -16,9 +18,8 @@ using Snittlistan.Web.Infrastructure.Attributes;
 using Snittlistan.Web.Infrastructure.Database;
 using Snittlistan.Web.Services;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Controllers;
+
 public class AuthenticationController : AbstractController
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

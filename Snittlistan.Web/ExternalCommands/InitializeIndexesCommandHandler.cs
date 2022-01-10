@@ -1,9 +1,10 @@
-﻿using Snittlistan.Queue.Commands;
+﻿#nullable enable
+
+using Snittlistan.Queue.ExternalCommands;
 using Snittlistan.Queue.Messages;
 
-#nullable enable
+namespace Snittlistan.Web.ExternalCommands;
 
-namespace Snittlistan.Web.Commands;
 public class InitializeIndexesCommandHandler : CommandHandler<InitializeIndexesCommand>
 {
     protected override Task<TaskBase> CreateMessage(InitializeIndexesCommand command)

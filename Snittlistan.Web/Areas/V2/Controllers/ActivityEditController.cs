@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿#nullable enable
+
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Globalization;
 using System.Web;
@@ -9,9 +11,8 @@ using Raven.Abstractions;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Controllers;
+
 [Authorize(Roles = WebsiteRoles.Activity.Manage)]
 public class ActivityEditController : AbstractController
 {

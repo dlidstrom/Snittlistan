@@ -1,20 +1,24 @@
-﻿using EventStoreLite;
+﻿#nullable enable
+
 using Snittlistan.Queue.Messages;
+using Snittlistan.Web.Commands;
 using Snittlistan.Web.Infrastructure.Database;
 
-#nullable enable
-
 namespace Snittlistan.Web.Infrastructure;
-public delegate void PublishMessageDelegate(TaskBase task);
 
-public class MessageContext<TTask> : IMessageContext where TTask : TaskBase
+public class MessageContext<TTask> : IPublishContext
+    where TTask : TaskBase
 {
+    private readonly CompositionRoot compositionRoot;
+
     public MessageContext(
+        CompositionRoot compositionRoot,
         TTask task,
         Tenant tenant,
         Guid correlationId,
         Guid causationId)
     {
+        this.compositionRoot = compositionRoot;
         Task = task;
         Tenant = tenant;
         CorrelationId = correlationId;
@@ -29,21 +33,12 @@ public class MessageContext<TTask> : IMessageContext where TTask : TaskBase
 
     public Guid CausationId { get; }
 
-    public void PublishMessage(TaskBase task)
-    {
-        PublishMessageDelegate(task);
-    }
+    public PublishMessageDelegate PublishMessage { get; set; } = null!;
 
-    public PublishMessageDelegate PublishMessageDelegate { get; set; } = null!;
-
-    internal async Task ExecuteCommand(
-        ICommand command,
-        Raven.Client.IDocumentSession documentSession,
-        IEventStoreSession eventStoreSession)
+    public async Task ExecuteCommand(
+        CommandBase command)
     {
-        await command.Execute(
-            documentSession,
-            eventStoreSession,
-            t => PublishMessageDelegate(t));
+        CommandExecutor commandExecutor = new(compositionRoot, CausationId, "system");
+        await commandExecutor.Execute(command);
     }
 }

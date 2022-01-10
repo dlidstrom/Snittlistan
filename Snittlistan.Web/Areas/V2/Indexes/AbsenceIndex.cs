@@ -1,10 +1,11 @@
-﻿using Raven.Abstractions.Indexing;
+﻿#nullable enable
+
+using Raven.Abstractions.Indexing;
 using Raven.Client.Indexes;
 using Snittlistan.Web.Areas.V2.Domain;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Indexes;
+
 public class AbsenceIndex : AbstractIndexCreationTask<Absence, AbsenceIndex.Result>
 {
     public AbsenceIndex()

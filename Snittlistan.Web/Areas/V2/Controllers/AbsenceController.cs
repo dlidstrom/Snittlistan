@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿#nullable enable
+
+using System.ComponentModel.DataAnnotations;
 using System.Web;
 using System.Web.Mvc;
 using Raven.Abstractions;
@@ -9,9 +11,8 @@ using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Controllers;
+
 public class AbsenceController : AbstractController
 {
     [Authorize(Roles = WebsiteRoles.Absence.View)]

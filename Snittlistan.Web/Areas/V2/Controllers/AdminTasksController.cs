@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿#nullable enable
+
+using System.Diagnostics;
 using System.Web;
 using System.Web.Mvc;
 using EventStoreLite;
@@ -14,9 +16,8 @@ using Snittlistan.Web.Infrastructure.Indexes;
 using Snittlistan.Web.Models;
 using Snittlistan.Web.Services;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Controllers;
+
 public class AdminTasksController : AdminController
 {
     private readonly IAuthenticationService authenticationService;

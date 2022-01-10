@@ -1,9 +1,9 @@
-﻿using Snittlistan.Queue.Commands;
+﻿#nullable enable
+
+using Snittlistan.Queue.ExternalCommands;
 using Snittlistan.Queue.Messages;
 
-#nullable enable
-
-namespace Snittlistan.Web.Commands;
+namespace Snittlistan.Web.ExternalCommands;
 
 public class GetPlayersFromBitsCommandHandler : CommandHandler<GetPlayersFromBitsCommand>
 {

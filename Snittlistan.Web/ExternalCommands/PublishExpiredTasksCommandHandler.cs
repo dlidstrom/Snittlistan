@@ -1,9 +1,9 @@
 ﻿#nullable enable
 
-using Snittlistan.Queue.Commands;
+using Snittlistan.Queue.ExternalCommands;
 using Snittlistan.Queue.Messages;
 
-namespace Snittlistan.Web.Commands;
+namespace Snittlistan.Web.ExternalCommands;
 
 public class PublishExpiredTasksCommandHandler : CommandHandler<PublishExpiredTasksCommand>
 {

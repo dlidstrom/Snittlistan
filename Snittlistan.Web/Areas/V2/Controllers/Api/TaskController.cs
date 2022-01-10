@@ -38,7 +38,7 @@ public class TaskController : AbstractApiController
         }
 
         // check for published task
-        PublishedTask? publishedTask = await Databases.Snittlistan.PublishedTasks.SingleOrDefaultAsync(x => x.MessageId == request.MessageId);
+        PublishedTask? publishedTask = await CompositionRoot.Databases.Snittlistan.PublishedTasks.SingleOrDefaultAsync(x => x.MessageId == request.MessageId);
         if (publishedTask is null)
         {
             return BadRequest($"No published task found with message id {request.MessageId}");
@@ -54,21 +54,22 @@ public class TaskController : AbstractApiController
         MethodInfo handleMethod = handlerType.GetMethod("Handle");
         using IDisposable scope = NestedDiagnosticsLogicalContext.Push(taskObject.BusinessKey);
         Log.Info("Begin");
-        Tenant tenant = await GetCurrentTenant();
+        Tenant tenant = await CompositionRoot.GetCurrentTenant();
         Guid correlationId = request.CorrelationId ?? default;
         Guid causationId = request.MessageId ?? default;
-        TaskPublisher taskPublisher = new(tenant, Databases, correlationId, causationId);
-        IMessageContext messageContext = (IMessageContext)Activator.CreateInstance(
+        TaskPublisher taskPublisher = new(tenant, CompositionRoot.Databases, correlationId, causationId);
+        IPublishContext publishContext = (IPublishContext)Activator.CreateInstance(
             typeof(MessageContext<>).MakeGenericType(taskObject.GetType()),
+            CompositionRoot,
             taskObject,
             tenant,
             correlationId,
             causationId);
-        messageContext.PublishMessageDelegate = task =>
+        publishContext.PublishMessage = task =>
             taskPublisher.PublishTask(task, "system");
 
-        object handler = Kernel.Resolve(handlerType);
-        Task task = (Task)handleMethod.Invoke(handler, new[] { messageContext });
+        object handler = CompositionRoot.Kernel.Resolve(handlerType);
+        Task task = (Task)handleMethod.Invoke(handler, new[] { publishContext });
         await task;
         Log.Info("End");
         publishedTask.MarkHandled(DateTime.Now);

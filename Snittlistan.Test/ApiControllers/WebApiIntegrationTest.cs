@@ -1,4 +1,6 @@
-﻿using System.Collections.Specialized;
+﻿#nullable enable
+
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Web;
@@ -19,9 +21,8 @@ using Snittlistan.Web.Infrastructure.Database;
 using Snittlistan.Web.Infrastructure.Installers;
 using Snittlistan.Web.Infrastructure.IoC;
 
-#nullable enable
-
 namespace Snittlistan.Test.ApiControllers;
+
 public abstract class WebApiIntegrationTest
 {
     protected HttpClient Client { get; private set; } = null!;

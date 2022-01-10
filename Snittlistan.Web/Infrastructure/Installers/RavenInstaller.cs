@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿#nullable enable
+
+using System.Reflection;
 using Castle.MicroKernel;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
@@ -9,9 +11,8 @@ using Raven.Client.Document;
 using Raven.Client.Embedded;
 using Snittlistan.Web.Infrastructure.Database;
 
-#nullable enable
-
 namespace Snittlistan.Web.Infrastructure.Installers;
+
 public class RavenInstaller : IWindsorInstaller
 {
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();

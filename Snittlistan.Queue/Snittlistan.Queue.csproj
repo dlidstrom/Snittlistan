@@ -46,14 +46,14 @@
       <Link>Globals.cs</Link>
     </Compile>
     <Compile Include="Application.cs" />
-    <Compile Include="Commands\CommandBase.cs" />
-    <Compile Include="Commands\GetPlayersFromBitsCommand.cs" />
-    <Compile Include="Commands\GetRostersFromBitsCommand.cs" />
-    <Compile Include="Commands\InitializeIndexesCommand.cs" />
-    <Compile Include="Commands\PublishExpiredTasksCommand.cs" />
-    <Compile Include="Commands\RegisterMatchesCommand.cs" />
-    <Compile Include="Commands\SendDelayedMailCommand.cs" />
-    <Compile Include="Commands\VerifyMatchesCommand.cs" />
+    <Compile Include="ExternalCommands\CommandBase.cs" />
+    <Compile Include="ExternalCommands\GetPlayersFromBitsCommand.cs" />
+    <Compile Include="ExternalCommands\GetRostersFromBitsCommand.cs" />
+    <Compile Include="ExternalCommands\InitializeIndexesCommand.cs" />
+    <Compile Include="ExternalCommands\PublishExpiredTasksCommand.cs" />
+    <Compile Include="ExternalCommands\RegisterMatchesCommand.cs" />
+    <Compile Include="ExternalCommands\SendDelayedMailCommand.cs" />
+    <Compile Include="ExternalCommands\VerifyMatchesCommand.cs" />
     <Compile Include="Config\QueueListenerElement.cs" />
     <Compile Include="Config\QueueListenersCollection.cs" />
     <Compile Include="Config\QueueListenersElement.cs" />

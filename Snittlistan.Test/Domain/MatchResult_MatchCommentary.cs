@@ -1,16 +1,19 @@
-﻿using EventStoreLite;
+﻿#nullable enable
+
+using Castle.MicroKernel;
+using EventStoreLite;
 using Moq;
 using NUnit.Framework;
 using Snittlistan.Test.ApiControllers;
-using Snittlistan.Web.Areas.V2.Commands;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
 using Snittlistan.Web.Areas.V2.ReadModels;
-
-#nullable enable
+using Snittlistan.Web.Commands;
+using Snittlistan.Web.Infrastructure;
 
 namespace Snittlistan.Test.Domain;
+
 [TestFixture]
 public class MatchResult_MatchCommentary : WebApiIntegrationTest
 {
@@ -111,7 +114,7 @@ public class MatchResult_MatchCommentary : WebApiIntegrationTest
             Id = "rosters-1",
             Players = rosterPlayerIds.ToList()
         };
-        RegisterMatchCommand command = new(roster, parseResult);
+        RegisterMatchCommandHandler.Command command = new(roster.Id!, parseResult);
 
         // prepare some results
         await Transact(session =>
@@ -154,7 +157,11 @@ public class MatchResult_MatchCommentary : WebApiIntegrationTest
             _ = Mock.Get(eventStoreSession)
                 .Setup(x => x.Store(It.IsAny<AggregateRoot>()))
                 .Callback((AggregateRoot ar) => matchResult = (MatchResult)ar);
-            await command.Execute(session, eventStoreSession, o => { });
+            CompositionRoot compositionRoot = new(Mock.Of<IKernel>(), session.Advanced.DocumentStore, session, eventStoreSession, Databases, Mock.Of<EventStore>());
+            CommandExecutor commandExecutor = new(compositionRoot, null, string.Empty);
+            RegisterMatchCommandHandler handler = new();
+            CommandContext<RegisterMatchCommandHandler.Command> context = new(command, new("hostname", "favicon", "appleTouchIcon", "appleTouchIconSize", "webAppTitle", -1, "teamFullName"), Guid.NewGuid(), Guid.NewGuid());
+            await handler.Handle(context);
         });
 
         return matchResult!;

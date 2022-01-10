@@ -1,7 +1,7 @@
-﻿
+﻿#nullable enable
+
 using Snittlistan.Web.Areas.V2.Indexes;
 using Raven.Abstractions;
-using Snittlistan.Web.Areas.V2.Commands;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Areas.V2.ViewModels;
@@ -11,10 +11,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Web;
 using System.Web.Mvc;
-
-#nullable enable
+using Snittlistan.Web.Commands;
 
 namespace Snittlistan.Web.Areas.V2.Controllers;
+
 [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
 public class MatchResultAdminController : AbstractController
 {
@@ -22,11 +22,11 @@ public class MatchResultAdminController : AbstractController
     {
         if (season.HasValue == false)
         {
-            season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+            season = CompositionRoot.DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
         }
 
         // only support for 4-player as of now
-        ViewBag.rosterid = DocumentSession.CreateRosterSelectList(season.Value, pred: x => x.IsFourPlayer);
+        ViewBag.rosterid = CompositionRoot.DocumentSession.CreateRosterSelectList(season.Value, pred: x => x.IsFourPlayer);
         return View();
     }
 
@@ -34,7 +34,7 @@ public class MatchResultAdminController : AbstractController
     [ActionName("Register")]
     public ActionResult Register_RosterSelected(string rosterId)
     {
-        Roster roster = DocumentSession.Load<Roster>(rosterId);
+        Roster roster = CompositionRoot.DocumentSession.Load<Roster>(rosterId);
         if (roster == null)
         {
             throw new HttpException(404, "Roster not found");
@@ -50,7 +50,7 @@ public class MatchResultAdminController : AbstractController
 
     public ActionResult RegisterMatch4Editor(string rosterId)
     {
-        Roster roster = DocumentSession.Load<Roster>(rosterId);
+        Roster roster = CompositionRoot.DocumentSession.Load<Roster>(rosterId);
         if (roster == null)
         {
             throw new HttpException(404, "Roster not found");
@@ -61,7 +61,7 @@ public class MatchResultAdminController : AbstractController
             throw new HttpException(500, "Roster already registered");
         }
 
-        List<Player> availablePlayers = DocumentSession.Query<Player, PlayerSearch>()
+        List<Player> availablePlayers = CompositionRoot.DocumentSession.Query<Player, PlayerSearch>()
             .OrderBy(x => x.Name)
             .Where(p => p.PlayerStatus == Player.Status.Active)
             .ToList();
@@ -72,9 +72,9 @@ public class MatchResultAdminController : AbstractController
         }).ToArray();
 
         RegisterMatch4ViewModel viewModel = new(
-                DocumentSession.LoadRosterViewModel(roster),
-                playerListItems,
-                RegisterMatch4ViewModel.PostModel.ForCreate());
+            CompositionRoot.DocumentSession.LoadRosterViewModel(roster),
+            playerListItems,
+            RegisterMatch4ViewModel.PostModel.ForCreate());
         return View(viewModel);
     }
 
@@ -82,7 +82,7 @@ public class MatchResultAdminController : AbstractController
     [ActionName("RegisterMatch4Editor")]
     public async Task<ActionResult> RegisterMatchEditorStore(string rosterId, RegisterMatch4ViewModel viewModel)
     {
-        Roster roster = DocumentSession.Load<Roster>(rosterId);
+        Roster roster = CompositionRoot.DocumentSession.Load<Roster>(rosterId);
         if (roster == null)
         {
             throw new HttpException(404, "Roster not found");
@@ -90,7 +90,7 @@ public class MatchResultAdminController : AbstractController
 
         if (ModelState.IsValid == false)
         {
-            List<Player> availablePlayers = DocumentSession.Query<Player, PlayerSearch>()
+            List<Player> availablePlayers = CompositionRoot.DocumentSession.Query<Player, PlayerSearch>()
                 .OrderBy(x => x.Name)
                 .Where(p => p.PlayerStatus == Player.Status.Active)
                 .ToList();
@@ -99,7 +99,7 @@ public class MatchResultAdminController : AbstractController
                 Text = x.Name,
                 Value = x.Id
             }).ToArray();
-            viewModel.RosterViewModel = DocumentSession.LoadRosterViewModel(roster);
+            viewModel.RosterViewModel = CompositionRoot.DocumentSession.LoadRosterViewModel(roster);
             viewModel.PlayerListItems = playerListItems;
             return View(
                 "RegisterMatch4Editor",
@@ -174,8 +174,8 @@ public class MatchResultAdminController : AbstractController
             roster.Turn,
             series.ToArray());
         await ExecuteCommand(
-            new RegisterMatch4Command(
-                roster,
+            new RegisterMatch4CommandHandler.Command(
+                roster.Id!,
                 parse4Result,
                 viewModel.Model.Commentary,
                 viewModel.Model.CommentaryHtml));

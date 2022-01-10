@@ -1,9 +1,10 @@
-﻿using Snittlistan.Web.Areas.V2.Domain.Match;
+﻿#nullable enable
+
+using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Areas.V2.ReadModels;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Domain;
+
 public class Parse4Result
 {
     public Parse4Result(
@@ -67,5 +68,4 @@ public class Parse4Result
             new HashSet<string>(restQuery).Where(x => playerIdsWithoutReserve.Contains(x) == false)).ToList();
         return allPlayerIds;
     }
-
 }

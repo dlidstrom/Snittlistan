@@ -1,80 +1,59 @@
-﻿using System.Web.Mvc;
-using EventStoreLite;
+﻿#nullable enable
+
+using System.Web.Mvc;
 using NLog;
-using Snittlistan.Queue;
-using Snittlistan.Web.Areas.V2.Tasks;
-using Snittlistan.Web.Helpers;
+using Snittlistan.Web.Commands;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Database;
 using Snittlistan.Web.Models;
 
-#nullable enable
-
 namespace Snittlistan.Web.Controllers;
+
 public abstract class AbstractController : Controller
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private readonly Lazy<CommandExecutor> commandExecutor;
 
-    public Raven.Client.IDocumentStore DocumentStore { get; set; } = null!;
-
-    public Raven.Client.IDocumentSession DocumentSession { get; set; } = null!;
-
-    public IEventStoreSession EventStoreSession { get; set; } = null!;
-
-    public Databases Databases { get; set; } = null!;
-
-    public EventStore EventStore { get; set; } = null!;
-
-    public IMsmqTransaction MsmqTransaction { get; set; } = null!;
-
-    public async Task<TaskPublisher> GetTaskPublisher()
+    public AbstractController()
     {
-        Tenant currentTenant = await Databases.GetCurrentTenant();
-        return new TaskPublisher(currentTenant, Databases, CorrelationId, null);
+        commandExecutor = new Lazy<CommandExecutor>(CreateCommandExecutor);
     }
+
+    public CompositionRoot CompositionRoot { get; set; } = null!;
 
     protected new CustomPrincipal User => (CustomPrincipal)HttpContext.User;
 
-    protected Guid CorrelationId
+    protected async Task<TaskPublisher> GetTaskPublisher()
     {
-        get
-        {
-            if (CurrentHttpContext.Instance().Items["CorrelationId"] is Guid correlationId)
-            {
-                return correlationId;
-            }
-
-            correlationId = Guid.NewGuid();
-            CurrentHttpContext.Instance().Items["CorrelationId"] = correlationId;
-            return correlationId;
-        }
+        Tenant currentTenant = await CompositionRoot.GetCurrentTenant();
+        return new TaskPublisher(
+            currentTenant,
+            CompositionRoot.Databases,
+            CompositionRoot.CorrelationId,
+            null);
     }
 
-    protected async Task ExecuteCommand(ICommand command)
+    protected async Task ExecuteCommand(CommandBase command)
     {
         if (command == null)
         {
             throw new ArgumentNullException(nameof(command));
         }
 
-        TaskPublisher taskPublisher = await GetTaskPublisher();
-        await command.Execute(
-            DocumentSession,
-            EventStoreSession,
-            task => taskPublisher.PublishTask(task, User.Identity.Name));
+        await commandExecutor.Value.Execute(command);
     }
 
     protected override void OnActionExecuting(ActionExecutingContext filterContext)
     {
         // load website config to make sure it always migrates
-        WebsiteConfig websiteContent = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+        WebsiteConfig websiteContent = CompositionRoot.DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
         if (websiteContent == null)
         {
-            DocumentSession.Store(new WebsiteConfig(new WebsiteConfig.TeamNameAndLevel[0], false, -1, 2019));
+            CompositionRoot.DocumentSession.Store(new WebsiteConfig(new WebsiteConfig.TeamNameAndLevel[0], false, -1, 2019));
         }
 
         // make sure there's an admin user
-        if (DocumentSession.Load<User>(Models.User.AdminId) != null)
+        if (CompositionRoot.DocumentSession.Load<User>(Models.User.AdminId) != null)
         {
             return;
         }
@@ -91,15 +70,18 @@ public abstract class AbstractController : Controller
             return;
         }
 
-        MsmqTransaction.Commit();
-
         // this commits the document session
-        EventStoreSession.SaveChanges();
+        CompositionRoot.EventStoreSession.SaveChanges();
 
-        if (Databases.Snittlistan.ChangeTracker.HasChanges())
+        if (CompositionRoot.Databases.Snittlistan.ChangeTracker.HasChanges())
         {
-            int changes = Databases.Snittlistan.SaveChanges();
+            int changes = CompositionRoot.Databases.Snittlistan.SaveChanges();
             Logger.Info("saved {changes} change(s) to database", changes);
         }
+    }
+
+    private CommandExecutor CreateCommandExecutor()
+    {
+        return new CommandExecutor(CompositionRoot, null, User.CustomIdentity.Name);
     }
 }

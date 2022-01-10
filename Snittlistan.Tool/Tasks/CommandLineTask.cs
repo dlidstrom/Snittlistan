@@ -3,7 +3,7 @@
 using System.Net.Http;
 using Newtonsoft.Json;
 using Snittlistan.Queue;
-using Snittlistan.Queue.Commands;
+using Snittlistan.Queue.ExternalCommands;
 
 namespace Snittlistan.Tool.Tasks;
 

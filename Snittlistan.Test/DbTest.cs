@@ -1,4 +1,6 @@
-﻿using System.Web;
+﻿#nullable enable
+
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Windsor;
@@ -11,9 +13,8 @@ using Snittlistan.Web.Infrastructure.Indexes;
 using Snittlistan.Web.Infrastructure.Installers;
 using Snittlistan.Web.Models;
 
-#nullable enable
-
 namespace Snittlistan.Test;
+
 public abstract class DbTest
 {
     protected IDocumentStore Store = null!;

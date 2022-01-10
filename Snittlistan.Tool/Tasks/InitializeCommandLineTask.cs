@@ -1,4 +1,6 @@
-﻿using Snittlistan.Queue.Commands;
+﻿#nullable enable
+
+using Snittlistan.Queue.ExternalCommands;
 
 namespace Snittlistan.Tool.Tasks;
 

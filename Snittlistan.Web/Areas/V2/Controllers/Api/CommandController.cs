@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Web.Http;
 using Snittlistan.Web.Infrastructure.Attributes;
 using Newtonsoft.Json;
-using Snittlistan.Web.Commands;
+using Snittlistan.Web.ExternalCommands;
 using Snittlistan.Web.Controllers;
 
 namespace Snittlistan.Web.Areas.V2.Controllers.Api;
