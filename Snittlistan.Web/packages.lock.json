@@ -311,7 +311,6 @@
       "snittlistan.queue": {
         "type": "Project",
         "dependencies": {
-          "EntityFramework6.Npgsql": "6.4.3",
           "Lindhart.Analyser.MissingAwaitWarning": "2.0.0",
           "Microsoft.AspNet.WebApi.Client": "5.2.7",
           "MvcContrib": "2.0.95",
