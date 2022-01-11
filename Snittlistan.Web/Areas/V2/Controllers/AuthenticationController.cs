@@ -10,13 +10,13 @@ using Snittlistan.Web.Areas.V2.Indexes;
 using NLog;
 using Snittlistan.Queue.Messages;
 using Raven.Abstractions;
-using Snittlistan.Web.Areas.V2.Tasks;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Helpers;
 using Snittlistan.Web.HtmlHelpers;
 using Snittlistan.Web.Infrastructure.Attributes;
 using Snittlistan.Web.Infrastructure.Database;
 using Snittlistan.Web.Services;
+using Snittlistan.Web.Infrastructure;
 
 namespace Snittlistan.Web.Areas.V2.Controllers;
 
@@ -41,7 +41,7 @@ public class AuthenticationController : AbstractController
     public async Task<ActionResult> LogOn(EmailViewModel vm, string returnUrl)
     {
         // find the user in question
-        Models.User user = DocumentSession.FindUserByEmail(vm.Email);
+        Models.User user = CompositionRoot.DocumentSession.FindUserByEmail(vm.Email);
 
         if (user == null)
         {
@@ -51,12 +51,12 @@ public class AuthenticationController : AbstractController
             {
                 players = new[]
                 {
-                        DocumentSession.Load<Player>(vm.PlayerId)
-                    };
+                    CompositionRoot.DocumentSession.Load<Player>(vm.PlayerId)
+                };
             }
             else
             {
-                Player[] possiblePlayers = DocumentSession
+                Player[] possiblePlayers = CompositionRoot.DocumentSession
                     .Query<Player, PlayerSearch>()
                     .Where(x => x.PlayerStatus == Player.Status.Active
                         || x.PlayerStatus == Player.Status.Supporter)
@@ -82,7 +82,7 @@ public class AuthenticationController : AbstractController
                 // if player already has non-expired token, then reuse that one,
                 // else create a new token
                 OneTimeToken[] existingTokens =
-                    DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>()
+                    CompositionRoot.DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>()
                                    .Where(x => x.PlayerId == player.Id)
                                    .OrderByDescending(x => x.CreatedDate)
                                    .Take(10)
@@ -102,7 +102,7 @@ public class AuthenticationController : AbstractController
                 Debug.Assert(Request.Url != null, "Request.Url != null");
                 string oneTimePassword =
                     string.Join("", Enumerable.Range(1, 6).Select(_ => Random.Next(10)));
-                Tenant tenant = await Databases.GetCurrentTenant();
+                Tenant tenant = await CompositionRoot.GetCurrentTenant();
                 TaskPublisher taskPublisher = await GetTaskPublisher();
                 token.Activate(
                     oneTimeKey =>
@@ -112,14 +112,14 @@ public class AuthenticationController : AbstractController
                     ,
                     oneTimePassword);
                 await NotifyEvent($"{player.Name} entered email address");
-                DocumentSession.Store(token);
+                CompositionRoot.DocumentSession.Store(token);
                 return RedirectToAction(
                     "LogOnOneTimePassword",
                     new { id = player.Id, token.OneTimeKey });
             }
             else if (players.Length > 1)
             {
-                ViewBag.PlayerId = DocumentSession.CreatePlayerSelectList(
+                ViewBag.PlayerId = CompositionRoot.DocumentSession.CreatePlayerSelectList(
                     getPlayers: () => players,
                     textFormatter: p => $"{p.Name} ({p.Nickname})");
                 await NotifyEvent($"{vm.Email} - Select from multiple {string.Join(", ", players.Select(x => $"{x.Name} ({x.Email})"))}");
@@ -147,12 +147,12 @@ public class AuthenticationController : AbstractController
         DateTimeOffset? tokenDate = null;
         if (reuseToken ?? false)
         {
-            OneTimeToken reusedToken = DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>()
+            OneTimeToken reusedToken = CompositionRoot.DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>()
                 .SingleOrDefault(x => x.OneTimeKey == oneTimeKey);
             tokenDate = reusedToken?.Timestamp;
         }
 
-        Player player = DocumentSession.Load<Player>(id);
+        Player player = CompositionRoot.DocumentSession.Load<Player>(id);
         return View(new PasswordViewModel
         {
             Email = player.Email,
@@ -172,10 +172,10 @@ public class AuthenticationController : AbstractController
             return RedirectToAction("Index", "Roster");
         }
 
-        OneTimeToken[] activeTokens = DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>()
+        OneTimeToken[] activeTokens = CompositionRoot.DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>()
             .Where(x => x.PlayerId == id && x.CreatedDate > SystemTime.UtcNow.ToLocalTime().AddDays(-1))
             .ToArray();
-        Player player = DocumentSession.Load<Player>(id);
+        Player player = CompositionRoot.DocumentSession.Load<Player>(id);
         if (player == null)
         {
             throw new HttpException(404, "Player not found");
@@ -224,7 +224,7 @@ public class AuthenticationController : AbstractController
     public ActionResult LogOnPassword(string returnUrl, PasswordViewModel vm)
     {
         // find the user in question
-        Models.User user = DocumentSession.FindUserByEmail(vm.Email);
+        Models.User user = CompositionRoot.DocumentSession.FindUserByEmail(vm.Email);
 
         if (!user.ValidatePassword(vm.Password))
         {

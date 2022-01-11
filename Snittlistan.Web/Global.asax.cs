@@ -250,6 +250,7 @@ public class MvcApplication : HttpApplication
                 new RavenInstaller(tenants),
                 new ServicesInstaller(),
                 new TaskHandlerInstaller(),
+                new CompositionRootInstaller(),
                 EventStoreInstaller.FromAssembly(
                     tenants,
                     Assembly.GetExecutingAssembly(),

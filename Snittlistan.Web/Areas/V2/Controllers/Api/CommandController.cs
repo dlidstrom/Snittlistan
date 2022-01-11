@@ -7,6 +7,7 @@ using Snittlistan.Web.Infrastructure.Attributes;
 using Newtonsoft.Json;
 using Snittlistan.Web.ExternalCommands;
 using Snittlistan.Web.Controllers;
+using Snittlistan.Queue.ExternalCommands;
 
 namespace Snittlistan.Web.Areas.V2.Controllers.Api;
 
@@ -30,8 +31,8 @@ public class CommandController : AbstractApiController
         }
 
         Type handlerType = typeof(ICommandHandler<>).MakeGenericType(commandObject.GetType());
-        object handler = Kernel.Resolve(handlerType);
-        MethodInfo handleMethod = handler.GetType().GetMethod("Handle");
+        object handler = CompositionRoot.Kernel.Resolve(handlerType);
+        MethodInfo handleMethod = handler.GetType().GetMethod(nameof(ICommandHandler<CommandBase>.Handle));
         Task task = (Task)handleMethod.Invoke(handler, new[] { commandObject });
         await task;
         return Ok();

@@ -1,8 +1,11 @@
-﻿using System.Web.Mvc;
+﻿#nullable enable
+
+using System.Web.Mvc;
 using Raven.Client.Linq;
 using Snittlistan.Web.Controllers;
 
 namespace Snittlistan.Web.Areas.V1.Controllers;
+
 public class SearchController : AbstractController
 {
     public JsonResult TeamsQuickSearch(string term)
@@ -13,7 +16,7 @@ public class SearchController : AbstractController
         }
 
         var query =
-            from team in Databases.Bits.Teams
+            from team in CompositionRoot.Databases.Bits.Teams
             where team.TeamAlias.StartsWith(term)
             orderby team.TeamAlias
             select new
@@ -32,7 +35,7 @@ public class SearchController : AbstractController
         }
 
         var query =
-            from hall in Databases.Bits.Hallar
+            from hall in CompositionRoot.Databases.Bits.Hallar
             where hall.HallName.StartsWith(term)
             orderby hall.HallName
             select new

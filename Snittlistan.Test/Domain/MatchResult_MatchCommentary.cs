@@ -111,9 +111,13 @@ public class MatchResult_MatchCommentary : WebApiIntegrationTest
             parseResult.Series.SelectMany(x => x.Tables.SelectMany(y => new[] { y.Game1.Player, y.Game2.Player })));
         Roster roster = new(2017, 1, testCase.BitsMatchId, "Fredrikshof", "A", string.Empty, string.Empty, DateTime.Now, false, OilPatternInformation.Empty)
         {
-            Id = "rosters-1",
             Players = rosterPlayerIds.ToList()
         };
+        await Transact(session =>
+        {
+            session.Store(roster);
+            return Task.CompletedTask;
+        });
         RegisterMatchCommandHandler.Command command = new(roster.Id!, parseResult);
 
         // prepare some results
@@ -157,7 +161,13 @@ public class MatchResult_MatchCommentary : WebApiIntegrationTest
             _ = Mock.Get(eventStoreSession)
                 .Setup(x => x.Store(It.IsAny<AggregateRoot>()))
                 .Callback((AggregateRoot ar) => matchResult = (MatchResult)ar);
-            CompositionRoot compositionRoot = new(Mock.Of<IKernel>(), session.Advanced.DocumentStore, session, eventStoreSession, Databases, Mock.Of<EventStore>());
+            CompositionRoot compositionRoot = new(
+                Container.Resolve<IKernel>(),
+                session.Advanced.DocumentStore,
+                session,
+                eventStoreSession,
+                Databases,
+                Container.Resolve<EventStore>());
             CommandExecutor commandExecutor = new(compositionRoot, null, string.Empty);
             RegisterMatchCommandHandler handler = new();
             CommandContext<RegisterMatchCommandHandler.Command> context = new(command, new("hostname", "favicon", "appleTouchIcon", "appleTouchIconSize", "webAppTitle", -1, "teamFullName"), Guid.NewGuid(), Guid.NewGuid());

@@ -24,7 +24,7 @@ public class UserController : AbstractController
 
     public ActionResult SetPassword(string id, string activationKey)
     {
-        User user = DocumentSession.Load<User>(id);
+        User user = CompositionRoot.DocumentSession.Load<User>(id);
         if (user == null)
         {
             throw new HttpException(404, "User not found");
@@ -41,7 +41,7 @@ public class UserController : AbstractController
     [HttpPost]
     public ActionResult SetPassword(string id, SetPasswordViewModel vm)
     {
-        User user = DocumentSession.Load<User>(id);
+        User user = CompositionRoot.DocumentSession.Load<User>(id);
         if (user == null)
         {
             throw new HttpException(404, "User not found");

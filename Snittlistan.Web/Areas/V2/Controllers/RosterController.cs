@@ -12,7 +12,6 @@ using Raven.Abstractions;
 using Raven.Client;
 using Rotativa;
 using Rotativa.Options;
-using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.ViewModels;
@@ -20,8 +19,8 @@ using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Helpers;
 using Snittlistan.Web.Infrastructure.Database;
 using Snittlistan.Web.Models;
-using Snittlistan.Web.Commands;
 using Snittlistan.Web.Infrastructure;
+using Snittlistan.Web.Commands;
 
 namespace Snittlistan.Web.Areas.V2.Controllers;
 
@@ -487,13 +486,7 @@ public class RosterController : AbstractController
             }
             else
             {
-                await ExecuteCommand(new CreateRosterMailCommand());
-                InitiateUpdateMailTask task = new(roster.Id!, roster.Version, CompositionRoot.CorrelationId);
-                TaskPublisher taskPublisher = await GetTaskPublisher();
-                taskPublisher.PublishDelayedTask(
-                    task,
-                    TimeSpan.FromMinutes(10),
-                    User.Identity.Name);
+                await ExecuteCommand(new CreateRosterMailCommandHandler.Command(rosterId));
             }
         }
 

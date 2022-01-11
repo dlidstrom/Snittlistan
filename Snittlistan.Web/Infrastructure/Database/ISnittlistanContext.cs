@@ -13,6 +13,8 @@ public interface ISnittlistanContext
 
     IDbSet<Tenant> Tenants { get; }
 
+    IDbSet<RosterMail> RosterMails { get; }
+
     DbChangeTracker ChangeTracker { get; }
 
     Task<int> SaveChangesAsync();

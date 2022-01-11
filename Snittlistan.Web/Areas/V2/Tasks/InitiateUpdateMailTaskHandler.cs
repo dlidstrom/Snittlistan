@@ -19,7 +19,7 @@ public class InitiateUpdateMailTaskHandler : TaskHandler<InitiateUpdateMailTask>
             SendUpdateMailTask message = new(
                 context.Task.RosterId,
                 playerId);
-            context.PublishMessageDelegate(message);
+            context.PublishMessage(message);
         }
 
         return Task.CompletedTask;

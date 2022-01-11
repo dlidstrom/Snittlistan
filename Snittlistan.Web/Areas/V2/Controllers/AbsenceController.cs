@@ -25,18 +25,18 @@ public class AbsenceController : AbstractController
     public ActionResult AbsenceTable(bool? hideControls)
     {
         ViewBag.HideControls = hideControls.GetValueOrDefault();
-        AbsenceIndex.Result[] absences = DocumentSession.Query<AbsenceIndex.Result, AbsenceIndex>()
-                                      .Where(x => x.To >= SystemTime.UtcNow.Date.AddDays(-1))
-                                      .OrderBy(p => p.To)
-                                      .ThenBy(p => p.PlayerName)
-                                      .ProjectFromIndexFieldsInto<AbsenceIndex.Result>()
-                                      .ToArray();
+        AbsenceIndex.Result[] absences = CompositionRoot.DocumentSession.Query<AbsenceIndex.Result, AbsenceIndex>()
+            .Where(x => x.To >= SystemTime.UtcNow.Date.AddDays(-1))
+            .OrderBy(p => p.To)
+            .ThenBy(p => p.PlayerName)
+            .ProjectFromIndexFieldsInto<AbsenceIndex.Result>()
+            .ToArray();
         return View(absences);
     }
 
     public ActionResult Create()
     {
-        ViewBag.Player = DocumentSession.CreatePlayerSelectList();
+        ViewBag.Player = CompositionRoot.DocumentSession.CreatePlayerSelectList();
         return View(new CreateAbsenceViewModel());
     }
 
@@ -46,11 +46,11 @@ public class AbsenceController : AbstractController
     {
         if (ModelState.IsValid == false)
         {
-            ViewBag.Player = DocumentSession.CreatePlayerSelectList();
+            ViewBag.Player = CompositionRoot.DocumentSession.CreatePlayerSelectList();
             return View(vm);
         }
 
-        Absence absence = DocumentSession.Load<Absence>(id);
+        Absence absence = CompositionRoot.DocumentSession.Load<Absence>(id);
         absence.Player = vm.Player;
         absence.From = vm.From;
         absence.To = vm.To;
@@ -64,12 +64,12 @@ public class AbsenceController : AbstractController
     {
         if (ModelState.IsValid == false)
         {
-            ViewBag.Player = DocumentSession.CreatePlayerSelectList();
+            ViewBag.Player = CompositionRoot.DocumentSession.CreatePlayerSelectList();
             return View(vm);
         }
 
         Absence absence = Absence.Create(vm.From, vm.To, vm.Player, vm.Comment);
-        DocumentSession.Store(absence);
+        CompositionRoot.DocumentSession.Store(absence);
 
         return RedirectToAction("Index");
     }
@@ -77,26 +77,26 @@ public class AbsenceController : AbstractController
     [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
     public ActionResult Edit(int id)
     {
-        Absence absence = DocumentSession.Load<Absence>(id);
+        Absence absence = CompositionRoot.DocumentSession.Load<Absence>(id);
         if (absence == null)
         {
             throw new HttpException(404, "Absence not found");
         }
 
-        ViewBag.Player = DocumentSession.CreatePlayerSelectList(absence.Player);
+        ViewBag.Player = CompositionRoot.DocumentSession.CreatePlayerSelectList(absence.Player);
         return View(new CreateAbsenceViewModel(absence));
     }
 
     [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
     public ActionResult Delete(int id)
     {
-        Absence absence = DocumentSession.Include<Absence>(x => x.Player).Load<Absence>(id);
+        Absence absence = CompositionRoot.DocumentSession.Include<Absence>(x => x.Player).Load<Absence>(id);
         if (absence == null)
         {
             return RedirectToAction("Index");
         }
 
-        Player player = DocumentSession.Load<Player>(absence.Player);
+        Player player = CompositionRoot.DocumentSession.Load<Player>(absence.Player);
         return View(new AbsenceViewModel(absence, player));
     }
 
@@ -105,13 +105,13 @@ public class AbsenceController : AbstractController
     [ActionName("Delete")]
     public ActionResult DeleteConfirmed(int id)
     {
-        Absence absence = DocumentSession.Load<Absence>(id);
+        Absence absence = CompositionRoot.DocumentSession.Load<Absence>(id);
         if (absence == null)
         {
             throw new HttpException(404, "Absence not found");
         }
 
-        DocumentSession.Delete(absence);
+        CompositionRoot.DocumentSession.Delete(absence);
         return RedirectToAction("Index");
     }
 

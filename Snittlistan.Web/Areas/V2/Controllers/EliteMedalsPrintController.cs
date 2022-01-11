@@ -27,8 +27,8 @@ public class EliteMedalsPrintController : AbstractController
     public async Task<ActionResult> GeneratePdf(PostModel postModel)
     {
         // find out current season
-        int season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
-        SeasonResults seasonResults = DocumentSession.Load<SeasonResults>(SeasonResults.GetId(season));
+        int season = CompositionRoot.DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+        SeasonResults seasonResults = CompositionRoot.DocumentSession.Load<SeasonResults>(SeasonResults.GetId(season));
         if (seasonResults == null)
         {
             ModelState.AddModelError("resultat", "Det finns inga resultat för säsongen.");
@@ -39,15 +39,15 @@ public class EliteMedalsPrintController : AbstractController
             return RedirectToAction("EliteMedals", "MatchResult");
         }
 
-        EliteMedals eliteMedals = DocumentSession.Load<EliteMedals>(EliteMedals.TheId);
-        Dictionary<string, Player> playersDict = DocumentSession.Query<Player, PlayerSearch>()
+        EliteMedals eliteMedals = CompositionRoot.DocumentSession.Load<EliteMedals>(EliteMedals.TheId);
+        Dictionary<string, Player> playersDict = CompositionRoot.DocumentSession.Query<Player, PlayerSearch>()
             .Where(p => p.PlayerStatus == Player.Status.Active)
             .ToDictionary(x => x.Id);
         EliteMedalsViewModel viewModel = new(season, playersDict, eliteMedals, seasonResults!);
 
         string templateFilename = ConfigurationManager.AppSettings["ElitemedalsTemplateFilename"];
         MemoryStream stream = new();
-        Tenant tenant = await Databases.GetCurrentTenant();
+        Tenant tenant = await CompositionRoot.GetCurrentTenant();
         string archiveFileName = $"Elitmedaljer_{tenant.TeamFullName}_{season}-{season + 1}.zip";
         using (ZipArchive zip = new(stream, ZipArchiveMode.Create, true))
         {

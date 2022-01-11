@@ -51,7 +51,7 @@ public class TaskController : AbstractApiController
 
         Type handlerType = typeof(ITaskHandler<>).MakeGenericType(taskObject.GetType());
 
-        MethodInfo handleMethod = handlerType.GetMethod("Handle");
+        MethodInfo handleMethod = handlerType.GetMethod(nameof(ITaskHandler<TaskBase>.Handle));
         using IDisposable scope = NestedDiagnosticsLogicalContext.Push(taskObject.BusinessKey);
         Log.Info("Begin");
         Tenant tenant = await CompositionRoot.GetCurrentTenant();
@@ -65,8 +65,17 @@ public class TaskController : AbstractApiController
             tenant,
             correlationId,
             causationId);
-        publishContext.PublishMessage = task =>
-            taskPublisher.PublishTask(task, "system");
+        publishContext.PublishMessage = (task, publishDate) =>
+        {
+            if (publishDate != null)
+            {
+                taskPublisher.PublishDelayedTask(task, publishDate.Value, "system");
+            }
+            else
+            {
+                taskPublisher.PublishTask(task, "system");
+            }
+        };
 
         object handler = CompositionRoot.Kernel.Resolve(handlerType);
         Task task = (Task)handleMethod.Invoke(handler, new[] { publishContext });

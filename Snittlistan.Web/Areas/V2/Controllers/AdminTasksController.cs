@@ -8,10 +8,10 @@ using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.Migration;
-using Snittlistan.Web.Areas.V2.Tasks;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Helpers;
+using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Indexes;
 using Snittlistan.Web.Models;
 using Snittlistan.Web.Services;
@@ -38,7 +38,7 @@ public class AdminTasksController : AdminController
     /// <returns></returns>
     public ActionResult Users()
     {
-        List<UserViewModel> users = DocumentSession.Query<User>()
+        List<UserViewModel> users = CompositionRoot.DocumentSession.Query<User>()
             .ToList()
             .Select(x => new UserViewModel(x))
             .OrderByDescending(x => x.IsActive)
@@ -57,7 +57,7 @@ public class AdminTasksController : AdminController
     public ActionResult CreateUser(CreateUserViewModel vm)
     {
         // an existing user cannot be registered again
-        if (DocumentSession.FindUserByEmail(vm.Email) != null)
+        if (CompositionRoot.DocumentSession.FindUserByEmail(vm.Email) != null)
         {
             ModelState.AddModelError("Email", "Användaren finns redan");
         }
@@ -69,14 +69,14 @@ public class AdminTasksController : AdminController
         }
 
         User newUser = new(string.Empty, string.Empty, vm.Email, string.Empty);
-        DocumentSession.Store(newUser);
+        CompositionRoot.DocumentSession.Store(newUser);
 
         return RedirectToAction("Users");
     }
 
     public ActionResult DeleteUser(string id)
     {
-        User user = DocumentSession.Load<User>(id);
+        User user = CompositionRoot.DocumentSession.Load<User>(id);
         if (user == null)
         {
             throw new HttpException(404, "User not found");
@@ -89,19 +89,19 @@ public class AdminTasksController : AdminController
     [ActionName("DeleteUser")]
     public ActionResult DeleteUserConfirmed(string id)
     {
-        User user = DocumentSession.Load<User>(id);
+        User user = CompositionRoot.DocumentSession.Load<User>(id);
         if (user == null)
         {
             throw new HttpException(404, "User not found");
         }
 
-        DocumentSession.Delete(user);
+        CompositionRoot.DocumentSession.Delete(user);
         return RedirectToAction("Users");
     }
 
     public ActionResult ActivateUser(string id)
     {
-        User user = DocumentSession.Load<User>(id);
+        User user = CompositionRoot.DocumentSession.Load<User>(id);
         if (user == null)
         {
             throw new HttpException(404, "User not found");
@@ -114,7 +114,7 @@ public class AdminTasksController : AdminController
     [ActionName("ActivateUser")]
     public async Task<ActionResult> ActivateUserConfirmed(string id, bool? invite)
     {
-        User user = DocumentSession.Load<User>(id);
+        User user = CompositionRoot.DocumentSession.Load<User>(id);
         if (user == null)
         {
             throw new HttpException(404, "User not found");
@@ -157,7 +157,7 @@ public class AdminTasksController : AdminController
     [HttpPost, ActionName("ResetIndexes")]
     public ActionResult ResetIndexesConfirmed()
     {
-        IndexCreator.ResetIndexes(DocumentStore, EventStore);
+        IndexCreator.ResetIndexes(CompositionRoot.DocumentStore, CompositionRoot.EventStore);
 
         return RedirectToAction("Raven");
     }
@@ -190,7 +190,7 @@ public class AdminTasksController : AdminController
     {
         List<IEventMigratorWithResults> eventMigrators = MvcApplication.Container!.ResolveAll<IEventMigratorWithResults>()
             .ToList();
-        EventStore.MigrateEvents(eventMigrators);
+        CompositionRoot.EventStore.MigrateEvents(eventMigrators);
         string results = string.Join("", eventMigrators.Select(x => x.GetResults()));
 
         return View("MigrateEvents", new HtmlString(results));
@@ -219,8 +219,8 @@ public class AdminTasksController : AdminController
 
     public ActionResult Adopt()
     {
-        Player[] players = DocumentSession.Query<Player, PlayerSearch>().ToArray();
-        ViewBag.PlayerId = DocumentSession.CreatePlayerSelectList(
+        Player[] players = CompositionRoot.DocumentSession.Query<Player, PlayerSearch>().ToArray();
+        ViewBag.PlayerId = CompositionRoot.DocumentSession.CreatePlayerSelectList(
             getPlayers: () => players);
         return View();
     }

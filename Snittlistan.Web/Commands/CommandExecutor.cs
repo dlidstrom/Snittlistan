@@ -22,7 +22,7 @@ public class CommandExecutor
     public async Task Execute(CommandBase command)
     {
         Type handlerType = typeof(ICommandHandler<>).MakeGenericType(command.GetType());
-        MethodInfo handleMethod = handlerType.GetMethod("Handle");
+        MethodInfo handleMethod = handlerType.GetMethod(nameof(ICommandHandler<CommandBase>.Handle));
         object handler = compositionRoot.Kernel.Resolve(handlerType);
         Tenant tenant = await compositionRoot.GetCurrentTenant();
         Guid correlationId = compositionRoot.CorrelationId;
@@ -33,8 +33,17 @@ public class CommandExecutor
             tenant,
             correlationId,
             causationId);
-        publishContext.PublishMessage = task =>
-            taskPublisher.PublishTask(task, createdBy);
+        publishContext.PublishMessage = (task, publishDate) =>
+        {
+            if (publishDate != null)
+            {
+                taskPublisher.PublishDelayedTask(task, publishDate.Value, createdBy);
+            }
+            else
+            {
+                taskPublisher.PublishTask(task, createdBy);
+            }
+        };
         Task task = (Task)handleMethod.Invoke(handler, new[] { publishContext });
         await task;
     }

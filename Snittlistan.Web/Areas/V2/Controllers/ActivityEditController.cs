@@ -22,7 +22,7 @@ public class ActivityEditController : AbstractController
     {
         if (season.HasValue == false)
         {
-            season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+            season = CompositionRoot.DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
         }
 
         return View(ActivityEditViewModel.ForCreate(season.Value));
@@ -46,14 +46,14 @@ public class ActivityEditController : AbstractController
                 vm.Message,
                 vm.MessageHtml,
                 User.CustomIdentity.PlayerId!);
-        DocumentSession.Store(activity);
+        CompositionRoot.DocumentSession.Store(activity);
 
         return RedirectToAction("Index", "ActivityIndex");
     }
 
     public ActionResult Edit(string id)
     {
-        Activity activity = DocumentSession.Load<Activity>(id);
+        Activity activity = CompositionRoot.DocumentSession.Load<Activity>(id);
         if (activity == null)
         {
             throw new HttpException(404, "Activity not found");
@@ -70,7 +70,7 @@ public class ActivityEditController : AbstractController
             return View(vm);
         }
 
-        Activity activity = DocumentSession.Load<Activity>(id);
+        Activity activity = CompositionRoot.DocumentSession.Load<Activity>(id);
         if (activity == null)
         {
             throw new HttpException(404, "Activity not found");
@@ -95,13 +95,13 @@ public class ActivityEditController : AbstractController
 
     public ActionResult Delete(string id)
     {
-        Activity activity = DocumentSession.Load<Activity>(id);
+        Activity activity = CompositionRoot.DocumentSession.Load<Activity>(id);
         if (activity == null)
         {
             throw new HttpException(404, "Activity not found");
         }
 
-        Player player = DocumentSession.Load<Player>(activity.AuthorId);
+        Player player = CompositionRoot.DocumentSession.Load<Player>(activity.AuthorId);
         return View(new ActivityViewModel(activity.Id!, activity.Title, activity.Date, activity.Message, player?.Name ?? string.Empty));
     }
 
@@ -109,10 +109,10 @@ public class ActivityEditController : AbstractController
     [ActionName("Delete")]
     public ActionResult DeleteActivity(string id)
     {
-        Activity activity = DocumentSession.Load<Activity>(id);
+        Activity activity = CompositionRoot.DocumentSession.Load<Activity>(id);
         if (activity != null)
         {
-            DocumentSession.Delete(activity);
+            CompositionRoot.DocumentSession.Delete(activity);
         }
 
         return RedirectToAction("Index", "ActivityIndex");

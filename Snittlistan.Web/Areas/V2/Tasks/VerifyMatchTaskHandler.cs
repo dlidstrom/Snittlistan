@@ -1,4 +1,6 @@
-﻿using Snittlistan.Queue.Messages;
+﻿#nullable enable
+
+using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Areas.V2.Indexes;
@@ -7,9 +9,8 @@ using Snittlistan.Web.Infrastructure.Bits;
 using Snittlistan.Web.Infrastructure.Bits.Contracts;
 using Snittlistan.Web.Models;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Tasks;
+
 public class VerifyMatchTaskHandler : TaskHandler<VerifyMatchTask>
 {
     public override async Task Handle(MessageContext<VerifyMatchTask> context)
@@ -49,7 +50,7 @@ public class VerifyMatchTaskHandler : TaskHandler<VerifyMatchTask>
                 Parse4Result? parseResult = parser.Parse4(bitsMatchResult, websiteConfig.ClubId);
                 update.Players = parseResult!.GetPlayerIds();
                 bool isVerified = matchResult!.Update(
-                    context.PublishMessage,
+                    t => context.PublishMessage(t),
                     roster,
                     parseResult.TeamScore,
                     parseResult.OpponentScore,
@@ -70,7 +71,7 @@ public class VerifyMatchTaskHandler : TaskHandler<VerifyMatchTask>
                     .ToDictionary(x => x.PlayerId);
                 MatchSerie[] matchSeries = parseResult.CreateMatchSeries();
                 bool isVerified = matchResult!.Update(
-                    context.PublishMessage,
+                    t => context.PublishMessage(t),
                     roster,
                     parseResult.TeamScore,
                     parseResult.OpponentScore,

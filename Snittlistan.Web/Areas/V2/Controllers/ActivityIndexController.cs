@@ -1,4 +1,6 @@
-﻿using System.Web;
+﻿#nullable enable
+
+using System.Web;
 using System.Web.Mvc;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
@@ -6,9 +8,8 @@ using Raven.Abstractions;
 using Snittlistan.Web.Helpers;
 using Snittlistan.Web.Controllers;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Controllers;
+
 [Authorize(Roles = WebsiteRoles.Activity.Manage)]
 public class ActivityIndexController : AbstractController
 {
@@ -16,11 +17,11 @@ public class ActivityIndexController : AbstractController
     {
         if (season.HasValue == false)
         {
-            season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+            season = CompositionRoot.DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
         }
 
         Activity[] activities =
-            DocumentSession.Query<Activity, ActivityIndex>()
+            CompositionRoot.DocumentSession.Query<Activity, ActivityIndex>()
                            .Where(x => x.Season >= season.Value)
                            .ToArray()
                            .OrderBy(x => x.Date)

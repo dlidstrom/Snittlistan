@@ -109,6 +109,7 @@ public class InMemoryContext : ISnittlistanContext, IBitsContext
         Tenants = new InMemoryDbSet<Tenant>(generator);
         Teams = new InMemoryDbSet<Bits_Team>(generator);
         Hallar = new InMemoryDbSet<Bits_Hall>(generator);
+        RosterMails = new InMemoryDbSet<RosterMail>(generator);
     }
 
     public IDbSet<DelayedTask> DelayedTasks { get; }
@@ -120,6 +121,8 @@ public class InMemoryContext : ISnittlistanContext, IBitsContext
     public IDbSet<Bits_Hall> Hallar { get; }
 
     public IDbSet<Tenant> Tenants { get; }
+
+    public IDbSet<RosterMail> RosterMails { get; }
 
     public DbChangeTracker ChangeTracker => throw new NotImplementedException();
 

@@ -18,7 +18,7 @@ public class InitializeIndexesTaskHandler : TaskHandler<InitializeIndexesTask>
             {
                 Id = User.AdminId
             };
-            admin.Initialize(t => context.PublishMessageDelegate(t));
+            admin.Initialize(t => context.PublishMessage(t));
             admin.Activate();
             DocumentSession.Store(admin);
         }

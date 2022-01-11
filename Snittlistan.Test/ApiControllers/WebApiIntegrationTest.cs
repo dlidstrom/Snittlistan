@@ -29,7 +29,7 @@ public abstract class WebApiIntegrationTest
 
     protected Databases Databases { get; private set; } = null!;
 
-    private IWindsorContainer Container { get; set; } = null!;
+    protected IWindsorContainer Container { get; set; } = null!;
 
     [SetUp]
     public async Task SetUp()
@@ -45,6 +45,7 @@ public abstract class WebApiIntegrationTest
             new ControllerFactoryInstaller(),
             new RavenInstaller(new[] { tenant }, DocumentStoreMode.InMemory),
             new TaskHandlerInstaller(),
+            new CompositionRootInstaller(),
             new CommandHandlerInstaller(),
             new DatabaseContextInstaller(() => Databases, LifestyleType.Scoped),
             EventStoreInstaller.FromAssembly(new[] { tenant }, typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),

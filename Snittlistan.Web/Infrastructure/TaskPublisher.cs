@@ -73,9 +73,8 @@ public class TaskPublisher
         }
     }
 
-    public void PublishDelayedTask(TaskBase task, TimeSpan sendAfter, string createdBy)
+    public void PublishDelayedTask(TaskBase task, DateTime publishDate, string createdBy)
     {
-        DateTime publishDate = DateTime.Now.Add(sendAfter);
         DelayedTask delayedTask = databases.Snittlistan.DelayedTasks.Add(new(
             task,
             publishDate,

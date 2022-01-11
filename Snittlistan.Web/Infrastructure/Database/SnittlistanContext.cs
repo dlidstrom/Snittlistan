@@ -1,8 +1,8 @@
-﻿using Npgsql.NameTranslation;
+﻿#nullable enable
+
+using Npgsql.NameTranslation;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-
-#nullable enable
 
 namespace Snittlistan.Web.Infrastructure.Database;
 
@@ -13,6 +13,8 @@ public class SnittlistanContext : DbContext, ISnittlistanContext
     public IDbSet<PublishedTask> PublishedTasks { get; set; } = null!;
 
     public IDbSet<Tenant> Tenants { get; set; } = null!;
+
+    public IDbSet<RosterMail> RosterMails { get; set; } = null!;
 
     protected override void OnModelCreating(DbModelBuilder modelBuilder)
     {
@@ -38,6 +40,13 @@ public class SnittlistanContext : DbContext, ISnittlistanContext
             .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
 
         _ = modelBuilder.Entity<Tenant>()
+            .Property(x => x.Version)
+            .HasColumnName("xmin")
+            .HasColumnType("text")
+            .IsConcurrencyToken()
+            .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
+
+        _ = modelBuilder.Entity<RosterMail>()
             .Property(x => x.Version)
             .HasColumnName("xmin")
             .HasColumnType("text")

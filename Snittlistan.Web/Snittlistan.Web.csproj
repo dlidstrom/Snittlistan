@@ -172,6 +172,7 @@
     <Compile Include="Areas\V2\Tasks\RegisterMatchTaskHandler.cs" />
     <Compile Include="Areas\V2\Tasks\SendUpdateMailTaskHandler.cs" />
     <Compile Include="Infrastructure\CompositionRoot.cs" />
+    <Compile Include="Infrastructure\Database\RosterMail.cs" />
     <Compile Include="Infrastructure\Installers\CompositionRootInstaller.cs" />
     <Compile Include="Infrastructure\TaskPublisher.cs" />
     <Compile Include="Areas\V2\Tasks\UserInvitedTaskHandler.cs" />

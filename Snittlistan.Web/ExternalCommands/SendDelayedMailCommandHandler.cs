@@ -2,7 +2,7 @@
 
 using Snittlistan.Queue.ExternalCommands;
 using Snittlistan.Queue.Messages;
-using Snittlistan.Web.Areas.V2.Tasks;
+using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Database;
 using System.Data.Entity;
 
@@ -17,6 +17,9 @@ public class SendDelayedMailCommandHandler : ICommandHandler<SendDelayedMailComm
         Tenant tenant = await Databases.Snittlistan.Tenants.SingleAsync(x => x.Hostname == command.Hostname);
         TaskPublisher taskPublisher = new(tenant, Databases, command.CorrelationId, null);
         EmailTask emailTask = EmailTask.Create(command.Recipient, command.Subject, command.Content);
-        taskPublisher.PublishDelayedTask(emailTask, TimeSpan.FromSeconds(command.DelayInSeconds), "system");
+        taskPublisher.PublishDelayedTask(
+            emailTask,
+            DateTime.Now.AddSeconds(command.DelayInSeconds),
+            "system");
     }
 }
