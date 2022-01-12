@@ -162,7 +162,7 @@ public class MatchResult_MatchCommentary : WebApiIntegrationTest
                 .Setup(x => x.Store(It.IsAny<AggregateRoot>()))
                 .Callback((AggregateRoot ar) => matchResult = (MatchResult)ar);
             CompositionRoot compositionRoot = new(
-                Container.Resolve<IKernel>(),
+                Container.Kernel,
                 session.Advanced.DocumentStore,
                 session,
                 eventStoreSession,
