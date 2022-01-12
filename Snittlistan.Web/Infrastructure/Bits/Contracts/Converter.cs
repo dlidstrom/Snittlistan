@@ -1,9 +1,8 @@
-﻿namespace Snittlistan.Web.Infrastructure.Bits.Contracts
-{
-    using Newtonsoft.Json;
+﻿
+using Newtonsoft.Json;
 
-    internal static class Converter
-    {
-        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings();
-    }
+namespace Snittlistan.Web.Infrastructure.Bits.Contracts;
+internal static class Converter
+{
+    public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings();
 }
