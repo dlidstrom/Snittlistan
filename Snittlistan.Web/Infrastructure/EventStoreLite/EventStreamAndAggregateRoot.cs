@@ -1,16 +1,16 @@
- // ReSharper disable once CheckNamespace
-namespace EventStoreLite
+﻿#nullable enable
+
+namespace EventStoreLite;
+
+internal class EventStreamAndAggregateRoot
 {
-    internal class EventStreamAndAggregateRoot
+    public EventStreamAndAggregateRoot(EventStream eventStream, AggregateRoot aggregateRoot)
     {
-        public EventStreamAndAggregateRoot(EventStream eventStream, AggregateRoot aggregateRoot)
-        {
-            EventStream = eventStream;
-            AggregateRoot = aggregateRoot;
-        }
-
-        public EventStream EventStream { get; private set; }
-
-        public AggregateRoot AggregateRoot { get; private set; }
+        EventStream = eventStream;
+        AggregateRoot = aggregateRoot;
     }
+
+    public EventStream EventStream { get; private set; }
+
+    public AggregateRoot AggregateRoot { get; private set; }
 }

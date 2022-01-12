@@ -1,61 +1,58 @@
-﻿namespace Snittlistan.Web.Infrastructure.Attributes
+﻿using System.Web;
+using System.Web.Mvc;
+using Elmah;
+using NLog;
+
+namespace Snittlistan.Web.Infrastructure.Attributes;
+public class ElmahHandleErrorAttribute : HandleErrorAttribute
 {
-    using System;
-    using System.Web;
-    using System.Web.Mvc;
-    using Elmah;
-    using NLog;
+    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-    public class ElmahHandleErrorAttribute : HandleErrorAttribute
+    public override void OnException(ExceptionContext context)
     {
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        base.OnException(context);
 
-        public override void OnException(ExceptionContext context)
+        Exception e = context.Exception;
+        if (!context.ExceptionHandled   // if unhandled, will be logged anyhow
+            || RaiseErrorSignal(e)      // prefer signaling, if possible
+            || IsFiltered(context))     // filtered?
         {
-            base.OnException(context);
-
-            Exception e = context.Exception;
-            if (!context.ExceptionHandled   // if unhandled, will be logged anyhow
-                || RaiseErrorSignal(e)      // prefer signaling, if possible
-                || IsFiltered(context))     // filtered?
-            {
-                return;
-            }
-
-            ErrorLog.GetDefault(HttpContext.Current).Log(new Error(e, HttpContext.Current));
-            Log.Error(e);
+            return;
         }
 
-        private static bool RaiseErrorSignal(Exception e)
+        ErrorLog.GetDefault(HttpContext.Current).Log(new Error(e, HttpContext.Current));
+        Log.Error(e);
+    }
+
+    private static bool RaiseErrorSignal(Exception e)
+    {
+        HttpContext context = HttpContext.Current;
+        if (context == null)
         {
-            HttpContext context = HttpContext.Current;
-            if (context == null)
-            {
-                return false;
-            }
-
-            var signal = ErrorSignal.FromContext(context);
-            if (signal == null)
-            {
-                return false;
-            }
-
-            signal.Raise(e, context);
-            return true;
+            return false;
         }
 
-        private static bool IsFiltered(ExceptionContext context)
+        var signal = ErrorSignal.FromContext(context);
+        if (signal == null)
         {
-            if (!(context.HttpContext.GetSection("elmah/errorFilter") is ErrorFilterConfiguration config))
-            {
-                return false;
-            }
-
-            var testContext = new ErrorFilterModule.AssertionHelperContext(
-                context.Exception,
-                HttpContext.Current);
-
-            return config.Assertion.Test(testContext);
+            return false;
         }
+
+        signal.Raise(e, context);
+        return true;
+    }
+
+    private static bool IsFiltered(ExceptionContext context)
+    {
+        if (!(context.HttpContext.GetSection("elmah/errorFilter") is ErrorFilterConfiguration config))
+        {
+            return false;
+        }
+
+        var testContext = new ErrorFilterModule.AssertionHelperContext(
+            context.Exception,
+            HttpContext.Current);
+
+        return config.Assertion.Test(testContext);
     }
 }

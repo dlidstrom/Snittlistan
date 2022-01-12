@@ -1,192 +1,189 @@
-﻿#nullable enable
+﻿using System.Web.Mvc;
+using System.Web.Routing;
+using NUnit.Framework;
+using Snittlistan.Web;
+using Snittlistan.Web.Areas.V1;
+using Snittlistan.Web.Areas.V2;
 
-namespace Snittlistan.Test
+#nullable enable
+
+namespace Snittlistan.Test;
+[TestFixture]
+public class RoutesTest
 {
-    using System;
-    using System.Web.Mvc;
-    using System.Web.Routing;
-    using NUnit.Framework;
-    using Web;
-    using Web.Areas.V1;
-    using Web.Areas.V2;
-
-    [TestFixture]
-    public class RoutesTest
+    [SetUp]
+    public void SetUp()
     {
-        [SetUp]
-        public void SetUp()
+        new RouteConfig(RouteTable.Routes).Configure();
+        RegisterArea<V1AreaRegistration>(RouteTable.Routes, null);
+        RegisterArea<V2AreaRegistration>(RouteTable.Routes, null);
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        RouteTable.Routes.Clear();
+    }
+
+    [Test]
+    public void DefaultRoute()
+    {
+        RouteTable.Routes.Maps("GET", "~/", new { controller = "Roster", action = "Index" });
+    }
+
+    [Test]
+    public void V2Route()
+    {
+        RouteTable.Routes.Maps("GET", "~/", new { controller = "Roster", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/Roster/Create", new { controller = "Roster", action = "Create" });
+        RouteTable.Routes.Maps("GET", "~/Roster/Edit/roster-1", new { controller = "Roster", action = "Edit", id = "roster-1" });
+        RouteTable.Routes.Maps("GET", "~/Roster/Delete/roster-1", new { controller = "Roster", action = "Delete", id = "roster-1" });
+        RouteTable.Routes.Maps("GET", "~/RosterView/2012", new { controller = "Roster", action = "View", season = 2012, turn = (int?)null });
+        RouteTable.Routes.Maps("GET", "~/Roster/Players/roster-1", new { controller = "Roster", action = "EditPlayers", id = "roster-1" });
+    }
+
+    [Test]
+    public void SearchRoute()
+    {
+        RouteTable.Routes.Maps("GET", "~/search/teams", new { controller = "SearchTerms", action = "Teams" });
+        RouteTable.Routes.Maps("GET", "~/search/opponents", new { controller = "SearchTerms", action = "Opponents" });
+        RouteTable.Routes.Maps("GET", "~/search/locations", new { controller = "SearchTerms", action = "Locations" });
+    }
+
+    [Test]
+    public void Shortcuts()
+    {
+        RouteTable.Routes.Maps("GET", "~/v1/register", new { controller = "Account", action = "Register" });
+        RouteTable.Routes.Maps("GET", "~/v1/logon", new { controller = "Account", action = "LogOn" });
+        RouteTable.Routes.Maps("GET", "~/v1/about", new { controller = "Home", action = "About" });
+    }
+
+    [Test]
+    public void Verify()
+    {
+        RouteTable.Routes.Maps("GET", "~/v1/verify", new { controller = "Account", action = "Verify" });
+    }
+
+    [Test]
+    public void Reset()
+    {
+        RouteTable.Routes.Maps("GET", "~/v1/reset", new { controller = "Welcome", action = "Reset" });
+    }
+
+    [Test]
+    public void ElmahRoute()
+    {
+        RouteTable.Routes.Maps("GET", "~/v1/admin/elmah", new { controller = "Elmah", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/v1/admin/elmah/detail", new { controller = "Elmah", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/v1/admin/elmah/stylesheet", new { controller = "Elmah", action = "Index" });
+    }
+
+    [Test]
+    public void RedirectRoutes()
+    {
+        RouteTable.Routes.Maps("GET", "~/Home/Player", new { controller = "Redirect", action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/register", new { controller = "Redirect", action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/Account/Register", new { controller = "Redirect", action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/Roster/2012", new { controller = "Redirect", action = "RedirectNewView", season = 2012, turn = (int?)null });
+        RouteTable.Routes.Maps("GET", "~/Roster/2012/12", new { controller = "Redirect", action = "RedirectNewView", season = 2012, turn = (int?)12 });
+        RouteTable.Routes.Maps("GET", "~/MatchResultAdmin/RegisterSerie", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/App/LogOn2", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/admin/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/old-site/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/tmp/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/dev/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/demo/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/backup/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/home/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/site/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/main/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/blog/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/old/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/test/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/wordpress/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/new/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/wp/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/simpla/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/admin/content/sitetree/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/manager/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/web/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/cms/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/old-wp/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/admins/", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/adminpanel", new { controller = "Redirect", Action = "Redirect" });
+        RouteTable.Routes.Maps("GET", "~/login", new { controller = "Redirect", Action = "Redirect" });
+    }
+
+    [Test]
+    public void HackerRoutes()
+    {
+        RouteTable.Routes.Maps("GET", "~/apps/phpalbum/main.php", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/apps/phpalbum/main.php?cmd=setquality&var1=1%27.passthru%28%27id%27%29.%27;", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/apps/phpAlbum/main.php", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/apps/phpAlbum/main.php?cmd=setquality&var1=1%27.passthru%28%27id%27%29.%27;", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/awstatstotals.php", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/awstatstotals.php?sort=%7b%24%7bpassthru%28chr(105)%2echr(100)%29%7d%7d%7b%24%7bexit%28%29%7d%7d", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/awstats/awstatstotals.php", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/awstats/awstatstotals.php?sort=%7b%24%7bpassthru%28chr(105)%2echr(100)%29%7d%7d%7b%24%7bexit%28%29%7d%7d", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/awstats/awstats.pl", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/awstats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/awstatstotals/awstatstotals.php", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/awstatstotals/awstatstotals.php?sort=%7b%24%7bpassthru%28chr(105)%2echr(100)%29%7d%7d%7b%24%7bexit%28%29%7d%7d", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/catalog", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/cpanel", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/cgi-bin/awstats.pl", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/cgi-bin/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/cgi-bin/awstats/awstats.pl", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/cgi-bin/awstats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/cgi-bin/stats/awstats.pl", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/cgi-bin/stats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/cgi/awstats/awstats.pl", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/cgi/awstats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/index.php", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/index.php?option=com_simpledownload&controller=../../../../../../../../../../../../../../../proc/self/environ%00", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/main.php", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/main.php?cmd=setquality&var1=1%27.passthru%28%27id%27%29.%27;", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/phpalbum/main.php", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/phpalbum/main.php?cmd=setquality&var1=1%27.passthru%28%27id%27%29.%27;", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/phpAlbum/main.php", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/phpAlbum/main.php?cmd=setquality&var1=1%27.passthru%28%27id%27%29.%27;", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/phpmyadmin", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/scgi-bin/awstats.pl", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/scgi-bin/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/scgi-bin/awstats/awstats.pl", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/scgi-bin/awstats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/scgi-bin/stats/awstats.pl", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/scgi-bin/stats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/scgi/awstats/awstats.pl", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/scgi/awstats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/scripts/awstats.pl", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/scripts/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/site.php", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/site.php?a={%24{passthru%28chr%28105%29.chr%28100%29%29}}", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/stat/awstatstotals.php", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/stat/awstatstotals.php?sort=%7b%24%7bpassthru%28chr(105)%2echr(100)%29%7d%7d%7b%24%7bexit%28%29%7d%7d", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/stats/awstats.pl", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/stats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/status", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/shop", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/feeds/", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/feeds", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/feed/", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/feed", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/temp/", new { controller = "Hacker", action = "Index" });
+        RouteTable.Routes.Maps("GET", "~/console", new { controller = "Hacker", action = "Index" });
+    }
+
+    private static void RegisterArea<T>(RouteCollection routes, object? state) where T : AreaRegistration
+    {
+        AreaRegistration registration = (AreaRegistration)Activator.CreateInstance(typeof(T));
+        AreaRegistrationContext context = new(registration.AreaName, routes, state);
+        string typeNamespace = registration.GetType().Namespace;
+        if (typeNamespace != null)
         {
-            new RouteConfig(RouteTable.Routes).Configure();
-            RegisterArea<V1AreaRegistration>(RouteTable.Routes, null);
-            RegisterArea<V2AreaRegistration>(RouteTable.Routes, null);
+            context.Namespaces.Add(typeNamespace + ".*");
         }
 
-        [TearDown]
-        public void TearDown()
-        {
-            RouteTable.Routes.Clear();
-        }
-
-        [Test]
-        public void DefaultRoute()
-        {
-            RouteTable.Routes.Maps("GET", "~/", new { controller = "Roster", action = "Index" });
-        }
-
-        [Test]
-        public void V2Route()
-        {
-            RouteTable.Routes.Maps("GET", "~/", new { controller = "Roster", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/Roster/Create", new { controller = "Roster", action = "Create" });
-            RouteTable.Routes.Maps("GET", "~/Roster/Edit/roster-1", new { controller = "Roster", action = "Edit", id = "roster-1" });
-            RouteTable.Routes.Maps("GET", "~/Roster/Delete/roster-1", new { controller = "Roster", action = "Delete", id = "roster-1" });
-            RouteTable.Routes.Maps("GET", "~/RosterView/2012", new { controller = "Roster", action = "View", season = 2012, turn = (int?)null });
-            RouteTable.Routes.Maps("GET", "~/Roster/Players/roster-1", new { controller = "Roster", action = "EditPlayers", id = "roster-1" });
-        }
-
-        [Test]
-        public void SearchRoute()
-        {
-            RouteTable.Routes.Maps("GET", "~/search/teams", new { controller = "SearchTerms", action = "Teams" });
-            RouteTable.Routes.Maps("GET", "~/search/opponents", new { controller = "SearchTerms", action = "Opponents" });
-            RouteTable.Routes.Maps("GET", "~/search/locations", new { controller = "SearchTerms", action = "Locations" });
-        }
-
-        [Test]
-        public void Shortcuts()
-        {
-            RouteTable.Routes.Maps("GET", "~/v1/register", new { controller = "Account", action = "Register" });
-            RouteTable.Routes.Maps("GET", "~/v1/logon", new { controller = "Account", action = "LogOn" });
-            RouteTable.Routes.Maps("GET", "~/v1/about", new { controller = "Home", action = "About" });
-        }
-
-        [Test]
-        public void Verify()
-        {
-            RouteTable.Routes.Maps("GET", "~/v1/verify", new { controller = "Account", action = "Verify" });
-        }
-
-        [Test]
-        public void Reset()
-        {
-            RouteTable.Routes.Maps("GET", "~/v1/reset", new { controller = "Welcome", action = "Reset" });
-        }
-
-        [Test]
-        public void ElmahRoute()
-        {
-            RouteTable.Routes.Maps("GET", "~/v1/admin/elmah", new { controller = "Elmah", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/v1/admin/elmah/detail", new { controller = "Elmah", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/v1/admin/elmah/stylesheet", new { controller = "Elmah", action = "Index" });
-        }
-
-        [Test]
-        public void RedirectRoutes()
-        {
-            RouteTable.Routes.Maps("GET", "~/Home/Player", new { controller = "Redirect", action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/register", new { controller = "Redirect", action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/Account/Register", new { controller = "Redirect", action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/Roster/2012", new { controller = "Redirect", action = "RedirectNewView", season = 2012, turn = (int?)null });
-            RouteTable.Routes.Maps("GET", "~/Roster/2012/12", new { controller = "Redirect", action = "RedirectNewView", season = 2012, turn = (int?)12 });
-            RouteTable.Routes.Maps("GET", "~/MatchResultAdmin/RegisterSerie", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/App/LogOn2", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/admin/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/old-site/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/tmp/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/dev/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/demo/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/backup/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/home/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/site/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/main/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/blog/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/old/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/test/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/wordpress/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/new/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/wp/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/simpla/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/admin/content/sitetree/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/manager/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/web/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/cms/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/old-wp/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/admins/", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/adminpanel", new { controller = "Redirect", Action = "Redirect" });
-            RouteTable.Routes.Maps("GET", "~/login", new { controller = "Redirect", Action = "Redirect" });
-        }
-
-        [Test]
-        public void HackerRoutes()
-        {
-            RouteTable.Routes.Maps("GET", "~/apps/phpalbum/main.php", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/apps/phpalbum/main.php?cmd=setquality&var1=1%27.passthru%28%27id%27%29.%27;", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/apps/phpAlbum/main.php", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/apps/phpAlbum/main.php?cmd=setquality&var1=1%27.passthru%28%27id%27%29.%27;", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/awstatstotals.php", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/awstatstotals.php?sort=%7b%24%7bpassthru%28chr(105)%2echr(100)%29%7d%7d%7b%24%7bexit%28%29%7d%7d", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/awstats/awstatstotals.php", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/awstats/awstatstotals.php?sort=%7b%24%7bpassthru%28chr(105)%2echr(100)%29%7d%7d%7b%24%7bexit%28%29%7d%7d", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/awstats/awstats.pl", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/awstats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/awstatstotals/awstatstotals.php", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/awstatstotals/awstatstotals.php?sort=%7b%24%7bpassthru%28chr(105)%2echr(100)%29%7d%7d%7b%24%7bexit%28%29%7d%7d", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/catalog", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/cpanel", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/cgi-bin/awstats.pl", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/cgi-bin/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/cgi-bin/awstats/awstats.pl", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/cgi-bin/awstats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/cgi-bin/stats/awstats.pl", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/cgi-bin/stats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/cgi/awstats/awstats.pl", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/cgi/awstats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/index.php", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/index.php?option=com_simpledownload&controller=../../../../../../../../../../../../../../../proc/self/environ%00", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/main.php", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/main.php?cmd=setquality&var1=1%27.passthru%28%27id%27%29.%27;", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/phpalbum/main.php", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/phpalbum/main.php?cmd=setquality&var1=1%27.passthru%28%27id%27%29.%27;", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/phpAlbum/main.php", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/phpAlbum/main.php?cmd=setquality&var1=1%27.passthru%28%27id%27%29.%27;", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/phpmyadmin", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/scgi-bin/awstats.pl", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/scgi-bin/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/scgi-bin/awstats/awstats.pl", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/scgi-bin/awstats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/scgi-bin/stats/awstats.pl", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/scgi-bin/stats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/scgi/awstats/awstats.pl", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/scgi/awstats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/scripts/awstats.pl", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/scripts/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/site.php", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/site.php?a={%24{passthru%28chr%28105%29.chr%28100%29%29}}", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/stat/awstatstotals.php", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/stat/awstatstotals.php?sort=%7b%24%7bpassthru%28chr(105)%2echr(100)%29%7d%7d%7b%24%7bexit%28%29%7d%7d", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/stats/awstats.pl", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/stats/awstats.pl?configdir=|echo;echo%20YYYAAZ;uname;id;echo%20YYY;echo|", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/status", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/shop", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/feeds/", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/feeds", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/feed/", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/feed", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/temp/", new { controller = "Hacker", action = "Index" });
-            RouteTable.Routes.Maps("GET", "~/console", new { controller = "Hacker", action = "Index" });
-        }
-
-        private static void RegisterArea<T>(RouteCollection routes, object? state) where T : AreaRegistration
-        {
-            AreaRegistration registration = (AreaRegistration)Activator.CreateInstance(typeof(T));
-            AreaRegistrationContext context = new(registration.AreaName, routes, state);
-            string typeNamespace = registration.GetType().Namespace;
-            if (typeNamespace != null)
-            {
-                context.Namespaces.Add(typeNamespace + ".*");
-            }
-
-            registration.RegisterArea(context);
-        }
+        registration.RegisterArea(context);
     }
 }

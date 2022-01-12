@@ -1,62 +1,59 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers
+﻿using System.Web;
+using System.Web.Mvc;
+using Snittlistan.Web.Areas.V2.ViewModels;
+using Snittlistan.Web.Controllers;
+using Snittlistan.Web.Models;
+using Snittlistan.Web.Services;
+
+namespace Snittlistan.Web.Areas.V2.Controllers;
+/// <summary>
+/// User administration.
+/// </summary>
+public class UserController : AbstractController
 {
-    using System;
-    using System.Web;
-    using System.Web.Mvc;
-    using Snittlistan.Web.Areas.V2.ViewModels;
-    using Snittlistan.Web.Controllers;
-    using Snittlistan.Web.Models;
-    using Snittlistan.Web.Services;
+    private readonly IAuthenticationService authenticationService;
 
     /// <summary>
-    /// User administration.
+    /// Initializes a new instance of the UserController class.
     /// </summary>
-    public class UserController : AbstractController
+    /// <param name="authenticationService">Authentication service.</param>
+    public UserController(IAuthenticationService authenticationService)
     {
-        private readonly IAuthenticationService authenticationService;
+        this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the UserController class.
-        /// </summary>
-        /// <param name="authenticationService">Authentication service.</param>
-        public UserController(IAuthenticationService authenticationService)
+    public ActionResult SetPassword(string id, string activationKey)
+    {
+        User user = CompositionRoot.DocumentSession.Load<User>(id);
+        if (user == null)
         {
-            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+            throw new HttpException(404, "User not found");
         }
 
-        public ActionResult SetPassword(string id, string activationKey)
+        if (user.ActivationKey != activationKey)
         {
-            User user = DocumentSession.Load<User>(id);
-            if (user == null)
-            {
-                throw new HttpException(404, "User not found");
-            }
-
-            if (user.ActivationKey != activationKey)
-            {
-                throw new InvalidOperationException("Unknown activation key");
-            }
-
-            return View(new SetPasswordViewModel { ActivationKey = activationKey });
+            throw new InvalidOperationException("Unknown activation key");
         }
 
-        [HttpPost]
-        public ActionResult SetPassword(string id, SetPasswordViewModel vm)
+        return View(new SetPasswordViewModel { ActivationKey = activationKey });
+    }
+
+    [HttpPost]
+    public ActionResult SetPassword(string id, SetPasswordViewModel vm)
+    {
+        User user = CompositionRoot.DocumentSession.Load<User>(id);
+        if (user == null)
         {
-            User user = DocumentSession.Load<User>(id);
-            if (user == null)
-            {
-                throw new HttpException(404, "User not found");
-            }
-
-            if (ModelState.IsValid == false)
-            {
-                return View(vm);
-            }
-
-            user.SetPassword(vm.Password, vm.ActivationKey);
-            authenticationService.SetAuthCookie(user.Email, true);
-            return RedirectToAction("Index", "Roster");
+            throw new HttpException(404, "User not found");
         }
+
+        if (ModelState.IsValid == false)
+        {
+            return View(vm);
+        }
+
+        user.SetPassword(vm.Password, vm.ActivationKey);
+        authenticationService.SetAuthCookie(user.Email, true);
+        return RedirectToAction("Index", "Roster");
     }
 }
