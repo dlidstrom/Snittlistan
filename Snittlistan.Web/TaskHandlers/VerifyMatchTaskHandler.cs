@@ -9,7 +9,7 @@ using Snittlistan.Web.Infrastructure.Bits;
 using Snittlistan.Web.Infrastructure.Bits.Contracts;
 using Snittlistan.Web.Models;
 
-namespace Snittlistan.Web.Areas.V2.Tasks;
+namespace Snittlistan.Web.TaskHandlers;
 
 public class VerifyMatchTaskHandler : TaskHandler<VerifyMatchTask>
 {

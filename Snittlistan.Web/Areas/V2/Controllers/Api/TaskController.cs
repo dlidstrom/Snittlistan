@@ -7,11 +7,11 @@ using System.Web.Http;
 using Newtonsoft.Json;
 using NLog;
 using Snittlistan.Queue.Messages;
-using Snittlistan.Web.Areas.V2.Tasks;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Attributes;
 using Snittlistan.Web.Infrastructure.Database;
+using Snittlistan.Web.TaskHandlers;
 
 namespace Snittlistan.Web.Areas.V2.Controllers.Api;
 

@@ -4,7 +4,7 @@ using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Models;
 
-namespace Snittlistan.Web.Areas.V2.Tasks;
+namespace Snittlistan.Web.TaskHandlers;
 
 public class UserInvitedTaskHandler : TaskHandler<UserInvitedTask>
 {

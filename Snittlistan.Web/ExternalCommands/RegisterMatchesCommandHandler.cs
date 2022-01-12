@@ -2,14 +2,14 @@
 
 using Snittlistan.Queue.ExternalCommands;
 using Snittlistan.Queue.Messages;
-using Snittlistan.Web.Areas.V2.Tasks;
 
 namespace Snittlistan.Web.ExternalCommands;
 
-public class RegisterMatchesCommandHandler : CommandHandler<RegisterMatchesCommand>
+public class RegisterMatchesCommandHandler
+    : CommandHandler<RegisterMatchesCommand, RegisterMatchesTask>
 {
-    protected override Task<TaskBase> CreateMessage(RegisterMatchesCommand command)
+    protected override RegisterMatchesTask CreateMessage(RegisterMatchesCommand command)
     {
-        return Task.FromResult((TaskBase)new RegisterMatchesTaskHandler.RegisterMatchesTask());
+        return new RegisterMatchesTask();
     }
 }

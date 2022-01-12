@@ -5,7 +5,7 @@ using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Database;
 using System.Data.Entity;
 
-namespace Snittlistan.Web.Areas.V2.Tasks;
+namespace Snittlistan.Web.TaskHandlers;
 
 public class PublishExpiredTasksTaskHandler : TaskHandler<PublishExpiredTasksTask>
 {

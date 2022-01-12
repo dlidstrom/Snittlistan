@@ -4,7 +4,7 @@ using NLog;
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Infrastructure;
 
-namespace Snittlistan.Web.Areas.V2.Tasks;
+namespace Snittlistan.Web.TaskHandlers;
 
 public abstract class TaskHandler<TTask>
     : ITaskHandler<TTask>

@@ -4,7 +4,7 @@ using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Infrastructure;
 
-namespace Snittlistan.Web.Areas.V2.Tasks;
+namespace Snittlistan.Web.TaskHandlers;
 
 public class InitiateUpdateMailTaskHandler : TaskHandler<InitiateUpdateMailTask>
 {

@@ -6,7 +6,7 @@ using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Models;
 
-namespace Snittlistan.Web.Areas.V2.Tasks;
+namespace Snittlistan.Web.TaskHandlers;
 
 public class MatchRegisteredTaskHandler : TaskHandler<MatchRegisteredTask>
 {

@@ -7,7 +7,7 @@ using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Helpers;
 using Snittlistan.Web.Infrastructure;
 
-namespace Snittlistan.Web.Areas.V2.Tasks;
+namespace Snittlistan.Web.TaskHandlers;
 
 public class VerifyMatchesTaskHandler : TaskHandler<VerifyMatchesTask>
 {

@@ -3,7 +3,7 @@
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Infrastructure;
 
-namespace Snittlistan.Web.Areas.V2.Tasks;
+namespace Snittlistan.Web.TaskHandlers;
 
 public interface ITaskHandler<TTask>
     where TTask : TaskBase

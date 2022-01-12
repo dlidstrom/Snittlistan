@@ -5,10 +5,11 @@ using Snittlistan.Queue.Messages;
 
 namespace Snittlistan.Web.ExternalCommands;
 
-public class GetPlayersFromBitsCommandHandler : CommandHandler<GetPlayersFromBitsCommand>
+public class GetPlayersFromBitsCommandHandler
+    : CommandHandler<GetPlayersFromBitsCommand, GetPlayersFromBitsTask>
 {
-    protected override Task<TaskBase> CreateMessage(GetPlayersFromBitsCommand command)
+    protected override GetPlayersFromBitsTask CreateMessage(GetPlayersFromBitsCommand command)
     {
-        return Task.FromResult((TaskBase)new GetPlayersFromBitsTask());
+        return new GetPlayersFromBitsTask();
     }
 }

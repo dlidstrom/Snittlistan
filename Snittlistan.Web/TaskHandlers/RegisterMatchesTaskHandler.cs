@@ -6,9 +6,9 @@ using Snittlistan.Web.Areas.V2.Queries;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Models;
 
-namespace Snittlistan.Web.Areas.V2.Tasks;
+namespace Snittlistan.Web.TaskHandlers;
 
-public class RegisterMatchesTaskHandler : TaskHandler<RegisterMatchesTaskHandler.RegisterMatchesTask>
+public class RegisterMatchesTaskHandler : TaskHandler<RegisterMatchesTask>
 {
     public override Task Handle(MessageContext<RegisterMatchesTask> context)
     {
@@ -20,13 +20,5 @@ public class RegisterMatchesTaskHandler : TaskHandler<RegisterMatchesTaskHandler
         }
 
         return Task.CompletedTask;
-    }
-
-    public class RegisterMatchesTask : TaskBase
-    {
-        public RegisterMatchesTask()
-            : base(new(typeof(RegisterMatchesTask).FullName, string.Empty))
-        {
-        }
     }
 }

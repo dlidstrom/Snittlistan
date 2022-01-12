@@ -8,14 +8,15 @@ using Snittlistan.Web.Infrastructure.Database;
 
 namespace Snittlistan.Web.ExternalCommands;
 
-public abstract class CommandHandler<TCommand> : ICommandHandler<TCommand>
+public abstract class CommandHandler<TCommand, TMessage> : ICommandHandler<TCommand>
     where TCommand : CommandBase
+    where TMessage : TaskBase
 {
     public Databases Databases { get; set; } = null!;
 
     public async Task Handle(TCommand command)
     {
-        TaskBase task = await CreateMessage(command);
+        TaskBase task = CreateMessage(command);
         IQueryable<Tenant> query =
             from tenant in Databases.Snittlistan.Tenants
             select tenant;
@@ -27,5 +28,5 @@ public abstract class CommandHandler<TCommand> : ICommandHandler<TCommand>
         }
     }
 
-    protected abstract Task<TaskBase> CreateMessage(TCommand command);
+    protected abstract TMessage CreateMessage(TCommand command);
 }

@@ -5,10 +5,11 @@ using Snittlistan.Queue.Messages;
 
 namespace Snittlistan.Web.ExternalCommands;
 
-public class PublishExpiredTasksCommandHandler : CommandHandler<PublishExpiredTasksCommand>
+public class PublishExpiredTasksCommandHandler
+    : CommandHandler<PublishExpiredTasksCommand, PublishExpiredTasksTask>
 {
-    protected override Task<TaskBase> CreateMessage(PublishExpiredTasksCommand command)
+    protected override PublishExpiredTasksTask CreateMessage(PublishExpiredTasksCommand command)
     {
-        return Task.FromResult((TaskBase)new PublishExpiredTasksTask());
+        return new PublishExpiredTasksTask();
     }
 }

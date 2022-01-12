@@ -5,10 +5,11 @@ using Snittlistan.Queue.Messages;
 
 namespace Snittlistan.Web.ExternalCommands;
 
-public class VerifyMatchesCommandHandler : CommandHandler<VerifyMatchesCommand>
+public class VerifyMatchesCommandHandler
+    : CommandHandler<VerifyMatchesCommand, VerifyMatchesTask>
 {
-    protected override Task<TaskBase> CreateMessage(VerifyMatchesCommand command)
+    protected override VerifyMatchesTask CreateMessage(VerifyMatchesCommand command)
     {
-        return Task.FromResult((TaskBase)new VerifyMatchesTask(command.Force));
+        return new VerifyMatchesTask(command.Force);
     }
 }

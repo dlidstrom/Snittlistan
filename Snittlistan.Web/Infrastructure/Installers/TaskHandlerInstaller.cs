@@ -3,7 +3,7 @@
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using Snittlistan.Web.Areas.V2.Tasks;
+using Snittlistan.Web.TaskHandlers;
 
 namespace Snittlistan.Web.Infrastructure.Installers;
 

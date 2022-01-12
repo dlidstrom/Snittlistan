@@ -5,7 +5,7 @@ using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Indexes;
 using Snittlistan.Web.Models;
 
-namespace Snittlistan.Web.Areas.V2.Tasks;
+namespace Snittlistan.Web.TaskHandlers;
 
 public class InitializeIndexesTaskHandler : TaskHandler<InitializeIndexesTask>
 {
