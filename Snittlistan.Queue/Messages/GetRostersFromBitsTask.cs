@@ -1,9 +1,11 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Queue.Messages
+namespace Snittlistan.Queue.Messages;
+
+public class GetRostersFromBitsTask : TaskBase
 {
-    public class GetRostersFromBitsTask : ITask
+    public GetRostersFromBitsTask()
+        : base(new(typeof(GetRostersFromBitsTask).FullName, string.Empty))
     {
-        public BusinessKey BusinessKey => new(GetType(), string.Empty);
     }
 }

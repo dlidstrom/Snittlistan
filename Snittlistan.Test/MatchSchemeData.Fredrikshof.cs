@@ -1,15 +1,13 @@
-﻿namespace Snittlistan.Test
-{
-    using System;
-    using NUnit.Framework;
-    using Snittlistan.Web.Areas.V2.Domain;
+﻿using NUnit.Framework;
+using Snittlistan.Web.Areas.V2.Domain;
 
-    public partial class MatchSchemeData
-    {
-        private static readonly TestCaseData Fif = new TestCaseData(
-            "Snittlistan.Test.BitsResult.FredrikshofIF-matchScheme.html",
-            new[]
-            {
+namespace Snittlistan.Test;
+public partial class MatchSchemeData
+{
+    private static readonly TestCaseData Fif = new TestCaseData(
+        "Snittlistan.Test.BitsResult.FredrikshofIF-matchScheme.html",
+        new[]
+        {
                 new ParseMatchSchemeResult.MatchItem
                 {
                     Turn = 1,
@@ -1334,6 +1332,5 @@
                     Location = "Stockholm - Åkeshov",
                     LocationUrl = "http://bits.swebowl.se/Matches/HallSchemeAdminList.aspx?HallId=786&SeasonId=0&RoundId=22"
                 }
-            });
-    }
+        });
 }

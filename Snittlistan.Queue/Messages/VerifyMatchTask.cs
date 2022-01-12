@@ -1,27 +1,25 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Queue.Messages
+namespace Snittlistan.Queue.Messages;
+
+public class VerifyMatchTask : TaskBase
 {
-    public class VerifyMatchTask : ITask
+    public VerifyMatchTask(int bitsMatchId, string rosterId, bool force)
+        : base(new(typeof(VerifyMatchTask).FullName, $"{rosterId}/{bitsMatchId}"))
     {
-        public VerifyMatchTask(int bitsMatchId, string rosterId, bool force)
-        {
-            BitsMatchId = bitsMatchId;
-            RosterId = rosterId;
-            Force = force;
-        }
+        BitsMatchId = bitsMatchId;
+        RosterId = rosterId;
+        Force = force;
+    }
 
-        public int BitsMatchId { get; }
+    public int BitsMatchId { get; }
 
-        public string RosterId { get; }
+    public string RosterId { get; }
 
-        public bool Force { get; }
+    public bool Force { get; }
 
-        public BusinessKey BusinessKey => new(GetType(), $"{RosterId}/{BitsMatchId}");
-
-        public override string ToString()
-        {
-            return $"VerifyMatch RosterId={RosterId} BitsMatchid={BitsMatchId} Force={Force}";
-        }
+    public override string ToString()
+    {
+        return $"VerifyMatch RosterId={RosterId} BitsMatchid={BitsMatchId} Force={Force}";
     }
 }
