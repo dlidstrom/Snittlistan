@@ -58,8 +58,8 @@ public class TaskController : AbstractApiController
         Guid correlationId = request.CorrelationId ?? default;
         Guid causationId = request.MessageId ?? default;
         TaskPublisher taskPublisher = new(tenant, CompositionRoot.Databases, correlationId, causationId);
-        IPublishContext publishContext = (IPublishContext)Activator.CreateInstance(
-            typeof(MessageContext<>).MakeGenericType(taskObject.GetType()),
+        IHandlerContext publishContext = (IHandlerContext)Activator.CreateInstance(
+            typeof(HandlerContext<>).MakeGenericType(taskObject.GetType()),
             CompositionRoot,
             taskObject,
             tenant,

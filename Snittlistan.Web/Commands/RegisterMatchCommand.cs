@@ -4,22 +4,23 @@ using Raven.Client.Linq;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Areas.V2.Indexes;
+using Snittlistan.Web.Infrastructure;
 
 namespace Snittlistan.Web.Commands;
 
 public class RegisterMatchCommandHandler : CommandHandler<RegisterMatchCommandHandler.Command>
 {
-    public override Task Handle(CommandContext<Command> context)
+    public override Task Handle(HandlerContext<Command> context)
     {
-        Roster roster = CompositionRoot.DocumentSession.Load<Roster>(context.Command.RosterId);
+        Roster roster = CompositionRoot.DocumentSession.Load<Roster>(context.Payload.RosterId);
         MatchResult matchResult = new(
             roster,
-            context.Command.Result.TeamScore,
-            context.Command.Result.OpponentScore,
+            context.Payload.Result.TeamScore,
+            context.Payload.Result.OpponentScore,
             roster.BitsMatchId);
         Player[] players = CompositionRoot.DocumentSession.Load<Player>(roster.Players);
 
-        MatchSerie[] matchSeries = context.Command.Result.CreateMatchSeries();
+        MatchSerie[] matchSeries = context.Payload.Result.CreateMatchSeries();
 
         Dictionary<string, ResultForPlayerIndex.Result> resultsForPlayer =
             CompositionRoot.DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
@@ -29,7 +30,7 @@ public class RegisterMatchCommandHandler : CommandHandler<RegisterMatchCommandHa
         matchResult.RegisterSeries(
             task => context.PublishMessage(task),
             matchSeries,
-            context.Command.Result.OpponentSeries,
+            context.Payload.Result.OpponentSeries,
             players,
             resultsForPlayer);
         CompositionRoot.EventStoreSession.Store(matchResult);

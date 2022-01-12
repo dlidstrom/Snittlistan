@@ -8,9 +8,9 @@ namespace Snittlistan.Web.TaskHandlers;
 
 public class InitiateUpdateMailTaskHandler : TaskHandler<InitiateUpdateMailTask>
 {
-    public override Task Handle(MessageContext<InitiateUpdateMailTask> context)
+    public override Task Handle(HandlerContext<InitiateUpdateMailTask> context)
     {
-        Roster roster = CompositionRoot.DocumentSession.Load<Roster>(context.Task.RosterId);
+        Roster roster = CompositionRoot.DocumentSession.Load<Roster>(context.Payload.RosterId);
         AuditLogEntry auditLogEntry = roster.AuditLogEntries.Single(x => x.CorrelationId == context.CorrelationId);
         RosterState before = (RosterState)auditLogEntry.Before;
         RosterState after = (RosterState)auditLogEntry.After;
@@ -18,7 +18,7 @@ public class InitiateUpdateMailTaskHandler : TaskHandler<InitiateUpdateMailTask>
         foreach (string playerId in new HashSet<string>(affectedPlayers))
         {
             SendUpdateMailTask message = new(
-                context.Task.RosterId,
+                context.Payload.RosterId,
                 playerId);
             context.PublishMessage(message);
         }

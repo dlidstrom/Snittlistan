@@ -11,7 +11,7 @@ namespace Snittlistan.Web.TaskHandlers;
 
 public class GetPlayersFromBitsTaskHandler : TaskHandler<GetPlayersFromBitsTask>
 {
-    public override async Task Handle(MessageContext<GetPlayersFromBitsTask> task)
+    public override async Task Handle(HandlerContext<GetPlayersFromBitsTask> task)
     {
         WebsiteConfig websiteConfig = CompositionRoot.DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
         PlayerResult playersResult = await CompositionRoot.BitsClient.GetPlayers(websiteConfig.ClubId);

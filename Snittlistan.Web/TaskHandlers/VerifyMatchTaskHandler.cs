@@ -13,10 +13,10 @@ namespace Snittlistan.Web.TaskHandlers;
 
 public class VerifyMatchTaskHandler : TaskHandler<VerifyMatchTask>
 {
-    public override async Task Handle(MessageContext<VerifyMatchTask> context)
+    public override async Task Handle(HandlerContext<VerifyMatchTask> context)
     {
-        Roster roster = CompositionRoot.DocumentSession.Load<Roster>(context.Task.RosterId);
-        if (roster.IsVerified && context.Task.Force == false)
+        Roster roster = CompositionRoot.DocumentSession.Load<Roster>(context.Payload.RosterId);
+        if (roster.IsVerified && context.Payload.Force == false)
         {
             return;
         }

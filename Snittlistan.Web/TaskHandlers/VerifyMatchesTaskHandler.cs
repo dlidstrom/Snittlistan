@@ -11,7 +11,7 @@ namespace Snittlistan.Web.TaskHandlers;
 
 public class VerifyMatchesTaskHandler : TaskHandler<VerifyMatchesTask>
 {
-    public override Task Handle(MessageContext<VerifyMatchesTask> context)
+    public override Task Handle(HandlerContext<VerifyMatchesTask> context)
     {
         int season = CompositionRoot.DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
         Roster[] rosters = CompositionRoot.DocumentSession.Query<Roster, RosterSearchTerms>()
@@ -31,7 +31,7 @@ public class VerifyMatchesTaskHandler : TaskHandler<VerifyMatchesTask>
                 continue;
             }
 
-            if (roster.IsVerified && context.Task.Force == false)
+            if (roster.IsVerified && context.Payload.Force == false)
             {
                 Log.Info($"Skipping {roster.BitsMatchId} because it is already verified.");
             }
@@ -40,7 +40,7 @@ public class VerifyMatchesTaskHandler : TaskHandler<VerifyMatchesTask>
                 VerifyMatchTask verifyTask = new(
                     roster.BitsMatchId,
                     roster.Id!,
-                    context.Task.Force);
+                    context.Payload.Force);
                 toVerify.Add(verifyTask);
             }
         }

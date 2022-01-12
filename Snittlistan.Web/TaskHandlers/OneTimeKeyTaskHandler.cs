@@ -8,12 +8,12 @@ namespace Snittlistan.Web.TaskHandlers;
 
 public class OneTimeKeyTaskHandler : TaskHandler<OneTimeKeyTask>
 {
-    public override async Task Handle(MessageContext<OneTimeKeyTask> context)
+    public override async Task Handle(HandlerContext<OneTimeKeyTask> context)
     {
         OneTimePasswordEmail email = new(
-            context.Task.Email,
-            context.Task.Subject,
-            context.Task.OneTimePassword);
+            context.Payload.Email,
+            context.Payload.Subject,
+            context.Payload.OneTimePassword);
         await CompositionRoot.EmailService.SendAsync(email);
     }
 }

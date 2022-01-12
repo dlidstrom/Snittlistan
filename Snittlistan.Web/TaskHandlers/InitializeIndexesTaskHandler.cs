@@ -9,13 +9,13 @@ namespace Snittlistan.Web.TaskHandlers;
 
 public class InitializeIndexesTaskHandler : TaskHandler<InitializeIndexesTask>
 {
-    public override Task Handle(MessageContext<InitializeIndexesTask> context)
+    public override Task Handle(HandlerContext<InitializeIndexesTask> context)
     {
         IndexCreator.CreateIndexes(CompositionRoot.DocumentStore);
         User admin = CompositionRoot.DocumentSession.Load<User>(User.AdminId);
         if (admin == null)
         {
-            admin = new("", "", context.Task.Email, context.Task.Password)
+            admin = new("", "", context.Payload.Email, context.Payload.Password)
             {
                 Id = User.AdminId
             };
@@ -25,8 +25,8 @@ public class InitializeIndexesTaskHandler : TaskHandler<InitializeIndexesTask>
         }
         else
         {
-            admin.SetEmail(context.Task.Email);
-            admin.SetPassword(context.Task.Password);
+            admin.SetEmail(context.Payload.Email);
+            admin.SetPassword(context.Payload.Password);
             admin.Activate();
         }
 

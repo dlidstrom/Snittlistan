@@ -1,31 +1,29 @@
 ﻿#nullable enable
 
-using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Commands;
 using Snittlistan.Web.Infrastructure.Database;
 
 namespace Snittlistan.Web.Infrastructure;
 
-public class MessageContext<TTask> : IPublishContext
-    where TTask : TaskBase
+public class HandlerContext<TPayload> : IHandlerContext
 {
     private readonly CompositionRoot compositionRoot;
 
-    public MessageContext(
+    public HandlerContext(
         CompositionRoot compositionRoot,
-        TTask task,
+        TPayload payload,
         Tenant tenant,
         Guid correlationId,
         Guid causationId)
     {
         this.compositionRoot = compositionRoot;
-        Task = task;
+        Payload = payload;
         Tenant = tenant;
         CorrelationId = correlationId;
         CausationId = causationId;
     }
 
-    public TTask Task { get; }
+    public TPayload Payload { get; }
 
     public Tenant Tenant { get; }
 
@@ -38,7 +36,11 @@ public class MessageContext<TTask> : IPublishContext
     public async Task ExecuteCommand(
         CommandBase command)
     {
-        CommandExecutor commandExecutor = new(compositionRoot, CausationId, "system");
+        CommandExecutor commandExecutor = new(
+            compositionRoot,
+            CorrelationId,
+            CausationId,
+            "system");
         await commandExecutor.Execute(command);
     }
 }

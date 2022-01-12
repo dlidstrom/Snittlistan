@@ -9,5 +9,5 @@ public abstract class CommandHandler<TCommand> : ICommandHandler<TCommand>
 {
     public CompositionRoot CompositionRoot { get; set; } = null!;
 
-    public abstract Task Handle(CommandContext<TCommand> context);
+    public abstract Task Handle(HandlerContext<TCommand> context);
 }

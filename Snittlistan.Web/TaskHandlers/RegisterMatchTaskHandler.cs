@@ -13,7 +13,7 @@ namespace Snittlistan.Web.TaskHandlers;
 
 public class RegisterMatchTaskHandler : TaskHandler<RegisterMatchTask>
 {
-    public override async Task Handle(MessageContext<RegisterMatchTask> context)
+    public override async Task Handle(HandlerContext<RegisterMatchTask> context)
     {
         WebsiteConfig websiteConfig = CompositionRoot.DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
         Player[] players =
@@ -21,7 +21,7 @@ public class RegisterMatchTaskHandler : TaskHandler<RegisterMatchTask>
                 .ToArray()
                 .Where(x => x.PlayerItem?.LicNbr != null)
                 .ToArray();
-        Roster pendingMatch = CompositionRoot.DocumentSession.Load<Roster>(context.Task.RosterId);
+        Roster pendingMatch = CompositionRoot.DocumentSession.Load<Roster>(context.Payload.RosterId);
         try
         {
             BitsParser parser = new(players);

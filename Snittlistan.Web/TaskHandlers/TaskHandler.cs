@@ -14,7 +14,7 @@ public abstract class TaskHandler<TTask>
 
     public CompositionRoot CompositionRoot { get; set; } = null!;
 
-    public abstract Task Handle(MessageContext<TTask> context);
+    public abstract Task Handle(HandlerContext<TTask> context);
 
     protected TResult ExecuteQuery<TResult>(IQuery<TResult> query)
     {

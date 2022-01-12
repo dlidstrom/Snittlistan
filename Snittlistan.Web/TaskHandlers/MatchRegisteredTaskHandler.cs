@@ -10,9 +10,9 @@ namespace Snittlistan.Web.TaskHandlers;
 
 public class MatchRegisteredTaskHandler : TaskHandler<MatchRegisteredTask>
 {
-    public override async Task Handle(MessageContext<MatchRegisteredTask> context)
+    public override async Task Handle(HandlerContext<MatchRegisteredTask> context)
     {
-        Roster roster = CompositionRoot.DocumentSession.Load<Roster>(context.Task.RosterId);
+        Roster roster = CompositionRoot.DocumentSession.Load<Roster>(context.Payload.RosterId);
         if (roster.IsFourPlayer)
         {
             return;
@@ -25,8 +25,8 @@ public class MatchRegisteredTaskHandler : TaskHandler<MatchRegisteredTask>
         MatchRegisteredEmail email = new(
             roster.Team,
             roster.Opponent!,
-            context.Task.Score,
-            context.Task.OpponentScore,
+            context.Payload.Score,
+            context.Payload.OpponentScore,
             resultSeriesReadModel,
             resultHeaderReadModel);
         await CompositionRoot.EmailService.SendAsync(email);

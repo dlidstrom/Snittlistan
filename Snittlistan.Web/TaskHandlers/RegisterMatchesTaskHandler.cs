@@ -10,7 +10,7 @@ namespace Snittlistan.Web.TaskHandlers;
 
 public class RegisterMatchesTaskHandler : TaskHandler<RegisterMatchesTask>
 {
-    public override Task Handle(MessageContext<RegisterMatchesTask> context)
+    public override Task Handle(HandlerContext<RegisterMatchesTask> context)
     {
         WebsiteConfig websiteConfig = CompositionRoot.DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
         Roster[] pendingMatches = ExecuteQuery(new GetPendingMatchesQuery(websiteConfig.SeasonId));

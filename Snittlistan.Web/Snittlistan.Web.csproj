@@ -135,7 +135,6 @@
     <Compile Include="TaskHandlers\PublishExpiredTasksTaskHandler.cs" />
     <Compile Include="TaskHandlers\TaskHandler.cs" />
     <Compile Include="Commands\CommandBase.cs" />
-    <Compile Include="Commands\CommandContext.cs" />
     <Compile Include="Commands\CommandExecutor.cs" />
     <Compile Include="Commands\CommandHandler.cs" />
     <Compile Include="Commands\ICommandHandler.cs" />
@@ -311,7 +310,7 @@
     <Compile Include="Infrastructure\Attributes\UnhandledExceptionFilter.cs" />
     <Compile Include="Infrastructure\BaseViewPage.cs" />
     <Compile Include="Infrastructure\Bits\BitsClient.cs" />
-    <Compile Include="Infrastructure\IPublishContext.cs" />
+    <Compile Include="Infrastructure\IHandlerContext.cs" />
     <Compile Include="Infrastructure\NLogLoggingProvider.cs" />
     <Compile Include="Infrastructure\CurrentHttpContext.cs" />
     <Compile Include="Infrastructure\Installers\CommandHandlerInstaller.cs" />
@@ -363,7 +362,7 @@
     <Compile Include="Infrastructure\IoC\WindsorHttpDependencyResolver.cs" />
     <Compile Include="Infrastructure\HttpNotFoundAwareControllerActionSelector.cs" />
     <Compile Include="Infrastructure\IQuery.cs" />
-    <Compile Include="Infrastructure\MessageContext.cs" />
+    <Compile Include="Infrastructure\HandlerContext.cs" />
     <Compile Include="Infrastructure\NLogLogger.cs" />
     <Compile Include="Infrastructure\OutlookAgentMessageHandler.cs" />
     <Compile Include="Infrastructure\RateHandler.cs" />

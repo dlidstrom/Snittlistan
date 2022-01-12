@@ -8,12 +8,12 @@ namespace Snittlistan.Web.TaskHandlers;
 
 public class NewUserCreatedTaskHandler : TaskHandler<NewUserCreatedTask>
 {
-    public override async Task Handle(MessageContext<NewUserCreatedTask> context)
+    public override async Task Handle(HandlerContext<NewUserCreatedTask> context)
     {
-        string recipient = context.Task.Email;
+        string recipient = context.Payload.Email;
         const string Subject = "Välkommen till Snittlistan!";
-        string activationKey = context.Task.ActivationKey;
-        string id = context.Task.UserId;
+        string activationKey = context.Payload.ActivationKey;
+        string id = context.Payload.UserId;
 
         UserRegisteredEmail email = new(
             recipient,

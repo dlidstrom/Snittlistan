@@ -9,7 +9,7 @@ namespace Snittlistan.Web.TaskHandlers;
 
 public class PublishExpiredTasksTaskHandler : TaskHandler<PublishExpiredTasksTask>
 {
-    public override async Task Handle(MessageContext<PublishExpiredTasksTask> context)
+    public override async Task Handle(HandlerContext<PublishExpiredTasksTask> context)
     {
         DateTime now = DateTime.Now;
         IQueryable<DelayedTask> query =

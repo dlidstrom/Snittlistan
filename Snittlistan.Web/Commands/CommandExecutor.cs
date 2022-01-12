@@ -9,12 +9,18 @@ namespace Snittlistan.Web.Commands;
 public class CommandExecutor
 {
     private readonly CompositionRoot compositionRoot;
+    private readonly Guid correlationId;
     private readonly Guid? causationId;
     private readonly string createdBy;
 
-    public CommandExecutor(CompositionRoot compositionRoot, Guid? causationId, string createdBy)
+    public CommandExecutor(
+        CompositionRoot compositionRoot,
+        Guid correlationId,
+        Guid? causationId,
+        string createdBy)
     {
         this.compositionRoot = compositionRoot;
+        this.correlationId = correlationId;
         this.causationId = causationId;
         this.createdBy = createdBy;
     }
@@ -25,10 +31,13 @@ public class CommandExecutor
         MethodInfo handleMethod = handlerType.GetMethod(nameof(ICommandHandler<CommandBase>.Handle));
         object handler = compositionRoot.Kernel.Resolve(handlerType);
         Tenant tenant = await compositionRoot.GetCurrentTenant();
-        Guid correlationId = compositionRoot.CorrelationId;
-        TaskPublisher taskPublisher = new(tenant, compositionRoot.Databases, correlationId, causationId);
-        IPublishContext publishContext = (IPublishContext)Activator.CreateInstance(
-            typeof(CommandContext<>).MakeGenericType(command.GetType()),
+        TaskPublisher taskPublisher = new(
+            tenant,
+            compositionRoot.Databases,
+            correlationId,
+            causationId);
+        IHandlerContext publishContext = (IHandlerContext)Activator.CreateInstance(
+            typeof(HandlerContext<>).MakeGenericType(command.GetType()),
             command,
             tenant,
             correlationId,

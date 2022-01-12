@@ -82,6 +82,10 @@ public abstract class AbstractController : Controller
 
     private CommandExecutor CreateCommandExecutor()
     {
-        return new CommandExecutor(CompositionRoot, null, User.CustomIdentity.Name);
+        return new CommandExecutor(
+            CompositionRoot,
+            CompositionRoot.CorrelationId,
+            null,
+            User.CustomIdentity.Name);
     }
 }
