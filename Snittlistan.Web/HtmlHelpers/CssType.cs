@@ -1,10 +1,9 @@
-﻿namespace Snittlistan.Web.HtmlHelpers
+﻿namespace Snittlistan.Web.HtmlHelpers;
+
+public enum CssType
 {
-    public enum CssType
-    {
-        /// <summary>
-        /// Blitzer jQuery-UI theme.
-        /// </summary>
-        Blitzer
-    }
+    /// <summary>
+    /// Blitzer jQuery-UI theme.
+    /// </summary>
+    Blitzer
 }

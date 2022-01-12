@@ -1,38 +1,37 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Web.Areas.V2.Controllers
+using System.Web;
+using System.Web.Mvc;
+using Snittlistan.Web.Areas.V2.Domain;
+using Snittlistan.Web.Areas.V2.ViewModels;
+using Snittlistan.Web.Controllers;
+
+namespace Snittlistan.Web.Areas.V2.Controllers;
+
+public class ActivityDetailsController : AbstractController
 {
-    using System.Web;
-    using System.Web.Mvc;
-    using Domain;
-    using ViewModels;
-    using Web.Controllers;
-
-    public class ActivityDetailsController : AbstractController
+    public ActionResult Index(string id)
     {
-        public ActionResult Index(string id)
+        Activity activity = CompositionRoot.DocumentSession.Load<Activity>(id);
+        if (activity == null)
         {
-            Activity activity = DocumentSession.Load<Activity>(id);
-            if (activity == null)
-            {
-                throw new HttpException(404, "Not found");
-            }
-
-            ViewData["showComments"] = true;
-            Player? player = null;
-            if (activity.AuthorId != null)
-            {
-                player = DocumentSession.Load<Player>(activity.AuthorId);
-            }
-
-            ActivityViewModel activityViewModel =
-                new(
-                    activity.Id!,
-                    activity.Title,
-                    activity.Date,
-                    activity.MessageHtml,
-                    player?.Name ?? string.Empty);
-            return View(activityViewModel);
+            throw new HttpException(404, "Not found");
         }
+
+        ViewData["showComments"] = true;
+        Player? player = null;
+        if (activity.AuthorId != null)
+        {
+            player = CompositionRoot.DocumentSession.Load<Player>(activity.AuthorId);
+        }
+
+        ActivityViewModel activityViewModel =
+            new(
+                activity.Id!,
+                activity.Title,
+                activity.Date,
+                activity.MessageHtml,
+                player?.Name ?? string.Empty);
+        return View(activityViewModel);
     }
 }
