@@ -1,88 +1,84 @@
-﻿#nullable enable
+﻿using System.Diagnostics;
+using EventStoreLite.Infrastructure;
 
-namespace EventStoreLite
+#nullable enable
+
+namespace EventStoreLite;
+/// <summary>
+/// Used to define aggregate roots.
+/// </summary>
+public abstract class AggregateRoot : IAggregate
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using EventStoreLite.Infrastructure;
+    private List<IDomainEvent> uncommittedChanges = new();
 
     /// <summary>
-    /// Used to define aggregate roots.
+    /// Gets the id.
     /// </summary>
-    public abstract class AggregateRoot : IAggregate
+    public string Id { get; private set; } = null!;
+
+    /// <summary>
+    /// Gets the uncommitted changes. These are events that
+    /// have been raised by the aggregate root but have not
+    /// yet been persisted to the event store.
+    /// </summary>
+    /// <returns>Uncommitted changes.</returns>
+    public IDomainEvent[] GetUncommittedChanges()
     {
-        private List<IDomainEvent> uncommittedChanges = new();
+        return uncommittedChanges.ToArray();
+    }
 
-        /// <summary>
-        /// Gets the id.
-        /// </summary>
-        public string Id { get; private set; } = null!;
+    internal void SetId(string id)
+    {
+        Id = id ?? throw new ArgumentNullException(nameof(id));
+    }
 
-        /// <summary>
-        /// Gets the uncommitted changes. These are events that
-        /// have been raised by the aggregate root but have not
-        /// yet been persisted to the event store.
-        /// </summary>
-        /// <returns>Uncommitted changes.</returns>
-        public IDomainEvent[] GetUncommittedChanges()
+    internal void LoadFromHistory(IEnumerable<IDomainEvent> history)
+    {
+        if (history == null)
         {
-            return uncommittedChanges.ToArray();
+            throw new ArgumentNullException(nameof(history));
         }
 
-        internal void SetId(string id)
+        uncommittedChanges = new List<IDomainEvent>();
+        foreach (IDomainEvent domainEvent in history)
         {
-            Id = id ?? throw new ArgumentNullException(nameof(id));
+            ApplyChange(domainEvent, false);
+        }
+    }
+
+    /// <summary>
+    /// Clears the uncommitted changes. This is done when
+    /// changes have been committed to the event store.
+    /// </summary>
+    internal void ClearUncommittedChanges()
+    {
+        uncommittedChanges = new List<IDomainEvent>();
+    }
+
+    /// <summary>
+    /// Applies the event to this aggregate root instance.
+    /// </summary>
+    /// <param name="event">Event instance.</param>
+    /// <exception cref="ArgumentNullException"></exception>
+    [DebuggerStepThrough]
+    protected void ApplyChange(Event @event)
+    {
+        if (@event == null)
+        {
+            throw new ArgumentNullException(nameof(@event));
         }
 
-        internal void LoadFromHistory(IEnumerable<IDomainEvent> history)
+        @event.SetTimeStamp(DateTimeOffset.Now);
+        ApplyChange(@event, true);
+    }
+
+    [DebuggerStepThrough]
+    private void ApplyChange(IDomainEvent @event, bool isNew)
+    {
+        this.AsDynamic()!.Apply(@event);
+        if (isNew)
         {
-            if (history == null)
-            {
-                throw new ArgumentNullException(nameof(history));
-            }
-
-            uncommittedChanges = new List<IDomainEvent>();
-            foreach (IDomainEvent domainEvent in history)
-            {
-                ApplyChange(domainEvent, false);
-            }
-        }
-
-        /// <summary>
-        /// Clears the uncommitted changes. This is done when
-        /// changes have been committed to the event store.
-        /// </summary>
-        internal void ClearUncommittedChanges()
-        {
-            uncommittedChanges = new List<IDomainEvent>();
-        }
-
-        /// <summary>
-        /// Applies the event to this aggregate root instance.
-        /// </summary>
-        /// <param name="event">Event instance.</param>
-        /// <exception cref="ArgumentNullException"></exception>
-        [DebuggerStepThrough]
-        protected void ApplyChange(Event @event)
-        {
-            if (@event == null)
-            {
-                throw new ArgumentNullException(nameof(@event));
-            }
-
-            @event.SetTimeStamp(DateTimeOffset.Now);
-            ApplyChange(@event, true);
-        }
-
-        [DebuggerStepThrough]
-        private void ApplyChange(IDomainEvent @event, bool isNew)
-        {
-            this.AsDynamic()!.Apply(@event);
-            if (isNew)
-            {
-                uncommittedChanges.Add(@event);
-            }
+            uncommittedChanges.Add(@event);
         }
     }
 }
