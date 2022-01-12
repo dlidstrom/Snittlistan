@@ -18,7 +18,6 @@ using Snittlistan.Test.ApiControllers.Infrastructure;
 using Snittlistan.Web;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Attributes;
-using Snittlistan.Web.Infrastructure.Bits;
 using Snittlistan.Web.Infrastructure.Database;
 using Snittlistan.Web.Infrastructure.Installers;
 using Snittlistan.Web.Infrastructure.IoC;
@@ -54,7 +53,6 @@ public abstract class WebApiIntegrationTest
             new EventStoreSessionInstaller(LifestyleType.Scoped));
         _ = Container.Register(Component.For<IMsmqTransaction>().Instance(Mock.Of<IMsmqTransaction>()));
         _ = Container.Register(Component.For<IEmailService>().Instance(Mock.Of<IEmailService>()));
-        _ = Container.Register(Component.For<IBitsClient>().Instance(Mock.Of<IBitsClient>()));
         HttpRequestBase requestMock =
             Mock.Of<HttpRequestBase>(x => x.ServerVariables == new NameValueCollection() { { "SERVER_NAME", "TEST" } });
         HttpContextBase httpContextMock =

@@ -170,10 +170,20 @@ public class MatchResult_MatchCommentary : WebApiIntegrationTest
                 Databases,
                 Container.Resolve<EventStore>(),
                 Container.Resolve<IEmailService>(),
-                Container.Resolve<IBitsClient>());
+                Mock.Of<IBitsClient>(MockBehavior.Strict));
             CommandExecutor commandExecutor = new(compositionRoot, null, string.Empty);
-            RegisterMatchCommandHandler handler = new();
-            CommandContext<RegisterMatchCommandHandler.Command> context = new(command, new("hostname", "favicon", "appleTouchIcon", "appleTouchIconSize", "webAppTitle", -1, "teamFullName"), Guid.NewGuid(), Guid.NewGuid());
+            RegisterMatchCommandHandler handler = new()
+            {
+                CompositionRoot = compositionRoot
+            };
+            CommandContext<RegisterMatchCommandHandler.Command> context = new(
+                command,
+                new("hostname", "favicon", "appleTouchIcon", "appleTouchIconSize", "webAppTitle", -1, "teamFullName"),
+                Guid.NewGuid(),
+                Guid.NewGuid())
+            {
+                PublishMessage = (t, d) => { }
+            };
             await handler.Handle(context);
         });
 
