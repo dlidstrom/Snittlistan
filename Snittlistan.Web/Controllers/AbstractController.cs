@@ -33,7 +33,8 @@ public abstract class AbstractController : Controller
             null);
     }
 
-    protected async Task ExecuteCommand(CommandBase command)
+    protected async Task ExecuteCommand<TCommand>(TCommand command)
+        where TCommand : class
     {
         if (command == null)
         {

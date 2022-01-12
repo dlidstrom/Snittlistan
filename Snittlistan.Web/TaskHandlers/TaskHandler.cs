@@ -1,23 +1,28 @@
 ﻿#nullable enable
 
-using NLog;
 using Snittlistan.Queue.Messages;
+using Snittlistan.Web.Commands;
 using Snittlistan.Web.Infrastructure;
 
 namespace Snittlistan.Web.TaskHandlers;
 
-public abstract class TaskHandler<TTask>
+public abstract class TaskHandler<TTask, TCommand>
     : ITaskHandler<TTask>
     where TTask : TaskBase
+    where TCommand : class
 {
-    protected static readonly Logger Log = LogManager.GetCurrentClassLogger();
-
     public CompositionRoot CompositionRoot { get; set; } = null!;
 
-    public abstract Task Handle(HandlerContext<TTask> context);
-
-    protected TResult ExecuteQuery<TResult>(IQuery<TResult> query)
+    public async Task Handle(HandlerContext<TTask> context)
     {
-        return query.Execute(CompositionRoot.DocumentSession);
+        TCommand command = CreateCommand(context.Payload);
+        CommandExecutor commandExecutor = new(
+            CompositionRoot,
+            context.CorrelationId,
+            context.CausationId,
+            "system");
+        await commandExecutor.Execute(command);
     }
+
+    protected abstract TCommand CreateCommand(TTask payload);
 }

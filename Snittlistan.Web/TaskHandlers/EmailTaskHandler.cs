@@ -1,20 +1,15 @@
 ﻿#nullable enable
 
-using System.Text;
 using Snittlistan.Queue.Messages;
-using Snittlistan.Web.Infrastructure;
-using Snittlistan.Web.Models;
+using Snittlistan.Web.Commands;
 
 namespace Snittlistan.Web.TaskHandlers;
 
-public class EmailTaskHandler : TaskHandler<EmailTask>
+public class EmailTaskHandler
+    : TaskHandler<EmailTask, SendEmailCommandHandler.Command>
 {
-    public override async Task Handle(HandlerContext<EmailTask> context)
+    protected override SendEmailCommandHandler.Command CreateCommand(EmailTask payload)
     {
-        SendEmail email = SendEmail.ToRecipient(
-            context.Payload.To,
-            Encoding.UTF8.GetString(Convert.FromBase64String(context.Payload.Subject)),
-            Encoding.UTF8.GetString(Convert.FromBase64String(context.Payload.Content)));
-        await CompositionRoot.EmailService.SendAsync(email);
+        return new(payload.To, payload.Subject, payload.Content);
     }
 }

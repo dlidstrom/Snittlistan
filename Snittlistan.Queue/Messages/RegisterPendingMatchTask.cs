@@ -2,10 +2,10 @@
 
 namespace Snittlistan.Queue.Messages;
 
-public class RegisterMatchTask : TaskBase
+public class RegisterPendingMatchTask : TaskBase
 {
-    public RegisterMatchTask(string rosterId, int bitsMatchId)
-        : base(new(typeof(RegisterMatchTask).FullName, $"{rosterId}/{bitsMatchId}"))
+    public RegisterPendingMatchTask(string rosterId, int bitsMatchId)
+        : base(new(typeof(RegisterPendingMatchTask).FullName, $"{rosterId}/{bitsMatchId}"))
     {
         RosterId = rosterId;
         BitsMatchId = bitsMatchId;

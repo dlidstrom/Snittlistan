@@ -1,35 +1,15 @@
 ﻿#nullable enable
 
 using Snittlistan.Queue.Messages;
-using Snittlistan.Web.Infrastructure;
-using Snittlistan.Web.Infrastructure.Indexes;
-using Snittlistan.Web.Models;
+using Snittlistan.Web.Commands;
 
 namespace Snittlistan.Web.TaskHandlers;
 
-public class InitializeIndexesTaskHandler : TaskHandler<InitializeIndexesTask>
+public class InitializeIndexesTaskHandler
+    : TaskHandler<InitializeIndexesTask, InitializeIndexesCommandHandler.Command>
 {
-    public override Task Handle(HandlerContext<InitializeIndexesTask> context)
+    protected override InitializeIndexesCommandHandler.Command CreateCommand(InitializeIndexesTask payload)
     {
-        IndexCreator.CreateIndexes(CompositionRoot.DocumentStore);
-        User admin = CompositionRoot.DocumentSession.Load<User>(User.AdminId);
-        if (admin == null)
-        {
-            admin = new("", "", context.Payload.Email, context.Payload.Password)
-            {
-                Id = User.AdminId
-            };
-            admin.Initialize(t => context.PublishMessage(t));
-            admin.Activate();
-            CompositionRoot.DocumentSession.Store(admin);
-        }
-        else
-        {
-            admin.SetEmail(context.Payload.Email);
-            admin.SetPassword(context.Payload.Password);
-            admin.Activate();
-        }
-
-        return Task.CompletedTask;
+        return new(payload.Email, payload.Password);
     }
 }

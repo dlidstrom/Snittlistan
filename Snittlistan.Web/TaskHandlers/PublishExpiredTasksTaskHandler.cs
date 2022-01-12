@@ -1,26 +1,15 @@
 ﻿#nullable enable
 
 using Snittlistan.Queue.Messages;
-using Snittlistan.Web.Infrastructure;
-using Snittlistan.Web.Infrastructure.Database;
-using System.Data.Entity;
+using Snittlistan.Web.Commands;
 
 namespace Snittlistan.Web.TaskHandlers;
 
-public class PublishExpiredTasksTaskHandler : TaskHandler<PublishExpiredTasksTask>
+public class PublishExpiredTasksTaskHandler
+    : TaskHandler<PublishExpiredTasksTask, PublishExpiredTasksCommandHandler.Command>
 {
-    public override async Task Handle(HandlerContext<PublishExpiredTasksTask> context)
+    protected override PublishExpiredTasksCommandHandler.Command CreateCommand(PublishExpiredTasksTask payload)
     {
-        DateTime now = DateTime.Now;
-        IQueryable<DelayedTask> query =
-            from task in CompositionRoot.Databases.Snittlistan.DelayedTasks
-            where task.PublishDate < now
-            select task;
-        DelayedTask[] expiredTasks = await query.ToArrayAsync();
-        foreach (DelayedTask task in expiredTasks)
-        {
-            context.PublishMessage(task.Task);
-            task.MarkAsPublished(now);
-        }
+        return new();
     }
 }

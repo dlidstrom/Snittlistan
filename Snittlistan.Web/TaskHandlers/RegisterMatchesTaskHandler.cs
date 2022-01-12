@@ -1,24 +1,15 @@
 ﻿#nullable enable
 
 using Snittlistan.Queue.Messages;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.Queries;
-using Snittlistan.Web.Infrastructure;
-using Snittlistan.Web.Models;
+using Snittlistan.Web.Commands;
 
 namespace Snittlistan.Web.TaskHandlers;
 
-public class RegisterMatchesTaskHandler : TaskHandler<RegisterMatchesTask>
+public class RegisterMatchesTaskHandler
+    : TaskHandler<RegisterMatchesTask, RegisterMatchesCommandHandler.Command>
 {
-    public override Task Handle(HandlerContext<RegisterMatchesTask> context)
+    protected override RegisterMatchesCommandHandler.Command CreateCommand(RegisterMatchesTask payload)
     {
-        WebsiteConfig websiteConfig = CompositionRoot.DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
-        Roster[] pendingMatches = ExecuteQuery(new GetPendingMatchesQuery(websiteConfig.SeasonId));
-        foreach (Roster pendingMatch in pendingMatches.Where(x => x.SkipRegistration == false))
-        {
-            context.PublishMessage(new RegisterMatchTask(pendingMatch.Id!, pendingMatch.BitsMatchId));
-        }
-
-        return Task.CompletedTask;
+        return new();
     }
 }

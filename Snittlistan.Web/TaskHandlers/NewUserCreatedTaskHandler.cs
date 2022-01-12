@@ -1,25 +1,15 @@
 ﻿#nullable enable
 
 using Snittlistan.Queue.Messages;
-using Snittlistan.Web.Infrastructure;
-using Snittlistan.Web.Models;
+using Snittlistan.Web.Commands;
 
 namespace Snittlistan.Web.TaskHandlers;
 
-public class NewUserCreatedTaskHandler : TaskHandler<NewUserCreatedTask>
+public class NewUserCreatedTaskHandler
+    : TaskHandler<NewUserCreatedTask, NewUserCreatedCommandHandler.Command>
 {
-    public override async Task Handle(HandlerContext<NewUserCreatedTask> context)
+    protected override NewUserCreatedCommandHandler.Command CreateCommand(NewUserCreatedTask payload)
     {
-        string recipient = context.Payload.Email;
-        const string Subject = "Välkommen till Snittlistan!";
-        string activationKey = context.Payload.ActivationKey;
-        string id = context.Payload.UserId;
-
-        UserRegisteredEmail email = new(
-            recipient,
-            Subject,
-            id,
-            activationKey);
-        await CompositionRoot.EmailService.SendAsync(email);
+        throw new NotImplementedException();
     }
 }

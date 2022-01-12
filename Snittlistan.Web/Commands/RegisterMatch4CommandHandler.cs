@@ -30,24 +30,9 @@ public class RegisterMatch4CommandHandler : CommandHandler<RegisterMatch4Command
         return Task.CompletedTask;
     }
 
-    public class Command : CommandBase
-    {
-        public Command(
-            string rosterId,
-            Parse4Result result,
-            string? summaryText = null,
-            string? summaryHtml = null)
-        {
-            RosterId = rosterId;
-            Result = result;
-            SummaryText = summaryText;
-            SummaryHtml = summaryHtml;
-        }
-
-        public string RosterId { get; }
-        public Parse4Result Result { get; }
-        public string? SummaryText { get; }
-        public string? SummaryHtml { get; }
-    }
+    public record Command(
+        string RosterId,
+        Parse4Result Result,
+        string? SummaryText,
+        string? SummaryHtml);
 }
-

@@ -38,16 +38,7 @@ public class RegisterMatchCommandHandler : CommandHandler<RegisterMatchCommandHa
         return Task.CompletedTask;
     }
 
-    public class Command : CommandBase
-    {
-        public Command(string rosterId, ParseResult result)
-        {
-            RosterId = rosterId;
-            Result = result;
-        }
-
-        public string RosterId { get; }
-
-        public ParseResult Result { get; }
-    }
+    public record Command(
+        string RosterId,
+        ParseResult Result);
 }

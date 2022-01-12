@@ -33,8 +33,8 @@ public class HandlerContext<TPayload> : IHandlerContext
 
     public PublishMessageDelegate PublishMessage { get; set; } = null!;
 
-    public async Task ExecuteCommand(
-        CommandBase command)
+    public async Task ExecuteCommand<TCommand>(TCommand command)
+        where TCommand : class
     {
         CommandExecutor commandExecutor = new(
             compositionRoot,

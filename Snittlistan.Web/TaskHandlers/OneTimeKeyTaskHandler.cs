@@ -1,19 +1,15 @@
 ﻿#nullable enable
 
 using Snittlistan.Queue.Messages;
-using Snittlistan.Web.Infrastructure;
-using Snittlistan.Web.Models;
+using Snittlistan.Web.Commands;
 
 namespace Snittlistan.Web.TaskHandlers;
 
-public class OneTimeKeyTaskHandler : TaskHandler<OneTimeKeyTask>
+public class OneTimeKeyTaskHandler
+    : TaskHandler<OneTimeKeyTask, OneTimeKeyCommandHandler.Command>
 {
-    public override async Task Handle(HandlerContext<OneTimeKeyTask> context)
+    protected override OneTimeKeyCommandHandler.Command CreateCommand(OneTimeKeyTask payload)
     {
-        OneTimePasswordEmail email = new(
-            context.Payload.Email,
-            context.Payload.Subject,
-            context.Payload.OneTimePassword);
-        await CompositionRoot.EmailService.SendAsync(email);
+        return new(payload.Subject, payload.Email, payload.OneTimePassword);
     }
 }

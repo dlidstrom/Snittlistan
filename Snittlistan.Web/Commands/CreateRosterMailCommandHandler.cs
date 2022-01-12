@@ -16,20 +16,12 @@ public class CreateRosterMailCommandHandler : CommandHandler<CreateRosterMailCom
         if (query.Any() == false)
         {
             _ = CompositionRoot.Databases.Snittlistan.RosterMails.Add(new(context.Payload.RosterId));
-            InitiateUpdateMailTask task = new(context.Payload.RosterId, 0, context.CorrelationId);
+            InitiateUpdateMailTask task = new(context.Payload.RosterId);
             context.PublishMessage(task, DateTime.Now.AddMinutes(10));
         }
 
         return Task.CompletedTask;
     }
 
-    public class Command : CommandBase
-    {
-        public string RosterId { get; }
-
-        public Command(string rosterId)
-        {
-            RosterId = rosterId;
-        }
-    }
+    public record Command(string RosterId);
 }

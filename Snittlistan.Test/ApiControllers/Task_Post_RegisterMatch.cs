@@ -18,7 +18,7 @@ namespace Snittlistan.Test.ApiControllers;
 [TestFixture]
 public class Task_Post_RegisterMatch : WebApiIntegrationTest
 {
-    private RegisterMatchTask? task;
+    private RegisterPendingMatchTask? task;
     private MessageEnvelope? envelope;
     private HttpResponseMessage? responseMessage;
     private string? rosterId;

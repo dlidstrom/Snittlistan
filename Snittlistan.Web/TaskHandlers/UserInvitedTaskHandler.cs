@@ -1,23 +1,15 @@
 ﻿#nullable enable
 
 using Snittlistan.Queue.Messages;
-using Snittlistan.Web.Infrastructure;
-using Snittlistan.Web.Models;
+using Snittlistan.Web.Commands;
 
 namespace Snittlistan.Web.TaskHandlers;
 
-public class UserInvitedTaskHandler : TaskHandler<UserInvitedTask>
+public class UserInvitedTaskHandler
+    : TaskHandler<UserInvitedTask, UserInvitedCommandHandler.Command>
 {
-    public override async Task Handle(HandlerContext<UserInvitedTask> context)
+    protected override UserInvitedCommandHandler.Command CreateCommand(UserInvitedTask payload)
     {
-        string recipient = context.Payload.Email;
-        const string Subject = "Välkommen till Snittlistan!";
-        string activationUri = context.Payload.ActivationUri;
-
-        InviteUserEmail email = new(
-            recipient,
-            Subject,
-            activationUri);
-        await CompositionRoot.EmailService.SendAsync(email);
+        return new(payload.ActivationUri, payload.Email);
     }
 }

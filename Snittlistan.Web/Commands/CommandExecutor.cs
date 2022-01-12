@@ -25,10 +25,11 @@ public class CommandExecutor
         this.createdBy = createdBy;
     }
 
-    public async Task Execute(CommandBase command)
+    public async Task Execute<TCommand>(TCommand command)
+        where TCommand : class
     {
         Type handlerType = typeof(ICommandHandler<>).MakeGenericType(command.GetType());
-        MethodInfo handleMethod = handlerType.GetMethod(nameof(ICommandHandler<CommandBase>.Handle));
+        MethodInfo handleMethod = handlerType.GetMethod(nameof(ICommandHandler<TCommand>.Handle));
         object handler = compositionRoot.Kernel.Resolve(handlerType);
         Tenant tenant = await compositionRoot.GetCurrentTenant();
         TaskPublisher taskPublisher = new(

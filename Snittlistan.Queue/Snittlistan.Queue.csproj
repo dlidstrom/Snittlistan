@@ -77,7 +77,7 @@
     <Compile Include="Config\MessagingConfigSection.cs" />
     <Compile Include="Messages\NewUserCreatedTask.cs" />
     <Compile Include="Messages\OneTimeKeyTask.cs" />
-    <Compile Include="Messages\RegisterMatchTask.cs" />
+    <Compile Include="Messages\RegisterPendingMatchTask.cs" />
     <Compile Include="Messages\InitiateUpdateMailTask.cs" />
     <Compile Include="Messages\SendUpdateMailTask.cs" />
     <Compile Include="Messages\TaskRequest.cs" />
