@@ -12,7 +12,7 @@ public class RegisterMatchesTaskHandler : TaskHandler<RegisterMatchesTaskHandler
 {
     public override Task Handle(MessageContext<RegisterMatchesTask> context)
     {
-        WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+        WebsiteConfig websiteConfig = CompositionRoot.DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
         Roster[] pendingMatches = ExecuteQuery(new GetPendingMatchesQuery(websiteConfig.SeasonId));
         foreach (Roster pendingMatch in pendingMatches.Where(x => x.SkipRegistration == false))
         {

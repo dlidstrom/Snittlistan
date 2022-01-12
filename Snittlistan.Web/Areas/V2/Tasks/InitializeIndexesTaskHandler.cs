@@ -1,17 +1,18 @@
-﻿using Snittlistan.Queue.Messages;
+﻿#nullable enable
+
+using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Indexes;
 using Snittlistan.Web.Models;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Tasks;
+
 public class InitializeIndexesTaskHandler : TaskHandler<InitializeIndexesTask>
 {
     public override Task Handle(MessageContext<InitializeIndexesTask> context)
     {
-        IndexCreator.CreateIndexes(DocumentStore);
-        User admin = DocumentSession.Load<User>(User.AdminId);
+        IndexCreator.CreateIndexes(CompositionRoot.DocumentStore);
+        User admin = CompositionRoot.DocumentSession.Load<User>(User.AdminId);
         if (admin == null)
         {
             admin = new("", "", context.Task.Email, context.Task.Password)
@@ -20,7 +21,7 @@ public class InitializeIndexesTaskHandler : TaskHandler<InitializeIndexesTask>
             };
             admin.Initialize(t => context.PublishMessage(t));
             admin.Activate();
-            DocumentSession.Store(admin);
+            CompositionRoot.DocumentSession.Store(admin);
         }
         else
         {

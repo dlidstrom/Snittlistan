@@ -1,9 +1,9 @@
 ﻿#nullable enable
 
-using Castle.MicroKernel;
 using EventStoreLite;
 using Moq;
 using NUnit.Framework;
+using Postal;
 using Snittlistan.Test.ApiControllers;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
@@ -11,6 +11,7 @@ using Snittlistan.Web.Areas.V2.Domain.Match.Events;
 using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Commands;
 using Snittlistan.Web.Infrastructure;
+using Snittlistan.Web.Infrastructure.Bits;
 
 namespace Snittlistan.Test.Domain;
 
@@ -60,7 +61,7 @@ public class MatchResult_MatchCommentary : WebApiIntegrationTest
     {
         // Act
         BitsParser bitsParser = new(Players);
-        Web.Infrastructure.Bits.BitsMatchResult content = await BitsGateway.GetBitsMatchResult(testCase.BitsMatchId);
+        BitsMatchResult content = await BitsGateway.GetBitsMatchResult(testCase.BitsMatchId);
         ParseResult? parseResult = bitsParser.Parse(content, testCase.ClubId);
 
         // Assert
@@ -105,7 +106,7 @@ public class MatchResult_MatchCommentary : WebApiIntegrationTest
         });
         BitsParser bitsParser = new(Players);
 
-        Web.Infrastructure.Bits.BitsMatchResult content = await BitsGateway.GetBitsMatchResult(testCase.BitsMatchId);
+        BitsMatchResult content = await BitsGateway.GetBitsMatchResult(testCase.BitsMatchId);
         ParseResult parseResult = bitsParser.Parse(content, testCase.ClubId)!;
         HashSet<string> rosterPlayerIds = new(
             parseResult.Series.SelectMany(x => x.Tables.SelectMany(y => new[] { y.Game1.Player, y.Game2.Player })));
@@ -167,7 +168,9 @@ public class MatchResult_MatchCommentary : WebApiIntegrationTest
                 session,
                 eventStoreSession,
                 Databases,
-                Container.Resolve<EventStore>());
+                Container.Resolve<EventStore>(),
+                Container.Resolve<IEmailService>(),
+                Container.Resolve<IBitsClient>());
             CommandExecutor commandExecutor = new(compositionRoot, null, string.Empty);
             RegisterMatchCommandHandler handler = new();
             CommandContext<RegisterMatchCommandHandler.Command> context = new(command, new("hostname", "favicon", "appleTouchIcon", "appleTouchIconSize", "webAppTitle", -1, "teamFullName"), Guid.NewGuid(), Guid.NewGuid());

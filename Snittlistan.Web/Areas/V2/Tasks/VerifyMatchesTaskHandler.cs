@@ -1,19 +1,20 @@
-﻿using Raven.Abstractions;
+﻿#nullable enable
+
+using Raven.Abstractions;
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Helpers;
 using Snittlistan.Web.Infrastructure;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Tasks;
+
 public class VerifyMatchesTaskHandler : TaskHandler<VerifyMatchesTask>
 {
     public override Task Handle(MessageContext<VerifyMatchesTask> context)
     {
-        int season = DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
-        Roster[] rosters = DocumentSession.Query<Roster, RosterSearchTerms>()
+        int season = CompositionRoot.DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+        Roster[] rosters = CompositionRoot.DocumentSession.Query<Roster, RosterSearchTerms>()
             .Where(x => x.Season == season)
             .ToArray();
         List<VerifyMatchTask> toVerify = new();

@@ -10,21 +10,22 @@ using Snittlistan.Web.Infrastructure.Bits;
 using Snittlistan.Web.Models;
 
 namespace Snittlistan.Web.Areas.V2.Tasks;
+
 public class RegisterMatchTaskHandler : TaskHandler<RegisterMatchTask>
 {
     public override async Task Handle(MessageContext<RegisterMatchTask> context)
     {
-        WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+        WebsiteConfig websiteConfig = CompositionRoot.DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
         Player[] players =
-            DocumentSession.Query<Player, PlayerSearch>()
+            CompositionRoot.DocumentSession.Query<Player, PlayerSearch>()
                 .ToArray()
                 .Where(x => x.PlayerItem?.LicNbr != null)
                 .ToArray();
-        Roster pendingMatch = DocumentSession.Load<Roster>(context.Task.RosterId);
+        Roster pendingMatch = CompositionRoot.DocumentSession.Load<Roster>(context.Task.RosterId);
         try
         {
             BitsParser parser = new(players);
-            BitsMatchResult bitsMatchResult = await BitsClient.GetBitsMatchResult(pendingMatch.BitsMatchId);
+            BitsMatchResult bitsMatchResult = await CompositionRoot.BitsClient.GetBitsMatchResult(pendingMatch.BitsMatchId);
             if (bitsMatchResult.HeadInfo.MatchFinished == false)
             {
                 Log.Info($"Match {pendingMatch.BitsMatchId} not yet finished");

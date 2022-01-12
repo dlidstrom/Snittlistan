@@ -1,4 +1,6 @@
-﻿using Raven.Client;
+﻿#nullable enable
+
+using Raven.Client;
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
@@ -6,32 +8,31 @@ using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Bits.Contracts;
 using Snittlistan.Web.Models;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Tasks;
+
 public class GetRostersFromBitsTaskHandler : TaskHandler<GetRostersFromBitsTask>
 {
     public override async Task Handle(MessageContext<GetRostersFromBitsTask> task)
     {
-        WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+        WebsiteConfig websiteConfig = CompositionRoot.DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
         Log.Info($"Importing BITS season {websiteConfig.SeasonId} for {task.Tenant.TeamFullName} (ClubId={websiteConfig.ClubId})");
         RosterSearchTerms.Result[] rosterSearchTerms =
-            DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
+            CompositionRoot.DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
                 .Where(x => x.Season == websiteConfig.SeasonId)
                 .Where(x => x.BitsMatchId != 0)
                 .ProjectFromIndexFieldsInto<RosterSearchTerms.Result>()
                 .ToArray();
-        Roster[] rosters = DocumentSession.Load<Roster>(rosterSearchTerms.Select(x => x.Id));
+        Roster[] rosters = CompositionRoot.DocumentSession.Load<Roster>(rosterSearchTerms.Select(x => x.Id));
         HashSet<int> foundMatchIds = new();
 
         // Team
         Log.Info($"Fetching teams");
-        TeamResult[] teams = await BitsClient.GetTeam(websiteConfig.ClubId, websiteConfig.SeasonId);
+        TeamResult[] teams = await CompositionRoot.BitsClient.GetTeam(websiteConfig.ClubId, websiteConfig.SeasonId);
         foreach (TeamResult teamResult in teams)
         {
             // Division
             Log.Info($"Fetching divisions");
-            DivisionResult[] divisionResults = await BitsClient.GetDivisions(teamResult.TeamId, websiteConfig.SeasonId);
+            DivisionResult[] divisionResults = await CompositionRoot.BitsClient.GetDivisions(teamResult.TeamId, websiteConfig.SeasonId);
 
             // Match
             if (divisionResults.Length != 1)
@@ -41,7 +42,7 @@ public class GetRostersFromBitsTaskHandler : TaskHandler<GetRostersFromBitsTask>
 
             DivisionResult divisionResult = divisionResults[0];
             Log.Info($"Fetching match rounds");
-            MatchRound[] matchRounds = await BitsClient.GetMatchRounds(teamResult.TeamId, divisionResult.DivisionId, websiteConfig.SeasonId);
+            MatchRound[] matchRounds = await CompositionRoot.BitsClient.GetMatchRounds(teamResult.TeamId, divisionResult.DivisionId, websiteConfig.SeasonId);
             Dictionary<int, MatchRound> dict = matchRounds.ToDictionary(x => x.MatchId);
             foreach (int key in dict.Keys)
             {
@@ -116,7 +117,7 @@ public class GetRostersFromBitsTaskHandler : TaskHandler<GetRostersFromBitsTask>
                 {
                     MatchTimeChanged = matchRound.MatchStatus == 2
                 };
-                DocumentSession.Store(roster);
+                CompositionRoot.DocumentSession.Store(roster);
             }
         }
 
@@ -128,13 +129,13 @@ public class GetRostersFromBitsTaskHandler : TaskHandler<GetRostersFromBitsTask>
             Log.Info(body);
             foreach (Roster roster in toRemove)
             {
-                DocumentSession.Delete(roster);
+                CompositionRoot.DocumentSession.Delete(roster);
             }
 
             SendEmail email = SendEmail.ToAdmin(
                 $"Removed rosters for {task.Tenant.TeamFullName}",
                 body);
-            await EmailService.SendAsync(email);
+            await CompositionRoot.EmailService.SendAsync(email);
         }
     }
 }

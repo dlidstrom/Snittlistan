@@ -1,10 +1,11 @@
-﻿using Snittlistan.Queue.Messages;
+﻿#nullable enable
+
+using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Models;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Tasks;
+
 public class NewUserCreatedTaskHandler : TaskHandler<NewUserCreatedTask>
 {
     public override async Task Handle(MessageContext<NewUserCreatedTask> context)
@@ -19,6 +20,6 @@ public class NewUserCreatedTaskHandler : TaskHandler<NewUserCreatedTask>
             Subject,
             id,
             activationKey);
-        await EmailService.SendAsync(email);
+        await CompositionRoot.EmailService.SendAsync(email);
     }
 }

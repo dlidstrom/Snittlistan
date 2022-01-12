@@ -13,7 +13,7 @@ public class PublishExpiredTasksTaskHandler : TaskHandler<PublishExpiredTasksTas
     {
         DateTime now = DateTime.Now;
         IQueryable<DelayedTask> query =
-            from task in Databases.Snittlistan.DelayedTasks
+            from task in CompositionRoot.Databases.Snittlistan.DelayedTasks
             where task.PublishDate < now
             select task;
         DelayedTask[] expiredTasks = await query.ToArrayAsync();

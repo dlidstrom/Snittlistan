@@ -2,6 +2,8 @@
 
 using Castle.MicroKernel;
 using EventStoreLite;
+using Postal;
+using Snittlistan.Web.Infrastructure.Bits;
 using Snittlistan.Web.Infrastructure.Database;
 using System.Data.Entity;
 
@@ -13,7 +15,9 @@ public record CompositionRoot(
     Raven.Client.IDocumentSession DocumentSession,
     IEventStoreSession EventStoreSession,
     Databases Databases,
-    EventStore EventStore)
+    EventStore EventStore,
+    IEmailService EmailService,
+    IBitsClient BitsClient)
 {
     public Guid CorrelationId
     {

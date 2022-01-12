@@ -1,15 +1,16 @@
-﻿using Snittlistan.Queue.Messages;
+﻿#nullable enable
+
+using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Infrastructure;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Tasks;
+
 public class InitiateUpdateMailTaskHandler : TaskHandler<InitiateUpdateMailTask>
 {
     public override Task Handle(MessageContext<InitiateUpdateMailTask> context)
     {
-        Roster roster = DocumentSession.Load<Roster>(context.Task.RosterId);
+        Roster roster = CompositionRoot.DocumentSession.Load<Roster>(context.Task.RosterId);
         AuditLogEntry auditLogEntry = roster.AuditLogEntries.Single(x => x.CorrelationId == context.CorrelationId);
         RosterState before = (RosterState)auditLogEntry.Before;
         RosterState after = (RosterState)auditLogEntry.After;

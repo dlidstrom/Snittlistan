@@ -1,10 +1,11 @@
-﻿using Snittlistan.Queue.Messages;
+﻿#nullable enable
+
+using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Models;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Tasks;
+
 public class OneTimeKeyTaskHandler : TaskHandler<OneTimeKeyTask>
 {
     public override async Task Handle(MessageContext<OneTimeKeyTask> context)
@@ -13,6 +14,6 @@ public class OneTimeKeyTaskHandler : TaskHandler<OneTimeKeyTask>
             context.Task.Email,
             context.Task.Subject,
             context.Task.OneTimePassword);
-        await EmailService.SendAsync(email);
+        await CompositionRoot.EmailService.SendAsync(email);
     }
 }

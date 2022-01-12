@@ -15,14 +15,14 @@ public class VerifyMatchTaskHandler : TaskHandler<VerifyMatchTask>
 {
     public override async Task Handle(MessageContext<VerifyMatchTask> context)
     {
-        Roster roster = DocumentSession.Load<Roster>(context.Task.RosterId);
+        Roster roster = CompositionRoot.DocumentSession.Load<Roster>(context.Task.RosterId);
         if (roster.IsVerified && context.Task.Force == false)
         {
             return;
         }
 
-        WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
-        HeadInfo result = await BitsClient.GetHeadInfo(roster.BitsMatchId);
+        WebsiteConfig websiteConfig = CompositionRoot.DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+        HeadInfo result = await CompositionRoot.BitsClient.GetHeadInfo(roster.BitsMatchId);
         ParseHeaderResult header = BitsParser.ParseHeader(result, websiteConfig.ClubId);
 
         // chance to update roster values
@@ -38,15 +38,15 @@ public class VerifyMatchTaskHandler : TaskHandler<VerifyMatchTask>
         if (roster.MatchResultId != null)
         {
             // update match result values
-            BitsMatchResult bitsMatchResult = await BitsClient.GetBitsMatchResult(roster.BitsMatchId);
-            Player[] players = DocumentSession.Query<Player, PlayerSearch>()
+            BitsMatchResult bitsMatchResult = await CompositionRoot.BitsClient.GetBitsMatchResult(roster.BitsMatchId);
+            Player[] players = CompositionRoot.DocumentSession.Query<Player, PlayerSearch>()
                 .ToArray()
                 .Where(x => x.PlayerItem?.LicNbr != null)
                 .ToArray();
             BitsParser parser = new(players);
             if (roster.IsFourPlayer)
             {
-                MatchResult4? matchResult = EventStoreSession.Load<MatchResult4>(roster.MatchResultId);
+                MatchResult4? matchResult = CompositionRoot.EventStoreSession.Load<MatchResult4>(roster.MatchResultId);
                 Parse4Result? parseResult = parser.Parse4(bitsMatchResult, websiteConfig.ClubId);
                 update.Players = parseResult!.GetPlayerIds();
                 bool isVerified = matchResult!.Update(
@@ -61,11 +61,11 @@ public class VerifyMatchTaskHandler : TaskHandler<VerifyMatchTask>
             }
             else
             {
-                MatchResult? matchResult = EventStoreSession.Load<MatchResult>(roster.MatchResultId);
+                MatchResult? matchResult = CompositionRoot.EventStoreSession.Load<MatchResult>(roster.MatchResultId);
                 ParseResult? parseResult = parser.Parse(bitsMatchResult, websiteConfig.ClubId);
                 update.Players = parseResult!.GetPlayerIds();
                 Dictionary<string, ResultForPlayerIndex.Result> resultsForPlayer =
-                    DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
+                    CompositionRoot.DocumentSession.Query<ResultForPlayerIndex.Result, ResultForPlayerIndex>()
                     .Where(x => x.Season == roster.Season)
                     .ToArray()
                     .ToDictionary(x => x.PlayerId);

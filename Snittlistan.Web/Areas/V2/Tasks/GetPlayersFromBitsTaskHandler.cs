@@ -1,20 +1,21 @@
-﻿using Snittlistan.Queue.Messages;
+﻿#nullable enable
+
+using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Bits.Contracts;
 using Snittlistan.Web.Models;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Tasks;
+
 public class GetPlayersFromBitsTaskHandler : TaskHandler<GetPlayersFromBitsTask>
 {
     public override async Task Handle(MessageContext<GetPlayersFromBitsTask> task)
     {
-        WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
-        PlayerResult playersResult = await BitsClient.GetPlayers(websiteConfig.ClubId);
-        Player[] players = DocumentSession.Query<Player, PlayerSearch>()
+        WebsiteConfig websiteConfig = CompositionRoot.DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+        PlayerResult playersResult = await CompositionRoot.BitsClient.GetPlayers(websiteConfig.ClubId);
+        Player[] players = CompositionRoot.DocumentSession.Query<Player, PlayerSearch>()
             .ToArray();
 
         // update existing players by matching on license number
@@ -59,7 +60,7 @@ public class GetPlayersFromBitsTaskHandler : TaskHandler<GetPlayersFromBitsTask>
                     PlayerItem = playerItem
                 };
                 Log.Info($"Created player {playerItem.FirstName} {playerItem.SurName}");
-                DocumentSession.Store(newPlayer);
+                CompositionRoot.DocumentSession.Store(newPlayer);
             }
         }
     }
