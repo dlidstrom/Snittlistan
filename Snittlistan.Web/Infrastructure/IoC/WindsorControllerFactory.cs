@@ -1,51 +1,48 @@
-﻿namespace Snittlistan.Web.Infrastructure.IoC
+﻿using System.Web.Mvc;
+using System.Web.Routing;
+using Castle.MicroKernel;
+using Snittlistan.Web.Areas.V1.Controllers;
+
+namespace Snittlistan.Web.Infrastructure.IoC;
+public class WindsorControllerFactory : DefaultControllerFactory
 {
-    using System;
-    using System.Web.Mvc;
-    using System.Web.Routing;
-    using Castle.MicroKernel;
-    using Snittlistan.Web.Areas.V1.Controllers;
+    private readonly IKernel kernel;
 
-    public class WindsorControllerFactory : DefaultControllerFactory
+    public WindsorControllerFactory(IKernel kernel)
     {
-        private readonly IKernel kernel;
+        this.kernel = kernel;
+    }
 
-        public WindsorControllerFactory(IKernel kernel)
+    public override void ReleaseController(IController controller)
+    {
+        kernel.ReleaseComponent(controller);
+    }
+
+    public override IController CreateController(RequestContext requestContext, string controllerName)
+    {
+        if (requestContext == null)
         {
-            this.kernel = kernel;
+            throw new ArgumentNullException(nameof(requestContext));
         }
 
-        public override void ReleaseController(IController controller)
+        if (controllerName == null)
         {
-            kernel.ReleaseComponent(controller);
+            throw new ArgumentNullException(nameof(controllerName));
         }
 
-        public override IController CreateController(RequestContext requestContext, string controllerName)
+        try
         {
-            if (requestContext == null)
+            IController controller = kernel.Resolve<IController>(controllerName + "Controller");
+            if (controller is Controller controllerWithInvoker)
             {
-                throw new ArgumentNullException(nameof(requestContext));
+                controllerWithInvoker.ActionInvoker = new ActionInvokerWrapper(controllerWithInvoker.ActionInvoker);
             }
 
-            if (controllerName == null)
-            {
-                throw new ArgumentNullException(nameof(controllerName));
-            }
-
-            try
-            {
-                IController controller = kernel.Resolve<IController>(controllerName + "Controller");
-                if (controller is Controller controllerWithInvoker)
-                {
-                    controllerWithInvoker.ActionInvoker = new ActionInvokerWrapper(controllerWithInvoker.ActionInvoker);
-                }
-
-                return controller;
-            }
-            catch (ComponentNotFoundException)
-            {
-                return new NotFoundController();
-            }
+            return controller;
+        }
+        catch (ComponentNotFoundException)
+        {
+            return new NotFoundController();
         }
     }
 }

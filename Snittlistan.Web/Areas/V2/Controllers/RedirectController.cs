@@ -1,24 +1,23 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers
+﻿
+using System.Web.Mvc;
+
+namespace Snittlistan.Web.Areas.V2.Controllers;
+public class RedirectController : Controller
 {
-    using System.Web.Mvc;
-
-    public class RedirectController : Controller
+    public ActionResult Redirect()
     {
-        public ActionResult Redirect()
-        {
-            return RedirectToAction("Index", "Roster");
-        }
+        return RedirectToAction("Index", "Roster");
+    }
 
-        public ActionResult RedirectNewView(int? season, int? turn)
-        {
-            return RedirectToAction(
-                "View",
-                "Roster",
-                new
-                {
-                    season,
-                    turn
-                });
-        }
+    public ActionResult RedirectNewView(int? season, int? turn)
+    {
+        return RedirectToAction(
+            "View",
+            "Roster",
+            new
+            {
+                season,
+                turn
+            });
     }
 }

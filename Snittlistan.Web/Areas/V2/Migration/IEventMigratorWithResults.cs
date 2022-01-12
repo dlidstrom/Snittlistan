@@ -1,9 +1,8 @@
-﻿namespace Snittlistan.Web.Areas.V2.Migration
-{
-    using EventStoreLite;
+﻿
+using EventStoreLite;
 
-    public interface IEventMigratorWithResults : IEventMigrator
-    {
-        string GetResults();
-    }
+namespace Snittlistan.Web.Areas.V2.Migration;
+public interface IEventMigratorWithResults : IEventMigrator
+{
+    string GetResults();
 }
