@@ -39,6 +39,7 @@ public class CommandExecutor
             causationId);
         IHandlerContext publishContext = (IHandlerContext)Activator.CreateInstance(
             typeof(HandlerContext<>).MakeGenericType(command.GetType()),
+            compositionRoot,
             command,
             tenant,
             correlationId,
