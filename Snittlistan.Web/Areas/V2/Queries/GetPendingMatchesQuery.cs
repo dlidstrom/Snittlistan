@@ -1,37 +1,33 @@
-﻿namespace Snittlistan.Web.Areas.V2.Queries
+﻿using Raven.Client;
+using Raven.Client.Linq;
+using Snittlistan.Web.Areas.V2.Domain;
+using Snittlistan.Web.Areas.V2.Indexes;
+using Snittlistan.Web.Infrastructure;
+
+namespace Snittlistan.Web.Areas.V2.Queries;
+public class GetPendingMatchesQuery : IQuery<Roster[]>
 {
-    using System;
-    using System.Linq;
-    using Raven.Client;
-    using Raven.Client.Linq;
-    using Snittlistan.Web.Areas.V2.Domain;
-    using Snittlistan.Web.Areas.V2.Indexes;
-    using Snittlistan.Web.Infrastructure;
+    private readonly int seasonId;
 
-    public class GetPendingMatchesQuery : IQuery<Roster[]>
+    public GetPendingMatchesQuery(int seasonId)
     {
-        private readonly int seasonId;
+        this.seasonId = seasonId;
+    }
 
-        public GetPendingMatchesQuery(int seasonId)
-        {
-            this.seasonId = seasonId;
-        }
+    public Roster[] Execute(IDocumentSession session)
+    {
+        RosterSearchTerms.Result[] results =
+            session.Query<RosterSearchTerms.Result, RosterSearchTerms>()
+                .Where(x => x.Preliminary == false)
+                .Where(x => x.Date < DateTime.Now)
+                .Where(x => x.BitsMatchId != 0)
+                .Where(x => x.MatchResultId == null)
+                .Where(x => x.Season == seasonId)
+                .OrderBy(x => x.Date)
+                .ProjectFromIndexFieldsInto<RosterSearchTerms.Result>()
+                .ToArray();
 
-        public Roster[] Execute(IDocumentSession session)
-        {
-            RosterSearchTerms.Result[] results =
-                session.Query<RosterSearchTerms.Result, RosterSearchTerms>()
-                    .Where(x => x.Preliminary == false)
-                    .Where(x => x.Date < DateTime.Now)
-                    .Where(x => x.BitsMatchId != 0)
-                    .Where(x => x.MatchResultId == null)
-                    .Where(x => x.Season == seasonId)
-                    .OrderBy(x => x.Date)
-                    .ProjectFromIndexFieldsInto<RosterSearchTerms.Result>()
-                    .ToArray();
-
-            Roster[] rosters = session.Include<Roster>(x => x.Players).Load<Roster>(results.Select(x => x.Id));
-            return rosters;
-        }
+        Roster[] rosters = session.Include<Roster>(x => x.Players).Load<Roster>(results.Select(x => x.Id));
+        return rosters;
     }
 }

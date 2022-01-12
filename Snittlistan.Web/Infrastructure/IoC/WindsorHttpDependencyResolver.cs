@@ -1,45 +1,40 @@
-﻿#nullable enable
+﻿using System.Web.Http.Dependencies;
+using Castle.MicroKernel;
 
-namespace Snittlistan.Web.Infrastructure.IoC
+#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.IoC;
+public sealed class WindsorHttpDependencyResolver : System.Web.Http.Dependencies.IDependencyResolver
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Http.Dependencies;
-    using Castle.MicroKernel;
+    private readonly IKernel container;
 
-    public sealed class WindsorHttpDependencyResolver : System.Web.Http.Dependencies.IDependencyResolver
+    public WindsorHttpDependencyResolver(IKernel container)
     {
-        private readonly IKernel container;
+        this.container = container;
+    }
 
-        public WindsorHttpDependencyResolver(IKernel container)
+    public IDependencyScope BeginScope()
+    {
+        return new WindsorDependencyScope(container);
+    }
+
+    public object? GetService(Type serviceType)
+    {
+        object? service = null;
+        if (container.HasComponent(serviceType))
         {
-            this.container = container;
+            service = container.Resolve(serviceType);
         }
 
-        public IDependencyScope BeginScope()
-        {
-            return new WindsorDependencyScope(container);
-        }
+        return service;
+    }
 
-        public object? GetService(Type serviceType)
-        {
-            object? service = null;
-            if (container.HasComponent(serviceType))
-            {
-                service = container.Resolve(serviceType);
-            }
+    public IEnumerable<object> GetServices(Type serviceType)
+    {
+        return container.ResolveAll(serviceType).Cast<object>();
+    }
 
-            return service;
-        }
-
-        public IEnumerable<object> GetServices(Type serviceType)
-        {
-            return container.ResolveAll(serviceType).Cast<object>();
-        }
-
-        public void Dispose()
-        {
-        }
+    public void Dispose()
+    {
     }
 }

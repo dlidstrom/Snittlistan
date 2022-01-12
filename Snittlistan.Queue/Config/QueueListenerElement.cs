@@ -1,77 +1,76 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Queue.Config
+using System.Configuration;
+
+namespace Snittlistan.Queue.Config;
+
+public class QueueListenerElement : ConfigurationElement
 {
-    using System.Configuration;
-
-    public class QueueListenerElement : ConfigurationElement
+    [ConfigurationProperty("name", IsRequired = true)]
+    public string Name
     {
-        [ConfigurationProperty("name", IsRequired = true)]
-        public string Name
+        get => (string)this["name"];
+
+        set => this["name"] = value;
+    }
+
+    [ConfigurationProperty("isEnabled", IsRequired = true)]
+    public bool IsEnabled
+    {
+        get => (bool)this["isEnabled"];
+
+        set => this["isEnabled"] = value;
+    }
+
+    [ConfigurationProperty("readQueue", IsRequired = true)]
+    public string ReadQueue
+    {
+        get => (string)this["readQueue"];
+
+        set => this["readQueue"] = value;
+    }
+
+    [ConfigurationProperty("errorQueue")]
+    public string ErrorQueue
+    {
+        get
         {
-            get => (string)this["name"];
+            string value = (string)this["errorQueue"];
 
-            set => this["name"] = value;
-        }
-
-        [ConfigurationProperty("isEnabled", IsRequired = true)]
-        public bool IsEnabled
-        {
-            get => (bool)this["isEnabled"];
-
-            set => this["isEnabled"] = value;
-        }
-
-        [ConfigurationProperty("readQueue", IsRequired = true)]
-        public string ReadQueue
-        {
-            get => (string)this["readQueue"];
-
-            set => this["readQueue"] = value;
-        }
-
-        [ConfigurationProperty("errorQueue")]
-        public string ErrorQueue
-        {
-            get
+            if (string.IsNullOrWhiteSpace(value))
             {
-                string value = (string)this["errorQueue"];
-
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    value = $"{ReadQueue}.error";
-                }
-
-                return value;
+                value = $"{ReadQueue}.error";
             }
 
-            set => this["errorQueue"] = value;
+            return value;
         }
 
-        [ConfigurationProperty("workerThreads", DefaultValue = 1)]
-        public int WorkerThreads
-        {
-            get => (int)this["workerThreads"];
+        set => this["errorQueue"] = value;
+    }
 
-            set => this["workerThreads"] = value;
-        }
+    [ConfigurationProperty("workerThreads", DefaultValue = 1)]
+    public int WorkerThreads
+    {
+        get => (int)this["workerThreads"];
 
-        [ConfigurationProperty("autoCreateQueues", DefaultValue = true)]
-        public bool AutoCreateQueues
-        {
-            get => (bool)this["autoCreateQueues"];
+        set => this["workerThreads"] = value;
+    }
 
-            set => this["autoCreateQueues"] = value;
-        }
+    [ConfigurationProperty("autoCreateQueues", DefaultValue = true)]
+    public bool AutoCreateQueues
+    {
+        get => (bool)this["autoCreateQueues"];
 
-        public MessageQueueProcessorSettings CreateSettings()
-        {
-            string readQueue = ReadQueue;
-            string errorQueue = ErrorQueue;
-            int workerThreads = WorkerThreads;
-            bool autoCreateQueues = AutoCreateQueues;
-            MessageQueueProcessorSettings settings = new(readQueue, errorQueue, workerThreads, autoCreateQueues);
-            return settings;
-        }
+        set => this["autoCreateQueues"] = value;
+    }
+
+    public MessageQueueProcessorSettings CreateSettings()
+    {
+        string readQueue = ReadQueue;
+        string errorQueue = ErrorQueue;
+        int workerThreads = WorkerThreads;
+        bool autoCreateQueues = AutoCreateQueues;
+        MessageQueueProcessorSettings settings = new(readQueue, errorQueue, workerThreads, autoCreateQueues);
+        return settings;
     }
 }

@@ -1,16 +1,12 @@
-﻿namespace Snittlistan.Web.Areas.V2.ViewModels
+﻿namespace Snittlistan.Web.Areas.V2.ViewModels;
+public class MatchResultViewModel
 {
-    using System.Collections.Generic;
-
-    public class MatchResultViewModel
+    public MatchResultViewModel()
     {
-        public MatchResultViewModel()
-        {
-            Turns = new Dictionary<int, List<ResultHeaderViewModel>>();
-        }
-
-        public int SeasonStart { get; set; }
-
-        public Dictionary<int, List<ResultHeaderViewModel>> Turns { get; set; }
+        Turns = new Dictionary<int, List<ResultHeaderViewModel>>();
     }
+
+    public int SeasonStart { get; set; }
+
+    public Dictionary<int, List<ResultHeaderViewModel>> Turns { get; set; }
 }

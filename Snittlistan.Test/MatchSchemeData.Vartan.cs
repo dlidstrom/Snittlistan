@@ -1,15 +1,13 @@
-﻿namespace Snittlistan.Test
-{
-    using System;
-    using NUnit.Framework;
-    using Snittlistan.Web.Areas.V2.Domain;
+﻿using NUnit.Framework;
+using Snittlistan.Web.Areas.V2.Domain;
 
-    public partial class MatchSchemeData
-    {
-        public static TestCaseData Vartan = new TestCaseData(
-            "Snittlistan.Test.BitsResult.VärtansIK-matchScheme.html",
-            new[]
-            {
+namespace Snittlistan.Test;
+public partial class MatchSchemeData
+{
+    public static TestCaseData Vartan = new TestCaseData(
+        "Snittlistan.Test.BitsResult.VärtansIK-matchScheme.html",
+        new[]
+        {
                 new ParseMatchSchemeResult.MatchItem
                 {
                     Turn = 1,
@@ -2395,6 +2393,5 @@
                     Location = "Sundsvall - Birsta",
                     LocationUrl = "http://bits.swebowl.se/Matches/HallSchemeAdminList.aspx?HallId=791&SeasonId=0&RoundId=21"
                 }
-            });
-    }
+        });
 }

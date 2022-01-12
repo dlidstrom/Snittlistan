@@ -1,29 +1,25 @@
-namespace Snittlistan.Web.Areas.V2.Queries
+using Raven.Client;
+using Snittlistan.Web.Areas.V2.Domain;
+using Snittlistan.Web.Infrastructure;
+
+namespace Snittlistan.Web.Areas.V2.Queries;
+public class GetPlayersQuery : IQuery<Player[]>
 {
-    using System;
-    using System.Collections.Generic;
-    using Raven.Client;
-    using Snittlistan.Web.Areas.V2.Domain;
-    using Snittlistan.Web.Infrastructure;
+    private readonly List<string> playerIds;
 
-    public class GetPlayersQuery : IQuery<Player[]>
+    public GetPlayersQuery(Roster roster)
     {
-        private readonly List<string> playerIds;
-
-        public GetPlayersQuery(Roster roster)
+        if (roster == null)
         {
-            if (roster == null)
-            {
-                throw new ArgumentNullException(nameof(roster));
-            }
-
-            playerIds = roster.Players;
+            throw new ArgumentNullException(nameof(roster));
         }
 
-        public Player[] Execute(IDocumentSession session)
-        {
-            Player[] result = session.Load<Player>(playerIds);
-            return result;
-        }
+        playerIds = roster.Players;
+    }
+
+    public Player[] Execute(IDocumentSession session)
+    {
+        Player[] result = session.Load<Player>(playerIds);
+        return result;
     }
 }

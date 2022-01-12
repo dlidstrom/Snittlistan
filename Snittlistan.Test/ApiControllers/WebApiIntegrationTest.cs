@@ -1,103 +1,128 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Test.ApiControllers
+using System.Collections.Specialized;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Web;
+using System.Web.Http;
+using Castle.Core;
+using Castle.MicroKernel.Registration;
+using Castle.Windsor;
+using EventStoreLite.IoC;
+using Moq;
+using NUnit.Framework;
+using Postal;
+using Raven.Client;
+using Snittlistan.Queue;
+using Snittlistan.Test.ApiControllers.Infrastructure;
+using Snittlistan.Web;
+using Snittlistan.Web.Infrastructure;
+using Snittlistan.Web.Infrastructure.Attributes;
+using Snittlistan.Web.Infrastructure.Database;
+using Snittlistan.Web.Infrastructure.Installers;
+using Snittlistan.Web.Infrastructure.IoC;
+
+namespace Snittlistan.Test.ApiControllers;
+
+public abstract class WebApiIntegrationTest
 {
-    using System;
-    using System.Diagnostics;
-    using System.Net.Http;
-    using System.Threading.Tasks;
-    using System.Web.Http;
-    using Castle.Core;
-    using Castle.MicroKernel.Registration;
-    using Castle.Windsor;
-    using EventStoreLite.IoC;
-    using Moq;
-    using NUnit.Framework;
-    using Raven.Client;
-    using Snittlistan.Queue;
-    using Snittlistan.Web;
-    using Snittlistan.Web.Infrastructure.Attributes;
-    using Snittlistan.Web.Infrastructure.Installers;
-    using Snittlistan.Web.Infrastructure.IoC;
+    protected HttpClient Client { get; private set; } = null!;
 
-    public abstract class WebApiIntegrationTest
+    protected Databases Databases { get; private set; } = null!;
+
+    protected IWindsorContainer Container { get; set; } = null!;
+
+    [SetUp]
+    public async Task SetUp()
     {
-        protected HttpClient Client { get; private set; } = null!;
+        HttpConfiguration configuration = new();
+        Container = new WindsorContainer();
+        InMemoryContext inMemoryContext = new();
+        Databases = new(inMemoryContext, inMemoryContext);
+        Tenant tenant = new("TEST", "favicon", "touchicon", "touchiconsize", "title", 51538, "Hofvet");
+        _ = Container.Install(
+            new ControllerInstaller(),
+            new ApiControllerInstaller(),
+            new ControllerFactoryInstaller(),
+            new RavenInstaller(new[] { tenant }, DocumentStoreMode.InMemory),
+            new TaskHandlerInstaller(),
+            new CompositionRootInstaller(),
+            new CommandHandlerInstaller(),
+            new DatabaseContextInstaller(() => Databases, LifestyleType.Scoped),
+            EventStoreInstaller.FromAssembly(new[] { tenant }, typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),
+            new EventStoreSessionInstaller(LifestyleType.Scoped));
+        _ = Container.Register(Component.For<IMsmqTransaction>().Instance(Mock.Of<IMsmqTransaction>()));
+        _ = Container.Register(Component.For<IEmailService>().Instance(Mock.Of<IEmailService>()));
+        HttpRequestBase requestMock =
+            Mock.Of<HttpRequestBase>(x => x.ServerVariables == new NameValueCollection() { { "SERVER_NAME", "TEST" } });
+        HttpContextBase httpContextMock =
+            Mock.Of<HttpContextBase>(x => x.Request == requestMock && x.Items == new Dictionary<object, object>());
+        _ = inMemoryContext.Tenants.Add(tenant);
+        CurrentHttpContext.Instance = () => httpContextMock;
+        await OnSetUp(Container);
 
-        private IWindsorContainer Container { get; set; } = null!;
+        MvcApplication.Bootstrap(Container, configuration, () => new(inMemoryContext, inMemoryContext));
+        Client = new HttpClient(new HttpServer(configuration));
+        OnlyLocalAllowedAttribute.SkipValidation = true;
 
-        [SetUp]
-        public void SetUp()
+        LoggingExceptionLogger.ExceptionHandler += ExceptionHandler;
+        await Act();
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        MvcApplication.Shutdown();
+    }
+
+    protected virtual Task Act()
+    {
+        return Task.CompletedTask;
+    }
+
+    protected async Task Transact(Func<IDocumentSession, Task> action)
+    {
+        WaitForIndexing();
+
+        using (IDocumentSession session = Container.Resolve<IDocumentStore>().OpenSession())
         {
-            HttpConfiguration configuration = new();
-            Container = new WindsorContainer();
-            _ = Container.Install(
-                new ControllerInstaller(),
-                new ApiControllerInstaller(),
-                new ControllerFactoryInstaller(),
-                new RavenInstaller(DocumentStoreMode.InMemory),
-                EventStoreInstaller.FromAssembly(typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),
-                new EventStoreSessionInstaller(LifestyleType.Scoped));
-            _ = Container.Register(Component.For<IMsmqTransaction>().Instance(Mock.Of<IMsmqTransaction>()));
-            Task.Run(async () => await OnSetUp(Container)).Wait();
-
-            MvcApplication.Bootstrap(Container, configuration);
-            Client = new HttpClient(new HttpServer(configuration));
-            OnlyLocalAllowedAttribute.SkipValidation = true;
-
-            Task.Run(async () => await Act()).Wait();
+            await action.Invoke(session);
+            session.SaveChanges();
         }
 
-        [TearDown]
-        public void TearDown()
-        {
-            MvcApplication.Shutdown();
-        }
+        WaitForIndexing();
+    }
 
-        protected virtual Task Act()
-        {
-            return Task.CompletedTask;
-        }
+    protected virtual Task OnSetUp(IWindsorContainer container)
+    {
+        return Task.CompletedTask;
+    }
 
-        protected void Transact(Action<IDocumentSession> action)
-        {
-            WaitForIndexing();
+    private static void ExceptionHandler(object sender, Exception exception)
+    {
+        Assert.Fail(exception.Demystify().ToString());
+    }
 
-            using (IDocumentSession session = Container.Resolve<IDocumentStore>().OpenSession())
+    private void WaitForIndexing()
+    {
+        IDocumentStore documentStore = Container.Resolve<IDocumentStore>();
+        const int Timeout = 15000;
+        Task indexingTask = Task.Factory.StartNew(
+            () =>
             {
-                action.Invoke(session);
-                session.SaveChanges();
-            }
-
-            WaitForIndexing();
-        }
-
-        protected virtual Task OnSetUp(IWindsorContainer container)
-        {
-            return Task.CompletedTask;
-        }
-
-        private void WaitForIndexing()
-        {
-            IDocumentStore documentStore = Container.Resolve<IDocumentStore>();
-            const int Timeout = 15000;
-            Task indexingTask = Task.Factory.StartNew(
-                () =>
+                Stopwatch sw = Stopwatch.StartNew();
+                while (sw.Elapsed.TotalMilliseconds < Timeout)
                 {
-                    Stopwatch sw = Stopwatch.StartNew();
-                    while (sw.Elapsed.TotalMilliseconds < Timeout)
+                    string[] s = documentStore.DatabaseCommands.GetStatistics()
+                                         .StaleIndexes;
+                    if (s.Length == 0)
                     {
-                        string[] s = documentStore.DatabaseCommands.GetStatistics()
-                                             .StaleIndexes;
-                        if (s.Length == 0)
-                        {
-                            break;
-                        }
-
-                        Task.Delay(500).Wait();
+                        break;
                     }
-                });
-            _ = indexingTask.Wait(Timeout);
-        }
+
+                    Task.Delay(500).Wait();
+                }
+            });
+        _ = indexingTask.Wait(Timeout);
     }
 }

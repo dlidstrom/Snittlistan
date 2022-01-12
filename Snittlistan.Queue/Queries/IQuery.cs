@@ -1,6 +1,5 @@
-﻿namespace Snittlistan.Queue.Queries
+﻿namespace Snittlistan.Queue.Queries;
+
+public interface IQuery<TQuery, TResult>
 {
-    public interface IQuery<TQuery, TResult>
-    {
-    }
 }
