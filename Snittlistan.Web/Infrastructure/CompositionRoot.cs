@@ -37,7 +37,13 @@ public record CompositionRoot(
     public async Task<Tenant> GetCurrentTenant()
     {
         string hostname = CurrentHttpContext.Instance().Request.ServerVariables["SERVER_NAME"];
-        Tenant tenant = await Databases.Snittlistan.Tenants.SingleOrDefaultAsync(x => x.Hostname == hostname);
+        Tenant? loadedTenant = Databases.Snittlistan.Tenants.Local.SingleOrDefault(x => x.Hostname == hostname);
+        if (loadedTenant != null)
+        {
+            return loadedTenant;
+        }
+
+        Tenant? tenant = await Databases.Snittlistan.Tenants.SingleOrDefaultAsync(x => x.Hostname == hostname);
         if (tenant == null)
         {
             throw new Exception($"No tenant found for hostname '{hostname}'");
