@@ -1,38 +1,35 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Queue
+using System.Net.Http;
+using NLog;
+
+namespace Snittlistan.Queue;
+
+public class LoggingHandler : DelegatingHandler
 {
-    using System.Net.Http;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using NLog;
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-    public class LoggingHandler : DelegatingHandler
+    public LoggingHandler(HttpMessageHandler innerHandler)
+        : base(innerHandler)
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    }
 
-        public LoggingHandler(HttpMessageHandler innerHandler)
-            : base(innerHandler)
+    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    {
+        Logger.Info(request.ToString());
+        if (request.Content != null)
         {
+            Logger.Info(await request.Content.ReadAsStringAsync());
         }
 
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
+
+        Logger.Info(response.ToString());
+        if (response.Content != null)
         {
-            Logger.Info(request.ToString());
-            if (request.Content != null)
-            {
-                Logger.Info(await request.Content.ReadAsStringAsync());
-            }
-
-            HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
-
-            Logger.Info(response.ToString());
-            if (response.Content != null)
-            {
-                Logger.Info(await response.Content.ReadAsStringAsync());
-            }
-
-            return response;
+            Logger.Info(await response.Content.ReadAsStringAsync());
         }
+
+        return response;
     }
 }

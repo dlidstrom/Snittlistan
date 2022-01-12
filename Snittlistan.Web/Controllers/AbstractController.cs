@@ -1,105 +1,87 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Web.Controllers
+using System.Web.Mvc;
+using NLog;
+using Snittlistan.Web.Commands;
+using Snittlistan.Web.Infrastructure;
+using Snittlistan.Web.Infrastructure.Database;
+using Snittlistan.Web.Models;
+
+namespace Snittlistan.Web.Controllers;
+
+public abstract class AbstractController : Controller
 {
-    using System;
-    using System.Web.Mvc;
-    using EventStoreLite;
-    using NLog;
-    using Snittlistan.Queue;
-    using Snittlistan.Queue.Models;
-    using Snittlistan.Web.Areas.V2.Tasks;
-    using Snittlistan.Web.Infrastructure;
-    using Snittlistan.Web.Infrastructure.Database;
-    using Snittlistan.Web.Models;
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private readonly Lazy<CommandExecutor> commandExecutor;
 
-    public abstract class AbstractController : Controller
+    public AbstractController()
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        commandExecutor = new Lazy<CommandExecutor>(CreateCommandExecutor);
+    }
 
-        public Raven.Client.IDocumentStore DocumentStore { get; set; } = null!;
+    public CompositionRoot CompositionRoot { get; set; } = null!;
 
-        public Raven.Client.IDocumentSession DocumentSession { get; set; } = null!;
+    protected new CustomPrincipal User => (CustomPrincipal)HttpContext.User;
 
-        public IEventStoreSession EventStoreSession { get; set; } = null!;
+    protected async Task<TaskPublisher> GetTaskPublisher()
+    {
+        Tenant currentTenant = await CompositionRoot.GetCurrentTenant();
+        return new TaskPublisher(
+            currentTenant,
+            CompositionRoot.Databases,
+            CompositionRoot.CorrelationId,
+            null);
+    }
 
-        public Databases Databases { get; set; } = null!;
-
-        public EventStore EventStore { get; set; } = null!;
-
-        public TenantConfiguration TenantConfiguration { get; set; } = null!;
-
-        public IMsmqTransaction MsmqTransaction { get; set; } = null!;
-
-        public TaskPublisher TaskPublisher { get; set; } = null!;
-
-        protected new CustomPrincipal User => (CustomPrincipal)HttpContext.User;
-
-        protected Guid CorrelationId
+    protected async Task ExecuteCommand(CommandBase command)
+    {
+        if (command == null)
         {
-            get
-            {
-                if (HttpContext.Items["CorrelationId"] is Guid correlationId)
-                {
-                    return correlationId;
-                }
-
-                correlationId = Guid.NewGuid();
-                HttpContext.Items["CorrelationId"] = correlationId;
-                return correlationId;
-            }
+            throw new ArgumentNullException(nameof(command));
         }
 
-        protected void ExecuteCommand(ICommand command)
-        {
-            if (command == null)
-            {
-                throw new ArgumentNullException(nameof(command));
-            }
+        await commandExecutor.Value.Execute(command);
+    }
 
-            command.Execute(
-                DocumentSession,
-                EventStoreSession,
-                task => TaskPublisher.PublishTask(task, User.Identity.Name));
+    protected override void OnActionExecuting(ActionExecutingContext filterContext)
+    {
+        // load website config to make sure it always migrates
+        WebsiteConfig websiteContent = CompositionRoot.DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+        if (websiteContent == null)
+        {
+            CompositionRoot.DocumentSession.Store(new WebsiteConfig(new WebsiteConfig.TeamNameAndLevel[0], false, -1, 2019));
         }
 
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        // make sure there's an admin user
+        if (CompositionRoot.DocumentSession.Load<User>(Models.User.AdminId) != null)
         {
-            // load website config to make sure it always migrates
-            WebsiteConfig websiteContent = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
-            if (websiteContent == null)
-            {
-                DocumentSession.Store(new WebsiteConfig(new WebsiteConfig.TeamNameAndLevel[0], false, -1, 2019));
-            }
-
-            // make sure there's an admin user
-            if (DocumentSession.Load<User>(Models.User.AdminId) != null)
-            {
-                return;
-            }
-
-            // first launch
-            Response.Redirect("/v1/welcome");
-            Response.End();
+            return;
         }
 
-        protected override void OnActionExecuted(ActionExecutedContext filterContext)
+        // first launch
+        Response.Redirect("/v1/welcome");
+        Response.End();
+    }
+
+    protected override void OnActionExecuted(ActionExecutedContext filterContext)
+    {
+        if (filterContext.IsChildAction || filterContext.Exception != null)
         {
-            if (filterContext.IsChildAction || filterContext.Exception != null)
-            {
-                return;
-            }
-
-            MsmqTransaction.Commit();
-
-            // this commits the document session
-            EventStoreSession.SaveChanges();
-
-            if (Databases.Snittlistan.ChangeTracker.HasChanges())
-            {
-                int changes = Databases.Snittlistan.SaveChanges();
-                Logger.Info("saved {changes} change(s) to database", changes);
-            }
+            return;
         }
+
+        // this commits the document session
+        CompositionRoot.EventStoreSession.SaveChanges();
+
+        if (CompositionRoot.Databases.Snittlistan.ChangeTracker.HasChanges())
+        {
+            int changes = CompositionRoot.Databases.Snittlistan.SaveChanges();
+            Logger.Info("saved {changes} change(s) to database", changes);
+        }
+    }
+
+    private CommandExecutor CreateCommandExecutor()
+    {
+        return new CommandExecutor(CompositionRoot, null, User.CustomIdentity.Name);
     }
 }
