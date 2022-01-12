@@ -22,5 +22,8 @@ public class NewUserCreatedCommandHandler : CommandHandler<NewUserCreatedCommand
         await CompositionRoot.EmailService.SendAsync(email);
     }
 
-    public record Command(string Email, string ActivationKey, string UserId);
+    public record Command(
+        string Email,
+        string ActivationKey,
+        string UserId);
 }

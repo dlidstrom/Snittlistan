@@ -10,6 +10,6 @@ public class RegisterMatchTaskHandler
 {
     protected override RegisterPendingMatchCommandHandler.Command CreateCommand(RegisterPendingMatchTask payload)
     {
-        throw new NotImplementedException();
+        return new(payload.RosterId);
     }
 }

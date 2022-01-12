@@ -10,6 +10,6 @@ public class NewUserCreatedTaskHandler
 {
     protected override NewUserCreatedCommandHandler.Command CreateCommand(NewUserCreatedTask payload)
     {
-        throw new NotImplementedException();
+        return new(payload.Email, payload.ActivationKey, payload.UserId);
     }
 }
