@@ -1,42 +1,35 @@
-﻿#nullable enable
+﻿using System.ServiceProcess;
+using NLog;
 
-namespace Snittlistan.Queue.WindowsServiceHost
+#nullable enable
+
+namespace Snittlistan.Queue.WindowsServiceHost;
+public static class Program
 {
-    using System;
-    using System.ServiceProcess;
-    using NLog;
-    using Npgsql.Logging;
-    using Snittlistan.Queue.Infrastructure;
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-    public static class Program
+    public static void Main()
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        public static void Main()
+        try
         {
-            try
-            {
-                Logger.Info("Starting queue service host");
-                NpgsqlLogManager.Provider = new NLogLoggingProvider();
-                NpgsqlLogManager.IsParameterLoggingEnabled = true;
-                Run();
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                Environment.ExitCode = 1;
-            }
-
-            Logger.Info("Stopping queue service host");
+            Logger.Info("Starting queue service host");
+            Run();
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex);
+            Environment.ExitCode = 1;
         }
 
-        private static void Run()
+        Logger.Info("Stopping queue service host");
+    }
+
+    private static void Run()
+    {
+        ServiceBase[] servicesToRun = new[]
         {
-            ServiceBase[] servicesToRun = new[]
-            {
                 new QueueService()
             };
-            ServiceBase.Run(servicesToRun);
-        }
+        ServiceBase.Run(servicesToRun);
     }
 }

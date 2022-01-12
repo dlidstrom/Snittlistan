@@ -1,29 +1,15 @@
-﻿namespace Snittlistan.Tool.Tasks
+﻿#nullable enable
+
+using Snittlistan.Queue.ExternalCommands;
+
+namespace Snittlistan.Tool.Tasks;
+
+public class GetPlayersFromBitsCommandLineTask : CommandLineTask
 {
-    using System;
-    using Snittlistan.Queue;
-    using Snittlistan.Queue.Infrastructure;
-    using Snittlistan.Queue.Messages;
-
-    public class GetPlayersFromBitsCommandLineTask : ICommandLineTask
+    public override async Task Run(string[] args)
     {
-        public void Run(string[] args)
-        {
-            using MsmqGateway.MsmqTransactionScope scope = MsmqGateway.AutoCommitScope();
-            foreach (Tenant tenant in CommandLineTaskHelper.Tenants())
-            {
-                MessageEnvelope envelope = new(
-                    new GetPlayersFromBitsTask(),
-                    tenant.TenantId,
-                    Guid.NewGuid(),
-                    null,
-                    Guid.NewGuid());
-                scope.PublishMessage(envelope);
-            }
-
-            scope.Commit();
-        }
-
-        public string HelpText => "Gets players from BITS.";
+        await ExecuteCommand(new GetPlayersFromBitsCommand());
     }
+
+    public override string HelpText => "Gets players from BITS.";
 }

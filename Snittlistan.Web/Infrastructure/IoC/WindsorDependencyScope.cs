@@ -1,39 +1,34 @@
-﻿#nullable enable
+﻿using System.Web.Http.Dependencies;
+using Castle.MicroKernel;
+using Castle.MicroKernel.Lifestyle;
 
-namespace Snittlistan.Web.Infrastructure.IoC
+#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.IoC;
+public sealed class WindsorDependencyScope : IDependencyScope
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Http.Dependencies;
-    using Castle.MicroKernel;
-    using Castle.MicroKernel.Lifestyle;
+    private readonly IKernel container;
+    private readonly IDisposable scope;
 
-    public sealed class WindsorDependencyScope : IDependencyScope
+    public WindsorDependencyScope(IKernel container)
     {
-        private readonly IKernel container;
-        private readonly IDisposable scope;
+        this.container = container;
+        scope = container.BeginScope();
+    }
 
-        public WindsorDependencyScope(IKernel container)
-        {
-            this.container = container;
-            scope = container.BeginScope();
-        }
+    public object? GetService(Type serviceType)
+    {
+        object? service = container.HasComponent(serviceType) ? container.Resolve(serviceType) : null;
+        return service;
+    }
 
-        public object? GetService(Type serviceType)
-        {
-            object? service = container.HasComponent(serviceType) ? container.Resolve(serviceType) : null;
-            return service;
-        }
+    public IEnumerable<object> GetServices(Type serviceType)
+    {
+        return container.ResolveAll(serviceType).Cast<object>();
+    }
 
-        public IEnumerable<object> GetServices(Type serviceType)
-        {
-            return container.ResolveAll(serviceType).Cast<object>();
-        }
-
-        public void Dispose()
-        {
-            scope.Dispose();
-        }
+    public void Dispose()
+    {
+        scope.Dispose();
     }
 }
