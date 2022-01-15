@@ -1,12 +1,8 @@
-﻿namespace Snittlistan.Web.Areas.V2.Domain.Match
+﻿namespace Snittlistan.Web.Areas.V2.Domain.Match;
+public class MatchException : Exception
 {
-    using System;
-
-    public class MatchException : Exception
+    public MatchException(string message)
+        : base(message)
     {
-        public MatchException(string message)
-            : base(message)
-        {
-        }
     }
 }

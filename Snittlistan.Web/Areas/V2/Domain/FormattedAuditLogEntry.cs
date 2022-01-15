@@ -1,20 +1,16 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Web.Areas.V2.Domain
+namespace Snittlistan.Web.Areas.V2.Domain;
+public class FormattedAuditLogEntry
 {
-    using System;
-
-    public class FormattedAuditLogEntry
+    public FormattedAuditLogEntry(string userId, string? action, DateTime? date)
     {
-        public FormattedAuditLogEntry(string userId, string? action, DateTime? date)
-        {
-            UserId = userId;
-            Action = action;
-            Date = date;
-        }
-
-        public string UserId { get; }
-        public string? Action { get; }
-        public DateTime? Date { get; }
+        UserId = userId;
+        Action = action;
+        Date = date;
     }
+
+    public string UserId { get; }
+    public string? Action { get; }
+    public DateTime? Date { get; }
 }
