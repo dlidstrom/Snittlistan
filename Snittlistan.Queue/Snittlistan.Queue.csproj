@@ -46,6 +46,7 @@
       <Link>Globals.cs</Link>
     </Compile>
     <Compile Include="Application.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="ExternalCommands\CommandBase.cs" />
     <Compile Include="ExternalCommands\GetPlayersFromBitsCommand.cs" />
     <Compile Include="ExternalCommands\GetRostersFromBitsCommand.cs" />
@@ -67,7 +68,6 @@
     <Compile Include="Messages\GetRostersFromBitsTask.cs" />
     <Compile Include="Messages\InitializeIndexesTask.cs" />
     <Compile Include="IsExternalInit.cs" />
-    <Compile Include="Messages\PublishExpiredTasksTask.cs" />
     <Compile Include="Messages\RegisterMatchesTask.cs" />
     <Compile Include="Messages\TaskBase.cs" />
     <Compile Include="Messages\MatchRegisteredTask.cs" />
@@ -78,8 +78,8 @@
     <Compile Include="Messages\NewUserCreatedTask.cs" />
     <Compile Include="Messages\OneTimeKeyTask.cs" />
     <Compile Include="Messages\RegisterPendingMatchTask.cs" />
-    <Compile Include="Messages\InitiateUpdateMailTask.cs" />
-    <Compile Include="Messages\SendUpdateMailTask.cs" />
+    <Compile Include="Messages\PublishRosterMailsTask.cs" />
+    <Compile Include="Messages\PublishRosterMailTask.cs" />
     <Compile Include="Messages\TaskRequest.cs" />
     <Compile Include="Messages\UserInvitedTask.cs" />
     <Compile Include="Messages\VerifyMatchesTask.cs" />

@@ -23,7 +23,11 @@ public abstract class CommandHandler<TCommand, TMessage> : ICommandHandler<TComm
         Tenant[] tenants = await query.ToArrayAsync();
         foreach (Tenant tenant in tenants)
         {
-            TaskPublisher taskPublisher = new(tenant, Databases, command.CorrelationId, null);
+            TaskPublisher taskPublisher = new(
+                tenant,
+                Databases,
+                command.CorrelationId,
+                null);
             taskPublisher.PublishTask(task, "system");
         }
     }

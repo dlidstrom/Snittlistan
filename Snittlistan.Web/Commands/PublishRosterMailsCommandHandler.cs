@@ -2,12 +2,15 @@
 
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Domain;
+using Snittlistan.Web.Infrastructure;
+using Snittlistan.Web.Infrastructure.Database;
+using System.Data.Entity;
 
 namespace Snittlistan.Web.Commands;
 
-public class InitiateUpdateMailCommandHandler : CommandHandler<InitiateUpdateMailCommandHandler.Command>
+public class PublishRosterMailsCommandHandler : CommandHandler<PublishRosterMailsCommandHandler.Command>
 {
-    public override Task Handle(Infrastructure.HandlerContext<Command> context)
+    public override async Task Handle(HandlerContext<Command> context)
     {
         Roster roster = CompositionRoot.DocumentSession.Load<Roster>(context.Payload.RosterId);
         AuditLogEntry auditLogEntry = roster.AuditLogEntries.Single(x => x.CorrelationId == context.CorrelationId);
@@ -16,13 +19,16 @@ public class InitiateUpdateMailCommandHandler : CommandHandler<InitiateUpdateMai
         IEnumerable<string> affectedPlayers = before.Players.Concat(after.Players);
         foreach (string playerId in new HashSet<string>(affectedPlayers))
         {
-            SendUpdateMailTask message = new(
+            PublishRosterMailTask message = new(
                 context.Payload.RosterId,
                 playerId);
             context.PublishMessage(message);
         }
 
-        return Task.CompletedTask;
+        RosterMail rosterMail =
+            await CompositionRoot.Databases.Snittlistan.RosterMails.SingleAsync(
+                x => x.RosterId == context.Payload.RosterId && x.PublishedDate == null);
+        rosterMail.MarkPublished(DateTime.Now);
     }
 
     public record Command(string RosterId);

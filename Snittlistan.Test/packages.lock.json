@@ -117,6 +117,15 @@
         "resolved": "4.2.0",
         "contentHash": "srJGb2SExp0Y77p85cDYl/OlfMjxN/jXPh/CQpQOQWiWpnSSPV9I/jtMNJWr1uzqed23rLYYetGgUrwSZUHgfg=="
       },
+      "Castle.Core-NLog": {
+        "type": "Transitive",
+        "resolved": "4.4.1",
+        "contentHash": "5nyAkQ+Akl+s9fucvwg3fYACIiMCnO8LvzRut9I8W77gojCEha3wz1iTEPvE3ehcPQDkwDDQblVmvSv0kHRKkg==",
+        "dependencies": {
+          "Castle.Core": "[4.4.1]",
+          "NLog": "4.5.0"
+        }
+      },
       "Castle.Facilities.AspNet.SystemWeb": {
         "type": "Transitive",
         "resolved": "5.1.1",
@@ -124,6 +133,14 @@
         "dependencies": {
           "Castle.Windsor": "[5.1.1]",
           "Microsoft.Web.Infrastructure": "1.0.0"
+        }
+      },
+      "Castle.LoggingFacility": {
+        "type": "Transitive",
+        "resolved": "5.1.1",
+        "contentHash": "bNVitNOxpQTPkjAs1AtxFhIdXBUndcqjC/nhKRW8ofOuwbPgVtKrGFaSLLLleYNW5F+Whj+s9TIWgmj2WxqwWw==",
+        "dependencies": {
+          "Castle.Windsor": "[5.1.1]"
         }
       },
       "elmah.corelibrary": {
@@ -389,7 +406,9 @@
         "type": "Project",
         "dependencies": {
           "Castle.Core": "4.4.1",
+          "Castle.Core-NLog": "4.4.1",
           "Castle.Facilities.AspNet.SystemWeb": "5.1.1",
+          "Castle.LoggingFacility": "5.1.1",
           "Castle.Windsor": "5.1.1",
           "Elmah.MVC": "2.1.2",
           "EntityFramework6.Npgsql": "6.4.3",

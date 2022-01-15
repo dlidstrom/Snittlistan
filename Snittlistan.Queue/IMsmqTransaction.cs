@@ -6,7 +6,7 @@ namespace Snittlistan.Queue;
 
 public interface IMsmqTransaction
 {
-    void PublishMessage(MessageEnvelope envelope);
+    void Send(MessageEnvelope envelope);
 
     void Commit();
 }

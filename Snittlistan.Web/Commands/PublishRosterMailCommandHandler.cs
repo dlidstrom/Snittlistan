@@ -6,7 +6,7 @@ using Snittlistan.Web.Models;
 
 namespace Snittlistan.Web.Commands;
 
-public class SendUpdateMailCommandHandler : CommandHandler<SendUpdateMailCommandHandler.Command>
+public class PublishRosterMailCommandHandler : CommandHandler<PublishRosterMailCommandHandler.Command>
 {
     public override async Task Handle(HandlerContext<Command> context)
     {

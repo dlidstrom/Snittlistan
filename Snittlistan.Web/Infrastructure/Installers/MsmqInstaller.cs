@@ -13,7 +13,7 @@ public class MsmqInstaller : IWindsorInstaller
     {
         _ = container.Register(
             Component.For<IMsmqTransaction>()
-                     .UsingFactoryMethod(k => MsmqGateway.AutoCommitScope())
+                     .UsingFactoryMethod(k => MsmqGateway.Create())
                      .LifestylePerWebRequest());
     }
 }

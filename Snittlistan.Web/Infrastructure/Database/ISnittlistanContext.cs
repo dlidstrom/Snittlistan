@@ -7,13 +7,13 @@ namespace Snittlistan.Web.Infrastructure.Database;
 
 public interface ISnittlistanContext
 {
-    IDbSet<DelayedTask> DelayedTasks { get; }
-
     IDbSet<PublishedTask> PublishedTasks { get; }
 
     IDbSet<Tenant> Tenants { get; }
 
     IDbSet<RosterMail> RosterMails { get; }
+
+    IDbSet<ChangeLog> ChangeLogs { get; }
 
     DbChangeTracker ChangeTracker { get; }
 

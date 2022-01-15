@@ -47,7 +47,13 @@
     <PackageReference Include="Castle.Core">
       <Version>4.4.1</Version>
     </PackageReference>
+    <PackageReference Include="Castle.Core-NLog">
+      <Version>4.4.1</Version>
+    </PackageReference>
     <PackageReference Include="Castle.Facilities.AspNet.SystemWeb">
+      <Version>5.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Castle.LoggingFacility">
       <Version>5.1.1</Version>
     </PackageReference>
     <PackageReference Include="Castle.Windsor">
@@ -135,19 +141,18 @@
     <Compile Include="Commands\GetPlayersFromBitsCommandHandler.cs" />
     <Compile Include="Commands\GetRostersFromBitsCommandHandler.cs" />
     <Compile Include="Commands\InitializeIndexesCommandHandler.cs" />
-    <Compile Include="Commands\InitiateUpdateMailCommandHandler.cs" />
+    <Compile Include="Commands\PublishRosterMailsCommandHandler.cs" />
     <Compile Include="Commands\MatchRegisteredCommandHandler.cs" />
     <Compile Include="Commands\NewUserCreatedCommandHandler.cs" />
     <Compile Include="Commands\OneTimeKeyCommandHandler.cs" />
-    <Compile Include="Commands\PublishExpiredTasksCommandHandler.cs" />
     <Compile Include="Commands\RegisterMatchesCommandHandler.cs" />
     <Compile Include="Commands\RegisterPendingMatchCommandHandler.cs" />
     <Compile Include="Commands\SendEmailCommandHandler.cs" />
-    <Compile Include="Commands\SendUpdateMailCommandHandler.cs" />
+    <Compile Include="Commands\PublishRosterMailCommandHandler.cs" />
     <Compile Include="Commands\UserInvitedCommandHandler.cs" />
     <Compile Include="Commands\VerifyMatchCommandHandler.cs" />
     <Compile Include="Commands\VerifyMatchesCommandHandler.cs" />
-    <Compile Include="TaskHandlers\PublishExpiredTasksTaskHandler.cs" />
+    <Compile Include="Infrastructure\Database\ChangeLog.cs" />
     <Compile Include="TaskHandlers\TaskHandler.cs" />
     <Compile Include="Commands\CommandExecutor.cs" />
     <Compile Include="Commands\CommandHandler.cs" />
@@ -169,7 +174,7 @@
     <Compile Include="TaskHandlers\GetPlayersFromBitsTaskHandler.cs" />
     <Compile Include="TaskHandlers\GetRostersFromBitsTaskHandler.cs" />
     <Compile Include="TaskHandlers\InitializeIndexesTaskHandler.cs" />
-    <Compile Include="TaskHandlers\InitiateUpdateMailTaskHandler.cs" />
+    <Compile Include="TaskHandlers\PublishRosterMailsTaskHandler.cs" />
     <Compile Include="TaskHandlers\ITaskHandler.cs" />
     <Compile Include="Areas\V2\Controllers\AuditLogViewerController.cs" />
     <Compile Include="Areas\V2\Domain\AuditLogEntry.cs" />
@@ -183,7 +188,7 @@
     <Compile Include="TaskHandlers\OneTimeKeyTaskHandler.cs" />
     <Compile Include="TaskHandlers\RegisterMatchesTaskHandler.cs" />
     <Compile Include="TaskHandlers\RegisterMatchTaskHandler.cs" />
-    <Compile Include="TaskHandlers\SendUpdateMailTaskHandler.cs" />
+    <Compile Include="TaskHandlers\PublishRosterMailTaskHandler.cs" />
     <Compile Include="Infrastructure\CompositionRoot.cs" />
     <Compile Include="Infrastructure\Database\RosterMail.cs" />
     <Compile Include="Infrastructure\Installers\CompositionRootInstaller.cs" />
@@ -206,7 +211,6 @@
     <Compile Include="Areas\V2\Controllers\ActivityIndexController.cs" />
     <Compile Include="Areas\V2\Controllers\AdminRosterAcceptController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\ApiErrorController.cs" />
-    <Compile Include="Areas\V2\Controllers\Api\QueryController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\TaskController.cs" />
     <Compile Include="Areas\V2\Controllers\EliteMedalsPrintController.cs" />
     <Compile Include="Areas\V2\Controllers\RosterAcceptController.cs" />
@@ -335,7 +339,6 @@
     <Compile Include="Infrastructure\Database\Bits_Team.cs" />
     <Compile Include="Infrastructure\Database\SnittlistanContext.cs" />
     <Compile Include="Infrastructure\Database\Databases.cs" />
-    <Compile Include="Infrastructure\Database\DelayedTask.cs" />
     <Compile Include="Infrastructure\Database\IBitsContext.cs" />
     <Compile Include="Infrastructure\Database\ISnittlistanContext.cs" />
     <Compile Include="Infrastructure\Database\PublishedTask.cs" />
@@ -610,6 +613,7 @@
     <Content Include="robots.txt" />
     <Content Include="Rotativa\help-wkhtmltoimage.txt" />
     <Content Include="Rotativa\help-wkhtmltopdf.txt" />
+    <Content Include="packages.lock.json" />
     <None Include="Rotativa\wkhtmltoimage.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

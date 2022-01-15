@@ -37,14 +37,14 @@ public class CommandExecutor
             compositionRoot.Databases,
             correlationId,
             causationId);
-        IHandlerContext publishContext = (IHandlerContext)Activator.CreateInstance(
+        IHandlerContext handlerContext = (IHandlerContext)Activator.CreateInstance(
             typeof(HandlerContext<>).MakeGenericType(command.GetType()),
             compositionRoot,
             command,
             tenant,
             correlationId,
             causationId);
-        publishContext.PublishMessage = (task, publishDate) =>
+        handlerContext.PublishMessage = (task, publishDate) =>
         {
             if (publishDate != null)
             {
@@ -55,7 +55,13 @@ public class CommandExecutor
                 taskPublisher.PublishTask(task, createdBy);
             }
         };
-        Task task = (Task)handleMethod.Invoke(handler, new[] { publishContext });
+        Task task = (Task)handleMethod.Invoke(handler, new[] { handlerContext });
         await task;
+        _ = compositionRoot.Databases.Snittlistan.ChangeLogs.Add(new(
+            tenant.TenantId,
+            correlationId,
+            causationId,
+            command,
+            createdBy));
     }
 }

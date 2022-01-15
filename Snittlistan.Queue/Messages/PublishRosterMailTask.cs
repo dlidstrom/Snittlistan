@@ -2,10 +2,10 @@
 
 namespace Snittlistan.Queue.Messages;
 
-public class SendUpdateMailTask : TaskBase
+public class PublishRosterMailTask : TaskBase
 {
-    public SendUpdateMailTask(string rosterId, string playerId)
-        : base(new(typeof(SendUpdateMailTask).FullName, $"{rosterId}/{playerId}"))
+    public PublishRosterMailTask(string rosterId, string playerId)
+        : base(new(typeof(PublishRosterMailTask).FullName, $"{rosterId}/{playerId}"))
     {
         RosterId = rosterId;
         PlayerId = playerId;

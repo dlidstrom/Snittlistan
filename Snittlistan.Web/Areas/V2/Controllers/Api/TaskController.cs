@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Web.Http;
 using Newtonsoft.Json;
 using NLog;
+using Snittlistan.Queue;
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Infrastructure;
@@ -19,26 +20,17 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api;
 public class TaskController : AbstractApiController
 {
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-    private readonly JsonSerializerSettings settings = new()
-    {
-        TypeNameHandling = TypeNameHandling.All,
-        MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead
-    };
 
     public async Task<IHttpActionResult> Post(TaskRequest request)
     {
         Log.Info($"Received task {request.TaskJson}");
 
-        TaskBase? taskObject = JsonConvert.DeserializeObject<TaskBase>(
-            request.TaskJson,
-            settings);
-        if (taskObject is null)
-        {
-            return BadRequest("could not deserialize task json");
-        }
+        TaskBase taskObject = request.TaskJson.FromJson<TaskBase>();
 
         // check for published task
-        PublishedTask? publishedTask = await CompositionRoot.Databases.Snittlistan.PublishedTasks.SingleOrDefaultAsync(x => x.MessageId == request.MessageId);
+        PublishedTask? publishedTask =
+            await CompositionRoot.Databases.Snittlistan.PublishedTasks.SingleOrDefaultAsync(
+                x => x.MessageId == request.MessageId);
         if (publishedTask is null)
         {
             return BadRequest($"No published task found with message id {request.MessageId}");
@@ -57,15 +49,19 @@ public class TaskController : AbstractApiController
         Tenant tenant = await CompositionRoot.GetCurrentTenant();
         Guid correlationId = request.CorrelationId ?? default;
         Guid causationId = request.MessageId ?? default;
-        TaskPublisher taskPublisher = new(tenant, CompositionRoot.Databases, correlationId, causationId);
-        IHandlerContext publishContext = (IHandlerContext)Activator.CreateInstance(
+        TaskPublisher taskPublisher = new(
+            tenant,
+            CompositionRoot.Databases,
+            correlationId,
+            causationId);
+        IHandlerContext handlerContext = (IHandlerContext)Activator.CreateInstance(
             typeof(HandlerContext<>).MakeGenericType(taskObject.GetType()),
             CompositionRoot,
             taskObject,
             tenant,
             correlationId,
             causationId);
-        publishContext.PublishMessage = (task, publishDate) =>
+        handlerContext.PublishMessage = (task, publishDate) =>
         {
             if (publishDate != null)
             {
@@ -78,7 +74,7 @@ public class TaskController : AbstractApiController
         };
 
         object handler = CompositionRoot.Kernel.Resolve(handlerType);
-        Task task = (Task)handleMethod.Invoke(handler, new[] { publishContext });
+        Task task = (Task)handleMethod.Invoke(handler, new[] { handlerContext });
         await task;
         Log.Info("End");
         publishedTask.MarkHandled(DateTime.Now);

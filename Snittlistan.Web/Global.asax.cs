@@ -29,6 +29,8 @@ using Snittlistan.Web.Infrastructure.Installers;
 using Snittlistan.Web.Infrastructure.IoC;
 using Snittlistan.Web.Models;
 using Npgsql.Logging;
+using Castle.Facilities.Logging;
+using Castle.Services.Logging.NLogIntegration;
 
 namespace Snittlistan.Web;
 
@@ -237,24 +239,26 @@ public class MvcApplication : HttpApplication
                 new RateHandler(rate: 1.0, per: 1.0, maxTries: 60,
                     new LoggingHandler(
                         new HttpClientHandler())));
-            _ = Container.Install(
-                new ApiControllerInstaller(),
-                new BitsClientInstaller(apiKey, httpClient),
-                new CommandHandlerInstaller(),
-                new ControllerInstaller(),
-                new DatabaseContextInstaller(databasesFactory),
-                new EmailServiceInstaller(HostingEnvironment.MapPath("~/Views/Emails")),
-                new EventMigratorInstaller(),
-                new EventStoreSessionInstaller(),
-                new MsmqInstaller(),
-                new RavenInstaller(tenants),
-                new ServicesInstaller(),
-                new TaskHandlerInstaller(),
-                new CompositionRootInstaller(),
-                EventStoreInstaller.FromAssembly(
-                    tenants,
-                    Assembly.GetExecutingAssembly(),
-                    DocumentStoreMode.Server));
+            _ = Container
+                .AddFacility<LoggingFacility>(f => f.LogUsing<NLogFactory>())
+                .Install(
+                    new ApiControllerInstaller(),
+                    new BitsClientInstaller(apiKey, httpClient),
+                    CommandHandlerInstaller.PerWebRequest(),
+                    new ControllerInstaller(),
+                    new DatabaseContextInstaller(databasesFactory),
+                    new EmailServiceInstaller(HostingEnvironment.MapPath("~/Views/Emails")),
+                    new EventMigratorInstaller(),
+                    new EventStoreSessionInstaller(),
+                    new MsmqInstaller(),
+                    new RavenInstaller(tenants),
+                    new ServicesInstaller(),
+                    new TaskHandlerInstaller(),
+                    new CompositionRootInstaller(),
+                    EventStoreInstaller.FromAssembly(
+                        tenants,
+                        Assembly.GetExecutingAssembly(),
+                        DocumentStoreMode.Server));
         }
 
         if (ChildContainer == null)

@@ -47,7 +47,7 @@ public abstract class WebApiIntegrationTest
             new RavenInstaller(new[] { tenant }, DocumentStoreMode.InMemory),
             new TaskHandlerInstaller(),
             new CompositionRootInstaller(),
-            new CommandHandlerInstaller(),
+            CommandHandlerInstaller.Scoped(),
             new DatabaseContextInstaller(() => Databases, LifestyleType.Scoped),
             EventStoreInstaller.FromAssembly(new[] { tenant }, typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),
             new EventStoreSessionInstaller(LifestyleType.Scoped));

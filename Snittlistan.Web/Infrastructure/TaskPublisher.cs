@@ -30,13 +30,13 @@ public class TaskPublisher
 
     public void PublishTask(TaskBase task, string createdBy)
     {
-        PublishedTask publishedTask = databases.Snittlistan.PublishedTasks.Add(new(
-            task,
-            currentTenant.TenantId,
-            correlationId,
-            causationId,
-            Guid.NewGuid(),
-            createdBy));
+        PublishedTask publishedTask = databases.Snittlistan.PublishedTasks.Add(
+            PublishedTask.CreateImmediate(
+                task,
+                currentTenant.TenantId,
+                correlationId,
+                causationId,
+                createdBy));
 
         try
         {
@@ -54,15 +54,15 @@ public class TaskPublisher
         {
             try
             {
-                using MsmqGateway.MsmqTransactionScope scope = MsmqGateway.AutoCommitScope();
+                using MsmqGateway.MsmqTransactionScope scope = MsmqGateway.Create();
                 MessageEnvelope message = new(
                     publishedTask.Task,
                     publishedTask.TenantId,
                     tenant.Hostname,
                     publishedTask.CorrelationId,
                     publishedTask.CausationId,
-                    publishedTask.MessageId);
-                scope.PublishMessage(message);
+                    publishedTask.MessageId ?? Guid.NewGuid());
+                scope.Send(message);
                 scope.Commit();
                 Logger.Info("published message {@message}", message);
             }
@@ -75,14 +75,14 @@ public class TaskPublisher
 
     public void PublishDelayedTask(TaskBase task, DateTime publishDate, string createdBy)
     {
-        DelayedTask delayedTask = databases.Snittlistan.DelayedTasks.Add(new(
-            task,
-            publishDate,
-            currentTenant.TenantId,
-            correlationId,
-            null,
-            Guid.NewGuid(),
-            createdBy));
-        Logger.Info("added delayed task: {@delayedTask}", delayedTask);
+        PublishedTask publishedTask = databases.Snittlistan.PublishedTasks.Add(
+            PublishedTask.CreateDelayed(
+                task,
+                currentTenant.TenantId,
+                correlationId,
+                causationId,
+                publishDate,
+                createdBy));
+        Logger.Info("added delayed task: {@publishedTask}", publishedTask);
     }
 }

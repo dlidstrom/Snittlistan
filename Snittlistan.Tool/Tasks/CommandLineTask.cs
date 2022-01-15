@@ -1,7 +1,6 @@
 ﻿#nullable enable
 
 using System.Net.Http;
-using Newtonsoft.Json;
 using Snittlistan.Queue;
 using Snittlistan.Queue.ExternalCommands;
 
@@ -9,11 +8,6 @@ namespace Snittlistan.Tool.Tasks;
 
 public abstract class CommandLineTask : ICommandLineTask
 {
-    private static readonly JsonSerializerSettings SerializerSettings = new()
-    {
-        TypeNameHandling = TypeNameHandling.All,
-        MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead
-    };
     private readonly HttpClient client = new(new LoggingHandler(new HttpClientHandler()))
     {
         Timeout = TimeSpan.FromSeconds(600)
@@ -38,7 +32,7 @@ public abstract class CommandLineTask : ICommandLineTask
     {
         public CommandRequest(object command)
         {
-            CommandJson = JsonConvert.SerializeObject(command, SerializerSettings);
+            CommandJson = command.ToJson();
         }
 
         public string CommandJson { get; }

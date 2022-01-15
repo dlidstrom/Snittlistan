@@ -18,24 +18,28 @@ public static class MsmqGateway
         };
     }
 
-    public static MsmqTransactionScope AutoCommitScope()
+    public static MsmqTransactionScope Create()
     {
-        return messageQueue == null ? throw new Exception("Initialize MsmqGateway") : new MsmqTransactionScope();
+        return messageQueue == null
+            ? throw new Exception("Initialize MsmqGateway")
+            : new MsmqTransactionScope(messageQueue);
     }
 
     public class MsmqTransactionScope : IMsmqTransaction, IDisposable
     {
         private readonly MessageQueueTransaction transaction = new();
+        private readonly MessageQueue messageQueue;
 
-        public MsmqTransactionScope()
+        public MsmqTransactionScope(MessageQueue messageQueue)
         {
             transaction.Begin();
+            this.messageQueue = messageQueue;
         }
 
-        public void PublishMessage(MessageEnvelope envelope)
+        public void Send(MessageEnvelope envelope)
         {
             Logger.Info("Sending {@envelope}", envelope);
-            messageQueue!.Send(envelope, transaction);
+            messageQueue.Send(envelope, transaction);
         }
 
         public void Commit()

@@ -11,6 +11,7 @@ using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Infrastructure.Bits;
 using Snittlistan.Web.Infrastructure.Bits.Contracts;
+using Snittlistan.Web.Infrastructure.Database;
 using Snittlistan.Web.Models;
 
 namespace Snittlistan.Test.ApiControllers;
@@ -109,6 +110,12 @@ public class Task_Post_RegisterMatch : WebApiIntegrationTest
 
         task = new(rosterId!, 123);
         envelope = new(task, -1, "", Guid.NewGuid(), null, Guid.NewGuid());
-        _ = Databases.Snittlistan.PublishedTasks.Add(new(task, envelope.TenantId, envelope.CorrelationId, envelope.CausationId, envelope.MessageId, "test"));
+        _ = Databases.Snittlistan.PublishedTasks.Add(
+            PublishedTask.CreateImmediate(
+                task,
+                envelope.TenantId,
+                envelope.CorrelationId,
+                envelope.CausationId,
+                "test"));
     }
 }

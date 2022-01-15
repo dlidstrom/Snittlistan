@@ -36,11 +36,6 @@ public abstract class AbstractController : Controller
     protected async Task ExecuteCommand<TCommand>(TCommand command)
         where TCommand : class
     {
-        if (command == null)
-        {
-            throw new ArgumentNullException(nameof(command));
-        }
-
         await commandExecutor.Value.Execute(command);
     }
 
@@ -74,10 +69,10 @@ public abstract class AbstractController : Controller
         // this commits the document session
         CompositionRoot.EventStoreSession.SaveChanges();
 
-        if (CompositionRoot.Databases.Snittlistan.ChangeTracker.HasChanges())
+        int changesSaved = CompositionRoot.Databases.Snittlistan.SaveChanges();
+        if (changesSaved > 0)
         {
-            int changes = CompositionRoot.Databases.Snittlistan.SaveChanges();
-            Logger.Info("saved {changes} change(s) to database", changes);
+            Logger.Info("saved {changesSaved} to database", changesSaved);
         }
     }
 

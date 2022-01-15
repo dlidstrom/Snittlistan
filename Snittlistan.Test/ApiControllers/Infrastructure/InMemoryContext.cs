@@ -104,15 +104,13 @@ public class InMemoryContext : ISnittlistanContext, IBitsContext
     public InMemoryContext()
     {
         IdGenerator generator = new();
-        DelayedTasks = new InMemoryDbSet<DelayedTask>(generator);
         PublishedTasks = new InMemoryDbSet<PublishedTask>(generator);
         Tenants = new InMemoryDbSet<Tenant>(generator);
         Teams = new InMemoryDbSet<Bits_Team>(generator);
         Hallar = new InMemoryDbSet<Bits_Hall>(generator);
         RosterMails = new InMemoryDbSet<RosterMail>(generator);
+        ChangeLogs = new InMemoryDbSet<ChangeLog>(generator);
     }
-
-    public IDbSet<DelayedTask> DelayedTasks { get; }
 
     public IDbSet<PublishedTask> PublishedTasks { get; }
 
@@ -123,6 +121,8 @@ public class InMemoryContext : ISnittlistanContext, IBitsContext
     public IDbSet<Tenant> Tenants { get; }
 
     public IDbSet<RosterMail> RosterMails { get; }
+
+    public IDbSet<ChangeLog> ChangeLogs { get; }
 
     public DbChangeTracker ChangeTracker => throw new NotImplementedException();
 
