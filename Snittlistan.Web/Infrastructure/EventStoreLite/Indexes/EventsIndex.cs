@@ -1,42 +1,38 @@
-﻿#nullable enable
+﻿using Raven.Client.Indexes;
 
-namespace EventStoreLite.Indexes
+#nullable enable
+
+namespace EventStoreLite.Indexes;
+public class EventsIndex : AbstractIndexCreationTask<EventStream, EventsIndex.Result>
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using Raven.Client.Indexes;
-
-    public class EventsIndex : AbstractIndexCreationTask<EventStream, EventsIndex.Result>
+    public EventsIndex()
     {
-        public EventsIndex()
-        {
-            Map = streams => from stream in streams
-                             from @event in stream.History
-                             select new
-                             {
-                                 @event.ChangeSequence,
-                                 Id = Enumerable.Repeat(new { stream.Id }, 1),
-                             };
+        Map = streams => from stream in streams
+                         from @event in stream.History
+                         select new
+                         {
+                             @event.ChangeSequence,
+                             Id = Enumerable.Repeat(new { stream.Id }, 1),
+                         };
 
-            Reduce = sequences => from sequence in sequences
-                                  group sequence by sequence.ChangeSequence into g
-                                  select new
-                                  {
-                                      ChangeSequence = g.Key,
-                                      Id = g.SelectMany(x => x.Id).Distinct()
-                                  };
-        }
+        Reduce = sequences => from sequence in sequences
+                              group sequence by sequence.ChangeSequence into g
+                              select new
+                              {
+                                  ChangeSequence = g.Key,
+                                  Id = g.SelectMany(x => x.Id).Distinct()
+                              };
+    }
 
-        public class StreamId
-        {
-            public string Id { get; set; } = null!;
-        }
+    public class StreamId
+    {
+        public string Id { get; set; } = null!;
+    }
 
-        public class Result
-        {
-            public int ChangeSequence { get; set; }
+    public class Result
+    {
+        public int ChangeSequence { get; set; }
 
-            public IEnumerable<StreamId> Id { get; set; } = null!;
-        }
+        public IEnumerable<StreamId> Id { get; set; } = null!;
     }
 }

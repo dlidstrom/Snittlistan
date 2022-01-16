@@ -1,62 +1,63 @@
-﻿#nullable enable
+﻿using System.Messaging;
+using NLog;
+using Snittlistan.Queue.Messages;
 
-namespace Snittlistan.Queue
+#nullable enable
+
+namespace Snittlistan.Queue;
+public static class MsmqGateway
 {
-    using System;
-    using System.Messaging;
-    using NLog;
-    using Snittlistan.Queue.Messages;
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private static MessageQueue? messageQueue;
 
-    public static class MsmqGateway
+    public static void Initialize(string path)
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private static MessageQueue? messageQueue;
-
-        public static void Initialize(string path)
+        messageQueue = new MessageQueue(path)
         {
-            messageQueue = new MessageQueue(path)
-            {
-                Formatter = new JsonMessageFormatter()
-            };
+            Formatter = new JsonMessageFormatter()
+        };
+    }
+
+    public static MsmqTransactionScope Create()
+    {
+        return messageQueue == null
+            ? throw new Exception("Initialize MsmqGateway")
+            : new MsmqTransactionScope(messageQueue);
+    }
+
+    public class MsmqTransactionScope : IMsmqTransaction, IDisposable
+    {
+        private readonly MessageQueueTransaction transaction = new();
+        private readonly MessageQueue messageQueue;
+
+        public MsmqTransactionScope(MessageQueue messageQueue)
+        {
+            transaction.Begin();
+            this.messageQueue = messageQueue;
         }
 
-        public static MsmqTransactionScope AutoCommitScope()
+        public void Send(MessageEnvelope envelope)
         {
-            return messageQueue == null ? throw new Exception("Initialize MsmqGateway") : new MsmqTransactionScope();
+            Logger.Info("Sending {@envelope}", envelope);
+            messageQueue.Send(envelope, transaction);
         }
 
-        public class MsmqTransactionScope : IMsmqTransaction, IDisposable
+        public void Commit()
         {
-            private readonly MessageQueueTransaction transaction = new();
-
-            public MsmqTransactionScope()
+            try
             {
-                transaction.Begin();
+                transaction.Commit();
             }
-
-            public void PublishMessage(MessageEnvelope envelope)
+            catch
             {
-                Logger.Info("Sending {@envelope}", envelope);
-                messageQueue!.Send(envelope, transaction);
+                transaction.Abort();
+                throw;
             }
+        }
 
-            public void Commit()
-            {
-                try
-                {
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Abort();
-                    throw;
-                }
-            }
-
-            public void Dispose()
-            {
-                transaction.Dispose();
-            }
+        public void Dispose()
+        {
+            transaction.Dispose();
         }
     }
 }
