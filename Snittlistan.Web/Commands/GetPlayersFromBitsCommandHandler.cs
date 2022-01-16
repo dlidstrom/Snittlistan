@@ -25,11 +25,15 @@ public class GetPlayersFromBitsCommandHandler : CommandHandler<GetPlayersFromBit
             {
                 player.PlayerItem = playerItem;
                 _ = playersByLicense.Remove(player.PlayerItem.LicNbr!);
-                Log.Info($"Updating player with existing PlayerItem: {player.PlayerItem.LicNbr}");
+                Logger.InfoFormat(
+                    "Updating player with existing PlayerItem {licNbr}",
+                    player.PlayerItem.LicNbr);
             }
             else
             {
-                Log.Info($"Player with {player.PlayerItem.LicNbr} not found from BITS");
+                Logger.InfoFormat(
+                    "Player with {licNbr} not found from BITS",
+                    player.PlayerItem.LicNbr);
             }
         }
 
@@ -43,7 +47,9 @@ public class GetPlayersFromBitsCommandHandler : CommandHandler<GetPlayersFromBit
             if (playerNamesWithoutPlayerItem.TryGetValue(nameFromBits, out Player player))
             {
                 player.PlayerItem = playerItem;
-                Log.Info($"Updating player with missing PlayerItem: {nameFromBits}");
+                Logger.InfoFormat(
+                    "Updating player with missing PlayerItem: {nameFromBits}",
+                    nameFromBits);
             }
             else
             {
@@ -58,7 +64,10 @@ public class GetPlayersFromBitsCommandHandler : CommandHandler<GetPlayersFromBit
                 {
                     PlayerItem = playerItem
                 };
-                Log.Info($"Created player {playerItem.FirstName} {playerItem.SurName}");
+                Logger.InfoFormat(
+                    "Created player {firstName} {surName}",
+                    playerItem.FirstName,
+                    playerItem.SurName);
                 CompositionRoot.DocumentSession.Store(newPlayer);
             }
         }

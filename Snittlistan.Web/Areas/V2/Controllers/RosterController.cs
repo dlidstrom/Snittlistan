@@ -7,7 +7,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using Snittlistan.Web.Infrastructure.Bits;
-using NLog;
 using Raven.Abstractions;
 using Raven.Client;
 using Rotativa;
@@ -26,7 +25,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers;
 
 public class RosterController : AbstractController
 {
-    private static readonly Logger logger = LogManager.GetCurrentClassLogger();
     private const string DateTimeFormat = "yyyy-MM-dd HH:mm";
     private readonly IBitsClient bitsClient;
 
@@ -478,11 +476,11 @@ public class RosterController : AbstractController
         {
             if (roster.Preliminary)
             {
-                logger.Warn("Roster is preliminary, not sending requested update mail");
+                Logger.Warn("Roster is preliminary, not sending requested update mail");
             }
             else if (roster.Date < SystemTime.UtcNow.ToLocalTime())
             {
-                logger.Warn("Roster date has passed, not sending requested update mail");
+                Logger.Warn("Roster date has passed, not sending requested update mail");
             }
             else
             {

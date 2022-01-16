@@ -9,19 +9,19 @@ using Snittlistan.Web.ExternalCommands;
 using Snittlistan.Queue.ExternalCommands;
 using Castle.MicroKernel;
 using Snittlistan.Web.Infrastructure.Database;
-using NLog;
 using Snittlistan.Queue;
+using Castle.Core.Logging;
 
 namespace Snittlistan.Web.Areas.V2.Controllers.Api;
 
 [OnlyLocalAllowed]
 public class CommandController : ApiController
 {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
     public IKernel Kernel { get; set; } = null!;
 
     public Databases Databases { get; set; } = null!;
+
+    public ILogger Logger { get; set; } = NullLogger.Instance;
 
     public async Task<IHttpActionResult> Post(CommandRequest request)
     {
@@ -35,7 +35,7 @@ public class CommandController : ApiController
         int changesSaved = await Databases.Snittlistan.SaveChangesAsync();
         if (changesSaved > 0)
         {
-            Logger.Info("saved {changesSaved} to database", changesSaved);
+            Logger.InfoFormat("saved {changesSaved} to database", changesSaved);
         }
 
         return Ok();

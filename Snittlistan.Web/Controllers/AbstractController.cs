@@ -1,7 +1,7 @@
 ﻿#nullable enable
 
 using System.Web.Mvc;
-using NLog;
+using Castle.Core.Logging;
 using Snittlistan.Web.Commands;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Database;
@@ -11,7 +11,6 @@ namespace Snittlistan.Web.Controllers;
 
 public abstract class AbstractController : Controller
 {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private readonly Lazy<CommandExecutor> commandExecutor;
 
     public AbstractController()
@@ -20,6 +19,8 @@ public abstract class AbstractController : Controller
     }
 
     public CompositionRoot CompositionRoot { get; set; } = null!;
+
+    public ILogger Logger { get; set; } = NullLogger.Instance;
 
     protected new CustomPrincipal User => (CustomPrincipal)HttpContext.User;
 
@@ -72,7 +73,9 @@ public abstract class AbstractController : Controller
         int changesSaved = CompositionRoot.Databases.Snittlistan.SaveChanges();
         if (changesSaved > 0)
         {
-            Logger.Info("saved {changesSaved} to database", changesSaved);
+            Logger.InfoFormat(
+                "saved {changesSaved} to database",
+                changesSaved);
         }
     }
 

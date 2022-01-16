@@ -18,24 +18,33 @@ public class GetRostersFromBitsCommandHandler
     {
         WebsiteConfig websiteConfig = CompositionRoot.DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
         Tenant tenant = await CompositionRoot.GetCurrentTenant();
-        Log.Info($"Importing BITS season {websiteConfig.SeasonId} for {tenant.TeamFullName} (ClubId={websiteConfig.ClubId})");
+        Logger.InfoFormat(
+            "Importing BITS season {seasonId} for {teamFullName} (ClubId={clubId})",
+            websiteConfig.SeasonId,
+            tenant.TeamFullName,
+            websiteConfig.ClubId);
         RosterSearchTerms.Result[] rosterSearchTerms =
             CompositionRoot.DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
                 .Where(x => x.Season == websiteConfig.SeasonId)
                 .Where(x => x.BitsMatchId != 0)
                 .ProjectFromIndexFieldsInto<RosterSearchTerms.Result>()
                 .ToArray();
-        Roster[] rosters = CompositionRoot.DocumentSession.Load<Roster>(rosterSearchTerms.Select(x => x.Id));
+        Roster[] rosters = CompositionRoot.DocumentSession.Load<Roster>(
+            rosterSearchTerms.Select(x => x.Id));
         HashSet<int> foundMatchIds = new();
 
         // Team
-        Log.Info($"Fetching teams");
-        TeamResult[] teams = await CompositionRoot.BitsClient.GetTeam(websiteConfig.ClubId, websiteConfig.SeasonId);
+        Logger.Info("Fetching teams");
+        TeamResult[] teams = await CompositionRoot.BitsClient.GetTeam(
+            websiteConfig.ClubId,
+            websiteConfig.SeasonId);
         foreach (TeamResult teamResult in teams)
         {
             // Division
-            Log.Info($"Fetching divisions");
-            DivisionResult[] divisionResults = await CompositionRoot.BitsClient.GetDivisions(teamResult.TeamId, websiteConfig.SeasonId);
+            Logger.Info("Fetching divisions");
+            DivisionResult[] divisionResults = await CompositionRoot.BitsClient.GetDivisions(
+                teamResult.TeamId,
+                websiteConfig.SeasonId);
 
             // Match
             if (divisionResults.Length != 1)
@@ -44,8 +53,11 @@ public class GetRostersFromBitsCommandHandler
             }
 
             DivisionResult divisionResult = divisionResults[0];
-            Log.Info($"Fetching match rounds");
-            MatchRound[] matchRounds = await CompositionRoot.BitsClient.GetMatchRounds(teamResult.TeamId, divisionResult.DivisionId, websiteConfig.SeasonId);
+            Logger.Info("Fetching match rounds");
+            MatchRound[] matchRounds = await CompositionRoot.BitsClient.GetMatchRounds(
+                teamResult.TeamId,
+                divisionResult.DivisionId,
+                websiteConfig.SeasonId);
             Dictionary<int, MatchRound> dict = matchRounds.ToDictionary(x => x.MatchId);
             foreach (int key in dict.Keys)
             {
@@ -55,7 +67,7 @@ public class GetRostersFromBitsCommandHandler
             // update existing rosters
             foreach (Roster roster in rosters.Where(x => dict.ContainsKey(x.BitsMatchId)))
             {
-                Log.Info($"Updating roster {roster.Id}");
+                Logger.Info($"Updating roster {roster.Id}");
                 MatchRound matchRound = dict[roster.BitsMatchId];
                 roster.OilPattern = OilPatternInformation.Create(
                     matchRound.MatchOilPatternName!,
@@ -87,7 +99,7 @@ public class GetRostersFromBitsCommandHandler
             HashSet<int> existingMatchIds = new(rosters.Select(x => x.BitsMatchId));
             foreach (int matchId in dict.Keys.Where(x => existingMatchIds.Contains(x) == false))
             {
-                Log.Info($"Adding match {matchId}");
+                Logger.InfoFormat("Adding match {matchId}", matchId);
                 MatchRound matchRound = dict[matchId];
                 string team;
                 string opponent;
@@ -128,13 +140,17 @@ public class GetRostersFromBitsCommandHandler
         Roster[] toRemove = rosters.Where(x => foundMatchIds.Contains(x.BitsMatchId) == false).ToArray();
         if (toRemove.Any())
         {
-            string body = $"Rosters to remove: {string.Join(",", toRemove.Select(x => $"Id={x.Id} BitsMatchId={x.BitsMatchId}"))}";
-            Log.Info(body);
+            string joined = string.Join(
+                ",",
+                toRemove.Select(x => $"Id={x.Id} BitsMatchId={x.BitsMatchId}"));
+            Logger.InfoFormat("Rosters to remove: {joined}", joined);
             foreach (Roster roster in toRemove)
             {
                 CompositionRoot.DocumentSession.Delete(roster);
             }
 
+            string body =
+                $"Rosters to remove: {joined}";
             SendEmail email = SendEmail.ToAdmin(
                 $"Removed rosters for {tenant.TeamFullName}",
                 body);

@@ -1,12 +1,12 @@
-﻿
+﻿#nullable enable
+
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
-#nullable enable
-
 namespace Snittlistan.Web.Infrastructure.Attributes;
+
 public class ValidateModelAttribute : ActionFilterAttribute
 {
     public override void OnActionExecuting(HttpActionContext actionContext)

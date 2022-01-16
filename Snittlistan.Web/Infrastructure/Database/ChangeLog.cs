@@ -1,6 +1,5 @@
 ﻿#nullable enable
 
-using Newtonsoft.Json;
 using Snittlistan.Queue;
 using System.ComponentModel.DataAnnotations.Schema;
 

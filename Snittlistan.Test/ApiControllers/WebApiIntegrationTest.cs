@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using Castle.Core;
+using Castle.Core.Logging;
+using Castle.Facilities.Logging;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using EventStoreLite.IoC;
@@ -40,17 +42,19 @@ public abstract class WebApiIntegrationTest
         InMemoryContext inMemoryContext = new();
         Databases = new(inMemoryContext, inMemoryContext);
         Tenant tenant = new("TEST", "favicon", "touchicon", "touchiconsize", "title", 51538, "Hofvet");
-        _ = Container.Install(
-            new ControllerInstaller(),
-            new ApiControllerInstaller(),
-            new ControllerFactoryInstaller(),
-            new RavenInstaller(new[] { tenant }, DocumentStoreMode.InMemory),
-            new TaskHandlerInstaller(),
-            new CompositionRootInstaller(),
-            CommandHandlerInstaller.Scoped(),
-            new DatabaseContextInstaller(() => Databases, LifestyleType.Scoped),
-            EventStoreInstaller.FromAssembly(new[] { tenant }, typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),
-            new EventStoreSessionInstaller(LifestyleType.Scoped));
+        _ = Container
+            .AddFacility<LoggingFacility>(x => x.LogUsing<TestLoggerFactory>())
+            .Install(
+                new ControllerInstaller(),
+                new ApiControllerInstaller(),
+                new ControllerFactoryInstaller(),
+                new RavenInstaller(new[] { tenant }, DocumentStoreMode.InMemory),
+                new TaskHandlerInstaller(),
+                new CompositionRootInstaller(),
+                CommandHandlerInstaller.Scoped(),
+                new DatabaseContextInstaller(() => Databases, LifestyleType.Scoped),
+                EventStoreInstaller.FromAssembly(new[] { tenant }, typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),
+                new EventStoreSessionInstaller(LifestyleType.Scoped));
         _ = Container.Register(Component.For<IMsmqTransaction>().Instance(Mock.Of<IMsmqTransaction>()));
         _ = Container.Register(Component.For<IEmailService>().Instance(Mock.Of<IEmailService>()));
         HttpRequestBase requestMock =

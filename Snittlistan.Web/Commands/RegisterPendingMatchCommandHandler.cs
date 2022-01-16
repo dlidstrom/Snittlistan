@@ -26,7 +26,9 @@ public class RegisterPendingMatchCommandHandler : CommandHandler<RegisterPending
             BitsMatchResult bitsMatchResult = await CompositionRoot.BitsClient.GetBitsMatchResult(pendingMatch.BitsMatchId);
             if (bitsMatchResult.HeadInfo.MatchFinished == false)
             {
-                Log.Info($"Match {pendingMatch.BitsMatchId} not yet finished");
+                Logger.InfoFormat(
+                    "Match {bitsMatchId} not yet finished",
+                    pendingMatch.BitsMatchId);
                 return;
             }
 
@@ -37,7 +39,9 @@ public class RegisterPendingMatchCommandHandler : CommandHandler<RegisterPending
                 {
                     if (parse4Result.Series.Length != 4 && parse4Result.Turn <= 20)
                     {
-                        Log.Info($"detected unfinished match: {parse4Result.Series.Length} series have been registered");
+                        Logger.InfoFormat(
+                            "detected unfinished match: {length} series have been registered",
+                            parse4Result.Series.Length);
                         return;
                     }
 
@@ -54,7 +58,9 @@ public class RegisterPendingMatchCommandHandler : CommandHandler<RegisterPending
                 {
                     if (parseResult.Series.Length != 4 && parseResult.Turn <= 20)
                     {
-                        Log.Info($"detected unfinished match: {parseResult.Series.Length} series have been registered");
+                        Logger.InfoFormat(
+                            "detected unfinished match: {length} series have been registered",
+                            parseResult.Series.Length);
                         return;
                     }
 
@@ -67,10 +73,10 @@ public class RegisterPendingMatchCommandHandler : CommandHandler<RegisterPending
         }
         catch (Exception e)
         {
+            Logger.Warn("Unable to auto-register match", e);
             ErrorSignal
                 .FromCurrentContext()
                 .Raise(new Exception($"Unable to auto register match {pendingMatch.Id} ({pendingMatch.BitsMatchId})", e));
-            Log.Warn(e);
         }
     }
 

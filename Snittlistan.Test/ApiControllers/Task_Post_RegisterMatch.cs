@@ -47,7 +47,10 @@ public class Task_Post_RegisterMatch : WebApiIntegrationTest
         // Act
         TaskRequest request = new(envelope!);
         responseMessage = await Client.PostAsJsonAsync("http://temp.uri/api/task", request);
-        _ = responseMessage.EnsureSuccessStatusCode();
+        if (responseMessage.IsSuccessStatusCode == false)
+        {
+            throw new Exception(await responseMessage.Content.ReadAsStringAsync());
+        }
     }
 
     protected override async Task OnSetUp(IWindsorContainer container)
@@ -109,13 +112,19 @@ public class Task_Post_RegisterMatch : WebApiIntegrationTest
         _ = container.Register(Component.For<IBitsClient>().Instance(bitsClient));
 
         task = new(rosterId!, 123);
-        envelope = new(task, -1, "", Guid.NewGuid(), null, Guid.NewGuid());
-        _ = Databases.Snittlistan.PublishedTasks.Add(
+        PublishedTask publishedTask = Databases.Snittlistan.PublishedTasks.Add(
             PublishedTask.CreateImmediate(
                 task,
-                envelope.TenantId,
-                envelope.CorrelationId,
-                envelope.CausationId,
+                1,
+                Guid.NewGuid(),
+                null,
                 "test"));
+        envelope = new(
+            task,
+            publishedTask.TenantId,
+            "",
+            publishedTask.CorrelationId,
+            null,
+            publishedTask.MessageId!.Value);
     }
 }

@@ -27,13 +27,17 @@ public class VerifyMatchesCommandHandler : CommandHandler<VerifyMatchesCommandHa
 
             if (roster.Date.ToUniversalTime() > SystemTime.UtcNow)
             {
-                Log.Info($"Too early to verify {roster.BitsMatchId}");
+                Logger.InfoFormat(
+                    "Too early to verify {bitsMatchId}",
+                    roster.BitsMatchId);
                 continue;
             }
 
             if (roster.IsVerified && context.Payload.Force == false)
             {
-                Log.Info($"Skipping {roster.BitsMatchId} because it is already verified.");
+                Logger.InfoFormat(
+                    "Skipping {bitsMatchId} because it is already verified",
+                    roster.BitsMatchId);
             }
             else
             {
@@ -47,7 +51,9 @@ public class VerifyMatchesCommandHandler : CommandHandler<VerifyMatchesCommandHa
 
         foreach (VerifyMatchTask verifyMatchMessage in toVerify)
         {
-            Log.Info("Scheduling verification of {bitsMatchId}", verifyMatchMessage.BitsMatchId);
+            Logger.InfoFormat(
+                "Scheduling verification of {bitsMatchId}",
+                verifyMatchMessage.BitsMatchId);
             context.PublishMessage(verifyMatchMessage);
         }
 

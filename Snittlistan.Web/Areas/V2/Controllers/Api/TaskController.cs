@@ -5,7 +5,6 @@ using System.Data.Entity;
 using System.Reflection;
 using System.Web.Http;
 using Newtonsoft.Json;
-using NLog;
 using Snittlistan.Queue;
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Controllers;
@@ -19,11 +18,9 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api;
 [OnlyLocalAllowed]
 public class TaskController : AbstractApiController
 {
-    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-
     public async Task<IHttpActionResult> Post(TaskRequest request)
     {
-        Log.Info($"Received task {request.TaskJson}");
+        Logger.InfoFormat("Received task {taskJson}", request.TaskJson);
 
         TaskBase taskObject = request.TaskJson.FromJson<TaskBase>();
 
@@ -44,8 +41,8 @@ public class TaskController : AbstractApiController
         Type handlerType = typeof(ITaskHandler<>).MakeGenericType(taskObject.GetType());
 
         MethodInfo handleMethod = handlerType.GetMethod(nameof(ITaskHandler<TaskBase>.Handle));
-        using IDisposable scope = NestedDiagnosticsLogicalContext.Push(taskObject.BusinessKey);
-        Log.Info("Begin");
+        using IDisposable scope = NLog.NestedDiagnosticsLogicalContext.Push(taskObject.BusinessKey);
+        Logger.Info("Begin");
         Tenant tenant = await CompositionRoot.GetCurrentTenant();
         Guid correlationId = request.CorrelationId ?? default;
         Guid causationId = request.MessageId ?? default;
@@ -76,7 +73,7 @@ public class TaskController : AbstractApiController
         object handler = CompositionRoot.Kernel.Resolve(handlerType);
         Task task = (Task)handleMethod.Invoke(handler, new[] { handlerContext });
         await task;
-        Log.Info("End");
+        Logger.Info("End");
         publishedTask.MarkHandled(DateTime.Now);
 
         return Ok();

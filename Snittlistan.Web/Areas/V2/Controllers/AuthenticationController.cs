@@ -7,7 +7,6 @@ using System.Web;
 using System.Web.Mvc;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
-using NLog;
 using Snittlistan.Queue.Messages;
 using Raven.Abstractions;
 using Snittlistan.Web.Controllers;
@@ -22,7 +21,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers;
 
 public class AuthenticationController : AbstractController
 {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private static readonly Random Random = new();
     private readonly IAuthenticationService authenticationService;
 

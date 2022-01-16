@@ -1,16 +1,16 @@
-﻿using System.Net.Http;
+﻿#nullable enable
+
+using System.Net.Http;
 using System.Runtime.Caching;
 using System.Text;
 using Snittlistan.Web.Infrastructure.Bits.Contracts;
 using Newtonsoft.Json;
-using NLog;
-
-#nullable enable
+using Castle.Core.Logging;
 
 namespace Snittlistan.Web.Infrastructure.Bits;
+
 public class BitsClient : IBitsClient
 {
-    private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
     private readonly string apiKey;
     private readonly HttpClient client;
     private readonly MemoryCache memoryCache;
@@ -21,6 +21,8 @@ public class BitsClient : IBitsClient
         this.client = client;
         this.memoryCache = memoryCache;
     }
+
+    public ILogger Logger { get; set; } = NullLogger.Instance;
 
     public async Task<HeadInfo> GetHeadInfo(int matchId)
     {
@@ -85,7 +87,9 @@ public class BitsClient : IBitsClient
     {
         if (memoryCache.Get(url) is TResult item)
         {
-            Logger.Info("Found {0} in cache", url);
+            Logger.InfoFormat(
+                "Found {url} in cache",
+                url);
             return item;
         }
 
@@ -104,7 +108,10 @@ public class BitsClient : IBitsClient
             new CacheItemPolicy
             {
                 AbsoluteExpiration = DateTime.Now.AddHours(1),
-                RemovedCallback = x => Logger.Info("{0} evicted due to {1}", x.CacheItem.Key, x.RemovedReason)
+                RemovedCallback = x => Logger.InfoFormat(
+                    "{key} evicted due to {reason}",
+                    x.CacheItem.Key,
+                    x.RemovedReason)
             });
         return result;
     }
@@ -118,7 +125,9 @@ public class BitsClient : IBitsClient
         });
         if (memoryCache.Get(cacheKey) is TResult item)
         {
-            Logger.Info("Found {0} in cache", cacheKey);
+            Logger.InfoFormat(
+                "Found {key} in cache",
+                cacheKey);
             return item;
         }
 
@@ -140,14 +149,19 @@ public class BitsClient : IBitsClient
             new CacheItemPolicy
             {
                 AbsoluteExpiration = DateTime.Now.AddHours(1),
-                RemovedCallback = x => Logger.Info("{0} evicted due to {1}", x.CacheItem.Key, x.RemovedReason)
+                RemovedCallback = x => Logger.InfoFormat(
+                    "{key} evicted due to {reason}",
+                    x.CacheItem.Key,
+                    x.RemovedReason)
             });
         return result;
     }
 
     private async Task<string> Request(HttpMethod method, string url, Action<HttpRequestMessage> action)
     {
-        Logger.Info("Requesting {0}", url);
+        Logger.InfoFormat(
+            "Requesting {url}",
+            url);
         HttpRequestMessage request = new(method, url);
         request.Headers.Referrer = new Uri("https://bits.swebowl.se");
         action.Invoke(request);
