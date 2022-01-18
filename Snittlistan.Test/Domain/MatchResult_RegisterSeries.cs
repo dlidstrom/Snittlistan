@@ -1,31 +1,27 @@
-﻿#nullable enable
+﻿using NUnit.Framework;
+using Snittlistan.Queue.Messages;
+using Snittlistan.Web.Areas.V2.Domain;
+using Snittlistan.Web.Areas.V2.Domain.Match;
+using Snittlistan.Web.Areas.V2.Domain.Match.Events;
+using Snittlistan.Web.Areas.V2.Indexes;
+using Snittlistan.Web.Areas.V2.ReadModels;
 
-namespace Snittlistan.Test.Domain
+#nullable enable
+
+namespace Snittlistan.Test.Domain;
+[TestFixture]
+public class MatchResult_RegisterSeries
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using NUnit.Framework;
-    using Snittlistan.Queue.Messages;
-    using Snittlistan.Web.Areas.V2.Domain;
-    using Snittlistan.Web.Areas.V2.Domain.Match;
-    using Snittlistan.Web.Areas.V2.Domain.Match.Events;
-    using Snittlistan.Web.Areas.V2.Indexes;
-    using Snittlistan.Web.Areas.V2.ReadModels;
+    private Roster? roster;
+    private MatchResult? matchResult;
+    private MatchRegisteredTask? ev;
 
-    [TestFixture]
-    public class MatchResult_RegisterSeries
+    [SetUp]
+    public Task SetUp()
     {
-        private Roster? roster;
-        private MatchResult? matchResult;
-        private MatchRegisteredTask? ev;
-
-        [SetUp]
-        public void SetUp()
+        // Arrange
+        Player[] players = new[]
         {
-            // Arrange
-            Player[] players = new[]
-            {
                 new Player("n", "e@d.com", Player.Status.Active, -1, null, new string[0])
                 {
                     Id = "p1"
@@ -59,16 +55,16 @@ namespace Snittlistan.Test.Domain
                     Id = "p8"
                 },
             };
-            roster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
-            {
-                Id = "rosters-1",
-                Players = players.Select(x => x.Id!).ToList()
-            };
-            matchResult = new MatchResult(roster, 9, 11, 123);
+        roster = new Roster(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
+        {
+            Id = "rosters-1",
+            Players = players.Select(x => x.Id!).ToList()
+        };
+        matchResult = new MatchResult(roster, 9, 11, 123);
 
-            // Act
-            MatchSerie[] series = new[]
-            {
+        // Act
+        MatchSerie[] series = new[]
+        {
                 new MatchSerie(
                     1,
                     new List<MatchTable>
@@ -88,8 +84,8 @@ namespace Snittlistan.Test.Domain
                         new MatchTable(4, new MatchGame("p7", 200, 0, 0), new MatchGame("p8", 0, 0, 0), 0),
                     })
             };
-            ResultSeriesReadModel.Serie[] opponentSeries = new[]
-            {
+        ResultSeriesReadModel.Serie[] opponentSeries = new[]
+        {
                 new ResultSeriesReadModel.Serie
                 {
                     Tables = new List<ResultSeriesReadModel.Table>
@@ -144,28 +140,29 @@ namespace Snittlistan.Test.Domain
                 }
             };
 
-            matchResult.RegisterSeries(
-                e => ev = (MatchRegisteredTask)e,
-                series,
-                opponentSeries,
-                players,
-                new Dictionary<string, ResultForPlayerIndex.Result>());
-        }
+        matchResult.RegisterSeries(
+            e => ev = (MatchRegisteredTask)e,
+            series,
+            opponentSeries,
+            players,
+            new Dictionary<string, ResultForPlayerIndex.Result>());
 
-        [Test]
-        public void CanRegisterAllSeries()
-        {
-            // Assert
-            EventStoreLite.IDomainEvent[] changes = matchResult!.GetUncommittedChanges();
-            Assert.That(changes, Has.Length.EqualTo(4));
-            Assert.IsAssignableFrom<SerieRegistered>(changes[1]);
-        }
+        return Task.CompletedTask;
+    }
 
-        [Test]
-        public void RaisesDomainEvent()
-        {
-            // Assert
-            Assert.That(ev, Is.Not.Null);
-        }
+    [Test]
+    public void CanRegisterAllSeries()
+    {
+        // Assert
+        EventStoreLite.IDomainEvent[] changes = matchResult!.GetUncommittedChanges();
+        Assert.That(changes, Has.Length.EqualTo(4));
+        Assert.IsAssignableFrom<SerieRegistered>(changes[1]);
+    }
+
+    [Test]
+    public void RaisesDomainEvent()
+    {
+        // Assert
+        Assert.That(ev, Is.Not.Null);
     }
 }
