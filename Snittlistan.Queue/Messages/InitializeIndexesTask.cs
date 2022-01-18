@@ -1,19 +1,17 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Queue.Messages
+namespace Snittlistan.Queue.Messages;
+
+public class InitializeIndexesTask : TaskBase
 {
-    public class InitializeIndexesTask : ITask
+    public InitializeIndexesTask(string email, string password)
+        : base(new(typeof(InitializeIndexesTask).FullName, string.Empty))
     {
-        public InitializeIndexesTask(string email, string password)
-        {
-            Email = email;
-            Password = password;
-        }
-
-        public string Email { get; }
-
-        public string Password { get; }
-
-        public BusinessKey BusinessKey => new(GetType(), string.Empty);
+        Email = email;
+        Password = password;
     }
+
+    public string Email { get; }
+
+    public string Password { get; }
 }
