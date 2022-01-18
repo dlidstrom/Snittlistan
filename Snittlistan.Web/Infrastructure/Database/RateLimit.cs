@@ -42,8 +42,9 @@ public class RateLimit : HasVersion
         }
     }
 
-    public void DecreaseAllowance()
+    public void DecreaseAllowance(DateTime when)
     {
         Allowance--;
+        UpdatedDate = when;
     }
 }

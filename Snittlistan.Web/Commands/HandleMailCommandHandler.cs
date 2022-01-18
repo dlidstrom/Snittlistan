@@ -36,7 +36,8 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
                 new(key, 1, rate, perSeconds));
         }
 
-        rateLimit.UpdateAllowance(DateTime.Now);
+        DateTime now = DateTime.Now;
+        rateLimit.UpdateAllowance(now);
         if (rateLimit.Allowance < 1)
         {
             throw new HandledException($"allowance = {rateLimit.Allowance:N2}, wait to reach 1");
@@ -44,7 +45,7 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
 
         TEmail email = await CreateEmail(context);
         await CompositionRoot.EmailService.SendAsync(email);
-        rateLimit.DecreaseAllowance();
+        rateLimit.DecreaseAllowance(now);
     }
 
     protected abstract Task<TEmail> CreateEmail(HandlerContext<TCommand> context);
