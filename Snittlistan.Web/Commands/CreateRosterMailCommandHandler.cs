@@ -20,7 +20,7 @@ public class CreateRosterMailCommandHandler : CommandHandler<CreateRosterMailCom
         {
             _ = CompositionRoot.Databases.Snittlistan.RosterMails.Add(new(context.Payload.RosterId));
             PublishRosterMailsTask task = new(context.Payload.RosterId);
-            context.PublishMessage(task, DateTime.Now.AddMinutes(10));
+            context.PublishMessage(task, DateTime.Now.AddSeconds(10));
         }
     }
 

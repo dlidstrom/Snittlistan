@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using Castle.Core;
-using Castle.Core.Logging;
 using Castle.Facilities.Logging;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;

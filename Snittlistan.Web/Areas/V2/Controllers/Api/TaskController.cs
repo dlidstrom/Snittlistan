@@ -71,11 +71,18 @@ public class TaskController : AbstractApiController
         };
 
         object handler = CompositionRoot.Kernel.Resolve(handlerType);
-        Task task = (Task)handleMethod.Invoke(handler, new[] { handlerContext });
-        await task;
-        Logger.Info("End");
-        publishedTask.MarkHandled(DateTime.Now);
+        try
+        {
+            Task task = (Task)handleMethod.Invoke(handler, new[] { handlerContext });
+            await task;
+            publishedTask.MarkHandled(DateTime.Now);
+        }
+        catch (HandledException ex)
+        {
+            Logger.InfoFormat("task cannot be handled: {reason}", ex.Message);
+        }
 
+        Logger.Info("End");
         return Ok();
     }
 }

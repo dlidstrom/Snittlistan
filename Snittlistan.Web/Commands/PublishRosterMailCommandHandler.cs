@@ -6,13 +6,23 @@ using Snittlistan.Web.Models;
 
 namespace Snittlistan.Web.Commands;
 
-public class PublishRosterMailCommandHandler : CommandHandler<PublishRosterMailCommandHandler.Command>
+public class PublishRosterMailCommandHandler
+    : HandleMailCommandHandler<PublishRosterMailCommandHandler.Command, UpdateRosterEmail>
 {
-    public override async Task Handle(HandlerContext<Command> context)
+    public PublishRosterMailCommandHandler()
+        : base(1, 300)
+    {
+    }
+
+    protected override Task<UpdateRosterEmail> CreateEmail(HandlerContext<Command> context)
     {
         Player player = CompositionRoot.DocumentSession.Load<Player>(context.Payload.PlayerId);
-        Roster roster = CompositionRoot.DocumentSession.Include<Roster>(x => x.Players).Load<Roster>(context.Payload.RosterId);
-        FormattedAuditLog formattedAuditLog = roster.GetFormattedAuditLog(CompositionRoot.DocumentSession, context.CorrelationId);
+        Roster roster = CompositionRoot.DocumentSession
+            .Include<Roster>(x => x.Players)
+            .Load<Roster>(context.Payload.RosterId);
+        FormattedAuditLog formattedAuditLog = roster.GetFormattedAuditLog(
+            CompositionRoot.DocumentSession,
+            context.CorrelationId);
         Player[] players = CompositionRoot.DocumentSession.Load<Player>(roster.Players);
         string teamLeader =
             roster.TeamLeader != null
@@ -23,7 +33,12 @@ public class PublishRosterMailCommandHandler : CommandHandler<PublishRosterMailC
             formattedAuditLog,
             players.Select(x => x.Name).ToArray(),
             teamLeader);
-        await CompositionRoot.EmailService.SendAsync(email);
+        return Task.FromResult(email);
+    }
+
+    protected override string GetKey(Command command)
+    {
+        return $"roster_mail:{command.PlayerId}";
     }
 
     public record Command(string RosterId, string PlayerId);

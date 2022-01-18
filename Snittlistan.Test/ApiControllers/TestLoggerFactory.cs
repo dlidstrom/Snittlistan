@@ -2,7 +2,6 @@
 
 using Castle.Core.Logging;
 using NUnit.Framework;
-using System.Text.RegularExpressions;
 
 namespace Snittlistan.Test.ApiControllers;
 

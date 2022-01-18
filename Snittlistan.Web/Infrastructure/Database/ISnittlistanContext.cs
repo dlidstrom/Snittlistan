@@ -15,6 +15,8 @@ public interface ISnittlistanContext
 
     IDbSet<ChangeLog> ChangeLogs { get; }
 
+    IDbSet<RateLimit> RateLimits { get; }
+
     DbChangeTracker ChangeTracker { get; }
 
     Task<int> SaveChangesAsync();

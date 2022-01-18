@@ -1,9 +1,9 @@
-﻿
+﻿#nullable enable
+
 using Snittlistan.Web.Areas.V2.Domain;
 
-#nullable enable
-
 namespace Snittlistan.Web.Models;
+
 public class UpdateRosterEmail : EmailBase
 {
     public UpdateRosterEmail(

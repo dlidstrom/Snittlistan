@@ -140,6 +140,7 @@
     <Compile Include="Areas\V2\Controllers\Api\CommandController.cs" />
     <Compile Include="Commands\GetPlayersFromBitsCommandHandler.cs" />
     <Compile Include="Commands\GetRostersFromBitsCommandHandler.cs" />
+    <Compile Include="Commands\HandleMailCommandHandler.cs" />
     <Compile Include="Commands\InitializeIndexesCommandHandler.cs" />
     <Compile Include="Commands\PublishRosterMailsCommandHandler.cs" />
     <Compile Include="Commands\MatchRegisteredCommandHandler.cs" />
@@ -153,6 +154,9 @@
     <Compile Include="Commands\VerifyMatchCommandHandler.cs" />
     <Compile Include="Commands\VerifyMatchesCommandHandler.cs" />
     <Compile Include="Infrastructure\Database\ChangeLog.cs" />
+    <Compile Include="Infrastructure\Database\HasVersion.cs" />
+    <Compile Include="Infrastructure\Database\RateLimit.cs" />
+    <Compile Include="Infrastructure\HandledException.cs" />
     <Compile Include="TaskHandlers\TaskHandler.cs" />
     <Compile Include="Commands\CommandExecutor.cs" />
     <Compile Include="Commands\CommandHandler.cs" />

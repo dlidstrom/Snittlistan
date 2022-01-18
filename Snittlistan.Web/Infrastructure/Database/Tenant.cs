@@ -1,7 +1,8 @@
 ﻿#nullable enable
 
 namespace Snittlistan.Web.Infrastructure.Database;
-public class Tenant
+
+public class Tenant : HasVersion
 {
     public Tenant(
         string hostname,
@@ -19,7 +20,6 @@ public class Tenant
         AppleTouchIcon = appleTouchIcon;
         AppleTouchIconSize = appleTouchIconSize;
         WebAppTitle = webAppTitle;
-        CreatedDate = DateTime.Now;
     }
 
     private Tenant()
@@ -43,8 +43,4 @@ public class Tenant
     public string AppleTouchIconSize { get; private set; } = null!;
 
     public string WebAppTitle { get; private set; } = null!;
-
-    public DateTime CreatedDate { get; private set; }
-
-    public string Version { get; private set; } = null!;
 }

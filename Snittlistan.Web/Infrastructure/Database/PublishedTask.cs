@@ -6,7 +6,7 @@ using Snittlistan.Queue.Messages;
 
 namespace Snittlistan.Web.Infrastructure.Database;
 
-public class PublishedTask
+public class PublishedTask : HasVersion
 {
     private PublishedTask(
         TaskBase task,
@@ -111,11 +111,6 @@ public class PublishedTask
     public DateTime? HandledDate { get; private set; }
 
     public string CreatedBy { get; private set; } = null!;
-
-    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-    public DateTime CreatedDate { get; private set; }
-
-    public string Version { get; private set; } = null!;
 
     public void MarkPublished(DateTime when)
     {
