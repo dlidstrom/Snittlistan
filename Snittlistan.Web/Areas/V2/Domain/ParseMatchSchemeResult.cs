@@ -1,33 +1,30 @@
-﻿#nullable enable
+﻿using Snittlistan.Web.HtmlHelpers;
 
-namespace Snittlistan.Web.Areas.V2.Domain
+#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Domain;
+public class ParseMatchSchemeResult
 {
-    using System;
-    using Snittlistan.Web.HtmlHelpers;
-
-    public class ParseMatchSchemeResult
+    public ParseMatchSchemeResult(MatchItem[] matches)
     {
-        public ParseMatchSchemeResult(MatchItem[] matches)
-        {
-            Matches = matches;
-        }
+        Matches = matches;
+    }
 
-        public MatchItem[] Matches { get; }
+    public MatchItem[] Matches { get; }
 
-        public class MatchItem
-        {
-            public int RowFromHtml { get; set; }
-            public int Turn { get; set; }
-            public DateTime Date { get; set; }
-            public bool DateChanged { get; set; }
-            public int BitsMatchId { get; set; }
-            public string MatchFactUrl => CustomHtmlHelpers.GenerateBitsUrl(BitsMatchId);
-            public string? Teams { get; set; }
-            public string? MatchResult { get; set; }
-            public string? OilPatternName { get; set; }
-            public int OilPatternId { get; set; }
-            public string? Location { get; set; }
-            public string? LocationUrl { get; set; }
-        }
+    public class MatchItem
+    {
+        public int RowFromHtml { get; set; }
+        public int Turn { get; set; }
+        public DateTime Date { get; set; }
+        public bool DateChanged { get; set; }
+        public int BitsMatchId { get; set; }
+        public string MatchFactUrl => CustomHtmlHelpers.GenerateBitsUrl(BitsMatchId);
+        public string? Teams { get; set; }
+        public string? MatchResult { get; set; }
+        public string? OilPatternName { get; set; }
+        public int OilPatternId { get; set; }
+        public string? Location { get; set; }
+        public string? LocationUrl { get; set; }
     }
 }

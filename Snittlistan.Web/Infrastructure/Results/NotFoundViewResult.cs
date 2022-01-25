@@ -1,26 +1,25 @@
-namespace Snittlistan.Web.Infrastructure.Results
+
+using System.Web.Mvc;
+
+namespace Snittlistan.Web.Infrastructure.Results;
+public class NotFoundViewResult : ViewResult
 {
-    using System.Web.Mvc;
-
-    public class NotFoundViewResult : ViewResult
+    public NotFoundViewResult()
     {
-        public NotFoundViewResult()
-        {
-            ViewName = "NotFound";
-        }
+        ViewName = "NotFound";
+    }
 
-        public override void ExecuteResult(ControllerContext context)
-        {
-            System.Web.HttpResponseBase response = context.HttpContext.Response;
-            System.Web.HttpRequestBase request = context.HttpContext.Request;
-            string url = request.Url.OriginalString;
-            ViewData["RequestedUrl"] = url;
-            ViewData["ReferrerUrl"] = (request.UrlReferrer != null && request.UrlReferrer.OriginalString != url) ? request.UrlReferrer.OriginalString : null;
-            response.StatusCode = 404;
+    public override void ExecuteResult(ControllerContext context)
+    {
+        System.Web.HttpResponseBase response = context.HttpContext.Response;
+        System.Web.HttpRequestBase request = context.HttpContext.Request;
+        string url = request.Url.OriginalString;
+        ViewData["RequestedUrl"] = url;
+        ViewData["ReferrerUrl"] = (request.UrlReferrer != null && request.UrlReferrer.OriginalString != url) ? request.UrlReferrer.OriginalString : null;
+        response.StatusCode = 404;
 
-            // Prevent IIS7 from overwriting our error page!
-            response.TrySkipIisCustomErrors = true;
-            base.ExecuteResult(context);
-        }
+        // Prevent IIS7 from overwriting our error page!
+        response.TrySkipIisCustomErrors = true;
+        base.ExecuteResult(context);
     }
 }

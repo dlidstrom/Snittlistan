@@ -1,16 +1,17 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers
-{
-    using System.Web.Mvc;
-    using Snittlistan.Web.Controllers;
-    using Snittlistan.Web.Models;
+﻿#nullable enable
 
-    public class LayoutController : AbstractController
+using System.Web.Mvc;
+using Snittlistan.Web.Controllers;
+using Snittlistan.Web.Models;
+
+namespace Snittlistan.Web.Areas.V2.Controllers;
+
+public class LayoutController : AbstractController
+{
+    [ChildActionOnly]
+    public ActionResult NavPart()
     {
-        [ChildActionOnly]
-        public ActionResult NavPart()
-        {
-            WebsiteConfig websiteConfig = DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
-            return View(websiteConfig);
-        }
+        WebsiteConfig websiteConfig = CompositionRoot.DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
+        return View(websiteConfig);
     }
 }

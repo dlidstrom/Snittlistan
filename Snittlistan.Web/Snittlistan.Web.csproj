@@ -47,7 +47,13 @@
     <PackageReference Include="Castle.Core">
       <Version>4.4.1</Version>
     </PackageReference>
+    <PackageReference Include="Castle.Core-NLog">
+      <Version>4.4.1</Version>
+    </PackageReference>
     <PackageReference Include="Castle.Facilities.AspNet.SystemWeb">
+      <Version>5.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Castle.LoggingFacility">
       <Version>5.1.1</Version>
     </PackageReference>
     <PackageReference Include="Castle.Windsor">
@@ -127,14 +133,61 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Globals.cs">
+      <Link>Globals.cs</Link>
+    </Compile>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="Areas\V2\Controllers\Api\CommandController.cs" />
+    <Compile Include="Commands\GetPlayersFromBitsCommandHandler.cs" />
+    <Compile Include="Commands\GetRostersFromBitsCommandHandler.cs" />
+    <Compile Include="Commands\HandleMailCommandHandler.cs" />
+    <Compile Include="Commands\InitializeIndexesCommandHandler.cs" />
+    <Compile Include="Commands\PublishRosterMailsCommandHandler.cs" />
+    <Compile Include="Commands\MatchRegisteredCommandHandler.cs" />
+    <Compile Include="Commands\NewUserCreatedCommandHandler.cs" />
+    <Compile Include="Commands\OneTimeKeyCommandHandler.cs" />
+    <Compile Include="Commands\RegisterMatchesCommandHandler.cs" />
+    <Compile Include="Commands\RegisterPendingMatchCommandHandler.cs" />
+    <Compile Include="Commands\SendEmailCommandHandler.cs" />
+    <Compile Include="Commands\PublishRosterMailCommandHandler.cs" />
+    <Compile Include="Commands\UserInvitedCommandHandler.cs" />
+    <Compile Include="Commands\VerifyMatchCommandHandler.cs" />
+    <Compile Include="Commands\VerifyMatchesCommandHandler.cs" />
+    <Compile Include="Infrastructure\Database\ChangeLog.cs" />
+    <Compile Include="Infrastructure\Database\HasVersion.cs" />
+    <Compile Include="Infrastructure\Database\RateLimit.cs" />
+    <Compile Include="Infrastructure\Database\SentEmail.cs" />
+    <Compile Include="Infrastructure\HandledException.cs" />
+    <Compile Include="Models\EmailState.cs" />
+    <Compile Include="Models\InviteUserEmail_State.cs" />
+    <Compile Include="Models\MatchRegisteredEmail_State.cs" />
+    <Compile Include="Models\OneTimePasswordEmail_State.cs" />
+    <Compile Include="Models\SendEmail_State.cs" />
+    <Compile Include="Models\UpdateRosterEmail_State.cs" />
+    <Compile Include="Models\UserRegisteredEmail_State.cs" />
+    <Compile Include="TaskHandlers\TaskHandler.cs" />
+    <Compile Include="Commands\CommandExecutor.cs" />
+    <Compile Include="Commands\CommandHandler.cs" />
+    <Compile Include="Commands\ICommandHandler.cs" />
+    <Compile Include="Commands\CreateRosterMailCommandHandler.cs" />
+    <Compile Include="ExternalCommands\CommandHandler.cs" />
+    <Compile Include="ExternalCommands\GetPlayersFromBitsCommandHandler.cs" />
+    <Compile Include="ExternalCommands\GetRostersFromBitsCommandHandler.cs" />
+    <Compile Include="ExternalCommands\ICommandHandler.cs" />
+    <Compile Include="ExternalCommands\InitializeIndexesCommandHandler.cs" />
+    <Compile Include="ExternalCommands\PublishExpiredTasksCommandHandler.cs" />
+    <Compile Include="ExternalCommands\RegisterMatchesCommandHandler.cs" />
+    <Compile Include="ExternalCommands\SendDelayedMailCommandHandler.cs" />
+    <Compile Include="ExternalCommands\VerifyMatchesCommandHandler.cs" />
+    <Compile Include="Infrastructure\Attributes\ValidateModelAttributeMvc.cs" />
+    <Compile Include="Infrastructure\Attributes\ValidateModelAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\CorrelationIdFilterAttribute.cs" />
-    <Compile Include="Areas\V2\Tasks\EmailTaskHandler.cs" />
-    <Compile Include="Areas\V2\Tasks\GetPlayersFromBitsTaskHandler.cs" />
-    <Compile Include="Areas\V2\Tasks\GetRostersFromBitsTaskHandler.cs" />
-    <Compile Include="Areas\V2\Tasks\InitializeIndexesTaskHandler.cs" />
-    <Compile Include="Areas\V2\Tasks\InitiateUpdateMailTaskHandler.cs" />
-    <Compile Include="Areas\V2\Tasks\ITaskHandler.cs" />
+    <Compile Include="TaskHandlers\EmailTaskHandler.cs" />
+    <Compile Include="TaskHandlers\GetPlayersFromBitsTaskHandler.cs" />
+    <Compile Include="TaskHandlers\GetRostersFromBitsTaskHandler.cs" />
+    <Compile Include="TaskHandlers\InitializeIndexesTaskHandler.cs" />
+    <Compile Include="TaskHandlers\PublishRosterMailsTaskHandler.cs" />
+    <Compile Include="TaskHandlers\ITaskHandler.cs" />
     <Compile Include="Areas\V2\Controllers\AuditLogViewerController.cs" />
     <Compile Include="Areas\V2\Domain\AuditLogEntry.cs" />
     <Compile Include="Areas\V2\Domain\FormattedAuditLog.cs" />
@@ -142,16 +195,19 @@
     <Compile Include="Areas\V2\Domain\RosterState.cs" />
     <Compile Include="Areas\V2\Extensions.cs" />
     <Compile Include="Areas\V2\IAuditLogCapable.cs" />
-    <Compile Include="Areas\V2\Tasks\MatchRegisteredTaskHandler.cs" />
-    <Compile Include="Areas\V2\Tasks\NewUserCreatedTaskHandler.cs" />
-    <Compile Include="Areas\V2\Tasks\OneTimeKeyTaskHandler.cs" />
-    <Compile Include="Areas\V2\Tasks\RegisterMatchesTaskHandler.cs" />
-    <Compile Include="Areas\V2\Tasks\RegisterMatchTaskHandler.cs" />
-    <Compile Include="Areas\V2\Tasks\SendUpdateMailTaskHandler.cs" />
-    <Compile Include="Areas\V2\Tasks\TaskPublisher.cs" />
-    <Compile Include="Areas\V2\Tasks\UserInvitedTaskHandler.cs" />
-    <Compile Include="Areas\V2\Tasks\VerifyMatchesTaskHandler.cs" />
-    <Compile Include="Areas\V2\Tasks\VerifyMatchTaskHandler.cs" />
+    <Compile Include="TaskHandlers\MatchRegisteredTaskHandler.cs" />
+    <Compile Include="TaskHandlers\NewUserCreatedTaskHandler.cs" />
+    <Compile Include="TaskHandlers\OneTimeKeyTaskHandler.cs" />
+    <Compile Include="TaskHandlers\RegisterMatchesTaskHandler.cs" />
+    <Compile Include="TaskHandlers\RegisterMatchTaskHandler.cs" />
+    <Compile Include="TaskHandlers\PublishRosterMailTaskHandler.cs" />
+    <Compile Include="Infrastructure\CompositionRoot.cs" />
+    <Compile Include="Infrastructure\Database\RosterMail.cs" />
+    <Compile Include="Infrastructure\Installers\CompositionRootInstaller.cs" />
+    <Compile Include="Infrastructure\TaskPublisher.cs" />
+    <Compile Include="TaskHandlers\UserInvitedTaskHandler.cs" />
+    <Compile Include="TaskHandlers\VerifyMatchesTaskHandler.cs" />
+    <Compile Include="TaskHandlers\VerifyMatchTaskHandler.cs" />
     <Compile Include="Infrastructure\Bits\BitsMatchResult.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\PlayerResult.cs" />
     <Compile Include="Infrastructure\Bits\Contracts\Converter.cs" />
@@ -167,7 +223,6 @@
     <Compile Include="Areas\V2\Controllers\ActivityIndexController.cs" />
     <Compile Include="Areas\V2\Controllers\AdminRosterAcceptController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\ApiErrorController.cs" />
-    <Compile Include="Areas\V2\Controllers\Api\QueryController.cs" />
     <Compile Include="Areas\V2\Controllers\Api\TaskController.cs" />
     <Compile Include="Areas\V2\Controllers\EliteMedalsPrintController.cs" />
     <Compile Include="Areas\V2\Controllers\RosterAcceptController.cs" />
@@ -185,8 +240,8 @@
     <Compile Include="Areas\V2\Indexes\OneTimeTokenIndex.cs" />
     <Compile Include="Areas\V2\Queries\GetPendingMatchesQuery.cs" />
     <Compile Include="Areas\V2\Queries\GetPlayersQuery.cs" />
-    <Compile Include="Areas\V2\Commands\RegisterMatch4Command.cs" />
-    <Compile Include="Areas\V2\Commands\RegisterMatchCommand.cs" />
+    <Compile Include="Commands\RegisterMatch4CommandHandler.cs" />
+    <Compile Include="Commands\RegisterMatchCommandHandler.cs" />
     <Compile Include="Areas\V2\Controllers\Api\CalendarController.cs" />
     <Compile Include="Areas\V2\Controllers\LayoutController.cs" />
     <Compile Include="Areas\V2\Domain\EliteMedals.cs" />
@@ -285,15 +340,22 @@
     <Compile Include="Infrastructure\Attributes\UnhandledExceptionFilter.cs" />
     <Compile Include="Infrastructure\BaseViewPage.cs" />
     <Compile Include="Infrastructure\Bits\BitsClient.cs" />
+    <Compile Include="Infrastructure\IHandlerContext.cs" />
+    <Compile Include="Infrastructure\NLogLoggingProvider.cs" />
+    <Compile Include="Infrastructure\CurrentHttpContext.cs" />
+    <Compile Include="Infrastructure\Installers\CommandHandlerInstaller.cs" />
+    <Compile Include="Infrastructure\LoggingExceptionLogger.cs" />
     <Compile Include="Infrastructure\CustomIdentity.cs" />
     <Compile Include="Infrastructure\CustomPrincipal.cs" />
     <Compile Include="Infrastructure\Database\Bits_Hall.cs" />
     <Compile Include="Infrastructure\Database\Bits_Team.cs" />
-    <Compile Include="Infrastructure\Database\DatabaseContext.cs" />
+    <Compile Include="Infrastructure\Database\SnittlistanContext.cs" />
     <Compile Include="Infrastructure\Database\Databases.cs" />
-    <Compile Include="Infrastructure\Database\DelayedTask.cs" />
+    <Compile Include="Infrastructure\Database\IBitsContext.cs" />
+    <Compile Include="Infrastructure\Database\ISnittlistanContext.cs" />
     <Compile Include="Infrastructure\Database\PublishedTask.cs" />
     <Compile Include="Infrastructure\Database\BitsContext.cs" />
+    <Compile Include="Infrastructure\Database\Tenant.cs" />
     <Compile Include="Infrastructure\EventStoreLite\AggregateRoot.cs" />
     <Compile Include="Infrastructure\EventStoreLite\Event.cs" />
     <Compile Include="Infrastructure\EventStoreLite\EventDispatcher.cs" />
@@ -316,7 +378,6 @@
     <Compile Include="Infrastructure\HttpNotFoundAwareDefaultHttpControllerSelector.cs" />
     <Compile Include="Infrastructure\Bits\IBitsClient.cs" />
     <Compile Include="Infrastructure\ICalFormatter.cs" />
-    <Compile Include="Infrastructure\ICommand.cs" />
     <Compile Include="Infrastructure\Installers\ApiControllerInstaller.cs" />
     <Compile Include="Infrastructure\Installers\DatabaseContextInstaller.cs" />
     <Compile Include="Infrastructure\Installers\EmailServiceInstaller.cs" />
@@ -330,6 +391,8 @@
     <Compile Include="Infrastructure\IoC\WindsorHttpDependencyResolver.cs" />
     <Compile Include="Infrastructure\HttpNotFoundAwareControllerActionSelector.cs" />
     <Compile Include="Infrastructure\IQuery.cs" />
+    <Compile Include="Infrastructure\HandlerContext.cs" />
+    <Compile Include="Infrastructure\NLogLogger.cs" />
     <Compile Include="Infrastructure\OutlookAgentMessageHandler.cs" />
     <Compile Include="Infrastructure\RateHandler.cs" />
     <Compile Include="Models\EmailBase.cs" />
@@ -398,7 +461,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\DocumentSessionExtensions.cs" />
+    <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\InputError.cs" />
     <Compile Include="HtmlHelpers\CssType.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
@@ -562,6 +625,7 @@
     <Content Include="robots.txt" />
     <Content Include="Rotativa\help-wkhtmltoimage.txt" />
     <Content Include="Rotativa\help-wkhtmltopdf.txt" />
+    <Content Include="packages.lock.json" />
     <None Include="Rotativa\wkhtmltoimage.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
