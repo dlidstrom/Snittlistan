@@ -1,20 +1,17 @@
-namespace Snittlistan.Web.Areas.V2.Indexes
-{
-    using System.Linq;
-    using Domain;
-    using Raven.Client.Indexes;
+using Snittlistan.Web.Areas.V2.Domain;
+using Raven.Client.Indexes;
 
-    public class OneTimeTokenIndex : AbstractIndexCreationTask<OneTimeToken>
+namespace Snittlistan.Web.Areas.V2.Indexes;
+public class OneTimeTokenIndex : AbstractIndexCreationTask<OneTimeToken>
+{
+    public OneTimeTokenIndex()
     {
-        public OneTimeTokenIndex()
-        {
-            Map = tokens => from token in tokens
-                            select new
-                            {
-                                token.OneTimeKey,
-                                token.PlayerId,
-                                token.CreatedDate
-                            };
-        }
+        Map = tokens => from token in tokens
+                        select new
+                        {
+                            token.OneTimeKey,
+                            token.PlayerId,
+                            token.CreatedDate
+                        };
     }
 }

@@ -8,6 +8,16 @@
         "resolved": "4.4.1",
         "contentHash": "zanbjWC0Y05gbx4eGXkzVycOQqVOFVeCjVsDSyuao9P4mtN1w3WxxTo193NGC7j3o2u3AJRswaoC6hEbnGACnQ=="
       },
+      "Castle.Core-NLog": {
+        "type": "Direct",
+        "requested": "[4.4.1, )",
+        "resolved": "4.4.1",
+        "contentHash": "5nyAkQ+Akl+s9fucvwg3fYACIiMCnO8LvzRut9I8W77gojCEha3wz1iTEPvE3ehcPQDkwDDQblVmvSv0kHRKkg==",
+        "dependencies": {
+          "Castle.Core": "[4.4.1]",
+          "NLog": "4.5.0"
+        }
+      },
       "Castle.Facilities.AspNet.SystemWeb": {
         "type": "Direct",
         "requested": "[5.1.1, )",
@@ -16,6 +26,15 @@
         "dependencies": {
           "Castle.Windsor": "[5.1.1]",
           "Microsoft.Web.Infrastructure": "1.0.0"
+        }
+      },
+      "Castle.LoggingFacility": {
+        "type": "Direct",
+        "requested": "[5.1.1, )",
+        "resolved": "5.1.1",
+        "contentHash": "bNVitNOxpQTPkjAs1AtxFhIdXBUndcqjC/nhKRW8ofOuwbPgVtKrGFaSLLLleYNW5F+Whj+s9TIWgmj2WxqwWw==",
+        "dependencies": {
+          "Castle.Windsor": "[5.1.1]"
         }
       },
       "Castle.Windsor": {
@@ -311,7 +330,6 @@
       "snittlistan.queue": {
         "type": "Project",
         "dependencies": {
-          "EntityFramework6.Npgsql": "6.4.3",
           "Lindhart.Analyser.MissingAwaitWarning": "2.0.0",
           "Microsoft.AspNet.WebApi.Client": "5.2.7",
           "MvcContrib": "2.0.95",

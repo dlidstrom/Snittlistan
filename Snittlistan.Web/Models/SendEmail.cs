@@ -1,25 +1,31 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Web.Models
+namespace Snittlistan.Web.Models;
+
+public class SendEmail : EmailBase
 {
-    public class SendEmail : EmailBase
+    private readonly SendEmail_State _state;
+
+    public SendEmail(string to, string subject, string content)
+        : base("Mail")
     {
-        private SendEmail(string to, string subject, string content)
-            : base("Mail", to, subject)
-        {
-            Content = content;
-        }
+        _state = new(
+            to,
+            subject,
+            content);
+    }
 
-        public string Content { get; }
+    public string Content => _state.Content;
 
-        public static SendEmail ToRecipient(string to, string subject, string content)
-        {
-            return new SendEmail(to, subject, content);
-        }
+    public override EmailState State => _state;
 
-        public static SendEmail ToAdmin(string to, string content)
-        {
-            return new SendEmail(OwnerEmail, to, content);
-        }
+    public static SendEmail ToRecipient(string to, string subject, string content)
+    {
+        return new SendEmail(to, subject, content);
+    }
+
+    public static SendEmail ToAdmin(string to, string content)
+    {
+        return new SendEmail(EmailState.OwnerEmail, to, content);
     }
 }

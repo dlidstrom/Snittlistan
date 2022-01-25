@@ -1,58 +1,53 @@
-﻿namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
+﻿namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary;
+public class Match4Analyzer
 {
-    using System.Collections.Generic;
-    using System.Linq;
+    private readonly MatchSerie4[] matchSeries;
+    private readonly Dictionary<string, Player> players;
 
-    public class Match4Analyzer
+    public Match4Analyzer(MatchSerie4[] matchSeries, Dictionary<string, Player> players)
     {
-        private readonly MatchSerie4[] matchSeries;
-        private readonly Dictionary<string, Player> players;
+        this.matchSeries = matchSeries;
+        this.players = players;
+    }
 
-        public Match4Analyzer(MatchSerie4[] matchSeries, Dictionary<string, Player> players)
-        {
-            this.matchSeries = matchSeries;
-            this.players = players;
-        }
+    public string GetBodyText()
+    {
+        Series4Scores[] seriesScores = GetSeriesScores();
+        PlayerPin[] playerPins = seriesScores.SelectMany(x => x.PlayerResults)
+                                     .GroupBy(x => x.PlayerId)
+                                     .Select(x => new PlayerPin(x.Key, (double)x.Sum(y => y.Pins) / x.Count(), x.Sum(y => y.Score), x.Sum(y => y.Pins), x.Count()))
+                                     .ToArray();
 
-        public string GetBodyText()
-        {
-            Series4Scores[] seriesScores = GetSeriesScores();
-            PlayerPin[] playerPins = seriesScores.SelectMany(x => x.PlayerResults)
-                                         .GroupBy(x => x.PlayerId)
-                                         .Select(x => new PlayerPin(x.Key, (double)x.Sum(y => y.Pins) / x.Count(), x.Sum(y => y.Score), x.Sum(y => y.Pins), x.Count()))
-                                         .ToArray();
-
-            string lastSentence = string.Join(
-                ", ",
-                playerPins.OrderByDescending(x => x.Pins).Select(x =>
-                {
-                    string part;
-                    if (x.SeriesPlayed == 4)
-                    {
-                        part = $"{players[x.PlayerId].Nickname} {x.Pins}";
-                    }
-                    else
-                    {
-                        part = $"{players[x.PlayerId].Nickname} {x.Pins} ({x.SeriesPlayed})";
-                    }
-
-                    return part;
-                }));
-
-            return lastSentence + ".";
-        }
-
-        private Series4Scores[] GetSeriesScores()
-        {
-            // calculate series scores
-            var seriesScores = new List<Series4Scores>();
-            foreach (MatchSerie4 matchSerie in matchSeries)
+        string lastSentence = string.Join(
+            ", ",
+            playerPins.OrderByDescending(x => x.Pins).Select(x =>
             {
-                var seriesScore = new Series4Scores(matchSerie);
-                seriesScores.Add(seriesScore);
-            }
+                string part;
+                if (x.SeriesPlayed == 4)
+                {
+                    part = $"{players[x.PlayerId].Nickname} {x.Pins}";
+                }
+                else
+                {
+                    part = $"{players[x.PlayerId].Nickname} {x.Pins} ({x.SeriesPlayed})";
+                }
 
-            return seriesScores.ToArray();
+                return part;
+            }));
+
+        return lastSentence + ".";
+    }
+
+    private Series4Scores[] GetSeriesScores()
+    {
+        // calculate series scores
+        var seriesScores = new List<Series4Scores>();
+        foreach (MatchSerie4 matchSerie in matchSeries)
+        {
+            var seriesScore = new Series4Scores(matchSerie);
+            seriesScores.Add(seriesScore);
         }
+
+        return seriesScores.ToArray();
     }
 }

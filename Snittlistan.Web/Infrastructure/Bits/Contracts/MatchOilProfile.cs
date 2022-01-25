@@ -1,15 +1,14 @@
-﻿#nullable enable
+﻿
+using Newtonsoft.Json;
 
-namespace Snittlistan.Web.Infrastructure.Bits.Contracts
+#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Bits.Contracts;
+public class MatchOilProfile
 {
-    using Newtonsoft.Json;
+    [JsonProperty("oilPatternId")]
+    public long OilPatternId { get; set; }
 
-    public class MatchOilProfile
-    {
-        [JsonProperty("oilPatternId")]
-        public long OilPatternId { get; set; }
-
-        [JsonProperty("oilPatternName")]
-        public string? OilPatternName { get; set; }
-    }
+    [JsonProperty("oilPatternName")]
+    public string? OilPatternName { get; set; }
 }

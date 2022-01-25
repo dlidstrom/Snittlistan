@@ -1,44 +1,43 @@
-﻿namespace Snittlistan.Web.Models
+﻿
+using Raven.Imports.Newtonsoft.Json;
+
+namespace Snittlistan.Web.Models;
+public class WebsiteConfig
 {
-    using Raven.Imports.Newtonsoft.Json;
+    public const string GlobalId = "WebsiteConfig";
 
-    public class WebsiteConfig
+    public WebsiteConfig(TeamNameAndLevel[] teamNamesAndLevels, bool hasV1, int clubId, int seasonId)
     {
-        public const string GlobalId = "WebsiteConfig";
+        Id = GlobalId;
+        TeamNamesAndLevels = teamNamesAndLevels ?? new TeamNameAndLevel[0];
+        HasV1 = hasV1;
+        ClubId = clubId;
+        SeasonId = seasonId;
+    }
 
-        public WebsiteConfig(TeamNameAndLevel[] teamNamesAndLevels, bool hasV1, int clubId, int seasonId)
+    public string Id { get; }
+
+    public TeamNameAndLevel[] TeamNamesAndLevels { get; }
+
+    public bool HasV1 { get; }
+
+    public int ClubId { get; }
+
+    public int SeasonId { get; }
+
+    public class TeamNameAndLevel
+    {
+        public TeamNameAndLevel(string teamName, string level)
         {
-            Id = GlobalId;
-            TeamNamesAndLevels = teamNamesAndLevels ?? new TeamNameAndLevel[0];
-            HasV1 = hasV1;
-            ClubId = clubId;
-            SeasonId = seasonId;
+            TeamName = teamName;
+            Level = level;
         }
 
-        public string Id { get; }
+        public string TeamName { get; }
 
-        public TeamNameAndLevel[] TeamNamesAndLevels { get; }
+        public string Level { get; }
 
-        public bool HasV1 { get; }
-
-        public int ClubId { get; }
-
-        public int SeasonId { get; }
-
-        public class TeamNameAndLevel
-        {
-            public TeamNameAndLevel(string teamName, string level)
-            {
-                TeamName = teamName;
-                Level = level;
-            }
-
-            public string TeamName { get; }
-
-            public string Level { get; }
-
-            [JsonIgnore]
-            public string FormattedForOption => $"{TeamName};{Level}";
-        }
+        [JsonIgnore]
+        public string FormattedForOption => $"{TeamName};{Level}";
     }
 }
