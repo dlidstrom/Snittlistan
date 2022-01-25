@@ -17,6 +17,8 @@ public class SnittlistanContext : DbContext, ISnittlistanContext
 
     public IDbSet<RateLimit> RateLimits { get; set; } = null!;
 
+    public IDbSet<SentEmail> SentEmails { get; set; } = null!;
+
     protected override void OnModelCreating(DbModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using Castle.Core.Logging;
+using Elmah;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Database;
 using Snittlistan.Web.Models;
@@ -44,6 +45,13 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
         }
 
         TEmail email = await CreateEmail(context);
+        EmailState state = email.State;
+        _ = CompositionRoot.Databases.Snittlistan.SentEmails.Add(new(
+            email.From,
+            email.To,
+            email.Bcc,
+            email.Subject,
+            state));
         await CompositionRoot.EmailService.SendAsync(email);
         rateLimit.DecreaseAllowance(now);
     }

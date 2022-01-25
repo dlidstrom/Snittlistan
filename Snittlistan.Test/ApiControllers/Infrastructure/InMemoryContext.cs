@@ -111,6 +111,7 @@ public class InMemoryContext : ISnittlistanContext, IBitsContext
         RosterMails = new InMemoryDbSet<RosterMail>(generator);
         ChangeLogs = new InMemoryDbSet<ChangeLog>(generator);
         RateLimits = new InMemoryDbSet<RateLimit>(generator);
+        SentEmails = new InMemoryDbSet<SentEmail>(generator);
     }
 
     public IDbSet<PublishedTask> PublishedTasks { get; }
@@ -126,6 +127,8 @@ public class InMemoryContext : ISnittlistanContext, IBitsContext
     public IDbSet<ChangeLog> ChangeLogs { get; }
 
     public IDbSet<RateLimit> RateLimits { get; }
+
+    public IDbSet<SentEmail> SentEmails { get; }
 
     public DbChangeTracker ChangeTracker => throw new NotImplementedException();
 

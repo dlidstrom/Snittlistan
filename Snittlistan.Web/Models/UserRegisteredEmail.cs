@@ -4,18 +4,25 @@ namespace Snittlistan.Web.Models;
 
 public class UserRegisteredEmail : EmailBase
 {
+    private readonly UserRegisteredEmail_State _state;
+
     public UserRegisteredEmail(
         string to,
         string subject,
         string id,
         string activationKey)
-        : base("UserRegistered", to, subject)
+        : base("UserRegistered")
     {
-        Id = id;
-        ActivationKey = activationKey;
+        _state = new(
+            to,
+            subject,
+            id,
+            activationKey);
     }
 
-    public string Id { get; }
+    public string Id => _state.Id;
 
-    public string ActivationKey { get; }
+    public string ActivationKey => _state.ActivationKey;
+
+    public override EmailState State => _state;
 }

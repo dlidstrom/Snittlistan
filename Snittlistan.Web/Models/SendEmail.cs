@@ -4,13 +4,20 @@ namespace Snittlistan.Web.Models;
 
 public class SendEmail : EmailBase
 {
-    private SendEmail(string to, string subject, string content)
-        : base("Mail", to, subject)
+    private readonly SendEmail_State _state;
+
+    public SendEmail(string to, string subject, string content)
+        : base("Mail")
     {
-        Content = content;
+        _state = new(
+            to,
+            subject,
+            content);
     }
 
-    public string Content { get; }
+    public string Content => _state.Content;
+
+    public override EmailState State => _state;
 
     public static SendEmail ToRecipient(string to, string subject, string content)
     {
@@ -19,6 +26,6 @@ public class SendEmail : EmailBase
 
     public static SendEmail ToAdmin(string to, string content)
     {
-        return new SendEmail(OwnerEmail, to, content);
+        return new SendEmail(EmailState.OwnerEmail, to, content);
     }
 }

@@ -17,6 +17,8 @@ public interface ISnittlistanContext
 
     IDbSet<RateLimit> RateLimits { get; }
 
+    IDbSet<SentEmail> SentEmails { get; }
+
     DbChangeTracker ChangeTracker { get; }
 
     Task<int> SaveChangesAsync();

@@ -156,7 +156,15 @@
     <Compile Include="Infrastructure\Database\ChangeLog.cs" />
     <Compile Include="Infrastructure\Database\HasVersion.cs" />
     <Compile Include="Infrastructure\Database\RateLimit.cs" />
+    <Compile Include="Infrastructure\Database\SentEmail.cs" />
     <Compile Include="Infrastructure\HandledException.cs" />
+    <Compile Include="Models\EmailState.cs" />
+    <Compile Include="Models\InviteUserEmail_State.cs" />
+    <Compile Include="Models\MatchRegisteredEmail_State.cs" />
+    <Compile Include="Models\OneTimePasswordEmail_State.cs" />
+    <Compile Include="Models\SendEmail_State.cs" />
+    <Compile Include="Models\UpdateRosterEmail_State.cs" />
+    <Compile Include="Models\UserRegisteredEmail_State.cs" />
     <Compile Include="TaskHandlers\TaskHandler.cs" />
     <Compile Include="Commands\CommandExecutor.cs" />
     <Compile Include="Commands\CommandHandler.cs" />
