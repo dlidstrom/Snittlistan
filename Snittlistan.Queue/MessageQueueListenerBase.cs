@@ -209,8 +209,7 @@ public abstract class MessageQueueListenerBase : IDisposable
         // can't be moved to the error queue)
         string contents = new StreamReader(message.BodyStream).ReadToEnd();
 
-        // try to process message up to 5 times
-        const int MaximumTries = 5;
+        const int MaximumTries = 1;
         try
         {
             await DoHandle(contents);
