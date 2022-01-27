@@ -5,18 +5,23 @@ using Newtonsoft.Json;
 
 namespace Snittlistan.Queue.Messages;
 
-public class EmailTask : TaskBase
+public class SendEmailTask : TaskBase
 {
     [JsonConstructor]
-    private EmailTask(string to, string subject, string content)
-        : base(new(typeof(EmailTask).FullName, to))
+    private SendEmailTask(string to, string subject, string content, int ratePerSeconds)
+        : base(new(typeof(SendEmailTask).FullName, to))
     {
         To = to;
         Subject = subject;
         Content = content;
+        RatePerSeconds = ratePerSeconds;
     }
 
-    public static EmailTask Create(string recipient, string subject, string content)
+    public static SendEmailTask Create(
+        string recipient,
+        string subject,
+        string content,
+        int ratePerSeconds)
     {
         if (subject == null)
         {
@@ -28,11 +33,12 @@ public class EmailTask : TaskBase
             throw new ArgumentNullException(nameof(content));
         }
 
-        EmailTask emailTask =
+        SendEmailTask emailTask =
             new(
                 recipient,
                 Convert.ToBase64String(Encoding.UTF8.GetBytes(subject)),
-                Convert.ToBase64String(Encoding.UTF8.GetBytes(content)));
+                Convert.ToBase64String(Encoding.UTF8.GetBytes(content)),
+                ratePerSeconds);
         return emailTask;
     }
 
@@ -42,6 +48,8 @@ public class EmailTask : TaskBase
 
     public string Content { get; }
 
+    public int RatePerSeconds { get; }
+
     public override string ToString()
     {
         StringBuilder builder = new();
@@ -49,6 +57,7 @@ public class EmailTask : TaskBase
             .AppendLine("Subject:   " + Subject)
             .AppendLine("Recipient: " + To)
             .AppendLine("Content:   " + Encoding.UTF8.GetString(Convert.FromBase64String(Content)).Substring(0, Math.Min(Content.Length, 250)))
+            .AppendLine("Rate: " + To)
             .ToString();
     }
 }

@@ -12,15 +12,6 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
     : ICommandHandler<TCommand>
     where TEmail : EmailBase
 {
-    private readonly int rate;
-    private readonly int perSeconds;
-
-    protected HandleMailCommandHandler(int rate, int perSeconds)
-    {
-        this.rate = rate;
-        this.perSeconds = perSeconds;
-    }
-
     public CompositionRoot CompositionRoot { get; set; } = null!;
 
     public ILogger Logger { get; set; } = NullLogger.Instance;
@@ -32,6 +23,7 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
             .SingleOrDefaultAsync(x => x.Key == key);
         if (rateLimit == null)
         {
+            (int rate, int perSeconds) = GetRate(context.Payload);
             rateLimit = CompositionRoot.Databases.Snittlistan.RateLimits.Add(
                 new(key, 1, rate, perSeconds));
         }
@@ -66,4 +58,8 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
     protected abstract Task<TEmail> CreateEmail(HandlerContext<TCommand> context);
 
     protected abstract string GetKey(TCommand command);
+
+    protected abstract RatePerSeconds GetRate(TCommand command);
+
+    protected record RatePerSeconds(int Rate, int PerSeconds);
 }

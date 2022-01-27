@@ -263,7 +263,7 @@ public class AuthenticationController : AbstractController
 
     private async Task NotifyEvent(string subject, string? body = null)
     {
-        EmailTask task = EmailTask.Create(
+        SendEmailTask task = SendEmailTask.Create(
             ConfigurationManager.AppSettings["OwnerEmail"],
             subject,
             string.Join(
@@ -273,7 +273,8 @@ public class AuthenticationController : AbstractController
                         $"User Agent: {Request.UserAgent}",
                         $"Referrer: {Request.UrlReferrer}",
                         body ?? string.Empty
-                }));
+                }),
+            60);
         TaskPublisher taskPublisher = await GetTaskPublisher();
         taskPublisher.PublishTask(
             task,

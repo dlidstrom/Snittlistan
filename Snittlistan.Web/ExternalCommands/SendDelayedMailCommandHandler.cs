@@ -20,7 +20,11 @@ public class SendDelayedMailCommandHandler : ICommandHandler<SendDelayedMailComm
             Databases,
             command.CorrelationId,
             null);
-        EmailTask emailTask = EmailTask.Create(command.Recipient, command.Subject, command.Content);
+        SendEmailTask emailTask = SendEmailTask.Create(
+            command.Recipient,
+            command.Subject,
+            command.Content,
+            command.RatePerSeconds);
         taskPublisher.PublishDelayedTask(
             emailTask,
             DateTime.Now.AddSeconds(command.DelayInSeconds),

@@ -4,11 +4,11 @@ using System.Diagnostics;
 using System.Web;
 using System.Web.Mvc;
 using EventStoreLite;
-using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.Migration;
 using Snittlistan.Web.Areas.V2.ViewModels;
+using Snittlistan.Web.Commands;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Helpers;
 using Snittlistan.Web.Infrastructure;
@@ -209,10 +209,12 @@ public class AdminTasksController : AdminController
             return View(vm);
         }
 
-        TaskPublisher taskPublisher = await GetTaskPublisher();
-        taskPublisher.PublishTask(
-            EmailTask.Create(vm.Recipient, vm.Subject, vm.Content),
-            User.Identity.Name);
+        // todo: how many, immediately or delayed, how long to wait between sending
+        await ExecuteCommand(new SendEmailTaskCommandHandler.Command(
+            vm.Recipient,
+            vm.Subject,
+            vm.Content,
+            vm.Rate));
 
         return RedirectToAction("Index");
     }

@@ -9,11 +9,6 @@ namespace Snittlistan.Web.Commands;
 public class PublishRosterMailCommandHandler
     : HandleMailCommandHandler<PublishRosterMailCommandHandler.Command, UpdateRosterEmail>
 {
-    public PublishRosterMailCommandHandler()
-        : base(1, 300)
-    {
-    }
-
     protected override Task<UpdateRosterEmail> CreateEmail(HandlerContext<Command> context)
     {
         Player player = CompositionRoot.DocumentSession.Load<Player>(context.Payload.PlayerId);
@@ -39,6 +34,11 @@ public class PublishRosterMailCommandHandler
     protected override string GetKey(Command command)
     {
         return $"roster_mail:{command.PlayerId}";
+    }
+
+    protected override RatePerSeconds GetRate(Command command)
+    {
+        return new(1, 600);
     }
 
     public record Command(string RosterId, string PlayerId);

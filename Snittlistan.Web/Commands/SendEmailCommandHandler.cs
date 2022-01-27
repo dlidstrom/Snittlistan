@@ -6,16 +6,27 @@ using System.Text;
 
 namespace Snittlistan.Web.Commands;
 
-public class SendEmailCommandHandler : CommandHandler<SendEmailCommandHandler.Command>
+public class SendEmailCommandHandler
+    : HandleMailCommandHandler<SendEmailCommandHandler.Command, SendEmail>
 {
-    public override async Task Handle(HandlerContext<Command> context)
+    protected override Task<SendEmail> CreateEmail(HandlerContext<Command> context)
     {
         SendEmail email = SendEmail.ToRecipient(
             context.Payload.To,
             Encoding.UTF8.GetString(Convert.FromBase64String(context.Payload.Subject)),
             Encoding.UTF8.GetString(Convert.FromBase64String(context.Payload.Content)));
-        await CompositionRoot.EmailService.SendAsync(email);
+        return Task.FromResult(email);
     }
 
-    public record Command(string To, string Subject, string Content);
+    protected override string GetKey(Command command)
+    {
+        return $"send-email:{command.To}";
+    }
+
+    protected override RatePerSeconds GetRate(Command command)
+    {
+        return new(1, command.RatePerSeconds);
+    }
+
+    public record Command(string To, string Subject, string Content, int RatePerSeconds);
 }

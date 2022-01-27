@@ -63,7 +63,7 @@
     <Compile Include="JsonMessageFormatter.cs" />
     <Compile Include="LoggingHandler.cs" />
     <Compile Include="Messages\BusinessKey.cs" />
-    <Compile Include="Messages\EmailTask.cs" />
+    <Compile Include="Messages\SendEmailTask.cs" />
     <Compile Include="Messages\GetPlayersFromBitsTask.cs" />
     <Compile Include="Messages\GetRostersFromBitsTask.cs" />
     <Compile Include="Messages\InitializeIndexesTask.cs" />

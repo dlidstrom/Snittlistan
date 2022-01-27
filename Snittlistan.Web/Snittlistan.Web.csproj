@@ -150,6 +150,7 @@
     <Compile Include="Commands\RegisterPendingMatchCommandHandler.cs" />
     <Compile Include="Commands\SendEmailCommandHandler.cs" />
     <Compile Include="Commands\PublishRosterMailCommandHandler.cs" />
+    <Compile Include="Commands\SendEmailTaskCommandHandler.cs" />
     <Compile Include="Commands\UserInvitedCommandHandler.cs" />
     <Compile Include="Commands\VerifyMatchCommandHandler.cs" />
     <Compile Include="Commands\VerifyMatchesCommandHandler.cs" />
@@ -182,7 +183,7 @@
     <Compile Include="Infrastructure\Attributes\ValidateModelAttributeMvc.cs" />
     <Compile Include="Infrastructure\Attributes\ValidateModelAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\CorrelationIdFilterAttribute.cs" />
-    <Compile Include="TaskHandlers\EmailTaskHandler.cs" />
+    <Compile Include="TaskHandlers\SendEmailTaskHandler.cs" />
     <Compile Include="TaskHandlers\GetPlayersFromBitsTaskHandler.cs" />
     <Compile Include="TaskHandlers\GetRostersFromBitsTaskHandler.cs" />
     <Compile Include="TaskHandlers\InitializeIndexesTaskHandler.cs" />

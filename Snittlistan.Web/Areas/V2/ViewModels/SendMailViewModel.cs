@@ -1,7 +1,9 @@
-﻿
+﻿#nullable enable
+
 using System.ComponentModel.DataAnnotations;
 
 namespace Snittlistan.Web.Areas.V2.ViewModels;
+
 public class SendMailViewModel
 {
     public SendMailViewModel()
@@ -19,4 +21,11 @@ public class SendMailViewModel
 
     [Required, StringLength(1024)]
     public string Content { get; set; }
+
+    public enum RateSetting
+    {
+        OnePerMinute,
+        OnePerFiveMinutes,
+        OnePerFifteenMinutes
+    }
 }
