@@ -35,6 +35,10 @@
       Installed OR ADMINISTRATOR_PASSWORD
     </Condition>
 
+    <Condition Message="EMAIL_PASSWORD variable must be set in the command line">
+      Installed OR EMAIL_PASSWORD
+    </Condition>
+
     <?include conditions.wxi?>
 
     <CustomAction Id="VerifyMatches_Cmd"
@@ -87,6 +91,16 @@
                   Return="check"
                   Execute="deferred"
                   Impersonate="no" />
+    <CustomAction Id="PublishExpiredTasks_Cmd"
+                  Property="PublishExpiredTasks_Task"
+                  Execute="immediate"
+                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU Administrator /RP [ADMINISTRATOR_PASSWORD] /SC MINUTE /MO 1 /TN PublishExpiredTasks /TR &quot;\&quot;[#Snittlistan.Tool.exe]\&quot; PublishExpiredTasks&quot;" />
+    <CustomAction Id="PublishExpiredTasks_Task"
+                  BinaryKey="WixCA"
+                  DllEntry="CAQuietExec"
+                  Return="check"
+                  Execute="deferred"
+                  Impersonate="no" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <!--<Merge Id="VCRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\Microsoft_VC140_CRT_x86.msm" DiskId="1" Language="0" />-->
@@ -105,6 +119,16 @@
                             File="[SnittlistanWebDir]Web.config"
                             ElementPath="/configuration/appSettings/add[\[]@key='ElitemedalsTemplateFilename'[\]]/@value"
                             Value="[SnittlistanWebDir]elitmarke-ifyllbar1.pdf" />
+              <util:XmlFile Id="MailSettings"
+                            Action="setValue"
+                            File="[SnittlistanWebDir]Web.config"
+                            ElementPath="/configuration/system.net/mailSettings/smtp/network/@password"
+                            Value="[EMAIL_PASSWORD]" />
+              <util:XmlFile Id="MailSettings"
+                            Action="setValue"
+                            File="[SnittlistanWebDir]Web.config"
+                            ElementPath="/configuration/elmah/errorMail/@password"
+                            Value="[EMAIL_PASSWORD]" />
             </Component>
             <Component Id="elitmarke_ifyllbar1_pdf" Guid="*" Win64="yes">
               <File KeyPath="yes" Source="elitmarke-ifyllbar1.pdf" />
@@ -264,6 +288,8 @@
       <Custom Action="GetRostersFromBits_Task" After="GetRostersFromBits_Cmd">NOT Installed</Custom>
       <Custom Action="GetPlayersFromBits_Cmd" Before="InstallFinalize">NOT Installed</Custom>
       <Custom Action="GetPlayersFromBits_Task" After="GetPlayersFromBits_Cmd">NOT Installed</Custom>
+      <Custom Action="PublishExpiredTasks_Cmd" Before="InstallFinalize">NOT Installed</Custom>
+      <Custom Action="PublishExpiredTasks_Task" After="GetPlayersFromBits_Cmd">NOT Installed</Custom>
     </InstallExecuteSequence>
 
     <Feature Id="Service" Level="1">
