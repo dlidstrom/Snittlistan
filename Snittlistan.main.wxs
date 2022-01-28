@@ -124,7 +124,7 @@
                             File="[SnittlistanWebDir]Web.config"
                             ElementPath="/configuration/system.net/mailSettings/smtp/network/@password"
                             Value="[EMAIL_PASSWORD]" />
-              <util:XmlFile Id="MailSettings"
+              <util:XmlFile Id="ElmahSettings"
                             Action="setValue"
                             File="[SnittlistanWebDir]Web.config"
                             ElementPath="/configuration/elmah/errorMail/@password"
