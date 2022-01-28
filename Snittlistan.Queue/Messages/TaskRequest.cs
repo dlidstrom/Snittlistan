@@ -1,29 +1,21 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Queue.Messages
+namespace Snittlistan.Queue.Messages;
+
+public class TaskRequest
 {
-    using System;
-    using Newtonsoft.Json;
-
-    public class TaskRequest
+    public TaskRequest(MessageEnvelope envelope)
     {
-        private static readonly JsonSerializerSettings SerializerSettings = new()
-        {
-            Formatting = Formatting.Indented,
-            TypeNameHandling = TypeNameHandling.All
-        };
-
-        public TaskRequest(MessageEnvelope envelope)
-        {
-            TaskJson = JsonConvert.SerializeObject(envelope.Payload, SerializerSettings);
-            CorrelationId = envelope.CorrelationId;
-            MessageId = envelope.MessageId;
-        }
-
-        public string TaskJson { get; }
-
-        public Guid CorrelationId { get; }
-
-        public Guid MessageId { get; }
+        TaskJson = envelope.Payload.ToJson();
+        CorrelationId = envelope.CorrelationId;
+        MessageId = envelope.MessageId;
     }
+
+    public int TenantId { get; }
+
+    public string TaskJson { get; }
+
+    public Guid CorrelationId { get; }
+
+    public Guid MessageId { get; }
 }

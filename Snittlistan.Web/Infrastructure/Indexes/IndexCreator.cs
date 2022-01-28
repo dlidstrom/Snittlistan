@@ -1,69 +1,65 @@
-﻿namespace Snittlistan.Web.Infrastructure.Indexes
+﻿using System.ComponentModel.Composition.Hosting;
+using System.Reflection;
+using EventStoreLite;
+using NLog;
+using Raven.Client;
+using Raven.Client.Indexes;
+
+namespace Snittlistan.Web.Infrastructure.Indexes;
+public static class IndexCreator
 {
-    using System;
-    using System.ComponentModel.Composition.Hosting;
-    using System.Linq;
-    using System.Reflection;
-    using EventStoreLite;
-    using NLog;
-    using Raven.Client;
-    using Raven.Client.Indexes;
+    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-    public static class IndexCreator
+    public static void ResetIndexes(IDocumentStore store, EventStore eventStore)
     {
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-
-        public static void ResetIndexes(IDocumentStore store, EventStore eventStore)
+        if (store == null)
         {
-            if (store == null)
-            {
-                throw new ArgumentNullException(nameof(store));
-            }
+            throw new ArgumentNullException(nameof(store));
+        }
 
-            if (eventStore == null)
-            {
-                throw new ArgumentNullException(nameof(eventStore));
-            }
+        if (eventStore == null)
+        {
+            throw new ArgumentNullException(nameof(eventStore));
+        }
 
-            while (true)
+        while (true)
+        {
+            string[] indexNames = store.DatabaseCommands.GetIndexNames(0, 20);
+            foreach (string indexName in indexNames)
             {
-                string[] indexNames = store.DatabaseCommands.GetIndexNames(0, 20);
-                foreach (string indexName in indexNames)
+                if (string.Equals(indexName, "Raven/DocumentsByEntityName", StringComparison.OrdinalIgnoreCase) == false)
                 {
-                    if (string.Equals(indexName, "Raven/DocumentsByEntityName", StringComparison.OrdinalIgnoreCase) == false)
-                    {
-                        Log.Info("Deleting index {0}", indexName);
-                        store.DatabaseCommands.DeleteIndex(indexName);
-                    }
-                }
-
-                if (indexNames.Length <= 1)
-                {
-                    break;
+                    Log.Info("Deleting index {0}", indexName);
+                    store.DatabaseCommands.DeleteIndex(indexName);
                 }
             }
 
-            // create indexes
-            CreateIndexes(store);
-            eventStore.Initialize(store);
-        }
-
-        public static void CreateIndexes(IDocumentStore store)
-        {
-            System.Collections.Generic.IEnumerable<Type> indexesQuery = from type in Assembly.GetExecutingAssembly().GetTypes()
-                               where type.IsSubclassOf(typeof(AbstractIndexCreationTask))
-                                     && type.Namespace != null
-                                     && type.Namespace.StartsWith("EventStore") == false
-                               select type;
-
-            Type[] indexes = indexesQuery.ToArray();
-            foreach (Type index in indexes)
+            if (indexNames.Length <= 1)
             {
-                Log.Info("Creating index {0}", index);
+                break;
             }
-
-            var typeCatalog = new TypeCatalog(indexes);
-            IndexCreation.CreateIndexes(new CompositionContainer(typeCatalog), store);
         }
+
+        // create indexes
+        CreateIndexes(store);
+        eventStore.Initialize(store);
+    }
+
+    public static void CreateIndexes(IDocumentStore store)
+    {
+        System.Collections.Generic.IEnumerable<Type> indexesQuery = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                                                    where type.IsSubclassOf(typeof(AbstractIndexCreationTask))
+                                                                          && type.Namespace != null
+                                                                          && type.Namespace.StartsWith("EventStore") == false
+                                                                    select type;
+
+        Type[] indexes = indexesQuery.ToArray();
+        foreach (Type index in indexes)
+        {
+            Log.Info("Creating index {0}", index);
+        }
+
+        var typeCatalog = new TypeCatalog(indexes);
+        IndexCreation.CreateIndexes(new CompositionContainer(typeCatalog), store);
     }
 }

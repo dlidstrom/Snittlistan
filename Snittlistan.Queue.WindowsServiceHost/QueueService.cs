@@ -1,45 +1,42 @@
-﻿#nullable enable
+﻿using System.Configuration;
+using System.ServiceProcess;
+using NLog;
+using Snittlistan.Queue.Config;
 
-namespace Snittlistan.Queue.WindowsServiceHost
+#nullable enable
+
+namespace Snittlistan.Queue.WindowsServiceHost;
+public partial class QueueService : ServiceBase
 {
-    using System;
-    using System.Configuration;
-    using System.ServiceProcess;
-    using NLog;
-    using Snittlistan.Queue.Config;
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private readonly Application application;
 
-    public partial class QueueService : ServiceBase
+    public QueueService()
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly Application application;
+        InitializeComponent();
+        application = new(
+            (MessagingConfigSection)ConfigurationManager.GetSection("messaging"),
+            ConfigurationManager.AppSettings["UrlScheme"],
+            Convert.ToInt32(ConfigurationManager.AppSettings["UrlScheme"]));
+    }
 
-        public QueueService()
+    protected override void OnStart(string[] args)
+    {
+        try
         {
-            InitializeComponent();
-            application = new(
-                (MessagingConfigSection)ConfigurationManager.GetSection("messaging"),
-                ConfigurationManager.AppSettings["UrlScheme"],
-                Convert.ToInt32(ConfigurationManager.AppSettings["UrlScheme"]));
+            Logger.Info("Starting queue service");
+            application.Start();
         }
+        catch (Exception ex)
+        {
+            Logger.Fatal(ex);
+            ExitCode = 1;
+        }
+    }
 
-        protected override void OnStart(string[] args)
-        {
-            try
-            {
-                Logger.Info("Starting queue service");
-                application.Start();
-            }
-            catch (Exception ex)
-            {
-                Logger.Fatal(ex);
-                ExitCode = 1;
-            }
-        }
-
-        protected override void OnStop()
-        {
-            Logger.Info("Stopping queue service");
-            application.Stop();
-        }
+    protected override void OnStop()
+    {
+        Logger.Info("Stopping queue service");
+        application.Stop();
     }
 }

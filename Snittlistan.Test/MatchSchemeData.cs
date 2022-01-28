@@ -1,17 +1,14 @@
-﻿namespace Snittlistan.Test
-{
-    using System.Collections.Generic;
-    using NUnit.Framework;
+﻿using NUnit.Framework;
 
-    public partial class MatchSchemeData
+namespace Snittlistan.Test;
+public partial class MatchSchemeData
+{
+    public static IEnumerable<TestCaseData> TestCases
     {
-        public static IEnumerable<TestCaseData> TestCases
+        get
         {
-            get
-            {
-                yield return Fif;
-                yield return Vartan;
-            }
+            yield return Fif;
+            yield return Vartan;
         }
     }
 }

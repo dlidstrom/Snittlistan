@@ -1,9 +1,10 @@
- // ReSharper disable once CheckNamespace
-namespace EventStoreLite
+﻿#nullable enable
+
+namespace EventStoreLite;
+
+internal interface IAggregate
 {
-    internal interface IAggregate
-    {
-        string Id { get; }
-        IDomainEvent[] GetUncommittedChanges();
-    }
+    string Id { get; }
+
+    IDomainEvent[] GetUncommittedChanges();
 }
