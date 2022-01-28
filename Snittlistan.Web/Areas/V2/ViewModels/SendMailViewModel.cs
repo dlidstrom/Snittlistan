@@ -22,10 +22,31 @@ public class SendMailViewModel
     [Required, StringLength(1024)]
     public string Content { get; set; }
 
-    public enum RateSetting
+    [Required]
+    [Range(1, int.MaxValue)]
+    public RateSettingValues? RateSetting { get; set; }
+
+    [Required]
+    [Range(1, int.MaxValue)]
+    public MailCountValues? MailCount { get; set; }
+
+    public enum RateSettingValues
     {
-        OnePerMinute,
+        [Display(Name = "1 per minut")]
+        OnePerMinute = 1,
+        [Display(Name = "1 var 5:e minut")]
         OnePerFiveMinutes,
+        [Display(Name = "1 var 15:e minut")]
         OnePerFifteenMinutes
+    }
+
+    public enum MailCountValues
+    {
+        [Display(Name = "1 mail")]
+        One = 1,
+        [Display(Name = "5 mail")]
+        Five,
+        [Display(Name = "15 mail")]
+        Fifteen
     }
 }

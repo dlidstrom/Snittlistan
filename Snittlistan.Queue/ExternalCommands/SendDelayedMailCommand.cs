@@ -10,14 +10,14 @@ public class SendDelayedMailCommand : CommandBase
         string hostname,
         string subject,
         string content,
-        int rate)
+        int ratePerSeconds)
     {
         Recipient = recipient;
         DelayInSeconds = delayInSeconds;
         Hostname = hostname;
         Subject = subject;
         Content = content;
-        RatePerSeconds = rate;
+        RatePerSeconds = ratePerSeconds;
     }
 
     public string Recipient { get; }

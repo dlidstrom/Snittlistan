@@ -209,12 +209,30 @@ public class AdminTasksController : AdminController
             return View(vm);
         }
 
-        // todo: how many, immediately or delayed, how long to wait between sending
-        await ExecuteCommand(new SendEmailTaskCommandHandler.Command(
-            vm.Recipient,
-            vm.Subject,
-            vm.Content,
-            vm.Rate));
+        int ratePerSeconds = vm.RateSetting! switch
+        {
+            SendMailViewModel.RateSettingValues.OnePerMinute => 60,
+            SendMailViewModel.RateSettingValues.OnePerFiveMinutes => 5 * 60,
+            SendMailViewModel.RateSettingValues.OnePerFifteenMinutes => 15 * 60,
+            _ => 60
+        };
+
+        int mailCount = vm.MailCount! switch
+        {
+            SendMailViewModel.MailCountValues.One => 1,
+            SendMailViewModel.MailCountValues.Five => 5,
+            SendMailViewModel.MailCountValues.Fifteen => 15,
+            _ => 1
+        };
+
+        for (int i = 0; i < mailCount; i++)
+        {
+            await ExecuteCommand(new SendEmailTaskCommandHandler.Command(
+                vm.Recipient,
+                vm.Subject,
+                vm.Content,
+                ratePerSeconds));
+        }
 
         return RedirectToAction("Index");
     }

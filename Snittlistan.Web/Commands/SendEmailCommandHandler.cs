@@ -20,7 +20,7 @@ public class SendEmailCommandHandler
 
     protected override string GetKey(Command command)
     {
-        return $"send-email:{command.To}";
+        return $"send-email/{command.RatePerSeconds}:{command.To}";
     }
 
     protected override RatePerSeconds GetRate(Command command)

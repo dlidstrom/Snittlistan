@@ -40,11 +40,12 @@ public class RateLimit : HasVersion
         {
             Allowance = Rate;
         }
+
+        UpdatedDate = when;
     }
 
     public void DecreaseAllowance(DateTime when)
     {
         Allowance--;
-        UpdatedDate = when;
     }
 }
