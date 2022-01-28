@@ -159,6 +159,7 @@
     <Compile Include="Infrastructure\Database\RateLimit.cs" />
     <Compile Include="Infrastructure\Database\SentEmail.cs" />
     <Compile Include="Infrastructure\HandledException.cs" />
+    <Compile Include="Infrastructure\CustomHeaderModule.cs" />
     <Compile Include="Models\EmailState.cs" />
     <Compile Include="Models\InviteUserEmail_State.cs" />
     <Compile Include="Models\MatchRegisteredEmail_State.cs" />
