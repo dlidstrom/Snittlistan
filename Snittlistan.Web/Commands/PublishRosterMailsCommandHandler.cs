@@ -12,7 +12,8 @@ public class PublishRosterMailsCommandHandler : CommandHandler<PublishRosterMail
 {
     public override async Task Handle(HandlerContext<Command> context)
     {
-        Roster roster = CompositionRoot.DocumentSession.Load<Roster>(context.Payload.RosterId);
+        // TODO might be comma-separated values
+        Roster roster = CompositionRoot.DocumentSession.Load<Roster>(context.Payload.RosterKey);
         AuditLogEntry auditLogEntry = roster.AuditLogEntries.Single(x => x.CorrelationId == context.CorrelationId);
         RosterState before = (RosterState)auditLogEntry.Before;
         RosterState after = (RosterState)auditLogEntry.After;
@@ -20,16 +21,16 @@ public class PublishRosterMailsCommandHandler : CommandHandler<PublishRosterMail
         foreach (string playerId in new HashSet<string>(affectedPlayers))
         {
             PublishRosterMailTask message = new(
-                context.Payload.RosterId,
+                context.Payload.RosterKey,
                 playerId);
             context.PublishMessage(message);
         }
 
         RosterMail rosterMail =
             await CompositionRoot.Databases.Snittlistan.RosterMails.SingleAsync(
-                x => x.RosterId == context.Payload.RosterId && x.PublishedDate == null);
+                x => x.RosterKey == context.Payload.RosterKey && x.PublishedDate == null);
         rosterMail.MarkPublished(DateTime.Now);
     }
 
-    public record Command(string RosterId);
+    public record Command(string RosterKey);
 }

@@ -4,9 +4,9 @@ namespace Snittlistan.Web.Infrastructure.Database;
 
 public class RosterMail : HasVersion
 {
-    public RosterMail(string rosterId)
+    public RosterMail(string rosterKey)
     {
-        RosterId = rosterId;
+        RosterKey = rosterKey;
     }
 
     private RosterMail()
@@ -15,7 +15,7 @@ public class RosterMail : HasVersion
 
     public int RosterMailId { get; private set; }
 
-    public string RosterId { get; private set; } = null!;
+    public string RosterKey { get; private set; } = null!;
 
     public DateTime? PublishedDate { get; private set; }
 

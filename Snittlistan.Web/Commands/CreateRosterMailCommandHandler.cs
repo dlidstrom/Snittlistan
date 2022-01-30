@@ -12,17 +12,17 @@ public class CreateRosterMailCommandHandler : CommandHandler<CreateRosterMailCom
     {
         IQueryable<string> query =
             from rosterMail in CompositionRoot.Databases.Snittlistan.RosterMails
-            where rosterMail.RosterId == context.Payload.RosterId
+            where rosterMail.RosterKey == context.Payload.RosterKey
                 && rosterMail.PublishedDate == null
-            select rosterMail.RosterId;
+            select rosterMail.RosterKey;
         string[] rosterIds = await query.ToArrayAsync();
         if (rosterIds.Any() == false)
         {
-            _ = CompositionRoot.Databases.Snittlistan.RosterMails.Add(new(context.Payload.RosterId));
-            PublishRosterMailsTask task = new(context.Payload.RosterId);
+            _ = CompositionRoot.Databases.Snittlistan.RosterMails.Add(new(context.Payload.RosterKey));
+            PublishRosterMailsTask task = new(context.Payload.RosterKey);
             context.PublishMessage(task, DateTime.Now.AddSeconds(10));
         }
     }
 
-    public record Command(string RosterId);
+    public record Command(string RosterKey);
 }
