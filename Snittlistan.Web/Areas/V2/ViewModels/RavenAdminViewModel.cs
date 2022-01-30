@@ -1,7 +1,6 @@
-﻿namespace Snittlistan.Web.Areas.V2.ViewModels
+﻿namespace Snittlistan.Web.Areas.V2.ViewModels;
+
+public class RavenAdminViewModel
 {
-    public class RavenAdminViewModel
-    {
-        public bool ResetIndexes { get; set; }
-    }
+    public bool ResetIndexes { get; set; }
 }

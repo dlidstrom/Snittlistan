@@ -1,6 +1,7 @@
 #r "nuget: dbup-postgresql"
 #r "nuget: Npgsql"
 
+open System
 open DbUp
 open Npgsql
 
@@ -28,7 +29,16 @@ let upgradeEngine =
         .LogToConsole()
         .Build()
 
-let result = upgradeEngine.PerformUpgrade()
+let scriptsToExecute = upgradeEngine.GetScriptsToExecute()
+if scriptsToExecute.Count > 0 then
+    printfn "Found these scripts to execute:"
+    scriptsToExecute |> Seq.iter (fun s -> printfn $"%s{s.Name}")
 
-if not result.Successful then
-    printfn $"%A{result.Error.Message}"
+    printfn "Run these scripts? Enter 'yes' to proceed."
+    if Console.ReadLine() = "yes" then
+        let result = upgradeEngine.PerformUpgrade()
+
+        if not result.Successful then
+            printfn $"%A{result.Error.Message}"
+else
+    printfn "No scripts found to execute, migration already complete"
