@@ -110,7 +110,7 @@ public class InMemoryContext : ISnittlistanContext, IBitsContext
         Hallar = new InMemoryDbSet<Bits_Hall>(generator);
         RosterMails = new InMemoryDbSet<RosterMail>(generator);
         ChangeLogs = new InMemoryDbSet<ChangeLog>(generator);
-        RateLimits = new InMemoryDbSet<RateLimit>(generator);
+        KeyValueProperties = new InMemoryDbSet<KeyValueProperty>(generator);
         SentEmails = new InMemoryDbSet<SentEmail>(generator);
     }
 
@@ -126,7 +126,7 @@ public class InMemoryContext : ISnittlistanContext, IBitsContext
 
     public IDbSet<ChangeLog> ChangeLogs { get; }
 
-    public IDbSet<RateLimit> RateLimits { get; }
+    public IDbSet<KeyValueProperty> KeyValueProperties { get; }
 
     public IDbSet<SentEmail> SentEmails { get; }
 

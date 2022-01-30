@@ -1,8 +1,8 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Web.Infrastructure.Database;
+namespace Snittlistan.Web.Models;
 
-public class RateLimit : HasVersion
+public class RateLimit
 {
     public RateLimit(
         string key,
@@ -14,22 +14,15 @@ public class RateLimit : HasVersion
         Allowance = allowance;
         Rate = rate;
         PerSeconds = perSeconds;
-        UpdatedDate = DateTime.Now;
     }
 
-    private RateLimit()
-    {
-    }
-
-    public int RateLimitId { get; private set; }
-
-    public string Key { get; private set; } = null!;
+    public string Key { get; }
 
     public double Allowance { get; private set; }
 
-    public int Rate { get; private set; }
+    public int Rate { get; }
 
-    public int PerSeconds { get; private set; }
+    public int PerSeconds { get; }
 
     public DateTime UpdatedDate { get; private set; }
 

@@ -156,7 +156,8 @@
     <Compile Include="Commands\VerifyMatchesCommandHandler.cs" />
     <Compile Include="Infrastructure\Database\ChangeLog.cs" />
     <Compile Include="Infrastructure\Database\HasVersion.cs" />
-    <Compile Include="Infrastructure\Database\RateLimit.cs" />
+    <Compile Include="Infrastructure\Database\KeyValueProperty.cs" />
+    <Compile Include="Models\RateLimit.cs" />
     <Compile Include="Infrastructure\Database\SentEmail.cs" />
     <Compile Include="Infrastructure\HandledException.cs" />
     <Compile Include="Infrastructure\CustomHeaderModule.cs" />

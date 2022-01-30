@@ -15,7 +15,7 @@ public class SnittlistanContext : DbContext, ISnittlistanContext
 
     public IDbSet<ChangeLog> ChangeLogs { get; set; } = null!;
 
-    public IDbSet<RateLimit> RateLimits { get; set; } = null!;
+    public IDbSet<KeyValueProperty> KeyValueProperties { get; set; } = null!;
 
     public IDbSet<SentEmail> SentEmails { get; set; } = null!;
 

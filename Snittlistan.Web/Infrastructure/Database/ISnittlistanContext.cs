@@ -15,7 +15,7 @@ public interface ISnittlistanContext
 
     IDbSet<ChangeLog> ChangeLogs { get; }
 
-    IDbSet<RateLimit> RateLimits { get; }
+    IDbSet<KeyValueProperty> KeyValueProperties { get; }
 
     IDbSet<SentEmail> SentEmails { get; }
 

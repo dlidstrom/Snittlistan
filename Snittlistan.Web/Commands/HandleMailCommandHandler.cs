@@ -19,19 +19,21 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
     public async Task Handle(HandlerContext<TCommand> context)
     {
         string key = GetKey(context.Payload);
-        RateLimit? rateLimit = await CompositionRoot.Databases.Snittlistan.RateLimits
+        KeyValueProperty? rateLimitProperty = await CompositionRoot.Databases.Snittlistan.KeyValueProperties
             .SingleOrDefaultAsync(x => x.Key == key);
-        if (rateLimit == null)
+        if (rateLimitProperty == null)
         {
             (int rate, int perSeconds) = GetRate(context.Payload);
-            rateLimit = CompositionRoot.Databases.Snittlistan.RateLimits.Add(
-                new(key, 1, rate, perSeconds));
+            rateLimitProperty = CompositionRoot.Databases.Snittlistan.KeyValueProperties.Add(
+                new(key, new RateLimit(key, 1, rate, perSeconds)));
         }
 
         DateTime now = DateTime.Now;
+        RateLimit rateLimit = (RateLimit)rateLimitProperty.Value;
         rateLimit.UpdateAllowance(now);
         if (rateLimit.Allowance < 1)
         {
+            rateLimitProperty.SetValue(rateLimit);
             throw new HandledException($"allowance = {rateLimit.Allowance:N2}, wait to reach 1");
         }
 
@@ -44,6 +46,7 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
             email.Subject,
             state));
         rateLimit.DecreaseAllowance(now);
+        rateLimitProperty.SetValue(rateLimit);
         int changesSaved = await CompositionRoot.Databases.Snittlistan.SaveChangesAsync();
         if (changesSaved > 0)
         {
