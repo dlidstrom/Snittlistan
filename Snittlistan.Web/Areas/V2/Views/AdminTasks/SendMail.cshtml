@@ -40,6 +40,24 @@
                     <textarea name="content" maxlength="1024" placeholder="" rows="4" required>@Model.Content</textarea>
                 </div>
             </div>
+            <div class="control-group">
+                <label class="control-label" for="rate">Rate:</label>
+                <div class="controls">
+                    @Html.EnumDropDownListFor(
+                        x => x.RateSetting,
+                        "Välj rate",
+                        new { required = "required", id = "rate" })
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="count">Antal:</label>
+                <div class="controls">
+                    @Html.EnumDropDownListFor(
+                        x => x.MailCount,
+                        "Välj antal mail",
+                        new { required = "required", id = "count" })
+                </div>
+            </div>
             <div class="form-actions">
                 <button class="btn btn-primary btn-large" type="submit">Skicka</button>
                 @Html.ActionLink("Avbryt", "Index", null, new { @class = "btn btn-large" })

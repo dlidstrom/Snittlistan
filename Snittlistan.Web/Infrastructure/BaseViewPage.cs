@@ -1,21 +1,20 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Web.Infrastructure
+using Snittlistan.Web.Infrastructure.Database;
+using System.Web.Mvc;
+
+namespace Snittlistan.Web.Infrastructure;
+
+public abstract class BaseViewPage : WebViewPage
 {
-    using System.Web.Mvc;
-    using Snittlistan.Queue.Models;
+    public new virtual CustomPrincipal User => (CustomPrincipal)base.User;
 
-    public abstract class BaseViewPage : WebViewPage
-    {
-        public new virtual CustomPrincipal User => (CustomPrincipal)base.User;
+    public Tenant Tenant => DependencyResolver.Current.GetService<Tenant>();
+}
 
-        public TenantConfiguration TenantConfiguration => DependencyResolver.Current.GetService<TenantConfiguration>();
-    }
+public abstract class BaseViewPage<TModel> : WebViewPage<TModel>
+{
+    public new virtual CustomPrincipal User => (CustomPrincipal)base.User;
 
-    public abstract class BaseViewPage<TModel> : WebViewPage<TModel>
-    {
-        public new virtual CustomPrincipal User => (CustomPrincipal)base.User;
-
-        public TenantConfiguration TenantConfiguration => DependencyResolver.Current.GetService<TenantConfiguration>();
-    }
+    public Tenant Tenant => DependencyResolver.Current.GetService<Tenant>();
 }
