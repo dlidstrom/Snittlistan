@@ -275,7 +275,7 @@
     <Compile Include="Areas\V2\ViewModels\RosterHeaderViewModel.cs" />
     <Compile Include="Controllers\AbstractApiController.cs" />
     <Compile Include="Areas\V2\Controllers\MatchResultAdminController.cs" />
-    <Compile Include="Areas\V2\DocumentSessionExtensions.cs" />
+    <Compile Include="DocumentSessionExtensions.cs" />
     <Compile Include="Areas\V2\Domain\BitsParser.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\ClearMedals.cs" />
     <Compile Include="Areas\V2\Domain\Match\Events\MatchResult4Registered.cs" />

@@ -1,8 +1,9 @@
-﻿using Raven.Abstractions;
+﻿#nullable enable
 
-#nullable enable
+using Raven.Abstractions;
 
 namespace Snittlistan.Web.Areas.V2.Domain;
+
 public class AuditLogEntry
 {
     public AuditLogEntry(

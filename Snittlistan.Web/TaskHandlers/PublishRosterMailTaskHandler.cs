@@ -10,6 +10,6 @@ public class PublishRosterMailTaskHandler
 {
     protected override PublishRosterMailCommandHandler.Command CreateCommand(PublishRosterMailTask payload)
     {
-        return new(payload.RosterId, payload.PlayerId);
+        return new(payload.RosterId, payload.PlayerId, payload.ReplyToEmail);
     }
 }

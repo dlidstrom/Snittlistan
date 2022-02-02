@@ -11,13 +11,19 @@ public class UpdateRosterEmail_State : EmailState
         string playerEmail,
         FormattedAuditLog formattedAuditLog,
         string[] players,
-        string? teamLeader)
+        string? teamLeader,
+        string replyToEmail,
+        int season,
+        int turn)
         : base(OwnerEmail, playerEmail, OwnerEmail, "Uttagning har uppdaterats")
     {
         PlayerEmail = playerEmail;
         FormattedAuditLog = formattedAuditLog;
         Players = players;
         TeamLeader = teamLeader;
+        ReplyToEmail = replyToEmail;
+        Season = season;
+        Turn = turn;
     }
 
     public string PlayerEmail { get; }
@@ -28,12 +34,21 @@ public class UpdateRosterEmail_State : EmailState
 
     public string? TeamLeader { get; }
 
+    public string ReplyToEmail { get; }
+
+    public int Season { get; }
+
+    public int Turn { get; }
+
     public override Email CreateEmail()
     {
         return new UpdateRosterEmail(
             PlayerEmail,
             FormattedAuditLog,
             Players,
-            TeamLeader);
+            TeamLeader,
+            ReplyToEmail,
+            Season,
+            Turn);
     }
 }

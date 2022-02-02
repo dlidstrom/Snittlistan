@@ -12,14 +12,20 @@ public class UpdateRosterEmail : EmailBase
         string playerEmail,
         FormattedAuditLog formattedAuditLog,
         string[] players,
-        string? teamLeader)
+        string? teamLeader,
+        string replyToEmail,
+        int season,
+        int turn)
         : base("UpdateRoster")
     {
         _state = new(
             playerEmail,
             formattedAuditLog,
             players,
-            teamLeader);
+            teamLeader,
+            replyToEmail,
+            season,
+            turn);
     }
 
     public string PlayerEmail => _state.PlayerEmail;
@@ -29,6 +35,12 @@ public class UpdateRosterEmail : EmailBase
     public string[] Players => _state.Players;
 
     public string? TeamLeader => _state.TeamLeader;
+
+    public string ReplyToEmail => _state.ReplyToEmail;
+
+    public int Season => _state.Season;
+
+    public int Turn => _state.Turn;
 
     public override EmailState State => _state;
 }

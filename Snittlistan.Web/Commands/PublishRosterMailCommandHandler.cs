@@ -27,7 +27,10 @@ public class PublishRosterMailCommandHandler
             player.Email,
             formattedAuditLog,
             players.Select(x => x.Name).ToArray(),
-            teamLeader);
+            teamLeader,
+            context.Payload.ReplyToEmail,
+            roster.Season,
+            roster.Turn);
         return Task.FromResult(email);
     }
 
@@ -41,5 +44,5 @@ public class PublishRosterMailCommandHandler
         return new(1, 600);
     }
 
-    public record Command(string RosterId, string PlayerId);
+    public record Command(string RosterId, string PlayerId, string ReplyToEmail);
 }
