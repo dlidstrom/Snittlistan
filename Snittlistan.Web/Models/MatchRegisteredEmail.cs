@@ -1,33 +1,45 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Web.Models
+using Snittlistan.Web.Areas.V2.ReadModels;
+
+namespace Snittlistan.Web.Models;
+
+public class MatchRegisteredEmail : EmailBase
 {
-    using Snittlistan.Web.Areas.V2.ReadModels;
+    private readonly MatchRegisteredEmail_State _state;
 
-    public class MatchRegisteredEmail : EmailBase
+    public MatchRegisteredEmail(
+        string team,
+        string opponent,
+        int score,
+        int opponentScore,
+        ResultSeriesReadModel resultSeriesReadModel,
+        ResultHeaderReadModel resultHeaderReadModel)
+        : base("MatchRegistered")
     {
-        public MatchRegisteredEmail(
-            string team,
-            string opponent,
-            int score,
-            int opponentScore,
-            ResultSeriesReadModel resultSeriesReadModel,
-            ResultHeaderReadModel resultHeaderReadModel)
-            : base("MatchRegistered", OwnerEmail, "Match har registrerats")
-        {
-            Team = team;
-            Opponent = opponent;
-            Score = score;
-            OpponentScore = opponentScore;
-            ResultSeriesReadModel = resultSeriesReadModel;
-            ResultHeaderReadModel = resultHeaderReadModel;
-        }
-
-        public string Team { get; }
-        public string Opponent { get; }
-        public int Score { get; }
-        public int OpponentScore { get; }
-        public ResultSeriesReadModel ResultSeriesReadModel { get; }
-        public ResultHeaderReadModel ResultHeaderReadModel { get; }
+        _state = new(
+            EmailState.OwnerEmail,
+            EmailState.OwnerEmail,
+            "Match har registrerats",
+            team,
+            opponent,
+            score,
+            opponentScore,
+            resultSeriesReadModel,
+            resultHeaderReadModel);
     }
+
+    public string Team => _state.Team;
+
+    public string Opponent => _state.Opponent;
+
+    public int Score => _state.Score;
+
+    public int OpponentScore => _state.OpponentScore;
+
+    public ResultSeriesReadModel ResultSeriesReadModel => _state.ResultSeriesReadModel;
+
+    public ResultHeaderReadModel ResultHeaderReadModel => _state.ResultHeaderReadModel;
+
+    public override EmailState State => _state;
 }

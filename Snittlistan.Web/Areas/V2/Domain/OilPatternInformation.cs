@@ -1,40 +1,35 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Web.Areas.V2.Domain
+namespace Snittlistan.Web.Areas.V2.Domain;
+public class OilPatternInformation : IEqualityComparer<OilPatternInformation>
 {
-    using System;
-    using System.Collections.Generic;
+    public static readonly OilPatternInformation Empty =
+        new(string.Empty, string.Empty);
 
-    public class OilPatternInformation : IEqualityComparer<OilPatternInformation>
+    public OilPatternInformation(string name, string url)
     {
-        public static readonly OilPatternInformation Empty =
-            new(string.Empty, string.Empty);
-
-        public OilPatternInformation(string name, string url)
-        {
-            Name = name;
-            Url = url;
-        }
-
-        public static OilPatternInformation Create(string matchOilPatternName, int matchOilPatternId)
-        {
-            return new OilPatternInformation(
-                matchOilPatternName,
-                matchOilPatternId != 0 ? $"https://bits.swebowl.se/MiscDisplay/Oilpattern/{matchOilPatternId}" : string.Empty);
-        }
-
-        public bool Equals(OilPatternInformation x, OilPatternInformation y)
-        {
-            return Tuple.Create(x.Name, x.Url) == Tuple.Create(y.Name, y.Url);
-        }
-
-        public int GetHashCode(OilPatternInformation obj)
-        {
-            return Tuple.Create(Name, Url).GetHashCode();
-        }
-
-        public string Name { get; private set; }
-
-        public string Url { get; private set; }
+        Name = name;
+        Url = url;
     }
+
+    public static OilPatternInformation Create(string matchOilPatternName, int matchOilPatternId)
+    {
+        return new OilPatternInformation(
+            matchOilPatternName,
+            matchOilPatternId != 0 ? $"https://bits.swebowl.se/MiscDisplay/Oilpattern/{matchOilPatternId}" : string.Empty);
+    }
+
+    public bool Equals(OilPatternInformation x, OilPatternInformation y)
+    {
+        return Tuple.Create(x.Name, x.Url) == Tuple.Create(y.Name, y.Url);
+    }
+
+    public int GetHashCode(OilPatternInformation obj)
+    {
+        return Tuple.Create(Name, Url).GetHashCode();
+    }
+
+    public string Name { get; private set; }
+
+    public string Url { get; private set; }
 }
