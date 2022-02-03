@@ -1,92 +1,90 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Queue
+using System.IO;
+using System.Messaging;
+using System.Text;
+using Newtonsoft.Json;
+
+namespace Snittlistan.Queue;
+
+public class JsonMessageFormatter : IMessageFormatter
 {
-    using System;
-    using System.IO;
-    using System.Messaging;
-    using System.Text;
-    using Newtonsoft.Json;
+    private static readonly JsonSerializerSettings DefaultSerializerSettings =
+        new()
+        {
+            TypeNameHandling = TypeNameHandling.Objects,
+            Formatting = Formatting.Indented
+        };
 
-    public class JsonMessageFormatter : IMessageFormatter
+    private readonly JsonSerializerSettings _serializerSettings;
+
+    public JsonMessageFormatter(Encoding? encoding = null)
+        : this(encoding, null)
     {
-        private static readonly JsonSerializerSettings DefaultSerializerSettings =
-            new()
-            {
-                TypeNameHandling = TypeNameHandling.Objects,
-                Formatting = Formatting.Indented
-            };
+    }
 
-        private readonly JsonSerializerSettings _serializerSettings;
+    public Encoding Encoding { get; set; }
 
-        public JsonMessageFormatter(Encoding? encoding = null)
-            : this(encoding, null)
+    internal JsonMessageFormatter(Encoding? encoding, JsonSerializerSettings? serializerSettings = null)
+    {
+        Encoding = encoding ?? Encoding.UTF8;
+        _serializerSettings = serializerSettings ?? DefaultSerializerSettings;
+    }
+
+    public bool CanRead(Message message)
+    {
+        if (message == null)
         {
+            throw new ArgumentNullException(nameof(message));
         }
 
-        public Encoding Encoding { get; set; }
+        Stream stream = message.BodyStream;
 
-        internal JsonMessageFormatter(Encoding? encoding, JsonSerializerSettings? serializerSettings = null)
+        return stream != null
+               && stream.CanRead
+               && stream.Length > 0;
+    }
+
+    public object Clone()
+    {
+        return new JsonMessageFormatter(Encoding, _serializerSettings);
+    }
+
+    public object? Read(Message message)
+    {
+        if (message == null)
         {
-            Encoding = encoding ?? Encoding.UTF8;
-            _serializerSettings = serializerSettings ?? DefaultSerializerSettings;
+            throw new ArgumentNullException(nameof(message));
         }
 
-        public bool CanRead(Message message)
+        if (CanRead(message) == false)
         {
-            if (message == null)
-            {
-                throw new ArgumentNullException(nameof(message));
-            }
-
-            Stream stream = message.BodyStream;
-
-            return stream != null
-                   && stream.CanRead
-                   && stream.Length > 0;
+            return null;
         }
 
-        public object Clone()
+        using StreamReader reader = new(message.BodyStream, Encoding);
+        string json = reader.ReadToEnd();
+        return JsonConvert.DeserializeObject(json, _serializerSettings);
+    }
+
+    public void Write(Message message, object obj)
+    {
+        if (message == null)
         {
-            return new JsonMessageFormatter(Encoding, _serializerSettings);
+            throw new ArgumentNullException(nameof(message));
         }
 
-        public object? Read(Message message)
+        if (obj == null)
         {
-            if (message == null)
-            {
-                throw new ArgumentNullException(nameof(message));
-            }
-
-            if (CanRead(message) == false)
-            {
-                return null;
-            }
-
-            using StreamReader reader = new(message.BodyStream, Encoding);
-            string json = reader.ReadToEnd();
-            return JsonConvert.DeserializeObject(json, _serializerSettings);
+            throw new ArgumentNullException(nameof(obj));
         }
 
-        public void Write(Message message, object obj)
-        {
-            if (message == null)
-            {
-                throw new ArgumentNullException(nameof(message));
-            }
+        string json = JsonConvert.SerializeObject(obj, Formatting.None, _serializerSettings);
 
-            if (obj == null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+        message.BodyStream = new MemoryStream(Encoding.GetBytes(json));
 
-            string json = JsonConvert.SerializeObject(obj, Formatting.None, _serializerSettings);
-
-            message.BodyStream = new MemoryStream(Encoding.GetBytes(json));
-
-            // Need to reset the body type, in case the same message
-            // is reused by some other formatter.
-            message.BodyType = 0;
-        }
+        // Need to reset the body type, in case the same message
+        // is reused by some other formatter.
+        message.BodyType = 0;
     }
 }

@@ -1,10 +1,9 @@
-﻿namespace Snittlistan.Web.Areas.V2
-{
-    using Raven.Client;
-    using Snittlistan.Web.Areas.V2.Domain;
+﻿
+using Raven.Client;
+using Snittlistan.Web.Areas.V2.Domain;
 
-    public interface IAuditLogCapable
-    {
-        FormattedAuditLog GetFormattedAuditLog(IDocumentSession documentSession);
-    }
+namespace Snittlistan.Web.Areas.V2;
+public interface IAuditLogCapable
+{
+    FormattedAuditLog GetFormattedAuditLog(IDocumentSession documentSession);
 }
