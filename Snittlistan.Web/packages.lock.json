@@ -135,14 +135,14 @@
         "resolved": "1.50.5147",
         "contentHash": "vr5KBIqcXu2hqZ43UTwPR+jqHgMrT5tsPtJvEF+mORKoBNMh3bRWgAwic0U1sT2IVb4PR5m0GyQxnmCz8jBHWg=="
       },
-      "Postal.Mvc4": {
+      "Postal.Mvc5": {
         "type": "Direct",
         "requested": "[1.2.0, )",
         "resolved": "1.2.0",
-        "contentHash": "1Ci7+HQt3P788AGY3rQA+tXLxM8AhL7+0THVQtkBkrKNzSj2gCv3h21LBTR6eQmsLf+4brFpaN911tmlaNXetg==",
+        "contentHash": "le4HMYmokyyVHOlnRoqKhkO/oCr+3wmO4nDdve59EXREkNagkaIy7jsNs5aSDHV3obT/hS8X7SJLHBzt8hAAMg==",
         "dependencies": {
-          "Microsoft.AspNet.Mvc": "4.0.30506",
-          "RazorEngine": "3.3.0"
+          "Microsoft.AspNet.Mvc": "5.1.2",
+          "RazorEngine": "3.4.1"
         }
       },
       "RavenDB.Client": {
@@ -266,10 +266,10 @@
       },
       "RazorEngine": {
         "type": "Transitive",
-        "resolved": "3.3.0",
-        "contentHash": "qpQFE+KvUjnXK3V4wIeMkx15GKBkIkfVrRW2ijqgGrXodW8LgjeXeWXrzIXgQ+mv2Uw5SdZiN4DaDa0FZYbVEA==",
+        "resolved": "3.4.1",
+        "contentHash": "9e/X1RPpru2ipBXE5K90XFLyeB29hWMS0hU73WoTx1T3+JhxU6RgViJqLx76roPZPNVWOVp6qGUclsP30TjFWw==",
         "dependencies": {
-          "Microsoft.AspNet.Razor": "2.0.30506"
+          "Microsoft.AspNet.Razor": "3.0.0"
         }
       },
       "System.Buffers": {

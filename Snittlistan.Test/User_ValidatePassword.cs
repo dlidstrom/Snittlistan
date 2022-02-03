@@ -1,11 +1,11 @@
-﻿
+﻿#nullable enable
+
 using NUnit.Framework;
-using Snittlistan.Web.Helpers;
+using Snittlistan.Web;
 using Snittlistan.Web.Models;
 
-#nullable enable
-
 namespace Snittlistan.Test;
+
 [TestFixture]
 public class User_ValidatePassword : DbTest
 {
