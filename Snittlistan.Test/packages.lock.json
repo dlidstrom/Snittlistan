@@ -117,6 +117,11 @@
         "resolved": "4.2.0",
         "contentHash": "srJGb2SExp0Y77p85cDYl/OlfMjxN/jXPh/CQpQOQWiWpnSSPV9I/jtMNJWr1uzqed23rLYYetGgUrwSZUHgfg=="
       },
+      "AsyncFriendlyStackTrace": {
+        "type": "Transitive",
+        "resolved": "1.6.0",
+        "contentHash": "VU/VsVqGt2FQIb8wSdkR8OWSupX6Uod91bQLR9/pd+sCl7sEZWu9EoJu2+TeKxVT/7vZe6p4T7Lxw4U1Z/zP6w=="
+      },
       "Castle.Core-NLog": {
         "type": "Transitive",
         "resolved": "4.4.1",
@@ -405,6 +410,7 @@
       "snittlistan.web": {
         "type": "Project",
         "dependencies": {
+          "AsyncFriendlyStackTrace": "1.6.0",
           "Castle.Core": "4.4.1",
           "Castle.Core-NLog": "4.4.1",
           "Castle.Facilities.AspNet.SystemWeb": "5.1.1",

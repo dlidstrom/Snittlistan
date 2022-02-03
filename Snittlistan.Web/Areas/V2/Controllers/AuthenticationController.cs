@@ -10,7 +10,6 @@ using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Queue.Messages;
 using Raven.Abstractions;
 using Snittlistan.Web.Controllers;
-using Snittlistan.Web.Helpers;
 using Snittlistan.Web.HtmlHelpers;
 using Snittlistan.Web.Infrastructure.Attributes;
 using Snittlistan.Web.Infrastructure.Database;

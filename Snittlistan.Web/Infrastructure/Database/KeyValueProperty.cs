@@ -8,9 +8,11 @@ namespace Snittlistan.Web.Infrastructure.Database;
 public class KeyValueProperty : HasVersion
 {
     public KeyValueProperty(
+        int tenantId,
         string key,
         object value)
     {
+        TenantId = tenantId;
         Key = key;
         Value = value;
     }
@@ -20,6 +22,8 @@ public class KeyValueProperty : HasVersion
     }
 
     public int KeyValuePropertyId { get; private set; }
+
+    public int TenantId { get; private set; }
 
     public string Key { get; private set; } = null!;
 

@@ -1,14 +1,14 @@
-﻿using System.Data.Entity;
+﻿#nullable enable
+
+using System.Data.Entity;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Database;
-using Snittlistan.Web.Infrastructure.Indexes;
 using Snittlistan.Web.Models;
 
-#nullable enable
-
 namespace Snittlistan.Web.Helpers;
+
 public static class Extensions
 {
     public static async Task<Tenant> GetCurrentTenant(this Databases databases)
@@ -27,12 +27,6 @@ public static class Extensions
         }
 
         return tenant;
-    }
-
-    public static User FindUserByEmail(this Raven.Client.IDocumentSession sess, string email)
-    {
-        return sess.Query<User, User_ByEmail>()
-                   .FirstOrDefault(u => u.Email == email);
     }
 
     public static User FindUserByActivationKey(this Raven.Client.IDocumentSession sess, string key)

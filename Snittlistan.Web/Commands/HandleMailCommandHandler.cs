@@ -24,8 +24,12 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
         if (rateLimitProperty == null)
         {
             (int rate, int perSeconds) = GetRate(context.Payload);
-            rateLimitProperty = CompositionRoot.Databases.Snittlistan.KeyValueProperties.Add(
-                new(key, new RateLimit(key, 1, rate, perSeconds)));
+            KeyValueProperty keyValueProperty = new(
+                context.Tenant.TenantId,
+                key,
+                new RateLimit(key, 1, rate, perSeconds));
+            rateLimitProperty =
+                CompositionRoot.Databases.Snittlistan.KeyValueProperties.Add(keyValueProperty);
         }
 
         DateTime now = DateTime.Now;

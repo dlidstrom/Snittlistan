@@ -2,6 +2,12 @@
   "version": 1,
   "dependencies": {
     ".NETFramework,Version=v4.8": {
+      "AsyncFriendlyStackTrace": {
+        "type": "Direct",
+        "requested": "[1.6.0, )",
+        "resolved": "1.6.0",
+        "contentHash": "VU/VsVqGt2FQIb8wSdkR8OWSupX6Uod91bQLR9/pd+sCl7sEZWu9EoJu2+TeKxVT/7vZe6p4T7Lxw4U1Z/zP6w=="
+      },
       "Castle.Core": {
         "type": "Direct",
         "requested": "[4.4.1, )",

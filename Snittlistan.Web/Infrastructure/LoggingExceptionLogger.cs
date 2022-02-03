@@ -1,13 +1,16 @@
-﻿using System.Web.Http.ExceptionHandling;
+﻿#nullable enable
+
+using System.Web.Http.ExceptionHandling;
+using AsyncFriendlyStackTrace;
 using NLog;
 
-#nullable enable
-
 namespace Snittlistan.Web.Infrastructure;
+
 public class LoggingExceptionLogger : IExceptionLogger
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    public static EventHandler<Exception> ExceptionHandler = (sender, exception) => Logger.Error(exception);
+    public static EventHandler<Exception> ExceptionHandler =
+        (sender, exception) => Logger.Error(exception.ToAsyncString());
 
     public Task LogAsync(ExceptionLoggerContext context, CancellationToken cancellationToken)
     {

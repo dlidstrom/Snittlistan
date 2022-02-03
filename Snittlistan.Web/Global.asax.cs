@@ -17,7 +17,6 @@ using Snittlistan.Web.Areas.V2.Domain;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using EventStoreLite.IoC;
-using Snittlistan.Web.Helpers;
 using NLog;
 using Raven.Client;
 using Snittlistan.Queue;

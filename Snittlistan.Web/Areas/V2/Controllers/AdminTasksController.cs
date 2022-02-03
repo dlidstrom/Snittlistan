@@ -10,7 +10,6 @@ using Snittlistan.Web.Areas.V2.Migration;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Commands;
 using Snittlistan.Web.Controllers;
-using Snittlistan.Web.Helpers;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Indexes;
 using Snittlistan.Web.Models;

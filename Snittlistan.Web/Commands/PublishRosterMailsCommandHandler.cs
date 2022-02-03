@@ -15,28 +15,32 @@ public class PublishRosterMailsCommandHandler : CommandHandler<PublishRosterMail
     {
         // TODO might be comma-separated values
         Roster roster = CompositionRoot.DocumentSession.LoadEx<Roster>(context.Payload.RosterKey);
-        AuditLogEntry auditLogEntry = roster.AuditLogEntries.Single(x => x.CorrelationId == context.CorrelationId);
+        AuditLogEntry auditLogEntry =
+            roster.AuditLogEntries.Single(x => x.CorrelationId == context.CorrelationId);
         RosterState before = (RosterState)auditLogEntry.Before;
         RosterState after = (RosterState)auditLogEntry.After;
         IEnumerable<string> affectedPlayers = before.Players.Concat(after.Players);
 
         // find user who did the last edit-players action
-        AuditLogEntry? editPlayersAction = roster.AuditLogEntries.SingleOrDefault(x => x.Action == Roster.ChangeType.EditPlayers.ToString());
+        AuditLogEntry? editPlayersAction = roster.AuditLogEntries.LastOrDefault(
+            x => x.Action == Roster.ChangeType.EditPlayers.ToString());
         if (editPlayersAction == null)
         {
             throw new Exception($"No edit-players action found in roster {roster.Id}");
         }
 
         Player? editPlayer = CompositionRoot.DocumentSession.Load<Player>(editPlayersAction.UserId);
-        User? editUser = CompositionRoot.DocumentSession.Load<User>(editPlayersAction.UserId);
+        User? editUser = CompositionRoot.DocumentSession.FindUserByEmail(editPlayersAction.UserId);
+        string replyToEmail =
+            editPlayer?.Email
+            ?? editUser?.Email
+            ?? throw new Exception($"Unable to find edit-players action user with id '{editPlayersAction.UserId}'");
         foreach (string playerId in new HashSet<string>(affectedPlayers))
         {
             PublishRosterMailTask message = new(
                 context.Payload.RosterKey,
                 playerId,
-                editPlayer?.Email
-                ?? editUser.Email
-                ?? throw new Exception($"Unable to find edit-players action user with id '{editPlayersAction.UserId}'"));
+                replyToEmail);
             context.PublishMessage(message);
         }
 
