@@ -30,7 +30,8 @@ public class PublishRosterMailCommandHandler
             teamLeader,
             context.Payload.ReplyToEmail,
             roster.Season,
-            roster.Turn);
+            roster.Turn,
+            context.Payload.RosterLink);
         return Task.FromResult(email);
     }
 
@@ -44,5 +45,9 @@ public class PublishRosterMailCommandHandler
         return new(1, 600);
     }
 
-    public record Command(string RosterId, string PlayerId, string ReplyToEmail);
+    public record Command(
+        string RosterId,
+        string PlayerId,
+        string ReplyToEmail,
+        Uri RosterLink);
 }

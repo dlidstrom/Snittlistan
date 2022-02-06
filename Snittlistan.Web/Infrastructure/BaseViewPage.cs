@@ -14,7 +14,7 @@ public abstract class BaseViewPage : WebViewPage
 
 public abstract class BaseViewPage<TModel> : WebViewPage<TModel>
 {
-    public new virtual CustomPrincipal User => (CustomPrincipal)base.User;
+    public new virtual CustomPrincipal? User => base.User as CustomPrincipal;
 
     public Tenant Tenant => DependencyResolver.Current.GetService<Tenant>();
 }

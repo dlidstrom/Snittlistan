@@ -40,7 +40,8 @@ public class PublishRosterMailsCommandHandler : CommandHandler<PublishRosterMail
             PublishRosterMailTask message = new(
                 context.Payload.RosterKey,
                 playerId,
-                replyToEmail);
+                replyToEmail,
+                context.Payload.RosterLink);
             context.PublishMessage(message);
         }
 
@@ -50,5 +51,7 @@ public class PublishRosterMailsCommandHandler : CommandHandler<PublishRosterMail
         rosterMail.MarkPublished(DateTime.Now);
     }
 
-    public record Command(string RosterKey);
+    public record Command(
+        string RosterKey,
+        Uri RosterLink);
 }

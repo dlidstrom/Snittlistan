@@ -19,10 +19,12 @@ public class CreateRosterMailCommandHandler : CommandHandler<CreateRosterMailCom
         if (rosterIds.Any() == false)
         {
             _ = CompositionRoot.Databases.Snittlistan.RosterMails.Add(new(context.Payload.RosterKey));
-            PublishRosterMailsTask task = new(context.Payload.RosterKey);
-            context.PublishMessage(task, DateTime.Now.AddSeconds(10));
+            PublishRosterMailsTask task = new(
+                context.Payload.RosterKey,
+                context.Payload.RosterLink);
+            context.PublishMessage(task, DateTime.Now.AddSeconds(10)); // TODO revert to 10 minutes
         }
     }
 
-    public record Command(string RosterKey);
+    public record Command(string RosterKey, Uri RosterLink);
 }

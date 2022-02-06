@@ -484,7 +484,14 @@ public class RosterController : AbstractController
             }
             else
             {
-                await ExecuteCommand(new CreateRosterMailCommandHandler.Command(rosterId));
+                string uriString = Url.Action(
+                    "View",
+                    "Roster",
+                    new { roster.Season, roster.Turn });
+                Uri rosterLink = new(
+                    $"{Request.Url.Scheme}://{Request.Url.Host}:{Request.Url.Port}/{uriString}");
+                await ExecuteCommand(
+                    new CreateRosterMailCommandHandler.Command(rosterId, rosterLink));
             }
         }
 

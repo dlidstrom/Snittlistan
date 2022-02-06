@@ -15,7 +15,8 @@ public class UpdateRosterEmail : EmailBase
         string? teamLeader,
         string replyToEmail,
         int season,
-        int turn)
+        int turn,
+        Uri rosterLink)
         : base("UpdateRoster")
     {
         _state = new(
@@ -25,7 +26,8 @@ public class UpdateRosterEmail : EmailBase
             teamLeader,
             replyToEmail,
             season,
-            turn);
+            turn,
+            rosterLink);
     }
 
     public string PlayerEmail => _state.PlayerEmail;
@@ -41,6 +43,8 @@ public class UpdateRosterEmail : EmailBase
     public int Season => _state.Season;
 
     public int Turn => _state.Turn;
+
+    public Uri RosterLink => _state.RosterLink;
 
     public override EmailState State => _state;
 }
