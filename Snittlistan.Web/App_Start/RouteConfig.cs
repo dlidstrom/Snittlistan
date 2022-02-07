@@ -1,30 +1,29 @@
-﻿namespace Snittlistan.Web
+﻿
+using System.Web.Mvc;
+using System.Web.Routing;
+
+namespace Snittlistan.Web;
+public class RouteConfig
 {
-    using System.Web.Mvc;
-    using System.Web.Routing;
+    private readonly RouteCollection routes;
 
-    public class RouteConfig
+    public RouteConfig(RouteCollection routes)
     {
-        private readonly RouteCollection routes;
+        this.routes = routes;
+    }
 
-        public RouteConfig(RouteCollection routes)
-        {
-            this.routes = routes;
-        }
+    public void Configure()
+    {
+        routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+        routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
 
-        public void Configure()
-        {
-            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-            routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
+        // robots.txt
+        routes.IgnoreRoute("{file}.txt");
 
-            // robots.txt
-            routes.IgnoreRoute("{file}.txt");
-
-            routes.MapRoute(
-                name: "Hacker-Routes",
-                url: "{*php}",
-                defaults: new { controller = "Hacker", action = "Index" },
-                constraints: new { php = @"cpanel|status|.*php.*|catalog|^s?cgi(\-bin)?.*|^scripts.*|^(aw)?stats.*|^shop.*|feed.*|temp.*|console" });
-        }
+        routes.MapRoute(
+            name: "Hacker-Routes",
+            url: "{*php}",
+            defaults: new { controller = "Hacker", action = "Index" },
+            constraints: new { php = @"cpanel|status|.*php.*|catalog|^s?cgi(\-bin)?.*|^scripts.*|^(aw)?stats.*|^shop.*|feed.*|temp.*|console" });
     }
 }

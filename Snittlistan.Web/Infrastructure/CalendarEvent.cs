@@ -1,64 +1,60 @@
-namespace Snittlistan.Web.Infrastructure
+using System.IO;
+
+namespace Snittlistan.Web.Infrastructure;
+public abstract class CalendarEvent
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
+    protected const string TextLineFeed = @"\" + "n";
 
-    public abstract class CalendarEvent
+    public abstract void Write(TextWriter writer);
+
+    protected static void WriteWithLineFeeds(TextWriter writer, string desc)
     {
-        protected const string TextLineFeed = @"\" + "n";
+        writer.Write(FoldLines(Escape(desc)));
+    }
 
-        public abstract void Write(TextWriter writer);
-
-        protected static void WriteWithLineFeeds(TextWriter writer, string desc)
+    private static string Escape(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
         {
-            writer.Write(FoldLines(Escape(desc)));
-        }
-
-        private static string Escape(string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                return value;
-            }
-
-            value = value.Replace(SerializationConstants.LineBreak, @"\n");
-            value = value.Replace("\r", @"\n");
-            value = value.Replace("\n", @"\n");
-            value = value.Replace(";", @"\;");
-            value = value.Replace(",", @"\,");
             return value;
         }
 
-        private static string FoldLines(string incoming)
+        value = value.Replace(SerializationConstants.LineBreak, @"\n");
+        value = value.Replace("\r", @"\n");
+        value = value.Replace("\n", @"\n");
+        value = value.Replace(";", @"\;");
+        value = value.Replace(",", @"\,");
+        return value;
+    }
+
+    private static string FoldLines(string incoming)
+    {
+        // The spec says nothing about trimming, but it seems reasonable...
+        string trimmed = incoming.Trim();
+        if (trimmed.Length <= 75)
         {
-            // The spec says nothing about trimming, but it seems reasonable...
-            string trimmed = incoming.Trim();
-            if (trimmed.Length <= 75)
-            {
-                return trimmed + SerializationConstants.LineBreak;
-            }
-
-            const int TakeLimit = 74;
-
-            string firstLine = trimmed.Substring(0, TakeLimit);
-            string remainder = trimmed.Substring(TakeLimit, trimmed.Length - TakeLimit);
-
-            string chunkedRemainder = string.Join(SerializationConstants.LineBreak + " ", Chunk(remainder));
-            return firstLine + SerializationConstants.LineBreak + " " + chunkedRemainder + SerializationConstants.LineBreak;
+            return trimmed + SerializationConstants.LineBreak;
         }
 
-        private static IEnumerable<string> Chunk(string str, int chunkSize = 73)
-        {
-            for (int index = 0; index < str.Length; index += chunkSize)
-            {
-                yield return str.Substring(index, Math.Min(chunkSize, str.Length - index));
-            }
-        }
+        const int TakeLimit = 74;
 
-        private static class SerializationConstants
+        string firstLine = trimmed.Substring(0, TakeLimit);
+        string remainder = trimmed.Substring(TakeLimit, trimmed.Length - TakeLimit);
+
+        string chunkedRemainder = string.Join(SerializationConstants.LineBreak + " ", Chunk(remainder));
+        return firstLine + SerializationConstants.LineBreak + " " + chunkedRemainder + SerializationConstants.LineBreak;
+    }
+
+    private static IEnumerable<string> Chunk(string str, int chunkSize = 73)
+    {
+        for (int index = 0; index < str.Length; index += chunkSize)
         {
-            public const string LineBreak = "\r\n";
+            yield return str.Substring(index, Math.Min(chunkSize, str.Length - index));
         }
+    }
+
+    private static class SerializationConstants
+    {
+        public const string LineBreak = "\r\n";
     }
 }

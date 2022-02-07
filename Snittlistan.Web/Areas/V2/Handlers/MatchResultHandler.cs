@@ -1,59 +1,58 @@
-﻿#nullable enable
+﻿
+using System.Web;
+using EventStoreLite;
+using Raven.Client;
+using Snittlistan.Web.Areas.V2.Domain;
+using Snittlistan.Web.Areas.V2.Domain.Match.Events;
+using Snittlistan.Web.Areas.V2.ReadModels;
 
-namespace Snittlistan.Web.Areas.V2.Handlers
+#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.Handlers;
+public class MatchResultHandler :
+    IEventHandler<MatchResultRegistered>,
+    IEventHandler<MatchResult4Registered>,
+    IEventHandler<MatchCommentaryEvent>
 {
-    using System.Web;
-    using EventStoreLite;
-    using Raven.Client;
-    using Snittlistan.Web.Areas.V2.Domain;
-    using Snittlistan.Web.Areas.V2.Domain.Match.Events;
-    using Snittlistan.Web.Areas.V2.ReadModels;
+    public IDocumentSession DocumentSession { get; set; } = null!;
 
-    public class MatchResultHandler :
-        IEventHandler<MatchResultRegistered>,
-        IEventHandler<MatchResult4Registered>,
-        IEventHandler<MatchCommentaryEvent>
+    public void Handle(MatchResultRegistered e, string aggregateId)
     {
-        public IDocumentSession DocumentSession { get; set; } = null!;
+        DoRegister(aggregateId, e.RosterId, e.TeamScore, e.OpponentScore);
+    }
 
-        public void Handle(MatchResultRegistered e, string aggregateId)
+    public void Handle(MatchResult4Registered e, string aggregateId)
+    {
+        DoRegister(aggregateId, e.RosterId, e.TeamScore, e.OpponentScore);
+    }
+
+    public void Handle(MatchCommentaryEvent e, string aggregateId)
+    {
+        string id = ResultHeaderReadModel.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
+        ResultHeaderReadModel results = DocumentSession.Load<ResultHeaderReadModel>(id);
+        results.SetMatchCommentary(e.SummaryText, e.SummaryHtml, e.BodyText);
+    }
+
+    private void DoRegister(string aggregateId, string rosterId, int teamScore, int opponentScore)
+    {
+        Roster roster = DocumentSession.Load<Roster>(rosterId);
+        if (roster == null)
         {
-            DoRegister(aggregateId, e.RosterId, e.TeamScore, e.OpponentScore);
+            throw new HttpException(404, "Roster not found");
         }
 
-        public void Handle(MatchResult4Registered e, string aggregateId)
+        roster.MatchResultId = aggregateId;
+        string id = ResultHeaderReadModel.IdFromBitsMatchId(roster.BitsMatchId, roster.Id!);
+
+        ResultHeaderReadModel readModel = DocumentSession.Load<ResultHeaderReadModel>(id);
+        if (readModel == null)
         {
-            DoRegister(aggregateId, e.RosterId, e.TeamScore, e.OpponentScore);
+            readModel = new ResultHeaderReadModel(roster, aggregateId, teamScore, opponentScore);
+            DocumentSession.Store(readModel);
         }
-
-        public void Handle(MatchCommentaryEvent e, string aggregateId)
+        else
         {
-            string id = ResultHeaderReadModel.IdFromBitsMatchId(e.BitsMatchId, e.RosterId);
-            ResultHeaderReadModel results = DocumentSession.Load<ResultHeaderReadModel>(id);
-            results.SetMatchCommentary(e.SummaryText, e.SummaryHtml, e.BodyText);
-        }
-
-        private void DoRegister(string aggregateId, string rosterId, int teamScore, int opponentScore)
-        {
-            Roster roster = DocumentSession.Load<Roster>(rosterId);
-            if (roster == null)
-            {
-                throw new HttpException(404, "Roster not found");
-            }
-
-            roster.MatchResultId = aggregateId;
-            string id = ResultHeaderReadModel.IdFromBitsMatchId(roster.BitsMatchId, roster.Id!);
-
-            ResultHeaderReadModel readModel = DocumentSession.Load<ResultHeaderReadModel>(id);
-            if (readModel == null)
-            {
-                readModel = new ResultHeaderReadModel(roster, aggregateId, teamScore, opponentScore);
-                DocumentSession.Store(readModel);
-            }
-            else
-            {
-                readModel.SetValues(roster, aggregateId, teamScore, opponentScore);
-            }
+            readModel.SetValues(roster, aggregateId, teamScore, opponentScore);
         }
     }
 }
