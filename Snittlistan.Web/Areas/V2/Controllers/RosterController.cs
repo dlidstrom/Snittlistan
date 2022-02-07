@@ -488,8 +488,12 @@ public class RosterController : AbstractController
                     "View",
                     "Roster",
                     new { roster.Season, roster.Turn });
+                string portPart =
+                    Request.Url.Port == 80
+                    ? string.Empty
+                    : $":{Request.Url.Port}";
                 Uri rosterLink = new(
-                    $"{Request.Url.Scheme}://{Request.Url.Host}:{Request.Url.Port}/{uriString}");
+                    $"{Request.Url.Scheme}://{Request.Url.Host}{portPart}{uriString}");
                 await ExecuteCommand(
                     new CreateRosterMailCommandHandler.Command(rosterId, rosterLink));
             }

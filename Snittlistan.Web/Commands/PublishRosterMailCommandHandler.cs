@@ -11,6 +11,11 @@ public class PublishRosterMailCommandHandler
 {
     protected override Task<UpdateRosterEmail> CreateEmail(HandlerContext<Command> context)
     {
+        if (DateTime.Now.Second % 3 == 0)
+        {
+            throw new Exception("oh, no!");
+        }
+
         Player player = CompositionRoot.DocumentSession.Load<Player>(context.Payload.PlayerId);
         Roster roster = CompositionRoot.DocumentSession
             .Include<Roster>(x => x.Players)
@@ -35,14 +40,13 @@ public class PublishRosterMailCommandHandler
         return Task.FromResult(email);
     }
 
-    protected override string GetKey(Command command)
+    protected override RatePerSeconds GetRate(HandlerContext<Command> context)
     {
-        return $"roster_mail:{command.PlayerId}";
-    }
-
-    protected override RatePerSeconds GetRate(Command command)
-    {
-        return new(1, 600);
+        RatePerSeconds ratePerSeconds = new(
+            $"roster_mail:{context.Payload.PlayerId}:{context.Tenant.TenantId}",
+            1,
+            600);
+        return ratePerSeconds;
     }
 
     public record Command(

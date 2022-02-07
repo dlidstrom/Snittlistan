@@ -5,6 +5,7 @@ using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Database;
 using Snittlistan.Web.Models;
 using System.Data.Entity;
+using System.Web.Caching;
 
 namespace Snittlistan.Web.Commands;
 
@@ -18,12 +19,31 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
 
     public async Task Handle(HandlerContext<TCommand> context)
     {
-        string key = GetKey(context.Payload);
+        (string key, int rate, int perSeconds) = GetRate(context);
+
+        // check cache
+        if (CurrentHttpContext.Instance().Cache.Get(key) is not RateLimit cacheItem)
+        {
+            cacheItem = new(key, 1, rate, perSeconds);
+            CurrentHttpContext.Instance().Cache.Insert(
+                key,
+                cacheItem,
+                null,
+                Cache.NoAbsoluteExpiration,
+                Cache.NoSlidingExpiration,
+                CacheItemPriority.Default,
+                (key, item, reason) =>
+                    Logger.InfoFormat(
+                        "cache item '{key}' removed due to '{reason}'",
+                        key,
+                        reason));
+        }
+
+        // check database
         KeyValueProperty? rateLimitProperty = await CompositionRoot.Databases.Snittlistan.KeyValueProperties
             .SingleOrDefaultAsync(x => x.Key == key);
         if (rateLimitProperty == null)
         {
-            (int rate, int perSeconds) = GetRate(context.Payload);
             KeyValueProperty keyValueProperty = new(
                 context.Tenant.TenantId,
                 key,
@@ -33,12 +53,22 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
         }
 
         DateTime now = DateTime.Now;
-        RateLimit rateLimit = (RateLimit)rateLimitProperty.Value;
-        rateLimit.UpdateAllowance(now);
-        if (rateLimit.Allowance < 1)
+        rateLimitProperty.ModifyValue<RateLimit>(x => x.UpdateAllowance(now));
+        cacheItem.UpdateAllowance(now);
+        double allowance = rateLimitProperty.GetValue<RateLimit, double>(x => x.Allowance);
+        if (allowance < 1 || cacheItem.Allowance < 1)
         {
-            rateLimitProperty.SetValue(rateLimit);
-            throw new HandledException($"allowance = {rateLimit.Allowance:N2}, wait to reach 1");
+            string message =
+                $"(db) allowance = {allowance:N2}, (cache) allowance = {cacheItem.Allowance:N2}, wait to reach 1";
+            throw new HandledException(message);
+        }
+
+        int changesSaved = await CompositionRoot.Databases.Snittlistan.SaveChangesAsync();
+        if (changesSaved > 0)
+        {
+            Logger.InfoFormat(
+                "saved {changesSaved} to database",
+                changesSaved);
         }
 
         TEmail email = await CreateEmail(context);
@@ -49,24 +79,14 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
             email.Bcc,
             email.Subject,
             state));
-        rateLimit.DecreaseAllowance(now);
-        rateLimitProperty.SetValue(rateLimit);
-        int changesSaved = await CompositionRoot.Databases.Snittlistan.SaveChangesAsync();
-        if (changesSaved > 0)
-        {
-            Logger.InfoFormat(
-                "saved {changesSaved} to database",
-                changesSaved);
-        }
-
         await CompositionRoot.EmailService.SendAsync(email);
+        rateLimitProperty.ModifyValue<RateLimit>(x => x.DecreaseAllowance(now));
+        cacheItem.DecreaseAllowance(now);
     }
 
     protected abstract Task<TEmail> CreateEmail(HandlerContext<TCommand> context);
 
-    protected abstract string GetKey(TCommand command);
+    protected abstract RatePerSeconds GetRate(HandlerContext<TCommand> context);
 
-    protected abstract RatePerSeconds GetRate(TCommand command);
-
-    protected record RatePerSeconds(int Rate, int PerSeconds);
+    protected record RatePerSeconds(string Key, int Rate, int PerSeconds);
 }

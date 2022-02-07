@@ -18,14 +18,12 @@ public class SendEmailCommandHandler
         return Task.FromResult(email);
     }
 
-    protected override string GetKey(Command command)
+    protected override RatePerSeconds GetRate(HandlerContext<Command> context)
     {
-        return $"send-email/{command.RatePerSeconds}:{command.To}";
-    }
-
-    protected override RatePerSeconds GetRate(Command command)
-    {
-        return new(1, command.RatePerSeconds);
+        return new(
+            $"send-email/{context.Payload.RatePerSeconds}:{context.Payload.To}",
+            1,
+            context.Payload.RatePerSeconds);
     }
 
     public record Command(string To, string Subject, string Content, int RatePerSeconds);

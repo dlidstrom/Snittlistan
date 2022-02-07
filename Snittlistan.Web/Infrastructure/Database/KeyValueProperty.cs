@@ -39,9 +39,18 @@ public class KeyValueProperty : HasVersion
 
     public DateTime UpdatedDate { get; private set; }
 
-    public void SetValue(object value)
+    public TResult GetValue<TValue, TResult>(Func<TValue, TResult> action)
     {
-        Value = value;
+        TValue val = (TValue)Value;
+        return action.Invoke(val);
+    }
+
+    public void ModifyValue<TValue>(Action<TValue> action)
+        where TValue : class
+    {
+        TValue val = (TValue)Value;
+        action.Invoke(val);
+        Value = val;
         UpdatedDate = DateTime.Now;
     }
 }

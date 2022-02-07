@@ -3,6 +3,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Reflection;
+using System.Web.Caching;
 using System.Web.Http;
 using Newtonsoft.Json;
 using Snittlistan.Queue;
@@ -11,6 +12,7 @@ using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Attributes;
 using Snittlistan.Web.Infrastructure.Database;
+using Snittlistan.Web.Models;
 using Snittlistan.Web.TaskHandlers;
 
 namespace Snittlistan.Web.Areas.V2.Controllers.Api;
@@ -24,10 +26,40 @@ public class TaskController : AbstractApiController
 
         TaskBase taskObject = request.TaskJson.FromJson<TaskBase>();
 
+        // check error rate
+        string cacheKey = $"error-rate:{taskObject.GetType().Name}";
+        if (CurrentHttpContext.Instance().Cache.Get(cacheKey) is not RateLimit cacheItem)
+        {
+            // allow 1 error per hour
+            cacheItem = new(cacheKey, 1, 1, 30);
+            CurrentHttpContext.Instance().Cache.Insert(
+                cacheKey,
+                cacheItem,
+                null,
+                Cache.NoAbsoluteExpiration,
+                Cache.NoSlidingExpiration,
+                CacheItemPriority.Default,
+                (key, item, reason) =>
+                    Logger.InfoFormat(
+                        "cache item '{key}' removed due to '{reason}'",
+                        key,
+                        reason));
+        }
+
+        cacheItem.UpdateAllowance(DateTime.Now);
+        if (cacheItem.Allowance < 1)
+        {
+            Logger.InfoFormat(
+                "throttling {cacheKey} due to allowance = {allowance}",
+                cacheKey,
+                cacheItem.Allowance.ToString("N2"));
+            return Ok("throttled due to unhandled exception");
+        }
+
         // check for published task
         PublishedTask? publishedTask =
-            await CompositionRoot.Databases.Snittlistan.PublishedTasks.SingleOrDefaultAsync(
-                x => x.MessageId == request.MessageId);
+        await CompositionRoot.Databases.Snittlistan.PublishedTasks.SingleOrDefaultAsync(
+            x => x.MessageId == request.MessageId);
         if (publishedTask is null)
         {
             return BadRequest($"No published task found with message id {request.MessageId}");
@@ -38,14 +70,42 @@ public class TaskController : AbstractApiController
             return Ok($"task with message id {publishedTask.MessageId} already handled");
         }
 
+        try
+        {
+            using IDisposable scope = NLog.NestedDiagnosticsLogicalContext.Push(taskObject.BusinessKey);
+            Logger.Info("Begin");
+            await HandleMessage(
+                taskObject,
+                request.CorrelationId ?? default,
+                request.MessageId ?? default);
+            publishedTask.MarkHandled(DateTime.Now);
+        }
+        catch (Exception ex)
+        {
+            Logger.WarnFormat(
+                ex,
+                "decreasing allowance for {cacheKey}",
+                cacheKey);
+            cacheItem.DecreaseAllowance(DateTime.Now);
+            throw;
+        }
+        finally
+        {
+            Logger.Info("End");
+        }
+
+        return Ok();
+    }
+
+    private async Task HandleMessage(
+        TaskBase taskObject,
+        Guid correlationId,
+        Guid causationId)
+    {
         Type handlerType = typeof(ITaskHandler<>).MakeGenericType(taskObject.GetType());
 
         MethodInfo handleMethod = handlerType.GetMethod(nameof(ITaskHandler<TaskBase>.Handle));
-        using IDisposable scope = NLog.NestedDiagnosticsLogicalContext.Push(taskObject.BusinessKey);
-        Logger.Info("Begin");
         Tenant tenant = await CompositionRoot.GetCurrentTenant();
-        Guid correlationId = request.CorrelationId ?? default;
-        Guid causationId = request.MessageId ?? default;
         TaskPublisher taskPublisher = new(
             tenant,
             CompositionRoot.Databases,
@@ -75,15 +135,11 @@ public class TaskController : AbstractApiController
         {
             Task task = (Task)handleMethod.Invoke(handler, new[] { handlerContext });
             await task;
-            publishedTask.MarkHandled(DateTime.Now);
         }
         catch (HandledException ex)
         {
             Logger.InfoFormat("task cannot be handled: {reason}", ex.Message);
         }
-
-        Logger.Info("End");
-        return Ok();
     }
 }
 
