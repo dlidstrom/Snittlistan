@@ -80,8 +80,8 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
             email.Subject,
             state));
         await CompositionRoot.EmailService.SendAsync(email);
-        rateLimitProperty.ModifyValue<RateLimit>(x => x.DecreaseAllowance(now));
-        cacheItem.DecreaseAllowance(now);
+        rateLimitProperty.ModifyValue<RateLimit>(x => x.DecreaseAllowance());
+        cacheItem.DecreaseAllowance();
     }
 
     protected abstract Task<TEmail> CreateEmail(HandlerContext<TCommand> context);

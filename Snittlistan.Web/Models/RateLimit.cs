@@ -28,16 +28,17 @@ public class RateLimit
 
     public void UpdateAllowance(DateTime when)
     {
-        Allowance = (double)(when - UpdatedDate).TotalSeconds * Rate / PerSeconds;
+        Allowance += (double)(when - UpdatedDate).TotalSeconds * Rate / PerSeconds;
         if (Allowance > Rate)
         {
             Allowance = Rate;
         }
+
+        UpdatedDate = when;
     }
 
-    public void DecreaseAllowance(DateTime when)
+    public void DecreaseAllowance()
     {
         Allowance--;
-        UpdatedDate = when;
     }
 }

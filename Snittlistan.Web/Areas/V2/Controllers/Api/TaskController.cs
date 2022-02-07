@@ -53,7 +53,8 @@ public class TaskController : AbstractApiController
                 "throttling {cacheKey} due to allowance = {allowance}",
                 cacheKey,
                 cacheItem.Allowance.ToString("N2"));
-            return Ok("throttled due to unhandled exception");
+            return Ok(
+                $"throttled due to unhandled exception (allowance = {cacheItem.Allowance:N2})");
         }
 
         // check for published task
@@ -86,7 +87,7 @@ public class TaskController : AbstractApiController
                 ex,
                 "decreasing allowance for {cacheKey}",
                 cacheKey);
-            cacheItem.DecreaseAllowance(DateTime.Now);
+            cacheItem.DecreaseAllowance();
             throw;
         }
         finally
