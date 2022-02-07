@@ -1,21 +1,16 @@
-namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
+namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary;
+public static class SummaryPatterns
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    public static class SummaryPatterns
+    public static SummaryPattern[] Create(Dictionary<string, Player> players)
     {
-        public static SummaryPattern[] Create(Dictionary<string, Player> players)
+        Func<SeriesScores[], string> seriesFormatter = seriesScores =>
         {
-            Func<SeriesScores[], string> seriesFormatter = seriesScores =>
-            {
-                string result = $"Serierna slutade {string.Join(", ", seriesScores.Select(x => $"{x.FormattedDeltaResult} ({x.TeamPins}-{x.OpponentPins})"))}.";
-                return result;
-            };
+            string result = $"Serierna slutade {string.Join(", ", seriesScores.Select(x => $"{x.FormattedDeltaResult} ({x.TeamPins}-{x.OpponentPins})"))}.";
+            return result;
+        };
 
-            SummaryPattern[] summaryPatterns = new[]
-            {
+        SummaryPattern[] summaryPatterns = new[]
+        {
                 new SummaryPattern("20-0")
                 {
                     NumberOfSeries = 4,
@@ -210,7 +205,6 @@ namespace Snittlistan.Web.Areas.V2.Domain.Match.Commentary
                 }
             };
 
-            return summaryPatterns;
-        }
+        return summaryPatterns;
     }
 }

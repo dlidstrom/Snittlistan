@@ -1,24 +1,23 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Web.Models
+using Postal;
+
+namespace Snittlistan.Web.Models;
+
+public abstract class EmailBase : Email
 {
-    using System.Configuration;
-    using Postal;
-
-    public abstract class EmailBase : Email
+    protected EmailBase(string viewName)
+        : base(viewName)
     {
-        protected EmailBase(string viewName, string to, string subject)
-            : base(viewName)
-        {
-            To = to;
-            Subject = subject;
-        }
-
-        public static string OwnerEmail { get; } = ConfigurationManager.AppSettings["OwnerEmail"];
-
-        public string Bcc { get; protected set; } = OwnerEmail;
-        public string From { get; protected set; } = OwnerEmail;
-        public string To { get; }
-        public string Subject { get; }
     }
+
+    public abstract EmailState State { get; }
+
+    public string Bcc => State.Bcc;
+
+    public string From => State.From;
+
+    public string To => State.To;
+
+    public string Subject => State.Subject;
 }

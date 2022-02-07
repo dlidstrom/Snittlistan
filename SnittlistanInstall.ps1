@@ -51,8 +51,17 @@ $administratorPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAu
     [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
         (ConvertTo-SecureString (gc ..\administrator-password.txt))))
 
+if (-not (Test-Path ..\email-password.txt)) {
+    Read-Host -AsSecureString "Enter Email password" | ConvertFrom-SecureString | Out-File ..\email-password.txt
+}
+
+$emailPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
+    [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
+        (ConvertTo-SecureString (gc ..\email-password.txt))))
+
 $settings = @{
     ADMINISTRATOR_PASSWORD = $administratorPassword
+    EMAIL_PASSWORD = $emailPassword
 }
 
 $settingsFormatted = ($settings.Keys | % { "$_=$($settings[$_])" }) -join "`n"

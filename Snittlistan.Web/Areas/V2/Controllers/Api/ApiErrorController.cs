@@ -1,19 +1,18 @@
-﻿namespace Snittlistan.Web.Areas.V2.Controllers.Api
-{
-    using System.Net;
-    using System.Net.Http;
-    using System.Web.Http;
+﻿
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 
-    public class ApiErrorController : ApiController
+namespace Snittlistan.Web.Areas.V2.Controllers.Api;
+public class ApiErrorController : ApiController
+{
+    [HttpGet, HttpPost, HttpPut, HttpDelete, HttpHead, HttpOptions, AcceptVerbs("PATCH")]
+    public HttpResponseMessage Handle404()
     {
-        [HttpGet, HttpPost, HttpPut, HttpDelete, HttpHead, HttpOptions, AcceptVerbs("PATCH")]
-        public HttpResponseMessage Handle404()
+        var responseMessage = new HttpResponseMessage(HttpStatusCode.NotFound)
         {
-            var responseMessage = new HttpResponseMessage(HttpStatusCode.NotFound)
-            {
-                ReasonPhrase = "The requested resource is not found"
-            };
-            return responseMessage;
-        }
+            ReasonPhrase = "The requested resource is not found"
+        };
+        return responseMessage;
     }
 }
