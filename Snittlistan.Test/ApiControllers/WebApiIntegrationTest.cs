@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Web;
+using System.Web.Caching;
 using System.Web.Http;
 using Castle.Core;
 using Castle.Facilities.Logging;
@@ -59,7 +60,10 @@ public abstract class WebApiIntegrationTest
         HttpRequestBase requestMock =
             Mock.Of<HttpRequestBase>(x => x.ServerVariables == new NameValueCollection() { { "SERVER_NAME", "TEST" } });
         HttpContextBase httpContextMock =
-            Mock.Of<HttpContextBase>(x => x.Request == requestMock && x.Items == new Dictionary<object, object>());
+            Mock.Of<HttpContextBase>(x =>
+                x.Request == requestMock
+                && x.Items == new Dictionary<object, object>()
+                && x.Cache == new Cache());
         _ = inMemoryContext.Tenants.Add(tenant);
         CurrentHttpContext.Instance = () => httpContextMock;
         await OnSetUp(Container);
