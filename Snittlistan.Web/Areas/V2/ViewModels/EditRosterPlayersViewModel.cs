@@ -1,11 +1,14 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Web.Areas.V2.ViewModels
-{
-    public class EditRosterPlayersViewModel
-    {
-        public RosterViewModel? RosterViewModel { get; set; }
+using Snittlistan.Web.Infrastructure.Database;
 
-        public PlayerViewModel[]? AvailablePlayers { get; set; }
-    }
+namespace Snittlistan.Web.Areas.V2.ViewModels;
+
+public class EditRosterPlayersViewModel
+{
+    public RosterViewModel? RosterViewModel { get; set; }
+
+    public PlayerViewModel[]? AvailablePlayers { get; set; }
+
+    public TenantFeatures? Features { get; set; } = null!;
 }

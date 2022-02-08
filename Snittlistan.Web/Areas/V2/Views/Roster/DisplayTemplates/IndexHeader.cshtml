@@ -26,7 +26,7 @@
     </div>
 </div>
 
-@if (User.IsInRole2(WebsiteRoles.Activity.Manage))
+@if (User?.IsInRole2(WebsiteRoles.Activity.Manage) ?? false)
 {
     <div class="row">
         <div class="span12">

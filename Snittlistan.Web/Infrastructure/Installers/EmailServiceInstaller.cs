@@ -1,29 +1,28 @@
-﻿#nullable enable
+﻿
+using System.Web.Mvc;
+using Castle.MicroKernel.Registration;
+using Castle.MicroKernel.SubSystems.Configuration;
+using Castle.Windsor;
+using Postal;
 
-namespace Snittlistan.Web.Infrastructure.Installers
+#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Installers;
+public class EmailServiceInstaller : IWindsorInstaller
 {
-    using System.Web.Mvc;
-    using Castle.MicroKernel.Registration;
-    using Castle.MicroKernel.SubSystems.Configuration;
-    using Castle.Windsor;
-    using Postal;
+    private readonly string viewsPath;
 
-    public class EmailServiceInstaller : IWindsorInstaller
+    public EmailServiceInstaller(string viewsPath)
     {
-        private readonly string viewsPath;
+        this.viewsPath = viewsPath;
+    }
 
-        public EmailServiceInstaller(string viewsPath)
+    public void Install(IWindsorContainer container, IConfigurationStore store)
+    {
+        ViewEngineCollection engines = new()
         {
-            this.viewsPath = viewsPath;
-        }
-
-        public void Install(IWindsorContainer container, IConfigurationStore store)
-        {
-            ViewEngineCollection engines = new()
-            {
-                new FileSystemRazorViewEngine(viewsPath)
-            };
-            _ = container.Register(Component.For<IEmailService>().Instance(new EmailService(engines)));
-        }
+            new FileSystemRazorViewEngine(viewsPath)
+        };
+        _ = container.Register(Component.For<IEmailService>().Instance(new EmailService(engines)));
     }
 }

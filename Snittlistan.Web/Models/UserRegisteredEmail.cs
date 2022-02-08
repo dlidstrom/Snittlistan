@@ -1,22 +1,28 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Web.Models
+namespace Snittlistan.Web.Models;
+
+public class UserRegisteredEmail : EmailBase
 {
-    public class UserRegisteredEmail : EmailBase
+    private readonly UserRegisteredEmail_State _state;
+
+    public UserRegisteredEmail(
+        string to,
+        string subject,
+        string id,
+        string activationKey)
+        : base("UserRegistered")
     {
-        public UserRegisteredEmail(
-            string to,
-            string subject,
-            string id,
-            string activationKey)
-            : base("UserRegistered", to, subject)
-        {
-            Id = id;
-            ActivationKey = activationKey;
-        }
-
-        public string Id { get; }
-
-        public string ActivationKey { get; }
+        _state = new(
+            to,
+            subject,
+            id,
+            activationKey);
     }
+
+    public string Id => _state.Id;
+
+    public string ActivationKey => _state.ActivationKey;
+
+    public override EmailState State => _state;
 }
