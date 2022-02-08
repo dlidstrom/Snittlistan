@@ -26,7 +26,7 @@ public class RateLimit
 
     public DateTime UpdatedDate { get; private set; }
 
-    public void UpdateAllowance(DateTime when)
+    public RateLimit UpdateAllowance(DateTime when)
     {
         Allowance += (double)(when - UpdatedDate).TotalSeconds * Rate / PerSeconds;
         if (Allowance > Rate)
@@ -35,10 +35,12 @@ public class RateLimit
         }
 
         UpdatedDate = when;
+        return this;
     }
 
-    public void DecreaseAllowance()
+    public RateLimit DecreaseAllowance()
     {
         Allowance--;
+        return this;
     }
 }

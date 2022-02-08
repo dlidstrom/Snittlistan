@@ -54,7 +54,7 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
 
         DateTime now = DateTime.Now;
         rateLimitProperty.ModifyValue<RateLimit>(x => x.UpdateAllowance(now));
-        cacheItem.UpdateAllowance(now);
+        _ = cacheItem.UpdateAllowance(now);
         double allowance = rateLimitProperty.GetValue<RateLimit, double>(x => x.Allowance);
         if (allowance < 1 || cacheItem.Allowance < 1)
         {

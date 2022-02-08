@@ -160,6 +160,7 @@
     <Compile Include="Infrastructure\Database\ChangeLog.cs" />
     <Compile Include="Infrastructure\Database\HasVersion.cs" />
     <Compile Include="Infrastructure\Database\KeyValueProperty.cs" />
+    <Compile Include="Models\TenantFeatures.cs" />
     <Compile Include="Models\RateLimit.cs" />
     <Compile Include="Infrastructure\Database\SentEmail.cs" />
     <Compile Include="Infrastructure\HandledException.cs" />
@@ -614,6 +615,8 @@
     <Content Include="Areas\V2\Views\Authentication\_PasswordEditor.cshtml" />
     <Content Include="Areas\V2\Views\AuditLogViewer\Index.cshtml" />
     <Content Include="Areas\V2\Views\AdminTasks\Adopt.cshtml" />
+    <Content Include="Areas\V2\Views\AdminTasks\Features.cshtml" />
+    <Content Include="Content\css\checkbox.css" />
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />

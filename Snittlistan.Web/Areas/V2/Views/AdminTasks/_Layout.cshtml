@@ -2,6 +2,8 @@
     Layout = "~/Areas/V2/Views/Shared/_Layout.cshtml";
 }
 
+@RenderSection("styles", false)
+
 <div class="lead">
     Installerad version: @Html.GetAssemblyVersion()
 </div>
@@ -14,6 +16,7 @@
             @Html.ActionMenuLink("Event Store", "sprite-glyphicons_141_database_plus", "EventStoreActions", Url.Action("EventStoreActions"))
             @Html.ActionMenuLink("E-post", "sprite-glyphicons_399_e-mail", "SendMail", Url.Action("SendMail"))
             @Html.ActionMenuLink("Adoptera", "sprite-glyphicons_024_parents", "Adopt", Url.Action("Adopt"))
+            @Html.ActionMenuLink("Inställningar", "sprite-glyphicons_280_settings", "Features", Url.Action("Features"))
         </ul>
     </div>
 </div>

@@ -51,4 +51,13 @@ public record CompositionRoot(
 
         return tenant;
     }
+
+    public async Task<TenantFeatures?> GetFeatures()
+    {
+        Tenant tenant = await GetCurrentTenant();
+        KeyValueProperty? settingsProperty =
+            await Databases.Snittlistan.KeyValueProperties.SingleOrDefaultAsync(
+                x => x.Key == TenantFeatures.Key && x.TenantId == tenant.TenantId);
+        return settingsProperty?.Value as TenantFeatures;
+    }
 }

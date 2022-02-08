@@ -472,7 +472,8 @@ public class RosterController : AbstractController
 
         roster.UpdateWith(CompositionRoot.CorrelationId, update);
 
-        if (vm.SendUpdateMail || true)
+        TenantFeatures? features = await CompositionRoot.GetFeatures();
+        if (vm.SendUpdateMail && features?.RosterMailEnabled)
         {
             if (roster.Preliminary)
             {
