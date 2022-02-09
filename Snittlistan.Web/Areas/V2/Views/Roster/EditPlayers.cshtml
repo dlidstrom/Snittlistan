@@ -198,13 +198,18 @@
                 </table>
             }
             <div class="control-group">
+                @Html.Label(
+                    "Preliminary",
+                    "Preliminär",
+                    new { @class = "control-label" })
                 <div class="controls">
-                    <label class="checkbox">
-                        @Html.CheckBox("preliminary", Model.RosterViewModel.Preliminary) Preliminär (visas inte)
-                    </label>
+                    @Html.CheckBox("Preliminary")
+                    <span class="help-block">
+                        Visas inte för vanliga spelare
+                    </span>
                 </div>
             </div>
-            if (Model.Features?.RosterMailEnabled ?? false)
+            if (Model.Features?.get_RosterMailEnabled() ?? false)
             {
                 <div class="control-group">
                     <div class="controls">

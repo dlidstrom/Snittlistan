@@ -1,9 +1,9 @@
-﻿
+﻿#nullable enable
+
 using Snittlistan.Web.Areas.V2.Domain;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.ViewModels;
+
 public class RosterViewModel
 {
     public RosterViewModel()
