@@ -198,22 +198,30 @@
                 </table>
             }
             <div class="control-group">
+                @Html.Label(
+                    "Preliminary",
+                    "Preliminär",
+                    new { @class = "control-label" })
                 <div class="controls">
-                    <label class="checkbox">
-                        @Html.CheckBox("preliminary", Model.RosterViewModel.Preliminary) Preliminär (visas inte)
-                    </label>
-                </div>
-            </div>
-            <div class="control-group">
-                <div class="controls">
-                    <label class="checkbox">
-                        @Html.CheckBox("sendUpdateMail", false, new { disabled = true }) Skicka mail till spelarna <strong style="background-color: yellow; padding: 5px; border: 1px dashed red;">Nyhet!</strong>
-                    </label>
+                    @Html.CheckBox("Preliminary")
                     <span class="help-block">
-                        Ett mail kommer skickas till alla spelare som berörs av ändringen, dvs även de som eventuellt byts ut.
+                        Visas inte för vanliga spelare
                     </span>
                 </div>
             </div>
+            if (Model.Features?.get_RosterMailEnabled() ?? false)
+            {
+                <div class="control-group">
+                    <div class="controls">
+                        <label class="checkbox">
+                            @Html.CheckBox("sendUpdateMail", false) Skicka mail till spelarna <strong style="background-color: yellow; padding: 5px; border: 1px dashed red;">Nyhet!</strong>
+                        </label>
+                        <span class="help-block">
+                            Ett mail kommer skickas till alla spelare som berörs av ändringen, dvs även de som eventuellt byts ut.
+                        </span>
+                    </div>
+                </div>
+            }
             <div class="form-actions">
                 <button class="btn btn-primary btn-large" type="submit">Spara</button>
                 @Html.ActionLink("Avbryt", "View", new { season = Model.RosterViewModel.Season, turn = Model.RosterViewModel.Turn }, new { @class = "btn btn-large" })

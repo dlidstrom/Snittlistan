@@ -1,42 +1,30 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Web.Controllers
+using System.Web.Http;
+using Castle.Core.Logging;
+using Snittlistan.Web.Infrastructure;
+using Snittlistan.Web.Infrastructure.Attributes;
+
+namespace Snittlistan.Web.Controllers;
+
+[SaveChanges]
+public abstract class AbstractApiController : ApiController
 {
-    using System.Threading.Tasks;
-    using System.Web.Http;
-    using EventStoreLite;
-    using Raven.Client;
-    using Snittlistan.Queue;
-    using Snittlistan.Queue.Models;
-    using Snittlistan.Web.Infrastructure.Attributes;
-    using Snittlistan.Web.Infrastructure.Database;
+    public CompositionRoot CompositionRoot { get; set; } = null!;
 
-    [SaveChanges]
-    public abstract class AbstractApiController : ApiController
+    public ILogger Logger { get; set; } = NullLogger.Instance;
+
+    [NonAction]
+    public async Task SaveChangesAsync()
     {
-        public IDocumentStore DocumentStore { get; set; } = null!;
-
-        public IDocumentSession DocumentSession { get; set; } = null!;
-
-        public IEventStoreSession EventStoreSession { get; set; } = null!;
-
-        public Databases Databases { get; set; } = null!;
-
-        public EventStore EventStore { get; set; } = null!;
-
-        public TenantConfiguration TenantConfiguration { get; set; } = null!;
-
-        public IMsmqTransaction MsmqTransaction { get; set; } = null!;
-
-        [NonAction]
-        public async Task SaveChangesAsync()
+        int changesSaved = await CompositionRoot.Databases.Snittlistan.SaveChangesAsync();
+        if (changesSaved > 0)
         {
-            MsmqTransaction.Commit();
-
-            // this commits the document session
-            EventStoreSession.SaveChanges();
-
-            _ = await Databases.Snittlistan.SaveChangesAsync();
+            Logger.InfoFormat(
+                "saved {changesSaved} to database",
+                changesSaved);
         }
+
+        CompositionRoot.EventStoreSession.SaveChanges();
     }
 }
