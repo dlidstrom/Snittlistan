@@ -1,0 +1,34 @@
+﻿@model Snittlistan.Web.Areas.V2.Controllers.AdminTasksController.TenantFeaturesViewModel
+
+<div class="row">
+    <div class="span12">
+        @using (Html.BeginForm(
+            "Features",
+            "AdminTasks",
+            FormMethod.Post,
+            new
+            {
+                @class = "form-horizontal"
+            }))
+        {
+            <div class="control-group">
+                @Html.LabelFor(x => x.RosterMailEnabled, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.CheckBoxFor(x => x.RosterMailEnabled, new { @class = "switch" })
+                    <span class="help-block">
+                        Gör det möjligt att skicka uppdaterings-epost när laguttagningarna uppdateras.
+                    </span>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button class="btn btn-primary btn-large" type="submit">Spara</button>
+                    <a class="btn btn-large"
+                       href="@Url.Action("Index", "AdminTasks")">
+                        Avbryt
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

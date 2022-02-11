@@ -1,17 +1,16 @@
-﻿namespace Snittlistan.Web.Infrastructure.Attributes
-{
-    using System.Web.Mvc;
+﻿
+using System.Web.Mvc;
 
-    public class RestoreModelStateFromTempDataAttribute : ActionFilterAttribute
+namespace Snittlistan.Web.Infrastructure.Attributes;
+public class RestoreModelStateFromTempDataAttribute : ActionFilterAttribute
+{
+    public override void OnActionExecuting(ActionExecutingContext filterContext)
     {
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        base.OnActionExecuting(filterContext);
+        if (filterContext.Controller.TempData.ContainsKey("ModelState"))
         {
-            base.OnActionExecuting(filterContext);
-            if (filterContext.Controller.TempData.ContainsKey("ModelState"))
-            {
-                filterContext.Controller.ViewData.ModelState.Merge(
-                    (ModelStateDictionary)filterContext.Controller.TempData["ModelState"]);
-            }
+            filterContext.Controller.ViewData.ModelState.Merge(
+                (ModelStateDictionary)filterContext.Controller.TempData["ModelState"]);
         }
     }
 }

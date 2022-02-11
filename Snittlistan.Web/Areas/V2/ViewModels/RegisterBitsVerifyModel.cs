@@ -1,16 +1,15 @@
-﻿#nullable enable
+﻿
+using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
-namespace Snittlistan.Web.Areas.V2.ViewModels
+#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.ViewModels;
+public class RegisterBitsVerifyModel
 {
-    using System.ComponentModel.DataAnnotations;
-    using System.Web.Mvc;
+    [Required]
+    public string RosterId { get; set; } = null!;
 
-    public class RegisterBitsVerifyModel
-    {
-        [Required]
-        public string RosterId { get; set; } = null!;
-
-        [HiddenInput]
-        public int Season { get; set; }
-    }
+    [HiddenInput]
+    public int Season { get; set; }
 }

@@ -1,16 +1,14 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Queue.Messages
+namespace Snittlistan.Queue.Messages;
+
+public class VerifyMatchesTask : TaskBase
 {
-    public class VerifyMatchesTask : ITask
+    public VerifyMatchesTask(bool force)
+        : base(new(typeof(VerifyMatchesTask).FullName, string.Empty))
     {
-        public VerifyMatchesTask(bool force)
-        {
-            Force = force;
-        }
-
-        public bool Force { get; }
-
-        public BusinessKey BusinessKey => new(GetType(), string.Empty);
+        Force = force;
     }
+
+    public bool Force { get; }
 }
