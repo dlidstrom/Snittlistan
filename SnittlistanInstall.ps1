@@ -43,13 +43,21 @@ if ($winver.Major -eq 6 -and $winver.Minor -ge 3) {
     }
 }
 
-if (-not (Test-Path ..\administrator-password.txt)) {
-    Read-Host -AsSecureString "Enter Administrator password" | ConvertFrom-SecureString | Out-File ..\administrator-password.txt
+if (-not (Test-Path ..\service-account.txt)) {
+    Read-Host -AsSecureString "Enter Service account" | ConvertFrom-SecureString | Out-File ..\service-account.txt
 }
 
-$administratorPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
+$serviceAccount = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
     [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
-        (ConvertTo-SecureString (gc ..\administrator-password.txt))))
+        (ConvertTo-SecureString (gc ..\service-account.txt))))
+
+if (-not (Test-Path ..\service-password.txt)) {
+    Read-Host -AsSecureString "Enter Service password" | ConvertFrom-SecureString | Out-File ..\service-password.txt
+}
+
+$servicePassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
+    [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
+        (ConvertTo-SecureString (gc ..\service-password.txt))))
 
 if (-not (Test-Path ..\email-password.txt)) {
     Read-Host -AsSecureString "Enter Email password" | ConvertFrom-SecureString | Out-File ..\email-password.txt
@@ -68,7 +76,8 @@ $dbPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
         (ConvertTo-SecureString (gc ..\db-password.txt))))
 
 $settings = @{
-    ADMINISTRATOR_PASSWORD = $administratorPassword
+    SERVICE_ACCOUNT = $serviceAccount
+    SERVICE_PASSWORD = $servicePassword
     EMAIL_PASSWORD = $emailPassword
     DB_PASSWORD = $dbPassword
 }

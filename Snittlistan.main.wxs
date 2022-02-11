@@ -31,8 +31,12 @@
     <PropertyRef Id="NETFRAMEWORK45" />
     <Condition Message="[ProductName] Requires .NET Framework 4.7 or later to be installed"><![CDATA[Installed OR (NETFRAMEWORK45 AND NETFRAMEWORK45 >= "#460805")]]></Condition>
 
-    <Condition Message="ADMINISTRATOR_PASSWORD variable must be set in the command line">
-      Installed OR ADMINISTRATOR_PASSWORD
+    <Condition Message="SERVICE_ACCOUNT variable must be set in the command line">
+      Installed OR SERVICE_ACCOUNT
+    </Condition>
+
+    <Condition Message="SERVICE_PASSWORD variable must be set in the command line">
+      Installed OR SERVICE_PASSWORD
     </Condition>
 
     <Condition Message="EMAIL_PASSWORD variable must be set in the command line">
@@ -48,7 +52,7 @@
     <CustomAction Id="VerifyMatches_Cmd"
                   Property="VerifyMatches_Task"
                   Execute="immediate"
-                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU Administrator /RP [ADMINISTRATOR_PASSWORD] /SC DAILY /TN VerifyMatches /ST 12:00 /TR &quot;\&quot;[#Snittlistan.Tool.exe]\&quot; verifymatches&quot;" />
+                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU [SERVICE_ACCOUNT] /RP [SERVICE_PASSWORD] /SC DAILY /TN VerifyMatches /ST 12:00 /TR &quot;\&quot;[#Snittlistan.Tool.exe]\&quot; verifymatches&quot;" />
     <CustomAction Id="VerifyMatches_Task"
                   BinaryKey="WixCA"
                   DllEntry="CAQuietExec"
@@ -58,7 +62,7 @@
     <CustomAction Id="RegisterMatches_Cmd"
                   Property="RegisterMatches_Task"
                   Execute="immediate"
-                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU Administrator /RP [ADMINISTRATOR_PASSWORD] /SC MINUTE /MO 15 /TN RegisterMatches /TR &quot;\&quot;[#Snittlistan.Tool.exe]\&quot; RegisterMatches&quot;" />
+                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU [SERVICE_ACCOUNT] /RP [SERVICE_PASSWORD] /SC MINUTE /MO 15 /TN RegisterMatches /TR &quot;\&quot;[#Snittlistan.Tool.exe]\&quot; RegisterMatches&quot;" />
     <CustomAction Id="RegisterMatches_Task"
                   BinaryKey="WixCA"
                   DllEntry="CAQuietExec"
@@ -68,7 +72,7 @@
     <CustomAction Id="StartServices_Cmd"
                   Property="StartServices_Task"
                   Execute="immediate"
-                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU Administrator /RP [ADMINISTRATOR_PASSWORD] /SC MINUTE /MO 1 /TN StartServices /TR &quot;\&quot;powershell.exe\&quot; -f \&quot;[#StartServices.ps1]\&quot;&quot;" />
+                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU [SERVICE_ACCOUNT] /RP [SERVICE_PASSWORD] /SC MINUTE /MO 1 /TN StartServices /TR &quot;\&quot;powershell.exe\&quot; -f \&quot;[#StartServices.ps1]\&quot;&quot;" />
     <CustomAction Id="StartServices_Task"
                   BinaryKey="WixCA"
                   DllEntry="CAQuietExec"
@@ -78,7 +82,7 @@
     <CustomAction Id="GetRostersFromBits_Cmd"
                   Property="GetRostersFromBits_Task"
                   Execute="immediate"
-                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU Administrator /RP [ADMINISTRATOR_PASSWORD] /SC HOURLY /TN GetRostersFromBits /TR &quot;\&quot;[#Snittlistan.Tool.exe]\&quot; GetRostersFromBits&quot;" />
+                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU [SERVICE_ACCOUNT] /RP [SERVICE_PASSWORD] /SC HOURLY /TN GetRostersFromBits /TR &quot;\&quot;[#Snittlistan.Tool.exe]\&quot; GetRostersFromBits&quot;" />
     <CustomAction Id="GetRostersFromBits_Task"
                   BinaryKey="WixCA"
                   DllEntry="CAQuietExec"
@@ -88,7 +92,7 @@
     <CustomAction Id="GetPlayersFromBits_Cmd"
                   Property="GetPlayersFromBits_Task"
                   Execute="immediate"
-                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU Administrator /RP [ADMINISTRATOR_PASSWORD] /SC DAILY /ST 08:00 /TN GetPlayersFromBits /TR &quot;\&quot;[#Snittlistan.Tool.exe]\&quot; GetPlayersFromBits&quot;" />
+                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU [SERVICE_ACCOUNT] /RP [SERVICE_PASSWORD] /SC DAILY /ST 08:00 /TN GetPlayersFromBits /TR &quot;\&quot;[#Snittlistan.Tool.exe]\&quot; GetPlayersFromBits&quot;" />
     <CustomAction Id="GetPlayersFromBits_Task"
                   BinaryKey="WixCA"
                   DllEntry="CAQuietExec"
@@ -98,7 +102,7 @@
     <CustomAction Id="PublishExpiredTasks_Cmd"
                   Property="PublishExpiredTasks_Task"
                   Execute="immediate"
-                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU Administrator /RP [ADMINISTRATOR_PASSWORD] /SC MINUTE /MO 1 /TN PublishExpiredTasks /TR &quot;\&quot;[#Snittlistan.Tool.exe]\&quot; PublishExpiredTasks&quot;" />
+                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU [SERVICE_ACCOUNT] /RP [SERVICE_PASSWORD] /SC MINUTE /MO 1 /TN PublishExpiredTasks /TR &quot;\&quot;[#Snittlistan.Tool.exe]\&quot; PublishExpiredTasks&quot;" />
     <CustomAction Id="PublishExpiredTasks_Task"
                   BinaryKey="WixCA"
                   DllEntry="CAQuietExec"
@@ -215,8 +219,8 @@
                               ErrorControl="normal"
                               Start="auto"
                               Type="ownProcess"
-                              Account="Snittlistan\Administrator"
-                              Password="[ADMINISTRATOR_PASSWORD]"
+                              Account="[SERVICE_ACCOUNT]"
+                              Password="[SERVICE_PASSWORD]"
                               Vital="yes">
                 <ServiceDependency Id="MSMQ" />
                 <util:ServiceConfig FirstFailureActionType="restart"
