@@ -1,42 +1,37 @@
-﻿#nullable enable
+﻿using System.Web.Mvc;
+using Castle.Windsor;
 
-namespace Snittlistan.Web.Infrastructure.IoC
+#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.IoC;
+public class WindsorDependencyResolver : IDependencyResolver
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
-    using Castle.Windsor;
+    private readonly IWindsorContainer container;
 
-    public class WindsorDependencyResolver : IDependencyResolver
+    public WindsorDependencyResolver(IWindsorContainer container)
     {
-        private readonly IWindsorContainer container;
+        this.container = container;
+    }
 
-        public WindsorDependencyResolver(IWindsorContainer container)
+    public object? GetService(Type serviceType)
+    {
+        object? service = null;
+        if (container.Kernel.HasComponent(serviceType))
         {
-            this.container = container;
+            service = container.Resolve(serviceType);
         }
 
-        public object? GetService(Type serviceType)
-        {
-            object? service = null;
-            if (container.Kernel.HasComponent(serviceType))
-            {
-                service = container.Resolve(serviceType);
-            }
+        return service;
+    }
 
-            return service;
+    public IEnumerable<object> GetServices(Type serviceType)
+    {
+        IEnumerable<object> services = new object[] { };
+        if (container.Kernel.HasComponent(serviceType))
+        {
+            services = container.ResolveAll(serviceType).Cast<object>();
         }
 
-        public IEnumerable<object> GetServices(Type serviceType)
-        {
-            IEnumerable<object> services = new object[] { };
-            if (container.Kernel.HasComponent(serviceType))
-            {
-                services = container.ResolveAll(serviceType).Cast<object>();
-            }
-
-            return services;
-        }
+        return services;
     }
 }

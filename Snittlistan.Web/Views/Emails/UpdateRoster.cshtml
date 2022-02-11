@@ -1,6 +1,8 @@
 ﻿@model Snittlistan.Web.Models.UpdateRosterEmail
-To: @Model.Bcc
+To: @Model.PlayerEmail
 From: @Model.From
+Reply-To: @Model.ReplyToEmail
+Bcc: @Model.Bcc
 Subject: @Model.Subject
 Content-Type: text/html; charset=utf-8
 
@@ -9,10 +11,12 @@ Content-Type: text/html; charset=utf-8
 </head>
 <body>
     <p>
-        Skulle skickas till @Model.PlayerEmail
+        Det här är ett automatiskt mail som skickats från Snittlistan.
     </p>
     <p>
-        Laguttagningen har uppdaterats.
+        Laguttagningen har uppdaterats. Klicka
+        <a href="@Model.RosterLink">här</a>
+        för att acceptera om du inte redan gjort det.
     </p>
     <p>
         <h1>@Model.FormattedAuditLog.Title</h1>

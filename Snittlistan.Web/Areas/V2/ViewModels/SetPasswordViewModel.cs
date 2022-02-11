@@ -1,19 +1,18 @@
-﻿#nullable enable
+﻿
+using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
-namespace Snittlistan.Web.Areas.V2.ViewModels
+#nullable enable
+
+namespace Snittlistan.Web.Areas.V2.ViewModels;
+public class SetPasswordViewModel
 {
-    using System.ComponentModel.DataAnnotations;
-    using System.Web.Mvc;
+    [HiddenInput]
+    public string ActivationKey { get; set; } = null!;
 
-    public class SetPasswordViewModel
-    {
-        [HiddenInput]
-        public string ActivationKey { get; set; } = null!;
+    [Required]
+    public string Password { get; set; } = null!;
 
-        [Required]
-        public string Password { get; set; } = null!;
-
-        [Required, System.ComponentModel.DataAnnotations.Compare("Password")]
-        public string ConfirmPassword { get; set; } = null!;
-    }
+    [Required, System.ComponentModel.DataAnnotations.Compare("Password")]
+    public string ConfirmPassword { get; set; } = null!;
 }
