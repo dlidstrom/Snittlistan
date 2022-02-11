@@ -6,6 +6,9 @@ open DbUp
 open Npgsql
 
 let connectionString =
+  if fsi.CommandLineArgs.Length = 2 then
+    fsi.CommandLineArgs.[1]
+  else
     "Host=localhost;Port=5432;Database=snittlistan;Username=postgres;Password=postgres"
 
 let conn = new NpgsqlConnection(connectionString)
