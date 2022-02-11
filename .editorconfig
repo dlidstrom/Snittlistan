@@ -1,11 +1,16 @@
 # All files
 [*]
 indent_style = space
+
 # Configuration files
 [*.config]
 indent_size = 2
 insert_final_newline = true
 charset = utf-8-bom
+
+[*.{cs,fsx}]
+guidelines = 100 2.5px solid 40ff0000
+
 # Code files
 [*.cs]
 indent_size = 4
@@ -18,7 +23,7 @@ dotnet_diagnostic.CS8618.severity = warning
 dotnet_analyzer_diagnostic.severity = warning
 
 # IDE0065: Misplaced using directive
-csharp_using_directive_placement = inside_namespace:error
+csharp_using_directive_placement = outside_namespace:error
 
 # IDE0045: Convert to conditional expression
 dotnet_diagnostic.IDE0045.severity = silent
@@ -31,3 +36,5 @@ dotnet_diagnostic.IDE0051.severity = silent
 
 # IDE0060: Remove unused parameter
 dotnet_diagnostic.IDE0060.severity = silent
+
+csharp_style_namespace_declarations = file_scoped:warning

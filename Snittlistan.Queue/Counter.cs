@@ -1,27 +1,26 @@
-﻿// ReSharper disable UseNameofExpression
-namespace Snittlistan.Queue
+﻿#nullable enable
+
+using System.Diagnostics;
+
+namespace Snittlistan.Queue;
+
+/// <summary>
+/// Implements a thread-safe counter.
+/// </summary>
+[DebuggerDisplay("Value = {Value}")]
+public class Counter
 {
-    using System.Diagnostics;
-    using System.Threading;
+    private int _value;
 
-    /// <summary>
-    /// Implements a thread-safe counter.
-    /// </summary>
-    [DebuggerDisplay("Value = {Value}")]
-    public class Counter
+    public int Value => _value;
+
+    public void Increment()
     {
-        private int _value;
+        _ = Interlocked.Increment(ref _value);
+    }
 
-        public int Value => _value;
-
-        public void Increment()
-        {
-            Interlocked.Increment(ref _value);
-        }
-
-        public void Decrement()
-        {
-            Interlocked.Decrement(ref _value);
-        }
+    public void Decrement()
+    {
+        _ = Interlocked.Decrement(ref _value);
     }
 }

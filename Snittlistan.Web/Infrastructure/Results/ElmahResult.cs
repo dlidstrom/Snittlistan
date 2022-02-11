@@ -1,34 +1,33 @@
-﻿#nullable enable
+﻿
+using System.Web;
+using System.Web.Mvc;
+using Elmah;
 
-namespace Snittlistan.Web.Infrastructure.Results
+#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Results;
+public class ElmahResult : ActionResult
 {
-    using System.Web;
-    using System.Web.Mvc;
-    using Elmah;
+    private readonly string resourceType;
 
-    public class ElmahResult : ActionResult
+    public ElmahResult(string resourceType)
     {
-        private readonly string resourceType;
+        this.resourceType = resourceType;
+    }
 
-        public ElmahResult(string resourceType)
+    public override void ExecuteResult(ControllerContext context)
+    {
+        UrlHelper url = new(HttpContext.Current.Request.RequestContext);
+        ErrorLogPageFactory factory = new();
+        if (!string.IsNullOrEmpty(resourceType))
         {
-            this.resourceType = resourceType;
+            string pathInfo = "." + resourceType;
+            string action = url.Action("Index", "Elmah", new { type = (string?)null });
+            HttpContext.Current.RewritePath(action, pathInfo, HttpContext.Current.Request.QueryString.ToString());
         }
 
-        public override void ExecuteResult(ControllerContext context)
-        {
-            UrlHelper url = new(HttpContext.Current.Request.RequestContext);
-            ErrorLogPageFactory factory = new();
-            if (!string.IsNullOrEmpty(resourceType))
-            {
-                string pathInfo = "." + resourceType;
-                string action = url.Action("Index", "Elmah", new { type = (string?)null });
-                HttpContext.Current.RewritePath(action, pathInfo, HttpContext.Current.Request.QueryString.ToString());
-            }
+        IHttpHandler handler = factory.GetHandler(HttpContext.Current, null, null, null);
 
-            IHttpHandler handler = factory.GetHandler(HttpContext.Current, null, null, null);
-
-            handler.ProcessRequest(HttpContext.Current);
-        }
+        handler.ProcessRequest(HttpContext.Current);
     }
 }

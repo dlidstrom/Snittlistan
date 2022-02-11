@@ -2,11 +2,27 @@
   "version": 1,
   "dependencies": {
     ".NETFramework,Version=v4.8": {
+      "AsyncFriendlyStackTrace": {
+        "type": "Direct",
+        "requested": "[1.6.0, )",
+        "resolved": "1.6.0",
+        "contentHash": "VU/VsVqGt2FQIb8wSdkR8OWSupX6Uod91bQLR9/pd+sCl7sEZWu9EoJu2+TeKxVT/7vZe6p4T7Lxw4U1Z/zP6w=="
+      },
       "Castle.Core": {
         "type": "Direct",
         "requested": "[4.4.1, )",
         "resolved": "4.4.1",
         "contentHash": "zanbjWC0Y05gbx4eGXkzVycOQqVOFVeCjVsDSyuao9P4mtN1w3WxxTo193NGC7j3o2u3AJRswaoC6hEbnGACnQ=="
+      },
+      "Castle.Core-NLog": {
+        "type": "Direct",
+        "requested": "[4.4.1, )",
+        "resolved": "4.4.1",
+        "contentHash": "5nyAkQ+Akl+s9fucvwg3fYACIiMCnO8LvzRut9I8W77gojCEha3wz1iTEPvE3ehcPQDkwDDQblVmvSv0kHRKkg==",
+        "dependencies": {
+          "Castle.Core": "[4.4.1]",
+          "NLog": "4.5.0"
+        }
       },
       "Castle.Facilities.AspNet.SystemWeb": {
         "type": "Direct",
@@ -16,6 +32,15 @@
         "dependencies": {
           "Castle.Windsor": "[5.1.1]",
           "Microsoft.Web.Infrastructure": "1.0.0"
+        }
+      },
+      "Castle.LoggingFacility": {
+        "type": "Direct",
+        "requested": "[5.1.1, )",
+        "resolved": "5.1.1",
+        "contentHash": "bNVitNOxpQTPkjAs1AtxFhIdXBUndcqjC/nhKRW8ofOuwbPgVtKrGFaSLLLleYNW5F+Whj+s9TIWgmj2WxqwWw==",
+        "dependencies": {
+          "Castle.Windsor": "[5.1.1]"
         }
       },
       "Castle.Windsor": {
@@ -110,14 +135,14 @@
         "resolved": "1.50.5147",
         "contentHash": "vr5KBIqcXu2hqZ43UTwPR+jqHgMrT5tsPtJvEF+mORKoBNMh3bRWgAwic0U1sT2IVb4PR5m0GyQxnmCz8jBHWg=="
       },
-      "Postal.Mvc4": {
+      "Postal.Mvc5": {
         "type": "Direct",
         "requested": "[1.2.0, )",
         "resolved": "1.2.0",
-        "contentHash": "1Ci7+HQt3P788AGY3rQA+tXLxM8AhL7+0THVQtkBkrKNzSj2gCv3h21LBTR6eQmsLf+4brFpaN911tmlaNXetg==",
+        "contentHash": "le4HMYmokyyVHOlnRoqKhkO/oCr+3wmO4nDdve59EXREkNagkaIy7jsNs5aSDHV3obT/hS8X7SJLHBzt8hAAMg==",
         "dependencies": {
-          "Microsoft.AspNet.Mvc": "4.0.30506",
-          "RazorEngine": "3.3.0"
+          "Microsoft.AspNet.Mvc": "5.1.2",
+          "RazorEngine": "3.4.1"
         }
       },
       "RavenDB.Client": {
@@ -241,10 +266,10 @@
       },
       "RazorEngine": {
         "type": "Transitive",
-        "resolved": "3.3.0",
-        "contentHash": "qpQFE+KvUjnXK3V4wIeMkx15GKBkIkfVrRW2ijqgGrXodW8LgjeXeWXrzIXgQ+mv2Uw5SdZiN4DaDa0FZYbVEA==",
+        "resolved": "3.4.1",
+        "contentHash": "9e/X1RPpru2ipBXE5K90XFLyeB29hWMS0hU73WoTx1T3+JhxU6RgViJqLx76roPZPNVWOVp6qGUclsP30TjFWw==",
         "dependencies": {
-          "Microsoft.AspNet.Razor": "2.0.30506"
+          "Microsoft.AspNet.Razor": "3.0.0"
         }
       },
       "System.Buffers": {
@@ -311,7 +336,6 @@
       "snittlistan.queue": {
         "type": "Project",
         "dependencies": {
-          "EntityFramework6.Npgsql": "6.4.3",
           "Lindhart.Analyser.MissingAwaitWarning": "2.0.0",
           "Microsoft.AspNet.WebApi.Client": "5.2.7",
           "MvcContrib": "2.0.95",

@@ -1,32 +1,31 @@
-﻿#nullable enable
+﻿
+using System.Net.Http;
+using System.Runtime.Caching;
+using Snittlistan.Web.Infrastructure.Bits;
+using Castle.MicroKernel.Registration;
+using Castle.MicroKernel.SubSystems.Configuration;
+using Castle.Windsor;
 
-namespace Snittlistan.Web.Infrastructure.Installers
+#nullable enable
+
+namespace Snittlistan.Web.Infrastructure.Installers;
+public class BitsClientInstaller : IWindsorInstaller
 {
-    using System.Net.Http;
-    using System.Runtime.Caching;
-    using Bits;
-    using Castle.MicroKernel.Registration;
-    using Castle.MicroKernel.SubSystems.Configuration;
-    using Castle.Windsor;
+    private readonly string apiKey;
+    private readonly HttpClient httpClient;
 
-    public class BitsClientInstaller : IWindsorInstaller
+    public BitsClientInstaller(string apiKey, HttpClient httpClient)
     {
-        private readonly string apiKey;
-        private readonly HttpClient httpClient;
+        this.apiKey = apiKey;
+        this.httpClient = httpClient;
+    }
 
-        public BitsClientInstaller(string apiKey, HttpClient httpClient)
-        {
-            this.apiKey = apiKey;
-            this.httpClient = httpClient;
-        }
-
-        public void Install(IWindsorContainer container, IConfigurationStore store)
-        {
-            BitsClient bitsClient = new(
-                apiKey,
-                httpClient,
-                MemoryCache.Default);
-            _ = container.Register(Component.For<IBitsClient>().Instance(bitsClient));
-        }
+    public void Install(IWindsorContainer container, IConfigurationStore store)
+    {
+        BitsClient bitsClient = new(
+            apiKey,
+            httpClient,
+            MemoryCache.Default);
+        _ = container.Register(Component.For<IBitsClient>().Instance(bitsClient));
     }
 }

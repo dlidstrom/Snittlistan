@@ -1,23 +1,22 @@
-﻿#nullable enable
+﻿
+using System.Security.Principal;
 
-namespace Snittlistan.Web.Infrastructure
+#nullable enable
+
+namespace Snittlistan.Web.Infrastructure;
+public class CustomIdentity : GenericIdentity
 {
-    using System.Security.Principal;
-
-    public class CustomIdentity : GenericIdentity
+    public CustomIdentity(string? playerId, string name, string email, string uniqueId)
+        : base(name)
     {
-        public CustomIdentity(string? playerId, string name, string email, string uniqueId)
-            : base(name)
-        {
-            PlayerId = playerId;
-            Email = email;
-            UniqueId = uniqueId;
-        }
-
-        public string Email { get; }
-
-        public string UniqueId { get; }
-
-        public string? PlayerId { get; }
+        PlayerId = playerId;
+        Email = email;
+        UniqueId = uniqueId;
     }
+
+    public string Email { get; }
+
+    public string UniqueId { get; }
+
+    public string? PlayerId { get; }
 }
