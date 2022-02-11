@@ -270,8 +270,9 @@ public class AdminTasksController : AdminController
     [HttpPost]
     public async Task<ActionResult> Features(TenantFeaturesViewModel vm)
     {
-        await ExecuteCommand(new UpdateFeaturesCommandHandler.Command(
-            vm.RosterMailEnabled));
+        UpdateFeaturesCommandHandler.Command command = new(
+            vm.RosterMailEnabled);
+        await ExecuteCommand(command);
 
         return RedirectToAction("Index");
     }
