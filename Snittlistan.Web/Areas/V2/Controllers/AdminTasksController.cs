@@ -270,21 +270,8 @@ public class AdminTasksController : AdminController
     [HttpPost]
     public async Task<ActionResult> Features(TenantFeaturesViewModel vm)
     {
-        Tenant tenant = await CompositionRoot.GetCurrentTenant();
-        KeyValueProperty? settingsProperty =
-            await CompositionRoot.Databases.Snittlistan.KeyValueProperties.SingleOrDefaultAsync(
-                x => x.Key == TenantFeatures.Key && x.TenantId == tenant.TenantId);
-
-        if (settingsProperty == null)
-        {
-            settingsProperty = CompositionRoot.Databases.Snittlistan.KeyValueProperties.Add(
-                new(tenant.TenantId, TenantFeatures.Key, new TenantFeatures(vm.RosterMailEnabled)));
-        }
-        else
-        {
-            settingsProperty.ModifyValue<TenantFeatures>(
-                x => x with { RosterMailEnabled = vm.RosterMailEnabled });
-        }
+        await ExecuteCommand(new UpdateFeaturesCommandHandler.Command(
+            vm.RosterMailEnabled));
 
         return RedirectToAction("Index");
     }

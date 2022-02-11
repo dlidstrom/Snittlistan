@@ -154,6 +154,7 @@
     <Compile Include="Commands\SendEmailCommandHandler.cs" />
     <Compile Include="Commands\PublishRosterMailCommandHandler.cs" />
     <Compile Include="Commands\SendEmailTaskCommandHandler.cs" />
+    <Compile Include="Commands\UpdateFeaturesCommandHandler.cs" />
     <Compile Include="Commands\UserInvitedCommandHandler.cs" />
     <Compile Include="Commands\VerifyMatchCommandHandler.cs" />
     <Compile Include="Commands\VerifyMatchesCommandHandler.cs" />

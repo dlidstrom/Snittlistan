@@ -14,7 +14,7 @@
             <div class="control-group">
                 @Html.LabelFor(x => x.RosterMailEnabled, new { @class = "control-label" })
                 <div class="controls">
-                    @Html.CheckBoxFor(x => x.RosterMailEnabled)
+                    @Html.CheckBoxFor(x => x.RosterMailEnabled, new { @class = "switch" })
                     <span class="help-block">
                         Gör det möjligt att skicka uppdaterings-epost när laguttagningarna uppdateras.
                     </span>
