@@ -59,9 +59,18 @@ $emailPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
     [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
         (ConvertTo-SecureString (gc ..\email-password.txt))))
 
+if (-not (Test-Path ..\db-password.txt)) {
+    Read-Host -AsSecureString "Enter Database password" | ConvertFrom-SecureString | Out-File ..\db-password.txt
+}
+
+$dbPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
+    [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
+        (ConvertTo-SecureString (gc ..\db-password.txt))))
+
 $settings = @{
     ADMINISTRATOR_PASSWORD = $administratorPassword
     EMAIL_PASSWORD = $emailPassword
+    DB_PASSWORD = $dbPassword
 }
 
 $settingsFormatted = ($settings.Keys | % { "$_=$($settings[$_])" }) -join "`n"
@@ -80,5 +89,5 @@ $pinfo.Arguments = "/l* Snittlistan_install.log /i Snittlistan.msi $settingsJoin
 $p = New-Object System.Diagnostics.Process
 $p.StartInfo = $pinfo
 $p.Start() | Out-Null
-$p.WaitForExit()
 $stdout = $p.StandardOutput.ReadToEnd()
+$p.WaitForExit()

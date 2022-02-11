@@ -39,6 +39,10 @@
       Installed OR EMAIL_PASSWORD
     </Condition>
 
+    <Condition Message="DB_PASSWORD variable must be set in the command line">
+      Installed OR DB_PASSWORD
+    </Condition>
+
     <?include conditions.wxi?>
 
     <CustomAction Id="VerifyMatches_Cmd"
@@ -129,6 +133,11 @@
                             File="[SnittlistanWebDir]Web.config"
                             ElementPath="/configuration/elmah/errorMail/@password"
                             Value="[EMAIL_PASSWORD]" />
+              <util:XmlFile Id="ConnectionString"
+                            Action="setValue"
+                            File="[SnittlistanWebDir]Web.config"
+                            ElementPath="/configuration/connectionStrings/add[\[]@name='SnittlistanContext'[\]]/@connectionString"
+                            Value="Server=localhost;Database=sportbowling;Username=postgres;Password=[DB_PASSWORD]" />
             </Component>
             <Component Id="elitmarke_ifyllbar1_pdf" Guid="*" Win64="yes">
               <File KeyPath="yes" Source="elitmarke-ifyllbar1.pdf" />
