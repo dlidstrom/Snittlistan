@@ -1,8 +1,9 @@
-﻿using Raven.Imports.Newtonsoft.Json;
+﻿#nullable enable
 
-#nullable enable
+using Newtonsoft.Json;
 
 namespace Snittlistan.Web.Areas.V2.Domain;
+
 public class Activity
 {
     [JsonConstructor]

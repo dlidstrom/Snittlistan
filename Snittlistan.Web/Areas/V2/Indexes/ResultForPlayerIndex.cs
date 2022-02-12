@@ -1,10 +1,12 @@
-﻿using Raven.Client.Indexes;
+﻿#nullable enable
+
+using Raven.Client.Documents.Indexes;
 using Snittlistan.Web.Areas.V2.ReadModels;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Indexes;
-public class ResultForPlayerIndex : AbstractIndexCreationTask<ResultForPlayerReadModel, ResultForPlayerIndex.Result>
+
+public class ResultForPlayerIndex
+    : AbstractIndexCreationTask<ResultForPlayerReadModel, ResultForPlayerIndex.Result>
 {
     public ResultForPlayerIndex()
     {

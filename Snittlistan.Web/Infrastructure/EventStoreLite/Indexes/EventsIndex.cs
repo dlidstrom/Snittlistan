@@ -1,8 +1,9 @@
-﻿using Raven.Client.Indexes;
+﻿#nullable enable
 
-#nullable enable
+using Raven.Client.Documents.Indexes;
 
 namespace EventStoreLite.Indexes;
+
 public class EventsIndex : AbstractIndexCreationTask<EventStream, EventsIndex.Result>
 {
     public EventsIndex()

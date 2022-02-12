@@ -8,7 +8,6 @@ using Snittlistan.Web.Helpers;
 using Snittlistan.Web.HtmlHelpers;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Infrastructure.Attributes;
-using Raven.Abstractions;
 using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;

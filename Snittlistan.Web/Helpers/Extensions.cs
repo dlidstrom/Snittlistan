@@ -29,13 +29,17 @@ public static class Extensions
         return tenant;
     }
 
-    public static User FindUserByActivationKey(this Raven.Client.IDocumentSession sess, string key)
+    public static User FindUserByActivationKey(
+        this Raven.Client.Documents.Session.IDocumentSession sess,
+        string key)
     {
         return sess.Query<User>()
                    .FirstOrDefault(u => u.ActivationKey == key);
     }
 
-    public static int LatestSeasonOrDefault(this Raven.Client.IDocumentSession sess, int def)
+    public static int LatestSeasonOrDefault(
+        this Raven.Client.Documents.Session.IDocumentSession sess,
+        int def)
     {
         return sess.Query<Roster, RosterSearchTerms>()
                    .OrderByDescending(s => s.Season)

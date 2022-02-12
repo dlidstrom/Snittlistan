@@ -1,6 +1,9 @@
-using Raven.Imports.Newtonsoft.Json;
+﻿#nullable enable
+
+using Newtonsoft.Json;
 
 namespace Snittlistan.Web.Helpers;
+
 public class InputError
 {
     public InputError(string field, string reason)

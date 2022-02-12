@@ -7,7 +7,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using Snittlistan.Web.Infrastructure.Bits;
-using Raven.Abstractions;
 using Raven.Client;
 using Rotativa;
 using Rotativa.Options;

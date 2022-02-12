@@ -11,7 +11,6 @@ using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Infrastructure.Attributes;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
-using Raven.Abstractions;
 using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Infrastructure.Database;
 using Snittlistan.Web.Areas.V2.ViewModels;

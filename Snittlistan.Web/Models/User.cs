@@ -2,6 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 using Raven.Imports.Newtonsoft.Json;
 using Snittlistan.Queue.Messages;
 

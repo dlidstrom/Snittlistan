@@ -1,7 +1,7 @@
 ﻿#nullable enable
 
 using System.Web.Mvc;
-using Raven.Abstractions;
+using Raven.Client.Util;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.ViewModels;
@@ -13,7 +13,7 @@ namespace Snittlistan.Web;
 public static class DocumentSessionExtensions
 {
     public static SelectListItem[] CreateRosterSelectList(
-        this Raven.Client.IDocumentSession session,
+        this Raven.Client.Documents.Session.IDocumentSession session,
         int season,
         string rosterId = "",
         Func<Roster, bool>? pred = null)
@@ -22,7 +22,7 @@ public static class DocumentSessionExtensions
     }
 
     public static RosterViewModel LoadRosterViewModel(
-        this Raven.Client.IDocumentSession session,
+        this Raven.Client.Documents.Session.IDocumentSession session,
         Roster roster)
     {
         HashSet<string> accepted = new(roster.AcceptedPlayers);
@@ -47,7 +47,7 @@ public static class DocumentSessionExtensions
     }
 
     public static SelectListItem[] CreatePlayerSelectList(
-        this Raven.Client.IDocumentSession documentSession,
+        this Raven.Client.Documents.Session.IDocumentSession documentSession,
         string player = "",
         Func<Player[]>? getPlayers = null,
         Func<Player, string>? textFormatter = null)
@@ -80,7 +80,7 @@ public static class DocumentSessionExtensions
     }
 
     private static SelectListItem[] GetRosterSelectList(
-        Raven.Client.IDocumentSession session,
+        Raven.Client.Documents.Session.IDocumentSession session,
         int season,
         string rosterId,
         bool bits,
@@ -114,12 +114,17 @@ public static class DocumentSessionExtensions
         return rosterSelectList;
     }
 
-    public static TResult LoadEx<TResult>(this Raven.Client.IDocumentSession session, string key)
+    public static TResult LoadEx<TResult>(
+        this Raven.Client.Documents.Session.IDocumentSession session,
+        string key)
     {
-        return session.Load<TResult>(key) ?? throw new Exception($"No entity with key '{key}' found");
+        return session.Load<TResult>(key)
+            ?? throw new Exception($"No entity with key '{key}' found");
     }
 
-    public static User FindUserByEmail(this Raven.Client.IDocumentSession sess, string email)
+    public static User FindUserByEmail(
+        this Raven.Client.Documents.Session.IDocumentSession sess,
+        string email)
     {
         return sess.Query<User, User_ByEmail>()
                    .FirstOrDefault(u => u.Email == email);

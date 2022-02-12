@@ -6,9 +6,7 @@ using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using NLog;
-using Raven.Client;
-using Raven.Client.Document;
-using Raven.Client.Embedded;
+using Raven.Client.Documents;
 using Snittlistan.Web.Infrastructure.Database;
 
 namespace Snittlistan.Web.Infrastructure.Installers;

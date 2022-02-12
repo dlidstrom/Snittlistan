@@ -4,19 +4,19 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Snittlistan.Web.Infrastructure;
-using Raven.Abstractions;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Helpers;
+using Raven.Client.Documents.Session;
 
 namespace Snittlistan.Web.Areas.V2.Controllers.Api;
 
 public class CalendarController : AbstractApiController
 {
-    public Raven.Client.IDocumentSession DocumentSession { get; set; } = null!;
+    public IDocumentSession DocumentSession { get; set; } = null!;
 
     public HttpResponseMessage Get()
     {

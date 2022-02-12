@@ -1,10 +1,12 @@
-﻿using Raven.Client;
-using Raven.Client.Linq;
+﻿#nullable enable
+
+using Raven.Client.Documents.Session;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Infrastructure;
 
 namespace Snittlistan.Web.Areas.V2.Queries;
+
 public class GetPendingMatchesQuery : IQuery<Roster[]>
 {
     private readonly int seasonId;

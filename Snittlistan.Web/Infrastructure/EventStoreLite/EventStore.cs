@@ -1,12 +1,13 @@
-﻿using Castle.Windsor;
-using EventStoreLite.Indexes;
-using Raven.Abstractions.Data;
-using Raven.Client;
-using Raven.Client.Linq;
+﻿#nullable enable
 
-#nullable enable
+using Castle.Windsor;
+using EventStoreLite.Indexes;
+using Raven.Client.Documents;
+using Raven.Client.Documents.Linq;
+using Raven.Client.Documents.Session;
 
 namespace EventStoreLite;
+
 /// <summary>
 /// Represents the event store. Use this class to create event store sessions.
 /// Typically, an instance of this class should be a singleton in your application.
@@ -126,7 +127,7 @@ public class EventStore
                 // allow indexing to take its time
                 IRavenQueryable<EventStream> q =
                     session.Query<EventStream>()
-                           .Customize(x => x.WaitForNonStaleResultsAsOf(DateTime.Now.AddSeconds(15)));
+                           .Customize(x => x.WaitForNonStaleResults(TimeSpan.FromSeconds(15)));
 
                 List<EventStream> eventStreams = q.Skip(current).Take(128).ToList();
                 if (eventStreams.Count == 0)
@@ -180,7 +181,7 @@ public class EventStore
         WaitForIndexing(documentStore);
 
         // delete all read models
-        _ = documentStore.DatabaseCommands.DeleteByIndex("ReadModelIndex", new IndexQuery());
+        _ = documentStore.DeleteByIndex("ReadModelIndex", new IndexQuery());
 
         // load all event streams and dispatch events
         EventDispatcher dispatcher = new(container);
@@ -196,7 +197,7 @@ public class EventStore
                 IRavenQueryable<EventsIndex.Result> eventsQuery =
                     session.Query<EventsIndex.Result, EventsIndex>()
                            .Customize(
-                               x => x.WaitForNonStaleResultsAsOf(DateTime.Now.AddSeconds(15)))
+                               x => x.WaitForNonStaleResults(TimeSpan.FromSeconds(15)))
                            .OrderBy(x => x.ChangeSequence);
                 List<EventsIndex.Result> results = eventsQuery.Skip(current).Take(128).ToList();
                 if (results.Count == 0)

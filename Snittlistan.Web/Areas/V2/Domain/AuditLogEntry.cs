@@ -1,6 +1,6 @@
 ﻿#nullable enable
 
-using Raven.Abstractions;
+using Raven.Client.Util;
 
 namespace Snittlistan.Web.Areas.V2.Domain;
 

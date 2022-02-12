@@ -1,9 +1,10 @@
-﻿using Raven.Client.Indexes;
+﻿#nullable enable
+
+using Raven.Client.Documents.Indexes;
 using Snittlistan.Web.Models;
 
-#nullable enable
-
 namespace Snittlistan.Web.Infrastructure.Indexes;
+
 public class User_ByEmail : AbstractIndexCreationTask<User>
 {
     public User_ByEmail()

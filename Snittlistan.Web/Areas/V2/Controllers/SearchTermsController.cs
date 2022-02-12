@@ -2,7 +2,6 @@
 
 using System.Web.Mvc;
 using Raven.Client;
-using Raven.Client.Linq;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Controllers;
 

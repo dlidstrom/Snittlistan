@@ -1,10 +1,10 @@
-﻿using Raven.Abstractions.Indexing;
-using Raven.Client.Indexes;
+﻿#nullable enable
+
+using Raven.Client.Documents.Indexes;
 using Snittlistan.Web.Areas.V2.Domain;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Indexes;
+
 public class RosterSearchTerms : AbstractIndexCreationTask<Roster, RosterSearchTerms.Result>
 {
     public RosterSearchTerms()

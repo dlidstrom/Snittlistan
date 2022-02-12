@@ -1,7 +1,6 @@
 ﻿#nullable enable
 
 using Snittlistan.Web.Areas.V2.Indexes;
-using Raven.Abstractions;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Areas.V2.ViewModels;

@@ -1,10 +1,11 @@
-﻿using System.Globalization;
-using EventStoreLite;
-using Raven.Imports.Newtonsoft.Json;
+﻿#nullable enable
 
-#nullable enable
+using System.Globalization;
+using EventStoreLite;
+using Newtonsoft.Json;
 
 namespace Snittlistan.Web.Areas.V2.ReadModels;
+
 public class ResultSeries4ReadModel : IReadModel
 {
     public ResultSeries4ReadModel()

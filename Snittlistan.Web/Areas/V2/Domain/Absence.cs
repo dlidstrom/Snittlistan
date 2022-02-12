@@ -1,6 +1,9 @@
-﻿using Raven.Imports.Newtonsoft.Json;
+﻿#nullable enable
+
+using Newtonsoft.Json;
 
 namespace Snittlistan.Web.Areas.V2.Domain;
+
 public class Absence
 {
     [JsonConstructor]

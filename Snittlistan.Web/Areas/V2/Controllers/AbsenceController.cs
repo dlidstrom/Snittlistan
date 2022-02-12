@@ -3,9 +3,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Web;
 using System.Web.Mvc;
-using Raven.Abstractions;
-using Raven.Client;
-using Raven.Client.Linq;
+using Raven.Client.Util;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.ViewModels;

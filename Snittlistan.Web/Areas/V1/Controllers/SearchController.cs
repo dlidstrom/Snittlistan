@@ -1,7 +1,6 @@
 ﻿#nullable enable
 
 using System.Web.Mvc;
-using Raven.Client.Linq;
 using Snittlistan.Web.Controllers;
 
 namespace Snittlistan.Web.Areas.V1.Controllers;

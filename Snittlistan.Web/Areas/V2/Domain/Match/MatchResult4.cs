@@ -1,13 +1,13 @@
-﻿using Snittlistan.Web.Areas.V2.Domain.Match.Commentary;
+﻿#nullable enable
+
+using Snittlistan.Web.Areas.V2.Domain.Match.Commentary;
 using EventStoreLite;
 using Newtonsoft.Json;
-using Raven.Abstractions;
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Domain.Match;
+
 public class MatchResult4 : AggregateRoot
 {
     private readonly Dictionary<string, List<PinsAndScoreResult>> playerPins;

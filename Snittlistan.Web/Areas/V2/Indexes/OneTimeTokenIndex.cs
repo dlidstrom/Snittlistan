@@ -1,7 +1,10 @@
+﻿#nullable enable
+
+using Raven.Client.Documents.Indexes;
 using Snittlistan.Web.Areas.V2.Domain;
-using Raven.Client.Indexes;
 
 namespace Snittlistan.Web.Areas.V2.Indexes;
+
 public class OneTimeTokenIndex : AbstractIndexCreationTask<OneTimeToken>
 {
     public OneTimeTokenIndex()

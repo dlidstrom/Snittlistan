@@ -1,9 +1,9 @@
-﻿using Raven.Abstractions;
-using Raven.Client;
+﻿#nullable enable
 
-#nullable enable
+using Raven.Client.Documents.Session;
 
 namespace Snittlistan.Web.Areas.V2.Domain;
+
 public class Roster : IAuditLogCapable
 {
     private string? teamLevel;

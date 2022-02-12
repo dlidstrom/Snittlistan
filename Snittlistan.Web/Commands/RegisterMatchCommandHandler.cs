@@ -1,6 +1,5 @@
 ﻿#nullable enable
 
-using Raven.Client.Linq;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Areas.V2.Indexes;

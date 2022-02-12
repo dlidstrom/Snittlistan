@@ -1,13 +1,14 @@
-﻿using EventStoreLite;
-using Raven.Client;
+﻿#nullable enable
+
+using EventStoreLite;
+using Raven.Client.Documents.Session;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
 using Snittlistan.Web.Areas.V2.ReadModels;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Handlers;
+
 public class ResultForPlayerHandler :
     IEventHandler<MatchResultRegistered>,
     IEventHandler<MatchResult4Registered>,
@@ -20,10 +21,12 @@ public class ResultForPlayerHandler :
     public void Handle(MatchResultRegistered e, string aggregateId)
     {
         // need to delete some entries
-        ResultForPlayerReadModel[] modelsToDelete = DocumentSession.Load<ResultForPlayerReadModel>(
-            e.PreviousPlayerIds.Select(x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId, e.RosterId)));
+        Dictionary<string, ResultForPlayerReadModel> modelsToDelete =
+            DocumentSession.Load<ResultForPlayerReadModel>(
+                e.PreviousPlayerIds.Select(
+                    x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId, e.RosterId)));
         HashSet<string> toKeep = new(e.RosterPlayers.Select(x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId, e.RosterId)));
-        foreach (ResultForPlayerReadModel modelToDelete in modelsToDelete)
+        foreach (ResultForPlayerReadModel modelToDelete in modelsToDelete.Values)
         {
             if (toKeep.Contains(modelToDelete.Id) == false)
             {
@@ -61,9 +64,12 @@ public class ResultForPlayerHandler :
     public void Handle(MatchResult4Registered e, string aggregateId)
     {
         // need to delete some entries
-        ResultForPlayerReadModel[] modelsToDelete = DocumentSession.Load<ResultForPlayerReadModel>(e.PreviousPlayerIds.Select(x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId, e.RosterId)));
+        Dictionary<string, ResultForPlayerReadModel> modelsToDelete =
+            DocumentSession.Load<ResultForPlayerReadModel>(
+                e.PreviousPlayerIds.Select(
+                    x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId, e.RosterId)));
         HashSet<string> toKeep = new(e.RosterPlayers.Select(x => ResultForPlayerReadModel.GetId(x, e.BitsMatchId, e.RosterId)));
-        foreach (ResultForPlayerReadModel modelToDelete in modelsToDelete)
+        foreach (ResultForPlayerReadModel modelToDelete in modelsToDelete.Values)
         {
             if (toKeep.Contains(modelToDelete.Id) == false)
             {

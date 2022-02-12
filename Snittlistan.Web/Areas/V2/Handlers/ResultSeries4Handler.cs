@@ -1,13 +1,14 @@
-﻿using EventStoreLite;
-using Raven.Client;
+﻿#nullable enable
+
+using EventStoreLite;
+using Raven.Client.Documents.Session;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Domain.Match;
 using Snittlistan.Web.Areas.V2.Domain.Match.Events;
 using Snittlistan.Web.Areas.V2.ReadModels;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Handlers;
+
 public class ResultSeries4Handler :
     IEventHandler<MatchResult4Registered>,
     IEventHandler<Serie4Registered>

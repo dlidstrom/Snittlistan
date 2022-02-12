@@ -1,12 +1,13 @@
-﻿using System.Reflection;
+﻿#nullable enable
+
+using System.Reflection;
 using System.Runtime.Serialization;
 using EventStoreLite.Infrastructure;
-using Raven.Client;
-using Raven.Client.Document;
-
-#nullable enable
+using Raven.Client.Documents;
+using Raven.Client.Documents.Session;
 
 namespace EventStoreLite;
+
 internal class EventStoreSession : IEventStoreSession
 {
     private readonly Dictionary<string, EventStreamAndAggregateRoot> entitiesByKey =

@@ -1,6 +1,6 @@
 ﻿#nullable enable
 
-using Raven.Abstractions;
+using Raven.Client.Util;
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;

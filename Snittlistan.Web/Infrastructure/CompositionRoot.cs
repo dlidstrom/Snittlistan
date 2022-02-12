@@ -11,8 +11,8 @@ namespace Snittlistan.Web.Infrastructure;
 
 public record CompositionRoot(
     IKernel Kernel,
-    Raven.Client.IDocumentStore DocumentStore,
-    Raven.Client.IDocumentSession DocumentSession,
+    Raven.Client.Documents.IDocumentStore DocumentStore,
+    Raven.Client.Documents.Session.IDocumentSession DocumentSession,
     IEventStoreSession EventStoreSession,
     Databases Databases,
     EventStore EventStore,

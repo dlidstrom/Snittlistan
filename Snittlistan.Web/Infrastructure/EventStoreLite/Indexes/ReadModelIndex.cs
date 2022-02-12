@@ -1,12 +1,13 @@
-﻿using System.Collections;
+﻿#nullable enable
+
+using Raven.Client.Documents.Indexes;
+using System.Collections;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
-using Raven.Client.Indexes;
-
-#nullable enable
 
 namespace EventStoreLite.Indexes;
+
 public class ReadModelIndex : AbstractMultiMapIndexCreationTask<IReadModel>
 {
     public ReadModelIndex(IEnumerable<Type> types)
