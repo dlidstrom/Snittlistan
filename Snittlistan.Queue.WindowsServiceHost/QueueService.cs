@@ -17,7 +17,7 @@ public partial class QueueService : ServiceBase
         application = new(
             (MessagingConfigSection)ConfigurationManager.GetSection("messaging"),
             ConfigurationManager.AppSettings["UrlScheme"],
-            Convert.ToInt32(ConfigurationManager.AppSettings["UrlScheme"]));
+            Convert.ToInt32(ConfigurationManager.AppSettings["Port"]));
     }
 
     protected override void OnStart(string[] args)
