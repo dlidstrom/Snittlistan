@@ -302,7 +302,7 @@
       <Custom Action="GetPlayersFromBits_Cmd" Before="InstallFinalize">NOT Installed</Custom>
       <Custom Action="GetPlayersFromBits_Task" After="GetPlayersFromBits_Cmd">NOT Installed</Custom>
       <Custom Action="PublishExpiredTasks_Cmd" Before="InstallFinalize">NOT Installed</Custom>
-      <Custom Action="PublishExpiredTasks_Task" After="GetPlayersFromBits_Cmd">NOT Installed</Custom>
+      <Custom Action="PublishExpiredTasks_Task" After="PublishExpiredTasks_Cmd">NOT Installed</Custom>
     </InstallExecuteSequence>
 
     <Feature Id="Service" Level="1">
