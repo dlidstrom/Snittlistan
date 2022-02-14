@@ -183,6 +183,11 @@
             <Component Id="Snittlistan.Tool.exe.config" Guid="*" Win64="yes">
               <File KeyPath="yes"
                     Source="$(var.Snittlistan_App)\Snittlistan.Tool.exe.config" />
+              <util:XmlFile Id="PortSetting"
+                            Action="setValue"
+                            File="[SnittlistanToolDir]Snittlistan.Tool.exe.config"
+                            ElementPath="/configuration/appSettings/add[\[]@key='Port'[\]]/@value"
+                            Value="80" />
               <!--<util:XmlFile Id="SnittlistanToolLogsDirSetting"
                             Action="setValue"
                             File="[SnittlistanToolDir]Snittlistan.Tool.exe.config"
