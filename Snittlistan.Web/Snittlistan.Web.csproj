@@ -159,6 +159,7 @@
     <Compile Include="Commands\UserInvitedCommandHandler.cs" />
     <Compile Include="Commands\VerifyMatchCommandHandler.cs" />
     <Compile Include="Commands\VerifyMatchesCommandHandler.cs" />
+    <Compile Include="Infrastructure\CustomTraceListener.cs" />
     <Compile Include="Infrastructure\Database\ChangeLog.cs" />
     <Compile Include="Infrastructure\Database\HasVersion.cs" />
     <Compile Include="Infrastructure\Database\KeyValueProperty.cs" />
