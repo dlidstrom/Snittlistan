@@ -15,21 +15,4 @@ updates:
     - ">= 5.a, < 6"
   - dependency-name: RavenDB.Embedded
     versions:
-    - ">= 4.a, < 5"
-  - dependency-name: RavenDB.Embedded
-    versions:
-    - ">= 5.a, < 6"
-  - dependency-name: Castle.Facilities.AspNet.SystemWeb
-    versions:
-    - 5.1.1
-  - dependency-name: NUnit
-    versions:
-    - 3.13.0
-    - 3.13.1
-  - dependency-name: NLog
-    versions:
-    - 4.7.7
-    - 4.7.8
-  - dependency-name: Moq
-    versions:
-    - 4.16.0
+    - ">= 4.a, < 6"
