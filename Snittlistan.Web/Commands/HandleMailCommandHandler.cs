@@ -63,14 +63,6 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
             throw new HandledException(message);
         }
 
-        int changesSaved = await CompositionRoot.Databases.Snittlistan.SaveChangesAsync();
-        if (changesSaved > 0)
-        {
-            Logger.InfoFormat(
-                "saved {changesSaved} to database",
-                changesSaved);
-        }
-
         TEmail email = await CreateEmail(context);
         EmailState state = email.State;
         _ = CompositionRoot.Databases.Snittlistan.SentEmails.Add(new(
@@ -81,7 +73,7 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
             state));
         await CompositionRoot.EmailService.SendAsync(email);
         rateLimitProperty.ModifyValue<RateLimit>(x => x.DecreaseAllowance());
-        cacheItem.DecreaseAllowance();
+        _ = cacheItem.DecreaseAllowance();
     }
 
     protected abstract Task<TEmail> CreateEmail(HandlerContext<TCommand> context);
