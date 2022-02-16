@@ -20,8 +20,10 @@ public class DelayedMailCommandLineTask : CommandLineTask
         string hostname = args[3];
         string subject = args[4];
         string content = args[5];
+        string replyTo = string.Empty;
         SendDelayedMailCommand command = new(
             recipient,
+            replyTo,
             delayInSeconds,
             hostname,
             subject,

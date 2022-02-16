@@ -9,12 +9,16 @@ public class SendMailViewModel
     public SendMailViewModel()
     {
         Recipient = string.Empty;
+        ReplyTo = string.Empty;
         Subject = string.Empty;
         Content = string.Empty;
     }
 
     [Required]
     public string Recipient { get; set; }
+
+    [Required]
+    public string ReplyTo { get; set; }
 
     [Required, StringLength(128)]
     public string Subject { get; set; }

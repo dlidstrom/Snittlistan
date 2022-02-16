@@ -10,6 +10,11 @@ public class SendEmailTaskHandler
 {
     protected override SendEmailCommandHandler.Command CreateCommand(SendEmailTask payload)
     {
-        return new(payload.To, payload.Subject, payload.Content, payload.RatePerSeconds);
+        return new(
+            payload.To,
+            payload.ReplyTo,
+            payload.Subject,
+            payload.Content,
+            payload.RatePerSeconds);
     }
 }

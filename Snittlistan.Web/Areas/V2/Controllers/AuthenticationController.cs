@@ -264,6 +264,7 @@ public class AuthenticationController : AbstractController
     {
         SendEmailTask task = SendEmailTask.Create(
             ConfigurationManager.AppSettings["OwnerEmail"],
+            string.Empty,
             subject,
             string.Join(
                 Environment.NewLine,

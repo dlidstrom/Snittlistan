@@ -11,6 +11,7 @@ public class SendEmailTaskCommandHandler : CommandHandler<SendEmailTaskCommandHa
     {
         SendEmailTask task = SendEmailTask.Create(
             context.Payload.Recipient,
+            context.Payload.ReplyTo,
             context.Payload.Subject,
             context.Payload.Content,
             context.Payload.RatePerSeconds);
@@ -20,6 +21,7 @@ public class SendEmailTaskCommandHandler : CommandHandler<SendEmailTaskCommandHa
 
     public record Command(
         string Recipient,
+        string ReplyTo,
         string Subject,
         string Content,
         int RatePerSeconds);

@@ -8,10 +8,16 @@ namespace Snittlistan.Queue.Messages;
 public class SendEmailTask : TaskBase
 {
     [JsonConstructor]
-    private SendEmailTask(string to, string subject, string content, int ratePerSeconds)
+    private SendEmailTask(
+        string to,
+        string replyTo,
+        string subject,
+        string content,
+        int ratePerSeconds)
         : base(new(typeof(SendEmailTask).FullName, to))
     {
         To = to;
+        ReplyTo = replyTo;
         Subject = subject;
         Content = content;
         RatePerSeconds = ratePerSeconds;
@@ -19,23 +25,15 @@ public class SendEmailTask : TaskBase
 
     public static SendEmailTask Create(
         string recipient,
+        string replyTo,
         string subject,
         string content,
         int ratePerSeconds)
     {
-        if (subject == null)
-        {
-            throw new ArgumentNullException(nameof(subject));
-        }
-
-        if (content == null)
-        {
-            throw new ArgumentNullException(nameof(content));
-        }
-
         SendEmailTask emailTask =
             new(
                 recipient,
+                replyTo,
                 Convert.ToBase64String(Encoding.UTF8.GetBytes(subject)),
                 Convert.ToBase64String(Encoding.UTF8.GetBytes(content)),
                 ratePerSeconds);
@@ -43,6 +41,8 @@ public class SendEmailTask : TaskBase
     }
 
     public string To { get; }
+
+    public string ReplyTo { get; }
 
     public string Subject { get; }
 

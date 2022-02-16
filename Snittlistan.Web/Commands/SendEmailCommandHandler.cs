@@ -13,6 +13,7 @@ public class SendEmailCommandHandler
     {
         SendEmail email = SendEmail.ToRecipient(
             context.Payload.To,
+            context.Payload.ReplyTo,
             Encoding.UTF8.GetString(Convert.FromBase64String(context.Payload.Subject)),
             Encoding.UTF8.GetString(Convert.FromBase64String(context.Payload.Content)));
         return Task.FromResult(email);
@@ -26,5 +27,10 @@ public class SendEmailCommandHandler
             context.Payload.RatePerSeconds);
     }
 
-    public record Command(string To, string Subject, string Content, int RatePerSeconds);
+    public record Command(
+        string To,
+        string ReplyTo,
+        string Subject,
+        string Content,
+        int RatePerSeconds);
 }

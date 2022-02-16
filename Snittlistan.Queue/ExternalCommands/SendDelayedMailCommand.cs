@@ -6,6 +6,7 @@ public class SendDelayedMailCommand : CommandBase
 {
     public SendDelayedMailCommand(
         string recipient,
+        string replyTo,
         int delayInSeconds,
         string hostname,
         string subject,
@@ -13,6 +14,7 @@ public class SendDelayedMailCommand : CommandBase
         int ratePerSeconds)
     {
         Recipient = recipient;
+        ReplyTo = replyTo;
         DelayInSeconds = delayInSeconds;
         Hostname = hostname;
         Subject = subject;
@@ -21,6 +23,8 @@ public class SendDelayedMailCommand : CommandBase
     }
 
     public string Recipient { get; }
+
+    public string ReplyTo { get; }
 
     public int DelayInSeconds { get; }
 

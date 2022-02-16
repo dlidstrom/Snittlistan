@@ -22,6 +22,7 @@ public class SendDelayedMailCommandHandler : ICommandHandler<SendDelayedMailComm
             null);
         SendEmailTask emailTask = SendEmailTask.Create(
             command.Recipient,
+            command.ReplyTo,
             command.Subject,
             command.Content,
             command.RatePerSeconds);

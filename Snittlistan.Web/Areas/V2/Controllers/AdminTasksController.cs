@@ -230,6 +230,7 @@ public class AdminTasksController : AdminController
         {
             await ExecuteCommand(new SendEmailTaskCommandHandler.Command(
                 vm.Recipient,
+                vm.ReplyTo,
                 vm.Subject,
                 vm.Content,
                 ratePerSeconds));

@@ -734,8 +734,4 @@
   </Target>
   <Target Name="AfterBuild">
   </Target> -->
-  <Target Name="BeforeBuild" Condition="'$(Configuration)' == 'Release'">
-    <Exec Command="if exist bin\Snittlistan.Web.dll del /F /S /Q bin\Snittlistan.Web.dll end" />
-    <Exec Command="if exist obj\Release\Snittlistan.Web.dll del /F /S /Q obj\Release\Snittlistan.Web.dll" />
-  </Target>
 </Project>
