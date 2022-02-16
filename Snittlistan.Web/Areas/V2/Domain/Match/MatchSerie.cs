@@ -1,6 +1,9 @@
-﻿using Raven.Imports.Newtonsoft.Json;
+﻿#nullable enable
+
+using Raven.Imports.Newtonsoft.Json;
 
 namespace Snittlistan.Web.Areas.V2.Domain.Match;
+
 public class MatchSerie
 {
     public MatchSerie(int serieNumber, IReadOnlyList<MatchTable> tables)
@@ -24,16 +27,16 @@ public class MatchSerie
         }
 
         SerieNumber = serieNumber;
-        var players = new HashSet<string>();
+        HashSet<string> players = new();
         foreach (MatchTable matchTable in tables)
         {
             string p1 = matchTable.Game1.Player;
             string p2 = matchTable.Game2.Player;
-            players.Add(p1);
-            players.Add(p2);
+            _ = players.Add(p1);
+            _ = players.Add(p2);
         }
 
-        if (players.Count != 7 && players.Count != 8)
+        if (players.Count is not 7 and not 8)
         {
             throw new MatchException($"Serie {serieNumber} must have 7 or 8 different players (detected {players.Count} players)");
         }

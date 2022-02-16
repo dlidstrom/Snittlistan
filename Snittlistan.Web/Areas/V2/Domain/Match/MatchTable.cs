@@ -1,7 +1,10 @@
-﻿using System.Diagnostics;
+﻿#nullable enable
+
+using System.Diagnostics;
 using Raven.Imports.Newtonsoft.Json;
 
 namespace Snittlistan.Web.Areas.V2.Domain.Match;
+
 [DebuggerDisplay("{Game1.Player} {Game2.Player} {Score}")]
 public class MatchTable
 {
@@ -17,7 +20,7 @@ public class MatchTable
             throw new ArgumentNullException(nameof(game2));
         }
 
-        if (score != 0 && score != 1)
+        if (score is not 0 and not 1)
         {
             throw new ArgumentOutOfRangeException(nameof(score), score, "Score out of range");
         }

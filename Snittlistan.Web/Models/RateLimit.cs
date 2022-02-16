@@ -8,12 +8,23 @@ public class RateLimit
         string key,
         double allowance,
         int rate,
-        int perSeconds)
+        int perSeconds,
+        DateTime updatedDate)
     {
         Key = key;
         Allowance = allowance;
         Rate = rate;
         PerSeconds = perSeconds;
+        UpdatedDate = updatedDate;
+    }
+
+    public static RateLimit Create(
+        string key,
+        double allowance,
+        int rate,
+        int perSeconds)
+    {
+        return new(key, allowance, rate, perSeconds, DateTime.MinValue);
     }
 
     public string Key { get; }

@@ -22,7 +22,7 @@ public class CreateRosterMailCommandHandler : CommandHandler<CreateRosterMailCom
             PublishRosterMailsTask task = new(
                 context.Payload.RosterKey,
                 context.Payload.RosterLink);
-            context.PublishMessage(task, DateTime.Now.AddSeconds(10)); // TODO revert to 10 minutes
+            context.PublishMessage(task, DateTime.Now.AddMinutes(10));
         }
     }
 

@@ -24,7 +24,7 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
         // check cache
         if (CurrentHttpContext.Instance().Cache.Get(key) is not RateLimit cacheItem)
         {
-            cacheItem = new(key, 1, rate, perSeconds);
+            cacheItem = RateLimit.Create(key, 1, rate, perSeconds);
             Logger.InfoFormat(
                 "add {key} to cache: {@cacheItem}",
                 key,
@@ -52,7 +52,7 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
             KeyValueProperty keyValueProperty = new(
                 context.Tenant.TenantId,
                 key,
-                new RateLimit(key, 1, rate, perSeconds));
+                RateLimit.Create(key, 1, rate, perSeconds));
             rateLimitProperty =
                 CompositionRoot.Databases.Snittlistan.KeyValueProperties.Add(keyValueProperty);
         }

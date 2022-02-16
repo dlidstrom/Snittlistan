@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.Composition.Hosting;
+﻿#nullable enable
+
+using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
 using EventStoreLite;
 using NLog;
@@ -6,6 +8,7 @@ using Raven.Client;
 using Raven.Client.Indexes;
 
 namespace Snittlistan.Web.Infrastructure.Indexes;
+
 public static class IndexCreator
 {
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();
@@ -42,16 +45,17 @@ public static class IndexCreator
 
         // create indexes
         CreateIndexes(store);
-        eventStore.Initialize(store);
+        _ = eventStore.Initialize(store);
     }
 
     public static void CreateIndexes(IDocumentStore store)
     {
-        System.Collections.Generic.IEnumerable<Type> indexesQuery = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                                                    where type.IsSubclassOf(typeof(AbstractIndexCreationTask))
-                                                                          && type.Namespace != null
-                                                                          && type.Namespace.StartsWith("EventStore") == false
-                                                                    select type;
+        IEnumerable<Type> indexesQuery =
+            from type in Assembly.GetExecutingAssembly().GetTypes()
+            where type.IsSubclassOf(typeof(AbstractIndexCreationTask))
+                    && type.Namespace != null
+                    && type.Namespace.StartsWith("EventStore") == false
+            select type;
 
         Type[] indexes = indexesQuery.ToArray();
         foreach (Type index in indexes)
@@ -59,7 +63,7 @@ public static class IndexCreator
             Log.Info("Creating index {0}", index);
         }
 
-        var typeCatalog = new TypeCatalog(indexes);
+        TypeCatalog typeCatalog = new(indexes);
         IndexCreation.CreateIndexes(new CompositionContainer(typeCatalog), store);
     }
 }

@@ -31,7 +31,7 @@ public class TaskController : AbstractApiController
         if (CurrentHttpContext.Instance().Cache.Get(cacheKey) is not RateLimit cacheItem)
         {
             // allow 1 error per hour
-            cacheItem = new(cacheKey, 1, 1, 30);
+            cacheItem = RateLimit.Create(cacheKey, 1, 1, 3600);
             CurrentHttpContext.Instance().Cache.Insert(
                 cacheKey,
                 cacheItem,

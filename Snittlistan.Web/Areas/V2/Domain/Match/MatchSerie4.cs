@@ -1,6 +1,9 @@
-﻿using Raven.Imports.Newtonsoft.Json;
+﻿#nullable enable
+
+using Raven.Imports.Newtonsoft.Json;
 
 namespace Snittlistan.Web.Areas.V2.Domain.Match;
+
 public class MatchSerie4
 {
     public MatchSerie4(int serieNumber, IReadOnlyList<MatchGame4> games)
@@ -17,7 +20,7 @@ public class MatchSerie4
 
         SerieNumber = serieNumber;
 
-        var players = new HashSet<string>(games.AsEnumerable().Select(x => x.Player));
+        HashSet<string> players = new(games.AsEnumerable().Select(x => x.Player));
 
         if (players.Count != 4)
         {
