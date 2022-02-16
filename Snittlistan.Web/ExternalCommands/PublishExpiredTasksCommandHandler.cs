@@ -44,6 +44,6 @@ public class PublishExpiredTasksCommandHandler
         }
 
         scope.Commit();
-        Logger.InfoFormat("published {lenght} expired messages", expiredTasks.Length);
+        Logger.InfoFormat("published {length} expired messages", expiredTasks.Length);
     }
 }

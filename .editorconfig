@@ -20,7 +20,7 @@ charset = utf-8-bom
 # CS8618: Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 dotnet_diagnostic.CS8618.severity = warning
 
-dotnet_analyzer_diagnostic.severity = warning
+dotnet_analyzer_diagnostic.severity = error
 
 # IDE0065: Misplaced using directive
 csharp_using_directive_placement = outside_namespace:error

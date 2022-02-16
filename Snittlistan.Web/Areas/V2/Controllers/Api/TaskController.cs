@@ -46,7 +46,7 @@ public class TaskController : AbstractApiController
                         reason));
         }
 
-        cacheItem.UpdateAllowance(DateTime.Now);
+        _ = cacheItem.UpdateAllowance(DateTime.Now);
         if (cacheItem.Allowance < 1)
         {
             Logger.InfoFormat(
@@ -75,11 +75,14 @@ public class TaskController : AbstractApiController
         {
             using IDisposable scope = NLog.NestedDiagnosticsLogicalContext.Push(taskObject.BusinessKey);
             Logger.Info("Begin");
-            await HandleMessage(
+            bool handled = await HandleMessage(
                 taskObject,
                 request.CorrelationId ?? default,
                 request.MessageId ?? default);
-            publishedTask.MarkHandled(DateTime.Now);
+            if (handled)
+            {
+                publishedTask.MarkHandled(DateTime.Now);
+            }
         }
         catch (Exception ex)
         {
@@ -87,7 +90,7 @@ public class TaskController : AbstractApiController
                 ex,
                 "decreasing allowance for {cacheKey}",
                 cacheKey);
-            cacheItem.DecreaseAllowance();
+            _ = cacheItem.DecreaseAllowance();
             throw;
         }
         finally
@@ -98,7 +101,7 @@ public class TaskController : AbstractApiController
         return Ok();
     }
 
-    private async Task HandleMessage(
+    private async Task<bool> HandleMessage(
         TaskBase taskObject,
         Guid correlationId,
         Guid causationId)
@@ -140,7 +143,10 @@ public class TaskController : AbstractApiController
         catch (HandledException ex)
         {
             Logger.InfoFormat("task cannot be handled: {reason}", ex.Message);
+            return false;
         }
+
+        return true;
     }
 }
 

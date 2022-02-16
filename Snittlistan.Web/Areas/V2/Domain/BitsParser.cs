@@ -1,10 +1,11 @@
-﻿using Snittlistan.Web.Infrastructure.Bits.Contracts;
+﻿#nullable enable
+
+using Snittlistan.Web.Infrastructure.Bits.Contracts;
 using Snittlistan.Web.Areas.V2.ReadModels;
 using Snittlistan.Web.Infrastructure.Bits;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Domain;
+
 public class BitsParser
 {
     private readonly Player[] players;

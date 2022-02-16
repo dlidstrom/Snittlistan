@@ -95,9 +95,9 @@
       },
       "NLog": {
         "type": "Direct",
-        "requested": "[4.7.12, )",
-        "resolved": "4.7.12",
-        "contentHash": "cFe+YQVxghBt4hoB8IH+XVW/vyS6rWJPfWmm0rmgS/iaI3lzzFsGRzjw3VhByovLugw7Zp3kY7nVUWADCu6n2g=="
+        "requested": "[4.7.13, )",
+        "resolved": "4.7.13",
+        "contentHash": "AvoGpCuq36B+0wY313XA6gC+YeMvk24rqF8P+HS9fInBGOjCzPjpXp2ln9ATZjPOJtXgHfc8zNmTjyswFGLxvg=="
       },
       "NUnit": {
         "type": "Direct",
@@ -113,9 +113,9 @@
       },
       "NUnit3TestAdapter": {
         "type": "Direct",
-        "requested": "[4.2.0, )",
-        "resolved": "4.2.0",
-        "contentHash": "srJGb2SExp0Y77p85cDYl/OlfMjxN/jXPh/CQpQOQWiWpnSSPV9I/jtMNJWr1uzqed23rLYYetGgUrwSZUHgfg=="
+        "requested": "[4.2.1, )",
+        "resolved": "4.2.1",
+        "contentHash": "kgH8VKsrcZZgNGQXRpVCrM7TnNz9li3b/snH+YmnXUNqsaWa1Xw9EQWHpbzq4Li2FbTjTE/E5N5HdLNXzZ8BpQ=="
       },
       "AsyncFriendlyStackTrace": {
         "type": "Transitive",
@@ -403,7 +403,7 @@
           "Lindhart.Analyser.MissingAwaitWarning": "2.0.0",
           "Microsoft.AspNet.WebApi.Client": "5.2.7",
           "MvcContrib": "2.0.95",
-          "NLog": "4.7.12",
+          "NLog": "4.7.13",
           "Newtonsoft.Json": "13.0.1"
         }
       },
@@ -424,7 +424,7 @@
           "Microsoft.CodeDom.Providers.DotNetCompilerPlatform": "3.6.0",
           "Microsoft.Web.Infrastructure": "1.0.0",
           "Mvc3Futures": "3.0.20105",
-          "NLog": "4.7.12",
+          "NLog": "4.7.13",
           "Newtonsoft.Json": "13.0.1",
           "PDFsharp": "1.50.5147",
           "Postal.Mvc5": "1.2.0",

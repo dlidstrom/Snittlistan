@@ -10,9 +10,9 @@
       },
       "NLog": {
         "type": "Direct",
-        "requested": "[4.7.12, )",
-        "resolved": "4.7.12",
-        "contentHash": "cFe+YQVxghBt4hoB8IH+XVW/vyS6rWJPfWmm0rmgS/iaI3lzzFsGRzjw3VhByovLugw7Zp3kY7nVUWADCu6n2g=="
+        "requested": "[4.7.13, )",
+        "resolved": "4.7.13",
+        "contentHash": "AvoGpCuq36B+0wY313XA6gC+YeMvk24rqF8P+HS9fInBGOjCzPjpXp2ln9ATZjPOJtXgHfc8zNmTjyswFGLxvg=="
       },
       "Microsoft.AspNet.WebApi.Client": {
         "type": "Transitive",
@@ -54,7 +54,7 @@
           "Lindhart.Analyser.MissingAwaitWarning": "2.0.0",
           "Microsoft.AspNet.WebApi.Client": "5.2.7",
           "MvcContrib": "2.0.95",
-          "NLog": "4.7.12",
+          "NLog": "4.7.13",
           "Newtonsoft.Json": "13.0.1"
         }
       }
