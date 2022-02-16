@@ -183,21 +183,11 @@
             <Component Id="Snittlistan.Tool.exe.config" Guid="*" Win64="yes">
               <File KeyPath="yes"
                     Source="$(var.Snittlistan_App)\Snittlistan.Tool.exe.config" />
-              <util:XmlFile Id="PortSetting"
+              <util:XmlFile Id="ToolPortSetting"
                             Action="setValue"
                             File="[SnittlistanToolDir]Snittlistan.Tool.exe.config"
                             ElementPath="/configuration/appSettings/add[\[]@key='Port'[\]]/@value"
                             Value="80" />
-              <!--<util:XmlFile Id="SnittlistanToolLogsDirSetting"
-                            Action="setValue"
-                            File="[SnittlistanToolDir]Snittlistan.Tool.exe.config"
-                            ElementPath="/configuration/log4net/appender[\[]@name='RollingFileAppender'[\]]/file/@value"
-                            Value="[SnittlistanToolDir]Logs\logfile.log" />
-              <util:XmlFile Id="SnittlistanToolLogsDirSettingErrors"
-                            Action="setValue"
-                            File="[SnittlistanToolDir]Snittlistan.Tool.exe.config"
-                            ElementPath="/configuration/log4net/appender[\[]@name='RollingFileAppenderErrors'[\]]/file/@value"
-                            Value="[SnittlistanToolDir]Logs\logfile.error.log" />-->
             </Component>
             <Directory Id="SnittlistanTool_Logs" Name="Logs">
               <Component Id="SnittlistanTool_Logs" Guid="{02c5f40d-0a22-4b54-a54e-654ae4d003d7}"
@@ -243,16 +233,11 @@
             <Component Id="Snittlistan.Queue.WindowsServiceHost.exe.config" Guid="*" Win64="yes">
               <File KeyPath="yes"
                     Source="$(var.Snittlistan_App)\Snittlistan.Queue.WindowsServiceHost.exe.config" />
-              <!--<util:XmlFile Id="SnittlistanQueueLogsDirSetting"
+              <util:XmlFile Id="QueuePortSetting"
                             Action="setValue"
                             File="[SnittlistanQueueDir]Snittlistan.Queue.WindowsServiceHost.exe.config"
-                            ElementPath="/configuration/log4net/appender[\[]@name='RollingFileAppender'[\]]/file/@value"
-                            Value="[SnittlistanQueueDir]Logs\logfile.log" />
-              <util:XmlFile Id="SnittlistanQueueLogsDirSettingErrors"
-                            Action="setValue"
-                            File="[SnittlistanQueueDir]Snittlistan.Queue.WindowsServiceHost.exe.config"
-                            ElementPath="/configuration/log4net/appender[\[]@name='RollingFileAppenderErrors'[\]]/file/@value"
-                            Value="[SnittlistanQueueDir]Logs\logfile.error.log" />-->
+                            ElementPath="/configuration/appSettings/add[\[]@key='Port'[\]]/@value"
+                            Value="80" />
             </Component>
             <Directory Id="SnittlistanQueue_Logs" Name="Logs">
               <Component Id="SnittlistanQueue_Logs" Guid="{fe829ea1-9510-4cf7-ba10-34230be033bc}"
