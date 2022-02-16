@@ -45,11 +45,16 @@ public class KeyValueProperty : HasVersion
         return action.Invoke(val);
     }
 
-    public void ModifyValue<TValue>(Func<TValue, TValue> action)
+    public void ModifyValue<TValue>(
+        Func<TValue, TValue> action,
+        Action<TValue> beforeAction,
+        Action<TValue> afterAction)
         where TValue : class
     {
         TValue val = (TValue)Value;
+        beforeAction.Invoke(val);
         val = action.Invoke(val);
+        afterAction.Invoke(val);
         Value = val;
         UpdatedDate = DateTime.Now;
     }

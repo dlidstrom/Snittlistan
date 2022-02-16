@@ -25,6 +25,10 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
         if (CurrentHttpContext.Instance().Cache.Get(key) is not RateLimit cacheItem)
         {
             cacheItem = new(key, 1, rate, perSeconds);
+            Logger.InfoFormat(
+                "add {key} to cache: {@cacheItem}",
+                key,
+                cacheItem);
             CurrentHttpContext.Instance().Cache.Insert(
                 key,
                 cacheItem,
@@ -40,8 +44,9 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
         }
 
         // check database
-        KeyValueProperty? rateLimitProperty = await CompositionRoot.Databases.Snittlistan.KeyValueProperties
-            .SingleOrDefaultAsync(x => x.Key == key);
+        KeyValueProperty? rateLimitProperty =
+            await CompositionRoot.Databases.Snittlistan.KeyValueProperties
+                .SingleOrDefaultAsync(x => x.Key == key);
         if (rateLimitProperty == null)
         {
             KeyValueProperty keyValueProperty = new(
@@ -53,7 +58,10 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
         }
 
         DateTime now = DateTime.Now;
-        rateLimitProperty.ModifyValue<RateLimit>(x => x.UpdateAllowance(now));
+        rateLimitProperty.ModifyValue<RateLimit>(
+            x => x.UpdateAllowance(now),
+            x => Logger.InfoFormat("before: {@x}", x),
+            x => Logger.InfoFormat("after: {@x}", x));
         _ = cacheItem.UpdateAllowance(now);
         double allowance = rateLimitProperty.GetValue<RateLimit, double>(x => x.Allowance);
         if (allowance < 1 || cacheItem.Allowance < 1)
@@ -71,8 +79,12 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
             email.Bcc,
             email.Subject,
             state));
+        Logger.InfoFormat("sending email {@email}", email);
         await CompositionRoot.EmailService.SendAsync(email);
-        rateLimitProperty.ModifyValue<RateLimit>(x => x.DecreaseAllowance());
+        rateLimitProperty.ModifyValue<RateLimit>(
+            x => x.DecreaseAllowance(),
+            x => Logger.InfoFormat("before: {@x}", x),
+            x => Logger.InfoFormat("after: {@x}", x));
         _ = cacheItem.DecreaseAllowance();
     }
 

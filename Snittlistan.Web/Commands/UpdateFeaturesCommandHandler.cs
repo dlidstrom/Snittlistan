@@ -29,7 +29,9 @@ public class UpdateFeaturesCommandHandler : CommandHandler<UpdateFeaturesCommand
                 x => x with
                 {
                     RosterMailEnabled = context.Payload.RosterMailEnabled
-                });
+                },
+                x => Logger.InfoFormat("before: {@x}", x),
+                x => Logger.InfoFormat("after: {@x}", x));
         }
     }
 
