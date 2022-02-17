@@ -52,6 +52,7 @@ public class TaskPublisher
 
         static async void PublishMessage(Tenant tenant, Guid messageId, CancellationToken ct)
         {
+            await Task.Delay(2000);
             using IDisposable logScope = NestedDiagnosticsLogicalContext.Push("QueueBackgroundWork");
             try
             {
