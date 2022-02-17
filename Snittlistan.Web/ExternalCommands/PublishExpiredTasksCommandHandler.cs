@@ -40,7 +40,6 @@ public class PublishExpiredTasksCommandHandler
                 publishedTask.CausationId,
                 publishedTask.MessageId);
             scope.Send(message);
-            publishedTask.MarkPublished(DateTime.Now);
         }
 
         scope.Commit();

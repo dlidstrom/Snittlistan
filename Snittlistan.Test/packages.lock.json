@@ -107,9 +107,9 @@
       },
       "NUnit.ConsoleRunner": {
         "type": "Direct",
-        "requested": "[3.12.0, )",
-        "resolved": "3.12.0",
-        "contentHash": "ZUtI8leU9ozCjLy4ZZ2X6ClU0hxfQtb95VOdmMA4SxIUvf62rIPxoHXS+jghvo5QxgRihGGcEp8xT3vCfgDdsA=="
+        "requested": "[3.15.0, )",
+        "resolved": "3.15.0",
+        "contentHash": "YZ/O+QzWxkvq1LV6fIa73w5bh4qg187jFcEhI0t0WF0X2YyYNPCxJvvHtfDcNKvJnj+TTjPssIcgsZnHw31bKg=="
       },
       "NUnit3TestAdapter": {
         "type": "Direct",

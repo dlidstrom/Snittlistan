@@ -101,21 +101,11 @@ public class PublishedTask : HasVersion
     public DateTime? PublishDate { get; private set; }
 
     /// <summary>
-    /// When it was published.
-    /// </summary>
-    public DateTime? PublishedDate { get; private set; }
-
-    /// <summary>
     /// When it was handled.
     /// </summary>
     public DateTime? HandledDate { get; private set; }
 
     public string CreatedBy { get; private set; } = null!;
-
-    public void MarkPublished(DateTime when)
-    {
-        PublishedDate = when;
-    }
 
     public void MarkHandled(DateTime when)
     {

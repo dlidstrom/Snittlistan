@@ -52,21 +52,28 @@ public class TaskPublisher
 
         static async void PublishMessage(Tenant tenant, Guid messageId, CancellationToken ct)
         {
-            await Task.Delay(2000);
+            const int MaxTries = 10;
             using IDisposable logScope = NestedDiagnosticsLogicalContext.Push("QueueBackgroundWork");
+            using SnittlistanContext context = new();
             try
             {
-                using SnittlistanContext context = new();
-                PublishedTask publishedTask =
-                    await context.PublishedTasks.SingleAsync(x => x.MessageId == messageId);
-                DoPublishMessage(tenant, publishedTask);
-                int changesSaved = await context.SaveChangesAsync();
-                if (changesSaved > 0)
+                for (int i = 0; i < MaxTries; i++)
                 {
-                    Logger.Info(
-                        "saved {changesSaved} to database",
-                        changesSaved);
+                    PublishedTask? publishedTask =
+                        await context.PublishedTasks.SingleOrDefaultAsync(x => x.MessageId == messageId);
+                    if (publishedTask == null)
+                    {
+                        Logger.Warn("message not found: {messageId}", messageId);
+                        await Task.Delay(200);
+                    }
+                    else
+                    {
+                        DoPublishMessage(tenant, publishedTask);
+                        break;
+                    }
                 }
+
+                throw new Exception($"max tries reached: {MaxTries}");
             }
             catch (Exception ex)
             {
@@ -84,7 +91,6 @@ public class TaskPublisher
                 publishedTask.CorrelationId,
                 publishedTask.CausationId,
                 publishedTask.MessageId);
-            publishedTask.MarkPublished(DateTime.Now);
             scope.Send(message);
             scope.Commit();
             Logger.Info("published message {@message}", message);
