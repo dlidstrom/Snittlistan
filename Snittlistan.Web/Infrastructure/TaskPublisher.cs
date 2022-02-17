@@ -49,7 +49,14 @@ public class TaskPublisher
             Logger.Error(
                 ex,
                 "QueueBackgroundWorkItem failed, using fallback (publish immediately)");
-            DoPublishMessage(currentTenant, publishedTask);
+            try
+            {
+                DoPublishMessage(currentTenant, publishedTask);
+            }
+            catch (Exception ex2)
+            {
+                Logger.Error(ex2);
+            }
         }
 
         static async void PublishMessage(Tenant tenant, Guid messageId, CancellationToken ct)
