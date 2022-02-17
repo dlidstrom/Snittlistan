@@ -46,7 +46,9 @@ public class TaskPublisher
         }
         catch (Exception ex)
         {
-            Logger.Error(ex, "QueueBackgroundWorkItem failed, using fallback (publish immediately)");
+            Logger.Error(
+                ex,
+                "QueueBackgroundWorkItem failed, using fallback (publish immediately)");
             DoPublishMessage(currentTenant, publishedTask);
         }
 
