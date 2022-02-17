@@ -18,10 +18,10 @@ public class PublishExpiredTasksCommandHandler
 
     public async Task Handle(PublishExpiredTasksCommand command)
     {
-        DateTime now = DateTime.Now;
+        DateTime after = DateTime.Now.AddMinutes(-1);
         IQueryable<PublishedTask> query =
             from task in Databases.Snittlistan.PublishedTasks.Include(x => x.Tenant)
-            where task.PublishDate < now && task.HandledDate == null
+            where task.PublishDate < after && task.HandledDate == null
             select task;
         PublishedTask[] expiredTasks = await query.ToArrayAsync();
         if (expiredTasks.Length == 0)
@@ -40,7 +40,7 @@ public class PublishExpiredTasksCommandHandler
                 publishedTask.CausationId,
                 publishedTask.MessageId ?? default);
             scope.Send(message);
-            publishedTask.MarkPublished(now);
+            publishedTask.MarkPublished(DateTime.Now);
         }
 
         scope.Commit();
