@@ -76,7 +76,7 @@ public class RegisterPendingMatchCommandHandler : CommandHandler<RegisterPending
             Logger.Warn("Unable to auto-register match", e);
             ErrorSignal
                 .FromCurrentContext()
-                .Raise(new Exception($"Unable to auto register match {pendingMatch.Id} ({pendingMatch.BitsMatchId})", e));
+                ?.Raise(new Exception($"Unable to auto register match {pendingMatch.Id} ({pendingMatch.BitsMatchId})", e));
         }
     }
 

@@ -240,7 +240,7 @@ public class TestLoggerFactory : ILoggerFactory
 
         public void Warn(string message, Exception exception)
         {
-            throw new NotImplementedException();
+            TestContext.WriteLine("{0} {1} {2}", name, message, exception);
         }
 
         public void WarnFormat(string format, params object[] args)
@@ -250,7 +250,7 @@ public class TestLoggerFactory : ILoggerFactory
 
         public void WarnFormat(Exception exception, string format, params object[] args)
         {
-            throw new NotImplementedException();
+            TestContext.WriteLine("{0} {1} {2} {3}", name, exception, format, args);
         }
 
         public void WarnFormat(IFormatProvider formatProvider, string format, params object[] args)
