@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using System.Data.Entity;
 using System.Web.Hosting;
 using NLog;
 using Snittlistan.Queue;
@@ -40,36 +41,52 @@ public class TaskPublisher
 
         try
         {
-            HostingEnvironment.QueueBackgroundWorkItem(ct => PublishMessage(currentTenant, publishedTask, ct));
+            HostingEnvironment.QueueBackgroundWorkItem(ct =>
+                PublishMessage(currentTenant, publishedTask.MessageId, ct));
         }
         catch (Exception ex)
         {
-            Logger.Error(ex, "QueueBackgroundWorkItem failed, using fallback");
-            CancellationTokenSource tokenSource = new(10000);
-            CancellationToken cancellationToken = tokenSource.Token;
-            PublishMessage(currentTenant, publishedTask, cancellationToken);
+            Logger.Error(ex, "QueueBackgroundWorkItem failed, using fallback (publish immediately)");
+            DoPublishMessage(currentTenant, publishedTask);
         }
 
-        static void PublishMessage(Tenant tenant, PublishedTask publishedTask, CancellationToken ct)
+        static async void PublishMessage(Tenant tenant, Guid messageId, CancellationToken ct)
         {
+            using IDisposable logScope = NestedDiagnosticsLogicalContext.Push("QueueBackgroundWork");
             try
             {
-                using MsmqGateway.MsmqTransactionScope scope = MsmqGateway.Create();
-                MessageEnvelope message = new(
-                    publishedTask.Task,
-                    publishedTask.TenantId,
-                    tenant.Hostname,
-                    publishedTask.CorrelationId,
-                    publishedTask.CausationId,
-                    publishedTask.MessageId ?? Guid.NewGuid());
-                scope.Send(message);
-                scope.Commit();
-                Logger.Info("published message {@message}", message);
+                using SnittlistanContext context = new();
+                PublishedTask publishedTask =
+                    await context.PublishedTasks.SingleAsync(x => x.MessageId == messageId);
+                DoPublishMessage(tenant, publishedTask);
+                int changesSaved = await context.SaveChangesAsync();
+                if (changesSaved > 0)
+                {
+                    Logger.Info(
+                        "saved {changesSaved} to database",
+                        changesSaved);
+                }
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "failed to publish message");
             }
+        }
+
+        static void DoPublishMessage(Tenant tenant, PublishedTask publishedTask)
+        {
+            using MsmqGateway.MsmqTransactionScope scope = MsmqGateway.Create();
+            MessageEnvelope message = new(
+                publishedTask.Task,
+                publishedTask.TenantId,
+                tenant.Hostname,
+                publishedTask.CorrelationId,
+                publishedTask.CausationId,
+                publishedTask.MessageId);
+            publishedTask.MarkPublished(DateTime.Now);
+            scope.Send(message);
+            scope.Commit();
+            Logger.Info("published message {@message}", message);
         }
     }
 

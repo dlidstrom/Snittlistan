@@ -38,7 +38,7 @@ public class PublishExpiredTasksCommandHandler
                 publishedTask.Tenant.Hostname,
                 publishedTask.CorrelationId,
                 publishedTask.CausationId,
-                publishedTask.MessageId ?? default);
+                publishedTask.MessageId);
             scope.Send(message);
             publishedTask.MarkPublished(DateTime.Now);
         }

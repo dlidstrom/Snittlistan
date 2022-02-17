@@ -125,6 +125,6 @@ public class Task_Post_RegisterMatch : WebApiIntegrationTest
             "",
             publishedTask.CorrelationId,
             null,
-            publishedTask.MessageId!.Value);
+            publishedTask.MessageId);
     }
 }

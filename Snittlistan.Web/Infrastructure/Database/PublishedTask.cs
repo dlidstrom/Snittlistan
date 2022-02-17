@@ -73,7 +73,7 @@ public class PublishedTask : HasVersion
 
     public Guid? CausationId { get; private set; }
 
-    public Guid? MessageId { get; private set; }
+    public Guid MessageId { get; private set; }
 
     [NotMapped]
     public BusinessKey BusinessKey
