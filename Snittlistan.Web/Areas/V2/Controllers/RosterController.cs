@@ -372,7 +372,7 @@ public class RosterController : AbstractController
     }
 
     [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
-    public ActionResult EditPlayers(string rosterId)
+    public async Task<ActionResult> EditPlayers(string rosterId)
     {
         Roster roster = CompositionRoot.DocumentSession
             .Include<Roster>(r => r.Players)
@@ -387,10 +387,12 @@ public class RosterController : AbstractController
             .Where(p => p.PlayerStatus == Player.Status.Active)
             .ToList();
 
+        TenantFeatures? features = await CompositionRoot.GetFeatures();
         EditRosterPlayersViewModel vm = new()
         {
             RosterViewModel = CompositionRoot.DocumentSession.LoadRosterViewModel(roster),
-            AvailablePlayers = availablePlayers.Select(x => new PlayerViewModel(x, WebsiteRoles.UserGroup().ToDict())).ToArray()
+            AvailablePlayers = availablePlayers.Select(x => new PlayerViewModel(x, WebsiteRoles.UserGroup().ToDict())).ToArray(),
+            RosterMailEnabled = features?.RosterMailEnabled ?? false
         };
         return View(vm);
     }
@@ -401,7 +403,7 @@ public class RosterController : AbstractController
     {
         if (ModelState.IsValid == false)
         {
-            return EditPlayers(rosterId);
+            return await EditPlayers(rosterId);
         }
 
         Roster roster = CompositionRoot.DocumentSession.Load<Roster>(rosterId);
