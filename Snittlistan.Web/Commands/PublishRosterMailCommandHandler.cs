@@ -11,11 +11,6 @@ public class PublishRosterMailCommandHandler
 {
     protected override Task<UpdateRosterEmail> CreateEmail(HandlerContext<Command> context)
     {
-        if (DateTime.Now.Second % 3 == 0)
-        {
-            throw new Exception("oh, no!");
-        }
-
         Player player = CompositionRoot.DocumentSession.Load<Player>(context.Payload.PlayerId);
         Roster roster = CompositionRoot.DocumentSession
             .Include<Roster>(x => x.Players)
