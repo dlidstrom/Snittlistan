@@ -10,6 +10,7 @@ public class UpdateRosterEmail : EmailBase
 
     public UpdateRosterEmail(
         string playerEmail,
+        string name,
         FormattedAuditLog formattedAuditLog,
         string[] players,
         string? teamLeader,
@@ -21,6 +22,7 @@ public class UpdateRosterEmail : EmailBase
     {
         _state = new(
             playerEmail,
+            name,
             formattedAuditLog,
             players,
             teamLeader,
@@ -31,6 +33,8 @@ public class UpdateRosterEmail : EmailBase
     }
 
     public string PlayerEmail => _state.PlayerEmail;
+
+    public string Name => _state.Name;
 
     public FormattedAuditLog FormattedAuditLog => _state.FormattedAuditLog;
 

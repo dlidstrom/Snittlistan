@@ -11,7 +11,6 @@ public class PublishRosterMailCommandHandler
 {
     protected override Task<UpdateRosterEmail> CreateEmail(HandlerContext<Command> context)
     {
-        Player player = CompositionRoot.DocumentSession.Load<Player>(context.Payload.PlayerId);
         Roster roster = CompositionRoot.DocumentSession
             .Include<Roster>(x => x.Players)
             .Load<Roster>(context.Payload.RosterId);
@@ -24,7 +23,8 @@ public class PublishRosterMailCommandHandler
             ? CompositionRoot.DocumentSession.Load<Player>(roster.TeamLeader).Name
             : string.Empty;
         UpdateRosterEmail email = new(
-            player.Email,
+            context.Payload.RecipientEmail,
+            context.Payload.RecipientName,
             formattedAuditLog,
             players.Select(x => x.Name).ToArray(),
             teamLeader,
@@ -38,7 +38,7 @@ public class PublishRosterMailCommandHandler
     protected override RatePerSeconds GetRate(HandlerContext<Command> context)
     {
         RatePerSeconds ratePerSeconds = new(
-            $"roster_mail:{context.Payload.PlayerId}:{context.Tenant.TenantId}",
+            $"roster_mail:{context.Payload.RecipientEmail}:{context.Tenant.TenantId}",
             1,
             600);
         return ratePerSeconds;
@@ -46,7 +46,8 @@ public class PublishRosterMailCommandHandler
 
     public record Command(
         string RosterId,
-        string PlayerId,
+        string RecipientEmail,
+        string RecipientName,
         string ReplyToEmail,
         Uri RosterLink);
 }

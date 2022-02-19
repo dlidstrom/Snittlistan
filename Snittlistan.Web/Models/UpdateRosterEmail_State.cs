@@ -9,6 +9,7 @@ public class UpdateRosterEmail_State : EmailState
 {
     public UpdateRosterEmail_State(
         string playerEmail,
+        string name,
         FormattedAuditLog formattedAuditLog,
         string[] players,
         string? teamLeader,
@@ -19,6 +20,7 @@ public class UpdateRosterEmail_State : EmailState
         : base(OwnerEmail, playerEmail, OwnerEmail, "Uttagning har uppdaterats")
     {
         PlayerEmail = playerEmail;
+        Name = name;
         FormattedAuditLog = formattedAuditLog;
         Players = players;
         TeamLeader = teamLeader;
@@ -29,6 +31,8 @@ public class UpdateRosterEmail_State : EmailState
     }
 
     public string PlayerEmail { get; }
+
+    public string Name { get; }
 
     public FormattedAuditLog FormattedAuditLog { get; }
 
@@ -48,6 +52,7 @@ public class UpdateRosterEmail_State : EmailState
     {
         return new UpdateRosterEmail(
             PlayerEmail,
+            Name,
             FormattedAuditLog,
             Players,
             TeamLeader,

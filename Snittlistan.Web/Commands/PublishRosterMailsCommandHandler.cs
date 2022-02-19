@@ -19,7 +19,7 @@ public class PublishRosterMailsCommandHandler : CommandHandler<PublishRosterMail
             roster.AuditLogEntries.Single(x => x.CorrelationId == context.CorrelationId);
         RosterState before = (RosterState)auditLogEntry.Before;
         RosterState after = (RosterState)auditLogEntry.After;
-        IEnumerable<string> affectedPlayers = before.Players.Concat(after.Players);
+        HashSet<string> affectedPlayers = new(before.Players.Concat(after.Players));
 
         // find user who did the last edit-players action
         AuditLogEntry? editPlayersAction = roster.AuditLogEntries.LastOrDefault(
@@ -29,17 +29,28 @@ public class PublishRosterMailsCommandHandler : CommandHandler<PublishRosterMail
             throw new Exception($"No edit-players action found in roster {roster.Id}");
         }
 
+        Dictionary<string, Player> playersDict =
+            CompositionRoot.DocumentSession.Load<Player>(affectedPlayers)
+            .ToDictionary(x => x.Id);
         Player? editPlayer = CompositionRoot.DocumentSession.Load<Player>(editPlayersAction.UserId);
         User? editUser = CompositionRoot.DocumentSession.FindUserByEmail(editPlayersAction.UserId);
         string replyToEmail =
             editPlayer?.Email
             ?? editUser?.Email
             ?? throw new Exception($"Unable to find edit-players action user with id '{editPlayersAction.UserId}'");
-        foreach (string playerId in new HashSet<string>(affectedPlayers))
+        if (editPlayer is not null)
         {
+            _ = affectedPlayers.Add(editPlayer.Id);
+            playersDict[editPlayer.Id] = editPlayer;
+        }
+
+        foreach (string playerId in affectedPlayers)
+        {
+            Player player = playersDict[playerId];
             PublishRosterMailTask message = new(
                 context.Payload.RosterKey,
-                playerId,
+                player.Email,
+                player.Nickname ?? player.Name,
                 replyToEmail,
                 context.Payload.RosterLink);
             context.PublishMessage(message);
