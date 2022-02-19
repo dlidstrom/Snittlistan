@@ -140,7 +140,7 @@ public class AuthenticationController : AbstractController
     }
 
     [RestoreModelStateFromTempData]
-    public ActionResult LogOnOneTimePassword(string id, string oneTimeKey, bool? reuseToken)
+    public async Task<ActionResult> LogOnOneTimePassword(string id, string oneTimeKey, bool? reuseToken)
     {
         DateTimeOffset? tokenDate = null;
         if (reuseToken ?? false)
@@ -150,6 +150,7 @@ public class AuthenticationController : AbstractController
             tokenDate = reusedToken?.Timestamp;
         }
 
+        Tenant tenant = await CompositionRoot.GetCurrentTenant();
         Player player = CompositionRoot.DocumentSession.Load<Player>(id);
         return View(new PasswordViewModel
         {
@@ -157,7 +158,8 @@ public class AuthenticationController : AbstractController
             RememberMe = true,
             OneTimeKey = oneTimeKey,
             ReuseToken = reuseToken ?? false,
-            ReusedTokenDate = tokenDate
+            ReusedTokenDate = tokenDate,
+            Hostname = tenant.Hostname
         });
     }
 
@@ -314,6 +316,8 @@ public class AuthenticationController : AbstractController
         public DateTimeOffset? ReusedTokenDate { get; set; }
 
         public string? ReturnUrl { get; set; }
+
+        public string? Hostname { get; set; }
     }
 
     public record PossiblePlayer(Player Player, int EditDistance);
