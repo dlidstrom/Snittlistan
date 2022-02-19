@@ -59,6 +59,7 @@ public class AuthenticationController : AbstractController
                         || x.PlayerStatus == Player.Status.Supporter)
                     .ToArray();
                 players = possiblePlayers
+                    .Where(x => x.Email is not null)
                     .Select(x => new PossiblePlayer(x, x.Email.EditDistanceTo(vm.Email)))
                     .Where(x => x.EditDistance <= 3)
                     .OrderBy(x => x.EditDistance)
@@ -190,7 +191,8 @@ public class AuthenticationController : AbstractController
                 return View(vm);
             }
 
-            OneTimeToken matchingPassword = activeTokens.FirstOrDefault(x => x.Payload!.EditDistanceTo(vm.Password) <= 1);
+            OneTimeToken matchingPassword =
+                activeTokens.FirstOrDefault(x => x.Payload!.EditDistanceTo(vm.Password) <= 1);
             if (matchingPassword == null)
             {
                 Logger.Info("No matching password token");
