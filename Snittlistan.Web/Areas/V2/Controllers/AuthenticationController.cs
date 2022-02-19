@@ -106,7 +106,7 @@ public class AuthenticationController : AbstractController
                     oneTimeKey =>
                         taskPublisher.PublishTask(
                             new OneTimeKeyTask(player.Email, oneTimePassword),
-                            User.Identity.Name)
+                            "system")
                     ,
                     oneTimePassword);
                 await NotifyEvent($"{player.Name} entered email address");
@@ -280,7 +280,7 @@ public class AuthenticationController : AbstractController
         TaskPublisher taskPublisher = await GetTaskPublisher();
         taskPublisher.PublishTask(
             task,
-            User.Identity.Name);
+            "system");
     }
 
     public class EmailViewModel
