@@ -73,12 +73,12 @@ public class TaskPublisher
                     if (publishedTask == null)
                     {
                         Logger.Warn("message not found: {messageId}", messageId);
-                        await Task.Delay(200);
+                        await Task.Delay(300);
                     }
                     else
                     {
                         DoPublishMessage(tenant, publishedTask);
-                        break;
+                        return;
                     }
                 }
 
