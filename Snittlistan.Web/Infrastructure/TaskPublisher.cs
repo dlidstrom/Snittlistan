@@ -68,6 +68,7 @@ public class TaskPublisher
             {
                 for (int i = 0; i < MaxTries; i++)
                 {
+                    Logger.Info("try #{try}", i);
                     PublishedTask? publishedTask =
                         await context.PublishedTasks.SingleOrDefaultAsync(x => x.MessageId == messageId);
                     if (publishedTask == null)
