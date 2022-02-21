@@ -49,7 +49,7 @@ if (-not (Test-Path ..\service-account.txt)) {
 
 $serviceAccount = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
     [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
-        (ConvertTo-SecureString (gc ..\service-account.txt))))
+        (ConvertTo-SecureString (Get-Content ..\service-account.txt))))
 
 if (-not (Test-Path ..\service-password.txt)) {
     Read-Host -AsSecureString "Enter Service password" | ConvertFrom-SecureString | Out-File ..\service-password.txt
@@ -57,7 +57,7 @@ if (-not (Test-Path ..\service-password.txt)) {
 
 $servicePassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
     [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
-        (ConvertTo-SecureString (gc ..\service-password.txt))))
+        (ConvertTo-SecureString (Get-Content ..\service-password.txt))))
 
 if (-not (Test-Path ..\email-password.txt)) {
     Read-Host -AsSecureString "Enter Email password" | ConvertFrom-SecureString | Out-File ..\email-password.txt
@@ -65,20 +65,47 @@ if (-not (Test-Path ..\email-password.txt)) {
 
 $emailPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
     [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
-        (ConvertTo-SecureString (gc ..\email-password.txt))))
+        (ConvertTo-SecureString (Get-Content ..\email-password.txt))))
 
 if (-not (Test-Path ..\db-password.txt)) {
     Read-Host -AsSecureString "Enter Database password" | ConvertFrom-SecureString | Out-File ..\db-password.txt
 }
 
+$dbHost = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
+    [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
+        (ConvertTo-SecureString (Get-Content ..\db-host.txt))))
+
+if (-not (Test-Path ..\db-host.txt)) {
+    Read-Host -AsSecureString "Enter Database host" | ConvertFrom-SecureString | Out-File ..\db-host.txt
+}
+
+$dbName = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
+    [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
+        (ConvertTo-SecureString (Get-Content ..\db-name.txt))))
+
+if (-not (Test-Path ..\db-name.txt)) {
+    Read-Host -AsSecureString "Enter Database name" | ConvertFrom-SecureString | Out-File ..\db-name.txt
+}
+
+$dbUsername = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
+    [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
+        (ConvertTo-SecureString (Get-Content ..\db-username.txt))))
+
+if (-not (Test-Path ..\db-username.txt)) {
+    Read-Host -AsSecureString "Enter Database username" | ConvertFrom-SecureString | Out-File ..\db-username.txt
+}
+
 $dbPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
     [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
-        (ConvertTo-SecureString (gc ..\db-password.txt))))
+        (ConvertTo-SecureString (Get-Content ..\db-password.txt))))
 
 $settings = @{
     SERVICE_ACCOUNT = $serviceAccount
     SERVICE_PASSWORD = $servicePassword
     EMAIL_PASSWORD = $emailPassword
+    DB_HOST = $dbHost
+    DB_NAME = $dbName
+    DB_USERNAME = $dbUsername
     DB_PASSWORD = $dbPassword
 }
 

@@ -43,6 +43,18 @@
       Installed OR EMAIL_PASSWORD
     </Condition>
 
+    <Condition Message="DB_HOST variable must be set in the command line">
+      Installed OR DB_HOST
+    </Condition>
+
+    <Condition Message="DB_NAME variable must be set in the command line">
+      Installed OR DB_NAME
+    </Condition>
+
+    <Condition Message="DB_USERNAME variable must be set in the command line">
+      Installed OR DB_USERNAME
+    </Condition>
+
     <Condition Message="DB_PASSWORD variable must be set in the command line">
       Installed OR DB_PASSWORD
     </Condition>
@@ -141,7 +153,7 @@
                             Action="setValue"
                             File="[SnittlistanWebDir]Web.config"
                             ElementPath="/configuration/connectionStrings/add[\[]@name='SnittlistanContext'[\]]/@connectionString"
-                            Value="Server=localhost;Database=sportbowling;Username=postgres;Password=[DB_PASSWORD]" />
+                            Value="Server=[DB_HOST];Database=[DB_NAME];Username=[DB_USERNAME];Password=[DB_PASSWORD]" />
             </Component>
             <Component Id="elitmarke_ifyllbar1_pdf" Guid="*" Win64="yes">
               <File KeyPath="yes" Source="elitmarke-ifyllbar1.pdf" />
