@@ -312,6 +312,15 @@
           "Microsoft.AspNet.Razor": "3.0.0"
         }
       },
+      "RazorGenerator.Mvc": {
+        "type": "Transitive",
+        "resolved": "2.4.9",
+        "contentHash": "RlCzv0B5Crt1WlQQq8l0RPUa/5onncrbCndNsEi8wd5nXtJEssTHI/dToFEC/SwHKYiwzGP22UXTjE7GCWqejw==",
+        "dependencies": {
+          "Microsoft.AspNet.Mvc": "3.0.50813.1",
+          "WebActivatorEx": "2.0.3"
+        }
+      },
       "Rotativa": {
         "type": "Transitive",
         "resolved": "1.7.4-rc",
@@ -397,6 +406,14 @@
         "resolved": "4.5.0",
         "contentHash": "okurQJO6NRE/apDIP23ajJ0hpiNmJ+f0BwOlB/cSqTLQlw5upkf+5+96+iG2Jw40G1fCVCyPz/FhIABUjMR+RQ=="
       },
+      "WebActivatorEx": {
+        "type": "Transitive",
+        "resolved": "2.0.3",
+        "contentHash": "1WLybAZ2kWOy+n9sgSQoQI512+8xlxddndIjbKo7Qn4qY8VL6kKPZPK2f9dVJ6kTO8ZvwB82cgUvV5OYU4BeGw==",
+        "dependencies": {
+          "Microsoft.Web.Infrastructure": "1.0.0"
+        }
+      },
       "snittlistan.queue": {
         "type": "Project",
         "dependencies": {
@@ -431,6 +448,7 @@
           "RavenDB.Client": "3.5.9",
           "RavenDB.Database": "3.5.9",
           "RavenDB.Embedded": "3.5.9",
+          "RazorGenerator.Mvc": "2.4.9",
           "Rotativa": "1.7.4-rc",
           "Snittlistan.Queue": "1.0.0"
         }
