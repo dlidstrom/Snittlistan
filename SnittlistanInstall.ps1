@@ -67,32 +67,32 @@ $emailPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
     [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
         (ConvertTo-SecureString (Get-Content ..\email-password.txt))))
 
-if (-not (Test-Path ..\db-password.txt)) {
-    Read-Host -AsSecureString "Enter Database password" | ConvertFrom-SecureString | Out-File ..\db-password.txt
+if (-not (Test-Path ..\db-host.txt)) {
+    Read-Host -AsSecureString "Enter Database host" | ConvertFrom-SecureString | Out-File ..\db-host.txt
 }
 
 $dbHost = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
     [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
         (ConvertTo-SecureString (Get-Content ..\db-host.txt))))
 
-if (-not (Test-Path ..\db-host.txt)) {
-    Read-Host -AsSecureString "Enter Database host" | ConvertFrom-SecureString | Out-File ..\db-host.txt
+if (-not (Test-Path ..\db-name.txt)) {
+    Read-Host -AsSecureString "Enter Database name" | ConvertFrom-SecureString | Out-File ..\db-name.txt
 }
 
 $dbName = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
     [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
         (ConvertTo-SecureString (Get-Content ..\db-name.txt))))
 
-if (-not (Test-Path ..\db-name.txt)) {
-    Read-Host -AsSecureString "Enter Database name" | ConvertFrom-SecureString | Out-File ..\db-name.txt
+if (-not (Test-Path ..\db-username.txt)) {
+    Read-Host -AsSecureString "Enter Database username" | ConvertFrom-SecureString | Out-File ..\db-username.txt
 }
 
 $dbUsername = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
     [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
         (ConvertTo-SecureString (Get-Content ..\db-username.txt))))
 
-if (-not (Test-Path ..\db-username.txt)) {
-    Read-Host -AsSecureString "Enter Database username" | ConvertFrom-SecureString | Out-File ..\db-username.txt
+if (-not (Test-Path ..\db-password.txt)) {
+    Read-Host -AsSecureString "Enter Database password" | ConvertFrom-SecureString | Out-File ..\db-password.txt
 }
 
 $dbPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
