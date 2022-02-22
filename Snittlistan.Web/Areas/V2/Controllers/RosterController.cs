@@ -33,7 +33,7 @@ public class RosterController : AbstractController
         this.bitsClient = bitsClient;
     }
 
-    public ActionResult Index(int? season)
+    public async Task<ActionResult> Index(int? season)
     {
         bool selectAll = true;
         if (season.HasValue == false)
@@ -64,6 +64,7 @@ public class RosterController : AbstractController
                            .SortRosters()
                            .ToArray());
         InitialDataViewModel.TurnViewModel[] turns = q.ToArray();
+        Tenant tenant = await CompositionRoot.GetCurrentTenant();
         IEnumerable<InitialDataViewModel.ScheduledItem> activities =
             CompositionRoot.DocumentSession.Query<Activity, ActivityIndex>()
                            .Where(x => x.Season == season.Value)
@@ -74,7 +75,11 @@ public class RosterController : AbstractController
                                x.Title,
                                x.Date,
                                x.MessageHtml,
-                               string.IsNullOrEmpty(x.AuthorId) == false ? CompositionRoot.DocumentSession.Load<Player>(x.AuthorId)?.Name ?? string.Empty : string.Empty));
+                               string.IsNullOrEmpty(x.AuthorId) == false
+                               ? CompositionRoot.DocumentSession.Load<Player>(x.AuthorId)?.Name ?? string.Empty
+                               : string.Empty,
+                               tenant.AppleTouchIcon,
+                               tenant.TeamFullName));
         bool isFiltered = rosters.Count != turns.Sum(x => x.Rosters.Length);
         InitialDataViewModel vm = new(turns.Concat(activities).OrderBy(x => x.Date).ToArray(), season.Value, isFiltered);
 
@@ -680,9 +685,18 @@ public class RosterController : AbstractController
                 string title,
                 DateTime date,
                 string messageHtml,
-                string author)
+                string author,
+                string appleTouchIcon,
+                string fullTeamName)
             {
-                ViewModel = new ActivityViewModel(id, title, date, messageHtml, author);
+                ViewModel = new ActivityViewModel(
+                    id,
+                    title,
+                    date,
+                    messageHtml,
+                    author,
+                    appleTouchIcon,
+                    fullTeamName);
             }
 
             public ActivityViewModel ViewModel { get; }

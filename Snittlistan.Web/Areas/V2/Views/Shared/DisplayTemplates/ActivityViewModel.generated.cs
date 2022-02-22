@@ -70,7 +70,7 @@ WriteLiteral("\r\n<div class=\"row\">\r\n    <div class=\"span12\">\r\n        <
 
             
             #line 13 "..\..\Areas\V2\Views\Shared\DisplayTemplates\ActivityViewModel.cshtml"
-                 Write(Url.ContentCacheBreak($"~/Content/css/images/{TenantConfiguration.AppleTouchIcon}"));
+                 Write(Url.ContentCacheBreak($"~/Content/css/images/{Model.AppleTouchIcon}"));
 
             
             #line default
@@ -80,7 +80,7 @@ WriteLiteral("\"\r\n                 alt=\"");
 
             
             #line 14 "..\..\Areas\V2\Views\Shared\DisplayTemplates\ActivityViewModel.cshtml"
-                 Write(TenantConfiguration.FullTeamName);
+                 Write(Model.FullTeamName);
 
             
             #line default
