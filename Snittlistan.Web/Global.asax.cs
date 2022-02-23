@@ -81,7 +81,6 @@ public class MvcApplication : HttpApplication
 
     protected void Application_Start()
     {
-        Log.Info("Application Starting");
         Bootstrap(GlobalConfiguration.Configuration, DatabasesFactory);
 
         static Databases DatabasesFactory()
@@ -185,6 +184,8 @@ public class MvcApplication : HttpApplication
 
         NpgsqlLogManager.Provider = new NLogLoggingProvider();
         NpgsqlLogManager.IsParameterLoggingEnabled = true;
+
+        Log.Info("Application Starting");
 
         // initialize container and controller factory
         InitializeContainer(configuration, databasesFactory);

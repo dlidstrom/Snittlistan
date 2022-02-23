@@ -121,8 +121,8 @@ WriteLiteral("            <p>Dagens inloggningskod har skickats till din e-posta
             
             #line default
             #line hidden
-WriteLiteral("\r\n        <p>\r\n            <strong style=\"background-color: yellow; padding: 5px;" +
-" border: 1px dashed red;\">\r\n                Om du har problem att logga in, öppn" +
+WriteLiteral("\r\n        <p style=\"background-color: yellow; padding: 5px; border: 1px dashed re" +
+"d;\">\r\n            <strong>\r\n                Om du har problem att logga in, öppn" +
 "a <a href=\"//");
 
 
