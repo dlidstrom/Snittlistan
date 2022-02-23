@@ -46,10 +46,10 @@ input.switch {
     -moz-appearance: none;
     -webkit-appearance: none;
     appearance: none;
-    height: 1em;
-    width: 2em;
-    border-radius: 1em;
-    box-shadow: inset -1em 0px 0px 0px rgba(192, 192, 192, 1);
+    height: 1.5em;
+    width: 3em;
+    border-radius: 1.5em;
+    box-shadow: inset -1.5em 0px 0px 0px rgba(192, 192, 192, 1);
     background-color: white;
     border: 1px solid rgba(192, 192, 192, 1);
     outline: none;
@@ -57,7 +57,15 @@ input.switch {
     transition: 0.2s;
 }
 
+input.switch:before {
+    content: none;
+}
+
+    input.switch:focus {
+        outline: none;
+    }
+
     input.switch:checked {
-        box-shadow: inset 1em 0px 0px 0px rgba(33, 150, 243, 0.5);
+        box-shadow: inset 1.5em 0px 0px 0px rgba(33, 150, 243, 0.5);
         border: 1px solid rgba(33, 150, 243, 1);
     }
