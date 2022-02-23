@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿#nullable enable
 
-#nullable enable
+using System.ComponentModel.DataAnnotations;
 
 namespace Snittlistan.Web.Areas.V2.ViewModels;
+
 public class RosterPlayersViewModel : IValidatableObject
 {
     public string? Table1Player1 { get; set; }

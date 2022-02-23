@@ -921,20 +921,30 @@ WriteLiteral("\r\n                    <span class=\"help-block\">\r\n           
             
             #line default
             #line hidden
-WriteLiteral("                <div class=\"control-group\">\r\n                    <div class=\"cont" +
-"rols\">\r\n                        <label class=\"checkbox\">\r\n                      " +
-"      ");
+WriteLiteral("                <div class=\"control-group\">\r\n                    ");
 
 
             
-            #line 217 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
-                       Write(Html.CheckBox("sendUpdateMail", false));
+            #line 215 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
+               Write(Html.Label(
+                        "SendUpdateMail",
+                        "Skicka mail till spelarna",
+                        new { @class = "control-label" }));
 
             
             #line default
             #line hidden
-WriteLiteral(@" Skicka mail till spelarna <strong style=""background-color: yellow; padding: 5px; border: 1px dashed red;"">Nyhet!</strong>
-                        </label>
+WriteLiteral("\r\n                    <div class=\"controls\">\r\n                        ");
+
+
+            
+            #line 220 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
+                   Write(Html.CheckBox("SendUpdateMail", false));
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"
                         <span class=""help-block"">
                             Ett mail med uttagningen och uppmaning om att
                             acceptera kommer skickas till alla uttagna spelare.
@@ -945,7 +955,7 @@ WriteLiteral(@" Skicka mail till spelarna <strong style=""background-color: yell
 
 
             
-            #line 225 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
+            #line 227 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
             }
 
             
@@ -956,7 +966,7 @@ WriteLiteral("            <div class=\"form-actions\">\r\n                <butto
 
 
             
-            #line 228 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
+            #line 230 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
            Write(Html.ActionLink("Avbryt", "View", new { season = Model.RosterViewModel.Season, turn = Model.RosterViewModel.Turn }, new { @class = "btn btn-large" }));
 
             
@@ -966,7 +976,7 @@ WriteLiteral("\r\n            </div>\r\n");
 
 
             
-            #line 230 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
+            #line 232 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
         }
 
             
@@ -976,7 +986,7 @@ WriteLiteral("    </div>\r\n</div>\r\n");
 
 
             
-            #line 233 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
+            #line 235 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
 Write(Html.Action("PlayerStatus", new
 {
     turn = Model.RosterViewModel.Turn,

@@ -212,10 +212,12 @@
             if (Model.RosterMailEnabled)
             {
                 <div class="control-group">
+                    @Html.Label(
+                        "SendUpdateMail",
+                        "Skicka mail till spelarna",
+                        new { @class = "control-label" })
                     <div class="controls">
-                        <label class="checkbox">
-                            @Html.CheckBox("sendUpdateMail", false) Skicka mail till spelarna <strong style="background-color: yellow; padding: 5px; border: 1px dashed red;">Nyhet!</strong>
-                        </label>
+                        @Html.CheckBox("SendUpdateMail", false)
                         <span class="help-block">
                             Ett mail med uttagningen och uppmaning om att
                             acceptera kommer skickas till alla uttagna spelare.
