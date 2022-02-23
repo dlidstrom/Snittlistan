@@ -1,16 +1,17 @@
-﻿using System.Messaging;
+﻿#nullable enable
+
+using System.Messaging;
 using NLog;
 using Snittlistan.Queue.Messages;
 
-#nullable enable
-
 namespace Snittlistan.Queue;
-public static class MsmqGateway
+
+public class MsmqGateway
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    private static MessageQueue? messageQueue;
+    private readonly MessageQueue messageQueue;
 
-    public static void Initialize(string path)
+    public MsmqGateway(string path)
     {
         messageQueue = new MessageQueue(path)
         {
@@ -18,11 +19,9 @@ public static class MsmqGateway
         };
     }
 
-    public static MsmqTransactionScope Create()
+    public MsmqTransactionScope Create()
     {
-        return messageQueue == null
-            ? throw new Exception("Initialize MsmqGateway")
-            : new MsmqTransactionScope(messageQueue);
+        return new MsmqTransactionScope(messageQueue);
     }
 
     public class MsmqTransactionScope : IMsmqTransaction, IDisposable
