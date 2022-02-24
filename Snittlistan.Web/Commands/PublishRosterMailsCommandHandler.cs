@@ -47,13 +47,16 @@ public class PublishRosterMailsCommandHandler : CommandHandler<PublishRosterMail
         foreach (string playerId in affectedPlayers)
         {
             Player player = playersDict[playerId];
-            PublishRosterMailTask message = new(
-                context.Payload.RosterKey,
-                player.Email,
-                player.Nickname ?? player.Name,
-                replyToEmail,
-                context.Payload.RosterLink);
-            context.PublishMessage(message);
+            if (string.IsNullOrEmpty(player.Email) == false)
+            {
+                PublishRosterMailTask message = new(
+                    context.Payload.RosterKey,
+                    player.Email,
+                    player.Nickname ?? player.Name,
+                    replyToEmail,
+                    context.Payload.RosterLink);
+                context.PublishMessage(message);
+            }
         }
 
         RosterMail rosterMail =
