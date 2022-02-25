@@ -1,7 +1,6 @@
 ﻿#nullable enable
 
 using Snittlistan.Web.Infrastructure;
-using Snittlistan.Web.Infrastructure.Database;
 using System.Reflection;
 
 namespace Snittlistan.Web.Commands;
@@ -31,9 +30,8 @@ public class CommandExecutor
         Type handlerType = typeof(ICommandHandler<>).MakeGenericType(command.GetType());
         MethodInfo handleMethod = handlerType.GetMethod(nameof(ICommandHandler<TCommand>.Handle));
         object handler = compositionRoot.Kernel.Resolve(handlerType);
-        Tenant tenant = await compositionRoot.GetCurrentTenant();
         TaskPublisher taskPublisher = new(
-            tenant,
+            compositionRoot.CurrentTenant,
             compositionRoot.Databases,
             correlationId,
             causationId);
@@ -41,7 +39,7 @@ public class CommandExecutor
             typeof(HandlerContext<>).MakeGenericType(command.GetType()),
             compositionRoot,
             command,
-            tenant,
+            compositionRoot.CurrentTenant,
             correlationId,
             causationId);
         handlerContext.PublishMessage = (task, publishDate) =>
@@ -58,7 +56,7 @@ public class CommandExecutor
         Task task = (Task)handleMethod.Invoke(handler, new[] { handlerContext });
         await task;
         _ = compositionRoot.Databases.Snittlistan.ChangeLogs.Add(new(
-            tenant.TenantId,
+            compositionRoot.CurrentTenant.TenantId,
             correlationId,
             causationId,
             command,

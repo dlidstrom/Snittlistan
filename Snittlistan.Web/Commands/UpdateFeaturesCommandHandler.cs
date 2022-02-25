@@ -10,16 +10,15 @@ public class UpdateFeaturesCommandHandler : CommandHandler<UpdateFeaturesCommand
 {
     public override async Task Handle(HandlerContext<Command> context)
     {
-        Tenant tenant = await CompositionRoot.GetCurrentTenant();
         KeyValueProperty? settingsProperty =
             await CompositionRoot.Databases.Snittlistan.KeyValueProperties.SingleOrDefaultAsync(
-                x => x.Key == TenantFeatures.Key && x.TenantId == tenant.TenantId);
+                x => x.Key == TenantFeatures.Key && x.TenantId == CompositionRoot.CurrentTenant.TenantId);
 
         if (settingsProperty == null)
         {
             settingsProperty = CompositionRoot.Databases.Snittlistan.KeyValueProperties.Add(
                 new(
-                    tenant.TenantId,
+                    CompositionRoot.CurrentTenant.TenantId,
                     TenantFeatures.Key,
                     new TenantFeatures(context.Payload.RosterMailEnabled)));
         }

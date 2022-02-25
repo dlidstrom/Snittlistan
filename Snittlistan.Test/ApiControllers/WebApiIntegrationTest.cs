@@ -34,6 +34,8 @@ public abstract class WebApiIntegrationTest
 
     protected IWindsorContainer Container { get; set; } = null!;
 
+    protected Tenant CurrentTenant { get; set; } = null!;
+
     [SetUp]
     public async Task SetUp()
     {
@@ -41,19 +43,19 @@ public abstract class WebApiIntegrationTest
         Container = new WindsorContainer();
         InMemoryContext inMemoryContext = new();
         Databases = new(inMemoryContext, inMemoryContext);
-        Tenant tenant = new("TEST", "favicon", "touchicon", "touchiconsize", "title", 51538, "Hofvet");
+        CurrentTenant = new("TEST", "favicon", "touchicon", "touchiconsize", "title", 51538, "Hofvet");
         _ = Container
             .AddFacility<LoggingFacility>(x => x.LogUsing<TestLoggerFactory>())
             .Install(
                 new ControllerInstaller(),
                 new ApiControllerInstaller(),
                 new ControllerFactoryInstaller(),
-                new RavenInstaller(new[] { tenant }, DocumentStoreMode.InMemory),
+                new RavenInstaller(new[] { CurrentTenant }, DocumentStoreMode.InMemory),
                 new TaskHandlerInstaller(),
                 new CompositionRootInstaller(),
                 CommandHandlerInstaller.Scoped(),
                 new DatabaseContextInstaller(() => Databases, LifestyleType.Scoped),
-                EventStoreInstaller.FromAssembly(new[] { tenant }, typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),
+                EventStoreInstaller.FromAssembly(new[] { CurrentTenant }, typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),
                 new EventStoreSessionInstaller(LifestyleType.Scoped));
         _ = Container.Register(Component.For<IMsmqTransaction>().Instance(Mock.Of<IMsmqTransaction>()));
         _ = Container.Register(Component.For<IEmailService>().Instance(Mock.Of<IEmailService>()));
@@ -64,7 +66,7 @@ public abstract class WebApiIntegrationTest
                 x.Request == requestMock
                 && x.Items == new Dictionary<object, object>()
                 && x.Cache == new Cache());
-        _ = inMemoryContext.Tenants.Add(tenant);
+        _ = inMemoryContext.Tenants.Add(CurrentTenant);
         CurrentHttpContext.Instance = () => httpContextMock;
         await OnSetUp(Container);
 

@@ -2,6 +2,7 @@
 
 using Castle.MicroKernel;
 using Raven.Client;
+using Snittlistan.Web.Infrastructure.Database;
 
 namespace Snittlistan.Web.Infrastructure.IoC;
 
@@ -12,7 +13,8 @@ public class HostBasedComponentSelector : IHandlerSelector
         try
         {
             _ = GetHostname();
-            bool result = service == typeof(IDocumentStore);
+            bool result = service == typeof(IDocumentStore)
+                || service == typeof(Tenant);
             return result;
         }
         catch (Exception)
