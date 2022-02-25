@@ -169,6 +169,7 @@ public class MatchResult_MatchCommentary : WebApiIntegrationTest
                 eventStoreSession,
                 Databases,
                 Container.Resolve<EventStore>(),
+                CurrentTenant,
                 Container.Resolve<IEmailService>(),
                 Mock.Of<IBitsClient>(MockBehavior.Strict));
             CommandExecutor commandExecutor = new(

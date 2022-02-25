@@ -1,20 +1,19 @@
 ﻿#nullable enable
 
+using Raven.Abstractions;
+using Snittlistan.Queue.Messages;
+using Snittlistan.Web.Areas.V2.Domain;
+using Snittlistan.Web.Areas.V2.Indexes;
+using Snittlistan.Web.Controllers;
+using Snittlistan.Web.HtmlHelpers;
+using Snittlistan.Web.Infrastructure;
+using Snittlistan.Web.Infrastructure.Attributes;
+using Snittlistan.Web.Services;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Diagnostics;
 using System.Web;
 using System.Web.Mvc;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Areas.V2.Indexes;
-using Snittlistan.Queue.Messages;
-using Raven.Abstractions;
-using Snittlistan.Web.Controllers;
-using Snittlistan.Web.HtmlHelpers;
-using Snittlistan.Web.Infrastructure.Attributes;
-using Snittlistan.Web.Infrastructure.Database;
-using Snittlistan.Web.Services;
-using Snittlistan.Web.Infrastructure;
 
 namespace Snittlistan.Web.Areas.V2.Controllers;
 
@@ -35,7 +34,7 @@ public class AuthenticationController : AbstractController
     }
 
     [HttpPost]
-    public async Task<ActionResult> LogOn(EmailViewModel vm, string returnUrl)
+    public ActionResult LogOn(EmailViewModel vm, string returnUrl)
     {
         // find the user in question
         Models.User user = CompositionRoot.DocumentSession.FindUserByEmail(vm.Email);
@@ -89,7 +88,7 @@ public class AuthenticationController : AbstractController
                 if (validExistingToken != null)
                 {
                     // reuse still valid token
-                    await NotifyEvent($"{player.Name} - Samma token", validExistingToken.ToJson().ToString());
+                    NotifyEvent($"{player.Name} - Samma token", validExistingToken.ToJson().ToString());
                     return RedirectToAction(
                         "LogOnOneTimePassword",
                         new { id = player.Id, validExistingToken.OneTimeKey, reuseToken = true });
@@ -100,8 +99,7 @@ public class AuthenticationController : AbstractController
                 Debug.Assert(Request.Url != null, "Request.Url != null");
                 string oneTimePassword =
                     string.Join("", Enumerable.Range(1, 6).Select(_ => Random.Next(10)));
-                Tenant tenant = await CompositionRoot.GetCurrentTenant();
-                TaskPublisher taskPublisher = await GetTaskPublisher();
+                TaskPublisher taskPublisher = GetTaskPublisher();
                 token.Activate(
                     oneTimeKey =>
                         taskPublisher.PublishTask(
@@ -109,7 +107,7 @@ public class AuthenticationController : AbstractController
                             "system")
                     ,
                     oneTimePassword);
-                await NotifyEvent($"{player.Name} entered email address");
+                NotifyEvent($"{player.Name} entered email address");
                 CompositionRoot.DocumentSession.Store(token);
                 return RedirectToAction(
                     "LogOnOneTimePassword",
@@ -120,7 +118,7 @@ public class AuthenticationController : AbstractController
                 ViewBag.PlayerId = CompositionRoot.DocumentSession.CreatePlayerSelectList(
                     getPlayers: () => players,
                     textFormatter: p => $"{p.Name} ({p.Nickname})");
-                await NotifyEvent($"{vm.Email} - Select from multiple {string.Join(", ", players.Select(x => $"{x.Name} ({x.Email})"))}");
+                NotifyEvent($"{vm.Email} - Select from multiple {string.Join(", ", players.Select(x => $"{x.Name} ({x.Email})"))}");
                 return View();
             }
             else
@@ -132,7 +130,7 @@ public class AuthenticationController : AbstractController
         // redisplay form if any errors at this point
         if (ModelState.IsValid == false)
         {
-            await NotifyEvent($"{vm.Email} - ModelState invalid: {string.Join(", ", ModelState.Values.Select(x => string.Join(", ", x.Errors.Select(y => y.ErrorMessage))))}");
+            NotifyEvent($"{vm.Email} - ModelState invalid: {string.Join(", ", ModelState.Values.Select(x => string.Join(", ", x.Errors.Select(y => y.ErrorMessage))))}");
             return View(vm);
         }
 
@@ -140,7 +138,7 @@ public class AuthenticationController : AbstractController
     }
 
     [RestoreModelStateFromTempData]
-    public async Task<ActionResult> LogOnOneTimePassword(string id, string oneTimeKey, bool? reuseToken)
+    public ActionResult LogOnOneTimePassword(string id, string oneTimeKey, bool? reuseToken)
     {
         DateTimeOffset? tokenDate = null;
         if (reuseToken ?? false)
@@ -150,7 +148,6 @@ public class AuthenticationController : AbstractController
             tokenDate = reusedToken?.Timestamp;
         }
 
-        Tenant tenant = await CompositionRoot.GetCurrentTenant();
         Player player = CompositionRoot.DocumentSession.Load<Player>(id);
         return View(new PasswordViewModel
         {
@@ -159,7 +156,7 @@ public class AuthenticationController : AbstractController
             OneTimeKey = oneTimeKey,
             ReuseToken = reuseToken ?? false,
             ReusedTokenDate = tokenDate,
-            Hostname = tenant.Hostname
+            Hostname = CompositionRoot.CurrentTenant.Hostname
         });
     }
 
@@ -189,7 +186,7 @@ public class AuthenticationController : AbstractController
                 ModelState.AddModelError("Lösenord", "Prova igen");
                 vm.Password = string.Empty;
                 await Task.Delay(2000);
-                await NotifyEvent($"{player.Name} - Prova igen");
+                NotifyEvent($"{player.Name} - Prova igen");
                 return View(vm);
             }
 
@@ -201,12 +198,12 @@ public class AuthenticationController : AbstractController
                 ModelState.AddModelError("Lösenord", "Felaktigt lösenord");
                 vm.Password = string.Empty;
                 await Task.Delay(2000);
-                await NotifyEvent($"{player.Name} - Felaktig kod ({vm.Password})");
+                NotifyEvent($"{player.Name} - Felaktig kod ({vm.Password})");
                 return View(vm);
             }
 
             authenticationService.SetAuthCookie(player.Id, vm.RememberMe);
-            await NotifyEvent($"{player.Name} logged in");
+            NotifyEvent($"{player.Name} logged in");
         }
         catch
         {
@@ -253,18 +250,18 @@ public class AuthenticationController : AbstractController
             : RedirectToAction("Index", "Roster");
     }
 
-    public async Task<ActionResult> LogOff()
+    public ActionResult LogOff()
     {
         if (Request.IsAuthenticated)
         {
-            await NotifyEvent($"{User.CustomIdentity.Name} logged off");
+            NotifyEvent($"{User.CustomIdentity.Name} logged off");
             authenticationService.SignOut();
         }
 
         return RedirectToAction("Index", "Roster");
     }
 
-    private async Task NotifyEvent(string subject, string? body = null)
+    private void NotifyEvent(string subject, string? body = null)
     {
         SendEmailTask task = SendEmailTask.Create(
             ConfigurationManager.AppSettings["OwnerEmail"],
@@ -279,7 +276,7 @@ public class AuthenticationController : AbstractController
                         body ?? string.Empty
                 }),
             60);
-        TaskPublisher taskPublisher = await GetTaskPublisher();
+        TaskPublisher taskPublisher = GetTaskPublisher();
         taskPublisher.PublishTask(
             task,
             "system");

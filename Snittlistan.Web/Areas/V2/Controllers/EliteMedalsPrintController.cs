@@ -24,7 +24,7 @@ public class EliteMedalsPrintController : AbstractController
 {
     [HttpPost]
     [SetTempModelState]
-    public async Task<ActionResult> GeneratePdf(PostModel postModel)
+    public ActionResult GeneratePdf(PostModel postModel)
     {
         // find out current season
         int season = CompositionRoot.DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
@@ -47,8 +47,7 @@ public class EliteMedalsPrintController : AbstractController
 
         string templateFilename = ConfigurationManager.AppSettings["ElitemedalsTemplateFilename"];
         MemoryStream stream = new();
-        Tenant tenant = await CompositionRoot.GetCurrentTenant();
-        string archiveFileName = $"Elitmedaljer_{tenant.TeamFullName}_{season}-{season + 1}.zip";
+        string archiveFileName = $"Elitmedaljer_{CompositionRoot.CurrentTenant.TeamFullName}_{season}-{season + 1}.zip";
         using (ZipArchive zip = new(stream, ZipArchiveMode.Create, true))
         {
             EliteMedalsViewModel.PlayerInfo[] playersThatHaveMedalsToAchieve =
@@ -69,7 +68,7 @@ public class EliteMedalsPrintController : AbstractController
                     zip,
                     templateFilename,
                     playerMedalInfo,
-                    tenant,
+                    CompositionRoot.CurrentTenant,
                     postModel);
                 if (result == CreateFileEntryResult.MissingPersonalNumber)
                 {

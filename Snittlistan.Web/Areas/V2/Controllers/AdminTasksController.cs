@@ -113,7 +113,7 @@ public class AdminTasksController : AdminController
 
     [HttpPost]
     [ActionName("ActivateUser")]
-    public async Task<ActionResult> ActivateUserConfirmed(string id, bool? invite)
+    public ActionResult ActivateUserConfirmed(string id, bool? invite)
     {
         User user = CompositionRoot.DocumentSession.Load<User>(id);
         if (user == null)
@@ -130,7 +130,7 @@ public class AdminTasksController : AdminController
             if (invite.GetValueOrDefault())
             {
                 Debug.Assert(Request.Url != null, "Request.Url != null");
-                TaskPublisher taskPublisher = await GetTaskPublisher();
+                TaskPublisher taskPublisher = GetTaskPublisher();
                 user.ActivateWithEmail(
                     t => taskPublisher.PublishTask(t, User.Identity.Name),
                     Url,
@@ -256,10 +256,9 @@ public class AdminTasksController : AdminController
 
     public async Task<ActionResult> Features()
     {
-        Tenant tenant = await CompositionRoot.GetCurrentTenant();
         KeyValueProperty? settingsProperty =
             await CompositionRoot.Databases.Snittlistan.KeyValueProperties.SingleOrDefaultAsync(
-                x => x.Key == TenantFeatures.Key && x.TenantId == tenant.TenantId);
+                x => x.Key == TenantFeatures.Key && x.TenantId == CompositionRoot.CurrentTenant.TenantId);
         if (settingsProperty != null)
         {
             return View(new TenantFeaturesViewModel((TenantFeatures)settingsProperty.Value));

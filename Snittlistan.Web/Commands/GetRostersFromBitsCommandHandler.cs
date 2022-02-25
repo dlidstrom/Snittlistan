@@ -6,7 +6,6 @@ using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Bits.Contracts;
-using Snittlistan.Web.Infrastructure.Database;
 using Snittlistan.Web.Models;
 
 namespace Snittlistan.Web.Commands;
@@ -17,11 +16,10 @@ public class GetRostersFromBitsCommandHandler
     public override async Task Handle(HandlerContext<Command> context)
     {
         WebsiteConfig websiteConfig = CompositionRoot.DocumentSession.Load<WebsiteConfig>(WebsiteConfig.GlobalId);
-        Tenant tenant = await CompositionRoot.GetCurrentTenant();
         Logger.InfoFormat(
             "Importing BITS season {seasonId} for {teamFullName} (ClubId={clubId})",
             websiteConfig.SeasonId,
-            tenant.TeamFullName,
+            CompositionRoot.CurrentTenant.TeamFullName,
             websiteConfig.ClubId);
         RosterSearchTerms.Result[] rosterSearchTerms =
             CompositionRoot.DocumentSession.Query<RosterSearchTerms.Result, RosterSearchTerms>()
@@ -152,7 +150,7 @@ public class GetRostersFromBitsCommandHandler
             string body =
                 $"Rosters to remove: {joined}";
             SendEmail email = SendEmail.ToAdmin(
-                $"Removed rosters for {tenant.TeamFullName}",
+                $"Removed rosters for {CompositionRoot.CurrentTenant.TeamFullName}",
                 body);
             await CompositionRoot.EmailService.SendAsync(email);
         }

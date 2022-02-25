@@ -33,7 +33,7 @@ public class RosterController : AbstractController
         this.bitsClient = bitsClient;
     }
 
-    public async Task<ActionResult> Index(int? season)
+    public ActionResult Index(int? season)
     {
         bool selectAll = true;
         if (season.HasValue == false)
@@ -64,7 +64,6 @@ public class RosterController : AbstractController
                            .SortRosters()
                            .ToArray());
         InitialDataViewModel.TurnViewModel[] turns = q.ToArray();
-        Tenant tenant = await CompositionRoot.GetCurrentTenant();
         IEnumerable<InitialDataViewModel.ScheduledItem> activities =
             CompositionRoot.DocumentSession.Query<Activity, ActivityIndex>()
                            .Where(x => x.Season == season.Value)
@@ -78,8 +77,8 @@ public class RosterController : AbstractController
                                string.IsNullOrEmpty(x.AuthorId) == false
                                ? CompositionRoot.DocumentSession.Load<Player>(x.AuthorId)?.Name ?? string.Empty
                                : string.Empty,
-                               tenant.AppleTouchIcon,
-                               tenant.TeamFullName));
+                               CompositionRoot.CurrentTenant.AppleTouchIcon,
+                               CompositionRoot.CurrentTenant.TeamFullName));
         bool isFiltered = rosters.Count != turns.Sum(x => x.Rosters.Length);
         InitialDataViewModel vm = new(turns.Concat(activities).OrderBy(x => x.Date).ToArray(), season.Value, isFiltered);
 
@@ -268,7 +267,7 @@ public class RosterController : AbstractController
     }
 
     [Authorize]
-    public async Task<ActionResult> View(int? season, int? turn, bool? print)
+    public ActionResult View(int? season, int? turn, bool? print)
     {
         if (season.HasValue == false)
         {
@@ -305,13 +304,12 @@ public class RosterController : AbstractController
             return View("Unscheduled", vm);
         }
 
-        Tenant tenant = await CompositionRoot.GetCurrentTenant();
         ViewTurnViewModel viewTurnViewModel = new(
             turn.Value,
             season.Value,
             rosterViewModels,
             true,
-            tenant.AppleTouchIcon);
+            CompositionRoot.CurrentTenant.AppleTouchIcon);
 
         if (print.GetValueOrDefault())
         {
@@ -323,7 +321,7 @@ public class RosterController : AbstractController
 
     [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
     [HttpPost]
-    public async Task<ActionResult> Print(
+    public ActionResult Print(
         int season,
         int turn,
         bool pdf,
@@ -342,13 +340,12 @@ public class RosterController : AbstractController
             .SortRosters()
             .ToArray();
 
-        Tenant tenant = await CompositionRoot.GetCurrentTenant();
         ViewTurnViewModel viewTurnViewModel = new(
             turn,
             season,
             rosterViewModels,
             withAbsence,
-            tenant.AppleTouchIcon);
+            CompositionRoot.CurrentTenant.AppleTouchIcon);
 
         if (pdf)
         {
@@ -360,7 +357,7 @@ public class RosterController : AbstractController
                 .Append(" --footer-font-size \"8\"")
                 .Append(" --footer-line")
                 .Append(" --footer-spacing \"3\"")
-                .Append($" --header-left \"{tenant.TeamFullName}\"")
+                .Append($" --header-left \"{CompositionRoot.CurrentTenant.TeamFullName}\"")
                 .Append($" --header-center \"Omgång {turn}\"")
                 .Append($" --header-right \"{DateTime.Now.Date.ToShortDateString()}\"")
                 .Append(" --header-line")
