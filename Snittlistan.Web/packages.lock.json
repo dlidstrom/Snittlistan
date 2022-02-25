@@ -125,9 +125,9 @@
       },
       "NLog": {
         "type": "Direct",
-        "requested": "[4.7.13, )",
-        "resolved": "4.7.13",
-        "contentHash": "AvoGpCuq36B+0wY313XA6gC+YeMvk24rqF8P+HS9fInBGOjCzPjpXp2ln9ATZjPOJtXgHfc8zNmTjyswFGLxvg=="
+        "requested": "[4.7.14, )",
+        "resolved": "4.7.14",
+        "contentHash": "R1Nn+Zi2mSiKf82zII+8ZhGTr66CmCDLlpDq/0N0Y22TDrioYeP6t3XWzJVTi3OXaHJ/jiXId/okXQu8e0g3uw=="
       },
       "PDFsharp": {
         "type": "Direct",
@@ -357,7 +357,7 @@
           "Lindhart.Analyser.MissingAwaitWarning": "2.0.0",
           "Microsoft.AspNet.WebApi.Client": "5.2.7",
           "MvcContrib": "2.0.95",
-          "NLog": "4.7.13",
+          "NLog": "4.7.14",
           "Newtonsoft.Json": "13.0.1"
         }
       }
