@@ -1,11 +1,10 @@
 ﻿#nullable enable
 
-using System.Web.Mvc;
 using Castle.Core.Logging;
 using Snittlistan.Web.Commands;
 using Snittlistan.Web.Infrastructure;
-using Snittlistan.Web.Infrastructure.Database;
 using Snittlistan.Web.Models;
+using System.Web.Mvc;
 
 namespace Snittlistan.Web.Controllers;
 
@@ -24,11 +23,10 @@ public abstract class AbstractController : Controller
 
     protected new CustomPrincipal User => (CustomPrincipal)HttpContext.User;
 
-    protected async Task<TaskPublisher> GetTaskPublisher()
+    protected TaskPublisher GetTaskPublisher()
     {
-        Tenant currentTenant = await CompositionRoot.GetCurrentTenant();
         return new TaskPublisher(
-            currentTenant,
+            CompositionRoot.CurrentTenant,
             CompositionRoot.Databases,
             CompositionRoot.CorrelationId,
             null);

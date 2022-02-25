@@ -1,16 +1,15 @@
 ﻿#nullable enable
 
+using Raven.Abstractions;
+using Snittlistan.Web.Areas.V2.Domain;
+using Snittlistan.Web.Areas.V2.ViewModels;
+using Snittlistan.Web.Controllers;
+using Snittlistan.Web.Helpers;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Globalization;
 using System.Web;
 using System.Web.Mvc;
-using Snittlistan.Web.Areas.V2.Domain;
-using Snittlistan.Web.Helpers;
-using Raven.Abstractions;
-using Snittlistan.Web.Areas.V2.ViewModels;
-using Snittlistan.Web.Controllers;
-using Snittlistan.Web.Infrastructure.Database;
 
 namespace Snittlistan.Web.Areas.V2.Controllers;
 
@@ -94,7 +93,7 @@ public class ActivityEditController : AbstractController
         return DateTime.ParseExact(date, DateTimeFormat, CultureInfo.InvariantCulture);
     }
 
-    public async Task<ActionResult> Delete(string id)
+    public ActionResult Delete(string id)
     {
         Activity activity = CompositionRoot.DocumentSession.Load<Activity>(id);
         if (activity == null)
@@ -103,15 +102,14 @@ public class ActivityEditController : AbstractController
         }
 
         Player player = CompositionRoot.DocumentSession.Load<Player>(activity.AuthorId);
-        Tenant tenant = await CompositionRoot.GetCurrentTenant();
         return View(new ActivityViewModel(
             activity.Id!,
             activity.Title,
             activity.Date,
             activity.Message,
             player?.Name ?? string.Empty,
-            tenant.AppleTouchIcon,
-            tenant.TeamFullName));
+            CompositionRoot.CurrentTenant.AppleTouchIcon,
+            CompositionRoot.CurrentTenant.TeamFullName));
     }
 
     [HttpPost]

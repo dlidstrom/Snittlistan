@@ -16,6 +16,7 @@ public record CompositionRoot(
     IEventStoreSession EventStoreSession,
     Databases Databases,
     EventStore EventStore,
+    Tenant CurrentTenant,
     IEmailService EmailService,
     IBitsClient BitsClient)
 {
@@ -34,30 +35,11 @@ public record CompositionRoot(
         }
     }
 
-    public async Task<Tenant> GetCurrentTenant()
-    {
-        string hostname = CurrentHttpContext.Instance().Request.ServerVariables["SERVER_NAME"];
-        Tenant? loadedTenant = Databases.Snittlistan.Tenants.Local.SingleOrDefault(x => x.Hostname == hostname);
-        if (loadedTenant != null)
-        {
-            return loadedTenant;
-        }
-
-        Tenant? tenant = await Databases.Snittlistan.Tenants.SingleOrDefaultAsync(x => x.Hostname == hostname);
-        if (tenant == null)
-        {
-            throw new Exception($"No tenant found for hostname '{hostname}'");
-        }
-
-        return tenant;
-    }
-
     public async Task<TenantFeatures?> GetFeatures()
     {
-        Tenant tenant = await GetCurrentTenant();
         KeyValueProperty? settingsProperty =
             await Databases.Snittlistan.KeyValueProperties.SingleOrDefaultAsync(
-                x => x.Key == TenantFeatures.Key && x.TenantId == tenant.TenantId);
+                x => x.Key == TenantFeatures.Key && x.TenantId == CurrentTenant.TenantId);
         return settingsProperty?.Value as TenantFeatures;
     }
 }
