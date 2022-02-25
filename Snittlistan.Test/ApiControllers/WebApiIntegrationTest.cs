@@ -46,6 +46,9 @@ public abstract class WebApiIntegrationTest
         CurrentTenant = new("TEST", "favicon", "touchicon", "touchiconsize", "title", 51538, "Hofvet");
         _ = Container
             .AddFacility<LoggingFacility>(x => x.LogUsing<TestLoggerFactory>())
+            .Register(Component.For<Tenant>().Instance(CurrentTenant))
+            .Register(Component.For<IMsmqTransaction>().Instance(Mock.Of<IMsmqTransaction>()))
+            .Register(Component.For<IEmailService>().Instance(Mock.Of<IEmailService>()))
             .Install(
                 new ControllerInstaller(),
                 new ApiControllerInstaller(),
@@ -57,8 +60,6 @@ public abstract class WebApiIntegrationTest
                 new DatabaseContextInstaller(() => Databases, LifestyleType.Scoped),
                 EventStoreInstaller.FromAssembly(new[] { CurrentTenant }, typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),
                 new EventStoreSessionInstaller(LifestyleType.Scoped));
-        _ = Container.Register(Component.For<IMsmqTransaction>().Instance(Mock.Of<IMsmqTransaction>()));
-        _ = Container.Register(Component.For<IEmailService>().Instance(Mock.Of<IEmailService>()));
         HttpRequestBase requestMock =
             Mock.Of<HttpRequestBase>(x => x.ServerVariables == new NameValueCollection() { { "SERVER_NAME", "TEST" } });
         HttpContextBase httpContextMock =
