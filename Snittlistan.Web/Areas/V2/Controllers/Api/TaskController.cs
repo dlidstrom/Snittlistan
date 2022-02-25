@@ -109,9 +109,8 @@ public class TaskController : AbstractApiController
         Type handlerType = typeof(ITaskHandler<>).MakeGenericType(taskObject.GetType());
 
         MethodInfo handleMethod = handlerType.GetMethod(nameof(ITaskHandler<TaskBase>.Handle));
-        Tenant tenant = await CompositionRoot.GetCurrentTenant();
         TaskPublisher taskPublisher = new(
-            tenant,
+            CompositionRoot.CurrentTenant,
             CompositionRoot.Databases,
             correlationId,
             causationId);
@@ -119,7 +118,7 @@ public class TaskController : AbstractApiController
             typeof(HandlerContext<>).MakeGenericType(taskObject.GetType()),
             CompositionRoot,
             taskObject,
-            tenant,
+            CompositionRoot.CurrentTenant,
             correlationId,
             causationId);
         handlerContext.PublishMessage = (task, publishDate) =>
