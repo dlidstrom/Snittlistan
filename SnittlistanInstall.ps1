@@ -83,6 +83,14 @@ $dbName = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
     [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
         (ConvertTo-SecureString (Get-Content ..\db-name.txt))))
 
+if (-not (Test-Path ..\db-name2.txt)) {
+    Read-Host -AsSecureString "Enter Second Database name" | ConvertFrom-SecureString | Out-File ..\db-name2.txt
+}
+
+$dbName2 = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
+    [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
+        (ConvertTo-SecureString (Get-Content ..\db-name2.txt))))
+
 if (-not (Test-Path ..\db-username.txt)) {
     Read-Host -AsSecureString "Enter Database username" | ConvertFrom-SecureString | Out-File ..\db-username.txt
 }
@@ -105,6 +113,7 @@ $settings = @{
     EMAIL_PASSWORD = $emailPassword
     DB_HOST = $dbHost
     DB_NAME = $dbName
+    DB_NAME2 = $dbName2
     DB_USERNAME = $dbUsername
     DB_PASSWORD = $dbPassword
 }

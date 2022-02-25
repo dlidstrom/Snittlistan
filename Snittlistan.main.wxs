@@ -51,6 +51,10 @@
       Installed OR DB_NAME
     </Condition>
 
+    <Condition Message="DB_NAME2 variable must be set in the command line">
+      Installed OR DB_NAME2
+    </Condition>
+
     <Condition Message="DB_USERNAME variable must be set in the command line">
       Installed OR DB_USERNAME
     </Condition>
@@ -154,6 +158,11 @@
                             File="[SnittlistanWebDir]Web.config"
                             ElementPath="/configuration/connectionStrings/add[\[]@name='SnittlistanContext'[\]]/@connectionString"
                             Value="Server=[DB_HOST];Database=[DB_NAME];Username=[DB_USERNAME];Password=[DB_PASSWORD]" />
+              <util:XmlFile Id="ConnectionString2"
+                            Action="setValue"
+                            File="[SnittlistanWebDir]Web.config"
+                            ElementPath="/configuration/connectionStrings/add[\[]@name='BitsContext'[\]]/@connectionString"
+                            Value="Server=[DB_HOST];Database=[DB_NAME2];Username=[DB_USERNAME];Password=[DB_PASSWORD]" />
             </Component>
             <Component Id="elitmarke_ifyllbar1_pdf" Guid="*" Win64="yes">
               <File KeyPath="yes" Source="elitmarke-ifyllbar1.pdf" />
