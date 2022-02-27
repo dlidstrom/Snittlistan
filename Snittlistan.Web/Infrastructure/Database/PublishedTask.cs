@@ -10,6 +10,8 @@ public class PublishedTask : HasVersion
 {
     private PublishedTask(
         TaskBase task,
+        string businessKeyJson,
+        int taskType,
         int tenantId,
         Guid correlationId,
         Guid? causationId,
@@ -17,7 +19,8 @@ public class PublishedTask : HasVersion
         string createdBy)
     {
         Task = task;
-        BusinessKey = task.BusinessKey;
+        BusinessKeyColumn = businessKeyJson;
+        TaskType = taskType;
         TenantId = tenantId;
         CorrelationId = correlationId;
         CausationId = causationId;
@@ -32,6 +35,8 @@ public class PublishedTask : HasVersion
 
     public static PublishedTask CreateImmediate(
         TaskBase task,
+        string businessKeyJson,
+        int taskType,
         int tenantId,
         Guid correlationId,
         Guid? causationId,
@@ -39,6 +44,8 @@ public class PublishedTask : HasVersion
     {
         return new(
             task,
+            businessKeyJson,
+            taskType,
             tenantId,
             correlationId,
             causationId,
@@ -48,6 +55,8 @@ public class PublishedTask : HasVersion
 
     public static PublishedTask CreateDelayed(
         TaskBase task,
+        string businessKeyJson,
+        int taskType,
         int tenantId,
         Guid correlationId,
         Guid? causationId,
@@ -56,6 +65,8 @@ public class PublishedTask : HasVersion
     {
         return new(
             task,
+            businessKeyJson,
+            taskType,
             tenantId,
             correlationId,
             causationId,
@@ -76,11 +87,7 @@ public class PublishedTask : HasVersion
     public Guid MessageId { get; private set; }
 
     [NotMapped]
-    public BusinessKey BusinessKey
-    {
-        get => BusinessKeyColumn.FromJson<BusinessKey>();
-        private set => BusinessKeyColumn = value.ToJson();
-    }
+    public BusinessKey BusinessKey => BusinessKeyColumn.FromJson<BusinessKey>();
 
     [NotMapped]
     public TaskBase Task
@@ -94,6 +101,8 @@ public class PublishedTask : HasVersion
 
     [Column("data")]
     public string DataColumn { get; private set; } = null!;
+
+    public int TaskType { get; private set; }
 
     /// <summary>
     /// When to publish (if delayed, otherwise use DateTime.Now)

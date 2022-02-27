@@ -188,7 +188,7 @@ public class MatchResult_MatchCommentary : WebApiIntegrationTest
                 Guid.NewGuid(),
                 Guid.NewGuid())
             {
-                PublishMessage = (t, d) => { }
+                PublishMessage = (t, d) => Task.CompletedTask
             };
             await handler.Handle(context);
         });

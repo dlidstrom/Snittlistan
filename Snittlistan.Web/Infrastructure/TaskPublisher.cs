@@ -29,20 +29,40 @@ public class TaskPublisher
         this.causationId = causationId;
     }
 
-    public void PublishTask(TaskBase task, string createdBy)
+    public async Task PublishTask(TaskBase task, string createdBy)
     {
-        PublishedTask publishedTask = databases.Snittlistan.PublishedTasks.Add(
-            PublishedTask.CreateImmediate(
-                task,
-                currentTenant.TenantId,
-                correlationId,
-                causationId,
-                createdBy));
+        string businessKeyJson = task.BusinessKey.ToJson();
+        int taskType = Enumerable.Aggregate(
+            businessKeyJson,
+            (ushort)5381, (l, r) => (ushort)((33 * l) ^ r));
+        IQueryable<PublishedTask> query =
+            from publishedTask in databases.Snittlistan.PublishedTasks
+            where publishedTask.HandledDate == null
+                && publishedTask.TaskType == taskType
+            select publishedTask;
+        PublishedTask? newOrExistingTask = await query.SingleOrDefaultAsync();
+        if (newOrExistingTask is null)
+        {
+            newOrExistingTask = databases.Snittlistan.PublishedTasks.Add(
+                PublishedTask.CreateImmediate(
+                    task,
+                    businessKeyJson,
+                    taskType,
+                    currentTenant.TenantId,
+                    correlationId,
+                    causationId,
+                    createdBy));
+        }
+        else
+        {
+            Logger.Info("task exists, do not publish: {@task}", task);
+            return;
+        }
 
         try
         {
             HostingEnvironment.QueueBackgroundWorkItem(ct =>
-                PublishMessage(currentTenant, publishedTask.MessageId, ct));
+                PublishMessage(currentTenant, newOrExistingTask.MessageId, ct));
         }
         catch (Exception ex)
         {
@@ -51,7 +71,7 @@ public class TaskPublisher
                 "QueueBackgroundWorkItem failed, using fallback (publish immediately)");
             try
             {
-                DoPublishMessage(currentTenant, publishedTask);
+                DoPublishMessage(currentTenant, newOrExistingTask);
             }
             catch (Exception ex2)
             {
@@ -107,16 +127,35 @@ public class TaskPublisher
         }
     }
 
-    public void PublishDelayedTask(TaskBase task, DateTime publishDate, string createdBy)
+    public async Task PublishDelayedTask(TaskBase task, DateTime publishDate, string createdBy)
     {
-        PublishedTask publishedTask = databases.Snittlistan.PublishedTasks.Add(
-            PublishedTask.CreateDelayed(
-                task,
-                currentTenant.TenantId,
-                correlationId,
-                causationId,
-                publishDate,
-                createdBy));
-        Logger.Info("added delayed task: {@publishedTask}", publishedTask);
+        string businessKeyJson = task.BusinessKey.ToJson();
+        int taskType = Enumerable.Aggregate(
+            businessKeyJson,
+            (ushort)5381, (l, r) => (ushort)((33 * l) ^ r));
+        IQueryable<PublishedTask> query =
+            from publishedTask in databases.Snittlistan.PublishedTasks
+            where publishedTask.HandledDate == null
+                && publishedTask.TaskType == taskType
+            select publishedTask;
+        PublishedTask? newOrExistingTask = await query.SingleOrDefaultAsync();
+        if (newOrExistingTask is null)
+        {
+            PublishedTask publishedTask = databases.Snittlistan.PublishedTasks.Add(
+                PublishedTask.CreateDelayed(
+                    task,
+                    businessKeyJson,
+                    taskType,
+                    currentTenant.TenantId,
+                    correlationId,
+                    causationId,
+                    publishDate,
+                    createdBy));
+            Logger.Info("added delayed task: {@publishedTask}", publishedTask);
+        }
+        else
+        {
+            Logger.Info("task exists, do not publish: {@task}", task);
+        }
     }
 }

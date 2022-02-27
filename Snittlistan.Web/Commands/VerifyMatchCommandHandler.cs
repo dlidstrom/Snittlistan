@@ -48,8 +48,8 @@ public class VerifyMatchCommandHandler : CommandHandler<VerifyMatchCommandHandle
                 MatchResult4? matchResult = CompositionRoot.EventStoreSession.Load<MatchResult4>(roster.MatchResultId);
                 Parse4Result? parseResult = parser.Parse4(bitsMatchResult, websiteConfig.ClubId);
                 update.Players = parseResult!.GetPlayerIds();
-                bool isVerified = matchResult!.Update(
-                    t => context.PublishMessage(t),
+                bool isVerified = await matchResult!.Update(
+                    async t => await context.PublishMessage(t),
                     roster,
                     parseResult.TeamScore,
                     parseResult.OpponentScore,
@@ -69,8 +69,8 @@ public class VerifyMatchCommandHandler : CommandHandler<VerifyMatchCommandHandle
                     .ToArray()
                     .ToDictionary(x => x.PlayerId);
                 MatchSerie[] matchSeries = parseResult.CreateMatchSeries();
-                bool isVerified = matchResult!.Update(
-                    t => context.PublishMessage(t),
+                bool isVerified = await matchResult!.Update(
+                    async t => await context.PublishMessage(t),
                     roster,
                     parseResult.TeamScore,
                     parseResult.OpponentScore,

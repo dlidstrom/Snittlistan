@@ -7,7 +7,7 @@ namespace Snittlistan.Web.Commands;
 
 public class SendEmailTaskCommandHandler : CommandHandler<SendEmailTaskCommandHandler.Command>
 {
-    public override Task Handle(HandlerContext<Command> context)
+    public override async Task Handle(HandlerContext<Command> context)
     {
         SendEmailTask task = SendEmailTask.Create(
             context.Payload.Recipient,
@@ -15,8 +15,7 @@ public class SendEmailTaskCommandHandler : CommandHandler<SendEmailTaskCommandHa
             context.Payload.Subject,
             context.Payload.Content,
             context.Payload.RatePerSeconds);
-        context.PublishMessage(task);
-        return Task.CompletedTask;
+        await context.PublishMessage(task);
     }
 
     public record Command(

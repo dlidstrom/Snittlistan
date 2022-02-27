@@ -10,7 +10,7 @@ namespace Snittlistan.Web.Commands;
 
 public class RegisterMatchCommandHandler : CommandHandler<RegisterMatchCommandHandler.Command>
 {
-    public override Task Handle(HandlerContext<Command> context)
+    public override async Task Handle(HandlerContext<Command> context)
     {
         Roster roster = CompositionRoot.DocumentSession.Load<Roster>(context.Payload.RosterId);
         MatchResult matchResult = new(
@@ -27,15 +27,13 @@ public class RegisterMatchCommandHandler : CommandHandler<RegisterMatchCommandHa
                 .Where(x => x.Season == roster.Season)
                 .ToArray()
                 .ToDictionary(x => x.PlayerId);
-        matchResult.RegisterSeries(
-            task => context.PublishMessage(task),
+        await matchResult.RegisterSeries(
+            async task => await context.PublishMessage(task),
             matchSeries,
             context.Payload.Result.OpponentSeries,
             players,
             resultsForPlayer);
         CompositionRoot.EventStoreSession.Store(matchResult);
-
-        return Task.CompletedTask;
     }
 
     public record Command(

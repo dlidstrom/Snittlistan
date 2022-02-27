@@ -113,7 +113,7 @@ public class AdminTasksController : AdminController
 
     [HttpPost]
     [ActionName("ActivateUser")]
-    public ActionResult ActivateUserConfirmed(string id, bool? invite)
+    public async Task<ActionResult> ActivateUserConfirmed(string id, bool? invite)
     {
         User user = CompositionRoot.DocumentSession.Load<User>(id);
         if (user == null)
@@ -131,8 +131,8 @@ public class AdminTasksController : AdminController
             {
                 Debug.Assert(Request.Url != null, "Request.Url != null");
                 TaskPublisher taskPublisher = GetTaskPublisher();
-                user.ActivateWithEmail(
-                    t => taskPublisher.PublishTask(t, User.Identity.Name),
+                await user.ActivateWithEmail(
+                    async t => await taskPublisher.PublishTask(t, User.Identity.Name),
                     Url,
                     Request.Url!.Scheme);
             }

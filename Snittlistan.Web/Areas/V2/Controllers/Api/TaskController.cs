@@ -121,15 +121,15 @@ public class TaskController : AbstractApiController
             CompositionRoot.CurrentTenant,
             correlationId,
             causationId);
-        handlerContext.PublishMessage = (task, publishDate) =>
+        handlerContext.PublishMessage = async (task, publishDate) =>
         {
             if (publishDate != null)
             {
-                taskPublisher.PublishDelayedTask(task, publishDate.Value, "system");
+                await taskPublisher.PublishDelayedTask(task, publishDate.Value, "system");
             }
             else
             {
-                taskPublisher.PublishTask(task, "system");
+                await taskPublisher.PublishTask(task, "system");
             }
         };
 
