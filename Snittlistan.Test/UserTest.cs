@@ -16,11 +16,15 @@ public class UserTest
     }
 
     [Test]
-    public void ShouldRaiseEventWhenCreated()
+    public async Task ShouldRaiseEventWhenCreated()
     {
         NewUserCreatedTask? createdEvent = null;
         User user = new("first name", "last name", "email", "password") { Id = "users-2" };
-        user.Initialize(e => createdEvent = (NewUserCreatedTask)e);
+        await user.Initialize(e =>
+        {
+            createdEvent = (NewUserCreatedTask)e;
+            return Task.CompletedTask;
+        });
 
         Assert.NotNull(createdEvent);
         Assert.That(createdEvent!.Email, Is.EqualTo("email"));

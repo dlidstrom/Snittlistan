@@ -17,7 +17,7 @@ public class MatchResult_RegisterSeries
     private MatchRegisteredTask? ev;
 
     [SetUp]
-    public Task SetUp()
+    public async Task SetUp()
     {
         // Arrange
         Player[] players = new[]
@@ -140,14 +140,16 @@ public class MatchResult_RegisterSeries
                 }
             };
 
-        matchResult.RegisterSeries(
-            e => ev = (MatchRegisteredTask)e,
+        await matchResult.RegisterSeries(
+            e =>
+            {
+                ev = (MatchRegisteredTask)e;
+                return Task.CompletedTask;
+            },
             series,
             opponentSeries,
             players,
             new Dictionary<string, ResultForPlayerIndex.Result>());
-
-        return Task.CompletedTask;
     }
 
     [Test]

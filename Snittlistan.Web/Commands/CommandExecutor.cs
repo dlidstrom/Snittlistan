@@ -42,15 +42,15 @@ public class CommandExecutor
             compositionRoot.CurrentTenant,
             correlationId,
             causationId);
-        handlerContext.PublishMessage = (task, publishDate) =>
+        handlerContext.PublishMessage = async (task, publishDate) =>
         {
             if (publishDate != null)
             {
-                taskPublisher.PublishDelayedTask(task, publishDate.Value, createdBy);
+                await taskPublisher.PublishDelayedTask(task, publishDate.Value, createdBy);
             }
             else
             {
-                taskPublisher.PublishTask(task, createdBy);
+                await taskPublisher.PublishTask(task, createdBy);
             }
         };
         Task task = (Task)handleMethod.Invoke(handler, new[] { handlerContext });

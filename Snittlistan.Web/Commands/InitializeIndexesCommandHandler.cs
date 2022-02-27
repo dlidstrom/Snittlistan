@@ -8,7 +8,7 @@ namespace Snittlistan.Web.Commands;
 
 public class InitializeIndexesCommandHandler : CommandHandler<InitializeIndexesCommandHandler.Command>
 {
-    public override Task Handle(HandlerContext<Command> context)
+    public override async Task Handle(HandlerContext<Command> context)
     {
         IndexCreator.CreateIndexes(CompositionRoot.DocumentStore);
         User admin = CompositionRoot.DocumentSession.Load<User>(User.AdminId);
@@ -18,7 +18,7 @@ public class InitializeIndexesCommandHandler : CommandHandler<InitializeIndexesC
             {
                 Id = User.AdminId
             };
-            admin.Initialize(t => context.PublishMessage(t));
+            await admin.Initialize(async t => await context.PublishMessage(t));
             admin.Activate();
             CompositionRoot.DocumentSession.Store(admin);
         }
@@ -28,8 +28,6 @@ public class InitializeIndexesCommandHandler : CommandHandler<InitializeIndexesC
             admin.SetPassword(context.Payload.Password);
             admin.Activate();
         }
-
-        return Task.CompletedTask;
     }
 
     public record Command(string Email, string Password);

@@ -52,8 +52,8 @@ public class MatchResult : AggregateRoot
 
     private int TeamScore { get; set; }
 
-    public bool Update(
-        Action<TaskBase> publish,
+    public async Task<bool> Update(
+        Func<TaskBase, Task> publish,
         Roster roster,
         int teamScore,
         int opponentScore,
@@ -109,14 +109,14 @@ public class MatchResult : AggregateRoot
                 roster.BitsMatchId,
                 playerPins.Keys.AsEnumerable().ToArray());
             ApplyChange(@event);
-            RegisterSeries(publish, matchSeries, opponentSeries, players, resultsForPlayer);
+            await RegisterSeries(publish, matchSeries, opponentSeries, players, resultsForPlayer);
         }
 
         return roster.Date.AddDays(5) < SystemTime.UtcNow;
     }
 
-    public void RegisterSeries(
-        Action<TaskBase> publish,
+    public async Task RegisterSeries(
+        Func<TaskBase, Task> publish,
         MatchSerie[] matchSeries,
         ResultSeriesReadModel.Serie[] opponentSeries,
         Player[] players,
@@ -164,7 +164,8 @@ public class MatchResult : AggregateRoot
             players.ToDictionary(x => x.Id),
             resultsForPlayer);
         ApplyChange(matchCommentaryEvent);
-        publish.Invoke(new MatchRegisteredTask(RosterId!, BitsMatchId, TeamScore, OpponentScore));
+        await publish.Invoke(
+            new MatchRegisteredTask(RosterId!, BitsMatchId, TeamScore, OpponentScore));
     }
 
     public void RegisterSerie(MatchTable[] matchTables)

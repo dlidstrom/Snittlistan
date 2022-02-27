@@ -49,8 +49,8 @@ public class MatchResult4 : AggregateRoot
 
     private int TeamScore { get; set; }
 
-    public bool Update(
-        Action<TaskBase> publish,
+    public async Task<bool> Update(
+        Func<TaskBase, Task> publish,
         Roster roster,
         int teamScore,
         int opponentScore,
@@ -92,7 +92,7 @@ public class MatchResult4 : AggregateRoot
                 bitsMatchId,
                 playerPins.Keys.AsEnumerable().ToArray());
             ApplyChange(@event);
-            RegisterSeries(publish, matchSeries, players, null, null);
+            await RegisterSeries(publish, matchSeries, players, null, null);
         }
 
         return roster.Date.AddDays(5) < SystemTime.UtcNow;
@@ -116,8 +116,8 @@ public class MatchResult4 : AggregateRoot
         DoAwardMedals(registeredSeries);
     }
 
-    public void RegisterSeries(
-        Action<TaskBase> publish,
+    public async Task RegisterSeries(
+        Func<TaskBase, Task> publish,
         MatchSerie4[] matchSeries,
         Player[] players,
         string? summaryText,
@@ -159,7 +159,8 @@ public class MatchResult4 : AggregateRoot
                     new[] { bodyText }));
         }
 
-        publish.Invoke(new MatchRegisteredTask(RosterId!, BitsMatchId, TeamScore, OpponentScore));
+        await publish.Invoke(
+            new MatchRegisteredTask(RosterId!, BitsMatchId, TeamScore, OpponentScore));
     }
 
     public void AwardMedals()

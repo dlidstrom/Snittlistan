@@ -6,6 +6,7 @@ using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using Moq;
 using NUnit.Framework;
+using Snittlistan.Queue;
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.ReadModels;
@@ -115,6 +116,8 @@ public class Task_Post_RegisterMatch : WebApiIntegrationTest
         PublishedTask publishedTask = Databases.Snittlistan.PublishedTasks.Add(
             PublishedTask.CreateImmediate(
                 task,
+                task.BusinessKey.ToJson(),
+                0,
                 1,
                 Guid.NewGuid(),
                 null,

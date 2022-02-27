@@ -8,7 +8,7 @@ namespace Snittlistan.Web.Commands;
 
 public class RegisterMatch4CommandHandler : CommandHandler<RegisterMatch4CommandHandler.Command>
 {
-    public override Task Handle(HandlerContext<Command> context)
+    public override async Task Handle(HandlerContext<Command> context)
     {
         Roster roster = CompositionRoot.DocumentSession.Load<Roster>(context.Payload.RosterId);
         MatchResult4 matchResult = new(
@@ -19,15 +19,13 @@ public class RegisterMatch4CommandHandler : CommandHandler<RegisterMatch4Command
         Player[] players = CompositionRoot.DocumentSession.Load<Player>(roster.Players);
 
         MatchSerie4[] matchSeries = context.Payload.Result.CreateMatchSeries();
-        matchResult.RegisterSeries(
-            task => context.PublishMessage(task),
+        await matchResult.RegisterSeries(
+            async task => await context.PublishMessage(task),
             matchSeries,
             players,
             context.Payload.SummaryText ?? string.Empty,
             context.Payload.SummaryHtml ?? string.Empty);
         CompositionRoot.EventStoreSession.Store(matchResult);
-
-        return Task.CompletedTask;
     }
 
     public record Command(

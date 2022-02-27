@@ -11,7 +11,7 @@ namespace Snittlistan.Web.Commands;
 
 public class VerifyMatchesCommandHandler : CommandHandler<VerifyMatchesCommandHandler.Command>
 {
-    public override Task Handle(HandlerContext<Command> context)
+    public override async Task Handle(HandlerContext<Command> context)
     {
         int season = CompositionRoot.DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
         Roster[] rosters = CompositionRoot.DocumentSession.Query<Roster, RosterSearchTerms>()
@@ -54,10 +54,8 @@ public class VerifyMatchesCommandHandler : CommandHandler<VerifyMatchesCommandHa
             Logger.InfoFormat(
                 "Scheduling verification of {bitsMatchId}",
                 verifyMatchMessage.BitsMatchId);
-            context.PublishMessage(verifyMatchMessage);
+            await context.PublishMessage(verifyMatchMessage);
         }
-
-        return Task.CompletedTask;
     }
 
     public record Command(bool Force);

@@ -129,10 +129,10 @@ public class User
     /// <summary>
     /// Initializes a new user. Must be done for new users.
     /// </summary>
-    public void Initialize(Action<TaskBase> publish)
+    public async Task Initialize(Func<TaskBase, Task> publish)
     {
         ActivationKey = Guid.NewGuid().ToString();
-        publish.Invoke(new NewUserCreatedTask(Email, ActivationKey, Id!));
+        await publish.Invoke(new NewUserCreatedTask(Email, ActivationKey, Id!));
     }
 
     /// <summary>
@@ -146,7 +146,10 @@ public class User
     /// <summary>
     /// Activates a user and sends an invite email. This allows them to log on.
     /// </summary>
-    public void ActivateWithEmail(Action<TaskBase> publish, UrlHelper urlHelper, string urlScheme)
+    public async Task ActivateWithEmail(
+        Func<TaskBase, Task> publish,
+        UrlHelper urlHelper,
+        string urlScheme)
     {
         IsActive = true;
         ActivationKey = Guid.NewGuid().ToString();
@@ -158,7 +161,7 @@ public class User
         },
         urlScheme);
         Debug.Assert(activationUri != null, "activationUri != null");
-        publish.Invoke(new UserInvitedTask(activationUri!, Email));
+        await publish.Invoke(new UserInvitedTask(activationUri!, Email));
     }
 
     /// <summary>

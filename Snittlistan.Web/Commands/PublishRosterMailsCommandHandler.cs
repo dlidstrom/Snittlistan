@@ -55,7 +55,7 @@ public class PublishRosterMailsCommandHandler : CommandHandler<PublishRosterMail
                     player.Nickname ?? player.Name,
                     replyToEmail,
                     context.Payload.RosterLink);
-                context.PublishMessage(message);
+                await context.PublishMessage(message);
             }
         }
 

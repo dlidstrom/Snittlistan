@@ -28,7 +28,7 @@ public abstract class CommandHandler<TCommand, TMessage> : ICommandHandler<TComm
                 Databases,
                 command.CorrelationId,
                 null);
-            taskPublisher.PublishTask(task, "system");
+            await taskPublisher.PublishTask(task, "system");
         }
     }
 

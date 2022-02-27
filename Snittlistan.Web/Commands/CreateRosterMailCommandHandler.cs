@@ -22,7 +22,7 @@ public class CreateRosterMailCommandHandler : CommandHandler<CreateRosterMailCom
             PublishRosterMailsTask task = new(
                 context.Payload.RosterKey,
                 context.Payload.RosterLink);
-            context.PublishMessage(task, DateTime.Now.AddMinutes(10));
+            await context.PublishMessage(task, DateTime.Now.AddMinutes(10));
         }
     }
 
