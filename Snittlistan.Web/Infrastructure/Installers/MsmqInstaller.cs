@@ -1,12 +1,11 @@
-﻿
+﻿#nullable enable
+
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using Snittlistan.Queue;
-
-#nullable enable
 
 namespace Snittlistan.Web.Infrastructure.Installers;
+
 public class MsmqInstaller : IWindsorInstaller
 {
     private readonly string path;
@@ -19,8 +18,6 @@ public class MsmqInstaller : IWindsorInstaller
     public void Install(IWindsorContainer container, IConfigurationStore store)
     {
         _ = container.Register(
-            Component.For<IMsmqTransaction>()
-                     .UsingFactoryMethod(k => MsmqGateway.Create())
-                     .LifestylePerWebRequest());
+            Component.For<MsmqFactory>().Instance(new MsmqFactory(path)));
     }
 }

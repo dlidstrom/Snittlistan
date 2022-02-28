@@ -12,12 +12,15 @@ public class SendDelayedMailCommandHandler : ICommandHandler<SendDelayedMailComm
 {
     public Databases Databases { get; set; } = null!;
 
+    public MsmqFactory MsmqFactory { get; set; } = null!;
+
     public async Task Handle(SendDelayedMailCommand command)
     {
         Tenant tenant = await Databases.Snittlistan.Tenants.SingleAsync(x => x.Hostname == command.Hostname);
         TaskPublisher taskPublisher = new(
             tenant,
             Databases,
+            MsmqFactory,
             command.CorrelationId,
             null);
         SendEmailTask emailTask = SendEmailTask.Create(

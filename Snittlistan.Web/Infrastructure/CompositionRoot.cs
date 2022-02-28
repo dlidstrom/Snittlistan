@@ -15,6 +15,7 @@ public record CompositionRoot(
     Raven.Client.IDocumentSession DocumentSession,
     IEventStoreSession EventStoreSession,
     Databases Databases,
+    MsmqFactory MsmqFactory,
     EventStore EventStore,
     Tenant CurrentTenant,
     IEmailService EmailService,

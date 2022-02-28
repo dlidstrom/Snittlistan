@@ -6,7 +6,7 @@ using Snittlistan.Queue.Messages;
 
 namespace Snittlistan.Queue;
 
-public class MsmqGateway
+public class MsmqGateway : IDisposable
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private readonly MessageQueue messageQueue;
@@ -24,7 +24,12 @@ public class MsmqGateway
         return new MsmqTransactionScope(messageQueue);
     }
 
-    public class MsmqTransactionScope : IMsmqTransaction, IDisposable
+    public void Dispose()
+    {
+        messageQueue.Dispose();
+    }
+
+    public class MsmqTransactionScope : IDisposable
     {
         private readonly MessageQueueTransaction transaction = new();
         private readonly MessageQueue messageQueue;

@@ -33,6 +33,7 @@ public class CommandExecutor
         TaskPublisher taskPublisher = new(
             compositionRoot.CurrentTenant,
             compositionRoot.Databases,
+            compositionRoot.MsmqFactory,
             correlationId,
             causationId);
         IHandlerContext handlerContext = (IHandlerContext)Activator.CreateInstance(
