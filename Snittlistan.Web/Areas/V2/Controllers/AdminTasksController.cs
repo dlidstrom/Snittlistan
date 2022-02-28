@@ -233,7 +233,8 @@ public class AdminTasksController : AdminController
                 vm.ReplyTo,
                 vm.Subject,
                 vm.Content,
-                ratePerSeconds));
+                ratePerSeconds,
+                $"{vm.Recipient}/{vm.MailCount}/{vm.RateSetting}/{i}"));
         }
 
         return RedirectToAction("Index");

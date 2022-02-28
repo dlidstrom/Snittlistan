@@ -31,7 +31,7 @@ public abstract class MessageQueueListenerBase : IDisposable
         numberOfThreads = Math.Min(numberOfThreads, maxThreads);
 
         Logger.Info(
-            "Using {numberOfThreads} worker threads for {readQueue}",
+            "using {numberOfThreads} worker threads for {readQueue}",
             numberOfThreads,
             settings.ReadQueue);
         importMessageQueues = Enumerable.Range(0, numberOfThreads).Select(
@@ -54,7 +54,7 @@ public abstract class MessageQueueListenerBase : IDisposable
 
     public void Start()
     {
-        Logger.Info("Starting msmq listener");
+        Logger.Info("starting msmq listener");
         foreach (MessageQueue importMessageQueue in importMessageQueues)
         {
             importMessageQueue.PeekCompleted += Queue_PeekCompleted;
@@ -65,7 +65,7 @@ public abstract class MessageQueueListenerBase : IDisposable
     public void Stop()
     {
         isClosing = true;
-        Logger.Info("Stopping msmq listener");
+        Logger.Info("stopping msmq listener");
         foreach (MessageQueue importMessageQueue in importMessageQueues)
         {
             importMessageQueue.PeekCompleted -= Queue_PeekCompleted;
@@ -85,7 +85,7 @@ public abstract class MessageQueueListenerBase : IDisposable
         if (value > 0)
         {
             Logger.Error(
-                "Failed to stop workers for {importQueue} ({count} remaining)",
+                "failed to stop workers for {importQueue} ({count} remaining)",
                 settings.ReadQueue,
                 value);
         }
@@ -112,7 +112,7 @@ public abstract class MessageQueueListenerBase : IDisposable
             return;
         }
 
-        Logger.Info("Creating queue {queueName}", queueName);
+        Logger.Info("creating queue {queueName}", queueName);
         MessageQueue queue = MessageQueue.Create(queueName, true);
         queue.UseJournalQueue = true;
         queue.MaximumJournalSize = 10 * 1024;
@@ -181,12 +181,12 @@ public abstract class MessageQueueListenerBase : IDisposable
             IDisposable disposable = NestedDiagnosticsLogicalContext.Push(message.Id);
             try
             {
-                Logger.Info("Start");
+                Logger.Info("start");
                 await TryProcessMessage(message, sourceQueue, messageQueueTransaction);
             }
             finally
             {
-                Logger.Info("End");
+                Logger.Info("end");
                 disposable.Dispose();
             }
         }
@@ -208,12 +208,17 @@ public abstract class MessageQueueListenerBase : IDisposable
         {
             await DoHandle(contents);
         }
+        catch (Exception ex) when (settings.DropFailedMessages)
+        {
+            Logger.Warn(ex);
+            Logger.Warn("dropping message {id}", message.Id);
+        }
         catch (Exception ex)
         {
             Logger.Warn(ex);
             message.AppSpecific++;
-            Logger.Warn("Message retry #{count}", message.AppSpecific);
-            if (message.AppSpecific >= MaximumTries && settings.DropFailedMessages == false)
+            Logger.Warn("message retry #{count}", message.AppSpecific);
+            if (message.AppSpecific >= MaximumTries)
             {
                 MoveToErrorQueue(message, ex, messageQueueTransaction, MaximumTries);
             }
@@ -228,7 +233,7 @@ public abstract class MessageQueueListenerBase : IDisposable
     private void MoveToErrorQueue(Message message, Exception ex, MessageQueueTransaction messageQueueTransaction, int errorCount)
     {
         Logger.Error(
-            "Message {id} reached error count {count}, moving to error queue.",
+            "message {id} reached error count {count}, moving to error queue.",
             message.Id,
             errorCount);
 
