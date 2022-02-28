@@ -260,7 +260,7 @@ public class AdminTasksController : AdminController
         KeyValueProperty? settingsProperty =
             await CompositionRoot.Databases.Snittlistan.KeyValueProperties.SingleOrDefaultAsync(
                 x => x.Key == TenantFeatures.Key && x.TenantId == CompositionRoot.CurrentTenant.TenantId);
-        if (settingsProperty != null)
+        if (settingsProperty is not null)
         {
             return View(new TenantFeaturesViewModel((TenantFeatures)settingsProperty.Value));
         }

@@ -143,6 +143,12 @@
       <Link>Globals.cs</Link>
     </Compile>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="Areas\V2\Controllers\UserProfileController.cs" />
+    <Compile Include="Areas\V2\Views\UserProfile\Index.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Index.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="Infrastructure\MsmqFactory.cs" />
     <Compile Include="Views\Hacker\Index.generated.cs">
       <AutoGen>True</AutoGen>
@@ -1348,6 +1354,10 @@
     <Content Include="Content\css\checkbox.css" />
     <Content Include="Areas\V1\Views\razorgenerator.directives" />
     <Content Include="Areas\V2\Views\razorgenerator.directives" />
+    <Content Include="Areas\V2\Views\UserProfile\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </Content>
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />

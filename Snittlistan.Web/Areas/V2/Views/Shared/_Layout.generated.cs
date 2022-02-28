@@ -431,12 +431,20 @@ WriteLiteral("                                    <li class=\"nav-header\">\r\n 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                                    </li>\r\n                                    " +
-"<li>\r\n                                        <a href=\"");
+WriteLiteral(@"
+                                    </li>
+                                    <li>
+                                        <a href=""#"">
+                                            <i class=""sprite-glyphicons_023_cogwheels""></i>
+                                            Min profil
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href=""");
 
 
             
-            #line 89 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 95 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
                                             Write(Url.Action("LogOff", "Authentication"));
 
             
@@ -453,7 +461,7 @@ WriteLiteral(@""">
 
 
             
-            #line 96 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 102 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
                         }
                         else
                         {
@@ -465,7 +473,7 @@ WriteLiteral("                            <li>\r\n                              
 
 
             
-            #line 100 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 106 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
                                     Write(Url.Action("LogOn", "Authentication"));
 
             
@@ -477,7 +485,7 @@ WriteLiteral("\">\r\n                                    <i class=\"sprite-glyph
 
 
             
-            #line 105 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 111 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
                         }
 
             
@@ -488,7 +496,7 @@ WriteLiteral("                    </ul>\r\n                </div>\r\n           
 
 
             
-            #line 112 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 118 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
    Write(RenderBody());
 
             
@@ -499,7 +507,7 @@ WriteLiteral("\r\n    </div>\r\n    <script id=\"dsq-count-scr\" src=\"//snittli
 
 
             
-            #line 116 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 122 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
                       Write(Url.Action("LogJavaScriptError", "Error"));
 
             
@@ -509,7 +517,7 @@ WriteLiteral("\';\r\n    </script>\r\n");
 
 
             
-            #line 118 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 124 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
      if (HttpContext.Current.IsDebuggingEnabled)
     {
 
@@ -520,7 +528,7 @@ WriteLiteral("        <script src=\"");
 
 
             
-            #line 120 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 126 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
                 Write(Url.ContentCacheBreak("~/Content/external/jquery/jquery-3.3.1.js"));
 
             
@@ -534,7 +542,7 @@ WriteLiteral("        <script src=\"");
 
 
             
-            #line 121 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 127 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
                 Write(Url.ContentCacheBreak("~/Content/external/bootstrap/js/bootstrap.js"));
 
             
@@ -548,7 +556,7 @@ WriteLiteral("        <script src=\"");
 
 
             
-            #line 122 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 128 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
                 Write(Url.ContentCacheBreak("~/Content/external/air-datepicker/datepicker.js"));
 
             
@@ -562,7 +570,7 @@ WriteLiteral("        <script src=\"");
 
 
             
-            #line 123 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 129 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
                 Write(Url.ContentCacheBreak("~/Content/external/quill/quill.js"));
 
             
@@ -572,7 +580,7 @@ WriteLiteral("\"></script>\r\n");
 
 
             
-            #line 124 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 130 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
     }
     else
     {
@@ -584,7 +592,7 @@ WriteLiteral("        <script src=\"");
 
 
             
-            #line 127 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 133 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
                 Write(Url.ContentCacheBreak("~/Content/external/jquery/jquery-3.3.1.min.js"));
 
             
@@ -598,7 +606,7 @@ WriteLiteral("        <script src=\"");
 
 
             
-            #line 128 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 134 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
                 Write(Url.ContentCacheBreak("~/Content/external/bootstrap/js/bootstrap.min.js"));
 
             
@@ -612,7 +620,7 @@ WriteLiteral("        <script src=\"");
 
 
             
-            #line 129 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 135 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
                 Write(Url.ContentCacheBreak("~/Content/external/air-datepicker/datepicker.min.js"));
 
             
@@ -626,7 +634,7 @@ WriteLiteral("        <script src=\"");
 
 
             
-            #line 130 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 136 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
                 Write(Url.ContentCacheBreak("~/Content/external/quill/quill.min.js"));
 
             
@@ -636,7 +644,7 @@ WriteLiteral("\"></script>\r\n");
 
 
             
-            #line 131 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 137 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
     }
 
             
@@ -646,7 +654,7 @@ WriteLiteral("    <script src=\"");
 
 
             
-            #line 132 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 138 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
             Write(Url.ContentCacheBreak("~/Content/external/waypoints/waypoints-0.0.1.min.js"));
 
             
@@ -656,7 +664,7 @@ WriteLiteral("\"></script>\r\n    <script src=\"");
 
 
             
-            #line 133 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 139 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
             Write(Url.ContentCacheBreak("~/Content/js/stacktrace.js"));
 
             
@@ -666,7 +674,7 @@ WriteLiteral("\"></script>\r\n    <script src=\"");
 
 
             
-            #line 134 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 140 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
             Write(Url.ContentCacheBreak("~/Content/js/helpers/typeahead.js"));
 
             
@@ -676,7 +684,7 @@ WriteLiteral("\"></script>\r\n    <script src=\"");
 
 
             
-            #line 135 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 141 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
             Write(Url.ContentCacheBreak("~/Content/js/QuillForm.js"));
 
             
@@ -686,7 +694,7 @@ WriteLiteral("\"></script>\r\n    <script src=\"");
 
 
             
-            #line 136 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 142 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
             Write(Url.ContentCacheBreak("~/Content/js/Layout.js"));
 
             
@@ -696,7 +704,7 @@ WriteLiteral("\"></script>\r\n    ");
 
 
             
-            #line 137 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
+            #line 143 "..\..\Areas\V2\Views\Shared\_Layout.cshtml"
 Write(RenderSection("scripts", false));
 
             
