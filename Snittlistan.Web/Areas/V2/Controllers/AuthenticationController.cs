@@ -24,12 +24,17 @@ public class AuthenticationController : AbstractController
 
     public AuthenticationController(IAuthenticationService authenticationService)
     {
-        this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+        this.authenticationService = authenticationService;
     }
 
     [RestoreModelStateFromTempData]
-    public ActionResult LogOn()
+    public ActionResult LogOn(string returnUrl)
     {
+        if (Url.IsLocalUrl(returnUrl) && string.IsNullOrEmpty(returnUrl) == false)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+        }
+
         return View();
     }
 
@@ -91,7 +96,13 @@ public class AuthenticationController : AbstractController
                     NotifyEvent($"{player.Name} - Samma token", validExistingToken.ToJson().ToString());
                     return RedirectToAction(
                         "LogOnOneTimePassword",
-                        new { id = player.Id, validExistingToken.OneTimeKey, reuseToken = true });
+                        new
+                        {
+                            id = player.Id,
+                            validExistingToken.OneTimeKey,
+                            returnUrl,
+                            reuseToken = true
+                        });
                 }
 
                 // no valid token, generate new
@@ -104,21 +115,26 @@ public class AuthenticationController : AbstractController
                     oneTimeKey =>
                         taskPublisher.PublishTask(
                             new OneTimeKeyTask(player.Email, oneTimePassword),
-                            "system")
-                    ,
+                            "system"),
                     oneTimePassword);
                 NotifyEvent($"{player.Name} entered email address");
                 CompositionRoot.DocumentSession.Store(token);
                 return RedirectToAction(
                     "LogOnOneTimePassword",
-                    new { id = player.Id, token.OneTimeKey });
+                    new
+                    {
+                        player.Id,
+                        token.OneTimeKey,
+                        returnUrl
+                    });
             }
             else if (players.Length > 1)
             {
                 ViewBag.PlayerId = CompositionRoot.DocumentSession.CreatePlayerSelectList(
                     getPlayers: () => players,
                     textFormatter: p => $"{p.Name} ({p.Nickname})");
-                NotifyEvent($"{vm.Email} - Select from multiple {string.Join(", ", players.Select(x => $"{x.Name} ({x.Email})"))}");
+                NotifyEvent(
+                    $"{vm.Email} - Select from multiple {string.Join(", ", players.Select(x => $"{x.Name} ({x.Email})"))}");
                 return View();
             }
             else
@@ -138,7 +154,11 @@ public class AuthenticationController : AbstractController
     }
 
     [RestoreModelStateFromTempData]
-    public ActionResult LogOnOneTimePassword(string id, string oneTimeKey, bool? reuseToken)
+    public ActionResult LogOnOneTimePassword(
+        string id,
+        string oneTimeKey,
+        string returnUrl,
+        bool? reuseToken)
     {
         DateTimeOffset? tokenDate = null;
         if (reuseToken ?? false)
@@ -146,6 +166,11 @@ public class AuthenticationController : AbstractController
             OneTimeToken reusedToken = CompositionRoot.DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>()
                 .SingleOrDefault(x => x.OneTimeKey == oneTimeKey);
             tokenDate = reusedToken?.Timestamp;
+        }
+
+        if (Url.IsLocalUrl(returnUrl) && string.IsNullOrEmpty(returnUrl) == false)
+        {
+            ViewBag.ReturnUrl = returnUrl;
         }
 
         Player player = CompositionRoot.DocumentSession.Load<Player>(id);
@@ -162,11 +187,24 @@ public class AuthenticationController : AbstractController
 
     [HttpPost]
     [SetTempModelState]
-    public async Task<ActionResult> LogOnOneTimePassword(string id, PasswordViewModel vm)
+    public async Task<ActionResult> LogOnOneTimePassword(
+        string id,
+        string returnUrl,
+        PasswordViewModel vm)
     {
         if (Request.IsAuthenticated)
         {
-            return RedirectToAction("Index", "Roster");
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+
+            return Redirect(returnUrl);
+        }
+
+        if (Url.IsLocalUrl(returnUrl) && string.IsNullOrEmpty(returnUrl) == false)
+        {
+            ViewBag.ReturnUrl = returnUrl;
         }
 
         OneTimeToken[] activeTokens = CompositionRoot.DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>()
@@ -208,6 +246,11 @@ public class AuthenticationController : AbstractController
         catch
         {
             //
+        }
+
+        if (Url.IsLocalUrl(returnUrl))
+        {
+            return Redirect(returnUrl);
         }
 
         return RedirectToAction("Index", "Roster");

@@ -8,12 +8,13 @@
         @if (ViewBag.PlayerId != null)
         {
             @* This page is used when the email address entered in the first step is used by several players.
-               It might happen if a parent is responsible for another player (child, or other). *@
+            It might happen if a parent is responsible for another player (child, or other). *@
             using (Html.BeginForm("LogOn", "Authentication", FormMethod.Post, new
             {
                 @class = "form-horizontal"
             }))
             {
+                @Html.Hidden("ReturnUrl", (string)ViewBag.ReturnUrl)
                 @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary", new
                 {
                     message = "Det gick inte att logga in."
@@ -47,6 +48,7 @@
                 @class = "form-horizontal"
             }))
             {
+                @Html.Hidden("ReturnUrl", (string)ViewBag.ReturnUrl)
                 @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary", new
                 {
                     message = "Det gick inte att logga in."

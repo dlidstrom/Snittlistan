@@ -157,13 +157,27 @@ WriteLiteral("</a> i en ny flik och prova att logga in där.\r\n            </st
             #line hidden
             
             #line 31 "..\..\Areas\V2\Views\Authentication\LogOnOneTimePassword.cshtml"
-       Write(Html.HiddenFor(x => x.OneTimeKey));
+       Write(Html.Hidden("ReturnUrl", (string)ViewBag.ReturnUrl));
 
             
             #line default
             #line hidden
             
             #line 31 "..\..\Areas\V2\Views\Authentication\LogOnOneTimePassword.cshtml"
+                                                                
+            
+            
+            #line default
+            #line hidden
+            
+            #line 32 "..\..\Areas\V2\Views\Authentication\LogOnOneTimePassword.cshtml"
+       Write(Html.HiddenFor(x => x.OneTimeKey));
+
+            
+            #line default
+            #line hidden
+            
+            #line 32 "..\..\Areas\V2\Views\Authentication\LogOnOneTimePassword.cshtml"
                                               
             Html.RenderPartial("_PasswordEditor");
         }

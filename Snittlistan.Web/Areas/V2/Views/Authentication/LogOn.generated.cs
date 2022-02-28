@@ -77,7 +77,7 @@ WriteLiteral("</h3>\r\n");
 
             
             #line 11 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
-                                                                                                  
+                                                                                               
             using (Html.BeginForm("LogOn", "Authentication", FormMethod.Post, new
             {
                 @class = "form-horizontal"
@@ -89,6 +89,20 @@ WriteLiteral("</h3>\r\n");
             #line hidden
             
             #line 17 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
+           Write(Html.Hidden("ReturnUrl", (string)ViewBag.ReturnUrl));
+
+            
+            #line default
+            #line hidden
+            
+            #line 17 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
+                                                                    
+                
+            
+            #line default
+            #line hidden
+            
+            #line 18 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
            Write(Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary", new
                 {
                     message = "Det gick inte att logga in."
@@ -98,7 +112,7 @@ WriteLiteral("</h3>\r\n");
             #line default
             #line hidden
             
-            #line 20 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
+            #line 21 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
                   
 
             
@@ -110,7 +124,7 @@ WriteLiteral("                <div class=\"control-group\">\r\n                 
 
 
             
-            #line 24 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
+            #line 25 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
                    Write(Html.DropDownList("PlayerId", null, new
                         {
                             required = "required",
@@ -133,7 +147,7 @@ WriteLiteral("                <div class=\"control-group\">\r\n                 
 
 
             
-            #line 37 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
+            #line 38 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
                                                   Write(Url.Action("Index", "Roster"));
 
             
@@ -143,7 +157,7 @@ WriteLiteral("\">Avbryt</a>\r\n                    </div>\r\n                </d
 
 
             
-            #line 40 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
+            #line 41 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
             }
         }
         else
@@ -156,7 +170,7 @@ WriteLiteral("            <p>Ange först din e-postadress.</p>\r\n");
 
 
             
-            #line 45 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
+            #line 46 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
             using (Html.BeginForm("LogOn", "Authentication", FormMethod.Post, new
             {
                 @class = "form-horizontal"
@@ -167,7 +181,21 @@ WriteLiteral("            <p>Ange först din e-postadress.</p>\r\n");
             #line default
             #line hidden
             
-            #line 50 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
+            #line 51 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
+           Write(Html.Hidden("ReturnUrl", (string)ViewBag.ReturnUrl));
+
+            
+            #line default
+            #line hidden
+            
+            #line 51 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
+                                                                    
+                
+            
+            #line default
+            #line hidden
+            
+            #line 52 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
            Write(Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary", new
                 {
                     message = "Det gick inte att logga in."
@@ -177,7 +205,7 @@ WriteLiteral("            <p>Ange först din e-postadress.</p>\r\n");
             #line default
             #line hidden
             
-            #line 53 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
+            #line 55 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
                   
 
             
@@ -187,7 +215,7 @@ WriteLiteral("                <div class=\"control-group\">\r\n                 
 
 
             
-            #line 55 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
+            #line 57 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
                Write(Html.LabelFor(x => x.Email, new { @class = "control-label" }));
 
             
@@ -197,7 +225,7 @@ WriteLiteral("\r\n                    <div class=\"controls\">\r\n              
 
 
             
-            #line 57 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
+            #line 59 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
                    Write(Html.TextBoxFor(
                             x => x.Email,
                             new
@@ -221,7 +249,7 @@ WriteLiteral("                <div class=\"control-group\">\r\n                 
 
 
             
-            #line 70 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
+            #line 72 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
                                                   Write(Url.Action("Index", "Roster"));
 
             
@@ -231,7 +259,7 @@ WriteLiteral("\">Avbryt</a>\r\n                    </div>\r\n                </d
 
 
             
-            #line 73 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
+            #line 75 "..\..\Areas\V2\Views\Authentication\LogOn.cshtml"
             }
         }
 
