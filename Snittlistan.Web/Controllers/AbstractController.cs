@@ -28,6 +28,7 @@ public abstract class AbstractController : Controller
         return new TaskPublisher(
             CompositionRoot.CurrentTenant,
             CompositionRoot.Databases,
+            CompositionRoot.MsmqFactory,
             CompositionRoot.CorrelationId,
             null);
     }

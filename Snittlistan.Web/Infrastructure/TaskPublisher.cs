@@ -14,17 +14,20 @@ public class TaskPublisher
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private readonly Tenant currentTenant;
     private readonly Databases databases;
+    private readonly MsmqFactory msmqFactory;
     private readonly Guid correlationId;
     private readonly Guid? causationId;
 
     public TaskPublisher(
         Tenant currentTenant,
         Databases databases,
+        MsmqFactory msmqFactory,
         Guid correlationId,
         Guid? causationId)
     {
         this.currentTenant = currentTenant;
         this.databases = databases;
+        this.msmqFactory = msmqFactory;
         this.correlationId = correlationId;
         this.causationId = causationId;
     }
@@ -59,7 +62,7 @@ public class TaskPublisher
             }
         }
 
-        static async void PublishMessage(Tenant tenant, Guid messageId, CancellationToken ct)
+        async void PublishMessage(Tenant tenant, Guid messageId, CancellationToken ct)
         {
             const int MaxTries = 10;
             using IDisposable logScope = NestedDiagnosticsLogicalContext.Push("QueueBackgroundWork");
@@ -91,9 +94,10 @@ public class TaskPublisher
             }
         }
 
-        static void DoPublishMessage(Tenant tenant, PublishedTask publishedTask)
+        void DoPublishMessage(Tenant tenant, PublishedTask publishedTask)
         {
-            using MsmqGateway.MsmqTransactionScope scope = MsmqGateway.Create();
+            using MsmqGateway msmqGateway = msmqFactory.Create();
+            using MsmqGateway.MsmqTransactionScope scope = msmqGateway.Create();
             MessageEnvelope message = new(
                 publishedTask.Task,
                 publishedTask.TenantId,

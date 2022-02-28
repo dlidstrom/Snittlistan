@@ -275,11 +275,10 @@ public class AuthenticationController : AbstractController
                         $"Referrer: {Request.UrlReferrer}",
                         body ?? string.Empty
                 }),
-            60);
+            60,
+            DateTime.Now.Ticks.ToString());
         TaskPublisher taskPublisher = GetTaskPublisher();
-        taskPublisher.PublishTask(
-            task,
-            "system");
+        taskPublisher.PublishTask(task, "system");
     }
 
     public class EmailViewModel

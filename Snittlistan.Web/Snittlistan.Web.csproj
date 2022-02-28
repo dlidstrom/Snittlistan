@@ -143,6 +143,7 @@
       <Link>Globals.cs</Link>
     </Compile>
     <Compile Include="ApplicationMode.cs" />
+    <Compile Include="Infrastructure\MsmqFactory.cs" />
     <Compile Include="Views\Hacker\Index.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

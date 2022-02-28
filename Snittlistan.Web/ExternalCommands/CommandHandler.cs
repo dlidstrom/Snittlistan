@@ -14,6 +14,8 @@ public abstract class CommandHandler<TCommand, TMessage> : ICommandHandler<TComm
 {
     public Databases Databases { get; set; } = null!;
 
+    public MsmqFactory MsmqFactory { get; set; } = null!;
+
     public async Task Handle(TCommand command)
     {
         TaskBase task = CreateMessage(command);
@@ -26,6 +28,7 @@ public abstract class CommandHandler<TCommand, TMessage> : ICommandHandler<TComm
             TaskPublisher taskPublisher = new(
                 tenant,
                 Databases,
+                MsmqFactory,
                 command.CorrelationId,
                 null);
             taskPublisher.PublishTask(task, "system");
