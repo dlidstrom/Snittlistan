@@ -64,13 +64,22 @@ public class QueueListenerElement : ConfigurationElement
         set => this["autoCreateQueues"] = value;
     }
 
+    [ConfigurationProperty("dropFailedMessages", DefaultValue = false)]
+    public bool DropFailedMessages
+    {
+        get => (bool)this["dropFailedMessages"];
+
+        set => this["dropFailedMessages"] = value;
+    }
+
     public MessageQueueProcessorSettings CreateSettings()
     {
-        string readQueue = ReadQueue;
-        string errorQueue = ErrorQueue;
-        int workerThreads = WorkerThreads;
-        bool autoCreateQueues = AutoCreateQueues;
-        MessageQueueProcessorSettings settings = new(readQueue, errorQueue, workerThreads, autoCreateQueues);
+        MessageQueueProcessorSettings settings = new(
+            ReadQueue,
+            ErrorQueue,
+            WorkerThreads,
+            AutoCreateQueues,
+            DropFailedMessages);
         return settings;
     }
 }

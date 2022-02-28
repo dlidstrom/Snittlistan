@@ -112,6 +112,7 @@ public class TaskController : AbstractApiController
         TaskPublisher taskPublisher = new(
             CompositionRoot.CurrentTenant,
             CompositionRoot.Databases,
+            CompositionRoot.MsmqFactory,
             correlationId,
             causationId);
         IHandlerContext handlerContext = (IHandlerContext)Activator.CreateInstance(
