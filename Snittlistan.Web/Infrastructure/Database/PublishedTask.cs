@@ -17,7 +17,10 @@ public class PublishedTask : HasVersion
         string createdBy)
     {
         Task = task;
-        BusinessKey = task.BusinessKey;
+        BusinessKeyColumn = task.BusinessKey.ToJson();
+        TaskType = Enumerable.Aggregate(
+            BusinessKeyColumn,
+            (ushort)5381, (l, r) => (ushort)((33 * l) ^ r));
         TenantId = tenantId;
         CorrelationId = correlationId;
         CausationId = causationId;
@@ -94,6 +97,8 @@ public class PublishedTask : HasVersion
 
     [Column("data")]
     public string DataColumn { get; private set; } = null!;
+
+    public int TaskType { get; private set; }
 
     /// <summary>
     /// When to publish (if delayed, otherwise use DateTime.Now)
