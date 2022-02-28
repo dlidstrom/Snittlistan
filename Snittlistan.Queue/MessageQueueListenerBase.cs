@@ -11,21 +11,14 @@ namespace Snittlistan.Queue;
 public abstract class MessageQueueListenerBase : IDisposable
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    private readonly string _importQueue;
-    private readonly MessageQueue[] _importMessageQueues;
-    private readonly MessageQueue _errorMessageQueue;
-    private readonly Counter _counter = new();
-    private volatile bool _isClosing;
+    private readonly MessageQueue[] importMessageQueues;
+    private readonly MessageQueue errorMessageQueue;
+    private readonly Counter counter = new();
+    private readonly MessageQueueProcessorSettings settings;
+    private volatile bool isClosing;
 
     protected MessageQueueListenerBase(MessageQueueProcessorSettings settings)
     {
-        if (settings == null)
-        {
-            throw new ArgumentNullException(nameof(settings));
-        }
-
-        _importQueue = settings.ReadQueue;
-
         // create import queue automatically, if it doesn't exist
         if (settings.AutoCreateQueues)
         {
@@ -38,10 +31,10 @@ public abstract class MessageQueueListenerBase : IDisposable
         numberOfThreads = Math.Min(numberOfThreads, maxThreads);
 
         Logger.Info(
-            "Using {numberOfThreads} worker threads for {readQueue}",
+            "using {numberOfThreads} worker threads for {readQueue}",
             numberOfThreads,
             settings.ReadQueue);
-        _importMessageQueues = Enumerable.Range(0, numberOfThreads).Select(
+        importMessageQueues = Enumerable.Range(0, numberOfThreads).Select(
             x =>
             {
                 MessageQueue queue = new(settings.ReadQueue, QueueAccessMode.SendAndReceive);
@@ -50,18 +43,19 @@ public abstract class MessageQueueListenerBase : IDisposable
             }).ToArray();
 
         // create error queue automatically, if it doesn't exist
-        if (settings.AutoCreateQueues)
+        if (settings.AutoCreateQueues && settings.DropFailedMessages == false)
         {
             CreateQueue(settings.ErrorQueue);
         }
 
-        _errorMessageQueue = new MessageQueue(settings.ErrorQueue, QueueAccessMode.Send);
+        errorMessageQueue = new MessageQueue(settings.ErrorQueue, QueueAccessMode.Send);
+        this.settings = settings;
     }
 
     public void Start()
     {
-        Logger.Info("Starting msmq listener");
-        foreach (MessageQueue importMessageQueue in _importMessageQueues)
+        Logger.Info("starting msmq listener");
+        foreach (MessageQueue importMessageQueue in importMessageQueues)
         {
             importMessageQueue.PeekCompleted += Queue_PeekCompleted;
             _ = importMessageQueue.BeginPeek();
@@ -70,43 +64,43 @@ public abstract class MessageQueueListenerBase : IDisposable
 
     public void Stop()
     {
-        _isClosing = true;
-        Logger.Info("Stopping msmq listener");
-        foreach (MessageQueue importMessageQueue in _importMessageQueues)
+        isClosing = true;
+        Logger.Info("stopping msmq listener");
+        foreach (MessageQueue importMessageQueue in importMessageQueues)
         {
             importMessageQueue.PeekCompleted -= Queue_PeekCompleted;
             importMessageQueue.Close();
         }
 
-        _errorMessageQueue.Close();
+        errorMessageQueue.Close();
 
         // wait (at most 10 seconds) for processor threads to finish working
         Stopwatch sw = Stopwatch.StartNew();
-        while (_counter.Value > 0 && sw.ElapsedMilliseconds < 10000)
+        while (counter.Value > 0 && sw.ElapsedMilliseconds < 10000)
         {
             Thread.Sleep(100);
         }
 
-        int value = _counter.Value;
+        int value = counter.Value;
         if (value > 0)
         {
             Logger.Error(
-                "Failed to stop workers for {importQueue} ({count} remaining)",
-                _importQueue,
+                "failed to stop workers for {importQueue} ({count} remaining)",
+                settings.ReadQueue,
                 value);
         }
 
-        _isClosing = false;
+        isClosing = false;
     }
 
     public void Dispose()
     {
-        foreach (MessageQueue importMessageQueue in _importMessageQueues)
+        foreach (MessageQueue importMessageQueue in importMessageQueues)
         {
             importMessageQueue.Dispose();
         }
 
-        _errorMessageQueue.Dispose();
+        errorMessageQueue.Dispose();
     }
 
     protected abstract Task DoHandle(string contents);
@@ -118,7 +112,7 @@ public abstract class MessageQueueListenerBase : IDisposable
             return;
         }
 
-        Logger.Info("Creating queue {queueName}", queueName);
+        Logger.Info("creating queue {queueName}", queueName);
         MessageQueue queue = MessageQueue.Create(queueName, true);
         queue.UseJournalQueue = true;
         queue.MaximumJournalSize = 10 * 1024;
@@ -169,7 +163,7 @@ public abstract class MessageQueueListenerBase : IDisposable
             transaction?.Dispose();
 
             // start new peek operation
-            if (_isClosing == false)
+            if (isClosing == false)
             {
                 _ = queue.BeginPeek();
             }
@@ -183,22 +177,22 @@ public abstract class MessageQueueListenerBase : IDisposable
     {
         try
         {
-            _counter.Increment();
+            counter.Increment();
             IDisposable disposable = NestedDiagnosticsLogicalContext.Push(message.Id);
             try
             {
-                Logger.Info("Start");
+                Logger.Info("start");
                 await TryProcessMessage(message, sourceQueue, messageQueueTransaction);
             }
             finally
             {
-                Logger.Info("End");
+                Logger.Info("end");
                 disposable.Dispose();
             }
         }
         finally
         {
-            _counter.Decrement();
+            counter.Decrement();
         }
     }
 
@@ -214,11 +208,16 @@ public abstract class MessageQueueListenerBase : IDisposable
         {
             await DoHandle(contents);
         }
+        catch (Exception ex) when (settings.DropFailedMessages)
+        {
+            Logger.Warn(ex);
+            Logger.Warn("dropping message {id}", message.Id);
+        }
         catch (Exception ex)
         {
             Logger.Warn(ex);
             message.AppSpecific++;
-            Logger.Warn("Message retry #{count}", message.AppSpecific);
+            Logger.Warn("message retry #{count}", message.AppSpecific);
             if (message.AppSpecific >= MaximumTries)
             {
                 MoveToErrorQueue(message, ex, messageQueueTransaction, MaximumTries);
@@ -234,7 +233,7 @@ public abstract class MessageQueueListenerBase : IDisposable
     private void MoveToErrorQueue(Message message, Exception ex, MessageQueueTransaction messageQueueTransaction, int errorCount)
     {
         Logger.Error(
-            "Message {id} reached error count {count}, moving to error queue.",
+            "message {id} reached error count {count}, moving to error queue.",
             message.Id,
             errorCount);
 
@@ -249,6 +248,6 @@ public abstract class MessageQueueListenerBase : IDisposable
         message.Label = exceptionMessage.Substring(0, Math.Min(exceptionMessage.Length, 249));
 
         // send message to error queue
-        _errorMessageQueue.Send(message, messageQueueTransaction);
+        errorMessageQueue.Send(message, messageQueueTransaction);
     }
 }

@@ -201,8 +201,6 @@ public class MvcApplication : HttpApplication
         // add model binders
         ModelBinders.Binders.Add(typeof(Guid), new GuidBinder());
 
-        MsmqGateway.Initialize(ConfigurationManager.AppSettings["TaskQueue"]);
-
         WebsiteRoles.Initialize();
     }
 
@@ -250,7 +248,7 @@ public class MvcApplication : HttpApplication
                     new EmailServiceInstaller(HostingEnvironment.MapPath("~/Views/Emails")),
                     new EventMigratorInstaller(),
                     new EventStoreSessionInstaller(),
-                    new MsmqInstaller(),
+                    new MsmqInstaller(ConfigurationManager.AppSettings["TaskQueue"]),
                     new RavenInstaller(tenants),
                     new ServicesInstaller(),
                     new TaskHandlerInstaller(),

@@ -4,6 +4,7 @@ using Castle.Core.Logging;
 using Snittlistan.Queue;
 using Snittlistan.Queue.ExternalCommands;
 using Snittlistan.Queue.Messages;
+using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Database;
 using System.Data.Entity;
 
@@ -15,6 +16,8 @@ public class PublishExpiredTasksCommandHandler
     public Databases Databases { get; set; } = null!;
 
     public ILogger Logger { get; set; } = NullLogger.Instance;
+
+    public MsmqFactory MsmqFactory { get; set; } = null!;
 
     public async Task Handle(PublishExpiredTasksCommand command)
     {
@@ -29,7 +32,8 @@ public class PublishExpiredTasksCommandHandler
             return;
         }
 
-        using MsmqGateway.MsmqTransactionScope scope = MsmqGateway.Create();
+        using MsmqGateway msmqGateway = MsmqFactory.Create();
+        using MsmqGateway.MsmqTransactionScope scope = msmqGateway.Create();
         foreach (PublishedTask publishedTask in expiredTasks)
         {
             MessageEnvelope message = new(

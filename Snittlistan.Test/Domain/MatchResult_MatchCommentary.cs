@@ -168,6 +168,7 @@ public class MatchResult_MatchCommentary : WebApiIntegrationTest
                 session,
                 eventStoreSession,
                 Databases,
+                Container.Resolve<MsmqFactory>(),
                 Container.Resolve<EventStore>(),
                 CurrentTenant,
                 Container.Resolve<IEmailService>(),

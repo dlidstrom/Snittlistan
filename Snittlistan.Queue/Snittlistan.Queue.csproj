@@ -59,7 +59,6 @@
     <Compile Include="Config\QueueListenersCollection.cs" />
     <Compile Include="Config\QueueListenersElement.cs" />
     <Compile Include="Counter.cs" />
-    <Compile Include="IMsmqTransaction.cs" />
     <Compile Include="JsonMessageFormatter.cs" />
     <Compile Include="LoggingHandler.cs" />
     <Compile Include="Messages\BusinessKey.cs" />

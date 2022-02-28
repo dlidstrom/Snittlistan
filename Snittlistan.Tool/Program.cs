@@ -1,9 +1,8 @@
-﻿using System.Configuration;
-using Castle.MicroKernel.Registration;
+﻿using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using NLog;
-using Snittlistan.Queue;
 using Snittlistan.Tool.Tasks;
+using System.Configuration;
 
 #nullable enable
 
@@ -27,16 +26,19 @@ public static class Program
 
     private static async Task Run(string[] args)
     {
-        IWindsorContainer container = new WindsorContainer();
         HttpConnectionSettings settings = new(
             ConfigurationManager.AppSettings["UrlScheme"],
             Convert.ToInt32(ConfigurationManager.AppSettings["Port"]));
-        _ = container.Register(Component.For<HttpConnectionSettings>().Instance(settings));
-        _ = container.Register(
-            Classes.FromThisAssembly()
-                   .BasedOn<ICommandLineTask>()
-                   .Configure(x => x.LifeStyle.Transient.Named(x.Implementation.Name.Replace("CommandLineTask", string.Empty)))
-                   .WithServiceFromInterface(typeof(ICommandLineTask)));
+        IWindsorContainer container =
+            new WindsorContainer()
+                .Register(Component.For<HttpConnectionSettings>().Instance(settings))
+                .Register(
+                    Classes.FromThisAssembly()
+                       .BasedOn<ICommandLineTask>()
+                       .Configure(x =>
+                            x.LifeStyle.Transient.Named(
+                                x.Implementation.Name.Replace("CommandLineTask", string.Empty)))
+                       .WithServiceFromInterface(typeof(ICommandLineTask)));
 
         if (args.Length < 1)
         {
@@ -46,7 +48,6 @@ public static class Program
 
         try
         {
-            MsmqGateway.Initialize(ConfigurationManager.AppSettings["TaskQueue"]);
             ICommandLineTask task = container.Resolve<ICommandLineTask>(args[0]);
             await task.Run(args);
         }

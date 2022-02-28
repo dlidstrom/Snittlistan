@@ -1,11 +1,5 @@
 ﻿#nullable enable
 
-using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Web;
-using System.Web.Caching;
-using System.Web.Http;
 using Castle.Core;
 using Castle.Facilities.Logging;
 using Castle.MicroKernel.Registration;
@@ -15,7 +9,6 @@ using Moq;
 using NUnit.Framework;
 using Postal;
 using Raven.Client;
-using Snittlistan.Queue;
 using Snittlistan.Test.ApiControllers.Infrastructure;
 using Snittlistan.Web;
 using Snittlistan.Web.Infrastructure;
@@ -23,6 +16,12 @@ using Snittlistan.Web.Infrastructure.Attributes;
 using Snittlistan.Web.Infrastructure.Database;
 using Snittlistan.Web.Infrastructure.Installers;
 using Snittlistan.Web.Infrastructure.IoC;
+using System.Collections.Specialized;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Web;
+using System.Web.Caching;
+using System.Web.Http;
 
 namespace Snittlistan.Test.ApiControllers;
 
@@ -47,7 +46,6 @@ public abstract class WebApiIntegrationTest
         _ = Container
             .AddFacility<LoggingFacility>(x => x.LogUsing<TestLoggerFactory>())
             .Register(Component.For<Tenant>().Instance(CurrentTenant))
-            .Register(Component.For<IMsmqTransaction>().Instance(Mock.Of<IMsmqTransaction>()))
             .Register(Component.For<IEmailService>().Instance(Mock.Of<IEmailService>()))
             .Install(
                 new ControllerInstaller(),
@@ -59,7 +57,8 @@ public abstract class WebApiIntegrationTest
                 CommandHandlerInstaller.Scoped(),
                 new DatabaseContextInstaller(() => Databases, LifestyleType.Scoped),
                 EventStoreInstaller.FromAssembly(new[] { CurrentTenant }, typeof(MvcApplication).Assembly, DocumentStoreMode.InMemory),
-                new EventStoreSessionInstaller(LifestyleType.Scoped));
+                new EventStoreSessionInstaller(LifestyleType.Scoped),
+                new MsmqInstaller(string.Empty));
         HttpRequestBase requestMock =
             Mock.Of<HttpRequestBase>(x => x.ServerVariables == new NameValueCollection() { { "SERVER_NAME", "TEST" } });
         HttpContextBase httpContextMock =
