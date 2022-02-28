@@ -13,8 +13,9 @@ public class SendEmailTask : TaskBase
         string replyTo,
         string subject,
         string content,
-        int ratePerSeconds)
-        : base(new(typeof(SendEmailTask).FullName, to))
+        int ratePerSeconds,
+        string key)
+        : base(new(typeof(SendEmailTask).FullName, key))
     {
         To = to;
         ReplyTo = replyTo;
@@ -28,7 +29,8 @@ public class SendEmailTask : TaskBase
         string replyTo,
         string subject,
         string content,
-        int ratePerSeconds)
+        int ratePerSeconds,
+        string key)
     {
         SendEmailTask emailTask =
             new(
@@ -36,7 +38,8 @@ public class SendEmailTask : TaskBase
                 replyTo,
                 Convert.ToBase64String(Encoding.UTF8.GetBytes(subject)),
                 Convert.ToBase64String(Encoding.UTF8.GetBytes(content)),
-                ratePerSeconds);
+                ratePerSeconds,
+                key);
         return emailTask;
     }
 

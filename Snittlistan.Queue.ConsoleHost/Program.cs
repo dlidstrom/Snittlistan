@@ -1,15 +1,21 @@
-﻿using System.Configuration;
+﻿#nullable enable
+
+using System.Configuration;
+using System.Diagnostics;
 using Snittlistan.Queue.Config;
 
-#nullable enable
-
 namespace Snittlistan.Queue.ConsoleHost;
+
 public class Program
 {
     public static void Main()
     {
-        Console.WriteLine("Press [ENTER] to start.");
-        _ = Console.ReadLine();
+        if (Debugger.IsAttached == false)
+        {
+            Console.WriteLine("Press [ENTER] to start.");
+            _ = Console.ReadLine();
+        }
+
         Application application = new(
             (MessagingConfigSection)ConfigurationManager.GetSection("messaging"),
             ConfigurationManager.AppSettings["UrlScheme"],
