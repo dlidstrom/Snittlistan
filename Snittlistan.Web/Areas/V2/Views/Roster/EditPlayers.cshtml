@@ -209,22 +209,6 @@
                     </span>
                 </div>
             </div>
-            if (Model.RosterMailEnabled)
-            {
-                <div class="control-group">
-                    @Html.Label(
-                        "SendUpdateMail",
-                        "Skicka mail till spelarna",
-                        new { @class = "control-label" })
-                    <div class="controls">
-                        @Html.CheckBox("SendUpdateMail", false)
-                        <span class="help-block">
-                            Ett mail med uttagningen och uppmaning om att
-                            acceptera kommer skickas till alla uttagna spelare.
-                        </span>
-                    </div>
-                </div>
-            }
             <div class="form-actions">
                 <button class="btn btn-primary btn-large" type="submit">Spara</button>
                 @Html.ActionLink("Avbryt", "View", new { season = Model.RosterViewModel.Season, turn = Model.RosterViewModel.Turn }, new { @class = "btn btn-large" })
