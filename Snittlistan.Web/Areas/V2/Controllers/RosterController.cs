@@ -1,12 +1,5 @@
 ﻿#nullable enable
 
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Text;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Mvc.Html;
-using Snittlistan.Web.Infrastructure.Bits;
 using Raven.Abstractions;
 using Raven.Client;
 using Rotativa;
@@ -14,12 +7,18 @@ using Rotativa.Options;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.ViewModels;
+using Snittlistan.Web.Commands;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Helpers;
-using Snittlistan.Web.Infrastructure.Database;
-using Snittlistan.Web.Models;
 using Snittlistan.Web.Infrastructure;
-using Snittlistan.Web.Commands;
+using Snittlistan.Web.Infrastructure.Bits;
+using Snittlistan.Web.Models;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.Text;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Mvc.Html;
 
 namespace Snittlistan.Web.Areas.V2.Controllers;
 
@@ -287,8 +286,10 @@ public class RosterController : AbstractController
             turn = rosters.Select(x => x.Turn).FirstOrDefault();
         }
 
-        Roster[] rostersForTurn = CompositionRoot.DocumentSession.Query<Roster, RosterSearchTerms>()
-            .Include(roster => roster.Players)
+        Roster[] rostersForTurn =
+            LinqExtensions.Include(
+                CompositionRoot.DocumentSession.Query<Roster, RosterSearchTerms>(),
+                roster => roster.Players)
             .Where(roster => roster.Turn == turn && roster.Season == season)
             .ToArray();
         RosterViewModel[] rosterViewModels = rostersForTurn.Select(CompositionRoot.DocumentSession.LoadRosterViewModel)
@@ -329,8 +330,10 @@ public class RosterController : AbstractController
         bool withAbsence,
         bool excludePreliminary)
     {
-        Roster[] rostersForTurn = CompositionRoot.DocumentSession.Query<Roster, RosterSearchTerms>()
-            .Include(roster => roster.Players)
+        Roster[] rostersForTurn =
+            LinqExtensions.Include(
+                CompositionRoot.DocumentSession.Query<Roster, RosterSearchTerms>(),
+                roster => roster.Players)
             .Where(roster => roster.Turn == turn && roster.Season == season)
             .ToArray()
             .Where(roster => (roster.Preliminary == false || excludePreliminary == false)
@@ -497,10 +500,14 @@ public class RosterController : AbstractController
                     Request.Url.Port == 80
                     ? string.Empty
                     : $":{Request.Url.Port}";
-                Uri rosterLink = new(
-                    $"{Request.Url.Scheme}://{Request.Url.Host}{portPart}{uriString}");
+                Uri rosterLink = CreateLink("View", "Roster", new { roster.Season, roster.Turn });
+                Uri userProfileLink = CreateLink("Index", "UserProfile");
+
                 await ExecuteCommand(
-                    new CreateRosterMailCommandHandler.Command(rosterId, rosterLink));
+                    new CreateRosterMailCommandHandler.Command(
+                        rosterId,
+                        rosterLink,
+                        userProfileLink));
             }
         }
 

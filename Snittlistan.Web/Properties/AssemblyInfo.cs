@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("PDL")]
 [assembly: AssemblyProduct("Snittlistan.Web")]
-[assembly: AssemblyCopyright("Copyright © Daniel Lidström 2011-2017")]
+[assembly: AssemblyCopyright("Copyright © Daniel Lidström")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
