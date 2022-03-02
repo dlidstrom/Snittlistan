@@ -501,10 +501,14 @@ public class RosterController : AbstractController
                     Request.Url.Port == 80
                     ? string.Empty
                     : $":{Request.Url.Port}";
-                Uri rosterLink = new(
-                    $"{Request.Url.Scheme}://{Request.Url.Host}{portPart}{uriString}");
+                Uri rosterLink = CreateLink("View", "Roster", new { roster.Season, roster.Turn });
+                Uri userProfileLink = CreateLink("Index", "UserProfile");
+
                 await ExecuteCommand(
-                    new CreateRosterMailCommandHandler.Command(rosterId, rosterLink));
+                    new CreateRosterMailCommandHandler.Command(
+                        rosterId,
+                        rosterLink,
+                        userProfileLink));
             }
         }
 

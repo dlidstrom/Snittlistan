@@ -78,19 +78,31 @@ public abstract class AbstractController : Controller
         }
     }
 
-    public void FlashInfo(string message)
+    protected void FlashInfo(string message)
     {
         TempData["info"] = message;
     }
 
-    public void FlashWarning(string message)
+    protected void FlashWarning(string message)
     {
         TempData["warning"] = message;
     }
 
-    public void FlashError(string message)
+    protected void FlashError(string message)
     {
         TempData["error"] = message;
+    }
+
+    protected Uri CreateLink(string actionName, string controllerName, object? routeValues = null)
+    {
+        string uriString = Url.Action(actionName, controllerName, routeValues);
+        string portPart =
+            Request.Url.Port is 80 or 443
+            ? string.Empty
+            : $":{Request.Url.Port}";
+        Uri link = new(
+            $"{Request.Url.Scheme}://{Request.Url.Host}{portPart}{uriString}");
+        return link;
     }
 
     private CommandExecutor CreateCommandExecutor()
