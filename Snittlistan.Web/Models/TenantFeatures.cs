@@ -1,6 +1,6 @@
 ﻿#nullable enable
 
-namespace Snittlistan.Model;
+namespace Snittlistan.Models;
 
 public record TenantFeatures(
     bool RosterMailEnabled)
