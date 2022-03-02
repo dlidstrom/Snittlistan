@@ -1,12 +1,5 @@
 ﻿#nullable enable
 
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Text;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Mvc.Html;
-using Snittlistan.Web.Infrastructure.Bits;
 using Raven.Abstractions;
 using Raven.Client;
 using Rotativa;
@@ -14,12 +7,18 @@ using Rotativa.Options;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.ViewModels;
+using Snittlistan.Web.Commands;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Helpers;
-using Snittlistan.Web.Models;
 using Snittlistan.Web.Infrastructure;
-using Snittlistan.Web.Commands;
-using Snittlistan.Model;
+using Snittlistan.Web.Infrastructure.Bits;
+using Snittlistan.Web.Models;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.Text;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Mvc.Html;
 
 namespace Snittlistan.Web.Areas.V2.Controllers;
 

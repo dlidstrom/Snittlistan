@@ -1,10 +1,6 @@
 ﻿#nullable enable
 
-using System.Diagnostics;
-using System.Web;
-using System.Web.Mvc;
 using EventStoreLite;
-using Snittlistan.Model;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.Migration;
@@ -16,6 +12,9 @@ using Snittlistan.Web.Infrastructure.Database;
 using Snittlistan.Web.Infrastructure.Indexes;
 using Snittlistan.Web.Models;
 using Snittlistan.Web.Services;
+using System.Diagnostics;
+using System.Web;
+using System.Web.Mvc;
 
 namespace Snittlistan.Web.Areas.V2.Controllers;
 

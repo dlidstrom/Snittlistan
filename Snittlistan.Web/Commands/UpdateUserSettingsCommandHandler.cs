@@ -1,8 +1,8 @@
 ﻿#nullable enable
 
-using Snittlistan.Model;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Database;
+using Snittlistan.Web.Models;
 
 namespace Snittlistan.Web.Commands;
 

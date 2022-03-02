@@ -1,6 +1,5 @@
 ﻿#nullable enable
 
-using Snittlistan.Model;
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Infrastructure;

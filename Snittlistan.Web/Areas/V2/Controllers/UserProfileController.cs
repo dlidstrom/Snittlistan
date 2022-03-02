@@ -1,9 +1,9 @@
 ﻿#nullable enable
 
-using Snittlistan.Model;
 using Snittlistan.Web.Commands;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Infrastructure.Database;
+using Snittlistan.Web.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
