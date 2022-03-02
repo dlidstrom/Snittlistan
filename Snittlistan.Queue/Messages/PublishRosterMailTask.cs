@@ -9,7 +9,8 @@ public class PublishRosterMailTask : TaskBase
         string recipientEmail,
         string recipientName,
         string replyToEmail,
-        Uri rosterLink)
+        Uri rosterLink,
+        Uri userProfileLink)
         : base(new(typeof(PublishRosterMailTask).FullName, $"{rosterId}/{recipientEmail}"))
     {
         RosterId = rosterId;
@@ -17,6 +18,7 @@ public class PublishRosterMailTask : TaskBase
         RecipientName = recipientName;
         ReplyToEmail = replyToEmail;
         RosterLink = rosterLink;
+        UserProfileLink = userProfileLink;
     }
 
     public string RosterId { get; }
@@ -28,4 +30,6 @@ public class PublishRosterMailTask : TaskBase
     public string ReplyToEmail { get; }
 
     public Uri RosterLink { get; }
+
+    public Uri UserProfileLink { get; }
 }

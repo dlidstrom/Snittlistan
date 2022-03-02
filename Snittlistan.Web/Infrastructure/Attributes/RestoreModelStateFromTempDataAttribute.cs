@@ -1,7 +1,9 @@
-﻿
+﻿#nullable enable
+
 using System.Web.Mvc;
 
 namespace Snittlistan.Web.Infrastructure.Attributes;
+
 public class RestoreModelStateFromTempDataAttribute : ActionFilterAttribute
 {
     public override void OnActionExecuting(ActionExecutingContext filterContext)

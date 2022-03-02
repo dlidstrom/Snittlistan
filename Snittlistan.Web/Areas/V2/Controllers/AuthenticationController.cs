@@ -346,6 +346,7 @@ public class AuthenticationController : AbstractController
         [Display(Name = "Lösenord")]
         public string Password { get; set; } = null!;
 
+        [Display(Name = "Kom ihåg mig")]
         public bool RememberMe { get; set; }
 
         public string OneTimeKey { get; set; } = null!;
