@@ -1,6 +1,5 @@
 ﻿#nullable enable
 
-using System.Data.Entity;
 using System.Web.Hosting;
 using NLog;
 using Snittlistan.Queue;

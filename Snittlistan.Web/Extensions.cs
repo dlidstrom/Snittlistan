@@ -10,7 +10,7 @@ using Snittlistan.Web.Models;
 
 namespace Snittlistan.Web;
 
-public static class DocumentSessionExtensions
+public static class Extensions
 {
     public static SelectListItem[] CreateRosterSelectList(
         this Raven.Client.IDocumentSession session,

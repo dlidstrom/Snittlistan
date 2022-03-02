@@ -31,7 +31,8 @@ public class PublishRosterMailCommandHandler
             context.Payload.ReplyToEmail,
             roster.Season,
             roster.Turn,
-            context.Payload.RosterLink);
+            context.Payload.RosterLink,
+            context.Payload.UserProfileLink);
         return Task.FromResult(email);
     }
 
@@ -49,5 +50,6 @@ public class PublishRosterMailCommandHandler
         string RecipientEmail,
         string RecipientName,
         string ReplyToEmail,
-        Uri RosterLink);
+        Uri RosterLink,
+        Uri UserProfileLink);
 }
