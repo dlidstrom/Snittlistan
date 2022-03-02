@@ -146,23 +146,11 @@ WriteLiteral("\r\n                    <span class=\"help-block\">\r\n           
 
 WriteLiteral("            <div class=\"control-group\">\r\n                <div class=\"controls\">\r\n" +
 "                    <button class=\"btn btn-primary btn-large\" type=\"submit\">Spar" +
-"a</button>\r\n                    <a class=\"btn btn-large\"\r\n                      " +
-" href=\"");
+"a</button>\r\n                </div>\r\n            </div>\r\n");
 
 
             
-            #line 48 "..\..\Areas\V2\Views\UserProfile\Index.cshtml"
-                        Write(Url.Action());
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\">\r\n                        Avbryt\r\n                    </a>\r\n                </d" +
-"iv>\r\n            </div>\r\n");
-
-
-            
-            #line 53 "..\..\Areas\V2\Views\UserProfile\Index.cshtml"
+            #line 49 "..\..\Areas\V2\Views\UserProfile\Index.cshtml"
         }
 
             
