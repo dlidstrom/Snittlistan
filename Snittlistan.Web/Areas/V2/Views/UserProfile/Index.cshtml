@@ -1,0 +1,55 @@
+﻿@model Snittlistan.Web.Areas.V2.Controllers.UserProfileController.UserSettingsViewModel
+
+<div class="row">
+    <div class="span12">
+        @using (Html.BeginForm(
+            "Save",
+            "UserProfile",
+            FormMethod.Post,
+            new
+            {
+                @class = "form-horizontal"
+            }))
+        {
+            <fieldset>
+                <legend>Notifieringar genom e-post</legend>
+            </fieldset>
+            <div class="control-group">
+                @Html.LabelFor(x => x.RosterMailEnabled, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.CheckBoxFor(x => x.RosterMailEnabled, new { @class = "switch" })
+                    <span class="help-block">
+                        Få e-post vid uppdaterad laguttagning.
+                    </span>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(x => x.AbsenceMailEnabled, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.CheckBoxFor(x => x.AbsenceMailEnabled, new { @class = "switch" })
+                    <span class="help-block">
+                        Få e-post vid registrerad frånvaro.
+                    </span>
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(x => x.MatchResultMailEnabled, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.CheckBoxFor(x => x.MatchResultMailEnabled, new { @class = "switch" })
+                    <span class="help-block">
+                        Få e-post när match-resultat registreras.
+                    </span>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button class="btn btn-primary btn-large" type="submit">Spara</button>
+                    <a class="btn btn-large"
+                       href="@Url.Action("Index", "AdminTasks")">
+                        Avbryt
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

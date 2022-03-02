@@ -6,7 +6,6 @@ using Snittlistan.Queue.ExternalCommands;
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Database;
-using System.Data.Entity;
 
 namespace Snittlistan.Web.ExternalCommands;
 

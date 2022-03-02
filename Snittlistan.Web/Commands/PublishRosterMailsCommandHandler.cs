@@ -5,7 +5,6 @@ using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Database;
 using Snittlistan.Web.Models;
-using System.Data.Entity;
 
 namespace Snittlistan.Web.Commands;
 

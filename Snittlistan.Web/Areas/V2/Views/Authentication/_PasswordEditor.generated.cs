@@ -152,21 +152,29 @@ WriteLiteral("\r\n    <div class=\"controls\">\r\n");
             
             #line default
             #line hidden
-WriteLiteral("    </div>\r\n</div>\r\n<div class=\"control-group\">\r\n    <div class=\"controls\">\r\n    " +
-"    <label class=\"checkbox\">\r\n            ");
+WriteLiteral("    </div>\r\n</div>\r\n<div class=\"control-group\">\r\n    ");
 
 
             
-            #line 43 "..\..\Areas\V2\Views\Authentication\_PasswordEditor.cshtml"
-       Write(Html.EditorFor(model => model.RememberMe));
+            #line 41 "..\..\Areas\V2\Views\Authentication\_PasswordEditor.cshtml"
+Write(Html.LabelFor(x => x.RememberMe, new { @class = "control-label" }));
 
             
             #line default
             #line hidden
-WriteLiteral(@" Kom ihåg mig
-        </label>
+WriteLiteral("\r\n    <div class=\"controls\">\r\n        ");
+
+
+            
+            #line 43 "..\..\Areas\V2\Views\Authentication\_PasswordEditor.cshtml"
+   Write(Html.CheckBoxFor(x => x.RememberMe));
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"
         <span class=""help-block"">
-            Med det här valet förblir du inloggad även när du stänger sidan.
+            Förbli inloggad även när sidan stängs.
         </span>
     </div>
 </div>
@@ -177,7 +185,7 @@ WriteLiteral(@" Kom ihåg mig
 
 
             
-            #line 53 "..\..\Areas\V2\Views\Authentication\_PasswordEditor.cshtml"
+            #line 52 "..\..\Areas\V2\Views\Authentication\_PasswordEditor.cshtml"
                                   Write(Url.Action("Index", "Roster"));
 
             

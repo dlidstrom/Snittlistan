@@ -2,7 +2,6 @@
 
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Infrastructure;
-using System.Data.Entity;
 
 namespace Snittlistan.Web.Commands;
 

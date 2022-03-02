@@ -1,10 +1,10 @@
 ﻿#nullable enable
 
-using System.Data.Entity;
 using System.Diagnostics;
 using System.Web;
 using System.Web.Mvc;
 using EventStoreLite;
+using Snittlistan.Model;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.Migration;
@@ -260,7 +260,7 @@ public class AdminTasksController : AdminController
         KeyValueProperty? settingsProperty =
             await CompositionRoot.Databases.Snittlistan.KeyValueProperties.SingleOrDefaultAsync(
                 x => x.Key == TenantFeatures.Key && x.TenantId == CompositionRoot.CurrentTenant.TenantId);
-        if (settingsProperty != null)
+        if (settingsProperty is not null)
         {
             return View(new TenantFeaturesViewModel((TenantFeatures)settingsProperty.Value));
         }

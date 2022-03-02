@@ -3,9 +3,9 @@
 using Castle.MicroKernel;
 using EventStoreLite;
 using Postal;
+using Snittlistan.Model;
 using Snittlistan.Web.Infrastructure.Bits;
 using Snittlistan.Web.Infrastructure.Database;
-using System.Data.Entity;
 
 namespace Snittlistan.Web.Infrastructure;
 
