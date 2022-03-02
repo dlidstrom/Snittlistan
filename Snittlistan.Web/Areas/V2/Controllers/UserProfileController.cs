@@ -1,8 +1,10 @@
 ﻿#nullable enable
 
+using Snittlistan.Model;
+using Snittlistan.Web.Commands;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Infrastructure.Database;
-using System.Data.Entity;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace Snittlistan.Web.Areas.V2.Controllers;
@@ -26,17 +28,46 @@ public class UserProfileController : AbstractController
         return View(new UserSettingsViewModel(UserSettings.Default));
     }
 
+    [HttpPost]
+    public async Task<ActionResult> Save(UserSettingsViewModel vm)
+    {
+        string key = UserSettings.GetKey(User.CustomIdentity.PlayerId!);
+        UpdateUserSettingsCommandHandler.Command command = new(
+            key,
+            vm.RosterMailEnabled,
+            vm.AbsenceMailEnabled,
+            vm.MatchResultMailEnabled);
+        await ExecuteCommand(command);
+        FlashInfo("Inställningarna sparades.");
+        return RedirectToAction("Index", "UserProfile");
+    }
+
     public class UserSettingsViewModel
     {
         public UserSettingsViewModel(UserSettings userSettings)
         {
             RosterMailEnabled = userSettings.RosterMailEnabled;
+            AbsenceMailEnabled = userSettings.AbsenceMailEnabled;
+            MatchResultMailEnabled = userSettings.MatchResultMailEnabled;
         }
 
         public UserSettingsViewModel()
         {
         }
 
+        [Display(
+            Name = "Uttagning",
+            GroupName = "Notifieringar")]
         public bool RosterMailEnabled { get; set; }
+
+        [Display(
+            Name = "Frånvaro",
+            GroupName = "Notifieringar")]
+        public bool AbsenceMailEnabled { get; set; }
+
+        [Display(
+            Name = "Matchresultat",
+            GroupName = "Notifieringar")]
+        public bool MatchResultMailEnabled { get; set; }
     }
 }

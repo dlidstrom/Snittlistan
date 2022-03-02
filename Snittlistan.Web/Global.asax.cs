@@ -1,5 +1,24 @@
 ﻿#nullable enable
 
+global using System.Data.Entity;
+using Castle.Facilities.Logging;
+using Castle.MicroKernel.Registration;
+using Castle.Services.Logging.NLogIntegration;
+using Castle.Windsor;
+using EventStoreLite.IoC;
+using NLog;
+using Npgsql.Logging;
+using Raven.Client;
+using Snittlistan.Queue;
+using Snittlistan.Web.Areas.V2;
+using Snittlistan.Web.Areas.V2.Domain;
+using Snittlistan.Web.Infrastructure;
+using Snittlistan.Web.Infrastructure.Attributes;
+using Snittlistan.Web.Infrastructure.Database;
+using Snittlistan.Web.Infrastructure.Indexes;
+using Snittlistan.Web.Infrastructure.Installers;
+using Snittlistan.Web.Infrastructure.IoC;
+using Snittlistan.Web.Models;
 using System.Configuration;
 using System.Diagnostics;
 using System.Net.Http;
@@ -12,24 +31,6 @@ using System.Web.Http.Dispatcher;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
-using Snittlistan.Web.Areas.V2;
-using Snittlistan.Web.Areas.V2.Domain;
-using Castle.MicroKernel.Registration;
-using Castle.Windsor;
-using EventStoreLite.IoC;
-using NLog;
-using Raven.Client;
-using Snittlistan.Queue;
-using Snittlistan.Web.Infrastructure;
-using Snittlistan.Web.Infrastructure.Attributes;
-using Snittlistan.Web.Infrastructure.Database;
-using Snittlistan.Web.Infrastructure.Indexes;
-using Snittlistan.Web.Infrastructure.Installers;
-using Snittlistan.Web.Infrastructure.IoC;
-using Snittlistan.Web.Models;
-using Npgsql.Logging;
-using Castle.Facilities.Logging;
-using Castle.Services.Logging.NLogIntegration;
 
 namespace Snittlistan.Web;
 

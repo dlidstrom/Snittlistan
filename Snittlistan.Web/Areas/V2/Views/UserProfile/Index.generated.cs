@@ -49,8 +49,8 @@ WriteLiteral("\r\n<div class=\"row\">\r\n    <div class=\"span12\">\r\n");
             
             #line 5 "..\..\Areas\V2\Views\UserProfile\Index.cshtml"
          using (Html.BeginForm(
-            "Features",
-            "AdminTasks",
+            "Save",
+            "UserProfile",
             FormMethod.Post,
             new
             {
@@ -61,11 +61,16 @@ WriteLiteral("\r\n<div class=\"row\">\r\n    <div class=\"span12\">\r\n");
             
             #line default
             #line hidden
+WriteLiteral("            <fieldset>\r\n                <legend>Notifieringar genom e-post</legen" +
+"d>\r\n            </fieldset>\r\n");
+
+
+
 WriteLiteral("            <div class=\"control-group\">\r\n                ");
 
 
             
-            #line 15 "..\..\Areas\V2\Views\UserProfile\Index.cshtml"
+            #line 18 "..\..\Areas\V2\Views\UserProfile\Index.cshtml"
            Write(Html.LabelFor(x => x.RosterMailEnabled, new { @class = "control-label" }));
 
             
@@ -75,15 +80,67 @@ WriteLiteral("\r\n                <div class=\"controls\">\r\n                  
 
 
             
-            #line 17 "..\..\Areas\V2\Views\UserProfile\Index.cshtml"
+            #line 20 "..\..\Areas\V2\Views\UserProfile\Index.cshtml"
                Write(Html.CheckBoxFor(x => x.RosterMailEnabled, new { @class = "switch" }));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                    <span class=\"help-block\">\r\n                        Gör det " +
-"möjligt att skicka uppdaterings-epost när laguttagningarna uppdateras.\r\n        " +
-"            </span>\r\n                </div>\r\n            </div>\r\n");
+WriteLiteral("\r\n                    <span class=\"help-block\">\r\n                        Få e-pos" +
+"t vid uppdaterad laguttagning.\r\n                    </span>\r\n                </d" +
+"iv>\r\n            </div>\r\n");
+
+
+
+WriteLiteral("            <div class=\"control-group\">\r\n                ");
+
+
+            
+            #line 27 "..\..\Areas\V2\Views\UserProfile\Index.cshtml"
+           Write(Html.LabelFor(x => x.AbsenceMailEnabled, new { @class = "control-label" }));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                <div class=\"controls\">\r\n                    ");
+
+
+            
+            #line 29 "..\..\Areas\V2\Views\UserProfile\Index.cshtml"
+               Write(Html.CheckBoxFor(x => x.AbsenceMailEnabled, new { @class = "switch" }));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                    <span class=\"help-block\">\r\n                        Få e-pos" +
+"t vid registrerad frånvaro.\r\n                    </span>\r\n                </div>" +
+"\r\n            </div>\r\n");
+
+
+
+WriteLiteral("            <div class=\"control-group\">\r\n                ");
+
+
+            
+            #line 36 "..\..\Areas\V2\Views\UserProfile\Index.cshtml"
+           Write(Html.LabelFor(x => x.MatchResultMailEnabled, new { @class = "control-label" }));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                <div class=\"controls\">\r\n                    ");
+
+
+            
+            #line 38 "..\..\Areas\V2\Views\UserProfile\Index.cshtml"
+               Write(Html.CheckBoxFor(x => x.MatchResultMailEnabled, new { @class = "switch" }));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                    <span class=\"help-block\">\r\n                        Få e-pos" +
+"t när match-resultat registreras.\r\n                    </span>\r\n                " +
+"</div>\r\n            </div>\r\n");
 
 
 
@@ -94,7 +151,7 @@ WriteLiteral("            <div class=\"control-group\">\r\n                <div 
 
 
             
-            #line 27 "..\..\Areas\V2\Views\UserProfile\Index.cshtml"
+            #line 48 "..\..\Areas\V2\Views\UserProfile\Index.cshtml"
                         Write(Url.Action("Index", "AdminTasks"));
 
             
@@ -105,7 +162,7 @@ WriteLiteral("\">\r\n                        Avbryt\r\n                    </a>\
 
 
             
-            #line 32 "..\..\Areas\V2\Views\UserProfile\Index.cshtml"
+            #line 53 "..\..\Areas\V2\Views\UserProfile\Index.cshtml"
         }
 
             

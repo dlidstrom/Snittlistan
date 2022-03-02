@@ -86,7 +86,7 @@
                                         @(User?.Identity.Name)
                                     </li>
                                     <li>
-                                        <a href="#">
+                                        <a href="@Url.Action("Index", "UserProfile")">
                                             <i class="sprite-glyphicons_023_cogwheels"></i>
                                             Min profil
                                         </a>
@@ -115,6 +115,7 @@
         </div>
     </div>
     <div id="main" class="container">
+        @Html.Partial("Flash")
         @RenderBody()
     </div>
     <script id="dsq-count-scr" src="//snittlistan.disqus.com/count.js" async></script>

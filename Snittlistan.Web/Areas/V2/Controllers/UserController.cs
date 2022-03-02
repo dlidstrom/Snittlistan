@@ -13,10 +13,6 @@ public class UserController : AbstractController
 {
     private readonly IAuthenticationService authenticationService;
 
-    /// <summary>
-    /// Initializes a new instance of the UserController class.
-    /// </summary>
-    /// <param name="authenticationService">Authentication service.</param>
     public UserController(IAuthenticationService authenticationService)
     {
         this.authenticationService = authenticationService;

@@ -78,6 +78,21 @@ public abstract class AbstractController : Controller
         }
     }
 
+    public void FlashInfo(string message)
+    {
+        TempData["info"] = message;
+    }
+
+    public void FlashWarning(string message)
+    {
+        TempData["warning"] = message;
+    }
+
+    public void FlashError(string message)
+    {
+        TempData["error"] = message;
+    }
+
     private CommandExecutor CreateCommandExecutor()
     {
         return new CommandExecutor(
