@@ -1,11 +1,12 @@
-﻿using System.Text;
+﻿#nullable enable
+
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 
-#nullable enable
-
 namespace Snittlistan.Web.HtmlHelpers;
+
 public static class HtmlHelperExtensions
 {
     private static readonly JsonSerializerSettings defaultSettings = new() { Formatting = Formatting.Indented };

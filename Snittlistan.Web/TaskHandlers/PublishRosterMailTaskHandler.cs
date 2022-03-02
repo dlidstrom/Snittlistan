@@ -15,6 +15,7 @@ public class PublishRosterMailTaskHandler
             payload.RecipientEmail,
             payload.RecipientName,
             payload.ReplyToEmail,
-            payload.RosterLink);
+            payload.RosterLink,
+            payload.UserProfileLink);
     }
 }

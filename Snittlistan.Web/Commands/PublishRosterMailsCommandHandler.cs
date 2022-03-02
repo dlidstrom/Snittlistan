@@ -5,7 +5,6 @@ using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Database;
 using Snittlistan.Web.Models;
-using System.Data.Entity;
 
 namespace Snittlistan.Web.Commands;
 
@@ -44,19 +43,59 @@ public class PublishRosterMailsCommandHandler : CommandHandler<PublishRosterMail
             playersDict[editPlayer.Id] = editPlayer;
         }
 
+        // only send to players that have accepted email, or have not yet decided
+        string[] propertyKeys = affectedPlayers.Select(UserSettings.GetKey).ToArray();
+        Dictionary<string, UserSettings> properties =
+            Enumerable.ToDictionary(
+                await CompositionRoot.Databases.Snittlistan.KeyValueProperties.Where(
+                    x => propertyKeys.Contains(x.Key))
+                .ToArrayAsync(),
+                x => x.Key,
+                x => (UserSettings)x.Value);
+
         foreach (string playerId in affectedPlayers)
         {
             Player player = playersDict[playerId];
-            if (string.IsNullOrEmpty(player.Email) == false)
+            do
             {
+                if (properties.TryGetValue(
+                    UserSettings.GetKey(playerId),
+                    out UserSettings? settings))
+                {
+                    Logger.InfoFormat(
+                        "found user settings for {playerId} {@settings}",
+                        playerId,
+                        settings);
+                }
+                else
+                {
+                    Logger.InfoFormat(
+                        "no user settings found for {playerId}",
+                        playerId);
+                }
+
+                if (string.IsNullOrEmpty(player.Email))
+                {
+                    Logger.InfoFormat("no email set for player {playerId}", playerId);
+                    break;
+                }
+
+                if ((settings?.RosterMailEnabled ?? true) == false)
+                {
+                    Logger.InfoFormat("roster mail disabled for player {playerId}");
+                    break;
+                }
+
                 PublishRosterMailTask message = new(
                     context.Payload.RosterKey,
                     player.Email,
                     player.Nickname ?? player.Name,
                     replyToEmail,
-                    context.Payload.RosterLink);
+                    context.Payload.RosterLink,
+                    context.Payload.UserProfileLink);
                 context.PublishMessage(message);
             }
+            while (false);
         }
 
         RosterMail rosterMail =
@@ -67,5 +106,6 @@ public class PublishRosterMailsCommandHandler : CommandHandler<PublishRosterMail
 
     public record Command(
         string RosterKey,
-        Uri RosterLink);
+        Uri RosterLink,
+        Uri UserProfileLink);
 }

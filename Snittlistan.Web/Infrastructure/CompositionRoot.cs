@@ -5,7 +5,7 @@ using EventStoreLite;
 using Postal;
 using Snittlistan.Web.Infrastructure.Bits;
 using Snittlistan.Web.Infrastructure.Database;
-using System.Data.Entity;
+using Snittlistan.Web.Models;
 
 namespace Snittlistan.Web.Infrastructure;
 
