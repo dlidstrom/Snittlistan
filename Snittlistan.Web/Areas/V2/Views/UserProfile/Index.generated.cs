@@ -152,7 +152,7 @@ WriteLiteral("            <div class=\"control-group\">\r\n                <div 
 
             
             #line 48 "..\..\Areas\V2\Views\UserProfile\Index.cshtml"
-                        Write(Url.Action("Index", "AdminTasks"));
+                        Write(Url.Action());
 
             
             #line default
