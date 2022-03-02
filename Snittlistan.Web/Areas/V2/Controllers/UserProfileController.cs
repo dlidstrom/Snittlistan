@@ -66,7 +66,7 @@ public class UserProfileController : AbstractController
         public bool AbsenceMailEnabled { get; set; }
 
         [Display(
-            Name = "Matchresultat",
+            Name = "Match-resultat",
             GroupName = "Notifieringar")]
         public bool MatchResultMailEnabled { get; set; }
     }

@@ -7,6 +7,4 @@ public class EditRosterPlayersViewModel
     public RosterViewModel? RosterViewModel { get; set; }
 
     public PlayerViewModel[]? AvailablePlayers { get; set; }
-
-    public bool RosterMailEnabled { get; set; }
 }

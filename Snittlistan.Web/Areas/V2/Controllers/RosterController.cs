@@ -396,8 +396,7 @@ public class RosterController : AbstractController
         EditRosterPlayersViewModel vm = new()
         {
             RosterViewModel = CompositionRoot.DocumentSession.LoadRosterViewModel(roster),
-            AvailablePlayers = availablePlayers.Select(x => new PlayerViewModel(x, WebsiteRoles.UserGroup().ToDict())).ToArray(),
-            RosterMailEnabled = features?.RosterMailEnabled ?? false
+            AvailablePlayers = availablePlayers.Select(x => new PlayerViewModel(x, WebsiteRoles.UserGroup().ToDict())).ToArray()
         };
         return View(vm);
     }
@@ -480,7 +479,7 @@ public class RosterController : AbstractController
         roster.UpdateWith(CompositionRoot.CorrelationId, update);
 
         TenantFeatures? features = await CompositionRoot.GetFeatures();
-        if (vm.SendUpdateMail && (features?.RosterMailEnabled ?? false))
+        if (features?.RosterMailEnabled ?? false)
         {
             if (roster.Preliminary)
             {
