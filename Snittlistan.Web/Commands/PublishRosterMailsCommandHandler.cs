@@ -82,7 +82,7 @@ public class PublishRosterMailsCommandHandler : CommandHandler<PublishRosterMail
 
                 if ((settings?.RosterMailEnabled ?? true) == false)
                 {
-                    Logger.InfoFormat("roster mail disabled for player {playerId}");
+                    Logger.InfoFormat("roster mail disabled for player {playerId}", playerId);
                     break;
                 }
 
