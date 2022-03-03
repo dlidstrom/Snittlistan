@@ -476,39 +476,59 @@ public class RosterController : AbstractController
             update.TeamLeader = new Some<string?>(null);
         }
 
-        roster.UpdateWith(CompositionRoot.CorrelationId, update);
-
-        TenantFeatures? features = await CompositionRoot.GetFeatures();
-        if (features?.RosterMailEnabled ?? false)
+        do
         {
+            AuditLogEntry? auditLogEntry = roster.UpdateWith(CompositionRoot.CorrelationId, update);
+            if (auditLogEntry is null)
+            {
+                Logger.InfoFormat(
+                    "roster saved without any registered changes: {rosterId} {@vm}",
+                    rosterId,
+                    vm);
+                break;
+            }
+
+            TenantFeatures? features = await CompositionRoot.GetFeatures();
+            if ((features?.RosterMailEnabled ?? false) == false)
+            {
+                Logger.Info("RosterMailEnabled evaluated to false");
+                break;
+            }
+
             if (roster.Preliminary)
             {
-                Logger.Warn("Roster is preliminary, not sending requested update mail");
+                Logger.InfoFormat(
+                    "Roster is preliminary, not sending requested update mail: {rosterId}",
+                    rosterId);
+                break;
             }
-            else if (roster.Date < SystemTime.UtcNow.ToLocalTime())
-            {
-                Logger.Warn("Roster date has passed, not sending requested update mail");
-            }
-            else
-            {
-                string uriString = Url.Action(
-                    "View",
-                    "Roster",
-                    new { roster.Season, roster.Turn });
-                string portPart =
-                    Request.Url.Port == 80
-                    ? string.Empty
-                    : $":{Request.Url.Port}";
-                Uri rosterLink = CreateLink("View", "Roster", new { roster.Season, roster.Turn });
-                Uri userProfileLink = CreateLink("Index", "UserProfile");
 
-                await ExecuteCommand(
-                    new CreateRosterMailCommandHandler.Command(
-                        rosterId,
-                        rosterLink,
-                        userProfileLink));
+            if (roster.Date < SystemTime.UtcNow.ToLocalTime())
+            {
+                Logger.WarnFormat(
+                    "Roster date has passed, not sending requested update mail: {rosterId}",
+                    rosterId);
+                break;
             }
+
+            string uriString = Url.Action(
+                "View",
+                "Roster",
+                new { roster.Season, roster.Turn });
+            string portPart =
+                Request.Url.Port == 80
+                ? string.Empty
+                : $":{Request.Url.Port}";
+            Uri rosterLink = CreateLink("View", "Roster", new { roster.Season, roster.Turn });
+            Uri userProfileLink = CreateLink("Index", "UserProfile");
+
+            await ExecuteCommand(
+                new CreateRosterMailCommandHandler.Command(
+                    rosterId,
+                    rosterLink,
+                    userProfileLink));
         }
+        while (false);
 
         return RedirectToAction("View", new { season = roster.Season, turn = roster.Turn });
     }
