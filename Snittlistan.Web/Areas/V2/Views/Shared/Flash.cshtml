@@ -1,0 +1,18 @@
+﻿@if (Html.ViewContext.TempData["info"] != null)
+{
+    <div class="alert alert-success">
+        @Html.ViewContext.TempData["info"]
+    </div>
+}
+@if (Html.ViewContext.TempData["warning"] != null)
+{
+    <div class="alert alert-danger">
+        @Html.ViewContext.TempData["warning"]
+    </div>
+}
+@if (Html.ViewContext.TempData["error"] != null)
+{
+    <div class="alert alert-error">
+        @Html.ViewContext.TempData["error"]
+    </div>
+}

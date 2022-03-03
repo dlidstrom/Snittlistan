@@ -9,7 +9,7 @@ insert_final_newline = true
 charset = utf-8-bom
 
 [*.{cs,fsx}]
-guidelines = 100 2.5px solid 40ff0000
+guidelines = 100 2px dotted black
 
 # Code files
 [*.cs]

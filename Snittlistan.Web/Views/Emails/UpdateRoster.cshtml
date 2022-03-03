@@ -8,6 +8,14 @@ Content-Type: text/html; charset=utf-8
 
 <html>
 <head>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
     <p>Hej @Model.Name!</p>
@@ -73,7 +81,8 @@ Content-Type: text/html; charset=utf-8
     </p>
     <footer>
         <small>
-            Det här är ett automatiskt mail som skickats från Snittlistan.
+            Det här är ett automatiskt mail som skickats från Snittlistan till @Model.PlayerEmail.
+            Du kan ändra inställningarna för mail-utskick <a href="@Model.UserProfileLink">här</a>.
         </small>
     </footer>
 </body>
