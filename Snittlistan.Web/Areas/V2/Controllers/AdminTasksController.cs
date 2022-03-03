@@ -1,9 +1,5 @@
 ﻿#nullable enable
 
-using System.Data.Entity;
-using System.Diagnostics;
-using System.Web;
-using System.Web.Mvc;
 using EventStoreLite;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
@@ -16,6 +12,9 @@ using Snittlistan.Web.Infrastructure.Database;
 using Snittlistan.Web.Infrastructure.Indexes;
 using Snittlistan.Web.Models;
 using Snittlistan.Web.Services;
+using System.Diagnostics;
+using System.Web;
+using System.Web.Mvc;
 
 namespace Snittlistan.Web.Areas.V2.Controllers;
 
@@ -260,7 +259,7 @@ public class AdminTasksController : AdminController
         KeyValueProperty? settingsProperty =
             await CompositionRoot.Databases.Snittlistan.KeyValueProperties.SingleOrDefaultAsync(
                 x => x.Key == TenantFeatures.Key && x.TenantId == CompositionRoot.CurrentTenant.TenantId);
-        if (settingsProperty != null)
+        if (settingsProperty is not null)
         {
             return View(new TenantFeaturesViewModel((TenantFeatures)settingsProperty.Value));
         }

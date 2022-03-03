@@ -913,60 +913,13 @@ WriteLiteral("\r\n                    <span class=\"help-block\">\r\n           
 "         </div>\r\n");
 
 
-            
-            #line 212 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
-            if (Model.RosterMailEnabled)
-            {
 
-            
-            #line default
-            #line hidden
-WriteLiteral("                <div class=\"control-group\">\r\n                    ");
-
-
-            
-            #line 215 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
-               Write(Html.Label(
-                        "SendUpdateMail",
-                        "Skicka mail till spelarna",
-                        new { @class = "control-label" }));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n                    <div class=\"controls\">\r\n                        ");
-
-
-            
-            #line 220 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
-                   Write(Html.CheckBox("SendUpdateMail", false));
-
-            
-            #line default
-            #line hidden
-WriteLiteral(@"
-                        <span class=""help-block"">
-                            Ett mail med uttagningen och uppmaning om att
-                            acceptera kommer skickas till alla uttagna spelare.
-                        </span>
-                    </div>
-                </div>
-");
-
-
-            
-            #line 227 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
-            }
-
-            
-            #line default
-            #line hidden
 WriteLiteral("            <div class=\"form-actions\">\r\n                <button class=\"btn btn-pr" +
 "imary btn-large\" type=\"submit\">Spara</button>\r\n                ");
 
 
             
-            #line 230 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
+            #line 214 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
            Write(Html.ActionLink("Avbryt", "View", new { season = Model.RosterViewModel.Season, turn = Model.RosterViewModel.Turn }, new { @class = "btn btn-large" }));
 
             
@@ -976,7 +929,7 @@ WriteLiteral("\r\n            </div>\r\n");
 
 
             
-            #line 232 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
+            #line 216 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
         }
 
             
@@ -986,7 +939,7 @@ WriteLiteral("    </div>\r\n</div>\r\n");
 
 
             
-            #line 235 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
+            #line 219 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
 Write(Html.Action("PlayerStatus", new
 {
     turn = Model.RosterViewModel.Turn,
