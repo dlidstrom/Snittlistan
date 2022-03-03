@@ -40,8 +40,6 @@ public class RosterPlayersViewModel : IValidatableObject
 
     public string? TeamLeader { get; set; }
 
-    public bool SendUpdateMail { get; set; }
-
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         HashSet<string> hash;

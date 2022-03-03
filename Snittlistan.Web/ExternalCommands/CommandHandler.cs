@@ -1,6 +1,5 @@
 ﻿#nullable enable
 
-using System.Data.Entity;
 using Snittlistan.Queue.ExternalCommands;
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Infrastructure;

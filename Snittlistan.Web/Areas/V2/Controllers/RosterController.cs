@@ -1,12 +1,5 @@
 ﻿#nullable enable
 
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Text;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Mvc.Html;
-using Snittlistan.Web.Infrastructure.Bits;
 using Raven.Abstractions;
 using Raven.Client;
 using Rotativa;
@@ -14,12 +7,18 @@ using Rotativa.Options;
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Areas.V2.Indexes;
 using Snittlistan.Web.Areas.V2.ViewModels;
+using Snittlistan.Web.Commands;
 using Snittlistan.Web.Controllers;
 using Snittlistan.Web.Helpers;
-using Snittlistan.Web.Infrastructure.Database;
-using Snittlistan.Web.Models;
 using Snittlistan.Web.Infrastructure;
-using Snittlistan.Web.Commands;
+using Snittlistan.Web.Infrastructure.Bits;
+using Snittlistan.Web.Models;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.Text;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Mvc.Html;
 
 namespace Snittlistan.Web.Areas.V2.Controllers;
 
@@ -287,8 +286,10 @@ public class RosterController : AbstractController
             turn = rosters.Select(x => x.Turn).FirstOrDefault();
         }
 
-        Roster[] rostersForTurn = CompositionRoot.DocumentSession.Query<Roster, RosterSearchTerms>()
-            .Include(roster => roster.Players)
+        Roster[] rostersForTurn =
+            LinqExtensions.Include(
+                CompositionRoot.DocumentSession.Query<Roster, RosterSearchTerms>(),
+                roster => roster.Players)
             .Where(roster => roster.Turn == turn && roster.Season == season)
             .ToArray();
         RosterViewModel[] rosterViewModels = rostersForTurn.Select(CompositionRoot.DocumentSession.LoadRosterViewModel)
@@ -329,8 +330,10 @@ public class RosterController : AbstractController
         bool withAbsence,
         bool excludePreliminary)
     {
-        Roster[] rostersForTurn = CompositionRoot.DocumentSession.Query<Roster, RosterSearchTerms>()
-            .Include(roster => roster.Players)
+        Roster[] rostersForTurn =
+            LinqExtensions.Include(
+                CompositionRoot.DocumentSession.Query<Roster, RosterSearchTerms>(),
+                roster => roster.Players)
             .Where(roster => roster.Turn == turn && roster.Season == season)
             .ToArray()
             .Where(roster => (roster.Preliminary == false || excludePreliminary == false)
@@ -393,8 +396,7 @@ public class RosterController : AbstractController
         EditRosterPlayersViewModel vm = new()
         {
             RosterViewModel = CompositionRoot.DocumentSession.LoadRosterViewModel(roster),
-            AvailablePlayers = availablePlayers.Select(x => new PlayerViewModel(x, WebsiteRoles.UserGroup().ToDict())).ToArray(),
-            RosterMailEnabled = features?.RosterMailEnabled ?? false
+            AvailablePlayers = availablePlayers.Select(x => new PlayerViewModel(x, WebsiteRoles.UserGroup().ToDict())).ToArray()
         };
         return View(vm);
     }
@@ -474,35 +476,59 @@ public class RosterController : AbstractController
             update.TeamLeader = new Some<string?>(null);
         }
 
-        roster.UpdateWith(CompositionRoot.CorrelationId, update);
-
-        TenantFeatures? features = await CompositionRoot.GetFeatures();
-        if (vm.SendUpdateMail && (features?.RosterMailEnabled ?? false))
+        do
         {
+            AuditLogEntry? auditLogEntry = roster.UpdateWith(CompositionRoot.CorrelationId, update);
+            if (auditLogEntry is null)
+            {
+                Logger.InfoFormat(
+                    "roster saved without any registered changes: {rosterId} {@vm}",
+                    rosterId,
+                    vm);
+                break;
+            }
+
+            TenantFeatures? features = await CompositionRoot.GetFeatures();
+            if ((features?.RosterMailEnabled ?? false) == false)
+            {
+                Logger.Info("RosterMailEnabled evaluated to false");
+                break;
+            }
+
             if (roster.Preliminary)
             {
-                Logger.Warn("Roster is preliminary, not sending requested update mail");
+                Logger.InfoFormat(
+                    "Roster is preliminary, not sending requested update mail: {rosterId}",
+                    rosterId);
+                break;
             }
-            else if (roster.Date < SystemTime.UtcNow.ToLocalTime())
+
+            if (roster.Date < SystemTime.UtcNow.ToLocalTime())
             {
-                Logger.Warn("Roster date has passed, not sending requested update mail");
+                Logger.WarnFormat(
+                    "Roster date has passed, not sending requested update mail: {rosterId}",
+                    rosterId);
+                break;
             }
-            else
-            {
-                string uriString = Url.Action(
-                    "View",
-                    "Roster",
-                    new { roster.Season, roster.Turn });
-                string portPart =
-                    Request.Url.Port == 80
-                    ? string.Empty
-                    : $":{Request.Url.Port}";
-                Uri rosterLink = new(
-                    $"{Request.Url.Scheme}://{Request.Url.Host}{portPart}{uriString}");
-                await ExecuteCommand(
-                    new CreateRosterMailCommandHandler.Command(rosterId, rosterLink));
-            }
+
+            string uriString = Url.Action(
+                "View",
+                "Roster",
+                new { roster.Season, roster.Turn });
+            string portPart =
+                Request.Url.Port == 80
+                ? string.Empty
+                : $":{Request.Url.Port}";
+            Uri rosterLink = CreateLink("View", "Roster", new { roster.Season, roster.Turn });
+            Uri userProfileLink = CreateLink("Index", "UserProfile");
+
+            await ExecuteCommand(
+                new CreateRosterMailCommandHandler.Command(
+                    rosterId,
+                    rosterLink,
+                    userProfileLink));
         }
+        while (false);
 
         return RedirectToAction("View", new { season = roster.Season, turn = roster.Turn });
     }

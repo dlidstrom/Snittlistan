@@ -63,14 +63,20 @@ public class AuthenticationController : AbstractController
                         || x.PlayerStatus == Player.Status.Supporter)
                     .ToArray();
                 players = possiblePlayers
-                    .Where(x => x.Email is not null)
-                    .Select(x => new PossiblePlayer(x, x.Email.EditDistanceTo(vm.Email)))
-                    .Where(x => x.EditDistance <= 3)
-                    .OrderBy(x => x.EditDistance)
-                    .Take(1)
-                    .Select(x => x.Player)
-                    .ToArray()
-                    ?? Array.Empty<Player>();
+                    .Where(x => x.Email == vm.Email)
+                    .ToArray();
+                if (players.Length > 1)
+                {
+                    players = possiblePlayers
+                        .Where(x => x.Email is not null)
+                        .Select(x => new PossiblePlayer(x, x.Email.EditDistanceTo(vm.Email)))
+                        .Where(x => x.EditDistance <= 3)
+                        .OrderBy(x => x.EditDistance)
+                        .Take(1)
+                        .Select(x => x.Player)
+                        .ToArray()
+                        ?? Array.Empty<Player>();
+                }
             }
 
             if (players.Length == 0)
@@ -346,6 +352,7 @@ public class AuthenticationController : AbstractController
         [Display(Name = "Lösenord")]
         public string Password { get; set; } = null!;
 
+        [Display(Name = "Kom ihåg mig")]
         public bool RememberMe { get; set; }
 
         public string OneTimeKey { get; set; } = null!;

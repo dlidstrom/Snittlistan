@@ -1,4 +1,6 @@
-﻿using System.Web;
+﻿#nullable enable
+
+using System.Web;
 using System.Web.Mvc;
 using Snittlistan.Web.Areas.V2.ViewModels;
 using Snittlistan.Web.Controllers;
@@ -6,20 +8,14 @@ using Snittlistan.Web.Models;
 using Snittlistan.Web.Services;
 
 namespace Snittlistan.Web.Areas.V2.Controllers;
-/// <summary>
-/// User administration.
-/// </summary>
+
 public class UserController : AbstractController
 {
     private readonly IAuthenticationService authenticationService;
 
-    /// <summary>
-    /// Initializes a new instance of the UserController class.
-    /// </summary>
-    /// <param name="authenticationService">Authentication service.</param>
     public UserController(IAuthenticationService authenticationService)
     {
-        this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+        this.authenticationService = authenticationService;
     }
 
     public ActionResult SetPassword(string id, string activationKey)
