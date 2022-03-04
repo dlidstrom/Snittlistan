@@ -4,7 +4,6 @@ using Castle.Core.Logging;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Database;
 using Snittlistan.Web.Models;
-using System.Data.Entity;
 using System.Web.Caching;
 
 namespace Snittlistan.Web.Commands;

@@ -1,9 +1,10 @@
-﻿using Raven.Abstractions;
+﻿#nullable enable
+
+using Raven.Abstractions;
 using Raven.Client;
 
-#nullable enable
-
 namespace Snittlistan.Web.Areas.V2.Domain;
+
 public class Roster : IAuditLogCapable
 {
     private string? teamLevel;
@@ -141,7 +142,7 @@ public class Roster : IAuditLogCapable
 
     public bool MatchTimeChanged { get; set; }
 
-    public void UpdateWith(Guid correlationId, Update update)
+    public AuditLogEntry? UpdateWith(Guid correlationId, Update update)
     {
         Change change = new(update.ChangeType, update.UserId);
         RosterState before = GetState();
@@ -242,15 +243,21 @@ public class Roster : IAuditLogCapable
             },
             () => { });
 
-        RosterState after = GetState();
-        AuditLogEntry auditLogEntry = new(
-            change.UserId,
-            change.ChangeType.ToString(),
-            correlationId == default ? Guid.NewGuid() : correlationId,
-            change,
-            before,
-            after);
-        AuditLogEntries.Add(auditLogEntry);
+        AuditLogEntry? auditLogEntry = null;
+        if (change.HasChanges)
+        {
+            RosterState after = GetState();
+            auditLogEntry = new(
+                change.UserId,
+                change.ChangeType.ToString(),
+                correlationId == default ? Guid.NewGuid() : correlationId,
+                change,
+                before,
+                after);
+            AuditLogEntries.Add(auditLogEntry);
+        }
+
+        return auditLogEntry;
     }
 
     private void Accept(string playerId)
@@ -321,31 +328,48 @@ public class Roster : IAuditLogCapable
                         List<string> changes = new();
                         if (change.Preliminary is not null)
                         {
-                            changes.Add($"{(change.Preliminary.NewValue ? "Gjordes preliminär" : "Inte längre preliminär")}");
+                            string text =
+                                change.Preliminary.NewValue
+                                ? "Gjordes preliminär"
+                                : "Inte längre preliminär";
+                            changes.Add(text);
                         }
 
                         if (change.Players is not null)
                         {
-                            string?[] outOfTeam = change.Players.OldValue.Except(change.Players.NewValue).Select(PlayerName).ToArray();
-                            string?[] intoTeam = change.Players.NewValue.Except(change.Players.OldValue).Select(PlayerName).ToArray();
+                            string?[] outOfTeam = change.Players.OldValue
+                                .Except(change.Players.NewValue)
+                                .Select(PlayerName)
+                                .ToArray();
+                            string?[] intoTeam = change.Players.NewValue
+                                .Except(change.Players.OldValue)
+                                .Select(PlayerName)
+                                .ToArray();
                             if (outOfTeam.Length == 0)
                             {
                                 if (intoTeam.Length is 1 or 2)
                                 {
                                     changes.Add($"Tog ut reserv {string.Join(", ", intoTeam)}");
                                 }
+                                else if (outOfTeam.Length == intoTeam.Length)
+                                {
+                                    changes.Add("Ändrade ordningen i laget");
+                                }
                                 else
                                 {
                                     changes.Add($"Tog ut lag {string.Join(", ", intoTeam)}");
                                 }
                             }
-                            else if ((outOfTeam.Length == 1 || outOfTeam.Length == 2) && intoTeam.Length == 0)
+                            else if ((outOfTeam.Length == 1 || outOfTeam.Length == 2)
+                                && intoTeam.Length == 0)
                             {
                                 changes.Add($"Tog bort reserv {string.Join(", ", outOfTeam)}");
                             }
                             else
                             {
-                                changes.Add($"Ändrade spelare ({string.Join(", ", outOfTeam)} byttes mot {string.Join(", ", intoTeam)})");
+                                string replaced = string.Join(", ", outOfTeam);
+                                string inserted = string.Join(", ", intoTeam);
+                                changes.Add($"Ändrade spelare ({replaced} byttes mot {inserted})");
                             }
                         }
 
@@ -353,11 +377,13 @@ public class Roster : IAuditLogCapable
                         {
                             if (change.TeamLeader.NewValue is not null)
                             {
-                                changes.Add($"Valde {PlayerName(change.TeamLeader.NewValue)} till lagledare");
+                                string leader = PlayerName(change.TeamLeader.NewValue);
+                                changes.Add($"Valde {leader} till lagledare");
                             }
                             else
                             {
-                                changes.Add($"Tog bort {PlayerName(change.TeamLeader?.OldValue)} som lagledare");
+                                string replaced = PlayerName(change.TeamLeader?.OldValue);
+                                changes.Add($"Tog bort {replaced} som lagledare");
                             }
                         }
 
@@ -365,9 +391,10 @@ public class Roster : IAuditLogCapable
                         break;
                     }
 
-                    string? PlayerName(string? playerId)
+                    string PlayerName(string? playerId)
                     {
-                        return documentSession.Load<Player>(playerId)?.Nickname;
+                        Player player = documentSession.Load<Player>(playerId);
+                        return player?.Nickname ?? player?.Name ?? "?";
                     }
 
                 default:
@@ -389,16 +416,27 @@ public class Roster : IAuditLogCapable
 
     public class Change
     {
-        public Change(
-            ChangeType changeType,
-            string userId)
+        public Change(ChangeType changeType, string userId)
         {
             ChangeType = changeType;
             UserId = userId;
         }
 
         public ChangeType ChangeType { get; }
+
         public string UserId { get; }
+
+        public bool HasChanges =>
+            PlayerAccepted is not null
+            || OilPattern is not null
+            || Date is not null
+            || Opponent is not null
+            || Location is not null
+            || Players is not null
+            || IsVerified is not null
+            || Preliminary is not null
+            || TeamLeader is not null;
+
         public AuditLogEntry.PropertyChange<string?>? PlayerAccepted { get; set; }
         public AuditLogEntry.PropertyChange<OilPatternInformation?>? OilPattern { get; set; }
         public AuditLogEntry.PropertyChange<DateTime>? Date { get; set; }

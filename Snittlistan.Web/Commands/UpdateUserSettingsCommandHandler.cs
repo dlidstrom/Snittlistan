@@ -6,13 +6,14 @@ using Snittlistan.Web.Models;
 
 namespace Snittlistan.Web.Commands;
 
-public class UpdateFeaturesCommandHandler : CommandHandler<UpdateFeaturesCommandHandler.Command>
+public class UpdateUserSettingsCommandHandler
+    : CommandHandler<UpdateUserSettingsCommandHandler.Command>
 {
     public override async Task Handle(HandlerContext<Command> context)
     {
         KeyValueProperty? settingsProperty =
             await CompositionRoot.Databases.Snittlistan.KeyValueProperties.SingleOrDefaultAsync(
-                x => x.Key == TenantFeatures.Key
+                x => x.Key == context.Payload.Key
                     && x.TenantId == CompositionRoot.CurrentTenant.TenantId);
 
         if (settingsProperty == null)
@@ -20,15 +21,20 @@ public class UpdateFeaturesCommandHandler : CommandHandler<UpdateFeaturesCommand
             settingsProperty = CompositionRoot.Databases.Snittlistan.KeyValueProperties.Add(
                 new(
                     CompositionRoot.CurrentTenant.TenantId,
-                    TenantFeatures.Key,
-                    new TenantFeatures(context.Payload.RosterMailEnabled)));
+                    context.Payload.Key,
+                    new UserSettings(
+                        context.Payload.RosterMailEnabled,
+                        context.Payload.AbsenceMailEnabled,
+                        context.Payload.MatchResultMailEnabled)));
         }
         else
         {
-            settingsProperty.ModifyValue<TenantFeatures>(
+            settingsProperty.ModifyValue<UserSettings>(
                 x => x with
                 {
-                    RosterMailEnabled = context.Payload.RosterMailEnabled
+                    RosterMailEnabled = context.Payload.RosterMailEnabled,
+                    AbsenceMailEnabled = context.Payload.AbsenceMailEnabled,
+                    MatchResultMailEnabled = context.Payload.MatchResultMailEnabled
                 },
                 x => Logger.InfoFormat("before: {@x}", x),
                 x => Logger.InfoFormat("after: {@x}", x));
@@ -36,5 +42,8 @@ public class UpdateFeaturesCommandHandler : CommandHandler<UpdateFeaturesCommand
     }
 
     public record Command(
-        bool RosterMailEnabled);
+        string Key,
+        bool RosterMailEnabled,
+        bool AbsenceMailEnabled,
+        bool MatchResultMailEnabled);
 }
