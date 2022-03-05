@@ -139,9 +139,18 @@ public class AuthenticationController : AbstractController
             {
                 ViewBag.PlayerId = CompositionRoot.DocumentSession.CreatePlayerSelectList(
                     getPlayers: () => players,
-                    textFormatter: p => $"{p.Name} ({p.Nickname})");
+                    textFormatter: p =>
+                    {
+                        if (p.Name != p.Nickname)
+                        {
+                            return $"{p.Name} ({p.Nickname})";
+                        }
+
+                        return p.Name;
+                    });
                 NotifyEvent(
-                    $"{vm.Email} - Select from multiple {string.Join(", ", players.Select(x => $"{x.Name} ({x.Email})"))}");
+                    $"{vm.Email} - Select from multiple",
+                    $"{string.Join(", ", players.Select(x => $"{x.Name} ({x.Email})"))}");
                 return View();
             }
             else
