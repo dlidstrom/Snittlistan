@@ -1028,347 +1028,347 @@
     <Content Include="Content\js\feedback.js" />
     <Content Include="Areas\V1\Views\Web.config" />
     <Content Include="Areas\V2\Views\Web.config" />
-    <Content Include="Areas\V2\Views\_ViewStart.cshtml">
+    <None Include="Areas\V2\Views\_ViewStart.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Shared\Error.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Shared\Error.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Error.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Shared\NotFound.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Shared\NotFound.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>NotFound.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Roster\Edit.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Roster\Edit.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Edit.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Roster\_RosterEditor.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Roster\_RosterEditor.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_RosterEditor.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Player\Index.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Player\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Player\Create.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Player\Create.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Create.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Player\_PlayerEditor.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Player\_PlayerEditor.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_PlayerEditor.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Player\Edit.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Player\Edit.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Edit.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Player\Delete.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Player\Delete.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Delete.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Roster\View.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Roster\View.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>View.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Roster\DisplayTemplates\Players.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Roster\DisplayTemplates\Players.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Players.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Roster\EditPlayers.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Roster\EditPlayers.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>EditPlayers.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\AdminTasks\_UserEditor.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\AdminTasks\_UserEditor.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_UserEditor.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Shared\DisplayTemplates\ValidationSummary.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Shared\DisplayTemplates\ValidationSummary.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>ValidationSummary.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\AdminTasks\ActivateUser.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\AdminTasks\ActivateUser.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>ActivateUser.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\User\SetPassword.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\User\SetPassword.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>SetPassword.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\AdminTasks\ResetIndexes.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\AdminTasks\ResetIndexes.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>ResetIndexes.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Absence\Index.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Absence\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Absence\Create.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Absence\Create.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Create.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Absence\_AbsenceEditor.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Absence\_AbsenceEditor.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_AbsenceEditor.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Absence\Edit.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Absence\Edit.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Edit.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Absence\Delete.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Absence\Delete.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Delete.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\MatchResult\Index.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\MatchResult\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\MatchResultAdmin\Register.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\MatchResultAdmin\Register.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Register.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\AdminTasks\Index.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\AdminTasks\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\AdminTasks\SendMail.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\AdminTasks\SendMail.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>SendMail.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\AdminTasks\_Layout.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\AdminTasks\_Layout.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Layout.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\AdminTasks\_ViewStart.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\AdminTasks\_ViewStart.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\AdminTasks\ReplayEvents.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\AdminTasks\ReplayEvents.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>ReplayEvents.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\MatchResult\Details.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\MatchResult\Details.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Details.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\AdminTasks\MigrateEvents.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\AdminTasks\MigrateEvents.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>MigrateEvents.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\AdminTasks\EventStoreActions.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\AdminTasks\EventStoreActions.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>EventStoreActions.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\MatchResult\DisplayTemplates\Header.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\MatchResult\DisplayTemplates\Header.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Header.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Shared\DisplayTemplates\ResultSeriesReadModel.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Shared\DisplayTemplates\ResultSeriesReadModel.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>ResultSeriesReadModel.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\MatchResult\_Layout.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\MatchResult\_Layout.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Layout.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\MatchResult\_ViewStart.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\MatchResult\_ViewStart.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\MatchResult\Turns.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\MatchResult\Turns.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Turns.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\MatchResult\_BitsSerieEditor.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\MatchResult\_BitsSerieEditor.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_BitsSerieEditor.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Roster\Unscheduled.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Roster\Unscheduled.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Unscheduled.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\MatchResult\_Turns.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\MatchResult\_Turns.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Turns.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\MatchResult\Details4.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\MatchResult\Details4.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Details4.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\MatchResult\DisplayTemplates\Result4.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\MatchResult\DisplayTemplates\Result4.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Result4.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\MatchResult\_Form.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\MatchResult\_Form.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Form.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Roster\Absences.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Roster\Absences.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Absences.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Roster\PlayerStatus.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Roster\PlayerStatus.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>PlayerStatus.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Roster\Print.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Roster\Print.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Print.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Absence\AbsenceTable.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Absence\AbsenceTable.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>AbsenceTable.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Roster\_Register.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Roster\_Register.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Register.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Roster\CreateBits.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Roster\CreateBits.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>CreateBits.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\MatchResult\EditMedals.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\MatchResult\EditMedals.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>EditMedals.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\MatchResult\EliteMedals.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\MatchResult\EliteMedals.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>EliteMedals.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\MatchResult\_MedalsEditor.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\MatchResult\_MedalsEditor.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_MedalsEditor.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <Content Include=".well-known\acme-challenge\Web.Config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Areas\V2\Views\Layout\NavPart.cshtml">
+    <None Include="Areas\V2\Views\Layout\NavPart.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>NavPart.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\MatchResult\Form.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\MatchResult\Form.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Form.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\AdminTasks\Raven.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\AdminTasks\Raven.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Raven.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Shared\_BitsIframe.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Shared\_BitsIframe.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_BitsIframe.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\MatchResult\BitsMatchResult.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\MatchResult\BitsMatchResult.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>BitsMatchResult.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <Content Include="App_Browsers\qt.browser" />
-    <Content Include="Areas\V2\Views\Shared\_Layout.cshtml">
+    <None Include="Areas\V2\Views\Shared\_Layout.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Layout.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <Content Include="Content\css\images\image1.pdf" />
-    <Content Include="Areas\V2\Views\MatchResultAdmin\RegisterMatchEditor.cshtml">
+    <None Include="Areas\V2\Views\MatchResultAdmin\RegisterMatchEditor.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>RegisterMatchEditor.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\MatchResultAdmin\RegisterMatch4Editor.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\MatchResultAdmin\RegisterMatch4Editor.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>RegisterMatch4Editor.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Shared\DisplayTemplates\RosterHeaderViewModel.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Shared\DisplayTemplates\RosterHeaderViewModel.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>RosterHeaderViewModel.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\MatchResultAdmin\EditorTemplates\Match4PostModel.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\MatchResultAdmin\EditorTemplates\Match4PostModel.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Match4PostModel.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>IndexHeader.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Authentication\LogOnPassword.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Authentication\LogOnPassword.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>LogOnPassword.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Authentication\EmailSent.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Authentication\EmailSent.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>EmailSent.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\AdminRosterAccept\AcceptPlayer.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\AdminRosterAccept\AcceptPlayer.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>AcceptPlayer.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Authentication\TokenExpired.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Authentication\TokenExpired.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>TokenExpired.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\ActivityIndex\Index.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\ActivityIndex\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\ActivityEdit\Edit.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\ActivityEdit\Edit.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Edit.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\ActivityEdit\Create.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\ActivityEdit\Create.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Create.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\ActivityEdit\Delete.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\ActivityEdit\Delete.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Delete.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\ActivityEdit\_ActivityEditor.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\ActivityEdit\_ActivityEditor.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_ActivityEditor.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Shared\DisplayTemplates\ActivityViewModel.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Shared\DisplayTemplates\ActivityViewModel.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>ActivityViewModel.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Shared\_TurnViewModel.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Shared\_TurnViewModel.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_TurnViewModel.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\ActivityDetails\Index.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\ActivityDetails\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <Content Include="Content\external\quill\quill.min.js.map" />
-    <Content Include="Areas\V2\Views\Authentication\LogOnOneTimePassword.cshtml">
+    <None Include="Areas\V2\Views\Authentication\LogOnOneTimePassword.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>LogOnOneTimePassword.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Authentication\_PasswordEditor.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Authentication\_PasswordEditor.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_PasswordEditor.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\AuditLogViewer\Index.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\AuditLogViewer\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\AdminTasks\Adopt.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\AdminTasks\Adopt.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Adopt.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\AdminTasks\Features.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\AdminTasks\Features.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Features.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <Content Include="Content\css\checkbox.css" />
-    <Content Include="Areas\V1\Views\razorgenerator.directives" />
-    <Content Include="Areas\V2\Views\razorgenerator.directives" />
-    <Content Include="Areas\V2\Views\UserProfile\Index.cshtml">
+    <None Include="Areas\V1\Views\razorgenerator.directives" />
+    <None Include="Areas\V2\Views\razorgenerator.directives" />
+    <None Include="Areas\V2\Views\UserProfile\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Shared\Flash.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Shared\Flash.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Flash.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Content\js\jquery-1.6.4-vsdoc.js" />
     <Content Include="Content\js\jquery-ui.js" />
     <Content Include="Content\js\jquery.tablesorter.min.js" />
@@ -1403,26 +1403,26 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Areas\V2\Views\Roster\Index.cshtml">
+    <None Include="Areas\V2\Views\Roster\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Authentication\LogOn.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Authentication\LogOn.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>LogOn.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Roster\Create.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Roster\Create.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Create.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Roster\Delete.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Roster\Delete.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Delete.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\Shared\DisplayTemplates\RosterViewModel.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\Shared\DisplayTemplates\RosterViewModel.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>RosterViewModel.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1443,49 +1443,49 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Hacker\Index.cshtml">
+    <None Include="Views\Hacker\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <Content Include="Views\Emails\UserRegistered.cshtml" />
-    <Content Include="Areas\V1\Views\Shared\Error.cshtml">
+    <None Include="Areas\V1\Views\Shared\Error.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Error.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V1\Views\Shared\NotFound.cshtml">
+    </None>
+    <None Include="Areas\V1\Views\Shared\NotFound.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>NotFound.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V1\Views\Shared\_Layout.cshtml">
+    </None>
+    <None Include="Areas\V1\Views\Shared\_Layout.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Layout.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V1\Views\Shared\_LogOnPartial.cshtml">
+    </None>
+    <None Include="Areas\V1\Views\Shared\_LogOnPartial.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_LogOnPartial.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\AdminTasks\CreateUser.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\AdminTasks\CreateUser.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>CreateUser.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\AdminTasks\DeleteUser.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\AdminTasks\DeleteUser.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>DeleteUser.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V2\Views\AdminTasks\Users.cshtml">
+    </None>
+    <None Include="Areas\V2\Views\AdminTasks\Users.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Users.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\V1\Views\_ViewStart.cshtml">
+    </None>
+    <None Include="Areas\V1\Views\_ViewStart.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Code\Content.cshtml">
+    <None Include="App_Code\Content.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Content.generated.cs</LastGenOutput>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\main.less" />
@@ -1524,10 +1524,21 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+  <!-- https://stackoverflow.com/questions/27954267/make-sure-all-cshtml-files-are-set-to-be-content-for-build-action -->
+  <!-- https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-well-known-item-metadata?view=vs-2022 -->
+  <Target Name="EnsureNoneOnHomeViews" BeforeTargets="BeforeBuild">
+    <ItemGroup>
+      <FilteredContent
+        Include="@(Content)"
+        Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('%(FullPath)', 'Areas.+cshtml$'))" />
+    </ItemGroup>
+    <Message Text="%(FilteredContent.FullPath)"
+      Condition=""
+      Importance="high" />
+    <Error
+      Condition="'@(FilteredContent)'!=''"
+      Code="CSHTML"
+      File="$(MSBuildProjectDirectory)\%(FilteredContent.Identity)"
+      Text="View is not set to [BuildAction:None]" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target> -->
 </Project>
