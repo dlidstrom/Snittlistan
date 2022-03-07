@@ -83,6 +83,7 @@ public class MvcApplication : HttpApplication
     protected void Application_Start()
     {
         Bootstrap(GlobalConfiguration.Configuration, DatabasesFactory);
+        MvcHandler.DisableMvcResponseHeader = true;
 
         static Databases DatabasesFactory()
         {
