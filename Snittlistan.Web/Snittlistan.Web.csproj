@@ -157,6 +157,7 @@
     <Compile Include="Commands\UpdateUserSettingsCommandHandler.cs" />
     <Compile Include="Infrastructure\MsmqFactory.cs" />
     <Compile Include="Models\UserSettings.cs" />
+    <Compile Include="RazorGeneratorMvcStart.cs" />
     <Compile Include="Views\Hacker\Index.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1528,17 +1529,9 @@
   <!-- https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-well-known-item-metadata?view=vs-2022 -->
   <Target Name="EnsureNoneOnHomeViews" BeforeTargets="BeforeBuild">
     <ItemGroup>
-      <FilteredContent
-        Include="@(Content)"
-        Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('%(FullPath)', 'Areas.+cshtml$'))" />
+      <FilteredContent Include="@(Content)" Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('%(FullPath)', 'Areas.+cshtml$'))" />
     </ItemGroup>
-    <Message Text="%(FilteredContent.FullPath)"
-      Condition=""
-      Importance="high" />
-    <Error
-      Condition="'@(FilteredContent)'!=''"
-      Code="CSHTML"
-      File="$(MSBuildProjectDirectory)\%(FilteredContent.Identity)"
-      Text="View is not set to [BuildAction:None]" />
+    <Message Text="%(FilteredContent.FullPath)" Condition="" Importance="high" />
+    <Error Condition="'@(FilteredContent)'!=''" Code="CSHTML" File="$(MSBuildProjectDirectory)\%(FilteredContent.Identity)" Text="View is not set to [BuildAction:None]" />
   </Target>
 </Project>
