@@ -18,7 +18,8 @@ public class UpdateRosterEmail : EmailBase
         int season,
         int turn,
         Uri rosterLink,
-        Uri userProfileLink)
+        Uri userProfileLink,
+        bool needsAccept)
         : base("UpdateRoster")
     {
         _state = new(
@@ -31,7 +32,8 @@ public class UpdateRosterEmail : EmailBase
             season,
             turn,
             rosterLink,
-            userProfileLink);
+            userProfileLink,
+            needsAccept);
     }
 
     public string PlayerEmail => _state.PlayerEmail;
@@ -53,6 +55,8 @@ public class UpdateRosterEmail : EmailBase
     public Uri RosterLink => _state.RosterLink;
 
     public Uri UserProfileLink => _state.UserProfileLink;
+
+    public bool NeedsAccept => _state.NeedsAccept;
 
     public override EmailState State => _state;
 }

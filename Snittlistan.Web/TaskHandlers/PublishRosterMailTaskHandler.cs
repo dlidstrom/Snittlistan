@@ -12,6 +12,7 @@ public class PublishRosterMailTaskHandler
     {
         return new(
             payload.RosterId,
+            payload.PlayerId,
             payload.RecipientEmail,
             payload.RecipientName,
             payload.ReplyToEmail,

@@ -88,6 +88,7 @@ public class PublishRosterMailsCommandHandler : CommandHandler<PublishRosterMail
 
                 PublishRosterMailTask message = new(
                     context.Payload.RosterKey,
+                    player.Id,
                     player.Email,
                     player.Nickname ?? player.Name,
                     replyToEmail,

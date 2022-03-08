@@ -12,6 +12,7 @@ Content-Type: text/html; charset=utf-8
         table {
             border-collapse: collapse;
         }
+
         table, th, td {
             border: 1px solid black;
         }
@@ -20,9 +21,13 @@ Content-Type: text/html; charset=utf-8
 <body>
     <p>Hej @Model.Name!</p>
     <p>
-        Laguttagningen har uppdaterats. Klicka
-        <a href="@Model.RosterLink">här</a>
-        för att acceptera om du inte redan gjort det.
+        Laguttagningen har uppdaterats.
+        @if (Model.NeedsAccept)
+        {
+            @:Klicka
+            <a href="@Model.RosterLink">här</a>
+            @:för att acceptera om du inte redan gjort det.
+        }
     </p>
     <p>
         <h1>@Model.FormattedAuditLog.Title</h1>

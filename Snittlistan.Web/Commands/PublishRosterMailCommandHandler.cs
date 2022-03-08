@@ -22,6 +22,7 @@ public class PublishRosterMailCommandHandler
             roster.TeamLeader != null
             ? CompositionRoot.DocumentSession.Load<Player>(roster.TeamLeader).Name
             : string.Empty;
+        bool needsAccept = roster.AcceptedPlayers.Contains(context.Payload.PlayerId) == false;
         UpdateRosterEmail email = new(
             context.Payload.RecipientEmail,
             context.Payload.RecipientName,
@@ -32,7 +33,8 @@ public class PublishRosterMailCommandHandler
             roster.Season,
             roster.Turn,
             context.Payload.RosterLink,
-            context.Payload.UserProfileLink);
+            context.Payload.UserProfileLink,
+            needsAccept);
         return Task.FromResult(email);
     }
 
@@ -47,6 +49,7 @@ public class PublishRosterMailCommandHandler
 
     public record Command(
         string RosterId,
+        string PlayerId,
         string RecipientEmail,
         string RecipientName,
         string ReplyToEmail,

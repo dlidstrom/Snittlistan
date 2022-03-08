@@ -17,7 +17,8 @@ public class UpdateRosterEmail_State : EmailState
         int season,
         int turn,
         Uri rosterLink,
-        Uri userProfileLink)
+        Uri userProfileLink,
+        bool needsAccept)
         : base(OwnerEmail, playerEmail, OwnerEmail, "Uttagning har uppdaterats")
     {
         PlayerEmail = playerEmail;
@@ -30,6 +31,7 @@ public class UpdateRosterEmail_State : EmailState
         Turn = turn;
         RosterLink = rosterLink;
         UserProfileLink = userProfileLink;
+        NeedsAccept = needsAccept;
     }
 
     public string PlayerEmail { get; }
@@ -52,6 +54,8 @@ public class UpdateRosterEmail_State : EmailState
 
     public Uri UserProfileLink { get; }
 
+    public bool NeedsAccept { get; }
+
     public override Email CreateEmail()
     {
         return new UpdateRosterEmail(
@@ -64,6 +68,7 @@ public class UpdateRosterEmail_State : EmailState
             Season,
             Turn,
             RosterLink,
-            UserProfileLink);
+            UserProfileLink,
+            NeedsAccept);
     }
 }

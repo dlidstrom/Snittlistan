@@ -6,6 +6,7 @@ public class PublishRosterMailTask : TaskBase
 {
     public PublishRosterMailTask(
         string rosterId,
+        string playerId,
         string recipientEmail,
         string recipientName,
         string replyToEmail,
@@ -14,6 +15,7 @@ public class PublishRosterMailTask : TaskBase
         : base(new(typeof(PublishRosterMailTask).FullName, $"{rosterId}/{recipientEmail}"))
     {
         RosterId = rosterId;
+        PlayerId = playerId;
         RecipientEmail = recipientEmail;
         RecipientName = recipientName;
         ReplyToEmail = replyToEmail;
@@ -22,6 +24,8 @@ public class PublishRosterMailTask : TaskBase
     }
 
     public string RosterId { get; }
+
+    public string PlayerId { get; }
 
     public string RecipientEmail { get; }
 
