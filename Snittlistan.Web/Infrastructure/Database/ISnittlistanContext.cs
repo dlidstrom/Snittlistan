@@ -1,6 +1,5 @@
 ﻿#nullable enable
 
-using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 
 namespace Snittlistan.Web.Infrastructure.Database;
