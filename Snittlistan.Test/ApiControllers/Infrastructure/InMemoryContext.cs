@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿#nullable enable
+
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -6,9 +8,8 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Snittlistan.Web.Infrastructure.Database;
 
-#nullable enable
-
 namespace Snittlistan.Test.ApiControllers.Infrastructure;
+
 public sealed class InMemoryDbSet<T> : IDbSet<T>, IDbAsyncEnumerable<T> where T : class
 {
     private readonly IdGenerator _generator;
@@ -112,6 +113,9 @@ public class InMemoryContext : ISnittlistanContext, IBitsContext
         ChangeLogs = new InMemoryDbSet<ChangeLog>(generator);
         KeyValueProperties = new InMemoryDbSet<KeyValueProperty>(generator);
         SentEmails = new InMemoryDbSet<SentEmail>(generator);
+        Match = new InMemoryDbSet<Bits_Match>(generator);
+        TeamRef = new InMemoryDbSet<Bits_TeamRef>(generator);
+        OilProfile = new InMemoryDbSet<Bits_OilProfile>(generator);
     }
 
     public IDbSet<PublishedTask> PublishedTasks { get; }
@@ -130,7 +134,13 @@ public class InMemoryContext : ISnittlistanContext, IBitsContext
 
     public IDbSet<SentEmail> SentEmails { get; }
 
-    public DbChangeTracker ChangeTracker => throw new NotImplementedException();
+    public DbChangeTracker ChangeTracker { get; } = null!;
+
+    public IDbSet<Bits_Match> Match { get; }
+
+    public IDbSet<Bits_TeamRef> TeamRef { get; }
+
+    public IDbSet<Bits_OilProfile> OilProfile { get; }
 
     public int SaveChanges()
     {

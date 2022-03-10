@@ -19,6 +19,11 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api;
 [OnlyLocalAllowed]
 public class TaskController : AbstractApiController
 {
+    public async Task<IHttpActionResult> Get()
+    {
+        return Ok(await CompositionRoot.Databases.Bits.Match.FirstOrDefaultAsync());
+    }
+
     public async Task<IHttpActionResult> Post(TaskRequest request)
     {
         Logger.InfoFormat("Received task {taskJson}", request.TaskJson);
