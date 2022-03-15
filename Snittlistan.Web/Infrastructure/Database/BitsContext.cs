@@ -6,9 +6,15 @@ namespace Snittlistan.Web.Infrastructure.Database;
 
 public class BitsContext : DbContext, IBitsContext
 {
-    public IDbSet<Bits_Team> Teams { get; set; } = null!;
+    public BitsContext()
+    {
+        Configuration.AutoDetectChangesEnabled = false;
+        Configuration.LazyLoadingEnabled = false;
+    }
 
-    public IDbSet<Bits_Hall> Hallar { get; set; } = null!;
+    public IDbSet<Bits_Team> Team { get; set; } = null!;
+
+    public IDbSet<Bits_Hall> Hall { get; set; } = null!;
 
     public IDbSet<Bits_Match> Match { get; set; } = null!;
 
@@ -27,8 +33,9 @@ public class BitsContext : DbContext, IBitsContext
         modelBuilder.Types().Configure(x => x.ToTable(
             mapper.TranslateMemberName(x.ClrType.Name.Replace("Bits_", string.Empty))));
 
-        _ = modelBuilder.Entity<Bits_Match>()
-                    .HasRequired(p => p.AwayTeamRef)
-                    .WithMany(x => x.Matches);
+        _ = modelBuilder.Entity<Bits_HallRef>()
+            .HasOptional(x => x.Hall)
+            .WithOptionalDependent(x => x!.HallRef)
+            .Map(x => x.MapKey("hall_id"));
     }
 }

@@ -27,39 +27,33 @@ WHERE
 public class Bits_Match
 {
     [Key]
-    public int MatchId { get; set; }
+    public int MatchId { get; private set; }
 
-    public int ExternalMatchId { get; set; }
+    public int ExternalMatchId { get; private set; }
+
+    public DateTime MatchDateTime { get; private set; }
 
     [Column("match_home_team_ref_id")]
-    public int HomeTeamRefId { get; set; }
+    [ForeignKey(nameof(HomeTeamRef))]
+    public int HomeTeamRefId { get; private set; }
 
-    public virtual Bits_TeamRef HomeTeamRef { get; set; } = null!;
+    public virtual Bits_TeamRef HomeTeamRef { get; private set; } = null!;
 
     [Column("match_away_team_ref_id")]
-    public int AwayTeamRefId { get; set; }
+    [ForeignKey(nameof(AwayTeamRef))]
+    public int AwayTeamRefId { get; private set; }
 
-    public virtual Bits_TeamRef AwayTeamRef { get; set; } = null!;
+    public virtual Bits_TeamRef AwayTeamRef { get; private set; } = null!;
 
     [Column("match_oil_profile_id")]
-    public int OilProfileId { get; set; }
+    [ForeignKey(nameof(OilProfile))]
+    public int OilProfileId { get; private set; }
 
-    public virtual Bits_OilProfile OilProfile { get; set; } = null!;
-}
-public class Bits_TeamRef
-{
-    [Key]
-    public int TeamRefId { get; set; }
+    public virtual Bits_OilProfile OilProfile { get; private set; } = null!;
 
-    public virtual ICollection<Bits_Match> Matches { get; set; } = null!;
-}
-public class Bits_OilProfile
-{
-    [Key]
-    public int OilProfileId { get; set; }
-}
-public class Bits_HallRef
-{
-    [Key]
-    public int HallRefId { get; set; }
+    [Column("match_hall_ref_id")]
+    [ForeignKey(nameof(HallRef))]
+    public int HallRefId { get; private set; }
+
+    public Bits_HallRef HallRef { get; private set; } = null!;
 }

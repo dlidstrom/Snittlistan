@@ -107,8 +107,8 @@ public class InMemoryContext : ISnittlistanContext, IBitsContext
         IdGenerator generator = new();
         PublishedTasks = new InMemoryDbSet<PublishedTask>(generator);
         Tenants = new InMemoryDbSet<Tenant>(generator);
-        Teams = new InMemoryDbSet<Bits_Team>(generator);
-        Hallar = new InMemoryDbSet<Bits_Hall>(generator);
+        Team = new InMemoryDbSet<Bits_Team>(generator);
+        Hall = new InMemoryDbSet<Bits_Hall>(generator);
         RosterMails = new InMemoryDbSet<RosterMail>(generator);
         ChangeLogs = new InMemoryDbSet<ChangeLog>(generator);
         KeyValueProperties = new InMemoryDbSet<KeyValueProperty>(generator);
@@ -120,9 +120,15 @@ public class InMemoryContext : ISnittlistanContext, IBitsContext
 
     public IDbSet<PublishedTask> PublishedTasks { get; }
 
-    public IDbSet<Bits_Team> Teams { get; }
+    public IDbSet<Bits_Team> Team { get; }
 
-    public IDbSet<Bits_Hall> Hallar { get; }
+    public IDbSet<Bits_Hall> Hall { get; }
+
+    public IDbSet<Bits_Match> Match { get; }
+
+    public IDbSet<Bits_TeamRef> TeamRef { get; }
+
+    public IDbSet<Bits_OilProfile> OilProfile { get; }
 
     public IDbSet<Tenant> Tenants { get; }
 
@@ -135,12 +141,6 @@ public class InMemoryContext : ISnittlistanContext, IBitsContext
     public IDbSet<SentEmail> SentEmails { get; }
 
     public DbChangeTracker ChangeTracker { get; } = null!;
-
-    public IDbSet<Bits_Match> Match { get; }
-
-    public IDbSet<Bits_TeamRef> TeamRef { get; }
-
-    public IDbSet<Bits_OilProfile> OilProfile { get; }
 
     public int SaveChanges()
     {

@@ -4,9 +4,9 @@ namespace Snittlistan.Web.Infrastructure.Database;
 
 public interface IBitsContext
 {
-    public IDbSet<Bits_Team> Teams { get; }
+    public IDbSet<Bits_Team> Team { get; }
 
-    public IDbSet<Bits_Hall> Hallar { get; }
+    public IDbSet<Bits_Hall> Hall { get; }
 
     public IDbSet<Bits_Match> Match { get; }
 
