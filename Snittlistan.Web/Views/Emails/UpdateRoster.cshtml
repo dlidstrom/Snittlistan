@@ -30,7 +30,16 @@ Content-Type: text/html; charset=utf-8
         }
     </p>
     <p>
-        <h1>@Model.FormattedAuditLog.Title</h1>
+        <dl>
+            <dt>Hemmalag</dt>
+            <dd>@Model.HomeTeamName</dd>
+            <dt>Bortalag</dt>
+            <dd>@Model.AwayTeamName</dd>
+            <dt>Datum</dt>
+            <dd>@Model.MatchDate</dd>
+            <dt>Online scoring</dt>
+            <dd>@Model.OnlineScoringLink</dd>
+        </dl>
         <table>
             <tr>
                 <th>Bord</th>

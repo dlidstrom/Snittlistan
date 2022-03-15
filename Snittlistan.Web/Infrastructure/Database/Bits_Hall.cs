@@ -1,10 +1,19 @@
 ﻿#nullable enable
 
+using System.ComponentModel.DataAnnotations;
+
 namespace Snittlistan.Web.Infrastructure.Database;
 
 public class Bits_Hall
 {
-    public int ExternalHallId { get; set; }
+    [Key]
+    public int HallId { get; private set; }
 
-    public string HallName { get; set; } = null!;
+    public int ExternalHallId { get; private set; }
+
+    public string HallName { get; private set; } = string.Empty;
+
+    public int HallRefId { get; set; }
+
+    public Bits_HallRef HallRef { get; private set; } = null!;
 }
