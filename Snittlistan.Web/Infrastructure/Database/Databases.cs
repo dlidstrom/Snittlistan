@@ -2,7 +2,7 @@
 
 namespace Snittlistan.Web.Infrastructure.Database;
 
-public class Databases
+public class Databases : IDisposable
 {
     public Databases(
         ISnittlistanContext snittlistanContext,
@@ -15,4 +15,10 @@ public class Databases
     public ISnittlistanContext Snittlistan { get; }
 
     public IBitsContext Bits { get; }
+
+    public void Dispose()
+    {
+        Snittlistan.Dispose();
+        Bits.Dispose();
+    }
 }

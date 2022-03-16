@@ -1,7 +1,6 @@
 ﻿#nullable enable
 
 using Npgsql.NameTranslation;
-using System.Data.Entity;
 
 namespace Snittlistan.Web.Infrastructure.Database;
 
