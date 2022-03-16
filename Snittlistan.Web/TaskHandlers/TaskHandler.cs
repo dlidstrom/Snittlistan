@@ -18,6 +18,7 @@ public abstract class TaskHandler<TTask, TCommand>
         TCommand command = CreateCommand(context.Payload);
         CommandExecutor commandExecutor = new(
             CompositionRoot,
+            CompositionRoot.Databases,
             context.CorrelationId,
             context.CausationId,
             "system");

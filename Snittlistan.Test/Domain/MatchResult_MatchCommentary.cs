@@ -168,6 +168,7 @@ public class MatchResult_MatchCommentary : WebApiIntegrationTest
                 session,
                 eventStoreSession,
                 Databases,
+                new(() => Databases),
                 Container.Resolve<MsmqFactory>(),
                 Container.Resolve<EventStore>(),
                 CurrentTenant,
@@ -175,6 +176,7 @@ public class MatchResult_MatchCommentary : WebApiIntegrationTest
                 Mock.Of<IBitsClient>(MockBehavior.Strict));
             CommandExecutor commandExecutor = new(
                 compositionRoot,
+                Databases,
                 compositionRoot.CorrelationId,
                 null,
                 string.Empty);
@@ -184,6 +186,7 @@ public class MatchResult_MatchCommentary : WebApiIntegrationTest
             };
             HandlerContext<RegisterMatchCommandHandler.Command> context = new(
                 compositionRoot,
+                Databases,
                 command,
                 new("hostname", "favicon", "appleTouchIcon", "appleTouchIconSize", "webAppTitle", -1, "teamFullName"),
                 Guid.NewGuid(),
