@@ -108,6 +108,7 @@ public class InMemoryContext : ISnittlistanContext, IBitsContext
         PublishedTasks = new InMemoryDbSet<PublishedTask>(generator);
         Tenants = new InMemoryDbSet<Tenant>(generator);
         Team = new InMemoryDbSet<Bits_Team>(generator);
+        HallRef = new InMemoryDbSet<Bits_HallRef>(generator);
         Hall = new InMemoryDbSet<Bits_Hall>(generator);
         RosterMails = new InMemoryDbSet<RosterMail>(generator);
         ChangeLogs = new InMemoryDbSet<ChangeLog>(generator);
@@ -116,11 +117,14 @@ public class InMemoryContext : ISnittlistanContext, IBitsContext
         Match = new InMemoryDbSet<Bits_Match>(generator);
         TeamRef = new InMemoryDbSet<Bits_TeamRef>(generator);
         OilProfile = new InMemoryDbSet<Bits_OilProfile>(generator);
+        VMatchHeadInfo = new InMemoryDbSet<Bits_VMatchHeadInfo>(generator);
     }
 
     public IDbSet<PublishedTask> PublishedTasks { get; }
 
     public IDbSet<Bits_Team> Team { get; }
+
+    public IDbSet<Bits_HallRef> HallRef { get; }
 
     public IDbSet<Bits_Hall> Hall { get; }
 
@@ -129,6 +133,8 @@ public class InMemoryContext : ISnittlistanContext, IBitsContext
     public IDbSet<Bits_TeamRef> TeamRef { get; }
 
     public IDbSet<Bits_OilProfile> OilProfile { get; }
+
+    public IDbSet<Bits_VMatchHeadInfo> VMatchHeadInfo { get; }
 
     public IDbSet<Tenant> Tenants { get; }
 
@@ -150,5 +156,9 @@ public class InMemoryContext : ISnittlistanContext, IBitsContext
     public Task<int> SaveChangesAsync()
     {
         return Task.FromResult(0);
+    }
+
+    public void Dispose()
+    {
     }
 }

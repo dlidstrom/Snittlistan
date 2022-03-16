@@ -10,20 +10,20 @@ namespace Snittlistan.Web.Infrastructure.Installers;
 
 public class DatabaseContextInstaller : IWindsorInstaller
 {
-    private readonly Func<Databases> databases;
+    private readonly Func<Databases> databasesFactory;
 
     private readonly Func<ComponentRegistration<Databases>, ComponentRegistration<Databases>> func;
 
-    public DatabaseContextInstaller(Func<Databases> databases)
+    public DatabaseContextInstaller(Func<Databases> databasesFactory)
     {
         func = x => x.LifestylePerWebRequest();
-        this.databases = databases;
+        this.databasesFactory = databasesFactory;
     }
 
-    public DatabaseContextInstaller(Func<Databases> databases, LifestyleType lifestyleType)
+    public DatabaseContextInstaller(Func<Databases> databasesFactory, LifestyleType lifestyleType)
     {
         func = x => x.LifeStyle.Is(lifestyleType);
-        this.databases = databases;
+        this.databasesFactory = databasesFactory;
     }
 
     public void Install(IWindsorContainer container, IConfigurationStore store)
@@ -31,6 +31,10 @@ public class DatabaseContextInstaller : IWindsorInstaller
         _ = container.Register(
             func.Invoke(
                 Component.For<Databases>()
-                    .UsingFactoryMethod(databases)));
+                    .UsingFactoryMethod(databasesFactory)));
+        _ = container.Register(
+                Component.For<DatabasesFactory>()
+                    .Instance(new DatabasesFactory(databasesFactory))
+                    .LifestyleSingleton());
     }
 }

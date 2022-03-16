@@ -21,21 +21,37 @@ public class TaskController : AbstractApiController
 {
     public async Task<IHttpActionResult> Get()
     {
-        var query =
-            from m in CompositionRoot.Databases.Bits.Match
-            where m.MatchId == 6422
-            select new
-            {
-                m.ExternalMatchId,
-                HomeTeamName = m.HomeTeamRef.TeamName,
-                AwayTeamName = m.AwayTeamRef.TeamName,
-                m.MatchDateTime,
-                m.HallRef.HallRefId,
-                HallRef_HallName = m.HallRef.HallName,
-                HallName = m.HallRef.Hall!.HallName ?? "<null>"
-            };
-        var result = await query
-            .FirstOrDefaultAsync();
+        //var query =
+        //    from m in CompositionRoot.Databases.Bits.Match
+        //    where m.MatchId == 6422
+        //    select new
+        //    {
+        //        m.ExternalMatchId,
+        //        HomeTeamName = m.HomeTeamRef.TeamName,
+        //        AwayTeamName = m.AwayTeamRef.TeamName,
+        //        m.MatchDateTime,
+        //        m.HallRef.HallRefId,
+        //        HallRef_HallName = m.HallRef.HallName,
+        //        HallName = m.HallRef.Hall!.HallName ?? "<null>"
+        //    };
+        var result = await Transact(async databases =>
+        {
+            var query =
+                from mhi in databases.Bits.VMatchHeadInfo
+                select new
+                {
+                    mhi.ExternalMatchId,
+                    mhi.HomeTeamName,
+                    mhi.HomeTeamAlias,
+                    mhi.AwayTeamName,
+                    mhi.AwayTeamAlias,
+                    mhi.OilProfileName,
+                    mhi.HallName
+                };
+            return await query
+                .FirstOrDefaultAsync();
+        });
+
         return Ok(result);
     }
 
@@ -76,32 +92,40 @@ public class TaskController : AbstractApiController
                 $"throttled due to unhandled exception (allowance = {cacheItem.Allowance:N2})");
         }
 
-        // check for published task
-        PublishedTask? publishedTask =
-        await CompositionRoot.Databases.Snittlistan.PublishedTasks.SingleOrDefaultAsync(
-            x => x.MessageId == request.MessageId);
-        if (publishedTask is null)
-        {
-            return BadRequest($"No published task found with message id {request.MessageId}");
-        }
-
-        if (publishedTask.HandledDate.HasValue)
-        {
-            return Ok($"task with message id {publishedTask.MessageId} already handled");
-        }
-
+        IDisposable scope = NLog.NestedDiagnosticsLogicalContext.Push(taskObject.BusinessKey);
         try
         {
-            using IDisposable scope = NLog.NestedDiagnosticsLogicalContext.Push(taskObject.BusinessKey);
-            Logger.Info("Begin");
-            bool handled = await HandleMessage(
-                taskObject,
-                request.CorrelationId ?? default,
-                request.MessageId ?? default);
-            if (handled)
+            Logger.Info("begin");
+            IHttpActionResult result = await Transact<IHttpActionResult>(async databases =>
             {
-                publishedTask.MarkHandled(DateTime.Now);
-            }
+                // check for published task
+                PublishedTask? publishedTask =
+                await databases.Snittlistan.PublishedTasks.SingleOrDefaultAsync(
+                    x => x.MessageId == request.MessageId);
+                if (publishedTask is null)
+                {
+                    return BadRequest($"no published task found with message id {request.MessageId}");
+                }
+
+                if (publishedTask.HandledDate.HasValue)
+                {
+                    return Ok($"task with message id {publishedTask.MessageId} already handled");
+                }
+
+                bool handled = await HandleMessage(
+                    taskObject,
+                    request.CorrelationId ?? default,
+                    request.MessageId ?? default,
+                    databases);
+                if (handled)
+                {
+                    publishedTask.MarkHandled(DateTime.Now);
+                }
+
+                return Ok();
+            });
+
+            return result;
         }
         catch (Exception ex)
         {
@@ -114,29 +138,30 @@ public class TaskController : AbstractApiController
         }
         finally
         {
-            Logger.Info("End");
+            Logger.Info("end");
+            scope.Dispose();
         }
-
-        return Ok();
     }
 
     private async Task<bool> HandleMessage(
         TaskBase taskObject,
         Guid correlationId,
-        Guid causationId)
+        Guid causationId,
+        Databases databases)
     {
         Type handlerType = typeof(ITaskHandler<>).MakeGenericType(taskObject.GetType());
 
         MethodInfo handleMethod = handlerType.GetMethod(nameof(ITaskHandler<TaskBase>.Handle));
         TaskPublisher taskPublisher = new(
             CompositionRoot.CurrentTenant,
-            CompositionRoot.Databases,
+            databases,
             CompositionRoot.MsmqFactory,
             correlationId,
             causationId);
         IHandlerContext handlerContext = (IHandlerContext)Activator.CreateInstance(
             typeof(HandlerContext<>).MakeGenericType(taskObject.GetType()),
             CompositionRoot,
+            databases,
             taskObject,
             CompositionRoot.CurrentTenant,
             correlationId,
@@ -166,6 +191,21 @@ public class TaskController : AbstractApiController
         }
 
         return true;
+    }
+
+    private async Task<TResult> Transact<TResult>(Func<Databases, Task<TResult>> func)
+    {
+        using Databases databases = CompositionRoot.DatabasesFactory.Create();
+        TResult result = await func.Invoke(databases);
+        int changesSaved = databases.Snittlistan.SaveChanges();
+        if (changesSaved > 0)
+        {
+            Logger.InfoFormat(
+                "saved {changesSaved} to database",
+                changesSaved);
+        }
+
+        return result;
     }
 }
 

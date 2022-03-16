@@ -13,7 +13,5 @@ public class Bits_Hall
 
     public string HallName { get; private set; } = string.Empty;
 
-    public int HallRefId { get; set; }
-
-    public Bits_HallRef HallRef { get; private set; } = null!;
+    public Bits_HallRef HallRef { get; set; } = null!;
 }

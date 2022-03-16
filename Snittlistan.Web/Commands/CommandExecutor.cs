@@ -39,6 +39,7 @@ public class CommandExecutor
         IHandlerContext handlerContext = (IHandlerContext)Activator.CreateInstance(
             typeof(HandlerContext<>).MakeGenericType(command.GetType()),
             compositionRoot,
+            compositionRoot.Databases,
             command,
             compositionRoot.CurrentTenant,
             correlationId,

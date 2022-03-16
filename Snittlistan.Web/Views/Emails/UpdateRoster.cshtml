@@ -32,13 +32,15 @@ Content-Type: text/html; charset=utf-8
     <p>
         <dl>
             <dt>Hemmalag</dt>
-            <dd>@Model.HomeTeamName</dd>
+            <dd>@Model.HomeTeamAlias</dd>
             <dt>Bortalag</dt>
-            <dd>@Model.AwayTeamName</dd>
-            <dt>Datum</dt>
-            <dd>@Model.MatchDate</dd>
-            <dt>Online scoring</dt>
-            <dd>@Model.OnlineScoringLink</dd>
+            <dd>@Model.AwayTeamAlias</dd>
+            <dt>Plats</dt>
+            <dd>@Model.HallName</dd>
+            <dt>Oljeprofil</dt>
+            <dd><a href="@string.Format("https://bits.swebowl.se/MiscDisplay/Oilpattern/{0}", Model.OilProfileId)">@Model.OilProfileName</a></dd>
+            <dt>När</dt>
+            <dd>@Model.MatchDate.ToString("", new System.Globalization.CultureInfo("sv-SE"))</dd>
         </dl>
         <table>
             <tr>

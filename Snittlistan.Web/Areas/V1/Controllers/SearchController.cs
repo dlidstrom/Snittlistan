@@ -43,6 +43,6 @@ public class SearchController : AbstractController
                 label = hall.HallName
             };
 
-        return Json(term, JsonRequestBehavior.AllowGet);
+        return Json(query, JsonRequestBehavior.AllowGet);
     }
 }

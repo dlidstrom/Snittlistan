@@ -159,6 +159,8 @@
     <Compile Include="Infrastructure\Database\Bits_Match.cs" />
     <Compile Include="Infrastructure\Database\Bits_OilProfile.cs" />
     <Compile Include="Infrastructure\Database\Bits_TeamRef.cs" />
+    <Compile Include="Infrastructure\Database\Bits_VMatchHeadInfo.cs" />
+    <Compile Include="Infrastructure\Database\DatabasesFactory.cs" />
     <Compile Include="Infrastructure\MsmqFactory.cs" />
     <Compile Include="Models\UserSettings.cs" />
     <Compile Include="RazorGeneratorMvcStart.cs" />

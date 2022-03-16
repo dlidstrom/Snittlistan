@@ -14,6 +14,8 @@ public class BitsContext : DbContext, IBitsContext
 
     public IDbSet<Bits_Team> Team { get; set; } = null!;
 
+    public IDbSet<Bits_HallRef> HallRef { get; set; } = null!;
+
     public IDbSet<Bits_Hall> Hall { get; set; } = null!;
 
     public IDbSet<Bits_Match> Match { get; set; } = null!;
@@ -21,6 +23,8 @@ public class BitsContext : DbContext, IBitsContext
     public IDbSet<Bits_TeamRef> TeamRef { get; set; } = null!;
 
     public IDbSet<Bits_OilProfile> OilProfile { get; set; } = null!;
+
+    public IDbSet<Bits_VMatchHeadInfo> VMatchHeadInfo { get; set; } = null!;
 
     protected override void OnModelCreating(DbModelBuilder modelBuilder)
     {
@@ -33,9 +37,13 @@ public class BitsContext : DbContext, IBitsContext
         modelBuilder.Types().Configure(x => x.ToTable(
             mapper.TranslateMemberName(x.ClrType.Name.Replace("Bits_", string.Empty))));
 
-        _ = modelBuilder.Entity<Bits_HallRef>()
-            .HasOptional(x => x.Hall)
-            .WithOptionalDependent(x => x!.HallRef)
-            .Map(x => x.MapKey("hall_id"));
+        //.WithRequiredPrincipal(x => x.Hall!);
+        //            .Map(x => x.MapKey("hall_id"));
+        //_ = modelBuilder.Entity<Bits_HallRef>()
+        //    .HasOptional(x => x.Hall)
+        //    .WithOptionalDependent(x => x!.HallRef)
+        //    .Map(x => x.MapKey("hall_id"));
+
+        //_ = modelBuilder.Entity<Bits_Hall>
     }
 }

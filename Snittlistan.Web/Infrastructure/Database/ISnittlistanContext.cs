@@ -4,7 +4,7 @@ using System.Data.Entity.Infrastructure;
 
 namespace Snittlistan.Web.Infrastructure.Database;
 
-public interface ISnittlistanContext
+public interface ISnittlistanContext : IDisposable
 {
     IDbSet<PublishedTask> PublishedTasks { get; }
 
