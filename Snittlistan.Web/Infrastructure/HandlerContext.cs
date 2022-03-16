@@ -44,6 +44,7 @@ public class HandlerContext<TPayload> : IHandlerContext
     {
         CommandExecutor commandExecutor = new(
             compositionRoot,
+            Databases,
             CorrelationId,
             CausationId,
             "system");

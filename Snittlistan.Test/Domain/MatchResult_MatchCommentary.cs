@@ -176,6 +176,7 @@ public class MatchResult_MatchCommentary : WebApiIntegrationTest
                 Mock.Of<IBitsClient>(MockBehavior.Strict));
             CommandExecutor commandExecutor = new(
                 compositionRoot,
+                Databases,
                 compositionRoot.CorrelationId,
                 null,
                 string.Empty);

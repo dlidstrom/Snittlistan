@@ -19,42 +19,6 @@ namespace Snittlistan.Web.Areas.V2.Controllers.Api;
 [OnlyLocalAllowed]
 public class TaskController : AbstractApiController
 {
-    public async Task<IHttpActionResult> Get()
-    {
-        //var query =
-        //    from m in CompositionRoot.Databases.Bits.Match
-        //    where m.MatchId == 6422
-        //    select new
-        //    {
-        //        m.ExternalMatchId,
-        //        HomeTeamName = m.HomeTeamRef.TeamName,
-        //        AwayTeamName = m.AwayTeamRef.TeamName,
-        //        m.MatchDateTime,
-        //        m.HallRef.HallRefId,
-        //        HallRef_HallName = m.HallRef.HallName,
-        //        HallName = m.HallRef.Hall!.HallName ?? "<null>"
-        //    };
-        var result = await Transact(async databases =>
-        {
-            var query =
-                from mhi in databases.Bits.VMatchHeadInfo
-                select new
-                {
-                    mhi.ExternalMatchId,
-                    mhi.HomeTeamName,
-                    mhi.HomeTeamAlias,
-                    mhi.AwayTeamName,
-                    mhi.AwayTeamAlias,
-                    mhi.OilProfileName,
-                    mhi.HallName
-                };
-            return await query
-                .FirstOrDefaultAsync();
-        });
-
-        return Ok(result);
-    }
-
     public async Task<IHttpActionResult> Post(TaskRequest request)
     {
         Logger.InfoFormat("Received task {taskJson}", request.TaskJson);
