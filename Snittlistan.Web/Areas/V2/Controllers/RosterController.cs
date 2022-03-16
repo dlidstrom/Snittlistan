@@ -377,7 +377,7 @@ public class RosterController : AbstractController
     }
 
     [Authorize(Roles = WebsiteRoles.Uk.UkTasks)]
-    public async Task<ActionResult> EditPlayers(string rosterId)
+    public ActionResult EditPlayers(string rosterId)
     {
         Roster roster = CompositionRoot.DocumentSession
             .Include<Roster>(r => r.Players)
@@ -392,7 +392,6 @@ public class RosterController : AbstractController
             .Where(p => p.PlayerStatus == Player.Status.Active)
             .ToList();
 
-        TenantFeatures? features = await CompositionRoot.GetFeatures();
         EditRosterPlayersViewModel vm = new()
         {
             RosterViewModel = CompositionRoot.DocumentSession.LoadRosterViewModel(roster),
@@ -407,7 +406,7 @@ public class RosterController : AbstractController
     {
         if (ModelState.IsValid == false)
         {
-            return await EditPlayers(rosterId);
+            return EditPlayers(rosterId);
         }
 
         Roster roster = CompositionRoot.DocumentSession.Load<Roster>(rosterId);
@@ -488,8 +487,8 @@ public class RosterController : AbstractController
                 break;
             }
 
-            TenantFeatures? features = await CompositionRoot.GetFeatures();
-            if ((features?.RosterMailEnabled ?? false) == false)
+            TenantFeatures features = await CompositionRoot.GetFeatures();
+            if (features.RosterMailEnabled)
             {
                 Logger.Info("RosterMailEnabled evaluated to false");
                 break;

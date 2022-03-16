@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿#nullable enable
+
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -6,9 +8,8 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Snittlistan.Web.Infrastructure.Database;
 
-#nullable enable
-
 namespace Snittlistan.Test.ApiControllers.Infrastructure;
+
 public sealed class InMemoryDbSet<T> : IDbSet<T>, IDbAsyncEnumerable<T> where T : class
 {
     private readonly IdGenerator _generator;
@@ -106,19 +107,34 @@ public class InMemoryContext : ISnittlistanContext, IBitsContext
         IdGenerator generator = new();
         PublishedTasks = new InMemoryDbSet<PublishedTask>(generator);
         Tenants = new InMemoryDbSet<Tenant>(generator);
-        Teams = new InMemoryDbSet<Bits_Team>(generator);
-        Hallar = new InMemoryDbSet<Bits_Hall>(generator);
+        Team = new InMemoryDbSet<Bits_Team>(generator);
+        HallRef = new InMemoryDbSet<Bits_HallRef>(generator);
+        Hall = new InMemoryDbSet<Bits_Hall>(generator);
         RosterMails = new InMemoryDbSet<RosterMail>(generator);
         ChangeLogs = new InMemoryDbSet<ChangeLog>(generator);
         KeyValueProperties = new InMemoryDbSet<KeyValueProperty>(generator);
         SentEmails = new InMemoryDbSet<SentEmail>(generator);
+        Match = new InMemoryDbSet<Bits_Match>(generator);
+        TeamRef = new InMemoryDbSet<Bits_TeamRef>(generator);
+        OilProfile = new InMemoryDbSet<Bits_OilProfile>(generator);
+        VMatchHeadInfo = new InMemoryDbSet<Bits_VMatchHeadInfo>(generator);
     }
 
     public IDbSet<PublishedTask> PublishedTasks { get; }
 
-    public IDbSet<Bits_Team> Teams { get; }
+    public IDbSet<Bits_Team> Team { get; }
 
-    public IDbSet<Bits_Hall> Hallar { get; }
+    public IDbSet<Bits_HallRef> HallRef { get; }
+
+    public IDbSet<Bits_Hall> Hall { get; }
+
+    public IDbSet<Bits_Match> Match { get; }
+
+    public IDbSet<Bits_TeamRef> TeamRef { get; }
+
+    public IDbSet<Bits_OilProfile> OilProfile { get; }
+
+    public IDbSet<Bits_VMatchHeadInfo> VMatchHeadInfo { get; }
 
     public IDbSet<Tenant> Tenants { get; }
 
@@ -130,7 +146,7 @@ public class InMemoryContext : ISnittlistanContext, IBitsContext
 
     public IDbSet<SentEmail> SentEmails { get; }
 
-    public DbChangeTracker ChangeTracker => throw new NotImplementedException();
+    public DbChangeTracker ChangeTracker { get; } = null!;
 
     public int SaveChanges()
     {
@@ -140,5 +156,9 @@ public class InMemoryContext : ISnittlistanContext, IBitsContext
     public Task<int> SaveChangesAsync()
     {
         return Task.FromResult(0);
+    }
+
+    public void Dispose()
+    {
     }
 }

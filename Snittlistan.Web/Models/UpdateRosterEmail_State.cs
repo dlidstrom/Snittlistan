@@ -18,7 +18,13 @@ public class UpdateRosterEmail_State : EmailState
         int turn,
         Uri rosterLink,
         Uri userProfileLink,
-        bool needsAccept)
+        bool needsAccept,
+        string homeTeamAlias,
+        string awayTeamAlias,
+        string hallName,
+        int oilProfileId,
+        string oilProfileName,
+        DateTime matchDate)
         : base(OwnerEmail, playerEmail, OwnerEmail, "Uttagning har uppdaterats")
     {
         PlayerEmail = playerEmail;
@@ -32,6 +38,12 @@ public class UpdateRosterEmail_State : EmailState
         RosterLink = rosterLink;
         UserProfileLink = userProfileLink;
         NeedsAccept = needsAccept;
+        HomeTeamAlias = homeTeamAlias;
+        AwayTeamAlias = awayTeamAlias;
+        HallName = hallName;
+        OilProfileId = oilProfileId;
+        OilProfileName = oilProfileName;
+        MatchDate = matchDate;
     }
 
     public string PlayerEmail { get; }
@@ -56,6 +68,18 @@ public class UpdateRosterEmail_State : EmailState
 
     public bool NeedsAccept { get; }
 
+    public string HomeTeamAlias { get; }
+
+    public string AwayTeamAlias { get; }
+
+    public string HallName { get; }
+
+    public int OilProfileId { get; }
+
+    public string OilProfileName { get; }
+
+    public DateTime MatchDate { get; }
+
     public override Email CreateEmail()
     {
         return new UpdateRosterEmail(
@@ -69,6 +93,12 @@ public class UpdateRosterEmail_State : EmailState
             Turn,
             RosterLink,
             UserProfileLink,
-            NeedsAccept);
+            NeedsAccept,
+            HomeTeamAlias,
+            AwayTeamAlias,
+            HallName,
+            OilProfileId,
+            OilProfileName,
+            MatchDate);
     }
 }
