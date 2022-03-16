@@ -37,11 +37,12 @@ public record CompositionRoot(
         }
     }
 
-    public async Task<TenantFeatures?> GetFeatures()
+    public async Task<TenantFeatures> GetFeatures()
     {
         KeyValueProperty? settingsProperty =
             await Databases.Snittlistan.KeyValueProperties.SingleOrDefaultAsync(
                 x => x.Key == TenantFeatures.Key && x.TenantId == CurrentTenant.TenantId);
-        return settingsProperty?.Value as TenantFeatures;
+        return settingsProperty?.Value as TenantFeatures
+            ?? TenantFeatures.Default;
     }
 }

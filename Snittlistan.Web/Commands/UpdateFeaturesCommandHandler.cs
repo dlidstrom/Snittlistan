@@ -21,14 +21,17 @@ public class UpdateFeaturesCommandHandler : CommandHandler<UpdateFeaturesCommand
                 new(
                     CompositionRoot.CurrentTenant.TenantId,
                     TenantFeatures.Key,
-                    new TenantFeatures(context.Payload.RosterMailEnabled)));
+                    new TenantFeatures(
+                        context.Payload.RosterMailEnabled,
+                        context.Payload.RosterMailDelayMinutes)));
         }
         else
         {
             settingsProperty.ModifyValue<TenantFeatures>(
                 x => x with
                 {
-                    RosterMailEnabled = context.Payload.RosterMailEnabled
+                    RosterMailEnabled = context.Payload.RosterMailEnabled,
+                    RosterMailDelayMinutes = context.Payload.RosterMailDelayMinutes
                 },
                 x => Logger.InfoFormat("before: {@x}", x),
                 x => Logger.InfoFormat("after: {@x}", x));
@@ -36,5 +39,6 @@ public class UpdateFeaturesCommandHandler : CommandHandler<UpdateFeaturesCommand
     }
 
     public record Command(
-        bool RosterMailEnabled);
+        bool RosterMailEnabled,
+        int RosterMailDelayMinutes);
 }
