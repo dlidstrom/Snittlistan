@@ -47,7 +47,7 @@ public class PublishRosterMailsCommandHandler : CommandHandler<PublishRosterMail
         string[] propertyKeys = affectedPlayers.Select(UserSettings.GetKey).ToArray();
         Dictionary<string, UserSettings> properties =
             Enumerable.ToDictionary(
-                await CompositionRoot.Databases.Snittlistan.KeyValueProperties.Where(
+                await context.Databases.Snittlistan.KeyValueProperties.Where(
                     x => propertyKeys.Contains(x.Key))
                 .ToArrayAsync(),
                 x => x.Key,
@@ -100,7 +100,7 @@ public class PublishRosterMailsCommandHandler : CommandHandler<PublishRosterMail
         }
 
         RosterMail rosterMail =
-            await CompositionRoot.Databases.Snittlistan.RosterMails.SingleAsync(
+            await context.Databases.Snittlistan.RosterMails.SingleAsync(
                 x => x.RosterKey == context.Payload.RosterKey && x.PublishedDate == null);
         rosterMail.MarkPublished(DateTime.Now);
     }

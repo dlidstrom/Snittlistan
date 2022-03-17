@@ -109,6 +109,7 @@ public abstract class AbstractController : Controller
     {
         return new CommandExecutor(
             CompositionRoot,
+            CompositionRoot.Databases,
             CompositionRoot.CorrelationId,
             null,
             User.CustomIdentity.Name);

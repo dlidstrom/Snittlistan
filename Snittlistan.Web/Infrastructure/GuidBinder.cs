@@ -1,6 +1,9 @@
-﻿using System.Web.Mvc;
+﻿#nullable enable
+
+using System.Web.Mvc;
 
 namespace Snittlistan.Web.Infrastructure;
+
 public class GuidBinder : DefaultModelBinder
 {
     public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
