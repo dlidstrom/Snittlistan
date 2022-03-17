@@ -488,7 +488,7 @@ public class RosterController : AbstractController
             }
 
             TenantFeatures features = await CompositionRoot.GetFeatures();
-            if (features.RosterMailEnabled)
+            if (features.RosterMailEnabled == false)
             {
                 Logger.Info("RosterMailEnabled evaluated to false");
                 break;
