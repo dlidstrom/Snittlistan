@@ -11,17 +11,21 @@ public class HandlerContext<TPayload> : IHandlerContext
 
     public HandlerContext(
         CompositionRoot compositionRoot,
+        Databases databases,
         TPayload payload,
         Tenant tenant,
         Guid correlationId,
         Guid causationId)
     {
         this.compositionRoot = compositionRoot;
+        Databases = databases;
         Payload = payload;
         Tenant = tenant;
         CorrelationId = correlationId;
         CausationId = causationId;
     }
+
+    public Databases Databases { get; }
 
     public TPayload Payload { get; }
 
@@ -40,6 +44,7 @@ public class HandlerContext<TPayload> : IHandlerContext
     {
         CommandExecutor commandExecutor = new(
             compositionRoot,
+            Databases,
             CorrelationId,
             CausationId,
             "system");
