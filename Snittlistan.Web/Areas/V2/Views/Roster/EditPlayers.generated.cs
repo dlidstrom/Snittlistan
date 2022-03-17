@@ -903,14 +903,22 @@ WriteLiteral("\r\n                <div class=\"controls\">\r\n                  
 
             
             #line 206 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
-               Write(Html.CheckBox("Preliminary"));
+               Write(Html.CheckBox("Preliminary", Model.RosterViewModel.Preliminary));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                    <span class=\"help-block\">\r\n                        Visas in" +
-"te för vanliga spelare\r\n                    </span>\r\n                </div>\r\n   " +
-"         </div>\r\n");
+WriteLiteral(@"
+                    <span class=""help-block"">
+                        Visas inte för vanliga spelare.
+                    </span>
+                    <span class=""help-block"">
+                        En publicerad uttagning kommer automatiskt att skickas
+                        till alla uttagna spelare genom e-post.
+                    </span>
+                </div>
+            </div>
+");
 
 
 
@@ -919,7 +927,7 @@ WriteLiteral("            <div class=\"form-actions\">\r\n                <butto
 
 
             
-            #line 214 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
+            #line 218 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
            Write(Html.ActionLink("Avbryt", "View", new { season = Model.RosterViewModel.Season, turn = Model.RosterViewModel.Turn }, new { @class = "btn btn-large" }));
 
             
@@ -929,7 +937,7 @@ WriteLiteral("\r\n            </div>\r\n");
 
 
             
-            #line 216 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
+            #line 220 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
         }
 
             
@@ -939,7 +947,7 @@ WriteLiteral("    </div>\r\n</div>\r\n");
 
 
             
-            #line 219 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
+            #line 223 "..\..\Areas\V2\Views\Roster\EditPlayers.cshtml"
 Write(Html.Action("PlayerStatus", new
 {
     turn = Model.RosterViewModel.Turn,

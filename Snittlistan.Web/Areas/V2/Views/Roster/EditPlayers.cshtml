@@ -203,9 +203,13 @@
                     "Preliminär",
                     new { @class = "control-label" })
                 <div class="controls">
-                    @Html.CheckBox("Preliminary")
+                    @Html.CheckBox("Preliminary", Model.RosterViewModel.Preliminary)
                     <span class="help-block">
-                        Visas inte för vanliga spelare
+                        Visas inte för vanliga spelare.
+                    </span>
+                    <span class="help-block">
+                        En publicerad uttagning kommer automatiskt att skickas
+                        till alla uttagna spelare genom e-post.
                     </span>
                 </div>
             </div>
