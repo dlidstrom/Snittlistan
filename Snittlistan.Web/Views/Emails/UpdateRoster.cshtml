@@ -43,11 +43,16 @@ Content-Type: text/html; charset=utf-8
             <dd>
                 <em>
                     <time datetime="@Model.MatchDate.ToString("s")">
-                        @Model.MatchDate.ToString("dddd d MMMM HH:mm")
+                        @Model.MatchDate.ToString(
+                            "dddd d MMMM HH:mm",
+                            new System.Globalization.CultureInfo("sv-SE"))
                     </time>
                 </em>
             </dd>
         </dl>
+    </p>
+    <p>
+        <h3>Laguttagning</h3>
         <table>
             <tr>
                 <th>Bord</th>
