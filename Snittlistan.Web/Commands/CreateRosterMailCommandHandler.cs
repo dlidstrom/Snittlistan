@@ -2,6 +2,7 @@
 
 using Snittlistan.Queue.Messages;
 using Snittlistan.Web.Infrastructure;
+using Snittlistan.Web.Models;
 
 namespace Snittlistan.Web.Commands;
 
@@ -15,15 +16,17 @@ public class CreateRosterMailCommandHandler : CommandHandler<CreateRosterMailCom
                 && rosterMail.PublishedDate == null
             select rosterMail.RosterKey;
         string[] rosterIds = await query.ToArrayAsync();
+        Logger.InfoFormat("roster mails found: {@rosterIds}", rosterIds);
         if (rosterIds.Any() == false)
         {
+            TenantFeatures features = await CompositionRoot.GetFeatures();
             _ = CompositionRoot.Databases.Snittlistan.RosterMails.Add(
                 new(context.Payload.RosterKey));
             PublishRosterMailsTask task = new(
                 context.Payload.RosterKey,
                 context.Payload.RosterLink,
                 context.Payload.UserProfileLink);
-            context.PublishMessage(task, DateTime.Now.AddMinutes(10));
+            context.PublishMessage(task, DateTime.Now.AddMinutes(features.RosterMailDelayMinutes));
         }
     }
 

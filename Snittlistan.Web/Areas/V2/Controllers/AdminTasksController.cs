@@ -12,6 +12,7 @@ using Snittlistan.Web.Infrastructure.Database;
 using Snittlistan.Web.Infrastructure.Indexes;
 using Snittlistan.Web.Models;
 using Snittlistan.Web.Services;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Web;
 using System.Web.Mvc;
@@ -271,17 +272,19 @@ public class AdminTasksController : AdminController
     public async Task<ActionResult> Features(TenantFeaturesViewModel vm)
     {
         UpdateFeaturesCommandHandler.Command command = new(
-            vm.RosterMailEnabled);
+            vm.RosterMailEnabled,
+            vm.RosterMailDelayMinutes);
         await ExecuteCommand(command);
 
         return RedirectToAction("Index");
     }
 
-    public class TenantFeaturesViewModel
+    public class TenantFeaturesViewModel : IValidatableObject
     {
         public TenantFeaturesViewModel(TenantFeatures tenantFeatures)
         {
             RosterMailEnabled = tenantFeatures.RosterMailEnabled;
+            RosterMailDelayMinutes = tenantFeatures.RosterMailDelayMinutes;
         }
 
         public TenantFeaturesViewModel()
@@ -289,5 +292,20 @@ public class AdminTasksController : AdminController
         }
 
         public bool RosterMailEnabled { get; set; }
+
+        public int RosterMailDelayMinutes { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (RosterMailDelayMinutes < 1)
+            {
+                yield return new("Must be at least 1", new[] { nameof(RosterMailDelayMinutes) });
+            }
+
+            if (RosterMailDelayMinutes > 60)
+            {
+                yield return new("Must be at most 60", new[] { nameof(RosterMailDelayMinutes) });
+            }
+        }
     }
 }

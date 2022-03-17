@@ -21,6 +21,15 @@
                 </div>
             </div>
             <div class="control-group">
+                @Html.LabelFor(x => x.RosterMailDelayMinutes, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.TextBoxFor(x => x.RosterMailDelayMinutes)
+                    <span class="help-block">
+                        Antal minuter att vänta innan laguttagningarna skickas ut per mail, efter en uppdatering.
+                    </span>
+                </div>
+            </div>
+            <div class="control-group">
                 <div class="controls">
                     <button class="btn btn-primary btn-large" type="submit">Spara</button>
                     <a class="btn btn-large"

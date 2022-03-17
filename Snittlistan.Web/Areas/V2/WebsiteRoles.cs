@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 namespace Snittlistan.Web.Areas.V2;
+
 public static class WebsiteRoles
 {
     // roles
