@@ -33,6 +33,7 @@ public class TaskPublisher
 
     public void PublishTask(TaskBase task, string createdBy)
     {
+        Logger.Info("{createdBy} publish task {@task}", createdBy, task);
         PublishedTask publishedTask = databases.Snittlistan.PublishedTasks.Add(
             PublishedTask.CreateImmediate(
                 task,
@@ -112,6 +113,11 @@ public class TaskPublisher
 
     public void PublishDelayedTask(TaskBase task, DateTime publishDate, string createdBy)
     {
+        Logger.Info(
+            "{createdBy} publish delayed (@{publishDate}) task {@task}",
+            createdBy,
+            publishDate,
+            task);
         PublishedTask publishedTask = databases.Snittlistan.PublishedTasks.Add(
             PublishedTask.CreateDelayed(
                 task,
@@ -120,6 +126,6 @@ public class TaskPublisher
                 causationId,
                 publishDate,
                 createdBy));
-        Logger.Info("added delayed task: {@publishedTask}", publishedTask);
+        Logger.Info("added delayed task {@publishedTask}", publishedTask);
     }
 }

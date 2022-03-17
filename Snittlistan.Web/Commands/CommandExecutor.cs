@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using NLog;
 using Snittlistan.Web.Infrastructure;
 using Snittlistan.Web.Infrastructure.Database;
 using System.Reflection;
@@ -8,6 +9,7 @@ namespace Snittlistan.Web.Commands;
 
 public class CommandExecutor
 {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private readonly CompositionRoot compositionRoot;
     private readonly Databases databases;
     private readonly Guid correlationId;
@@ -31,6 +33,7 @@ public class CommandExecutor
     public async Task Execute<TCommand>(TCommand command)
         where TCommand : class
     {
+        Logger.Info("execute command {@command}", command);
         Type handlerType = typeof(ICommandHandler<>).MakeGenericType(command.GetType());
         MethodInfo handleMethod = handlerType.GetMethod(nameof(ICommandHandler<TCommand>.Handle));
         object handler = compositionRoot.Kernel.Resolve(handlerType);

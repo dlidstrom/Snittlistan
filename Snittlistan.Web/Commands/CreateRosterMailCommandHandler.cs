@@ -16,9 +16,10 @@ public class CreateRosterMailCommandHandler : CommandHandler<CreateRosterMailCom
                 && rosterMail.PublishedDate == null
             select rosterMail.RosterKey;
         string[] rosterIds = await query.ToArrayAsync();
+        Logger.InfoFormat("roster mails found: {@rosterIds}", rosterIds);
         if (rosterIds.Any() == false)
         {
-            TenantFeatures? features = await CompositionRoot.GetFeatures();
+            TenantFeatures features = await CompositionRoot.GetFeatures();
             _ = CompositionRoot.Databases.Snittlistan.RosterMails.Add(
                 new(context.Payload.RosterKey));
             PublishRosterMailsTask task = new(
