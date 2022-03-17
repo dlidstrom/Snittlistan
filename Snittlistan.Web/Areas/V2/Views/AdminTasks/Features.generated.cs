@@ -87,6 +87,32 @@ WriteLiteral("\r\n                    <span class=\"help-block\">\r\n           
 
 
 
+WriteLiteral("            <div class=\"control-group\">\r\n                ");
+
+
+            
+            #line 24 "..\..\Areas\V2\Views\AdminTasks\Features.cshtml"
+           Write(Html.LabelFor(x => x.RosterMailDelayMinutes, new { @class = "control-label" }));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                <div class=\"controls\">\r\n                    ");
+
+
+            
+            #line 26 "..\..\Areas\V2\Views\AdminTasks\Features.cshtml"
+               Write(Html.TextBoxFor(x => x.RosterMailDelayMinutes));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                    <span class=\"help-block\">\r\n                        Antal mi" +
+"nuter att vänta innan laguttagningarna skickas ut per mail, efter en uppdatering" +
+".\r\n                    </span>\r\n                </div>\r\n            </div>\r\n");
+
+
+
 WriteLiteral("            <div class=\"control-group\">\r\n                <div class=\"controls\">\r\n" +
 "                    <button class=\"btn btn-primary btn-large\" type=\"submit\">Spar" +
 "a</button>\r\n                    <a class=\"btn btn-large\"\r\n                      " +
@@ -94,7 +120,7 @@ WriteLiteral("            <div class=\"control-group\">\r\n                <div 
 
 
             
-            #line 27 "..\..\Areas\V2\Views\AdminTasks\Features.cshtml"
+            #line 36 "..\..\Areas\V2\Views\AdminTasks\Features.cshtml"
                         Write(Url.Action("Index", "AdminTasks"));
 
             
@@ -105,7 +131,7 @@ WriteLiteral("\">\r\n                        Avbryt\r\n                    </a>\
 
 
             
-            #line 32 "..\..\Areas\V2\Views\AdminTasks\Features.cshtml"
+            #line 41 "..\..\Areas\V2\Views\AdminTasks\Features.cshtml"
         }
 
             
