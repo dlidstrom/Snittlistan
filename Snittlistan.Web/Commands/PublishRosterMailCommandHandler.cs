@@ -2,6 +2,7 @@
 
 using Snittlistan.Web.Areas.V2.Domain;
 using Snittlistan.Web.Infrastructure;
+using Snittlistan.Web.Infrastructure.Database;
 using Snittlistan.Web.Models;
 
 namespace Snittlistan.Web.Commands;
@@ -9,7 +10,7 @@ namespace Snittlistan.Web.Commands;
 public class PublishRosterMailCommandHandler
     : HandleMailCommandHandler<PublishRosterMailCommandHandler.Command, UpdateRosterEmail>
 {
-    protected override Task<UpdateRosterEmail> CreateEmail(HandlerContext<Command> context)
+    protected override async Task<UpdateRosterEmail> CreateEmail(HandlerContext<Command> context)
     {
         Roster roster = CompositionRoot.DocumentSession
             .Include<Roster>(x => x.Players)
@@ -23,6 +24,8 @@ public class PublishRosterMailCommandHandler
             ? CompositionRoot.DocumentSession.Load<Player>(roster.TeamLeader).Name
             : string.Empty;
         bool needsAccept = roster.AcceptedPlayers.Contains(context.Payload.PlayerId) == false;
+        Bits_VMatchHeadInfo matchHeadInfo = await context.Databases.Bits.VMatchHeadInfo.SingleAsync(
+            x => x.ExternalMatchId == roster.BitsMatchId);
         UpdateRosterEmail email = new(
             context.Payload.RecipientEmail,
             context.Payload.RecipientName,
@@ -34,8 +37,14 @@ public class PublishRosterMailCommandHandler
             roster.Turn,
             context.Payload.RosterLink,
             context.Payload.UserProfileLink,
-            needsAccept);
-        return Task.FromResult(email);
+            needsAccept,
+            matchHeadInfo.HomeTeamAlias,
+            matchHeadInfo.AwayTeamAlias,
+            matchHeadInfo.HallName,
+            matchHeadInfo.OilProfileId,
+            matchHeadInfo.OilProfileName,
+            matchHeadInfo.MatchDateTime);
+        return email;
     }
 
     protected override RatePerSeconds GetRate(HandlerContext<Command> context)

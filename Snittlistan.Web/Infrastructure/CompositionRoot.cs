@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using Castle.Core.Logging;
 using Castle.MicroKernel;
 using EventStoreLite;
 using Postal;
@@ -15,11 +16,13 @@ public record CompositionRoot(
     Raven.Client.IDocumentSession DocumentSession,
     IEventStoreSession EventStoreSession,
     Databases Databases,
+    DatabasesFactory DatabasesFactory,
     MsmqFactory MsmqFactory,
     EventStore EventStore,
     Tenant CurrentTenant,
     IEmailService EmailService,
-    IBitsClient BitsClient)
+    IBitsClient BitsClient,
+    ILogger Logger)
 {
     public Guid CorrelationId
     {
@@ -36,11 +39,28 @@ public record CompositionRoot(
         }
     }
 
-    public async Task<TenantFeatures?> GetFeatures()
+    public async Task<TenantFeatures> GetFeatures()
     {
         KeyValueProperty? settingsProperty =
             await Databases.Snittlistan.KeyValueProperties.SingleOrDefaultAsync(
                 x => x.Key == TenantFeatures.Key && x.TenantId == CurrentTenant.TenantId);
-        return settingsProperty?.Value as TenantFeatures;
+        do
+        {
+            if (settingsProperty is null)
+            {
+                Logger.Info("no tenant features found");
+                break;
+            }
+
+            if (settingsProperty.Value is TenantFeatures tenantFeatures)
+            {
+                Logger.InfoFormat("found tenant features {@tenantFeatures}", tenantFeatures);
+                return tenantFeatures;
+            }
+        }
+        while (false);
+
+        Logger.Warn("no tenant features found, or unusable");
+        return TenantFeatures.Default;
     }
 }

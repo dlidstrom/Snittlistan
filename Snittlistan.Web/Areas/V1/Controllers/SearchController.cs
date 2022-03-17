@@ -16,7 +16,7 @@ public class SearchController : AbstractController
         }
 
         var query =
-            from team in CompositionRoot.Databases.Bits.Teams
+            from team in CompositionRoot.Databases.Bits.Team
             where team.TeamAlias.StartsWith(term)
             orderby team.TeamAlias
             select new
@@ -35,7 +35,7 @@ public class SearchController : AbstractController
         }
 
         var query =
-            from hall in CompositionRoot.Databases.Bits.Hallar
+            from hall in CompositionRoot.Databases.Bits.Hall
             where hall.HallName.StartsWith(term)
             orderby hall.HallName
             select new
@@ -43,6 +43,6 @@ public class SearchController : AbstractController
                 label = hall.HallName
             };
 
-        return Json(term, JsonRequestBehavior.AllowGet);
+        return Json(query, JsonRequestBehavior.AllowGet);
     }
 }
