@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using Castle.Core.Logging;
 using Castle.MicroKernel;
 using EventStoreLite;
 using Postal;
@@ -20,7 +21,8 @@ public record CompositionRoot(
     EventStore EventStore,
     Tenant CurrentTenant,
     IEmailService EmailService,
-    IBitsClient BitsClient)
+    IBitsClient BitsClient,
+    ILogger Logger)
 {
     public Guid CorrelationId
     {
@@ -42,7 +44,23 @@ public record CompositionRoot(
         KeyValueProperty? settingsProperty =
             await Databases.Snittlistan.KeyValueProperties.SingleOrDefaultAsync(
                 x => x.Key == TenantFeatures.Key && x.TenantId == CurrentTenant.TenantId);
-        return settingsProperty?.Value as TenantFeatures
-            ?? TenantFeatures.Default;
+        do
+        {
+            if (settingsProperty is null)
+            {
+                Logger.Info("no tenant features found");
+                break;
+            }
+
+            if (settingsProperty.Value is TenantFeatures tenantFeatures)
+            {
+                Logger.InfoFormat("found tenant features {@tenantFeatures}", tenantFeatures);
+                return tenantFeatures;
+            }
+        }
+        while (false);
+
+        Logger.Warn("no tenant features found, or unusable");
+        return TenantFeatures.Default;
     }
 }

@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using Castle.Core.Logging;
 using EventStoreLite;
 using Moq;
 using NUnit.Framework;
@@ -173,7 +174,8 @@ public class MatchResult_MatchCommentary : WebApiIntegrationTest
                 Container.Resolve<EventStore>(),
                 CurrentTenant,
                 Container.Resolve<IEmailService>(),
-                Mock.Of<IBitsClient>(MockBehavior.Strict));
+                Mock.Of<IBitsClient>(MockBehavior.Strict),
+                NullLogger.Instance);
             CommandExecutor commandExecutor = new(
                 compositionRoot,
                 Databases,
