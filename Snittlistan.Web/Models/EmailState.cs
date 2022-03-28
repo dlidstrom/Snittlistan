@@ -21,6 +21,8 @@ public abstract class EmailState
 
     public static string OwnerEmail { get; } = ConfigurationManager.AppSettings["OwnerEmail"];
 
+    public static string BccEmail { get; } = ConfigurationManager.AppSettings["BccEmail"];
+
     public string Bcc { get; }
 
     public string From { get; }

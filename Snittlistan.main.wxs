@@ -43,6 +43,10 @@
       Installed OR EMAIL_PASSWORD
     </Condition>
 
+    <Condition Message="ELMAH_EMAIL_PASSWORD variable must be set in the command line">
+      Installed OR ELMAH_EMAIL_PASSWORD
+    </Condition>
+
     <Condition Message="DB_HOST variable must be set in the command line">
       Installed OR DB_HOST
     </Condition>
@@ -61,6 +65,14 @@
 
     <Condition Message="DB_PASSWORD variable must be set in the command line">
       Installed OR DB_PASSWORD
+    </Condition>
+
+    <Condition Message="OWNER_EMAIL variable must be set in the command line">
+      Installed OR OWNER_EMAIL
+    </Condition>
+
+    <Condition Message="BCC_EMAIL variable must be set in the command line">
+      Installed OR BCC_EMAIL
     </Condition>
 
     <?include conditions.wxi?>
@@ -143,6 +155,16 @@
                             File="[SnittlistanWebDir]Web.config"
                             ElementPath="/configuration/appSettings/add[\[]@key='ElitemedalsTemplateFilename'[\]]/@value"
                             Value="[SnittlistanWebDir]elitmarke-ifyllbar1.pdf" />
+              <util:XmlFile Id="OwnerEmailSetting"
+                            Action="setValue"
+                            File="[SnittlistanWebDir]Web.config"
+                            ElementPath="/configuration/appSettings/add[\[]@key='OwnerEmail'[\]]/@value"
+                            Value="[OWNER_EMAIL]" />
+              <util:XmlFile Id="BccEmailSetting"
+                            Action="setValue"
+                            File="[SnittlistanWebDir]Web.config"
+                            ElementPath="/configuration/appSettings/add[\[]@key='BccEmail'[\]]/@value"
+                            Value="[BCC_EMAIL]" />
               <util:XmlFile Id="MailSettings"
                             Action="setValue"
                             File="[SnittlistanWebDir]Web.config"
@@ -152,7 +174,7 @@
                             Action="setValue"
                             File="[SnittlistanWebDir]Web.config"
                             ElementPath="/configuration/elmah/errorMail/@password"
-                            Value="[EMAIL_PASSWORD]" />
+                            Value="[ELMAH_EMAIL_PASSWORD]" />
               <util:XmlFile Id="ConnectionString"
                             Action="setValue"
                             File="[SnittlistanWebDir]Web.config"

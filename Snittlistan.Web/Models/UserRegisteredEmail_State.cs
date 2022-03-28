@@ -11,7 +11,7 @@ public class UserRegisteredEmail_State : EmailState
         string subject,
         string id,
         string activationKey)
-        : base(OwnerEmail, to, OwnerEmail, subject)
+        : base(OwnerEmail, to, BccEmail, subject)
     {
         Id = id;
         ActivationKey = activationKey;

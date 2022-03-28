@@ -11,7 +11,7 @@ public class SendEmail_State : EmailState
         string replyTo,
         string subject,
         string content)
-        : base(OwnerEmail, to, OwnerEmail, subject)
+        : base(OwnerEmail, to, BccEmail, subject)
     {
         ReplyTo = replyTo;
         Content = content;

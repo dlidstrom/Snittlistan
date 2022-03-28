@@ -10,7 +10,7 @@ public class OneTimePasswordEmail_State : EmailState
         string to,
         string subject,
         string oneTimePassword)
-        : base(OwnerEmail, to, OwnerEmail, subject)
+        : base(OwnerEmail, to, BccEmail, subject)
     {
         OneTimePassword = oneTimePassword;
     }

@@ -997,7 +997,6 @@
     <Compile Include="Infrastructure\IoC\WindsorDependencyResolver.cs" />
     <Compile Include="Infrastructure\JavaScriptException.cs" />
     <Compile Include="Infrastructure\LowercaseRoute.cs" />
-    <Compile Include="Infrastructure\MailHttpContext.cs" />
     <Compile Include="Infrastructure\MailHttpResponse.cs" />
     <Compile Include="Infrastructure\Results\ElmahResult.cs" />
     <Compile Include="Infrastructure\Results\NotFoundViewResult.cs" />

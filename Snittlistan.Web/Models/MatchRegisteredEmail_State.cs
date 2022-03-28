@@ -17,7 +17,7 @@ public class MatchRegisteredEmail_State : EmailState
         int opponentScore,
         ResultSeriesReadModel resultSeriesReadModel,
         ResultHeaderReadModel resultHeaderReadModel)
-        : base(from, to, OwnerEmail, subject)
+        : base(from, to, BccEmail, subject)
     {
         Team = team;
         Opponent = opponent;

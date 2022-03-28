@@ -7,7 +7,7 @@ namespace Snittlistan.Web.Models;
 public class InviteUserEmail_State : EmailState
 {
     public InviteUserEmail_State(string to, string subject, string activationUri)
-        : base(OwnerEmail, to, OwnerEmail, subject)
+        : base(OwnerEmail, to, BccEmail, subject)
     {
         ActivationUri = activationUri;
     }

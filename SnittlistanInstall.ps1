@@ -67,6 +67,14 @@ $emailPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
     [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
         (ConvertTo-SecureString (Get-Content ..\email-password.txt))))
 
+if (-not (Test-Path ..\elmah-email-password.txt)) {
+    Read-Host -AsSecureString "Enter Elmah Email password" | ConvertFrom-SecureString | Out-File ..\elmah-email-password.txt
+}
+
+$elmahEmailPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
+    [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
+        (ConvertTo-SecureString (Get-Content ..\elmah-email-password.txt))))
+
 if (-not (Test-Path ..\db-host.txt)) {
     Read-Host -AsSecureString "Enter Database host" | ConvertFrom-SecureString | Out-File ..\db-host.txt
 }
@@ -107,15 +115,30 @@ $dbPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
     [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
         (ConvertTo-SecureString (Get-Content ..\db-password.txt))))
 
+if (-not (Test-Path ..\owner-email.txt)) {
+    Read-Host "Enter owner email" | Out-File ..\owner-email.txt
+}
+
+$ownerEmail = Get-Content ..\owner-email.txt
+
+if (-not (Test-Path ..\bcc-email.txt)) {
+    Read-Host "Enter bcc email" | Out-File ..\bcc-email.txt
+}
+
+$bccEmail = Get-Content ..\bcc-email.txt
+
 $settings = @{
     SERVICE_ACCOUNT = $serviceAccount
     SERVICE_PASSWORD = $servicePassword
     EMAIL_PASSWORD = $emailPassword
+    ELMAH_EMAIL_PASSWORD = $elmahEmailPassword
     DB_HOST = $dbHost
     DB_NAME = $dbName
     DB_NAME2 = $dbName2
     DB_USERNAME = $dbUsername
     DB_PASSWORD = $dbPassword
+    OWNER_EMAIL = $ownerEmail
+    BCC_EMAIL = $bccEmail
 }
 
 $settingsFormatted = ($settings.Keys | % { "$_=$($settings[$_])" }) -join "`n"

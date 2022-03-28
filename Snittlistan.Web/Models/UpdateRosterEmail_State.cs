@@ -25,7 +25,7 @@ public class UpdateRosterEmail_State : EmailState
         int oilProfileId,
         string oilProfileName,
         DateTime matchDate)
-        : base(OwnerEmail, playerEmail, OwnerEmail, "Uttagning har uppdaterats")
+        : base(OwnerEmail, playerEmail, BccEmail, "Uttagning har uppdaterats")
     {
         PlayerEmail = playerEmail;
         Name = name;
