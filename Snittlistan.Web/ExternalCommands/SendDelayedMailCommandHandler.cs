@@ -27,7 +27,8 @@ public class SendDelayedMailCommandHandler : ICommandHandler<SendDelayedMailComm
             command.ReplyTo,
             command.Subject,
             command.Content,
-            command.RatePerSeconds,
+            command.Rate,
+            command.PerSeconds,
             DateTime.Now.Ticks.ToString());
         taskPublisher.PublishDelayedTask(
             emailTask,

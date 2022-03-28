@@ -31,11 +31,23 @@ public class RateLimit
 
     public double Allowance { get; private set; }
 
-    public int Rate { get; }
+    public int Rate { get; private set; }
 
-    public int PerSeconds { get; }
+    public int PerSeconds { get; private set; }
 
     public DateTime UpdatedDate { get; private set; }
+
+    public RateLimit SetRate(int rate)
+    {
+        Rate = rate;
+        return this;
+    }
+
+    public RateLimit SetPerSeconds(int perSeconds)
+    {
+        PerSeconds = perSeconds;
+        return this;
+    }
 
     public RateLimit UpdateAllowance(DateTime when)
     {

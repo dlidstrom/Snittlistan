@@ -13,7 +13,8 @@ public class SendEmailTask : TaskBase
         string replyTo,
         string subject,
         string content,
-        int ratePerSeconds,
+        int rate,
+        int perSeconds,
         string key)
         : base(new(typeof(SendEmailTask).FullName, key))
     {
@@ -21,7 +22,8 @@ public class SendEmailTask : TaskBase
         ReplyTo = replyTo;
         Subject = subject;
         Content = content;
-        RatePerSeconds = ratePerSeconds;
+        Rate = rate;
+        PerSeconds = perSeconds;
     }
 
     public static SendEmailTask Create(
@@ -29,7 +31,8 @@ public class SendEmailTask : TaskBase
         string replyTo,
         string subject,
         string content,
-        int ratePerSeconds,
+        int rate,
+        int perSeconds,
         string key)
     {
         SendEmailTask emailTask =
@@ -38,7 +41,8 @@ public class SendEmailTask : TaskBase
                 replyTo,
                 Convert.ToBase64String(Encoding.UTF8.GetBytes(subject)),
                 Convert.ToBase64String(Encoding.UTF8.GetBytes(content)),
-                ratePerSeconds,
+                rate,
+                perSeconds,
                 key);
         return emailTask;
     }
@@ -51,16 +55,7 @@ public class SendEmailTask : TaskBase
 
     public string Content { get; }
 
-    public int RatePerSeconds { get; }
+    public int Rate { get; }
 
-    public override string ToString()
-    {
-        StringBuilder builder = new();
-        return builder
-            .AppendLine("Subject:   " + Subject)
-            .AppendLine("Recipient: " + To)
-            .AppendLine("Content:   " + Encoding.UTF8.GetString(Convert.FromBase64String(Content)).Substring(0, Math.Min(Content.Length, 250)))
-            .AppendLine("Rate: " + To)
-            .ToString();
-    }
+    public int PerSeconds { get; }
 }

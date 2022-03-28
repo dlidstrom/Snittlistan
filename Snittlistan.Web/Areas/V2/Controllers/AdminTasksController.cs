@@ -210,7 +210,7 @@ public class AdminTasksController : AdminController
             return View(vm);
         }
 
-        int ratePerSeconds = vm.RateSetting! switch
+        int perSeconds = vm.RateSetting! switch
         {
             SendMailViewModel.RateSettingValues.OnePerMinute => 60,
             SendMailViewModel.RateSettingValues.OnePerFiveMinutes => 5 * 60,
@@ -233,7 +233,8 @@ public class AdminTasksController : AdminController
                 vm.ReplyTo,
                 vm.Subject,
                 vm.Content,
-                ratePerSeconds,
+                1,
+                perSeconds,
                 $"{vm.Recipient}/{vm.MailCount}/{vm.RateSetting}/{i}"));
         }
 

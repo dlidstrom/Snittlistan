@@ -14,7 +14,8 @@ public class SendEmailTaskCommandHandler : CommandHandler<SendEmailTaskCommandHa
             context.Payload.ReplyTo,
             context.Payload.Subject,
             context.Payload.Content,
-            context.Payload.RatePerSeconds,
+            context.Payload.Rate,
+            context.Payload.PerSeconds,
             context.Payload.Key);
         context.PublishMessage(task);
         return Task.CompletedTask;
@@ -25,6 +26,7 @@ public class SendEmailTaskCommandHandler : CommandHandler<SendEmailTaskCommandHa
         string ReplyTo,
         string Subject,
         string Content,
-        int RatePerSeconds,
+        int Rate,
+        int PerSeconds,
         string Key);
 }

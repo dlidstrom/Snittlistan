@@ -23,7 +23,7 @@ public class SendEmailCommandHandler
     {
         return new(
             $"send-email/{context.Payload.RatePerSeconds}:{context.Payload.To}",
-            1,
+            context.Payload.Rate,
             context.Payload.RatePerSeconds);
     }
 
@@ -32,5 +32,6 @@ public class SendEmailCommandHandler
         string ReplyTo,
         string Subject,
         string Content,
+        int Rate,
         int RatePerSeconds);
 }

@@ -15,6 +15,7 @@ public class SendEmailTaskHandler
             payload.ReplyTo,
             payload.Subject,
             payload.Content,
-            payload.RatePerSeconds);
+            payload.Rate,
+            payload.PerSeconds);
     }
 }

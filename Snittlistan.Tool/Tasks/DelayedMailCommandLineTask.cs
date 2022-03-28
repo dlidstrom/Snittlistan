@@ -28,6 +28,7 @@ public class DelayedMailCommandLineTask : CommandLineTask
             hostname,
             subject,
             content,
+            1,
             60);
         await ExecuteCommand(command);
     }

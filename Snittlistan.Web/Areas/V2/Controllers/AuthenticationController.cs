@@ -330,10 +330,11 @@ public class AuthenticationController : AbstractController
                 Environment.NewLine,
                 new[]
                 {
-                        $"User Agent: {Request.UserAgent}",
-                        $"Referrer: {Request.UrlReferrer}",
-                        body ?? string.Empty
+                    $"User Agent: {Request.UserAgent}",
+                    $"Referrer: {Request.UrlReferrer}",
+                    body ?? string.Empty
                 }),
+            10,
             60,
             DateTime.Now.Ticks.ToString());
         TaskPublisher taskPublisher = GetTaskPublisher();

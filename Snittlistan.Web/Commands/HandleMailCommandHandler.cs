@@ -55,6 +55,13 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
             rateLimitProperty =
                 CompositionRoot.Databases.Snittlistan.KeyValueProperties.Add(keyValueProperty);
         }
+        else
+        {
+            rateLimitProperty.ModifyValue<RateLimit>(
+                r => r.SetRate(rate).SetPerSeconds(perSeconds),
+                x => Logger.InfoFormat("before: {@x}", x),
+                x => Logger.InfoFormat("after: {@x}", x));
+        }
 
         DateTime now = DateTime.Now;
         rateLimitProperty.ModifyValue<RateLimit>(
