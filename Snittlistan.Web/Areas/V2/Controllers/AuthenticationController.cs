@@ -323,7 +323,7 @@ public class AuthenticationController : AbstractController
     private void NotifyEvent(string subject, string? body = null)
     {
         SendEmailTask task = SendEmailTask.Create(
-            ConfigurationManager.AppSettings["OwnerEmail"],
+            ConfigurationManager.AppSettings["BccEmail"],
             string.Empty,
             subject,
             string.Join(
