@@ -165,7 +165,12 @@
                             File="[SnittlistanWebDir]Web.config"
                             ElementPath="/configuration/appSettings/add[\[]@key='BccEmail'[\]]/@value"
                             Value="[BCC_EMAIL]" />
-              <util:XmlFile Id="MailSettings"
+              <util:XmlFile Id="MailUsername"
+                            Action="setValue"
+                            File="[SnittlistanWebDir]Web.config"
+                            ElementPath="/configuration/system.net/mailSettings/smtp/network/@userName"
+                            Value="[OWNER_EMAIL]" />
+              <util:XmlFile Id="MailPassword"
                             Action="setValue"
                             File="[SnittlistanWebDir]Web.config"
                             ElementPath="/configuration/system.net/mailSettings/smtp/network/@password"
