@@ -147,7 +147,7 @@
       <Version>5.2.7</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client">
-      <Version>5.2.7</Version>
+      <Version>5.2.8</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.WebApi.Core">
       <Version>5.2.7</Version>

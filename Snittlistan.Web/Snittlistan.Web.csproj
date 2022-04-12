@@ -75,7 +75,7 @@
       <Version>5.2.7</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client">
-      <Version>5.2.7</Version>
+      <Version>5.2.8</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
       <Version>3.6.0</Version>
