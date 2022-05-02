@@ -35,30 +35,30 @@
       },
       "Microsoft.AspNet.Mvc": {
         "type": "Direct",
-        "requested": "[5.2.7, )",
-        "resolved": "5.2.7",
-        "contentHash": "m3hUsn48k6Qb5El9A8naTwGTLCdSQKGSpGweqIfiVKltGJzAJJxuXvhhaQQtLCGg3i5V88iGjz0JG72/tlFKlg==",
+        "requested": "[5.2.8, )",
+        "resolved": "5.2.8",
+        "contentHash": "LDpC42O51MIVQht4aHEC/Nq6bpRiM+Z2jtZT2KkugB6dIJqMbvW9E74CxiBeJjRWDJGFOUq2Fzuo+THil0TIbg==",
         "dependencies": {
-          "Microsoft.AspNet.Razor": "[3.2.7, 3.3.0)",
-          "Microsoft.AspNet.WebPages": "[3.2.7, 3.3.0)"
+          "Microsoft.AspNet.Razor": "[3.2.8, 3.3.0)",
+          "Microsoft.AspNet.WebPages": "[3.2.8, 3.3.0)"
         }
       },
       "Microsoft.AspNet.WebApi.Client": {
         "type": "Direct",
-        "requested": "[5.2.7, )",
-        "resolved": "5.2.7",
-        "contentHash": "/76fAHknzvFqbznS6Uj2sOyE9rJB3PltY+f53TH8dX9RiGhk02EhuFCWljSj5nnqKaTsmma8DFR50OGyQ4yJ1g==",
+        "requested": "[5.2.8, )",
+        "resolved": "5.2.8",
+        "contentHash": "dkGLm30CxLieMlUO+oQpJw77rDs0IIx/w3lIHsp+8X94HXCsUfLYuFmlZPsQDItC0O2l1ZlWeKLkZX7ZiNRekw==",
         "dependencies": {
           "Newtonsoft.Json": "6.0.4"
         }
       },
       "Microsoft.AspNet.WebApi.Core": {
         "type": "Direct",
-        "requested": "[5.2.7, )",
-        "resolved": "5.2.7",
-        "contentHash": "gM2QzApnHdy1FbKUJ/ROGJSm69P2G+HMoVd/t5Vq1O/zZ5TI4IKC9PX6nUfRt/NHgebZOIWHpB4/4K4inuy4yQ==",
+        "requested": "[5.2.8, )",
+        "resolved": "5.2.8",
+        "contentHash": "AQ2Mmo2IEALj16Flk9L53Wl0WZ0QgeC5GPNe7G13e1E+GdbjIdewYeU7Y7EtGe921srIneGIsrlehMVFib4xiw==",
         "dependencies": {
-          "Microsoft.AspNet.WebApi.Client": "5.2.7"
+          "Microsoft.AspNet.WebApi.Client": "5.2.8"
         }
       },
       "Microsoft.Bcl.Build": {
@@ -79,11 +79,11 @@
       },
       "Moq": {
         "type": "Direct",
-        "requested": "[4.16.1, )",
-        "resolved": "4.16.1",
-        "contentHash": "bw3R9q8cVNhWXNpnvWb0OGP4HadS4zvClq+T1zf7AF+tLY1haZ2AvbHidQekf4PDv1T40c6brZeT/V0IBq7cEQ==",
+        "requested": "[4.17.2, )",
+        "resolved": "4.17.2",
+        "contentHash": "HytUPJ3/uks2UgJ9hIcyXm3YxpFAR4OJzbQwTHltbKGun3lFLhEHs97hiiPj1dY8jV/kasXeihTzDxct6Zf3iQ==",
         "dependencies": {
-          "Castle.Core": "4.4.0",
+          "Castle.Core": "4.4.1",
           "System.Threading.Tasks.Extensions": "4.5.4"
         }
       },
@@ -95,15 +95,15 @@
       },
       "NLog": {
         "type": "Direct",
-        "requested": "[4.7.14, )",
-        "resolved": "4.7.14",
-        "contentHash": "R1Nn+Zi2mSiKf82zII+8ZhGTr66CmCDLlpDq/0N0Y22TDrioYeP6t3XWzJVTi3OXaHJ/jiXId/okXQu8e0g3uw=="
+        "requested": "[4.7.15, )",
+        "resolved": "4.7.15",
+        "contentHash": "vXMmsK17hXnMsKd8BdCrJzvb8JMT0+cPgBGRfnqcXIb6y8b6RMIZexO4hMhQgifcTHgU7dbubvCR5A5wX6Ne+A=="
       },
       "NUnit": {
         "type": "Direct",
-        "requested": "[3.13.2, )",
-        "resolved": "3.13.2",
-        "contentHash": "u+fz/lXyR4vlamySNAEMrXvh+GhAQiB6/aVZtU5WjivR5zF26Ui0tfteDtWqT90k9D8y6g8rFKYQC97Z7d195w=="
+        "requested": "[3.13.3, )",
+        "resolved": "3.13.3",
+        "contentHash": "KNPDpls6EfHwC3+nnA67fh5wpxeLb3VLFAfLxrug6JMYDLHH6InaQIWR7Sc3y75d/9IKzMksH/gi08W7XWbmnQ=="
       },
       "NUnit.ConsoleRunner": {
         "type": "Direct",
@@ -177,31 +177,31 @@
       },
       "Microsoft.AspNet.Razor": {
         "type": "Transitive",
-        "resolved": "3.2.7",
-        "contentHash": "BpWEZ+Ys7g9VAkbAfpG5jr5A1fKcmadCCXv3fYfps5YfTVABJIGV4uc9yvmXKxsNsjL+BzDld2gs+xtgT2gg1g=="
+        "resolved": "3.2.8",
+        "contentHash": "kbWyeKmtRKhaAdutZdTwy60C2YoMw6JykV7qL+idvAo19VvcOzBZyiBFGQnmSbzOf/qoznvrWjPJi6+oOsS0Vw=="
       },
       "Microsoft.AspNet.WebApi": {
         "type": "Transitive",
-        "resolved": "5.2.7",
-        "contentHash": "r+nQLBQ857hw8Mfb5hrlMwr0nb7BE1Fp12LsSIZ9g6NT/hTZj8CYUi2UREfywIsGPQ4EIx14oWp8QPRps/i5CA==",
+        "resolved": "5.2.8",
+        "contentHash": "+Ebj4vk0F9H2Atomk21NvHnmkbgG+m21xMJxrkqNLnTHKXfy4ORw2IBQY4fNEWZx1JPaApmZojz41oiK5Lg6UQ==",
         "dependencies": {
-          "Microsoft.AspNet.WebApi.WebHost": "[5.2.7, 5.3.0)"
+          "Microsoft.AspNet.WebApi.WebHost": "[5.2.8, 5.3.0)"
         }
       },
       "Microsoft.AspNet.WebApi.WebHost": {
         "type": "Transitive",
-        "resolved": "5.2.7",
-        "contentHash": "m3TyD7R/cmbfXqkfgcnE0J/UEKklcPP5gsXR96//vLx2kTnsxuOqNlulJLl+Oto4fZMvhVPFZVR+KG9cLZM/PA==",
+        "resolved": "5.2.8",
+        "contentHash": "fqhWX+H2KR1cqJYs8qZ72AkPzw1XdFHBpliP9d182VSxoJQN/Wzm7Yn0lekhYxCli9BZj5sZc+UgvAqA7B+gNg==",
         "dependencies": {
-          "Microsoft.AspNet.WebApi.Core": "[5.2.7, 5.3.0)"
+          "Microsoft.AspNet.WebApi.Core": "[5.2.8, 5.3.0)"
         }
       },
       "Microsoft.AspNet.WebPages": {
         "type": "Transitive",
-        "resolved": "3.2.7",
-        "contentHash": "2jwZFB7PvY+tbdz0ZP4iEo7gMrJxkCQUzoGLh6swUc6ZXl6DoKyDslmGcC/j9PFmJXCRMVIqtRorlPSMU2DuRA==",
+        "resolved": "3.2.8",
+        "contentHash": "uPscsoHcoYUOLyitrnxsK5Ch1MMemvthnmItJCdzWeDQKGtE3pgki5CS+AiYrzIc0tP6AgwBD+xox2lp+7Z5WA==",
         "dependencies": {
-          "Microsoft.AspNet.Razor": "[3.2.7, 3.3.0)",
+          "Microsoft.AspNet.Razor": "[3.2.8, 3.3.0)",
           "Microsoft.Web.Infrastructure": "1.0.0"
         }
       },
@@ -228,8 +228,8 @@
       },
       "Microsoft.Web.Infrastructure": {
         "type": "Transitive",
-        "resolved": "1.0.0",
-        "contentHash": "FNmvLn5m2LTU/Rs2KWVo0SIIh9Ek+U0ojex7xeDaSHw/zgEP77A8vY5cVWgUtBGS8MJfDGNn8rpXJWEIQaPwTg=="
+        "resolved": "2.0.0",
+        "contentHash": "NA6F00drSYd4HZk7QcyMRz1EEdZQQpcdnt6DfNiurNcUNsmmRDpz9db2Bc3L3Lgo455BOSwNDuNjbhDLltKGKQ=="
       },
       "MicrosoftWebMvc": {
         "type": "Transitive",
@@ -418,7 +418,7 @@
         "type": "Project",
         "dependencies": {
           "Lindhart.Analyser.MissingAwaitWarning": "2.0.0",
-          "Microsoft.AspNet.WebApi.Client": "5.2.7",
+          "Microsoft.AspNet.WebApi.Client": "5.2.8",
           "MvcContrib": "2.0.95",
           "NLog": "4.7.14",
           "Newtonsoft.Json": "13.0.1"
@@ -435,13 +435,13 @@
           "Castle.Windsor": "5.1.1",
           "Elmah.MVC": "2.1.2",
           "EntityFramework6.Npgsql": "6.4.3",
-          "Microsoft.AspNet.Mvc": "5.2.7",
-          "Microsoft.AspNet.WebApi": "5.2.7",
-          "Microsoft.AspNet.WebApi.Client": "5.2.7",
+          "Microsoft.AspNet.Mvc": "5.2.8",
+          "Microsoft.AspNet.WebApi": "5.2.8",
+          "Microsoft.AspNet.WebApi.Client": "5.2.8",
           "Microsoft.CodeDom.Providers.DotNetCompilerPlatform": "3.6.0",
-          "Microsoft.Web.Infrastructure": "1.0.0",
+          "Microsoft.Web.Infrastructure": "2.0.0",
           "Mvc3Futures": "3.0.20105",
-          "NLog": "4.7.14",
+          "NLog": "4.7.15",
           "Newtonsoft.Json": "13.0.1",
           "PDFsharp": "1.50.5147",
           "Postal.Mvc5": "1.2.0",
