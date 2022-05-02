@@ -100,9 +100,6 @@
     <PackageReference Include="Microsoft.AspNet.WebApi.Client">
       <Version>5.2.8</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Bcl.Build">
-      <Version>1.0.21</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.Net.Http">
       <Version>2.2.29</Version>
     </PackageReference>

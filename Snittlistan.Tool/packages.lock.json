@@ -41,12 +41,6 @@
           "Newtonsoft.Json": "6.0.4"
         }
       },
-      "Microsoft.Bcl.Build": {
-        "type": "Direct",
-        "requested": "[1.0.21, )",
-        "resolved": "1.0.21",
-        "contentHash": "sgHu4mIt0+NVGyI12Bj4hLPypNK55UOH+ologj2LqDCjxq3EbIxe/uAtHjY+fEwbE1dtsAHG8SXHf+V/EYbKTg=="
-      },
       "Microsoft.Net.Http": {
         "type": "Direct",
         "requested": "[2.2.29, )",
@@ -92,6 +86,11 @@
         "dependencies": {
           "Microsoft.Bcl.Build": "1.0.14"
         }
+      },
+      "Microsoft.Bcl.Build": {
+        "type": "Transitive",
+        "resolved": "1.0.14",
+        "contentHash": "cDLKSvNvRa519hplsbSoYqO69TjdDIhfjtKUM0g20/nVROoWsGav9KCI9HtnGjLmdV1+TcUUDhbotcllibjPEA=="
       },
       "MicrosoftWebMvc": {
         "type": "Transitive",
