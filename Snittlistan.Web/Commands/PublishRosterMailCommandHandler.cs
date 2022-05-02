@@ -24,8 +24,34 @@ public class PublishRosterMailCommandHandler
             ? CompositionRoot.DocumentSession.Load<Player>(roster.TeamLeader).Name
             : string.Empty;
         bool needsAccept = roster.AcceptedPlayers.Contains(context.Payload.PlayerId) == false;
-        Bits_VMatchHeadInfo matchHeadInfo = await context.Databases.Bits.VMatchHeadInfo.SingleAsync(
-            x => x.ExternalMatchId == roster.BitsMatchId);
+        UpdateRosterEmail_State.MatchHeadType matchHead;
+        if (roster.BitsMatchId != 0)
+        {
+            Bits_VMatchHeadInfo matchHeadInfo = await context.Databases.Bits.VMatchHeadInfo.SingleAsync(
+                x => x.ExternalMatchId == roster.BitsMatchId);
+            matchHead = new(
+                "Hemmalag",
+                matchHeadInfo.HomeTeamAlias,
+                "Bortalag",
+                matchHeadInfo.AwayTeamAlias,
+                matchHeadInfo.HallName,
+                matchHeadInfo.OilProfileId,
+                matchHeadInfo.OilProfileName,
+                matchHeadInfo.MatchDateTime);
+        }
+        else
+        {
+            matchHead = new(
+                "Lag",
+                roster.Team,
+                "Motståndare",
+                roster.Opponent ?? string.Empty,
+                roster.Location ?? string.Empty,
+                null,
+                roster.OilPattern.Name,
+                roster.Date);
+        }
+
         UpdateRosterEmail email = new(
             context.Payload.RecipientEmail,
             context.Payload.RecipientName,
@@ -38,12 +64,7 @@ public class PublishRosterMailCommandHandler
             context.Payload.RosterLink,
             context.Payload.UserProfileLink,
             needsAccept,
-            matchHeadInfo.HomeTeamAlias,
-            matchHeadInfo.AwayTeamAlias,
-            matchHeadInfo.HallName,
-            matchHeadInfo.OilProfileId,
-            matchHeadInfo.OilProfileName,
-            matchHeadInfo.MatchDateTime);
+            matchHead);
         return email;
     }
 

@@ -19,12 +19,7 @@ public class UpdateRosterEmail_State : EmailState
         Uri rosterLink,
         Uri userProfileLink,
         bool needsAccept,
-        string homeTeamAlias,
-        string awayTeamAlias,
-        string hallName,
-        int oilProfileId,
-        string oilProfileName,
-        DateTime matchDate)
+        MatchHeadType matchHead)
         : base(OwnerEmail, playerEmail, BccEmail, "Uttagning har uppdaterats")
     {
         PlayerEmail = playerEmail;
@@ -38,12 +33,7 @@ public class UpdateRosterEmail_State : EmailState
         RosterLink = rosterLink;
         UserProfileLink = userProfileLink;
         NeedsAccept = needsAccept;
-        HomeTeamAlias = homeTeamAlias;
-        AwayTeamAlias = awayTeamAlias;
-        HallName = hallName;
-        OilProfileId = oilProfileId;
-        OilProfileName = oilProfileName;
-        MatchDate = matchDate;
+        MatchHead = matchHead;
     }
 
     public string PlayerEmail { get; }
@@ -68,17 +58,46 @@ public class UpdateRosterEmail_State : EmailState
 
     public bool NeedsAccept { get; }
 
-    public string HomeTeamAlias { get; }
+    public MatchHeadType MatchHead { get; }
 
-    public string AwayTeamAlias { get; }
+    public class MatchHeadType
+    {
+        public MatchHeadType(
+            string firstTeamLabel,
+            string homeTeamAlias,
+            string secondTeamLabel,
+            string awayTeamAlias,
+            string hallName,
+            int? oilProfileId,
+            string oilProfileName,
+            DateTime matchDate)
+        {
+            FirstTeamLabel = firstTeamLabel;
+            HomeTeamAlias = homeTeamAlias;
+            SecondTeamLabel = secondTeamLabel;
+            AwayTeamAlias = awayTeamAlias;
+            HallName = hallName;
+            OilProfileId = oilProfileId;
+            OilProfileName = oilProfileName;
+            MatchDate = matchDate;
+        }
 
-    public string HallName { get; }
+        public string FirstTeamLabel { get; }
 
-    public int OilProfileId { get; }
+        public string HomeTeamAlias { get; }
 
-    public string OilProfileName { get; }
+        public string SecondTeamLabel { get; }
 
-    public DateTime MatchDate { get; }
+        public string AwayTeamAlias { get; }
+
+        public string HallName { get; }
+
+        public int? OilProfileId { get; }
+
+        public string OilProfileName { get; }
+
+        public DateTime MatchDate { get; }
+    }
 
     public override Email CreateEmail()
     {
@@ -94,11 +113,6 @@ public class UpdateRosterEmail_State : EmailState
             RosterLink,
             UserProfileLink,
             NeedsAccept,
-            HomeTeamAlias,
-            AwayTeamAlias,
-            HallName,
-            OilProfileId,
-            OilProfileName,
-            MatchDate);
+            MatchHead);
     }
 }

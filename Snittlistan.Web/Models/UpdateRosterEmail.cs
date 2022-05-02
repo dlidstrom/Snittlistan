@@ -20,12 +20,7 @@ public class UpdateRosterEmail : EmailBase
         Uri rosterLink,
         Uri userProfileLink,
         bool needsAccept,
-        string homeTeamAlias,
-        string awayTeamAlias,
-        string hallName,
-        int oilProfileId,
-        string oilProfileName,
-        DateTime matchDate)
+        UpdateRosterEmail_State.MatchHeadType matchHead)
         : base("UpdateRoster")
     {
         _state = new(
@@ -40,12 +35,7 @@ public class UpdateRosterEmail : EmailBase
             rosterLink,
             userProfileLink,
             needsAccept,
-            homeTeamAlias,
-            awayTeamAlias,
-            hallName,
-            oilProfileId,
-            oilProfileName,
-            matchDate);
+            matchHead);
     }
 
     public string PlayerEmail => _state.PlayerEmail;
@@ -70,17 +60,7 @@ public class UpdateRosterEmail : EmailBase
 
     public bool NeedsAccept => _state.NeedsAccept;
 
-    public string HomeTeamAlias => _state.HomeTeamAlias;
-
-    public string AwayTeamAlias => _state.AwayTeamAlias;
-
-    public string HallName => _state.HallName;
-
-    public int OilProfileId => _state.OilProfileId;
-
-    public string OilProfileName => _state.OilProfileName;
-
-    public DateTime MatchDate => _state.MatchDate;
+    public UpdateRosterEmail_State.MatchHeadType MatchHead => _state.MatchHead;
 
     public override EmailState State => _state;
 }

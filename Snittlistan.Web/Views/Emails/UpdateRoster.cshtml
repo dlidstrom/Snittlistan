@@ -33,19 +33,28 @@ Content-Type: text/html; charset=utf-8
     </p>
     <p>
         <dl>
-            <dt>Hemmalag</dt>
-            <dd>@Model.HomeTeamAlias</dd>
-            <dt>Bortalag</dt>
-            <dd>@Model.AwayTeamAlias</dd>
+            <dt>@Model.MatchHead.FirstTeamLabel</dt>
+            <dd>@Model.MatchHead.HomeTeamAlias</dd>
+            <dt>@Model.MatchHead.SecondTeamLabel</dt>
+            <dd>@Model.MatchHead.AwayTeamAlias</dd>
             <dt>Plats</dt>
-            <dd>@Model.HallName</dd>
+            <dd>@Model.MatchHead.HallName</dd>
             <dt>Oljeprofil</dt>
-            <dd><a href="@string.Format("https://bits.swebowl.se/MiscDisplay/Oilpattern/{0}", Model.OilProfileId)">@Model.OilProfileName</a></dd>
+            <dd>
+                @if (Model.MatchHead.OilProfileId != null)
+                {
+                    <a href="@string.Format("https://bits.swebowl.se/MiscDisplay/Oilpattern/{0}", Model.MatchHead.OilProfileId)">@Model.MatchHead.OilProfileName</a>
+                }
+                else
+                {
+                    @Model.MatchHead.OilProfileName
+                }
+            </dd>
             <dt>När</dt>
             <dd>
                 <em>
-                    <time datetime="@Model.MatchDate.ToString("s")">
-                        @Model.MatchDate.ToString(
+                    <time datetime="@Model.MatchHead.MatchDate.ToString("s")">
+                        @Model.MatchHead.MatchDate.ToString(
                             "dddd d MMMM HH:mm",
                             new System.Globalization.CultureInfo("sv-SE"))
                     </time>
