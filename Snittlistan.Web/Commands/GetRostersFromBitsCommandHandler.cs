@@ -135,23 +135,21 @@ public class GetRostersFromBitsCommandHandler
         }
 
         // remove extraneous rosters
-        Roster[] toRemove = rosters.Where(x => foundMatchIds.Contains(x.BitsMatchId) == false).ToArray();
+        Roster[] toRemove = rosters
+            .Where(x => foundMatchIds.Contains(x.BitsMatchId) == false
+                && x.MatchResultId is null
+                && x.Turn <= 20)
+            .ToArray();
         if (toRemove.Any())
         {
-            List<Roster> actualRemoved = new();
             foreach (Roster roster in toRemove)
             {
-                // only regular season games, playoff is handled differently
-                if (roster.MatchResultId is null && roster.Turn <= 20)
-                {
-                    CompositionRoot.DocumentSession.Delete(roster);
-                    actualRemoved.Add(roster);
-                }
+                CompositionRoot.DocumentSession.Delete(roster);
             }
 
             string joined = string.Join(
                 ",",
-                actualRemoved.Select(x => $"Id={x.Id} BitsMatchId={x.BitsMatchId}"));
+                toRemove.Select(x => $"Id={x.Id} BitsMatchId={x.BitsMatchId}"));
             Logger.InfoFormat("Rosters to remove: {joined}", joined);
             string body = $"Rosters to remove: {joined}";
             SendEmail email = SendEmail.ToAdmin(
