@@ -141,7 +141,8 @@ public class GetRostersFromBitsCommandHandler
             List<Roster> actualRemoved = new();
             foreach (Roster roster in toRemove)
             {
-                if (roster.MatchResultId is null && roster.Turn > 20)
+                // only regular season games, playoff is handled differently
+                if (roster.MatchResultId is null && roster.Turn <= 20)
                 {
                     CompositionRoot.DocumentSession.Delete(roster);
                     actualRemoved.Add(roster);
