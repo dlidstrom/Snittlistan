@@ -60,7 +60,8 @@ public class VerifyMatchCommandHandler : CommandHandler<VerifyMatchCommandHandle
             }
             else
             {
-                MatchResult? matchResult = CompositionRoot.EventStoreSession.Load<MatchResult>(roster.MatchResultId);
+                MatchResult? matchResult =
+                    CompositionRoot.EventStoreSession.Load<MatchResult>(roster.MatchResultId);
                 ParseResult? parseResult = parser.Parse(bitsMatchResult, websiteConfig.ClubId);
                 update.Players = parseResult!.GetPlayerIds();
                 Dictionary<string, ResultForPlayerIndex.Result> resultsForPlayer =
@@ -82,7 +83,7 @@ public class VerifyMatchCommandHandler : CommandHandler<VerifyMatchCommandHandle
             }
         }
 
-        roster.UpdateWith(context.CorrelationId, update);
+        _ = roster.UpdateWith(context.CorrelationId, update);
     }
 
     public record Command(

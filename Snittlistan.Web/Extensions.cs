@@ -79,6 +79,17 @@ public static class Extensions
         return playerList.ToArray();
     }
 
+    public static TResult LoadEx<TResult>(this Raven.Client.IDocumentSession session, string key)
+    {
+        return session.Load<TResult>(key) ?? throw new Exception($"No entity with key '{key}' found");
+    }
+
+    public static User FindUserByEmail(this Raven.Client.IDocumentSession sess, string email)
+    {
+        return sess.Query<User, User_ByEmail>()
+                   .FirstOrDefault(u => u.Email == email);
+    }
+
     private static SelectListItem[] GetRosterSelectList(
         Raven.Client.IDocumentSession session,
         int season,
@@ -112,16 +123,5 @@ public static class Extensions
                                         })
                                     .ToArray();
         return rosterSelectList;
-    }
-
-    public static TResult LoadEx<TResult>(this Raven.Client.IDocumentSession session, string key)
-    {
-        return session.Load<TResult>(key) ?? throw new Exception($"No entity with key '{key}' found");
-    }
-
-    public static User FindUserByEmail(this Raven.Client.IDocumentSession sess, string email)
-    {
-        return sess.Query<User, User_ByEmail>()
-                   .FirstOrDefault(u => u.Email == email);
     }
 }

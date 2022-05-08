@@ -138,17 +138,21 @@ public class GetRostersFromBitsCommandHandler
         Roster[] toRemove = rosters.Where(x => foundMatchIds.Contains(x.BitsMatchId) == false).ToArray();
         if (toRemove.Any())
         {
-            string joined = string.Join(
-                ",",
-                toRemove.Select(x => $"Id={x.Id} BitsMatchId={x.BitsMatchId}"));
-            Logger.InfoFormat("Rosters to remove: {joined}", joined);
+            List<Roster> actualRemoved = new();
             foreach (Roster roster in toRemove)
             {
-                CompositionRoot.DocumentSession.Delete(roster);
+                if (roster.MatchResultId is null && roster.Turn > 20)
+                {
+                    CompositionRoot.DocumentSession.Delete(roster);
+                    actualRemoved.Add(roster);
+                }
             }
 
-            string body =
-                $"Rosters to remove: {joined}";
+            string joined = string.Join(
+                ",",
+                actualRemoved.Select(x => $"Id={x.Id} BitsMatchId={x.BitsMatchId}"));
+            Logger.InfoFormat("Rosters to remove: {joined}", joined);
+            string body = $"Rosters to remove: {joined}";
             SendEmail email = SendEmail.ToAdmin(
                 $"Removed rosters for {CompositionRoot.CurrentTenant.TeamFullName}",
                 body);
