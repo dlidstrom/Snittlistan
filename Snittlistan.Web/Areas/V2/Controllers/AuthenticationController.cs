@@ -224,7 +224,7 @@ public class AuthenticationController : AbstractController
         }
 
         OneTimeToken[] activeTokens = CompositionRoot.DocumentSession.Query<OneTimeToken, OneTimeTokenIndex>()
-            .Where(x => x.PlayerId == id && x.CreatedDate > SystemTime.UtcNow.ToLocalTime().AddDays(-1))
+            .Where(x => x.PlayerId == id && x.CreatedDate > SystemTime.UtcNow.ToLocalTime().AddDays(-7))
             .ToArray();
         Player player = CompositionRoot.DocumentSession.Load<Player>(id);
         if (player == null)

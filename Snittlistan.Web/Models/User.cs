@@ -15,7 +15,6 @@ public class User
     private const string ConstantSalt = "CheFe2ra8en9SW";
 
     private Guid passwordSalt;
-    private string? activationKey;
 
     public User(string firstName, string lastName, string email, string password)
     {
@@ -60,16 +59,6 @@ public class User
     /// </summary>
     public bool IsActive { get; private set; }
 
-    /// <summary>
-    /// Gets the activation key.
-    /// </summary>
-    public string? ActivationKey
-    {
-        get => activationKey ??= Guid.NewGuid().ToString();
-
-        private set => activationKey = value;
-    }
-
     public string FirstName { get; }
 
     public string LastName { get; }
@@ -77,8 +66,6 @@ public class User
     public string UniqueId { get; }
 
     private string HashedPassword { get; set; }
-
-    private bool RequiresPasswordChange { get; set; }
 
     private Guid PasswordSalt
     {
@@ -93,29 +80,9 @@ public class User
         }
     }
 
-    public void SetEmail(string email)
+    public void SetEmail(string email, string password)
     {
         Email = email;
-    }
-
-    public void SetPassword(string password)
-    {
-        HashedPassword = ComputeHashedPassword(password);
-        RequiresPasswordChange = false;
-    }
-
-    public void SetPassword(string password, string suppliedActivationKey)
-    {
-        if (RequiresPasswordChange == false)
-        {
-            throw new InvalidOperationException("Password change not allowed");
-        }
-
-        if (ActivationKey != suppliedActivationKey)
-        {
-            throw new InvalidOperationException("Unknown activation key");
-        }
-
         HashedPassword = ComputeHashedPassword(password);
         RequiresPasswordChange = false;
     }
@@ -124,49 +91,6 @@ public class User
     {
         return RequiresPasswordChange == false
             && HashedPassword == ComputeHashedPassword(somePassword);
-    }
-
-    /// <summary>
-    /// Initializes a new user. Must be done for new users.
-    /// </summary>
-    public void Initialize(Action<TaskBase> publish)
-    {
-        ActivationKey = Guid.NewGuid().ToString();
-        publish.Invoke(new NewUserCreatedTask(Email, ActivationKey, Id!));
-    }
-
-    /// <summary>
-    /// Activates a user. This allows them to log on.
-    /// </summary>
-    public void Activate()
-    {
-        IsActive = true;
-    }
-
-    /// <summary>
-    /// Activates a user and sends an invite email. This allows them to log on.
-    /// </summary>
-    public void ActivateWithEmail(Action<TaskBase> publish, UrlHelper urlHelper, string urlScheme)
-    {
-        IsActive = true;
-        ActivationKey = Guid.NewGuid().ToString();
-        RequiresPasswordChange = true;
-        string activationUri = urlHelper.Action("SetPassword", "User", new
-        {
-            id = Id,
-            activationKey = ActivationKey
-        },
-        urlScheme);
-        Debug.Assert(activationUri != null, "activationUri != null");
-        publish.Invoke(new UserInvitedTask(activationUri!, Email));
-    }
-
-    /// <summary>
-    /// Deactivates a user. This prevents them from logging on.
-    /// </summary>
-    public void Deactivate()
-    {
-        IsActive = false;
     }
 
     private string ComputeHashedPassword(string password)

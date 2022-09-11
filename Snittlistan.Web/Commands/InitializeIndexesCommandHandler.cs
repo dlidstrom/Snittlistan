@@ -18,15 +18,11 @@ public class InitializeIndexesCommandHandler : CommandHandler<InitializeIndexesC
             {
                 Id = User.AdminId
             };
-            admin.Initialize(t => context.PublishMessage(t));
-            admin.Activate();
             CompositionRoot.DocumentSession.Store(admin);
         }
         else
         {
-            admin.SetEmail(context.Payload.Email);
-            admin.SetPassword(context.Payload.Password);
-            admin.Activate();
+            admin.SetEmail(context.Payload.Email, context.Payload.Password);
         }
 
         return Task.CompletedTask;

@@ -9,8 +9,9 @@ public class OneTimePasswordEmail_State : EmailState
     public OneTimePasswordEmail_State(
         string to,
         string subject,
-        string oneTimePassword)
-        : base(OwnerEmail, to, BccEmail, subject)
+        string oneTimePassword,
+        Uri userProfileLink)
+        : base(OwnerEmail, to, BccEmail, subject, userProfileLink)
     {
         OneTimePassword = oneTimePassword;
     }

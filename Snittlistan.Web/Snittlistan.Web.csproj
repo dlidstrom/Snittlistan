@@ -162,6 +162,7 @@
     <Compile Include="Infrastructure\Database\Bits_VMatchHeadInfo.cs" />
     <Compile Include="Infrastructure\Database\DatabasesFactory.cs" />
     <Compile Include="Infrastructure\MsmqFactory.cs" />
+    <Compile Include="Models\UserProfileState.cs" />
     <Compile Include="Models\UserSettings.cs" />
     <Compile Include="RazorGeneratorMvcStart.cs" />
     <Compile Include="Views\Hacker\Index.generated.cs">
@@ -635,11 +636,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>_TurnViewModel.cshtml</DependentUpon>
     </Compile>
-    <Compile Include="Areas\V2\Views\User\SetPassword.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SetPassword.cshtml</DependentUpon>
-    </Compile>
     <Compile Include="Areas\V2\Views\_ViewStart.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -651,7 +647,6 @@
     <Compile Include="Commands\InitializeIndexesCommandHandler.cs" />
     <Compile Include="Commands\PublishRosterMailsCommandHandler.cs" />
     <Compile Include="Commands\MatchRegisteredCommandHandler.cs" />
-    <Compile Include="Commands\NewUserCreatedCommandHandler.cs" />
     <Compile Include="Commands\OneTimeKeyCommandHandler.cs" />
     <Compile Include="Commands\RegisterMatchesCommandHandler.cs" />
     <Compile Include="Commands\RegisterPendingMatchCommandHandler.cs" />
@@ -672,12 +667,10 @@
     <Compile Include="Infrastructure\HandledException.cs" />
     <Compile Include="Infrastructure\CustomHeaderModule.cs" />
     <Compile Include="Models\EmailState.cs" />
-    <Compile Include="Models\InviteUserEmail_State.cs" />
     <Compile Include="Models\MatchRegisteredEmail_State.cs" />
     <Compile Include="Models\OneTimePasswordEmail_State.cs" />
     <Compile Include="Models\SendEmail_State.cs" />
     <Compile Include="Models\UpdateRosterEmail_State.cs" />
-    <Compile Include="Models\UserRegisteredEmail_State.cs" />
     <Compile Include="TaskHandlers\TaskHandler.cs" />
     <Compile Include="Commands\CommandExecutor.cs" />
     <Compile Include="Commands\CommandHandler.cs" />
@@ -709,7 +702,6 @@
     <Compile Include="Areas\V2\Extensions.cs" />
     <Compile Include="Areas\V2\IAuditLogCapable.cs" />
     <Compile Include="TaskHandlers\MatchRegisteredTaskHandler.cs" />
-    <Compile Include="TaskHandlers\NewUserCreatedTaskHandler.cs" />
     <Compile Include="TaskHandlers\OneTimeKeyTaskHandler.cs" />
     <Compile Include="TaskHandlers\RegisterMatchesTaskHandler.cs" />
     <Compile Include="TaskHandlers\RegisterMatchTaskHandler.cs" />
@@ -914,11 +906,9 @@
     <Compile Include="Models\OneTimePasswordEmail.cs" />
     <Compile Include="Models\SendEmail.cs" />
     <Compile Include="Models\UpdateRosterEmail.cs" />
-    <Compile Include="Models\UserRegisteredEmail.cs" />
     <Compile Include="Option.cs" />
     <Compile Include="ViewModels\QuillData.cs" />
     <Compile Include="Models\WebsiteConfig.cs" />
-    <Compile Include="Areas\V2\Controllers\UserController.cs" />
     <Compile Include="Areas\V2\ViewModels\CreateUserViewModel.cs" />
     <Compile Include="Areas\V2\ViewModels\ExtensionMethods.cs" />
     <Compile Include="Areas\V2\ViewModels\RosterPlayersViewModel.cs" />
@@ -1097,10 +1087,6 @@
     <None Include="Areas\V2\Views\AdminTasks\ActivateUser.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>ActivateUser.generated.cs</LastGenOutput>
-    </None>
-    <None Include="Areas\V2\Views\User\SetPassword.cshtml">
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>SetPassword.generated.cs</LastGenOutput>
     </None>
     <None Include="Areas\V2\Views\AdminTasks\ResetIndexes.cshtml">
       <Generator>RazorGenerator</Generator>

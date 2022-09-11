@@ -56,8 +56,6 @@ public class UpdateRosterEmail : EmailBase
 
     public Uri RosterLink => _state.RosterLink;
 
-    public Uri UserProfileLink => _state.UserProfileLink;
-
     public bool NeedsAccept => _state.NeedsAccept;
 
     public UpdateRosterEmail_State.MatchHeadType MatchHead => _state.MatchHead;
