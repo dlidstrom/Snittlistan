@@ -15,11 +15,11 @@ public class RosterAcceptController : AbstractController
         Roster roster = CompositionRoot.DocumentSession.Load<Roster>(rosterId);
         Roster.Update update = new(
             Roster.ChangeType.PlayerAccepted,
-            User.CustomIdentity.PlayerId!)
+            User!.CustomIdentity.PlayerId!)
         {
             PlayerAccepted = playerId
         };
-        roster.UpdateWith(CompositionRoot.CorrelationId, update);
+        _ = roster.UpdateWith(CompositionRoot.CorrelationId, update);
         return Redirect(
             Url.RouteUrl(
                 new

@@ -26,12 +26,17 @@
     </div>
 </div>
 
-@if (User?.IsInRole2(WebsiteRoles.Activity.Manage) ?? false)
+<h3>Välkommen @User.Identity.Name!</h3>
+@if (Model.SelectedTurns.Any())
 {
-    <div class="row">
-        <div class="span12">
-            @Html.ActionLink("Hantera aktiviteter", "Index", "ActivityIndex")
-        </div>
+    <div class="alert alert-block">
+        <span>Du är uttagen till:</span>
+        <ul>
+            @foreach (var selectedRoster in Model.SelectedTurns)
+            {
+                <li>Omgång @selectedRoster.Turn</li>
+            }
+        </ul>
     </div>
 }
 

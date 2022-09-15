@@ -45,11 +45,11 @@ public class AdminRosterAcceptController : AbstractController
         Roster roster = CompositionRoot.DocumentSession.Load<Roster>(vm.Model?.RosterId);
         Roster.Update update = new(
             Roster.ChangeType.PlayerAccepted,
-            User.Identity.Name)
+            User!.Identity.Name)
         {
             PlayerAccepted = vm.Model?.PlayerId!
         };
-        roster.UpdateWith(CompositionRoot.CorrelationId, update);
+        _ = roster.UpdateWith(CompositionRoot.CorrelationId, update);
         return RedirectToAction("View", "Roster", new
         {
             vm.Model?.Season,

@@ -45,7 +45,7 @@ public class ActivityEditController : AbstractController
                 ParseDate(vm.Date!),
                 vm.Message,
                 vm.MessageHtml,
-                User.CustomIdentity.PlayerId!);
+                User!.CustomIdentity.PlayerId!);
         CompositionRoot.DocumentSession.Store(activity);
 
         return RedirectToAction("Index", "ActivityIndex");
@@ -84,7 +84,7 @@ public class ActivityEditController : AbstractController
             ParseDate(vm.Date!),
             vm.Message,
             vm.MessageHtml,
-            User.CustomIdentity.PlayerId!);
+            User!.CustomIdentity.PlayerId!);
         return RedirectToAction("Index", "ActivityIndex");
     }
 

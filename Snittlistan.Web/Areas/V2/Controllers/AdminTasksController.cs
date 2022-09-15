@@ -132,7 +132,7 @@ public class AdminTasksController : AdminController
                 Debug.Assert(Request.Url != null, "Request.Url != null");
                 TaskPublisher taskPublisher = GetTaskPublisher();
                 user.ActivateWithEmail(
-                    t => taskPublisher.PublishTask(t, User.Identity.Name),
+                    t => taskPublisher.PublishTask(t, User!.Identity.Name),
                     Url,
                     Request.Url!.Scheme);
             }

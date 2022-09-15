@@ -96,32 +96,64 @@ WriteLiteral("\r\n        <div class=\"add-calendar-container\">\r\n            
             #line hidden
 WriteLiteral("\">\r\n                <i class=\"sprite-glyphicons_045_calendar\"></i>\r\n             " +
 "   Lägg till i din kalender\r\n            </a>\r\n        </div>\r\n    </div>\r\n</div" +
-">\r\n\r\n");
+">\r\n\r\n<h3>Välkommen ");
 
 
             
             #line 29 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
- if (User?.IsInRole2(WebsiteRoles.Activity.Manage) ?? false)
+         Write(User.Identity.Name);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("!</h3>\r\n");
+
+
+            
+            #line 30 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
+ if (Model.SelectedTurns.Any())
 {
 
             
             #line default
             #line hidden
-WriteLiteral("    <div class=\"row\">\r\n        <div class=\"span12\">\r\n            ");
+WriteLiteral("    <div class=\"alert alert-block\">\r\n        <span>Du är uttagen till:</span>\r\n  " +
+"      <ul>\r\n");
 
 
             
-            #line 33 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
-       Write(Html.ActionLink("Hantera aktiviteter", "Index", "ActivityIndex"));
+            #line 35 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
+             foreach (var selectedRoster in Model.SelectedTurns)
+            {
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n        </div>\r\n    </div>\r\n");
+WriteLiteral("                <li>Omgång ");
 
 
             
-            #line 36 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
+            #line 37 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
+                      Write(selectedRoster.Turn);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</li>\r\n");
+
+
+            
+            #line 38 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
+            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        </ul>\r\n    </div>\r\n");
+
+
+            
+            #line 41 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
 }
 
             

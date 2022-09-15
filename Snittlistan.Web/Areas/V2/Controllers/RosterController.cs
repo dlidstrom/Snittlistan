@@ -41,9 +41,19 @@ public class RosterController : AbstractController
             selectAll = false;
         }
 
-        List<Roster>? rosters = CompositionRoot.DocumentSession.Query<Roster, RosterSearchTerms>()
+        Roster[] rosters = CompositionRoot.DocumentSession.Query<Roster, RosterSearchTerms>()
             .Where(r => r.Season == season)
-            .ToList();
+            .ToArray();
+        InitialDataViewModel.SelectedTurn[] selectedTurns = Array.Empty<InitialDataViewModel.SelectedTurn>();
+        if (User?.CustomIdentity.PlayerId is not null)
+        {
+            selectedTurns = rosters
+                .Where(x => x.Players.Contains(User.CustomIdentity.PlayerId))
+                .GroupBy(x => x.Turn)
+                .Select(x => new InitialDataViewModel.SelectedTurn(x.Key))
+                .ToArray();
+        }
+
         IEnumerable<InitialDataViewModel.TurnViewModel> q =
             from roster in rosters
             orderby roster.Turn
@@ -78,8 +88,12 @@ public class RosterController : AbstractController
                                : string.Empty,
                                CompositionRoot.CurrentTenant.AppleTouchIcon,
                                CompositionRoot.CurrentTenant.TeamFullName));
-        bool isFiltered = rosters.Count != turns.Sum(x => x.Rosters.Length);
-        InitialDataViewModel vm = new(turns.Concat(activities).OrderBy(x => x.Date).ToArray(), season.Value, isFiltered);
+        bool isFiltered = rosters.Length != turns.Sum(x => x.Rosters.Length);
+        InitialDataViewModel vm = new(
+            selectedTurns,
+            turns.Concat(activities).OrderBy(x => x.Date).ToArray(),
+            season.Value,
+            isFiltered);
 
         return turns.Length <= 0 ? View("Unscheduled", vm) : View(vm);
     }
@@ -299,6 +313,7 @@ public class RosterController : AbstractController
         if (rosterViewModels.Length <= 0)
         {
             InitialDataViewModel vm = new(
+                Array.Empty<InitialDataViewModel.SelectedTurn>(),
                 new InitialDataViewModel.ScheduledItem[0],
                 season.Value,
                 true);
@@ -417,7 +432,7 @@ public class RosterController : AbstractController
 
         Roster.Update update = new(
             Roster.ChangeType.EditPlayers,
-            User.CustomIdentity.PlayerId ?? User.CustomIdentity.Email)
+            User!.CustomIdentity.PlayerId ?? User.CustomIdentity.Email)
         {
             Preliminary = vm.Preliminary
         };
@@ -645,20 +660,26 @@ public class RosterController : AbstractController
     public class InitialDataViewModel
     {
         public InitialDataViewModel(
+            SelectedTurn[] selectedTurns,
             ScheduledItem[] scheduledItems,
             int seasonStart,
             bool isFiltered)
         {
+            SelectedTurns = selectedTurns;
             ScheduledItems = scheduledItems;
             SeasonStart = seasonStart;
             IsFiltered = isFiltered;
         }
+
+        public SelectedTurn[] SelectedTurns { get; }
 
         public ScheduledItem[] ScheduledItems { get; }
 
         public int SeasonStart { get; }
 
         public bool IsFiltered { get; }
+
+        public record SelectedTurn(int Turn);
 
         public abstract class ScheduledItem
         {

@@ -14,7 +14,7 @@ public class UserProfileController : AbstractController
 {
     public async Task<ActionResult> Index()
     {
-        string key = UserSettings.GetKey(User.CustomIdentity.PlayerId!);
+        string key = UserSettings.GetKey(User!.CustomIdentity.PlayerId!);
         int tenantId = CompositionRoot.CurrentTenant.TenantId;
         KeyValueProperty? settingsProperty =
             await CompositionRoot.Databases.Snittlistan.KeyValueProperties.SingleOrDefaultAsync(
@@ -31,7 +31,7 @@ public class UserProfileController : AbstractController
     [HttpPost]
     public async Task<ActionResult> Save(UserSettingsViewModel vm)
     {
-        string key = UserSettings.GetKey(User.CustomIdentity.PlayerId!);
+        string key = UserSettings.GetKey(User!.CustomIdentity.PlayerId!);
         UpdateUserSettingsCommandHandler.Command command = new(
             key,
             vm.RosterMailEnabled,

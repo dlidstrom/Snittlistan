@@ -21,7 +21,7 @@ public abstract class AbstractController : Controller
 
     public ILogger Logger { get; set; } = NullLogger.Instance;
 
-    protected new CustomPrincipal User => (CustomPrincipal)HttpContext.User;
+    protected new CustomPrincipal? User => HttpContext.User as CustomPrincipal;
 
     protected TaskPublisher GetTaskPublisher()
     {
@@ -112,6 +112,6 @@ public abstract class AbstractController : Controller
             CompositionRoot.Databases,
             CompositionRoot.CorrelationId,
             null,
-            User.CustomIdentity.Name);
+            User!.CustomIdentity.Name);
     }
 }

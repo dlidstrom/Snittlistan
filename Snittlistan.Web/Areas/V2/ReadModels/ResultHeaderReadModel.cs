@@ -36,7 +36,7 @@ public class ResultHeaderReadModel : IReadModel
 
     public int OpponentScore { get; private set; }
 
-    public string? RosterId { get; private set; }
+    public string RosterId { get; private set; } = null!;
 
     public int Season { get; private set; }
 

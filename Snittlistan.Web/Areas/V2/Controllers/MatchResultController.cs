@@ -27,7 +27,7 @@ public class MatchResultController : AbstractController
         ResultHeaderReadModel[] headerReadModels = CompositionRoot.DocumentSession.Query<ResultHeaderReadModel, ResultHeaderIndex>()
             .Where(x => x.Season == season)
             .ToArray();
-        Dictionary<string?, Roster> rosters = CompositionRoot.DocumentSession.Load<Roster>(headerReadModels.Select(x => x.RosterId))
+        Dictionary<string, Roster> rosters = CompositionRoot.DocumentSession.Load<Roster>(headerReadModels.Select(x => x.RosterId))
             .ToDictionary(x => x.Id);
 
         IEnumerable<ResultHeaderViewModel> headerViewModels = headerReadModels.Select(x => new ResultHeaderViewModel(x, rosters[x.RosterId]));

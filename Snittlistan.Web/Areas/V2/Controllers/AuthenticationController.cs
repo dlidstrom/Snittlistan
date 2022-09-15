@@ -313,7 +313,7 @@ public class AuthenticationController : AbstractController
     {
         if (Request.IsAuthenticated)
         {
-            NotifyEvent($"{User.CustomIdentity.Name} logged off");
+            NotifyEvent($"{User!.CustomIdentity.Name} logged off");
             authenticationService.SignOut();
         }
 
