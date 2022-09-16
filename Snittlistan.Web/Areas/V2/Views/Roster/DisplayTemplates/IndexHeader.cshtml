@@ -26,18 +26,21 @@
     </div>
 </div>
 
-<h3>Välkommen @User.Identity.Name!</h3>
-@if (Model.SelectedTurns.Any())
+@if (Request.IsAuthenticated)
 {
-    <div class="alert alert-block">
-        <span>Du är uttagen till:</span>
-        <ul>
-            @foreach (var selectedRoster in Model.SelectedTurns)
-            {
-                <li>Omgång @selectedRoster.Turn</li>
-            }
-        </ul>
-    </div>
+    <h3>Välkommen @User.Identity.Name!</h3>
+    if (Model.SelectedTurns.Any())
+    {
+        <div class="alert alert-block">
+            <span>Du är uttagen till:</span>
+            <ul>
+                @foreach (var selectedRoster in Model.SelectedTurns)
+                {
+                    <li>Omgång @selectedRoster.Turn</li>
+                }
+            </ul>
+        </div>
+    }
 }
 
 <hr />

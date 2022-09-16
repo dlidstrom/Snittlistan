@@ -44,11 +44,13 @@ public class RosterController : AbstractController
         Roster[] rosters = CompositionRoot.DocumentSession.Query<Roster, RosterSearchTerms>()
             .Where(r => r.Season == season)
             .ToArray();
-        InitialDataViewModel.SelectedTurn[] selectedTurns = Array.Empty<InitialDataViewModel.SelectedTurn>();
+        InitialDataViewModel.SelectedTurn[] selectedTurns =
+            Array.Empty<InitialDataViewModel.SelectedTurn>();
         if (User?.CustomIdentity.PlayerId is not null)
         {
             selectedTurns = rosters
-                .Where(x => x.Players.Contains(User.CustomIdentity.PlayerId))
+                .Where(x => x.Preliminary == false
+                    && x.Players.Contains(User.CustomIdentity.PlayerId))
                 .GroupBy(x => x.Turn)
                 .Select(x => new InitialDataViewModel.SelectedTurn(x.Key))
                 .ToArray();
