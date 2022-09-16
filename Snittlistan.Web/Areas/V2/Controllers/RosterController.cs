@@ -50,6 +50,7 @@ public class RosterController : AbstractController
         {
             selectedTurns = rosters
                 .Where(x => x.Preliminary == false
+                    && x.Date.AddDays(1).Date > SystemTime.UtcNow.ToLocalTime()
                     && x.Players.Contains(User.CustomIdentity.PlayerId))
                 .GroupBy(x => x.Turn)
                 .Select(x => new InitialDataViewModel.SelectedTurn(x.Key))
