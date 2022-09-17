@@ -175,7 +175,8 @@ WriteLiteral("        <div class=\"clearfix\"></div>\r\n    </div>\r\n</div>\r\n
             #line 52 "..\..\Areas\V2\Views\Roster\View.cshtml"
    
     int n = Model.RosterViewModels.Count(x =>
-        x.Players.Find(y => y.PlayerId == User.CustomIdentity.PlayerId)?.Accepted == false);
+        x.Preliminary == false
+        && x.Players.Find(y => y.PlayerId == User.CustomIdentity.PlayerId)?.Accepted == false);
 
 
             
@@ -183,11 +184,10 @@ WriteLiteral("        <div class=\"clearfix\"></div>\r\n    </div>\r\n</div>\r\n
             #line hidden
 
             
-            #line 56 "..\..\Areas\V2\Views\Roster\View.cshtml"
+            #line 57 "..\..\Areas\V2\Views\Roster\View.cshtml"
  if (User.CustomIdentity.PlayerId != null && Model.RosterViewModels.Any(x =>
-    x.Preliminary == false
-    && x.Header.Date.ToUniversalTime() > SystemTime.UtcNow
-    && n > 0))
+    x.Header.Date.ToUniversalTime() > SystemTime.UtcNow)
+    && n > 0)
 {
 
             

@@ -51,12 +51,12 @@
 
 @{ 
     int n = Model.RosterViewModels.Count(x =>
-        x.Players.Find(y => y.PlayerId == User.CustomIdentity.PlayerId)?.Accepted == false);
+        x.Preliminary == false
+        && x.Players.Find(y => y.PlayerId == User.CustomIdentity.PlayerId)?.Accepted == false);
 }
 @if (User.CustomIdentity.PlayerId != null && Model.RosterViewModels.Any(x =>
-    x.Preliminary == false
-    && x.Header.Date.ToUniversalTime() > SystemTime.UtcNow
-    && n > 0))
+    x.Header.Date.ToUniversalTime() > SystemTime.UtcNow)
+    && n > 0)
 {
     <div class="row">
         <div class="span12">
