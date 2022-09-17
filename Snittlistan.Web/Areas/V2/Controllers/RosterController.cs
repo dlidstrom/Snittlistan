@@ -48,12 +48,16 @@ public class RosterController : AbstractController
             Array.Empty<InitialDataViewModel.SelectedTurn>();
         if (User?.CustomIdentity.PlayerId is not null)
         {
-            selectedTurns = rosters
+            Roster[] futureRosters = rosters
                 .Where(x => x.Preliminary == false
                     && x.Date.AddDays(1).Date > SystemTime.UtcNow.ToLocalTime()
                     && x.Players.Contains(User.CustomIdentity.PlayerId))
+                .ToArray();
+            selectedTurns = futureRosters
                 .GroupBy(x => x.Turn)
-                .Select(x => new InitialDataViewModel.SelectedTurn(x.Key))
+                .Select(x => new InitialDataViewModel.SelectedTurn(
+                    x.Key,
+                    x.All(r => r.AcceptedPlayers.Contains(User.CustomIdentity.PlayerId))))
                 .ToArray();
         }
 
@@ -682,7 +686,7 @@ public class RosterController : AbstractController
 
         public bool IsFiltered { get; }
 
-        public record SelectedTurn(int Turn);
+        public record SelectedTurn(int Turn, bool Accepted);
 
         public abstract class ScheduledItem
         {

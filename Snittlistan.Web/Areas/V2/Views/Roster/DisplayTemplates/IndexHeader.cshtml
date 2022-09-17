@@ -31,14 +31,32 @@
     <h3>Välkommen @User.Identity.Name!</h3>
     if (Model.SelectedTurns.Any())
     {
-        <div class="alert alert-block">
-            <span>Du är uttagen till:</span>
-            <ul>
-                @foreach (var selectedRoster in Model.SelectedTurns)
+        <div class="alert alert-success">
+            <strong>Du är uttagen till:</strong>
+            <dl>
+                @foreach (var selectedTurn in Model.SelectedTurns.OrderBy(x => x.Turn))
                 {
-                    <li>Omgång @selectedRoster.Turn</li>
+                    <dt>
+                        @Html.ActionLink(
+                           $"Omgång {selectedTurn.Turn}",
+                           "View",
+                           "Roster",
+                           new { season = Model.SeasonStart, turn = selectedTurn.Turn })
+                    </dt>
+                    if (selectedTurn.Accepted)
+                    {
+                        <dd>
+                            <span class="label label-success">BEKRÄFTAT</span>
+                        </dd>
+                    }
+                    else
+                    {
+                        <dd>
+                            <span class="label label-important">OBEKRÄFTAT</span>
+                        </dd>
+                    }
                 }
-            </ul>
+            </dl>
         </div>
     }
 }

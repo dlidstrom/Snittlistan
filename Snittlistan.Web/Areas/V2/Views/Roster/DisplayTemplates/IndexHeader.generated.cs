@@ -128,43 +128,73 @@ WriteLiteral("!</h3>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("        <div class=\"alert alert-block\">\r\n            <span>Du är uttagen till:</s" +
-"pan>\r\n            <ul>\r\n");
+WriteLiteral("        <div class=\"alert alert-success\">\r\n            <strong>Du är uttagen till" +
+":</strong>\r\n            <dl>\r\n");
 
 
             
             #line 37 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
-                 foreach (var selectedRoster in Model.SelectedTurns)
+                 foreach (var selectedTurn in Model.SelectedTurns.OrderBy(x => x.Turn))
                 {
 
             
             #line default
             #line hidden
-WriteLiteral("                    <li>Omgång ");
-
-
-            
-            #line 39 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
-                          Write(selectedRoster.Turn);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</li>\r\n");
+WriteLiteral("                    <dt>\r\n                        ");
 
 
             
             #line 40 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
+                   Write(Html.ActionLink(
+                           $"Omgång {selectedTurn.Turn}",
+                           "View",
+                           "Roster",
+                           new { season = Model.SeasonStart, turn = selectedTurn.Turn }));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                    </dt>\r\n");
+
+
+            
+            #line 46 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
+                    if (selectedTurn.Accepted)
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <dd>\r\n                            <span class=\"label labe" +
+"l-success\">BEKRÄFTAT</span>\r\n                        </dd>\r\n");
+
+
+            
+            #line 51 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
+                    }
+                    else
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <dd>\r\n                            <span class=\"label labe" +
+"l-important\">OBEKRÄFTAT</span>\r\n                        </dd>\r\n");
+
+
+            
+            #line 57 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
+                    }
                 }
 
             
             #line default
             #line hidden
-WriteLiteral("            </ul>\r\n        </div>\r\n");
+WriteLiteral("            </dl>\r\n        </div>\r\n");
 
 
             
-            #line 43 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
+            #line 61 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
     }
 }
 
