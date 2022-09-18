@@ -149,7 +149,8 @@ WriteLiteral("                    <dt>\r\n                        ");
                            $"Omgång {selectedTurn.Turn}",
                            "View",
                            "Roster",
-                           new { season = Model.SeasonStart, turn = selectedTurn.Turn }));
+                           new { season = Model.SeasonStart, turn = selectedTurn.Turn },
+                           null));
 
             
             #line default
@@ -158,7 +159,7 @@ WriteLiteral("\r\n                    </dt>\r\n");
 
 
             
-            #line 46 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
+            #line 47 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
                     if (selectedTurn.Accepted)
                     {
 
@@ -170,7 +171,7 @@ WriteLiteral("                        <dd>\r\n                            <span 
 
 
             
-            #line 51 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
+            #line 52 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
                     }
                     else
                     {
@@ -183,7 +184,7 @@ WriteLiteral("                        <dd>\r\n                            <span 
 
 
             
-            #line 57 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
+            #line 58 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
                     }
                 }
 
@@ -194,7 +195,7 @@ WriteLiteral("            </dl>\r\n        </div>\r\n");
 
 
             
-            #line 61 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
+            #line 62 "..\..\Areas\V2\Views\Roster\DisplayTemplates\IndexHeader.cshtml"
     }
 }
 
