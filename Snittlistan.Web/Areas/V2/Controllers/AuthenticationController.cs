@@ -30,17 +30,19 @@ public class AuthenticationController : AbstractController
     [RestoreModelStateFromTempData]
     public ActionResult LogOn(string returnUrl)
     {
-        if (Url.IsLocalUrl(returnUrl) && string.IsNullOrEmpty(returnUrl) == false)
-        {
-            ViewBag.ReturnUrl = returnUrl;
-        }
-
+        ViewBag.ReturnUrl = returnUrl;
         return View();
     }
 
     [HttpPost]
     public ActionResult LogOn(EmailViewModel vm, string returnUrl)
     {
+        if (ModelState.IsValid == false)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View(vm);
+        }
+
         // find the user in question
         Models.User user = CompositionRoot.DocumentSession.FindUserByEmail(vm.Email);
 
@@ -346,6 +348,7 @@ public class AuthenticationController : AbstractController
         [Required(ErrorMessage = "Ange e-postadress")]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "E-postadress")]
+        [MaxLength(100)]
         public string Email { get; set; } = null!;
 
         public string? PlayerId { get; set; }

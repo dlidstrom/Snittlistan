@@ -13,6 +13,26 @@ public class SentEmail : HasVersion
         string subject,
         object data)
     {
+        if (fromEmail.Length > 100)
+        {
+            throw new ArgumentOutOfRangeException(nameof(fromEmail));
+        }
+
+        if (toEmail.Length > 100)
+        {
+            throw new ArgumentOutOfRangeException(nameof(toEmail));
+        }
+
+        if (bccEmail.Length > 100)
+        {
+            throw new ArgumentOutOfRangeException(nameof(bccEmail));
+        }
+
+        if (subject.Length > 100)
+        {
+            throw new ArgumentOutOfRangeException(nameof(subject));
+        }
+
         FromEmail = fromEmail;
         ToEmail = toEmail;
         BccEmail = bccEmail;
