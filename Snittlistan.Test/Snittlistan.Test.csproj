@@ -135,7 +135,7 @@
       <Version>0.4.1</Version>
     </PackageReference>
     <PackageReference Include="Castle.Core">
-      <Version>4.4.1</Version>
+      <Version>5.1.1</Version>
     </PackageReference>
     <PackageReference Include="Castle.Windsor">
       <Version>5.1.1</Version>
