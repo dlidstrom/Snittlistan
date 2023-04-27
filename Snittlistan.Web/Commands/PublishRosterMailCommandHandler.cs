@@ -43,7 +43,7 @@ public class PublishRosterMailCommandHandler
             }
             else
             {
-                int? oilPatternId = null;
+                int oilPatternId = 0;
                 if (roster.OilPattern is not null)
                 {
                     int.TryParse(
@@ -53,11 +53,11 @@ public class PublishRosterMailCommandHandler
 
                 matchHead = new(
                     "Lag",
-                    roster.Team,
+                    roster.Team ?? "?",
                     "Motståndare",
-                    roster.Opponent,
-                    roster.Location,
-                    oilPatternId ?? 0,
+                    roster.Opponent ?? "?",
+                    roster.Location ?? "?",
+                    oilPatternId == 0 ? null : oilPatternId,
                     roster.OilPattern?.Name ?? "Ingen oljeprofil",
                     roster.Date);
             }
