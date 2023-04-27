@@ -27,17 +27,40 @@ public class PublishRosterMailCommandHandler
         UpdateRosterEmail_State.MatchHeadType matchHead;
         if (roster.BitsMatchId != 0)
         {
-            Bits_VMatchHeadInfo matchHeadInfo = await context.Databases.Bits.VMatchHeadInfo.SingleAsync(
+            Bits_VMatchHeadInfo? matchHeadInfo = await context.Databases.Bits.VMatchHeadInfo.SingleOrDefaultAsync(
                 x => x.ExternalMatchId == roster.BitsMatchId);
-            matchHead = new(
-                "Hemmalag",
-                matchHeadInfo.HomeTeamAlias,
-                "Bortalag",
-                matchHeadInfo.AwayTeamAlias,
-                matchHeadInfo.HallName,
-                matchHeadInfo.OilProfileId,
-                matchHeadInfo.OilProfileName,
-                matchHeadInfo.MatchDateTime);
+            if (matchHeadInfo is not null)
+            {
+                matchHead = new(
+                    "Hemmalag",
+                    matchHeadInfo.HomeTeamAlias,
+                    "Bortalag",
+                    matchHeadInfo.AwayTeamAlias,
+                    matchHeadInfo.HallName,
+                    matchHeadInfo.OilProfileId,
+                    matchHeadInfo.OilProfileName,
+                    matchHeadInfo.MatchDateTime);
+            }
+            else
+            {
+                int oilPatternId = 0;
+                if (roster.OilPattern is not null)
+                {
+                    int.TryParse(
+                        roster.OilPattern.Url.Substring(roster.OilPattern.Url.LastIndexOf('/') + 1),
+                        out oilPatternId);
+                }
+
+                matchHead = new(
+                    "Lag",
+                    roster.Team ?? "?",
+                    "Motståndare",
+                    roster.Opponent ?? "?",
+                    roster.Location ?? "?",
+                    oilPatternId == 0 ? null : oilPatternId,
+                    roster.OilPattern?.Name ?? "Ingen oljeprofil",
+                    roster.Date);
+            }
         }
         else
         {
