@@ -43,10 +43,12 @@ public class PublishRosterMailCommandHandler
             }
             else
             {
-                string? oilPatternId = null;
+                int? oilPatternId = null;
                 if (roster.OilPattern is not null)
                 {
-                    oilPatternId = roster.OilPattern.Url.Substring(roster.OilPattern.Url.LastIndexOf('/') + 1);
+                    int.TryParse(
+                        roster.OilPattern.Url.Substring(roster.OilPattern.Url.LastIndexOf('/') + 1),
+                        out oilPatternId);
                 }
 
                 matchHead = new(
@@ -55,7 +57,7 @@ public class PublishRosterMailCommandHandler
                     "Motståndare",
                     roster.Opponent,
                     roster.Location,
-                    oilPatternId,
+                    oilPatternId ?? 0,
                     roster.OilPattern?.Name ?? "Ingen oljeprofil",
                     roster.Date);
             }
