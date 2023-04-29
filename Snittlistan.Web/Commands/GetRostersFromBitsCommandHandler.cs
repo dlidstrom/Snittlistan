@@ -138,7 +138,8 @@ public class GetRostersFromBitsCommandHandler
         Roster[] toRemove = rosters
             .Where(x => foundMatchIds.Contains(x.BitsMatchId) == false
                 && x.MatchResultId is null
-                && x.Turn <= 20)
+                && x.Turn < 20
+                && x.ManuallyAdded == false)
             .ToArray();
         if (toRemove.Any())
         {

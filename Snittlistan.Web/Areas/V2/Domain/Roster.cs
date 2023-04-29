@@ -116,6 +116,7 @@ public class Roster : IAuditLogCapable
     public List<AuditLogEntry> AuditLogEntries { get; }
     public int Version => AuditLogEntries.Count;
     public bool Preliminary { get; set; }
+    public bool ManuallyAdded { get; set; }
 
     public List<string> Players { get; set; } = new List<string>();
 

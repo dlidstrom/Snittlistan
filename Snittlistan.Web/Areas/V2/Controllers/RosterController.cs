@@ -183,7 +183,10 @@ public class RosterController : AbstractController
             vm.Opponent,
             ParseDate(vm.Date),
             vm.IsFourPlayer,
-            new OilPatternInformation(vm.OilPatternName!, vm.OilPatternUrl!));
+            new OilPatternInformation(vm.OilPatternName!, vm.OilPatternUrl!))
+        {
+            ManuallyAdded = true
+        };
         CompositionRoot.DocumentSession.Store(roster);
         return RedirectToAction("Index");
     }
