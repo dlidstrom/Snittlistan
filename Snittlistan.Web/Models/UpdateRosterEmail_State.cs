@@ -20,7 +20,12 @@ public class UpdateRosterEmail_State : EmailState
         Uri userProfileLink,
         bool needsAccept,
         MatchHeadType matchHead)
-        : base(OwnerEmail, playerEmail, BccEmail, "Uttagning har uppdaterats")
+        : base(
+            OwnerEmail,
+            playerEmail,
+            BccEmail,
+            "Uttagning har uppdaterats",
+            userProfileLink)
     {
         PlayerEmail = playerEmail;
         Name = name;
@@ -31,7 +36,6 @@ public class UpdateRosterEmail_State : EmailState
         Season = season;
         Turn = turn;
         RosterLink = rosterLink;
-        UserProfileLink = userProfileLink;
         NeedsAccept = needsAccept;
         MatchHead = matchHead;
     }
@@ -53,8 +57,6 @@ public class UpdateRosterEmail_State : EmailState
     public int Turn { get; }
 
     public Uri RosterLink { get; }
-
-    public Uri UserProfileLink { get; }
 
     public bool NeedsAccept { get; }
 
