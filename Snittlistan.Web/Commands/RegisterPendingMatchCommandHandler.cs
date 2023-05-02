@@ -37,7 +37,7 @@ public class RegisterPendingMatchCommandHandler : CommandHandler<RegisterPending
                 Parse4Result? parse4Result = parser.Parse4(bitsMatchResult, websiteConfig.ClubId);
                 if (parse4Result != null)
                 {
-                    if (parse4Result.Series.Length != 4 && parse4Result.Turn < 20)
+                    if (parse4Result.Series.Length != 4 && parse4Result.Turn <= 19)
                     {
                         Logger.InfoFormat(
                             "detected unfinished match: {length} series have been registered",
@@ -56,7 +56,7 @@ public class RegisterPendingMatchCommandHandler : CommandHandler<RegisterPending
                 ParseResult? parseResult = parser.Parse(bitsMatchResult, websiteConfig.ClubId);
                 if (parseResult != null)
                 {
-                    if (parseResult.Series.Length != 4 && parseResult.Turn <= 20)
+                    if (parseResult.Series.Length != 4 && parseResult.Turn <= 19)
                     {
                         Logger.InfoFormat(
                             "detected unfinished match: {length} series have been registered",
