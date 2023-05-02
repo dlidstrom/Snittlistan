@@ -20,7 +20,7 @@ public class VerifyMatchesCommandHandler : CommandHandler<VerifyMatchesCommandHa
         List<VerifyMatchTask> toVerify = new();
         foreach (Roster roster in rosters)
         {
-            if (roster.BitsMatchId == 0)
+            if (roster.BitsMatchId == 0 || roster.SkipRegistration)
             {
                 continue;
             }
