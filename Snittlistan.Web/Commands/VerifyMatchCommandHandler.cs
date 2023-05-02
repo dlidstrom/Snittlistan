@@ -15,7 +15,7 @@ public class VerifyMatchCommandHandler : CommandHandler<VerifyMatchCommandHandle
     public override async Task Handle(HandlerContext<Command> context)
     {
         Roster roster = CompositionRoot.DocumentSession.Load<Roster>(context.Payload.RosterId);
-        if (roster.IsVerified && context.Payload.Force == false)
+        if ((roster.IsVerified || roster.SkipRegistration) && context.Payload.Force == false)
         {
             return;
         }
