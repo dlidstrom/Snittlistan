@@ -83,7 +83,7 @@ public abstract class HandleMailCommandHandler<TCommand, TEmail>
             email.From,
             email.To,
             email.Bcc,
-            email.Subject,
+            email.Subject.Substring(0, Math.Min(100, email.Subject.Length)),
             state));
         Logger.InfoFormat("sending email {@email}", email);
         await CompositionRoot.EmailService.SendAsync(email);

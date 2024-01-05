@@ -1,13 +1,13 @@
-﻿
+﻿#nullable enable
+
 using System.Web.Mvc;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Postal;
 
-#nullable enable
-
 namespace Snittlistan.Web.Infrastructure.Installers;
+
 public class EmailServiceInstaller : IWindsorInstaller
 {
     private readonly string viewsPath;
