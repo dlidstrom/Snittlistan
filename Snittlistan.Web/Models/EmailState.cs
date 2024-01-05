@@ -16,7 +16,7 @@ public abstract class EmailState
         From = from;
         To = to;
         Bcc = bcc;
-        Subject = subject;
+        Subject = subject.Substring(0, Math.Min(100, subject.Length));
     }
 
     public static string OwnerEmail { get; } = ConfigurationManager.AppSettings["OwnerEmail"];
