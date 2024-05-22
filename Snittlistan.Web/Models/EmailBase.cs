@@ -20,4 +20,6 @@ public abstract class EmailBase : Email
     public string To => State.To;
 
     public string Subject => State.Subject;
+
+    public Uri UserProfileLink => State.UserProfileLink;
 }

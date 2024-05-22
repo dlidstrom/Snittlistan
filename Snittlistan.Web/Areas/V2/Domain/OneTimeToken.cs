@@ -27,7 +27,7 @@ public class OneTimeToken
     public bool IsExpired()
     {
         TimeSpan span = SystemTime.UtcNow.ToLocalTime() - CreatedDate;
-        return span.TotalDays > 1;
+        return span.TotalDays > 7;
     }
 
     public void Activate(Action<string> action, string payload)
