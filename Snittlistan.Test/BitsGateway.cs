@@ -13,8 +13,10 @@ namespace Snittlistan.Test;
 public static class BitsGateway
 {
     private static readonly IBitsClient Client = new BitsClient(
-        Environment.GetEnvironmentVariable("ApiKey"),
-        new HttpClient(),
+        new HttpClient()
+        {
+          BaseAddress = new Uri(Environment.GetEnvironmentVariable("GatewayUrl"))
+        },
         MemoryCache.Default);
 
     public static async Task<HeadInfo> GetHeadInfo(int matchId)

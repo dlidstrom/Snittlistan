@@ -7,7 +7,7 @@ namespace Snittlistan.Queue;
 
 public class TaskQueueListener : MessageQueueListenerBase
 {
-    private readonly HttpClient client = new(new LoggingHandler(new HttpClientHandler()))
+    private readonly HttpClient client = new(new LoggingHandler())
     {
         Timeout = TimeSpan.FromSeconds(600)
     };

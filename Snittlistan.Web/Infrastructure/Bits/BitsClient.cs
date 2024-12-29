@@ -9,60 +9,49 @@ using Castle.Core.Logging;
 
 namespace Snittlistan.Web.Infrastructure.Bits;
 
-public class BitsClient : IBitsClient
+public class BitsClient(HttpClient client, MemoryCache memoryCache) : IBitsClient
 {
-    private readonly string apiKey;
-    private readonly HttpClient client;
-    private readonly MemoryCache memoryCache;
-
-    public BitsClient(string apiKey, HttpClient client, MemoryCache memoryCache)
-    {
-        this.apiKey = apiKey;
-        this.client = client;
-        this.memoryCache = memoryCache;
-    }
-
     public ILogger Logger { get; set; } = NullLogger.Instance;
 
     public async Task<HeadInfo> GetHeadInfo(int matchId)
     {
-        HeadInfo result = await Get<HeadInfo>($"https://api.swebowl.se/api/v1/matchResult/GetHeadInfo?APIKey={apiKey}&id={matchId}");
+        HeadInfo result = await Get<HeadInfo>($"/api/v1/matchResult/GetHeadInfo?id={matchId}");
         return result;
     }
 
     public async Task<HeadResultInfo> GetHeadResultInfo(int matchId)
     {
-        HeadResultInfo result = await Get<HeadResultInfo>($"https://api.swebowl.se/api/v1/matchResult/GetHeadResultInfo?APIKey={apiKey}&id={matchId}");
+        HeadResultInfo result = await Get<HeadResultInfo>($"/api/v1/matchResult/GetHeadResultInfo?id={matchId}");
         return result;
     }
 
     public async Task<MatchResults> GetMatchResults(int matchId)
     {
-        MatchResults result = await Get<MatchResults>($"https://api.swebowl.se/api/v1/matchResult/GetMatchResults?APIKey={apiKey}&matchId={matchId}&matchSchemeId=8M8BA");
+        MatchResults result = await Get<MatchResults>($"/api/v1/matchResult/GetMatchResults?matchId={matchId}&matchSchemeId=8M8BA");
         return result;
     }
 
     public async Task<MatchScores> GetMatchScores(int matchId)
     {
-        MatchScores result = await Get<MatchScores>($"https://api.swebowl.se/api/v1/matchResult/GetMatchScores?APIKey={apiKey}&matchId={matchId}&matchSchemeId=8M8BA");
+        MatchScores result = await Get<MatchScores>($"/api/v1/matchResult/GetMatchScores?matchId={matchId}&matchSchemeId=8M8BA");
         return result;
     }
 
     public async Task<TeamResult[]> GetTeam(int clubId, int seasonId)
     {
-        TeamResult[] result = await Get<TeamResult[]>($"https://api.swebowl.se/api/v1/Team?APIKey={apiKey}&clubId={clubId}&seasonId={seasonId}");
+        TeamResult[] result = await Get<TeamResult[]>($"/api/v1/Team?clubId={clubId}&seasonId={seasonId}");
         return result;
     }
 
     public async Task<DivisionResult[]> GetDivisions(int teamId, int seasonId)
     {
-        DivisionResult[] result = await Get<DivisionResult[]>($"https://api.swebowl.se/api/v1/Division?APIKey={apiKey}&teamId={teamId}&seasonId={seasonId}");
+        DivisionResult[] result = await Get<DivisionResult[]>($"/api/v1/Division?teamId={teamId}&seasonId={seasonId}");
         return result;
     }
 
     public async Task<MatchRound[]> GetMatchRounds(int teamId, int divisionId, int seasonId)
     {
-        MatchRound[] result = await Get<MatchRound[]>($"https://api.swebowl.se/api/v1/Match/?APIKey={apiKey}&teamId={teamId}&divisionId={divisionId}&seasonId={seasonId}");
+        MatchRound[] result = await Get<MatchRound[]>($"/api/v1/Match/?teamId={teamId}&divisionId={divisionId}&seasonId={seasonId}");
         return result;
     }
 
@@ -79,7 +68,7 @@ public class BitsClient : IBitsClient
                 pageSize = "250",
                 sort = new object[0]
             },
-            $"https://api.swebowl.se/api/v1/player/GetAll?APIKey={apiKey}");
+            $"/api/v1/player/GetAll");
         return result;
     }
 
@@ -163,7 +152,6 @@ public class BitsClient : IBitsClient
             "Requesting {url}",
             url);
         HttpRequestMessage request = new(method, url);
-        request.Headers.Referrer = new Uri("https://bits.swebowl.se");
         action.Invoke(request);
         HttpResponseMessage result = await client.SendAsync(request);
         string content = await result.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
