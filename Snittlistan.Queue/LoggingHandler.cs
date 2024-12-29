@@ -9,8 +9,8 @@ public class LoggingHandler : DelegatingHandler
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-    public LoggingHandler(HttpMessageHandler innerHandler)
-        : base(innerHandler)
+    public LoggingHandler()
+      : base(new HttpClientHandler())
     {
     }
 

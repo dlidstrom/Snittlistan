@@ -111,7 +111,15 @@ public class MvcApplication : HttpApplication
         {
             Response.Clear();
             Response.Status = "301 Moved Permanently";
-            Response.AddHeader("Location", Context.Request.Url.ToString().Insert(4, "s"));
+            try
+            {
+              Response.AddHeader("Location", Context.Request.Url.ToString().Insert(4, "s"));
+            }
+            catch (Exception ex)
+            {
+              throw new Exception($"Failed to redirect to {Context.Request.Url}", ex);
+            }
+
             Response.End();
         }
     }
@@ -233,17 +241,19 @@ public class MvcApplication : HttpApplication
             }
 
             Container.Kernel.AddHandlerSelector(new HostBasedComponentSelector());
-            string apiKey = Environment.GetEnvironmentVariable("ApiKey");
-            Log.Info($"ApiKey: {apiKey}");
+            string gatewayUrl = Environment.GetEnvironmentVariable("GatewayUrl");
+            Log.Info($"gatewayUrl: {gatewayUrl}");
             HttpClient httpClient = new(
                 new RateHandler(rate: 1.0, per: 1.0, maxTries: 60,
-                    new LoggingHandler(
-                        new HttpClientHandler())));
+                    new LoggingHandler()))
+            {
+              BaseAddress = new Uri(gatewayUrl)
+            };
             _ = Container
                 .AddFacility<LoggingFacility>(f => f.LogUsing<NLogFactory>())
                 .Install(
                     new ApiControllerInstaller(),
-                    new BitsClientInstaller(apiKey, httpClient),
+                    new BitsClientInstaller(httpClient),
                     CommandHandlerInstaller.PerWebRequest(),
                     new ControllerInstaller(),
                     new DatabaseContextInstaller(databasesFactory),

@@ -12,6 +12,11 @@ permissions: write-all
 jobs:
   build-windows:
     runs-on: windows-2022
+
+    concurrency:
+      group: ${{ github.workflow }}-build
+      cancel-in-progress: true
+
     steps:
     - uses: actions/checkout@v2
 
@@ -33,11 +38,11 @@ jobs:
         echo ("BUILD_VERSION=$v") >> $env:GITHUB_ENV
         echo $v
 
-    - uses: actions/cache@v2
+    - uses: actions/cache@v4
       id: cache
       with:
         path: packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
         restore-keys: |
           ${{ runner.os }}-nuget-
 

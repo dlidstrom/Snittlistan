@@ -8,7 +8,7 @@ namespace Snittlistan.Tool.Tasks;
 
 public abstract class CommandLineTask : ICommandLineTask
 {
-    private readonly HttpClient client = new(new LoggingHandler(new HttpClientHandler()))
+    private readonly HttpClient client = new(new LoggingHandler())
     {
         Timeout = TimeSpan.FromSeconds(600)
     };
