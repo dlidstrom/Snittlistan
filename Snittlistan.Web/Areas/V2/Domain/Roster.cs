@@ -34,55 +34,6 @@ public class Roster : IAuditLogCapable
         IsFourPlayer = isFourPlayer;
         OilPattern = oilPattern ?? new OilPatternInformation(string.Empty, string.Empty);
         AuditLogEntries = auditLogEntries ?? new List<AuditLogEntry>();
-
-        // fixup the state
-        if (AuditLogEntries.Any(x => x.Before.GetType() != typeof(RosterState)))
-        {
-            foreach (AuditLogEntry item in AuditLogEntries)
-            {
-                string[] playersBefore = Array.Empty<string>();
-                try
-                {
-                    playersBefore = ((dynamic)item.Before).Players;
-                }
-                catch (Exception)
-                {
-                }
-
-                string[] acceptedPlayersBefore = Array.Empty<string>();
-                try
-                {
-                    acceptedPlayersBefore = ((dynamic)item.Before).AcceptedPlayers;
-                }
-                catch (Exception)
-                {
-                }
-
-                RosterState before = new(playersBefore, acceptedPlayersBefore);
-                item.SetBefore(before);
-
-                string[] playersAfter = Array.Empty<string>();
-                try
-                {
-                    playersAfter = ((dynamic)item.After).Players;
-                }
-                catch (Exception)
-                {
-                }
-
-                string[] acceptedPlayersAfter = Array.Empty<string>();
-                try
-                {
-                    acceptedPlayersAfter = ((dynamic)item.After).AcceptedPlayers;
-                }
-                catch (Exception)
-                {
-                }
-
-                RosterState after = new(playersAfter, acceptedPlayersAfter);
-                item.SetAfter(after);
-            }
-        }
     }
 
     public string Id { get; set; } = null!;
