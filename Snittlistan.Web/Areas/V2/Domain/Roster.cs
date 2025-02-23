@@ -288,7 +288,7 @@ public class Roster : IAuditLogCapable
 
     private RosterState GetState()
     {
-        return new RosterState(Players.ToArray(), AcceptedPlayers.ToArray());
+        return new RosterState(Players.ToArray(), AcceptedPlayers.ToArray(), TeamLeader);
     }
 
     public FormattedAuditLog GetFormattedAuditLog(IDocumentSession documentSession, Guid correlationId)
