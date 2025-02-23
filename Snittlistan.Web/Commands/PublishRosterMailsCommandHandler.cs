@@ -19,6 +19,8 @@ public class PublishRosterMailsCommandHandler : CommandHandler<PublishRosterMail
         RosterState before = (RosterState)auditLogEntry.Before;
         RosterState after = (RosterState)auditLogEntry.After;
         HashSet<string> affectedPlayers = new(before.Players.Concat(after.Players));
+        if (before.TeamLeader != null) affectedPlayers.Add(before.TeamLeader);
+        if (after.TeamLeader != null) affectedPlayers.Add(after.TeamLeader);
 
         // find user who did the last edit-players action
         AuditLogEntry? editPlayersAction = roster.AuditLogEntries.LastOrDefault(
