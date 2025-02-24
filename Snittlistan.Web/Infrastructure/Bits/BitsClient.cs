@@ -1,5 +1,7 @@
 ﻿#nullable enable
 
+using System.Diagnostics;
+using System.Net;
 using System.Net.Http;
 using System.Runtime.Caching;
 using System.Text;
@@ -148,13 +150,22 @@ public class BitsClient(HttpClient client, MemoryCache memoryCache) : IBitsClien
 
     private async Task<string> Request(HttpMethod method, string url, Action<HttpRequestMessage> action)
     {
-        Logger.InfoFormat(
-            "Requesting {url}",
-            url);
-        HttpRequestMessage request = new(method, url);
-        action.Invoke(request);
-        HttpResponseMessage result = await client.SendAsync(request);
-        string content = await result.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
-        return content;
+        Stopwatch sw = Stopwatch.StartNew();
+        while (true)
+        {
+            Logger.InfoFormat(
+                "Requesting {url}",
+                url);
+            HttpRequestMessage request = new(method, url);
+            action.Invoke(request);
+            HttpResponseMessage response = await client.SendAsync(request);
+            if ((int)response.StatusCode != 429 || sw.Elapsed.TotalSeconds > 60)
+            {
+                string content = await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
+                return content;
+            }
+
+            await Task.Delay(1000);
+        }
     }
 }
