@@ -148,13 +148,26 @@ public class BitsClient(HttpClient client, MemoryCache memoryCache) : IBitsClien
 
     private async Task<string> Request(HttpMethod method, string url, Action<HttpRequestMessage> action)
     {
-        Logger.InfoFormat(
-            "Requesting {url}",
-            url);
-        HttpRequestMessage request = new(method, url);
-        action.Invoke(request);
-        HttpResponseMessage result = await client.SendAsync(request);
-        string content = await result.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
-        return content;
+        Stopwatch sw = Stopwatch.StartNew();
+        while (sw.Elapsed.TotalSeconds < 60)
+        {
+            try
+            {
+                Logger.InfoFormat(
+                    "Requesting {url}",
+                    url);
+                HttpRequestMessage request = new(method, url);
+                action.Invoke(request);
+                HttpResponseMessage result = await client.SendAsync(request);
+                string content = await result.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
+                return content;
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.TooManyRequests)
+            {
+                // retry after delay
+            }
+
+            await Task.Delay(1000);
+        }
     }
 }
