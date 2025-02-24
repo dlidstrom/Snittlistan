@@ -159,8 +159,7 @@ public class BitsClient(HttpClient client, MemoryCache memoryCache) : IBitsClien
             HttpRequestMessage request = new(method, url);
             action.Invoke(request);
             HttpResponseMessage response = await client.SendAsync(request);
-            if (response.StatusCode != HttpStatusCode.TooManyRequests
-                || sw.Elapsed.TotalSeconds > 60)
+            if ((int)response.StatusCode != 429 || sw.Elapsed.TotalSeconds > 60)
             {
                 string content = await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
                 return content;
