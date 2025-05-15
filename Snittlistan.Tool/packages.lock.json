@@ -119,7 +119,7 @@
           "Lindhart.Analyser.MissingAwaitWarning": "[2.0.0, )",
           "Microsoft.AspNet.WebApi.Client": "[5.2.8, )",
           "MvcContrib": "[2.0.95, )",
-          "NLog": "[4.7.14, )",
+          "NLog": "[4.7.15, )",
           "Newtonsoft.Json": "[13.0.3, )"
         }
       }

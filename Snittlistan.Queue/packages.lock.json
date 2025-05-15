@@ -34,9 +34,9 @@
       },
       "NLog": {
         "type": "Direct",
-        "requested": "[4.7.14, )",
-        "resolved": "4.7.14",
-        "contentHash": "R1Nn+Zi2mSiKf82zII+8ZhGTr66CmCDLlpDq/0N0Y22TDrioYeP6t3XWzJVTi3OXaHJ/jiXId/okXQu8e0g3uw=="
+        "requested": "[4.7.15, )",
+        "resolved": "4.7.15",
+        "contentHash": "vXMmsK17hXnMsKd8BdCrJzvb8JMT0+cPgBGRfnqcXIb6y8b6RMIZexO4hMhQgifcTHgU7dbubvCR5A5wX6Ne+A=="
       },
       "MicrosoftWebMvc": {
         "type": "Transitive",
