@@ -119,9 +119,9 @@
       },
       "Newtonsoft.Json": {
         "type": "Direct",
-        "requested": "[13.0.1, )",
-        "resolved": "13.0.1",
-        "contentHash": "ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A=="
+        "requested": "[13.0.3, )",
+        "resolved": "13.0.3",
+        "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
       },
       "NLog": {
         "type": "Direct",
@@ -147,13 +147,13 @@
       },
       "RavenDB.Client": {
         "type": "Direct",
-        "requested": "[3.5.9, )",
+        "requested": "[3.5.9, 3.5.9]",
         "resolved": "3.5.9",
         "contentHash": "SQBVQGWBAL4Y/2wVVU9u5pQ73mGL3oSn5RK0sOcma4jvRGOYYHRuYA/VFIeKWVq5DTw4lqnUz7HU433ZBsE2Ig=="
       },
       "RavenDB.Database": {
         "type": "Direct",
-        "requested": "[3.5.9, )",
+        "requested": "[3.5.9, 3.5.9]",
         "resolved": "3.5.9",
         "contentHash": "lfO3aRYbeh1ITNYM+OOXs9F0144PnSHCIG+0ki7ZLuapaRdM8qw8Y3Szdpbz1FH4Gqvr67keCdxSeKH+X4Um3w==",
         "dependencies": {
@@ -162,7 +162,7 @@
       },
       "RavenDB.Embedded": {
         "type": "Direct",
-        "requested": "[3.5.9, )",
+        "requested": "[3.5.9, 3.5.9]",
         "resolved": "3.5.9",
         "contentHash": "3kCRWsHj4QlwbiJq+u37fwZegCGe0N+ERkQjOb6m8Eb1PlTtm9TuiZvDZN3gELzRktXd+ChHZ00icQoyFyR6vA==",
         "dependencies": {
@@ -358,7 +358,7 @@
           "Microsoft.AspNet.WebApi.Client": "[5.2.8, )",
           "MvcContrib": "[2.0.95, )",
           "NLog": "[4.7.14, )",
-          "Newtonsoft.Json": "[13.0.1, )"
+          "Newtonsoft.Json": "[13.0.3, )"
         }
       }
     }
