@@ -10,11 +10,11 @@
       },
       "Castle.Windsor": {
         "type": "Direct",
-        "requested": "[5.1.1, )",
-        "resolved": "5.1.1",
-        "contentHash": "m1YCo+V+MHUqJV7+KtXlNYig93tEAnPdPevIHi8hVqV8/ceF82Nqe8vS1ROQ25nweTcxYgkrLHwhvJsH2SFwZA==",
+        "requested": "[5.1.2, )",
+        "resolved": "5.1.2",
+        "contentHash": "DWobWQBNi4p4I0xgTxEqQMld4qYhdUNAIWmdqpAQTno2CNb0iC+Jnqsf1/8xih7TmIOzAdCTIhmDeKau50Zn4w==",
         "dependencies": {
-          "Castle.Core": "4.4.1"
+          "Castle.Core": "[4.4.1, 5.0.0)"
         }
       },
       "Lindhart.Analyser.MissingAwaitWarning": {
@@ -116,16 +116,13 @@
       "snittlistan.queue": {
         "type": "Project",
         "dependencies": {
-          "Lindhart.Analyser.MissingAwaitWarning": "2.0.0",
-          "Microsoft.AspNet.WebApi.Client": "5.2.8",
-          "MvcContrib": "2.0.95",
-          "NLog": "4.7.14",
-          "Newtonsoft.Json": "13.0.1"
+          "Lindhart.Analyser.MissingAwaitWarning": "[2.0.0, )",
+          "Microsoft.AspNet.WebApi.Client": "[5.2.8, )",
+          "MvcContrib": "[2.0.95, )",
+          "NLog": "[4.7.14, )",
+          "Newtonsoft.Json": "[13.0.1, )"
         }
       }
-    },
-    ".NETFramework,Version=v4.8/win": {},
-    ".NETFramework,Version=v4.8/win-x64": {},
-    ".NETFramework,Version=v4.8/win-x86": {}
+    }
   }
 }
