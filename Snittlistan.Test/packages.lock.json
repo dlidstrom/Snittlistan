@@ -127,10 +127,10 @@
       },
       "Castle.Facilities.AspNet.SystemWeb": {
         "type": "Transitive",
-        "resolved": "5.1.1",
-        "contentHash": "sKMvbMmdIXya+aZtxk5rTx9fv1srAJt6mzrqil3rqTS8CJL19WJS6lEbgcj2jbrroWrYlxPYQgwfaWWGgzbUig==",
+        "resolved": "5.1.2",
+        "contentHash": "Nz2DBexo1jBy4j/LLKAMCJrveEmj0W3xTHD4/RIV03poh2xrFoEgNpNbWQ6C/8oZE6CpU1snYgDuUTEWrhKlrQ==",
         "dependencies": {
-          "Castle.Windsor": "[5.1.1]",
+          "Castle.Windsor": "[5.1.2]",
           "Microsoft.Web.Infrastructure": "1.0.0"
         }
       },
@@ -416,45 +416,42 @@
       "snittlistan.queue": {
         "type": "Project",
         "dependencies": {
-          "Lindhart.Analyser.MissingAwaitWarning": "2.0.0",
-          "Microsoft.AspNet.WebApi.Client": "5.2.8",
-          "MvcContrib": "2.0.95",
-          "NLog": "4.7.14",
-          "Newtonsoft.Json": "13.0.1"
+          "Lindhart.Analyser.MissingAwaitWarning": "[2.0.0, )",
+          "Microsoft.AspNet.WebApi.Client": "[5.2.8, )",
+          "MvcContrib": "[2.0.95, )",
+          "NLog": "[4.7.14, )",
+          "Newtonsoft.Json": "[13.0.1, )"
         }
       },
       "snittlistan.web": {
         "type": "Project",
         "dependencies": {
-          "AsyncFriendlyStackTrace": "1.6.0",
-          "Castle.Core": "4.4.1",
-          "Castle.Core-NLog": "4.4.1",
-          "Castle.Facilities.AspNet.SystemWeb": "5.1.1",
-          "Castle.LoggingFacility": "5.1.1",
-          "Castle.Windsor": "5.1.1",
-          "Elmah.MVC": "2.1.2",
-          "EntityFramework6.Npgsql": "6.4.3",
-          "Microsoft.AspNet.Mvc": "5.2.8",
-          "Microsoft.AspNet.WebApi": "5.2.8",
-          "Microsoft.AspNet.WebApi.Client": "5.2.8",
-          "Microsoft.CodeDom.Providers.DotNetCompilerPlatform": "3.6.0",
-          "Microsoft.Web.Infrastructure": "2.0.0",
-          "Mvc3Futures": "3.0.20105",
-          "NLog": "4.7.15",
-          "Newtonsoft.Json": "13.0.1",
-          "PDFsharp": "1.50.5147",
-          "Postal.Mvc5": "1.2.0",
-          "RavenDB.Client": "3.5.9",
-          "RavenDB.Database": "3.5.9",
-          "RavenDB.Embedded": "3.5.9",
-          "RazorGenerator.Mvc": "2.4.9",
-          "Rotativa": "1.7.4-rc",
-          "Snittlistan.Queue": "1.0.0"
+          "AsyncFriendlyStackTrace": "[1.6.0, )",
+          "Castle.Core": "[4.4.1, )",
+          "Castle.Core-NLog": "[4.4.1, )",
+          "Castle.Facilities.AspNet.SystemWeb": "[5.1.2, )",
+          "Castle.LoggingFacility": "[5.1.1, )",
+          "Castle.Windsor": "[5.1.1, )",
+          "Elmah.MVC": "[2.1.2, )",
+          "EntityFramework6.Npgsql": "[6.4.3, )",
+          "Microsoft.AspNet.Mvc": "[5.2.8, )",
+          "Microsoft.AspNet.WebApi": "[5.2.8, )",
+          "Microsoft.AspNet.WebApi.Client": "[5.2.8, )",
+          "Microsoft.CodeDom.Providers.DotNetCompilerPlatform": "[3.6.0, )",
+          "Microsoft.Web.Infrastructure": "[2.0.0, )",
+          "Mvc3Futures": "[3.0.20105, )",
+          "NLog": "[4.7.15, )",
+          "Newtonsoft.Json": "[13.0.1, )",
+          "PDFsharp": "[1.50.5147, )",
+          "Postal.Mvc5": "[1.2.0, )",
+          "RavenDB.Client": "[3.5.9, )",
+          "RavenDB.Database": "[3.5.9, )",
+          "RavenDB.Embedded": "[3.5.9, )",
+          "RazorGenerator.Mvc": "[2.4.9, )",
+          "Rotativa": "[1.7.4-rc, )",
+          "Snittlistan.Queue": "[1.0.0, )"
         }
       }
-    },
-    ".NETFramework,Version=v4.8/win": {},
-    ".NETFramework,Version=v4.8/win-x64": {},
-    ".NETFramework,Version=v4.8/win-x86": {}
+    }
   }
 }
