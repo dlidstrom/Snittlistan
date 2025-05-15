@@ -136,10 +136,10 @@
       },
       "Castle.LoggingFacility": {
         "type": "Transitive",
-        "resolved": "5.1.1",
-        "contentHash": "bNVitNOxpQTPkjAs1AtxFhIdXBUndcqjC/nhKRW8ofOuwbPgVtKrGFaSLLLleYNW5F+Whj+s9TIWgmj2WxqwWw==",
+        "resolved": "5.1.2",
+        "contentHash": "bNc8a5MoxMw5gH33Q9EMCb6GbHPdQq5o1E7kmJOpV+CwCE0wIXwEHbu8DBc0hbGzv516SHPFAGLSDqWKOl2uhA==",
         "dependencies": {
-          "Castle.Windsor": "[5.1.1]"
+          "Castle.Windsor": "[5.1.2]"
         }
       },
       "elmah.corelibrary": {
@@ -430,7 +430,7 @@
           "Castle.Core": "[4.4.1, )",
           "Castle.Core-NLog": "[4.4.1, )",
           "Castle.Facilities.AspNet.SystemWeb": "[5.1.2, )",
-          "Castle.LoggingFacility": "[5.1.1, )",
+          "Castle.LoggingFacility": "[5.1.2, )",
           "Castle.Windsor": "[5.1.1, )",
           "Elmah.MVC": "[2.1.2, )",
           "EntityFramework6.Npgsql": "[6.4.3, )",
