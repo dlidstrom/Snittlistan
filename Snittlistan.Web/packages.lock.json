@@ -101,9 +101,9 @@
       },
       "Microsoft.CodeDom.Providers.DotNetCompilerPlatform": {
         "type": "Direct",
-        "requested": "[3.6.0, )",
-        "resolved": "3.6.0",
-        "contentHash": "Wxo1vjgqJDawdtSBYegfe7fqUfdKn5vMtAMgHHxjV5rW9rSyQZMQ5t0YTCxyQ/IUyAOoUkrHMVXNLCdqAtH72w=="
+        "requested": "[3.11.0, )",
+        "resolved": "3.11.0",
+        "contentHash": "63/6SMVG2XVdQLEAF3VzrI4rTNEdS7EVzPSQpgHdn/WmyZU/viAyb3lY4odWP6nw/CFEqvH4o3XbhMR8/wEeHg=="
       },
       "Microsoft.Web.Infrastructure": {
         "type": "Direct",
