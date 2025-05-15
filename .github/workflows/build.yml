@@ -14,7 +14,7 @@ jobs:
     runs-on: windows-2022
 
     concurrency:
-      group: ${{ github.workflow }}-build
+      group: ${{ github.workflow }}-${{ github.ref_name }}-build
       cancel-in-progress: true
 
     steps:
