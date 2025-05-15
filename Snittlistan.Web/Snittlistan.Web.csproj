@@ -87,7 +87,7 @@
       <Version>3.0.20105</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.1</Version>
+      <Version>13.0.3</Version>
     </PackageReference>
     <PackageReference Include="Postal.Mvc5">
       <Version>1.2.0</Version>

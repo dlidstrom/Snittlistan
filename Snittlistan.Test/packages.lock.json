@@ -83,9 +83,9 @@
       },
       "Newtonsoft.Json": {
         "type": "Direct",
-        "requested": "[13.0.1, )",
-        "resolved": "13.0.1",
-        "contentHash": "ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A=="
+        "requested": "[13.0.3, )",
+        "resolved": "13.0.3",
+        "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
       },
       "NLog": {
         "type": "Direct",
@@ -420,7 +420,7 @@
           "Microsoft.AspNet.WebApi.Client": "[5.2.8, )",
           "MvcContrib": "[2.0.95, )",
           "NLog": "[4.7.14, )",
-          "Newtonsoft.Json": "[13.0.1, )"
+          "Newtonsoft.Json": "[13.0.3, )"
         }
       },
       "snittlistan.web": {
@@ -441,12 +441,12 @@
           "Microsoft.Web.Infrastructure": "[2.0.0, )",
           "Mvc3Futures": "[3.0.20105, )",
           "NLog": "[4.7.15, )",
-          "Newtonsoft.Json": "[13.0.1, )",
+          "Newtonsoft.Json": "[13.0.3, )",
           "PDFsharp": "[1.50.5147, )",
           "Postal.Mvc5": "[1.2.0, )",
-          "RavenDB.Client": "[3.5.9, )",
-          "RavenDB.Database": "[3.5.9, )",
-          "RavenDB.Embedded": "[3.5.9, )",
+          "RavenDB.Client": "[3.5.9, 3.5.9]",
+          "RavenDB.Database": "[3.5.9, 3.5.9]",
+          "RavenDB.Embedded": "[3.5.9, 3.5.9]",
           "RazorGenerator.Mvc": "[2.4.9, )",
           "Rotativa": "[1.7.4-rc, )",
           "Snittlistan.Queue": "[1.0.0, )"
