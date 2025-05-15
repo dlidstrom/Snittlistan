@@ -16,8 +16,8 @@
       },
       "Microsoft.AspNet.WebApi.Client": {
         "type": "Transitive",
-        "resolved": "5.2.8",
-        "contentHash": "dkGLm30CxLieMlUO+oQpJw77rDs0IIx/w3lIHsp+8X94HXCsUfLYuFmlZPsQDItC0O2l1ZlWeKLkZX7ZiNRekw==",
+        "resolved": "5.2.9",
+        "contentHash": "cuVhPjjNMSEFpKXweMNBbsG4RUFuuZpFBm8tSyw309U9JEjcnbB6n3EPb4xwgcy9bJ38ctIbv5G8zXUBhlrPWw==",
         "dependencies": {
           "Newtonsoft.Json": "6.0.4"
         }
@@ -52,7 +52,7 @@
         "type": "Project",
         "dependencies": {
           "Lindhart.Analyser.MissingAwaitWarning": "[2.0.0, )",
-          "Microsoft.AspNet.WebApi.Client": "[5.2.8, )",
+          "Microsoft.AspNet.WebApi.Client": "[5.2.9, )",
           "MvcContrib": "[2.0.95, )",
           "NLog": "[4.7.15, )",
           "Newtonsoft.Json": "[13.0.3, )"
