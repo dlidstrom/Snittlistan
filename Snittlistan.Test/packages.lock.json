@@ -14,9 +14,9 @@
       },
       "Castle.Core": {
         "type": "Direct",
-        "requested": "[4.4.1, )",
-        "resolved": "4.4.1",
-        "contentHash": "zanbjWC0Y05gbx4eGXkzVycOQqVOFVeCjVsDSyuao9P4mtN1w3WxxTo193NGC7j3o2u3AJRswaoC6hEbnGACnQ=="
+        "requested": "[5.2.1, )",
+        "resolved": "5.2.1",
+        "contentHash": "wHARzQA695jwwKreOzNsq54KiGqKP38tv8hi8e2FXDEC/sA6BtrX90tVPDkOfVu13PbEzr00TCV8coikl+D1Iw=="
       },
       "Castle.Windsor": {
         "type": "Direct",
@@ -427,7 +427,7 @@
         "type": "Project",
         "dependencies": {
           "AsyncFriendlyStackTrace": "[1.7.0, )",
-          "Castle.Core": "[4.4.1, )",
+          "Castle.Core": "[5.2.1, )",
           "Castle.Core-NLog": "[4.4.1, )",
           "Castle.Facilities.AspNet.SystemWeb": "[5.1.2, )",
           "Castle.LoggingFacility": "[5.1.2, )",
