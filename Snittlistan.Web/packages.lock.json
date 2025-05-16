@@ -16,11 +16,11 @@
       },
       "Castle.Core-NLog": {
         "type": "Direct",
-        "requested": "[4.4.1, )",
-        "resolved": "4.4.1",
-        "contentHash": "5nyAkQ+Akl+s9fucvwg3fYACIiMCnO8LvzRut9I8W77gojCEha3wz1iTEPvE3ehcPQDkwDDQblVmvSv0kHRKkg==",
+        "requested": "[5.2.1, )",
+        "resolved": "5.2.1",
+        "contentHash": "plSlTf2i6LgJQAFQbqGadn3t//GRJilSJKUwjnn/WUE8pJ56gTFqy+lk91CkahGTCqJ9rymeX9cHtRWnH+DDeg==",
         "dependencies": {
-          "Castle.Core": "[4.4.1]",
+          "Castle.Core": "[5.2.1]",
           "NLog": "4.5.0"
         }
       },
