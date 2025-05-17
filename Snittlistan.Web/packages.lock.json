@@ -36,11 +36,11 @@
       },
       "Castle.LoggingFacility": {
         "type": "Direct",
-        "requested": "[5.1.2, )",
-        "resolved": "5.1.2",
-        "contentHash": "bNc8a5MoxMw5gH33Q9EMCb6GbHPdQq5o1E7kmJOpV+CwCE0wIXwEHbu8DBc0hbGzv516SHPFAGLSDqWKOl2uhA==",
+        "requested": "[6.0.0, )",
+        "resolved": "6.0.0",
+        "contentHash": "+qW9OcUr2h7aw5UPbzuWtnS9UxUtBbwMCEU0zhmupuAjH4S1Ny2UW5mPSolabJcIdKx5c46eiiaPwDZn/ou3bA==",
         "dependencies": {
-          "Castle.Windsor": "[5.1.2]"
+          "Castle.Windsor": "[6.0.0]"
         }
       },
       "Castle.Windsor": {
