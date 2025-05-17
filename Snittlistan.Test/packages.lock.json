@@ -20,11 +20,11 @@
       },
       "Castle.Windsor": {
         "type": "Direct",
-        "requested": "[5.1.2, )",
-        "resolved": "5.1.2",
-        "contentHash": "DWobWQBNi4p4I0xgTxEqQMld4qYhdUNAIWmdqpAQTno2CNb0iC+Jnqsf1/8xih7TmIOzAdCTIhmDeKau50Zn4w==",
+        "requested": "[6.0.0, )",
+        "resolved": "6.0.0",
+        "contentHash": "yvKY5DXpqWEp7a5Xar9hihAcgVVzBftLqvf/Fo6xd10jAsZUpaAE5WwkuhiiYSA/yVaPzul8rRCvmYLkqh2Hkw==",
         "dependencies": {
-          "Castle.Core": "[4.4.1, 5.0.0)"
+          "Castle.Core": "[5.1.0, 6.0.0)"
         }
       },
       "Lindhart.Analyser.MissingAwaitWarning": {
@@ -431,7 +431,7 @@
           "Castle.Core-NLog": "[5.2.1, )",
           "Castle.Facilities.AspNet.SystemWeb": "[5.1.2, )",
           "Castle.LoggingFacility": "[5.1.2, )",
-          "Castle.Windsor": "[5.1.2, )",
+          "Castle.Windsor": "[6.0.0, )",
           "Elmah.MVC": "[2.1.2, )",
           "EntityFramework6.Npgsql": "[6.4.3, )",
           "Microsoft.AspNet.Mvc": "[5.3.0, )",
