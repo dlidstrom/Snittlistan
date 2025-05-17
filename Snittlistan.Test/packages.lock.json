@@ -225,8 +225,8 @@
       },
       "Microsoft.CodeDom.Providers.DotNetCompilerPlatform": {
         "type": "Transitive",
-        "resolved": "3.11.0",
-        "contentHash": "63/6SMVG2XVdQLEAF3VzrI4rTNEdS7EVzPSQpgHdn/WmyZU/viAyb3lY4odWP6nw/CFEqvH4o3XbhMR8/wEeHg=="
+        "resolved": "4.1.0",
+        "contentHash": "o34xN9ugrjXCj45UuZhKjHzuxWCdrlWdqhzhVJ6J7a67djTFD6k+1WBm8Hz7Dbi+KQm98eUmlKEg3DsF1uqZow=="
       },
       "Microsoft.Web.Infrastructure": {
         "type": "Transitive",
@@ -448,7 +448,7 @@
           "Microsoft.AspNet.Mvc": "[5.3.0, )",
           "Microsoft.AspNet.WebApi": "[5.3.0, )",
           "Microsoft.AspNet.WebApi.Client": "[6.0.0, )",
-          "Microsoft.CodeDom.Providers.DotNetCompilerPlatform": "[3.11.0, )",
+          "Microsoft.CodeDom.Providers.DotNetCompilerPlatform": "[4.1.0, )",
           "Microsoft.Web.Infrastructure": "[2.0.0, )",
           "Mvc3Futures": "[3.0.20105, )",
           "NLog": "[4.7.15, )",
