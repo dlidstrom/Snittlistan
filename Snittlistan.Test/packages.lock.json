@@ -127,10 +127,10 @@
       },
       "Castle.Facilities.AspNet.SystemWeb": {
         "type": "Transitive",
-        "resolved": "5.1.2",
-        "contentHash": "Nz2DBexo1jBy4j/LLKAMCJrveEmj0W3xTHD4/RIV03poh2xrFoEgNpNbWQ6C/8oZE6CpU1snYgDuUTEWrhKlrQ==",
+        "resolved": "6.0.0",
+        "contentHash": "M2mLlbdeEiiosmPVn2U1jRlgdqg3LLhkLTo73QglSnom/u+elviCNIdYbolI9NXIsfBE/mnXYrd+DEOX+fzGFA==",
         "dependencies": {
-          "Castle.Windsor": "[5.1.2]",
+          "Castle.Windsor": "[6.0.0]",
           "Microsoft.Web.Infrastructure": "1.0.0"
         }
       },
@@ -429,7 +429,7 @@
           "AsyncFriendlyStackTrace": "[1.7.0, )",
           "Castle.Core": "[5.2.1, )",
           "Castle.Core-NLog": "[5.2.1, )",
-          "Castle.Facilities.AspNet.SystemWeb": "[5.1.2, )",
+          "Castle.Facilities.AspNet.SystemWeb": "[6.0.0, )",
           "Castle.LoggingFacility": "[5.1.2, )",
           "Castle.Windsor": "[5.1.2, )",
           "Elmah.MVC": "[2.1.2, )",
