@@ -11,7 +11,7 @@ permissions: write-all
 
 jobs:
   build-windows:
-    runs-on: windows-2022
+    runs-on: windows-2025
 
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref_name }}-build
