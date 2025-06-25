@@ -490,8 +490,8 @@
       },
       "RavenDB.Client": {
         "type": "Transitive",
-        "resolved": "7.0.3",
-        "contentHash": "xTzNlplnjH66MeLxq/C2IKUo6FBIKwziRVX7CV6V3tCPN1yeQz2pKvCMYyqsf7XZJ1nK4y+PZ8mH4hxymHdVXw==",
+        "resolved": "7.0.4",
+        "contentHash": "QheA1PM4lC68ZoQ3+dnXcaHpFmEGLKv2wVaQj/hEdL2JrpA+5KZDWTBfwyGvyxb7ES0E8u3EasBpZI3FRvldFA==",
         "dependencies": {
           "Lambda2Js.Signed": "3.1.4",
           "Microsoft.AspNetCore.JsonPatch": "8.0.16",
@@ -680,7 +680,7 @@
           "Newtonsoft.Json": "[13.0.3, )",
           "PDFsharp": "[6.2.0, )",
           "Postal.Mvc5": "[1.2.0, )",
-          "RavenDB.Client": "[7.0.3, 7.0.3]",
+          "RavenDB.Client": "[7.0.4, 7.0.4]",
           "RavenDB.Database": "[3.5.9, 3.5.9]",
           "RavenDB.Embedded": "[7.0.3, 7.0.3]",
           "RazorGenerator.Mvc": "[2.4.9, )",
