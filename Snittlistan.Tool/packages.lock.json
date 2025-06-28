@@ -62,9 +62,9 @@
       },
       "NLog": {
         "type": "Direct",
-        "requested": "[6.0.0, )",
-        "resolved": "6.0.0",
-        "contentHash": "3wqlcN80L6OHh0ZTQR/F+eZBeaAZ109XbvCEbtZ/nG5B/S+XzGOxv67RAfMx0YMkHY1aAHyW245k0/OE7J0ZxA=="
+        "requested": "[6.0.1, )",
+        "resolved": "6.0.1",
+        "contentHash": "qDWiqy8/xdpZKtHna/645KbalwP86N2NFJEzfqhcv+Si4V2iNaEfR/dCneuF/4+Dcwl3f7jHMXj3ndWYftV3Ug=="
       },
       "Microsoft.AspNet.WebApi.Core": {
         "type": "Transitive",
@@ -163,7 +163,7 @@
           "Lindhart.Analyser.MissingAwaitWarning": "[2.0.0, )",
           "Microsoft.AspNet.WebApi.Client": "[6.0.0, )",
           "MvcContrib": "[2.0.95, )",
-          "NLog": "[6.0.0, )",
+          "NLog": "[6.0.1, )",
           "Newtonsoft.Json": "[13.0.3, )"
         }
       }
