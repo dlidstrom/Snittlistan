@@ -154,9 +154,9 @@
       },
       "RavenDB.Client": {
         "type": "Direct",
-        "requested": "[7.0.4, 7.0.4]",
-        "resolved": "7.0.4",
-        "contentHash": "QheA1PM4lC68ZoQ3+dnXcaHpFmEGLKv2wVaQj/hEdL2JrpA+5KZDWTBfwyGvyxb7ES0E8u3EasBpZI3FRvldFA==",
+        "requested": "[7.1.0, 7.1.0]",
+        "resolved": "7.1.0",
+        "contentHash": "jAIBhPiBCrrcmGxj8iSQTcxPMEtPG7VN64ucdLgNqvG6bad5dFWl4KnswVoQVB5ypv2kspwXjmgALI4vpidUPQ==",
         "dependencies": {
           "Lambda2Js.Signed": "3.1.4",
           "Microsoft.AspNetCore.JsonPatch": "8.0.16",
