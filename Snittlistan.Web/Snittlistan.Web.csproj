@@ -94,7 +94,7 @@
     </PackageReference>
     <PackageReference Include="RavenDB.Client" Version="[7.1.0]" />
     <PackageReference Include="RavenDB.Database" Version="[3.5.9]" />
-    <PackageReference Include="RavenDB.Embedded" Version="[7.0.4]" />
+    <PackageReference Include="RavenDB.Embedded" Version="[7.1.0]" />
     <PackageReference Include="RazorGenerator.Mvc">
       <Version>2.4.9</Version>
     </PackageReference>
