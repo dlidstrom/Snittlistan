@@ -184,11 +184,11 @@
       },
       "RavenDB.Embedded": {
         "type": "Direct",
-        "requested": "[7.1.0, 7.1.0]",
-        "resolved": "7.1.0",
-        "contentHash": "q2y+svCoz95R8YyFggacZIX227YThZiaKGuhookDX4QV1yYtFBr/ZtMYE2aF1rY/FXNmB118HLSqrTnaEo4j4A==",
+        "requested": "[7.1.1, 7.1.1]",
+        "resolved": "7.1.1",
+        "contentHash": "3vSymu5YM+EwroyDqY3Yctk/oINXLKDoHEVl76RDny1tkoCVO3LYUVGrg2Ti0bxM5FxoM2oH5otCcPSSqT4tUA==",
         "dependencies": {
-          "RavenDB.Client": "7.1.0"
+          "RavenDB.Client": "7.1.1"
         }
       },
       "RazorGenerator.Mvc": {
