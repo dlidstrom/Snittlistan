@@ -162,7 +162,7 @@
       <Version>13.0.3</Version>
     </PackageReference>
     <PackageReference Include="NLog">
-      <Version>6.0.2</Version>
+      <Version>6.0.3</Version>
     </PackageReference>
     <PackageReference Include="NUnit">
       <Version>4.4.0</Version>
