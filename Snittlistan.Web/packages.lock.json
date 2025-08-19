@@ -154,20 +154,20 @@
       },
       "RavenDB.Client": {
         "type": "Direct",
-        "requested": "[7.1.1, 7.1.1]",
-        "resolved": "7.1.1",
-        "contentHash": "Rb/rWE9UyvkwUL5+REusgbAdfRzQ+I8Clw5kBwyaAphBs6cfKNZyP3cC/5lKIJ1uie1mCDUhQ3iluqZdH1Fd2A==",
+        "requested": "[7.1.2, 7.1.2]",
+        "resolved": "7.1.2",
+        "contentHash": "Zu2wYGRAPCIKcLefIqX9xiFUNCwnm4qEpoOtniLFwTIQgAmS6bPkP8vLfyEffvetanKIUkoV/h7B/h88NdyHNw==",
         "dependencies": {
           "Lambda2Js.Signed": "3.1.4",
-          "Microsoft.AspNetCore.JsonPatch": "8.0.17",
-          "Microsoft.Bcl.AsyncInterfaces": "9.0.6",
+          "Microsoft.AspNetCore.JsonPatch": "8.0.18",
+          "Microsoft.Bcl.AsyncInterfaces": "9.0.7",
           "Microsoft.Bcl.HashCode": "6.0.0",
           "Microsoft.CSharp": "4.7.0",
           "Microsoft.IO.RecyclableMemoryStream": "3.0.1",
           "Newtonsoft.Json": "13.0.3",
           "Nito.AsyncEx.Coordination": "5.1.2",
           "System.Buffers": "4.6.1",
-          "System.Collections.Immutable": "9.0.6",
+          "System.Collections.Immutable": "9.0.7",
           "System.Memory": "4.6.3",
           "System.Runtime.CompilerServices.Unsafe": "6.1.2",
           "System.Threading.Tasks.Extensions": "4.6.3"
@@ -262,8 +262,8 @@
       },
       "Microsoft.AspNetCore.JsonPatch": {
         "type": "Transitive",
-        "resolved": "8.0.17",
-        "contentHash": "Rs6dBchc36T1bIh750AkV89rOEudlQqjRsegYnY5vrwvfwmtUEKEvasX2Esn62FWRKlUJjM3VW8omwH0X8Ub3A==",
+        "resolved": "8.0.18",
+        "contentHash": "1c8SQxSYwhxqndMn5prT2h5gPjPz+zZ5bVE+RSmbmX/1Xub9Rf5r3xxWPw9vxW6Uo7bqCdvfs2sBmad+wva4ug==",
         "dependencies": {
           "Microsoft.CSharp": "4.7.0",
           "Newtonsoft.Json": "13.0.3"
@@ -271,8 +271,8 @@
       },
       "Microsoft.Bcl.AsyncInterfaces": {
         "type": "Transitive",
-        "resolved": "9.0.6",
-        "contentHash": "82rLw487j5jBXEi2r3WvA/cagOhcRREVRtet6izzjDMY+i392W5oNSN2KCtuIvlTpyMONEUD0MIlGAgDdsvQ/w==",
+        "resolved": "9.0.7",
+        "contentHash": "oVWiFz94Y00WdwBPFJzmwZtX+jmK9h8Q1pED4qKGvVuuWUOP/JRSRtCnqV6XXOxs8SbTF6JEU8FHPuWBlrjEuA==",
         "dependencies": {
           "System.Threading.Tasks.Extensions": "4.5.4"
         }
@@ -443,8 +443,8 @@
       },
       "System.Collections.Immutable": {
         "type": "Transitive",
-        "resolved": "9.0.6",
-        "contentHash": "lqvXJBZ9KtKKffQt9PgHj5aCdm8HGpPOZQgN3sHRN8j2Yjh+KANkdomhv8QybsBk3/YDDG83OdIWcsfQfdRglw==",
+        "resolved": "9.0.7",
+        "contentHash": "0WeYGUWsWXA0e2CZU+TelZR+tFu3Fg1FwS2GikIrrFEFRKLBS2MyFNlJD3h1G94S6gnl4lVijF7JY3vAmTKVjw==",
         "dependencies": {
           "System.Memory": "4.5.5",
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
