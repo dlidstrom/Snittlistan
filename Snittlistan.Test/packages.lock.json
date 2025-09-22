@@ -476,8 +476,8 @@
       },
       "PDFsharp": {
         "type": "Transitive",
-        "resolved": "6.2.1",
-        "contentHash": "u/vJfZhmp3g3oIGRngRnpSqKN2GxpJ9GeG7tKj2o/g/Tef9A+Ghlrq7I6eG5T28zUiUCOuFSilTm7iWz+bjWvA==",
+        "resolved": "6.2.2",
+        "contentHash": "azgX2bTtQhhGyw2dfTph4rzqFR50BDD3KiPRedNg4cPwZMrVDeQ/D0lH2oIBbTbzWVmRIyTNJTeN9ux1XUdltg==",
         "dependencies": {
           "Microsoft.Extensions.Logging": "8.0.1",
           "System.Security.Cryptography.Pkcs": "8.0.1"
@@ -682,7 +682,7 @@
           "Mvc3Futures": "[3.0.20105, )",
           "NLog": "[6.0.4, )",
           "Newtonsoft.Json": "[13.0.4, )",
-          "PDFsharp": "[6.2.1, )",
+          "PDFsharp": "[6.2.2, )",
           "Postal.Mvc5": "[1.2.0, )",
           "RavenDB.Client": "[7.1.2, 7.1.2]",
           "RavenDB.Database": "[3.5.9, 3.5.9]",
