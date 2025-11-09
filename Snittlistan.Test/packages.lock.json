@@ -92,9 +92,9 @@
       },
       "NLog": {
         "type": "Direct",
-        "requested": "[6.0.5, )",
-        "resolved": "6.0.5",
-        "contentHash": "Gq/L18qnZhIfrfqXtUBKdDMtT8cZB+974C99H+w6DxdlIcT4wYCCGjRgnUij3spUH1HWScF6JRaCyv11CHZJ6g=="
+        "requested": "[6.0.6, )",
+        "resolved": "6.0.6",
+        "contentHash": "eUd/LDIwPtufj5OxtzFYiwuoKpzaS87iqO9P9D05avLCk4jIoOlqMwRH0o/43LmzM+CmgVAdDrCOq/rOK0sDKw=="
       },
       "NUnit": {
         "type": "Direct",
@@ -660,7 +660,7 @@
           "Lindhart.Analyser.MissingAwaitWarning": "[2.0.0, )",
           "Microsoft.AspNet.WebApi.Client": "[6.0.0, )",
           "MvcContrib": "[2.0.95, )",
-          "NLog": "[6.0.5, )",
+          "NLog": "[6.0.6, )",
           "Newtonsoft.Json": "[13.0.4, )"
         }
       },
@@ -681,7 +681,7 @@
           "Microsoft.CodeDom.Providers.DotNetCompilerPlatform": "[4.1.0, )",
           "Microsoft.Web.Infrastructure": "[2.0.0, )",
           "Mvc3Futures": "[3.0.20105, )",
-          "NLog": "[6.0.5, )",
+          "NLog": "[6.0.6, )",
           "Newtonsoft.Json": "[13.0.4, )",
           "PDFsharp": "[6.2.2, )",
           "Postal.Mvc5": "[1.2.0, )",
