@@ -102,7 +102,7 @@
       <Version>1.7.4-rc</Version>
     </PackageReference>
     <PackageReference Include="PDFsharp">
-      <Version>6.2.2</Version>
+      <Version>6.2.3</Version>
     </PackageReference>
     <PackageReference Include="NLog">
       <Version>6.0.6</Version>
