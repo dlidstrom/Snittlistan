@@ -38,7 +38,7 @@ jobs:
         echo ("BUILD_VERSION=$v") >> $env:GITHUB_ENV
         echo $v
 
-    - uses: actions/cache@v4
+    - uses: actions/cache@v5
       id: cache
       with:
         path: packages
