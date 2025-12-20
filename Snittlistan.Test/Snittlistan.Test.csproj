@@ -171,7 +171,7 @@
       <Version>3.21.1</Version>
     </PackageReference>
     <PackageReference Include="NUnit3TestAdapter">
-      <Version>6.0.0</Version>
+      <Version>6.0.1</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
