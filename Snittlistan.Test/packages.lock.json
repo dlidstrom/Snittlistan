@@ -225,8 +225,8 @@
       },
       "Microsoft.AspNetCore.JsonPatch": {
         "type": "Transitive",
-        "resolved": "8.0.21",
-        "contentHash": "OCky+q8QKEHnaslT4kMHohziP2hSw2IP8/LTK9F0xpC9ORmauzVAWPZf6jWCj8LGA4TBUvOXZF+OxkYQLuteFA==",
+        "resolved": "8.0.22",
+        "contentHash": "gquk+JFVSXMJSHP/wWBgF6gYrwk616T6uJPaXvdXxBTRe43KTzuW0M+eMVlJsDH/lHGvItdjv47Y6uJ7WQVoSg==",
         "dependencies": {
           "Microsoft.CSharp": "4.7.0",
           "Newtonsoft.Json": "13.0.3"
@@ -242,10 +242,10 @@
       },
       "Microsoft.Bcl.AsyncInterfaces": {
         "type": "Transitive",
-        "resolved": "9.0.10",
-        "contentHash": "iUfw06CsVKAliec4ML6Q91ozbQ8SKbiraIiQegECAPeMY8cGGagIbyZ9+PBtTJ0hx1//qpRqdXDkt51SDQ6k+Q==",
+        "resolved": "10.0.0",
+        "contentHash": "vFuwSLj9QJBbNR0NeNO4YVASUbokxs+i/xbuu8B+Fs4FAZg5QaFa6eGrMaRqTzzNI5tAb97T7BhSxtLckFyiRA==",
         "dependencies": {
-          "System.Threading.Tasks.Extensions": "4.5.4"
+          "System.Threading.Tasks.Extensions": "4.6.3"
         }
       },
       "Microsoft.Bcl.Build": {
@@ -495,19 +495,19 @@
       },
       "RavenDB.Client": {
         "type": "Transitive",
-        "resolved": "7.1.4",
-        "contentHash": "XDuIwpZxB3ntEZrjVha9US7l0KExpt2+l+2TG8ociGyDqKU1yMbyHzC+k4Jfji9YmtOgnVdlUBsgqejKZDBdmg==",
+        "resolved": "7.1.5",
+        "contentHash": "ElApA3mHSKpvqd57hqMXtZlLbf3+EFYm+RRAtP9OK5mtnXaChh3EZhu+71q4Y1fOkVOGA+SOwoz0oKKDGTBfig==",
         "dependencies": {
           "Lambda2Js.Signed": "3.1.4",
-          "Microsoft.AspNetCore.JsonPatch": "8.0.21",
-          "Microsoft.Bcl.AsyncInterfaces": "9.0.10",
+          "Microsoft.AspNetCore.JsonPatch": "8.0.22",
+          "Microsoft.Bcl.AsyncInterfaces": "10.0.0",
           "Microsoft.Bcl.HashCode": "6.0.0",
           "Microsoft.CSharp": "4.7.0",
           "Microsoft.IO.RecyclableMemoryStream": "3.0.1",
           "Newtonsoft.Json": "13.0.3",
           "Nito.AsyncEx.Coordination": "5.1.2",
           "System.Buffers": "4.6.1",
-          "System.Collections.Immutable": "9.0.10",
+          "System.Collections.Immutable": "10.0.0",
           "System.Memory": "4.6.3",
           "System.Runtime.CompilerServices.Unsafe": "6.1.2",
           "System.Threading.Tasks.Extensions": "4.6.3"
@@ -561,11 +561,11 @@
       },
       "System.Collections.Immutable": {
         "type": "Transitive",
-        "resolved": "9.0.10",
-        "contentHash": "2FkVxKnJVqFtv5zGKSEu2FPqbOScpxw+CvgV0C2MYtXPrT1ZcylAdYlTj3S64iRDV7HGykvagoadUUhZN1/eQg==",
+        "resolved": "10.0.0",
+        "contentHash": "BHo23kBFvTFQa0tuDFXcb3Q8QInjm1Xrq+If/xuV8iMlxOOsylsa6sgRK25n5dlcMk8G2f0O/t5AdjZrdVBOXA==",
         "dependencies": {
-          "System.Memory": "4.5.5",
-          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
+          "System.Memory": "4.6.3",
+          "System.Runtime.CompilerServices.Unsafe": "6.1.2"
         }
       },
       "System.Diagnostics.DiagnosticSource": {
@@ -686,7 +686,7 @@
           "Newtonsoft.Json": "[13.0.4, )",
           "PDFsharp": "[6.2.3, )",
           "Postal.Mvc5": "[1.2.0, )",
-          "RavenDB.Client": "[7.1.4, 7.1.4]",
+          "RavenDB.Client": "[7.1.5, 7.1.5]",
           "RavenDB.Database": "[3.5.9, 3.5.9]",
           "RavenDB.Embedded": "[7.1.4, 7.1.4]",
           "RazorGenerator.Mvc": "[2.4.9, )",
