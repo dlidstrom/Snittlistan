@@ -523,10 +523,10 @@
       },
       "RavenDB.Embedded": {
         "type": "Transitive",
-        "resolved": "7.1.4",
-        "contentHash": "MwxrTnyudkerVTMi0fQAMDWW6tiiN+mY2UCPgNcMye6tAmFcBvYDODlz93I6tX6xve8HNJzOkCtv8ChPC6VZIw==",
+        "resolved": "7.1.5",
+        "contentHash": "sbTi9tYBootEC2HYXHKyaiLU93gIULfUjP9zgBL3MWcilQluGOb3hFo0ZFTca5q1Ib2aDZDD1j3c2cuusJpGmQ==",
         "dependencies": {
-          "RavenDB.Client": "7.1.4"
+          "RavenDB.Client": "7.1.5"
         }
       },
       "RazorEngine": {
@@ -688,7 +688,7 @@
           "Postal.Mvc5": "[1.2.0, )",
           "RavenDB.Client": "[7.1.4, 7.1.4]",
           "RavenDB.Database": "[3.5.9, 3.5.9]",
-          "RavenDB.Embedded": "[7.1.4, 7.1.4]",
+          "RavenDB.Embedded": "[7.1.5, 7.1.5]",
           "RazorGenerator.Mvc": "[2.4.9, )",
           "Rotativa": "[1.7.4-rc, )",
           "Snittlistan.Queue": "[1.0.0, )"
