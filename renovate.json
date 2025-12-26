@@ -6,6 +6,11 @@
   ],
   "packageRules": [
     {
+      "description": "Disable RavenDB updates - locked at version 3.5.9",
+      "matchPackagePatterns": ["^RavenDB\\."],
+      "enabled": false
+    },
+    {
       "description": "Automerge updates",
       "matchUpdateTypes": ["major", "minor", "patch"],
       "automerge": true
