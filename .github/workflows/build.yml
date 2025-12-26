@@ -77,9 +77,9 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const fs = require('fs');
-          const filename = "Build/_build/TestResult.html";
-          const body = fs.readFileSync(filename, "utf8");
+          const runId = context.runId;
+          const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}`;
+          const body = `## Build Complete ✅\n\n**Version:** ${process.env.BUILD_VERSION}\n\n📊 Test results are available in the [build artifacts](${runUrl})`;
           const { issue: { number: issue_number }, repo: { owner, repo } } = context;
           github.rest.issues.createComment({ issue_number, owner, repo, body });
 
