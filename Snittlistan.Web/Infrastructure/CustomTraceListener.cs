@@ -20,7 +20,7 @@ public class CustomTraceListener : TraceListener
     };
 
     private readonly Logger _logger;
-    private LogLevel? _level;
+    private LogLevel? _level = LogLevel.Info;
     private StringBuilder _currentLine = new();
 
     public CustomTraceListener(string provider)

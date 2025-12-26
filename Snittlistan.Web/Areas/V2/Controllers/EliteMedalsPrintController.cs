@@ -133,37 +133,37 @@ public class EliteMedalsPrintController : AbstractController
             document.AcroForm.Elements.Add("/NeedAppearances", new PdfBoolean(true));
         }
 
-        document.AcroForm.Fields["Text1"].Value = new PdfString(playerMedalInfo.PlayerName);
-        document.AcroForm.Fields["Text2"].Value = new PdfString(playerMedalInfo.PlayerPersonalNumber.ToString());
-        document.AcroForm.Fields["Text3"].Value = new PdfString(playerMedalInfo.FormattedExistingMedal.Description);
+        document.AcroForm.Fields["Text1"]!.Value = new PdfString(playerMedalInfo.PlayerName);
+        document.AcroForm.Fields["Text2"]!.Value = new PdfString(playerMedalInfo.PlayerPersonalNumber.ToString());
+        document.AcroForm.Fields["Text3"]!.Value = new PdfString(playerMedalInfo.FormattedExistingMedal.Description);
         //document.AcroForm.Fields["Text4"].Value = new PdfString("Märkets nummer");
-        document.AcroForm.Fields["Text5"].Value = new PdfString(playerMedalInfo.FormattedNextMedal.Description);
+        document.AcroForm.Fields["Text5"]!.Value = new PdfString(playerMedalInfo.FormattedNextMedal.Description);
 
         var firstResult = top3ValidResults[0];
         var secondResult = top3ValidResults[1];
         var thirdResult = top3ValidResults[2];
-        document.AcroForm.Fields["Text6"].Value = new PdfString(firstResult.Key.Date.ToString("yyyy-MM-dd"));
-        document.AcroForm.Fields["Text7"].Value = new PdfString($"Omgång {firstResult.Key.Turn}");
-        document.AcroForm.Fields["Text8"].Value = new PdfString(firstResult.Count().ToString());
-        document.AcroForm.Fields["Text9"].Value = new PdfString(firstResult.Sum(x => x.Item1.Pins).ToString());
+        document.AcroForm.Fields["Text6"]!.Value = new PdfString(firstResult.Key.Date.ToString("yyyy-MM-dd"));
+        document.AcroForm.Fields["Text7"]!.Value = new PdfString($"Omgång {firstResult.Key.Turn}");
+        document.AcroForm.Fields["Text8"]!.Value = new PdfString(firstResult.Count().ToString());
+        document.AcroForm.Fields["Text9"]!.Value = new PdfString(firstResult.Sum(x => x.Item1.Pins).ToString());
 
-        document.AcroForm.Fields["1"].Value = new PdfString(secondResult.Key.Date.ToString("yyyy-MM-dd"));
-        document.AcroForm.Fields["2"].Value = new PdfString($"Omgång {secondResult.Key.Turn}");
-        document.AcroForm.Fields["3"].Value = new PdfString(secondResult.Count().ToString());
-        document.AcroForm.Fields["4"].Value = new PdfString(secondResult.Sum(x => x.Item1.Pins).ToString());
+        document.AcroForm.Fields["1"]!.Value = new PdfString(secondResult.Key.Date.ToString("yyyy-MM-dd"));
+        document.AcroForm.Fields["2"]!.Value = new PdfString($"Omgång {secondResult.Key.Turn}");
+        document.AcroForm.Fields["3"]!.Value = new PdfString(secondResult.Count().ToString());
+        document.AcroForm.Fields["4"]!.Value = new PdfString(secondResult.Sum(x => x.Item1.Pins).ToString());
 
-        document.AcroForm.Fields["5"].Value = new PdfString(thirdResult.Key.Date.ToString("yyyy-MM-dd"));
-        document.AcroForm.Fields["6"].Value = new PdfString($"Omgång {thirdResult.Key.Turn}");
-        document.AcroForm.Fields["7"].Value = new PdfString(thirdResult.Count().ToString());
-        document.AcroForm.Fields["8"].Value = new PdfString(thirdResult.Sum(x => x.Item1.Pins).ToString());
+        document.AcroForm.Fields["5"]!.Value = new PdfString(thirdResult.Key.Date.ToString("yyyy-MM-dd"));
+        document.AcroForm.Fields["6"]!.Value = new PdfString($"Omgång {thirdResult.Key.Turn}");
+        document.AcroForm.Fields["7"]!.Value = new PdfString(thirdResult.Count().ToString());
+        document.AcroForm.Fields["8"]!.Value = new PdfString(thirdResult.Sum(x => x.Item1.Pins).ToString());
 
         //document.AcroForm.Fields["9"].Value = new PdfString("Datum fjärde matchen");
         //document.AcroForm.Fields["10"].Value = new PdfString("Tävling eller omgång fjärde matchen");
         //document.AcroForm.Fields["11"].Value = new PdfString("Antal serier fjärde matchen");
         //document.AcroForm.Fields["12"].Value = new PdfString("Poäng fjärde matchen");
-        document.AcroForm.Fields["Text10"].Value = new PdfString(postModel.Location);
-        document.AcroForm.Fields["Text11"].Value = new PdfString(DateTime.Now.Date.ToString("yyyy-MM-dd"));
-        document.AcroForm.Fields["Text12"].Value = new PdfString(tenant.TeamFullName);
+        document.AcroForm.Fields["Text10"]!.Value = new PdfString(postModel.Location);
+        document.AcroForm.Fields["Text11"]!.Value = new PdfString(DateTime.Now.Date.ToString("yyyy-MM-dd"));
+        document.AcroForm.Fields["Text12"]!.Value = new PdfString(tenant.TeamFullName);
         //document.AcroForm.Fields["Text14"].Value = new PdfString("OrtBestyrkes");
         //document.AcroForm.Fields["Text15"].Value = new PdfString("DatumBestyrkes");
         //document.AcroForm.Fields["Text16"].Value = new PdfString("Distriktförbund");
