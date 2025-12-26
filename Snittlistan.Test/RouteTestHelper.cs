@@ -21,7 +21,7 @@ public static class RouteTestHelper
                 routeData.Values[property.Name].ToString(),
                 StringComparison.OrdinalIgnoreCase);
             string message = $"Expected '{property.Value}', not '{routeData.Values[property.Name]}' for '{property.Name}'.";
-            Assert.That(equal, message, Is.True);
+            Assert.That(equal, Is.True, message);
         }
     }
 
