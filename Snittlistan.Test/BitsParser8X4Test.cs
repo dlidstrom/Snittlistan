@@ -230,8 +230,8 @@ public class BitsParser8X4Test
     private static void VerifyTable(ResultSeriesReadModel.Table table, Tuple<int, string, int, string, int> expected)
     {
         Assert.That(table.Score, Is.EqualTo(expected.Item1));
-        Assert.NotNull(table.Game1);
-        Assert.NotNull(table.Game2);
+        Assert.That(table.Game1, Is.Not.Null);
+        Assert.That(table.Game2, Is.Not.Null);
         Assert.That(table.Game1.Player, Is.EqualTo(expected.Item2));
         Assert.That(table.Game1.Pins, Is.EqualTo(expected.Item3));
         Assert.That(table.Game2.Player, Is.EqualTo(expected.Item4));

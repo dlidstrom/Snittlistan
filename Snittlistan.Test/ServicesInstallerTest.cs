@@ -19,6 +19,6 @@ public class ServicesInstallerTest
     public void InstallsFormsAuthenticationService()
     {
         IAuthenticationService service = container.Resolve<IAuthenticationService>();
-        Assert.NotNull(service);
+        Assert.That(service, Is.Not.Null);
     }
 }

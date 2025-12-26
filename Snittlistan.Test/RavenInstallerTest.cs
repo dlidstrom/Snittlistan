@@ -19,7 +19,7 @@ public class RavenInstallerTest
     public void InstallsDocumentStore()
     {
         IDocumentStore store = container.Resolve<IDocumentStore>();
-        Assert.NotNull(store);
+        Assert.That(store, Is.Not.Null);
         container.Release(store);
     }
 }

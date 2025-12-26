@@ -156,7 +156,7 @@ public class MatchResult_RegisterSeries
         // Assert
         EventStoreLite.IDomainEvent[] changes = matchResult!.GetUncommittedChanges();
         Assert.That(changes, Has.Length.EqualTo(4));
-        Assert.IsAssignableFrom<SerieRegistered>(changes[1]);
+        Assert.That(changes[1], Is.AssignableFrom<SerieRegistered>());
     }
 
     [Test]
