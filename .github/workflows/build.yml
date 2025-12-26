@@ -53,7 +53,7 @@ jobs:
     - name: Restore
       #if: steps.cache.outputs.cache-hit != 'true'
       run: |
-        nuget restore Snittlistan.sln
+        nuget restore Snittlistan.sln -PreRelease
 
     - name: Build
       run: msbuild build.build -t:All -p:Version=$env:BUILD_VERSION -p:WIX_PATH=$env:WIX_PATH -p:NUnitConsoleRunnerPath=$env:GITHUB_WORKSPACE\packages\nunit.consolerunner\3.21.1\
