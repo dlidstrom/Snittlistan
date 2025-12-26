@@ -26,6 +26,11 @@ jobs:
       with:
         nuget-version: '5.x'
 
+    - name: Install WiX Toolset
+      run: |
+        choco install wixtoolset --version=3.11.2 -y
+        echo "WIX_PATH=C:\Program Files (x86)\WiX Toolset v3.11\" >> $env:GITHUB_ENV
+
     # 21.44.101.0
     - name: Set version
       run: |
@@ -52,7 +57,7 @@ jobs:
         nuget restore Snittlistan.sln
 
     - name: Build
-      run: msbuild build.build -t:All -p:Version=$env:BUILD_VERSION -p:WIX_PATH=$env:wix -p:NUnitConsoleRunnerPath=$env:GITHUB_WORKSPACE\packages\nunit.consolerunner\3.21.1\
+      run: msbuild build.build -t:All -p:Version=$env:BUILD_VERSION -p:WIX_PATH=$env:WIX_PATH -p:NUnitConsoleRunnerPath=$env:GITHUB_WORKSPACE\packages\nunit.consolerunner\3.21.1\
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v6
