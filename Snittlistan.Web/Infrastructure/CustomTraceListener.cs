@@ -20,7 +20,7 @@ public class CustomTraceListener : TraceListener
     };
 
     private readonly Logger _logger;
-    private LogLevel? _level = LogLevel.Info;
+    private LogLevel _level = LogLevel.Info;
     private StringBuilder _currentLine = new();
 
     public CustomTraceListener(string provider)
@@ -35,7 +35,10 @@ public class CustomTraceListener : TraceListener
         Match match = _levelRegex.Match(message);
         if (match.Success)
         {
-            _ = _toLevel.TryGetValue(match.Groups["level"].Value, out _level);
+            if (_toLevel.TryGetValue(match.Groups["level"].Value, out LogLevel parsedLevel))
+            {
+                _level = parsedLevel;
+            }
         }
 
         _ = _currentLine.Append(message);
