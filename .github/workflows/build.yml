@@ -52,7 +52,7 @@ jobs:
         nuget restore Snittlistan.sln
 
     - name: Build
-      run: msbuild build.build -t:All -p:Version=$env:BUILD_VERSION -p:WIX_PATH=$env:wix -p:NUnitConsoleRunnerPath=$env:GITHUB_WORKSPACE\packages\nunit.consolerunner\3.15.0\
+      run: msbuild build.build -t:All -p:Version=$env:BUILD_VERSION -p:WIX_PATH=$env:wix -p:NUnitConsoleRunnerPath=$env:GITHUB_WORKSPACE\packages\nunit.consolerunner\3.21.1\
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v6
