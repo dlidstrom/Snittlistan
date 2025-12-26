@@ -26,10 +26,9 @@ jobs:
       with:
         nuget-version: '5.x'
 
-    - name: Install WiX Toolset
+    - name: Set WiX path
       run: |
-        choco install wixtoolset --version=3.11.2 -y
-        echo "WIX_PATH=C:\Program Files (x86)\WiX Toolset v3.11\" >> $env:GITHUB_ENV
+        echo "WIX_PATH=C:\Program Files (x86)\WiX Toolset v3.14\" >> $env:GITHUB_ENV
 
     # 21.44.101.0
     - name: Set version
