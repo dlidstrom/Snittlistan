@@ -56,7 +56,7 @@ public class TaskController : AbstractApiController
                 $"throttled due to unhandled exception (allowance = {cacheItem.Allowance:N2})");
         }
 
-        IDisposable scope = NLog.NestedDiagnosticsLogicalContext.Push(taskObject.BusinessKey);
+        IDisposable scope = NLog.ScopeContext.PushNestedState(taskObject.BusinessKey);
         try
         {
             Logger.Info("begin");

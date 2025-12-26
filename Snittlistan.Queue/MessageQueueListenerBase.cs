@@ -178,7 +178,7 @@ public abstract class MessageQueueListenerBase : IDisposable
         try
         {
             counter.Increment();
-            IDisposable disposable = NestedDiagnosticsLogicalContext.Push(message.Id);
+            IDisposable disposable = ScopeContext.PushNestedState(message.Id);
             try
             {
                 Logger.Info("start");
