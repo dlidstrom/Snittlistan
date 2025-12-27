@@ -24,6 +24,6 @@ public class ControllerFactoryTest
         Assert.DoesNotThrow(() => factory = container.Resolve<IControllerFactory>());
         IController? controller = null;
         Assert.DoesNotThrow(() => controller = factory!.CreateController(new RequestContext(), nameof(ErrorController).Replace("Controller", string.Empty)));
-        Assert.NotNull(controller);
+        Assert.That(controller, Is.Not.Null);
     }
 }

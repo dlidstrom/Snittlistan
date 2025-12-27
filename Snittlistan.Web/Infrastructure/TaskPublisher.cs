@@ -65,7 +65,7 @@ public class TaskPublisher
         async void PublishMessage(Tenant tenant, Guid messageId, CancellationToken ct)
         {
             const int MaxTries = 10;
-            using IDisposable logScope = NestedDiagnosticsLogicalContext.Push("QueueBackgroundWork");
+            using IDisposable logScope = ScopeContext.PushNestedState("QueueBackgroundWork");
             using SnittlistanContext context = new();
             try
             {

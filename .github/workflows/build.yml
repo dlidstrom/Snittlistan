@@ -26,6 +26,10 @@ jobs:
       with:
         nuget-version: '5.x'
 
+    - name: Set WiX path
+      run: |
+        echo "WIX_PATH=C:\Program Files (x86)\WiX Toolset v3.14\" >> $env:GITHUB_ENV
+
     # 21.44.101.0
     - name: Set version
       run: |
@@ -52,9 +56,10 @@ jobs:
         nuget restore Snittlistan.sln
 
     - name: Build
-      run: msbuild build.build -t:All -p:Version=$env:BUILD_VERSION -p:WIX_PATH=$env:wix -p:NUnitConsoleRunnerPath=$env:GITHUB_WORKSPACE\packages\nunit.consolerunner\3.15.0\
+      run: msbuild build.build -t:All -p:Version=$env:BUILD_VERSION -p:WIX_PATH=$env:WIX_PATH -p:NUnitConsoleRunnerPath=$env:GITHUB_WORKSPACE\packages\nunit.consolerunner\3.21.1\
 
     - name: Upload a Build Artifact
+      if: success() || failure()
       uses: actions/upload-artifact@v6
       with:
         name: 'Test Result'
@@ -69,13 +74,15 @@ jobs:
 
     - name: Comment pull request
       uses: actions/github-script@v8
-      if: github.event_name == 'pull_request'
+      if: (success() || failure()) && github.event_name == 'pull_request'
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const fs = require('fs');
-          const filename = "Build/_build/TestResult.html";
-          const body = fs.readFileSync(filename, "utf8");
+          const runId = context.runId;
+          const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}`;
+          const status = '${{ job.status }}' === 'success' ? '✅' : '❌';
+          const statusText = '${{ job.status }}' === 'success' ? 'Build Complete' : 'Build Failed';
+          const body = `## ${statusText} ${status}\n\n**Version:** ${process.env.BUILD_VERSION}\n\n📊 Test results are available in the [build artifacts](${runUrl})`;
           const { issue: { number: issue_number }, repo: { owner, repo } } = context;
           github.rest.issues.createComment({ issue_number, owner, repo, body });
 

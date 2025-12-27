@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Web;
 using System.Web.Mvc;
+using Activity = Snittlistan.Web.Areas.V2.Domain.Activity;
 
 namespace Snittlistan.Web.Areas.V2.Controllers;
 

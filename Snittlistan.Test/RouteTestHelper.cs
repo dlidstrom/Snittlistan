@@ -12,7 +12,7 @@ public static class RouteTestHelper
     public static void Maps(this RouteCollection routes, string httpVerb, string url, object expectations)
     {
         RouteData routeData = RetrieveRouteData(routes, httpVerb, url);
-        Assert.NotNull(routeData);
+        Assert.That(routeData, Is.Not.Null);
 
         foreach (PropertyValue property in GetProperties(expectations))
         {
@@ -21,7 +21,7 @@ public static class RouteTestHelper
                 routeData.Values[property.Name].ToString(),
                 StringComparison.OrdinalIgnoreCase);
             string message = $"Expected '{property.Value}', not '{routeData.Values[property.Name]}' for '{property.Name}'.";
-            Assert.True(equal, message);
+            Assert.That(equal, Is.True, message);
         }
     }
 

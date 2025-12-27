@@ -33,6 +33,6 @@ public class User_ValidatePassword : DbTest
         Session.SaveChanges();
 
         bool valid = Session.FindUserByEmail("e@d.com").ValidatePassword("some pwd");
-        Assert.True(valid);
+        Assert.That(valid, Is.True);
     }
 }

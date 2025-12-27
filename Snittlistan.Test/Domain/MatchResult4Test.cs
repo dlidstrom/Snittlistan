@@ -29,7 +29,7 @@ public class MatchResult4Test
         EventStoreLite.IDomainEvent[] uncommittedChanges = matchResult.GetUncommittedChanges();
         Assert.That(uncommittedChanges.Length, Is.EqualTo(1));
         MatchResult4Registered? registered = uncommittedChanges[0] as MatchResult4Registered;
-        Assert.NotNull(registered);
+        Assert.That(registered, Is.Not.Null);
         Assert.That(registered!.RosterId, Is.EqualTo("rosters-1"));
         Assert.That(registered.TeamScore, Is.EqualTo(9));
         Assert.That(registered.OpponentScore, Is.EqualTo(11));
@@ -286,7 +286,7 @@ public class MatchResult4Test
         EventStoreLite.IDomainEvent[] changes = matchResult.GetUncommittedChanges();
         Assert.That(changes.Length, Is.EqualTo(6));
         AwardedMedal? medal = changes[5] as AwardedMedal;
-        Assert.NotNull(medal);
+        Assert.That(medal, Is.Not.Null);
         Assert.That(medal!.Player, Is.EqualTo("p2"));
         Assert.That(medal.MedalType, Is.EqualTo(MedalType.TotalScore));
         Assert.That(medal.Value, Is.EqualTo(4));
@@ -322,8 +322,8 @@ public class MatchResult4Test
         Assert.That(changes.Length, Is.EqualTo(4));
         AwardedMedal? medal1 = changes[2] as AwardedMedal;
         AwardedMedal? medal2 = changes[3] as AwardedMedal;
-        Assert.NotNull(medal1);
-        Assert.NotNull(medal2);
+        Assert.That(medal1, Is.Not.Null);
+        Assert.That(medal2, Is.Not.Null);
         Assert.That(medal1!.Player, Is.EqualTo("p2"));
         Assert.That(medal1.MedalType, Is.EqualTo(MedalType.PinsInSerie));
         Assert.That(medal1.Value, Is.EqualTo(270));
@@ -394,8 +394,8 @@ public class MatchResult4Test
         Assert.That(changes.Length, Is.EqualTo(5));
         AwardedMedal? medal1 = changes[2] as AwardedMedal;
         AwardedMedal? medal2 = changes[3] as AwardedMedal;
-        Assert.NotNull(medal1);
-        Assert.NotNull(medal2);
+        Assert.That(medal1, Is.Not.Null);
+        Assert.That(medal2, Is.Not.Null);
         Assert.That(medal1!.Player, Is.EqualTo("p2"));
         Assert.That(medal1.MedalType, Is.EqualTo(MedalType.PinsInSerie));
         Assert.That(medal1.Value, Is.EqualTo(270));
@@ -426,7 +426,7 @@ public class MatchResult4Test
         EventStoreLite.IDomainEvent[] changes = matchResult.GetUncommittedChanges();
         Assert.That(changes.Length, Is.EqualTo(2));
         EventStoreLite.IDomainEvent domainEvent = changes[1];
-        Assert.IsAssignableFrom<ClearMedals>(domainEvent);
+        Assert.That(domainEvent, Is.AssignableFrom<ClearMedals>());
         Assert.That(123, Is.EqualTo(((ClearMedals)domainEvent).BitsMatchId));
     }
 

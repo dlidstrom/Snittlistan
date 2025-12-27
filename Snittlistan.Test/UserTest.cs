@@ -12,7 +12,7 @@ public class UserTest
     public void ShouldNotBeActiveWhenCreated()
     {
         User user = new("first name", "last name", "email", "password");
-        Assert.False(user.IsActive);
+        Assert.That(user.IsActive, Is.False);
     }
 
     [Test]
@@ -22,7 +22,7 @@ public class UserTest
         User user = new("first name", "last name", "email", "password") { Id = "users-2" };
         user.Initialize(e => createdEvent = (NewUserCreatedTask)e);
 
-        Assert.NotNull(createdEvent);
+        Assert.That(createdEvent, Is.Not.Null);
         Assert.That(createdEvent!.Email, Is.EqualTo("email"));
         Assert.That(createdEvent.UserId, Is.EqualTo("users-2"));
     }
@@ -32,6 +32,6 @@ public class UserTest
     {
         User user = new("F", "L", "e@d.com", "pwd");
         user.Activate();
-        Assert.True(user.IsActive);
+        Assert.That(user.IsActive, Is.True);
     }
 }
