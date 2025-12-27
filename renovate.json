@@ -11,6 +11,11 @@
       "enabled": false
     },
     {
+      "description": "Disable System.Collections.Immutable updates - locked at version 8.0.0 for .NET Framework compatibility",
+      "matchPackageNames": ["System.Collections.Immutable"],
+      "enabled": false
+    },
+    {
       "description": "Disable automerge to prevent merging PRs with binding redirect issues",
       "matchUpdateTypes": ["major", "minor", "patch"],
       "automerge": false
