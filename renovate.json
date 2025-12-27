@@ -11,9 +11,9 @@
       "enabled": false
     },
     {
-      "description": "Automerge updates",
+      "description": "Disable automerge to prevent merging PRs with binding redirect issues",
       "matchUpdateTypes": ["major", "minor", "patch"],
-      "automerge": true
+      "automerge": false
     }
   ]
 }
