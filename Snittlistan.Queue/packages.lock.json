@@ -4,9 +4,9 @@
     ".NETFramework,Version=v4.8": {
       "Lindhart.Analyser.MissingAwaitWarning": {
         "type": "Direct",
-        "requested": "[2.0.0, )",
-        "resolved": "2.0.0",
-        "contentHash": "HpFBjmWLrGO/ysm9/npeReYFKUV8fwDGI09qNazNV7/p4k29VTOrmrHkbZkQFao0tXvl6Zt0cd+VXlcfoGVnoA=="
+        "requested": "[3.2.0, )",
+        "resolved": "3.2.0",
+        "contentHash": "Zv+tBUYXoDPckIctjyP9yfn6m8CMVvF+AS6ZY7xZDDuK1DKmgpLhkksV6muNIMAfzD3WSFfQCPyVRTvkiVVohg=="
       },
       "Microsoft.AspNet.WebApi.Client": {
         "type": "Direct",
