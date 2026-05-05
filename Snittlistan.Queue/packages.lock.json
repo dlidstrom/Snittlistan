@@ -37,9 +37,9 @@
       },
       "NLog": {
         "type": "Direct",
-        "requested": "[6.0.7, )",
-        "resolved": "6.0.7",
-        "contentHash": "16kwDY6+/TCBToyXekpcl5mxprUWuXqltdOK26w44E0rTQTiRCjXv1VVLDtSbgMCR1RirVvr+V/9T+76cwuqnw=="
+        "requested": "[6.1.3, )",
+        "resolved": "6.1.3",
+        "contentHash": "w4JFIUN3cjQobFOc6wuXtHTyMNaWfdAxOhMvCR0vHBNpl2kKSjNYYxzx1KsTtePufQeokFMEx9UbWTAqlICKjA=="
       },
       "System.Runtime.CompilerServices.Unsafe": {
         "type": "Direct",
