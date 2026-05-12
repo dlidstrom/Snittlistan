@@ -20,7 +20,7 @@ jobs:
     steps:
     - uses: actions/checkout@v6
 
-    - uses: microsoft/setup-msbuild@v2.0.0
+    - uses: microsoft/setup-msbuild@v3.0.0
 
     - uses: nuget/setup-nuget@v2
       with:
