@@ -9,13 +9,13 @@ on:
 
 permissions: write-all
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-windows:
     runs-on: windows-2022
-
-    concurrency:
-      group: ${{ github.workflow }}-build
-      cancel-in-progress: true
 
     steps:
     - uses: actions/checkout@v2
