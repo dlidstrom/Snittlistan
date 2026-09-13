@@ -12,12 +12,14 @@ namespace Snittlistan.Test;
 
 public static class BitsGateway
 {
-    private static readonly IBitsClient Client = new BitsClient(
+    private static readonly Lazy<IBitsClient> LazyClient = new(() => new BitsClient(
         new HttpClient()
         {
           BaseAddress = new Uri(Environment.GetEnvironmentVariable("GatewayUrl"))
         },
-        MemoryCache.Default);
+        MemoryCache.Default));
+
+    private static IBitsClient Client => LazyClient.Value;
 
     public static async Task<HeadInfo> GetHeadInfo(int matchId)
     {

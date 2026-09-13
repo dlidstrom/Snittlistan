@@ -76,10 +76,14 @@
     <MSBuild Projects="@(SnittlistanQueueProject)" Properties="Configuration=Release;OutDir=$(OutputDirectory)\SnittlistanQueue" />
     <MSBuild Projects="@(SnittlistanTestProject)" Properties="Configurstion=Release;OutDir=$(OutputDirectory)\SnittlistanTest" />
     <Exec Command="$(NUnitConsoleRunnerPath)tools\nunit3-console.exe $(OutputDirectory)\SnittlistanTest\Snittlistan.Test.dll"
-          IgnoreExitCode="true" />
+          IgnoreExitCode="true">
+      <Output TaskParameter="ExitCode" PropertyName="NUnitExitCode" />
+    </Exec>
     <XslTransformation XmlInputPaths="TestResult.xml"
                        OutputPaths="$(OutputDirectory)\TestResult.html"
                        XslInputPath="nunit.xsl" />
+    <Error Condition="'$(NUnitExitCode)' != '0'"
+           Text="Unit tests failed (nunit3-console exited with code $(NUnitExitCode)). See TestResult.html for details." />
   </Target>
 
   <!-- Preparations for WiX -->
