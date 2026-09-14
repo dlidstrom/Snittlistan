@@ -31,6 +31,15 @@ Snittlistan.Web/Snittlistan.Publish.xml
 Snittlistan.Web/App_Data/Database
 Tools/
 _install/
+service-account.txt
+service-password.txt
+email-password.txt
+elmah-email-password.txt
+db-host.txt
+db-name.txt
+db-name2.txt
+db-username.txt
+db-password.txt
 Build/_build/
 .vs
 .ionide

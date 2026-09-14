@@ -141,7 +141,8 @@ $settings = @{
     BCC_EMAIL = $bccEmail
 }
 
-$settingsFormatted = ($settings.Keys | % { "$_=$($settings[$_])" }) -join "`n"
+$secretKeys = @('SERVICE_PASSWORD', 'EMAIL_PASSWORD', 'ELMAH_EMAIL_PASSWORD', 'DB_PASSWORD')
+$settingsFormatted = ($settings.Keys | % { "$_=$(if ($secretKeys -contains $_) { '********' } else { $settings[$_] })" }) -join "`n"
 "Settings:`n$settingsFormatted"
 
 "Installing new version..."

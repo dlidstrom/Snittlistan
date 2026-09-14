@@ -24,6 +24,8 @@
 
     <MajorUpgrade DowngradeErrorMessage="A later version of this product is already installed. Setup will now exit." />
     <Property Id="ALLUSERS" Value="1" />
+    <!-- keep these values out of Snittlistan_install.log even under /l* logging -->
+    <Property Id="MsiHiddenProperties" Value="SERVICE_PASSWORD;EMAIL_PASSWORD;ELMAH_EMAIL_PASSWORD;DB_USERNAME;DB_PASSWORD" />
     <PropertyRef Id="NETFRAMEWORK40FULLINSTALLROOTDIR" />
 
     <!-- will break when supported by WiX -->
