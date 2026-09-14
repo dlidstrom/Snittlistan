@@ -81,6 +81,9 @@ public class MvcApplication : HttpApplication
 
     protected void Application_Start()
     {
+        // SendGrid (and most modern SMTP endpoints) reject TLS 1.0/1.1; older Windows Server
+        // Schannel defaults don't always negotiate TLS 1.2 for SmtpClient without this.
+        System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
         Bootstrap(GlobalConfiguration.Configuration, DatabasesFactory);
         MvcHandler.DisableMvcResponseHeader = true;
 
