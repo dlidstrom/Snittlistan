@@ -123,16 +123,6 @@
                   Return="check"
                   Execute="deferred"
                   Impersonate="no" />
-    <CustomAction Id="GetPlayersFromBits_Cmd"
-                  Property="GetPlayersFromBits_Task"
-                  Execute="immediate"
-                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU [SERVICE_ACCOUNT] /RP [SERVICE_PASSWORD] /SC DAILY /ST 08:00 /TN GetPlayersFromBits /TR &quot;\&quot;[#Snittlistan.Tool.exe]\&quot; GetPlayersFromBits&quot;" />
-    <CustomAction Id="GetPlayersFromBits_Task"
-                  BinaryKey="WixCA"
-                  DllEntry="CAQuietExec"
-                  Return="check"
-                  Execute="deferred"
-                  Impersonate="no" />
     <CustomAction Id="PublishExpiredTasks_Cmd"
                   Property="PublishExpiredTasks_Task"
                   Execute="immediate"
@@ -358,8 +348,6 @@
       <Custom Action="StartServices_Task" After="StartServices_Cmd">NOT Installed</Custom>
       <Custom Action="GetRostersFromBits_Cmd" Before="InstallFinalize">NOT Installed</Custom>
       <Custom Action="GetRostersFromBits_Task" After="GetRostersFromBits_Cmd">NOT Installed</Custom>
-      <Custom Action="GetPlayersFromBits_Cmd" Before="InstallFinalize">NOT Installed</Custom>
-      <Custom Action="GetPlayersFromBits_Task" After="GetPlayersFromBits_Cmd">NOT Installed</Custom>
       <Custom Action="PublishExpiredTasks_Cmd" Before="InstallFinalize">NOT Installed</Custom>
       <Custom Action="PublishExpiredTasks_Task" After="PublishExpiredTasks_Cmd">NOT Installed</Custom>
     </InstallExecuteSequence>
