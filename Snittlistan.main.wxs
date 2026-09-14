@@ -175,7 +175,7 @@
                             Action="setValue"
                             File="[SnittlistanWebDir]Web.config"
                             ElementPath="/configuration/system.net/mailSettings/smtp/network/@userName"
-                            Value="[OWNER_EMAIL]" />
+                            Value="apikey" />
               <util:XmlFile Id="MailPassword"
                             Action="setValue"
                             File="[SnittlistanWebDir]Web.config"
@@ -200,7 +200,7 @@
                             Action="setValue"
                             File="[SnittlistanWebDir]Web.config"
                             ElementPath="/configuration/elmah/errorMail/@userName"
-                            Value="[OWNER_EMAIL]" />
+                            Value="apikey" />
               <util:XmlFile Id="ConnectionString"
                             Action="setValue"
                             File="[SnittlistanWebDir]Web.config"
