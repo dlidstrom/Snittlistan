@@ -16,8 +16,6 @@ public interface IBitsClient
     Task<DivisionResult[]> GetDivisions(int teamId, int seasonId);
 
     Task<MatchRound[]> GetMatchRounds(int teamId, int divisionId, int seasonId);
-
-    Task<PlayerResult> GetPlayers(int clubId);
 }
 
 public static class BitsClientExtensions

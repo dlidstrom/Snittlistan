@@ -1,8 +1,6 @@
 ﻿#nullable enable
 
 using System.IO;
-using System.Net.Http;
-using System.Runtime.Caching;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Snittlistan.Web.Infrastructure.Bits;
@@ -12,12 +10,7 @@ namespace Snittlistan.Test;
 
 public static class BitsGateway
 {
-    private static readonly Lazy<IBitsClient> LazyClient = new(() => new BitsClient(
-        new HttpClient()
-        {
-          BaseAddress = new Uri(Environment.GetEnvironmentVariable("GatewayUrl"))
-        },
-        MemoryCache.Default));
+    private static readonly Lazy<IBitsClient> LazyClient = new(() => new BitsDbClient());
 
     private static IBitsClient Client => LazyClient.Value;
 
@@ -83,14 +76,6 @@ public static class BitsGateway
             $"MatchRound-{teamId}-{divisionId}-{seasonId}.json",
             () => Client.GetMatchRounds(teamId, divisionId, seasonId));
         return matchRounds;
-    }
-
-    public static async Task<PlayerResult> GetPlayers(int clubId)
-    {
-        PlayerResult playerResult = await Try(
-            $"PlayerResult-{clubId}.json",
-            () => Client.GetPlayers(clubId));
-        return playerResult;
     }
 
     private static async Task<TResult> Try<TResult>(string filename, Func<Task<TResult>> func)

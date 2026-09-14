@@ -645,7 +645,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>_ViewStart.cshtml</DependentUpon>
     </Compile>
-    <Compile Include="Commands\GetPlayersFromBitsCommandHandler.cs" />
     <Compile Include="Commands\GetRostersFromBitsCommandHandler.cs" />
     <Compile Include="Commands\HandleMailCommandHandler.cs" />
     <Compile Include="Commands\InitializeIndexesCommandHandler.cs" />
@@ -684,7 +683,6 @@
     <Compile Include="Commands\ICommandHandler.cs" />
     <Compile Include="Commands\CreateRosterMailCommandHandler.cs" />
     <Compile Include="ExternalCommands\CommandHandler.cs" />
-    <Compile Include="ExternalCommands\GetPlayersFromBitsCommandHandler.cs" />
     <Compile Include="ExternalCommands\GetRostersFromBitsCommandHandler.cs" />
     <Compile Include="ExternalCommands\ICommandHandler.cs" />
     <Compile Include="ExternalCommands\InitializeIndexesCommandHandler.cs" />
@@ -696,7 +694,6 @@
     <Compile Include="Infrastructure\Attributes\ValidateModelAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\CorrelationIdFilterAttribute.cs" />
     <Compile Include="TaskHandlers\SendEmailTaskHandler.cs" />
-    <Compile Include="TaskHandlers\GetPlayersFromBitsTaskHandler.cs" />
     <Compile Include="TaskHandlers\GetRostersFromBitsTaskHandler.cs" />
     <Compile Include="TaskHandlers\InitializeIndexesTaskHandler.cs" />
     <Compile Include="TaskHandlers\PublishRosterMailsTaskHandler.cs" />
@@ -852,7 +849,7 @@
     <Compile Include="Infrastructure\Attributes\SaveChangesAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\UnhandledExceptionFilter.cs" />
     <Compile Include="Infrastructure\BaseViewPage.cs" />
-    <Compile Include="Infrastructure\Bits\BitsClient.cs" />
+    <Compile Include="Infrastructure\Bits\BitsDbClient.cs" />
     <Compile Include="Infrastructure\IHandlerContext.cs" />
     <Compile Include="Infrastructure\NLogLoggingProvider.cs" />
     <Compile Include="Infrastructure\CurrentHttpContext.cs" />

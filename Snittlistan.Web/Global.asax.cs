@@ -21,7 +21,6 @@ using Snittlistan.Web.Infrastructure.IoC;
 using Snittlistan.Web.Models;
 using System.Configuration;
 using System.Diagnostics;
-using System.Net.Http;
 using System.Reflection;
 using System.Web;
 using System.Web.Hosting;
@@ -241,19 +240,11 @@ public class MvcApplication : HttpApplication
             }
 
             Container.Kernel.AddHandlerSelector(new HostBasedComponentSelector());
-            string gatewayUrl = Environment.GetEnvironmentVariable("GatewayUrl");
-            Log.Info($"gatewayUrl: {gatewayUrl}");
-            HttpClient httpClient = new(
-                new RateHandler(rate: 1.0, per: 1.0, maxTries: 60,
-                    new LoggingHandler()))
-            {
-              BaseAddress = new Uri(gatewayUrl)
-            };
             _ = Container
                 .AddFacility<LoggingFacility>(f => f.LogUsing<NLogFactory>())
                 .Install(
                     new ApiControllerInstaller(),
-                    new BitsClientInstaller(httpClient),
+                    new BitsClientInstaller(),
                     CommandHandlerInstaller.PerWebRequest(),
                     new ControllerInstaller(),
                     new DatabaseContextInstaller(databasesFactory),

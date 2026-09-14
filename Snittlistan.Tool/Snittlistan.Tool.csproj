@@ -55,7 +55,6 @@
     <Compile Include="HttpConnectionSettings.cs" />
     <Compile Include="Tasks\CommandLineTask.cs" />
     <Compile Include="Tasks\DelayedMailCommandLineTask.cs" />
-    <Compile Include="Tasks\GetPlayersFromBitsCommandLineTask.cs" />
     <Compile Include="Tasks\GetRostersFromBitsCommandLineTask.cs" />
     <Compile Include="Tasks\HelpCommandLineTask.cs" />
     <Compile Include="Tasks\ICommandLineTask.cs" />
