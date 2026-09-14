@@ -66,7 +66,7 @@ public class Roster : IAuditLogCapable
     public OilPatternInformation OilPattern { get; set; }
     public List<AuditLogEntry> AuditLogEntries { get; }
     public int Version => AuditLogEntries.Count;
-    public bool Preliminary { get; set; }
+    public bool Preliminary { get; set; } = true;
     public bool ManuallyAdded { get; set; }
 
     public List<string> Players { get; set; } = new List<string>();
