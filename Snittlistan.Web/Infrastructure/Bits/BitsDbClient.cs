@@ -19,7 +19,10 @@ public class BitsDbClient : IBitsClient
         select m.external_match_id as ExternalMatchId,
                m.match_date_time as MatchDateTime,
                m.match_round_id as MatchRoundId,
-               m.match_finished as MatchFinished,
+               -- match_finished reflects BITS' own status, not whether results have
+               -- landed in this replica; results_received_date is what callers actually
+               -- need before they can parse/register a result.
+               (m.results_received_date is not null) as MatchFinished,
                hr.hall_name as HallName,
                op.oil_profile_name as OilProfileName,
                op.external_oil_profile_id as ExternalOilProfileId,
