@@ -422,6 +422,7 @@ public class RosterController : AbstractController
             RosterViewModel = CompositionRoot.DocumentSession.LoadRosterViewModel(roster),
             AvailablePlayers = availablePlayers.Select(x => new PlayerViewModel(x, WebsiteRoles.UserGroup().ToDict())).ToArray()
         };
+        vm.RosterViewModel.Preliminary = roster.EffectivePreliminary;
         return View(vm);
     }
 

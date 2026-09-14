@@ -69,6 +69,15 @@ public class Roster : IAuditLogCapable
     public bool Preliminary { get; set; } = true;
     public bool ManuallyAdded { get; set; }
 
+    /// <summary>
+    /// Rosters created before the Preliminary default changed to true still have it persisted as false,
+    /// even though no one ever chose that. Nobody has assigned players yet on those, so use that as a
+    /// proxy for "never been through EditPlayers" and show it as still-default (true); once players are
+    /// set, whatever was last explicitly saved (true or false) is trusted.
+    /// </summary>
+    public bool EffectivePreliminary =>
+        Preliminary || Players.Count == 0;
+
     public List<string> Players { get; set; } = new List<string>();
 
     public void SetPlayers(List<string> players)
