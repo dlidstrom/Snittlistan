@@ -103,6 +103,26 @@
                   Return="check"
                   Execute="deferred"
                   Impersonate="no" />
+    <CustomAction Id="VerifyMatches_Disable_Cmd"
+                  Property="VerifyMatches_Disable_Task"
+                  Execute="immediate"
+                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Change /TN VerifyMatches /DISABLE" />
+    <CustomAction Id="VerifyMatches_Disable_Task"
+                  BinaryKey="WixCA"
+                  DllEntry="CAQuietExec"
+                  Return="check"
+                  Execute="deferred"
+                  Impersonate="no" />
+    <CustomAction Id="RegisterMatches_Disable_Cmd"
+                  Property="RegisterMatches_Disable_Task"
+                  Execute="immediate"
+                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Change /TN RegisterMatches /DISABLE" />
+    <CustomAction Id="RegisterMatches_Disable_Task"
+                  BinaryKey="WixCA"
+                  DllEntry="CAQuietExec"
+                  Return="check"
+                  Execute="deferred"
+                  Impersonate="no" />
     <CustomAction Id="StartServices_Cmd"
                   Property="StartServices_Task"
                   Execute="immediate"
@@ -118,6 +138,16 @@
                   Execute="immediate"
                   Value="&quot;[SystemFolder]schtasks.exe&quot; /Create /F /RU [SERVICE_ACCOUNT] /RP [SERVICE_PASSWORD] /SC HOURLY /TN GetRostersFromBits /TR &quot;\&quot;[#Snittlistan.Tool.exe]\&quot; GetRostersFromBits&quot;" />
     <CustomAction Id="GetRostersFromBits_Task"
+                  BinaryKey="WixCA"
+                  DllEntry="CAQuietExec"
+                  Return="check"
+                  Execute="deferred"
+                  Impersonate="no" />
+    <CustomAction Id="GetRostersFromBits_Disable_Cmd"
+                  Property="GetRostersFromBits_Disable_Task"
+                  Execute="immediate"
+                  Value="&quot;[SystemFolder]schtasks.exe&quot; /Change /TN GetRostersFromBits /DISABLE" />
+    <CustomAction Id="GetRostersFromBits_Disable_Task"
                   BinaryKey="WixCA"
                   DllEntry="CAQuietExec"
                   Return="check"
@@ -342,12 +372,18 @@
       <!-- add tasks on install -->
       <Custom Action="VerifyMatches_Cmd" Before="InstallFinalize">NOT Installed</Custom>
       <Custom Action="VerifyMatches_Task" After="VerifyMatches_Cmd">NOT Installed</Custom>
+      <Custom Action="VerifyMatches_Disable_Cmd" After="VerifyMatches_Task">NOT Installed</Custom>
+      <Custom Action="VerifyMatches_Disable_Task" After="VerifyMatches_Disable_Cmd">NOT Installed</Custom>
       <Custom Action="RegisterMatches_Cmd" Before="InstallFinalize">NOT Installed</Custom>
       <Custom Action="RegisterMatches_Task" After="RegisterMatches_Cmd">NOT Installed</Custom>
+      <Custom Action="RegisterMatches_Disable_Cmd" After="RegisterMatches_Task">NOT Installed</Custom>
+      <Custom Action="RegisterMatches_Disable_Task" After="RegisterMatches_Disable_Cmd">NOT Installed</Custom>
       <Custom Action="StartServices_Cmd" Before="InstallFinalize">NOT Installed</Custom>
       <Custom Action="StartServices_Task" After="StartServices_Cmd">NOT Installed</Custom>
       <Custom Action="GetRostersFromBits_Cmd" Before="InstallFinalize">NOT Installed</Custom>
       <Custom Action="GetRostersFromBits_Task" After="GetRostersFromBits_Cmd">NOT Installed</Custom>
+      <Custom Action="GetRostersFromBits_Disable_Cmd" After="GetRostersFromBits_Task">NOT Installed</Custom>
+      <Custom Action="GetRostersFromBits_Disable_Task" After="GetRostersFromBits_Disable_Cmd">NOT Installed</Custom>
       <Custom Action="PublishExpiredTasks_Cmd" Before="InstallFinalize">NOT Installed</Custom>
       <Custom Action="PublishExpiredTasks_Task" After="PublishExpiredTasks_Cmd">NOT Installed</Custom>
     </InstallExecuteSequence>
