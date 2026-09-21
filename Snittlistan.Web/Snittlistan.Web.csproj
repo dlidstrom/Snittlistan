@@ -266,6 +266,7 @@
     <Compile Include="Commands\RegisterMatch4CommandHandler.cs" />
     <Compile Include="Commands\RegisterMatchCommandHandler.cs" />
     <Compile Include="Commands\RegisterMatchManualCommandHandler.cs" />
+    <Compile Include="Commands\EditMatchManualCommandHandler.cs" />
     <Compile Include="Areas\V2\Controllers\Api\CalendarController.cs" />
     <Compile Include="Areas\V2\Controllers\LayoutController.cs" />
     <Compile Include="Areas\V2\Domain\EliteMedals.cs" />
