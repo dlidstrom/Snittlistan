@@ -11,10 +11,10 @@ public class EditMatchManualCommandHandler : CommandHandler<EditMatchManualComma
     public override Task Handle(HandlerContext<Command> context)
     {
         Roster roster = CompositionRoot.DocumentSession.Load<Roster>(context.Payload.RosterId);
-        MatchResult matchResult = CompositionRoot.EventStoreSession.Load<MatchResult>(roster.MatchResultId);
+        MatchResult? matchResult = CompositionRoot.EventStoreSession.Load<MatchResult>(roster.MatchResultId!);
         Player[] players = CompositionRoot.DocumentSession.Load<Player>(roster.Players);
 
-        matchResult.UpdateManual(
+        matchResult!.UpdateManual(
             task => context.PublishMessage(task),
             roster,
             context.Payload.TeamScore,
