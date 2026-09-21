@@ -272,7 +272,7 @@ public class MatchResultAdminController : AbstractController
             });
     }
 
-    private static SelectListItem[] LoadActivePlayerListItems()
+    private SelectListItem[] LoadActivePlayerListItems()
     {
         List<Player> availablePlayers = CompositionRoot.DocumentSession.Query<Player, PlayerSearch>()
             .OrderBy(x => x.Name)

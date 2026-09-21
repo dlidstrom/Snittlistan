@@ -390,6 +390,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Match4PostModel.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="Areas\V2\Views\MatchResultAdmin\EditorTemplates\MatchPostModel.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MatchPostModel.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="Areas\V2\Views\MatchResultAdmin\Register.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
