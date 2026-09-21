@@ -16,6 +16,7 @@
     }))
 {
     @Html.DisplayFor(model => Html.ViewData.ModelState, "ValidationSummary")
+    @Html.Hidden("rosterId", Model.RosterViewModel!.Header!.RosterId)
     @Html.EditorFor(x => x.Model, "Match4PostModel", new { Model.PlayerListItems })
     <div class="form-actions">
         <button class="btn btn-primary btn-large" type="submit">Registrera</button>
