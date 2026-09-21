@@ -208,7 +208,7 @@ public class MatchResultAdminController : AbstractController
         RegisterMatchViewModel viewModel = new(
             CompositionRoot.DocumentSession.LoadRosterViewModel(roster),
             playerListItems,
-            RegisterMatchViewModel.PostModel.ForCreate(roster.AcceptedPlayers));
+            RegisterMatchViewModel.PostModel.ForCreate(roster.Players));
         return View(viewModel);
     }
 
@@ -626,9 +626,9 @@ public class MatchResultAdminController : AbstractController
                 }
             }
 
-            public static PostModel ForCreate(IEnumerable<string> acceptedPlayerIds)
+            public static PostModel ForCreate(IEnumerable<string> rosterPlayerIds)
             {
-                string[] playerIds = acceptedPlayerIds.Take(9).ToArray();
+                string[] playerIds = rosterPlayerIds.Take(9).ToArray();
                 PlayerRow[] players = Enumerable.Range(0, 9)
                     .Select(i => new PlayerRow
                     {
