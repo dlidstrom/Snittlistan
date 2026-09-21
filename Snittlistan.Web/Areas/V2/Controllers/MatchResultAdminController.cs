@@ -236,11 +236,17 @@ public class MatchResultAdminController : AbstractController
         HashSet<string> usedPlayerIds = new();
         for (int i = 0; i < 4; i++)
         {
+            // Only the players with a result in this series played it (the 9th, reserve, row
+            // may be blank here, or one of the regular rows may be blank if the reserve subbed in).
+            List<RegisterMatchViewModel.PlayerRow> active = model.Players!
+                .Where(p => p.Games![i].Pins.HasValue)
+                .ToList();
+
             MatchTable[] matchTables = new MatchTable[4];
             for (int t = 0; t < 4; t++)
             {
-                RegisterMatchViewModel.PlayerRow p1 = model.Players![t * 2];
-                RegisterMatchViewModel.PlayerRow p2 = model.Players[(t * 2) + 1];
+                RegisterMatchViewModel.PlayerRow p1 = active[t * 2];
+                RegisterMatchViewModel.PlayerRow p2 = active[(t * 2) + 1];
                 MatchGame game1 = new(p1.PlayerId!, p1.Games![i].Pins!.Value, 0, 0);
                 MatchGame game2 = new(p2.PlayerId!, p2.Games![i].Pins!.Value, 0, 0);
                 matchTables[t] = new MatchTable(t + 1, game1, game2, model.Wins![t].Won![i] ? 1 : 0);
@@ -443,8 +449,10 @@ public class MatchResultAdminController : AbstractController
             public int? OpponentScore { get; set; }
 
             /// <summary>
-            /// Eight rows, paired two-by-two into the four tables (rows 0-1 = table 1, etc.),
-            /// with the same player playing all four series at their table.
+            /// Up to nine rows: the eight regular players plus an optional ninth reserve who may
+            /// sub in for exactly one of them in a given series. Which 8 played a given series is
+            /// derived from which rows have a result entered for it; table pairing within a series
+            /// is just those 8 rows, in order, two at a time - who partners with whom doesn't matter.
             /// </summary>
             public PlayerRow[]? Players { get; set; }
 
@@ -460,34 +468,36 @@ public class MatchResultAdminController : AbstractController
 
                 for (int i = 0; i < Players!.Length; i++)
                 {
-                    if (string.IsNullOrEmpty(Players[i].PlayerId))
+                    bool playedAnySerie = Players[i].Games!.Any(g => g.Pins.HasValue);
+                    if (playedAnySerie && string.IsNullOrEmpty(Players[i].PlayerId))
                     {
                         yield return new ValidationResult($"Välj spelare på rad {i + 1}.");
                     }
-
-                    for (int s = 0; s < 4; s++)
-                    {
-                        if (Players[i].Games![s].Pins.HasValue == false)
-                        {
-                            yield return new ValidationResult($"Ange resultat för rad {i + 1} i serie {s + 1}.");
-                        }
-                    }
                 }
 
-                for (int t = 0; t < 4; t++)
+                List<string> chosenPlayerIds = Players
+                    .Where(p => string.IsNullOrEmpty(p.PlayerId) == false)
+                    .Select(p => p.PlayerId!)
+                    .ToList();
+                if (chosenPlayerIds.Distinct().Count() != chosenPlayerIds.Count)
                 {
-                    if (string.IsNullOrEmpty(Players[t * 2].PlayerId) == false
-                        && Players[t * 2].PlayerId == Players[(t * 2) + 1].PlayerId)
+                    yield return new ValidationResult("Samma spelare kan inte finnas på flera rader.");
+                }
+
+                for (int s = 0; s < 4; s++)
+                {
+                    int playedCount = Players.Count(p => p.Games![s].Pins.HasValue);
+                    if (playedCount != 8)
                     {
-                        yield return new ValidationResult($"Samma spelare kan inte spela mot sig själv, bord {t + 1}.");
+                        yield return new ValidationResult($"Serie {s + 1} måste ha resultat för exakt 8 spelare (har {playedCount}).");
                     }
                 }
             }
 
             public static PostModel ForCreate(IEnumerable<string> acceptedPlayerIds)
             {
-                string[] playerIds = acceptedPlayerIds.Take(8).ToArray();
-                PlayerRow[] players = Enumerable.Range(0, 8)
+                string[] playerIds = acceptedPlayerIds.Take(9).ToArray();
+                PlayerRow[] players = Enumerable.Range(0, 9)
                     .Select(i => new PlayerRow
                     {
                         PlayerId = i < playerIds.Length ? playerIds[i] : null,

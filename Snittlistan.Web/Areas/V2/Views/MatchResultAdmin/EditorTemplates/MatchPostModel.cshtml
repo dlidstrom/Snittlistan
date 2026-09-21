@@ -72,58 +72,57 @@
 </div>
 <div class="row">
     <div class="span12">
-        <p>Namnen är förifyllda utifrån vilka som anmält sig till matchen. Byt spelare vid behov och fyll i resultatet för varje serie.</p>
+        <p>
+            Namnen är förifyllda utifrån vilka som anmält sig till matchen. Byt spelare vid behov.
+            Rad 9 är reserv - lämna en serie tom för den spelare som satt över, och fyll i reservens
+            resultat för den serien istället. Varje serie ska ha resultat för exakt 8 spelare.
+        </p>
         <table class="table table-condensed table-bordered table-striped">
             <tr>
-                <th>Bord</th>
+                <th>#</th>
                 <th>Spelare</th>
                 <th>Serie 1</th>
                 <th>Serie 2</th>
                 <th>Serie 3</th>
                 <th>Serie 4</th>
             </tr>
-            @for (var t = 0; t < 4; t++)
+            @for (var i = 0; i < Model.Players.Length; i++)
             {
-                for (var g = 0; g < 2; g++)
-                {
-                    var i = (t * 2) + g;
-                    <tr>
-                        @if (g == 0)
-                        {
-                            <td rowspan="2" style="vertical-align: middle;">@(t + 1)</td>
-                        }
+                <tr>
+                    <td>@(i + 1)@(i == 8 ? " (reserv)" : "")</td>
+                    <td>
+                        @Html.DropDownListFor(
+                            m => m.Players[i].PlayerId,
+                            playerListItems,
+                            "Välj spelare",
+                            new { @class = "span2" })
+                    </td>
+                    @for (var s = 0; s < 4; s++)
+                    {
                         <td>
-                            @Html.DropDownListFor(
-                                m => m.Players[i].PlayerId,
-                                playerListItems,
-                                "Välj spelare",
-                                new { @class = "span2", required = "required" })
+                            @Html.TextBoxFor(
+                                m => m.Players[i].Games[s].Pins,
+                                new
+                                {
+                                    @class = "span1",
+                                    type = "number",
+                                    pattern = @"\d*",
+                                    min = "0",
+                                    max = "300"
+                                })
                         </td>
-                        @for (var s = 0; s < 4; s++)
-                        {
-                            <td>
-                                @Html.TextBoxFor(
-                                    m => m.Players[i].Games[s].Pins,
-                                    new
-                                    {
-                                        @class = "span1",
-                                        type = "number",
-                                        pattern = @"\d*",
-                                        min = "0",
-                                        max = "300",
-                                        required = "required"
-                                    })
-                            </td>
-                        }
-                    </tr>
-                }
+                    }
+                </tr>
             }
         </table>
     </div>
 </div>
 <div class="row">
     <div class="span12">
-        <p>Ange vilket bord som vann respektive serie.</p>
+        <p>
+            Ange vilket bord som vann respektive serie (bord 1 = de två första spelarna med resultat
+            den serien, bord 2 = nästa två, och så vidare).
+        </p>
         <table class="table table-condensed table-bordered table-striped">
             <tr>
                 <th>Bord</th>
