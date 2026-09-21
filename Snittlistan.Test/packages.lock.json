@@ -311,6 +311,11 @@
           "Microsoft.AspNet.Razor": "3.0.0"
         }
       },
+      "RazorGenerator.MsBuild": {
+        "type": "Transitive",
+        "resolved": "2.4.7",
+        "contentHash": "sOE49ev0gHZFiuL1mzqQ4VY/OTU6xb/iSm5loy0zdqkYWvRl9ksL3qLl0oltwWnvLscscUL+8BKxa04MTrrm0Q=="
+      },
       "RazorGenerator.Mvc": {
         "type": "Transitive",
         "resolved": "2.4.9",
@@ -447,6 +452,7 @@
           "RavenDB.Client": "[3.5.9, )",
           "RavenDB.Database": "[3.5.9, )",
           "RavenDB.Embedded": "[3.5.9, )",
+          "RazorGenerator.MsBuild": "[2.4.7, )",
           "RazorGenerator.Mvc": "[2.4.9, )",
           "Rotativa": "[1.7.4-rc, )",
           "Snittlistan.Queue": "[1.0.0, )"

@@ -512,4 +512,87 @@ public class MatchResultTest
         // Assert
         Assert.DoesNotThrow(matchResult.AwardMedals);
     }
+
+    [Test]
+    public void RegisterSeriesManualUsesGivenCommentary()
+    {
+        // Arrange
+        Roster validRoster = new(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
+        {
+            Id = "rosters-1",
+            Players = new List<string>
+                          {
+                              "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8"
+                          }
+        };
+
+        MatchResult matchResult = new(validRoster, 9, 11, 123);
+        Player[] players = new[]
+        {
+            new Player("P1", "e@d.com", Player.Status.Active, -1, "P1", new string[0]) { Id = "p1" },
+            new Player("P2", "e@d.com", Player.Status.Active, -1, "P2", new string[0]) { Id = "p2" },
+        };
+
+        MatchSerie[] matchSeries = Enumerable.Range(1, 4)
+            .Select(serieNumber => new MatchSerie(
+                serieNumber,
+                new[]
+                {
+                    new MatchTable(1, new MatchGame("p1", 200, 0, 0), new MatchGame("p2", 190, 0, 0), 1),
+                    new MatchTable(2, new MatchGame("p3", 200, 0, 0), new MatchGame("p4", 190, 0, 0), 0),
+                    new MatchTable(3, new MatchGame("p5", 200, 0, 0), new MatchGame("p6", 190, 0, 0), 0),
+                    new MatchTable(4, new MatchGame("p7", 200, 0, 0), new MatchGame("p8", 190, 0, 0), 0),
+                }))
+            .ToArray();
+
+        // Act
+        matchResult.RegisterSeries(
+            _ => { },
+            matchSeries,
+            players,
+            "Manuellt inskrivet referat",
+            "<p>Manuellt inskrivet referat</p>");
+
+        // Assert
+        IDomainEvent[] changes = matchResult.GetUncommittedChanges();
+        Assert.That(changes.OfType<SerieRegistered>().Count(), Is.EqualTo(4));
+        MatchCommentaryEvent matchCommentaryEvent = (MatchCommentaryEvent)changes.Single(x => x is MatchCommentaryEvent);
+        Assert.That(matchCommentaryEvent.SummaryText, Is.EqualTo("Manuellt inskrivet referat"));
+        Assert.That(matchCommentaryEvent.SummaryHtml, Is.EqualTo("<p>Manuellt inskrivet referat</p>"));
+        Assert.That(matchCommentaryEvent.BodyText, Is.Empty);
+    }
+
+    [Test]
+    public void RegisterSeriesManualRequiresEightNineOrTenPlayers()
+    {
+        // Arrange
+        Roster invalidRoster = new(2012, 11, 1, "H", "A", "L", "A", new DateTime(2012, 2, 3), false, OilPatternInformation.Empty)
+        {
+            Id = "rosters-1",
+            Players = new List<string>
+                          {
+                              "p1", "p2", "p3", "p4", "p5", "p6", "p7"
+                          }
+        };
+
+        MatchResult matchResult = new(invalidRoster, 9, 11, 123);
+        Player[] players = Array.Empty<Player>();
+        MatchSerie[] matchSeries = new[]
+        {
+            new MatchSerie(
+                1,
+                new[]
+                {
+                    new MatchTable(1, new MatchGame("p1", 0, 0, 0), new MatchGame("p2", 0, 0, 0), 0),
+                    new MatchTable(2, new MatchGame("p3", 0, 0, 0), new MatchGame("p4", 0, 0, 0), 0),
+                    new MatchTable(3, new MatchGame("p5", 0, 0, 0), new MatchGame("p6", 0, 0, 0), 0),
+                    new MatchTable(4, new MatchGame("p7", 0, 0, 0), new MatchGame("p1", 0, 0, 0), 0),
+                }),
+        };
+
+        // Act & Assert
+        MatchException? ex = Assert.Throws<MatchException>(
+            () => matchResult.RegisterSeries(_ => { }, matchSeries, players, "referat", "<p>referat</p>"));
+        Assert.That(ex?.Message, Is.EqualTo("Roster must have 8, 9, or 10 players when registering results"));
+    }
 }

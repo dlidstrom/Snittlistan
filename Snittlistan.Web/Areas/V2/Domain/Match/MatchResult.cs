@@ -167,6 +167,45 @@ public class MatchResult : AggregateRoot
         publish.Invoke(new MatchRegisteredTask(RosterId!, BitsMatchId, TeamScore, OpponentScore));
     }
 
+    // Used for manual admin entry, where no opposing team's series data exists to
+    // auto-generate commentary from, so the admin-supplied text is used as-is.
+    public void RegisterSeries(
+        Action<TaskBase> publish,
+        MatchSerie[] matchSeries,
+        Player[] players,
+        string summaryText,
+        string summaryHtml)
+    {
+        if (matchSeries == null)
+        {
+            throw new ArgumentNullException(nameof(matchSeries));
+        }
+
+        if (players == null)
+        {
+            throw new ArgumentNullException(nameof(players));
+        }
+
+        if (rosterPlayers!.Count is not 8 and not 9 and not 10)
+        {
+            throw new MatchException("Roster must have 8, 9, or 10 players when registering results");
+        }
+
+        foreach (MatchSerie matchSerie in matchSeries)
+        {
+            VerifyPlayers(matchSerie);
+            ApplyChange(new SerieRegistered(matchSerie, BitsMatchId, RosterId!));
+            DoAwardMedals(registeredSeries);
+            if (registeredSeries > 4)
+            {
+                throw new ArgumentException("Can only register up to 4 series");
+            }
+        }
+
+        ApplyChange(new MatchCommentaryEvent(BitsMatchId, RosterId!, summaryText, summaryHtml, Array.Empty<string>()));
+        publish.Invoke(new MatchRegisteredTask(RosterId!, BitsMatchId, TeamScore, OpponentScore));
+    }
+
     public void RegisterSerie(MatchTable[] matchTables)
     {
         if (matchTables == null)
