@@ -287,6 +287,7 @@ public class MatchResultAdminController : AbstractController
             .ToHashSet();
 
         roster.SetPlayers(usedPlayerIds.ToList());
+        FillAutoCommentary(model, matchSeries!);
 
         await ExecuteCommand(
             new EditMatchManualCommandHandler.Command(
@@ -343,6 +344,7 @@ public class MatchResultAdminController : AbstractController
             .ToHashSet();
 
         roster.SetPlayers(usedPlayerIds.ToList());
+        FillAutoCommentary(model, matchSeries!);
 
         await ExecuteCommand(
             new RegisterMatchManualCommandHandler.Command(
@@ -491,6 +493,61 @@ public class MatchResultAdminController : AbstractController
         MatchGame game1 = new(p1.PlayerId!, p1.Games![serie].Pins!.Value, 0, 0);
         MatchGame game2 = new(p2.PlayerId!, p2.Games![serie].Pins!.Value, 0, 0);
         return new MatchTable(tableNumber, game1, game2, score);
+    }
+
+    // Fills in Commentary/CommentaryHtml when the admin left them blank, with a short auto-generated
+    // summary: how each series went (only if the opponent's series pins were entered) and every
+    // player's total pins by nickname, e.g. "Serierna slutade 3-1 (1655-1559), ... Tingis 867, ...".
+    private void FillAutoCommentary(RegisterMatchViewModel.PostModel model, MatchSerie[] matchSeries)
+    {
+        if (string.IsNullOrWhiteSpace(model.Commentary) == false)
+        {
+            return;
+        }
+
+        List<string> sentences = new();
+
+        int?[] opponentPins = model.OpponentSeriesPins ?? new int?[4];
+        if (opponentPins.Length == 4 && opponentPins.All(p => p.HasValue))
+        {
+            string seriesResults = string.Join(
+                ", ",
+                Enumerable.Range(0, 4).Select(i =>
+                {
+                    MatchTable[] tables = new[] { matchSeries[i].Table1, matchSeries[i].Table2, matchSeries[i].Table3, matchSeries[i].Table4 };
+                    int ourWins = tables.Sum(t => t.Score);
+                    int theirWins = 4 - ourWins;
+                    return $"{ourWins}-{theirWins} ({matchSeries[i].TeamTotal}-{opponentPins[i]!.Value})";
+                }));
+            sentences.Add($"Serierna slutade {seriesResults}.");
+        }
+
+        RegisterMatchViewModel.PlayerRow[] playedRows = model.Players!
+            .Where(p => string.IsNullOrEmpty(p.PlayerId) == false && p.Games!.Any(g => g.Pins.HasValue))
+            .ToArray();
+        Dictionary<string, Player> playersById = CompositionRoot.DocumentSession
+            .Load<Player>(playedRows.Select(p => p.PlayerId!).ToList())
+            .ToDictionary(x => x.Id);
+
+        List<(string Nickname, int Pins, int SeriesPlayed)> totals = playedRows
+            .Select(p =>
+            {
+                Player player = playersById[p.PlayerId!];
+                return (
+                    Nickname: player.Nickname ?? player.Name,
+                    Pins: p.Games!.Sum(g => g.Pins.GetValueOrDefault()),
+                    SeriesPlayed: p.Games!.Count(g => g.Pins.HasValue));
+            })
+            .OrderByDescending(x => x.Pins)
+            .ToList();
+        string playerTotals = string.Join(
+            ", ",
+            totals.Select(x => x.SeriesPlayed == 4 ? $"{x.Nickname} {x.Pins}" : $"{x.Nickname} {x.Pins} ({x.SeriesPlayed})"));
+        sentences.Add(playerTotals + ".");
+
+        string text = string.Join(" ", sentences);
+        model.Commentary = text;
+        model.CommentaryHtml = $"<p>{text}</p>";
     }
 
     private SelectListItem[] LoadActivePlayerListItems()
@@ -668,6 +725,14 @@ public class MatchResultAdminController : AbstractController
             /// whom doesn't matter.
             /// </summary>
             public PlayerRow[]? Players { get; set; }
+
+            /// <summary>
+            /// The opponent's total pins for each of the 4 series, used only to auto-generate a
+            /// commentary sentence like "Serierna slutade 3-1 (1655-1559), ...". Optional - if any
+            /// entry is left blank, that sentence is skipped.
+            /// </summary>
+            [Display(Name = "Motståndarens serieresultat")]
+            public int?[]? OpponentSeriesPins { get; set; } = new int?[4];
 
             public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
             {

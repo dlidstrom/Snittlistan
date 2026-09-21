@@ -72,6 +72,33 @@
 </div>
 <div class="row">
     <div class="span12">
+        <div class="control-group">
+            <div class="controls">
+                <label class="control-label">Motståndarens serieresultat (valfritt)</label>
+                <p class="help-block" style="margin-top: 0;">
+                    Fylls dessa i genereras automatiskt ett matchreferat om referatfältet ovan lämnas tomt.
+                </p>
+                @for (var s = 0; s < 4; s++)
+                {
+                    @Html.TextBoxFor(
+                        m => m.OpponentSeriesPins[s],
+                        new
+                        {
+                            @class = "span1",
+                            type = "number",
+                            pattern = @"\d*",
+                            min = "0",
+                            max = "1600",
+                            placeholder = $"Serie {s + 1}",
+                            title = $"Motståndarens resultat i serie {s + 1}"
+                        })
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="span12">
         <p>
             Namnen är förifyllda utifrån vilka som anmält sig till matchen. Byt spelare vid behov.
             Rad 9 är reserv - lämna en serie tom för den spelare som satt över, och fyll i reservens
