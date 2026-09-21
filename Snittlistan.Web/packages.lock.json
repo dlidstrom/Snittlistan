@@ -169,6 +169,12 @@
           "RavenDB.Database": "[3.5.9]"
         }
       },
+      "RazorGenerator.MsBuild": {
+        "type": "Direct",
+        "requested": "[2.4.7, )",
+        "resolved": "2.4.7",
+        "contentHash": "sOE49ev0gHZFiuL1mzqQ4VY/OTU6xb/iSm5loy0zdqkYWvRl9ksL3qLl0oltwWnvLscscUL+8BKxa04MTrrm0Q=="
+      },
       "RazorGenerator.Mvc": {
         "type": "Direct",
         "requested": "[2.4.9, )",
