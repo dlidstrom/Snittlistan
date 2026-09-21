@@ -1,9 +1,12 @@
 @model Snittlistan.Web.Areas.V2.Controllers.MatchResultAdminController.RegisterMatchViewModel
+@{
+    bool isEdit = string.IsNullOrEmpty(Model.RosterViewModel!.Header!.MatchResultId) == false;
+}
 <div class="well well-small">
     @Html.DisplayFor(x => x.RosterViewModel.Header)
 </div>
 @using (Html.BeginForm(
-    "RegisterMatchEditor",
+    isEdit ? "Edit" : "RegisterMatchEditor",
     "MatchResultAdmin",
     FormMethod.Post,
     new
@@ -19,7 +22,7 @@
     @Html.Hidden("rosterId", Model.RosterViewModel!.Header!.RosterId)
     @Html.EditorFor(x => x.Model, "MatchPostModel", new { PlayerListItems = Model.PlayerListItems })
     <div class="form-actions">
-        <button class="btn btn-primary btn-large" type="submit">Registrera</button>
+        <button class="btn btn-primary btn-large" type="submit">@(isEdit ? "Spara" : "Registrera")</button>
         @Html.ActionLink("Avbryt", "Index", "MatchResult", null, new { @class = "btn btn-large" })
     </div>
 }

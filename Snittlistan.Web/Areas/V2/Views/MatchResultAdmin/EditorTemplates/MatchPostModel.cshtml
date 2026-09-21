@@ -125,16 +125,21 @@
                         </td>
                     }
                     <td>
-                        @Html.TextBoxFor(
-                            m => m.Players[i].TableWins,
-                            new
+                        @{
+                            var tableWinsAttributes = new RouteValueDictionary
                             {
-                                @class = "span1",
-                                type = "number",
-                                pattern = @"\d*",
-                                min = "0",
-                                max = "4"
-                            })
+                                { "class", "span1" },
+                                { "type", "number" },
+                                { "pattern", @"\d*" },
+                                { "min", "0" },
+                                { "max", "4" }
+                            };
+                            if (i < 8)
+                            {
+                                tableWinsAttributes["required"] = "required";
+                            }
+                        }
+                        @Html.TextBoxFor(m => m.Players[i].TableWins, tableWinsAttributes)
                     </td>
                 </tr>
             }

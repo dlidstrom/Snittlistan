@@ -206,6 +206,38 @@ public class MatchResult : AggregateRoot
         publish.Invoke(new MatchRegisteredTask(RosterId!, BitsMatchId, TeamScore, OpponentScore));
     }
 
+    // The manual-entry counterpart to Update(...): re-registers an already-registered match with
+    // admin-edited pins/scores/commentary, without needing the opposing team's series data that the
+    // Bits-driven Update(...) uses to auto-generate commentary.
+    public void UpdateManual(
+        Action<TaskBase> publish,
+        Roster roster,
+        int teamScore,
+        int opponentScore,
+        MatchSerie[] matchSeries,
+        Player[] players,
+        string summaryText,
+        string summaryHtml)
+    {
+        if (roster == null)
+        {
+            throw new ArgumentNullException(nameof(roster));
+        }
+
+        VerifyScores(teamScore, opponentScore);
+
+        MatchResultRegistered @event = new(
+            roster.Id!,
+            roster.Players,
+            teamScore,
+            opponentScore,
+            roster.BitsMatchId,
+            playerPins.Keys.AsEnumerable().ToArray());
+        ApplyChange(@event);
+        ClearMedals();
+        RegisterSeries(publish, matchSeries, players, summaryText, summaryHtml);
+    }
+
     public void RegisterSerie(MatchTable[] matchTables)
     {
         if (matchTables == null)
