@@ -18,7 +18,7 @@ public static class Extensions
         string rosterId = "",
         Func<Roster, bool>? pred = null)
     {
-        return GetRosterSelectList(session, season, rosterId, false, pred ?? (x => true));
+        return GetRosterSelectList(session, season, rosterId, pred ?? (x => true));
     }
 
     public static RosterViewModel LoadRosterViewModel(
@@ -94,21 +94,12 @@ public static class Extensions
         Raven.Client.IDocumentSession session,
         int season,
         string rosterId,
-        bool bits,
         Func<Roster, bool> pred)
     {
         IQueryable<Roster> query = session.Query<Roster, RosterSearchTerms>()
                            .Where(x => x.Season == season)
                            .Where(x => x.Date < SystemTime.UtcNow)
                            .Where(x => x.Preliminary == false);
-        if (bits)
-        {
-            query = query.Where(x => x.BitsMatchId != 0);
-        }
-        else
-        {
-            query = query.Where(x => x.BitsMatchId == 0);
-        }
 
         SelectListItem[] rosterSelectList = query.OrderBy(x => x.Date)
                                     .ToList()
