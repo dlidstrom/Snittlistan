@@ -76,6 +76,8 @@
             Namnen är förifyllda utifrån vilka som anmält sig till matchen. Byt spelare vid behov.
             Rad 9 är reserv - lämna en serie tom för den spelare som satt över, och fyll i reservens
             resultat för den serien istället. Varje serie ska ha resultat för exakt 8 spelare.
+            Ange varje spelares bordpoäng (antal serier hen vann sitt bord) i sista kolumnen -
+            det avgörs själv vilka bord som bildas och vem som vinner respektive serie.
         </p>
         <table class="table table-condensed table-bordered table-striped">
             <tr>
@@ -85,6 +87,7 @@
                 <th>Serie 2</th>
                 <th>Serie 3</th>
                 <th>Serie 4</th>
+                <th>Bordpoäng</th>
             </tr>
             @for (var i = 0; i < Model.Players.Length; i++)
             {
@@ -112,38 +115,18 @@
                                 })
                         </td>
                     }
-                </tr>
-            }
-        </table>
-    </div>
-</div>
-<div class="row">
-    <div class="span12">
-        <p>
-            Ange vilket bord som vann respektive serie (bord 1 = de två första spelarna med resultat
-            den serien, bord 2 = nästa två, och så vidare).
-        </p>
-        <table class="table table-condensed table-bordered table-striped">
-            <tr>
-                <th>Bord</th>
-                <th>Serie 1</th>
-                <th>Serie 2</th>
-                <th>Serie 3</th>
-                <th>Serie 4</th>
-            </tr>
-            @for (var t = 0; t < 4; t++)
-            {
-                <tr>
-                    <td>@(t + 1)</td>
-                    @for (var s = 0; s < 4; s++)
-                    {
-                        <td>
-                            <label>
-                                @Html.CheckBoxFor(m => m.Wins[t].Won[s])
-                                Vann
-                            </label>
-                        </td>
-                    }
+                    <td>
+                        @Html.TextBoxFor(
+                            m => m.Players[i].TableWins,
+                            new
+                            {
+                                @class = "span1",
+                                type = "number",
+                                pattern = @"\d*",
+                                min = "0",
+                                max = "4"
+                            })
+                    </td>
                 </tr>
             }
         </table>

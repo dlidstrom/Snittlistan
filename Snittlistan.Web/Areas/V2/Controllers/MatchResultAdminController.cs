@@ -232,30 +232,20 @@ public class MatchResultAdminController : AbstractController
         }
 
         RegisterMatchViewModel.PostModel model = viewModel.Model!;
-        MatchSerie[] matchSeries = new MatchSerie[4];
-        HashSet<string> usedPlayerIds = new();
-        for (int i = 0; i < 4; i++)
+        if (TrySpreadTableWins(model.Players!, out MatchSerie[]? matchSeries, out string? spreadError) == false)
         {
-            // Only the players with a result in this series played it (the 9th, reserve, row
-            // may be blank here, or one of the regular rows may be blank if the reserve subbed in).
-            List<RegisterMatchViewModel.PlayerRow> active = model.Players!
-                .Where(p => p.Games![i].Pins.HasValue)
-                .ToList();
-
-            MatchTable[] matchTables = new MatchTable[4];
-            for (int t = 0; t < 4; t++)
-            {
-                RegisterMatchViewModel.PlayerRow p1 = active[t * 2];
-                RegisterMatchViewModel.PlayerRow p2 = active[(t * 2) + 1];
-                MatchGame game1 = new(p1.PlayerId!, p1.Games![i].Pins!.Value, 0, 0);
-                MatchGame game2 = new(p2.PlayerId!, p2.Games![i].Pins!.Value, 0, 0);
-                matchTables[t] = new MatchTable(t + 1, game1, game2, model.Wins![t].Won![i] ? 1 : 0);
-                usedPlayerIds.Add(p1.PlayerId!);
-                usedPlayerIds.Add(p2.PlayerId!);
-            }
-
-            matchSeries[i] = new MatchSerie(i + 1, matchTables);
+            ModelState.AddModelError(string.Empty, spreadError!);
+            viewModel.RosterViewModel = CompositionRoot.DocumentSession.LoadRosterViewModel(roster);
+            viewModel.PlayerListItems = LoadActivePlayerListItems();
+            return View(
+                "RegisterMatchEditor",
+                viewModel);
         }
+
+        HashSet<string> usedPlayerIds = model.Players!
+            .Where(p => p.Games!.Any(g => g.Pins.HasValue))
+            .Select(p => p.PlayerId!)
+            .ToHashSet();
 
         roster.SetPlayers(usedPlayerIds.ToList());
 
@@ -264,7 +254,7 @@ public class MatchResultAdminController : AbstractController
                 roster.Id!,
                 model.TeamScore!.Value,
                 model.OpponentScore!.Value,
-                matchSeries,
+                matchSeries!,
                 model.Commentary!,
                 model.CommentaryHtml!));
 
@@ -276,6 +266,136 @@ public class MatchResultAdminController : AbstractController
                 Id = roster.BitsMatchId,
                 RosterId = roster.Id
             });
+    }
+
+    /// <summary>
+    /// Splits each series into four tables of two, deciding the pairing and win/loss per table so
+    /// that each player ends up with exactly the number of table wins they were given, ignoring who
+    /// actually played alongside whom. A table's win is always shared by both its players, so within
+    /// a series, players are freely re-paired every round: winners grouped together, losers grouped
+    /// together. That is always enough to realize any per-player win counts, since credit is only
+    /// ever handed out in pairs; the loop below prioritizes players who have no slack left (their
+    /// remaining win target equals their remaining series) each round.
+    /// </summary>
+    private static bool TrySpreadTableWins(
+        RegisterMatchViewModel.PlayerRow[] players,
+        out MatchSerie[]? matchSeries,
+        out string? error)
+    {
+        int[] remainingNeed = players.Select(p => p.TableWins.GetValueOrDefault()).ToArray();
+        int[][] activeSeries = players
+            .Select(p => Enumerable.Range(0, 4).Where(s => p.Games![s].Pins.HasValue).ToArray())
+            .ToArray();
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (remainingNeed[i] > activeSeries[i].Length)
+            {
+                matchSeries = null;
+                error = $"Rad {i + 1} kan inte ha fler bordpoäng ({remainingNeed[i]}) än antal spelade serier ({activeSeries[i].Length}).";
+                return false;
+            }
+        }
+
+        MatchSerie[] series = new MatchSerie[4];
+        for (int s = 0; s < 4; s++)
+        {
+            List<int> active = Enumerable.Range(0, players.Length)
+                .Where(i => players[i].Games![s].Pins.HasValue)
+                .ToList();
+            if (active.Count != 8)
+            {
+                matchSeries = null;
+                error = $"Serie {s + 1} måste ha resultat för exakt 8 spelare (har {active.Count}).";
+                return false;
+            }
+
+            List<int> remainingRoundsFromHere = active
+                .Select(i => activeSeries[i].Count(round => round >= s))
+                .ToList();
+
+            List<int> winners = new();
+            List<int> slack = new();
+            for (int k = 0; k < active.Count; k++)
+            {
+                int i = active[k];
+                if (remainingNeed[i] <= 0)
+                {
+                    continue;
+                }
+
+                if (remainingNeed[i] == remainingRoundsFromHere[k])
+                {
+                    winners.Add(i);
+                }
+                else
+                {
+                    slack.Add(i);
+                }
+            }
+
+            if (winners.Count % 2 == 1)
+            {
+                if (slack.Count > 0)
+                {
+                    winners.Add(slack[0]);
+                }
+                else
+                {
+                    matchSeries = null;
+                    error = "Kunde inte fördela bordpoängen jämnt över serierna. Justera antalet bordpoäng för någon spelare.";
+                    return false;
+                }
+            }
+
+            foreach (int w in winners)
+            {
+                remainingNeed[w]--;
+            }
+
+            List<int> losers = active.Except(winners).ToList();
+            MatchTable[] matchTables = new MatchTable[4];
+            int table = 0;
+            for (int k = 0; k + 1 < winners.Count; k += 2)
+            {
+                matchTables[table] = BuildTable(table + 1, players, winners[k], winners[k + 1], s, score: 1);
+                table++;
+            }
+
+            for (int k = 0; k + 1 < losers.Count; k += 2)
+            {
+                matchTables[table] = BuildTable(table + 1, players, losers[k], losers[k + 1], s, score: 0);
+                table++;
+            }
+
+            series[s] = new MatchSerie(s + 1, matchTables);
+        }
+
+        if (remainingNeed.Any(need => need != 0))
+        {
+            matchSeries = null;
+            error = "Kunde inte fördela bordpoängen jämnt över serierna. Justera antalet bordpoäng för någon spelare.";
+            return false;
+        }
+
+        matchSeries = series;
+        error = null;
+        return true;
+    }
+
+    private static MatchTable BuildTable(
+        int tableNumber,
+        RegisterMatchViewModel.PlayerRow[] players,
+        int index1,
+        int index2,
+        int serie,
+        int score)
+    {
+        RegisterMatchViewModel.PlayerRow p1 = players[index1];
+        RegisterMatchViewModel.PlayerRow p2 = players[index2];
+        MatchGame game1 = new(p1.PlayerId!, p1.Games![serie].Pins!.Value, 0, 0);
+        MatchGame game2 = new(p2.PlayerId!, p2.Games![serie].Pins!.Value, 0, 0);
+        return new MatchTable(tableNumber, game1, game2, score);
     }
 
     private SelectListItem[] LoadActivePlayerListItems()
@@ -420,10 +540,9 @@ public class MatchResultAdminController : AbstractController
             {
             }
 
-            public PostModel(PlayerRow[] players, TableWin[] wins)
+            public PostModel(PlayerRow[] players)
             {
                 Players = players;
-                Wins = wins;
             }
 
             [MaxLength(1024)]
@@ -452,12 +571,10 @@ public class MatchResultAdminController : AbstractController
             /// Up to nine rows: the eight regular players plus an optional ninth reserve who may
             /// sub in for exactly one of them in a given series. Which 8 played a given series is
             /// derived from which rows have a result entered for it; table pairing within a series
-            /// is just those 8 rows, in order, two at a time - who partners with whom doesn't matter.
+            /// is computed from everyone's <see cref="PlayerRow.TableWins"/> - who partners with
+            /// whom doesn't matter.
             /// </summary>
             public PlayerRow[]? Players { get; set; }
-
-            /// <summary>One entry per table (four in total), holding which series that table won.</summary>
-            public TableWin[]? Wins { get; set; }
 
             public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
             {
@@ -466,12 +583,20 @@ public class MatchResultAdminController : AbstractController
                     yield return new ValidationResult("Summan av lagpoängen kan inte överstiga 20.");
                 }
 
+                int totalPlayedSeries = 0;
                 for (int i = 0; i < Players!.Length; i++)
                 {
-                    bool playedAnySerie = Players[i].Games!.Any(g => g.Pins.HasValue);
-                    if (playedAnySerie && string.IsNullOrEmpty(Players[i].PlayerId))
+                    int playedSeries = Players[i].Games!.Count(g => g.Pins.HasValue);
+                    totalPlayedSeries += playedSeries;
+                    if (playedSeries > 0 && string.IsNullOrEmpty(Players[i].PlayerId))
                     {
                         yield return new ValidationResult($"Välj spelare på rad {i + 1}.");
+                    }
+
+                    if (playedSeries > 0 && Players[i].TableWins.GetValueOrDefault() > playedSeries)
+                    {
+                        yield return new ValidationResult(
+                            $"Rad {i + 1} kan inte ha fler bordpoäng än antal spelade serier ({playedSeries}).");
                     }
                 }
 
@@ -492,6 +617,13 @@ public class MatchResultAdminController : AbstractController
                         yield return new ValidationResult($"Serie {s + 1} måste ha resultat för exakt 8 spelare (har {playedCount}).");
                     }
                 }
+
+                int totalTableWins = Players.Sum(p => p.TableWins.GetValueOrDefault());
+                if (totalTableWins % 2 != 0)
+                {
+                    yield return new ValidationResult(
+                        "Summan av allas bordpoäng måste vara jämn (varje bord som vinner ger poäng till två spelare).");
+                }
             }
 
             public static PostModel ForCreate(IEnumerable<string> acceptedPlayerIds)
@@ -504,10 +636,7 @@ public class MatchResultAdminController : AbstractController
                         Games = Enumerable.Range(0, 4).Select(_ => new PinsCell()).ToArray()
                     })
                     .ToArray();
-                TableWin[] wins = Enumerable.Range(0, 4)
-                    .Select(_ => new TableWin { Won = new bool[4] })
-                    .ToArray();
-                return new PostModel(players, wins);
+                return new PostModel(players);
             }
         }
 
@@ -516,17 +645,16 @@ public class MatchResultAdminController : AbstractController
             public string? PlayerId { get; set; }
 
             public PinsCell[]? Games { get; set; }
+
+            [Range(0, 4)]
+            [Display(Name = "Bordpoäng")]
+            public int? TableWins { get; set; }
         }
 
         public class PinsCell
         {
             [Range(0, 300)]
             public int? Pins { get; set; }
-        }
-
-        public class TableWin
-        {
-            public bool[]? Won { get; set; }
         }
     }
 
