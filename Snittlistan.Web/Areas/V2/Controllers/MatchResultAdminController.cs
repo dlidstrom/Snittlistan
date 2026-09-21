@@ -208,7 +208,7 @@ public class MatchResultAdminController : AbstractController
         RegisterMatchViewModel viewModel = new(
             CompositionRoot.DocumentSession.LoadRosterViewModel(roster),
             playerListItems,
-            RegisterMatchViewModel.PostModel.ForCreate());
+            RegisterMatchViewModel.PostModel.ForCreate(roster.AcceptedPlayers));
         return View(viewModel);
     }
 
@@ -236,16 +236,16 @@ public class MatchResultAdminController : AbstractController
         HashSet<string> usedPlayerIds = new();
         for (int i = 0; i < 4; i++)
         {
-            RegisterMatchViewModel.SeriePostModel serie = model.Series![i];
             MatchTable[] matchTables = new MatchTable[4];
-            for (int j = 0; j < 4; j++)
+            for (int t = 0; t < 4; t++)
             {
-                RegisterMatchViewModel.TablePostModel table = serie.Tables![j];
-                MatchGame game1 = new(table.Game1!.PlayerId!, table.Game1.Pins!.Value, 0, 0);
-                MatchGame game2 = new(table.Game2!.PlayerId!, table.Game2.Pins!.Value, 0, 0);
-                matchTables[j] = new MatchTable(j + 1, game1, game2, table.Score ? 1 : 0);
-                usedPlayerIds.Add(table.Game1.PlayerId!);
-                usedPlayerIds.Add(table.Game2.PlayerId!);
+                RegisterMatchViewModel.PlayerRow p1 = model.Players![t * 2];
+                RegisterMatchViewModel.PlayerRow p2 = model.Players[(t * 2) + 1];
+                MatchGame game1 = new(p1.PlayerId!, p1.Games![i].Pins!.Value, 0, 0);
+                MatchGame game2 = new(p2.PlayerId!, p2.Games![i].Pins!.Value, 0, 0);
+                matchTables[t] = new MatchTable(t + 1, game1, game2, model.Wins![t].Won![i] ? 1 : 0);
+                usedPlayerIds.Add(p1.PlayerId!);
+                usedPlayerIds.Add(p2.PlayerId!);
             }
 
             matchSeries[i] = new MatchSerie(i + 1, matchTables);
@@ -414,9 +414,10 @@ public class MatchResultAdminController : AbstractController
             {
             }
 
-            public PostModel(SeriePostModel[] series)
+            public PostModel(PlayerRow[] players, TableWin[] wins)
             {
-                Series = series;
+                Players = players;
+                Wins = wins;
             }
 
             [MaxLength(1024)]
@@ -441,7 +442,14 @@ public class MatchResultAdminController : AbstractController
             [Display(Name = "Motståndarpoäng")]
             public int? OpponentScore { get; set; }
 
-            public SeriePostModel[]? Series { get; set; }
+            /// <summary>
+            /// Eight rows, paired two-by-two into the four tables (rows 0-1 = table 1, etc.),
+            /// with the same player playing all four series at their table.
+            /// </summary>
+            public PlayerRow[]? Players { get; set; }
+
+            /// <summary>One entry per table (four in total), holding which series that table won.</summary>
+            public TableWin[]? Wins { get; set; }
 
             public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
             {
@@ -450,62 +458,65 @@ public class MatchResultAdminController : AbstractController
                     yield return new ValidationResult("Summan av lagpoängen kan inte överstiga 20.");
                 }
 
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < Players!.Length; i++)
                 {
-                    for (int j = 0; j < 4; j++)
+                    if (string.IsNullOrEmpty(Players[i].PlayerId))
                     {
-                        TablePostModel table = Series![i].Tables![j];
-                        if (table.Game1?.PlayerId == null || table.Game1.Pins.HasValue == false
-                            || table.Game2?.PlayerId == null || table.Game2.Pins.HasValue == false)
+                        yield return new ValidationResult($"Välj spelare på rad {i + 1}.");
+                    }
+
+                    for (int s = 0; s < 4; s++)
+                    {
+                        if (Players[i].Games![s].Pins.HasValue == false)
                         {
-                            yield return new ValidationResult($"Ange spelare och resultat för bord {j + 1} i serie {i + 1}");
+                            yield return new ValidationResult($"Ange resultat för rad {i + 1} i serie {s + 1}.");
                         }
-                        else if (table.Game1.PlayerId == table.Game2.PlayerId)
-                        {
-                            yield return new ValidationResult($"Samma spelare kan inte spela mot sig själv, bord {j + 1} i serie {i + 1}");
-                        }
+                    }
+                }
+
+                for (int t = 0; t < 4; t++)
+                {
+                    if (string.IsNullOrEmpty(Players[t * 2].PlayerId) == false
+                        && Players[t * 2].PlayerId == Players[(t * 2) + 1].PlayerId)
+                    {
+                        yield return new ValidationResult($"Samma spelare kan inte spela mot sig själv, bord {t + 1}.");
                     }
                 }
             }
 
-            public static PostModel ForCreate()
+            public static PostModel ForCreate(IEnumerable<string> acceptedPlayerIds)
             {
-                SeriePostModel[] series = Enumerable.Range(0, 4)
-                    .Select(_ => new SeriePostModel
+                string[] playerIds = acceptedPlayerIds.Take(8).ToArray();
+                PlayerRow[] players = Enumerable.Range(0, 8)
+                    .Select(i => new PlayerRow
                     {
-                        Tables = Enumerable.Range(0, 4)
-                            .Select(_ => new TablePostModel
-                            {
-                                Game1 = new GamePostModel(),
-                                Game2 = new GamePostModel()
-                            })
-                            .ToArray()
+                        PlayerId = i < playerIds.Length ? playerIds[i] : null,
+                        Games = Enumerable.Range(0, 4).Select(_ => new PinsCell()).ToArray()
                     })
                     .ToArray();
-                return new PostModel(series);
+                TableWin[] wins = Enumerable.Range(0, 4)
+                    .Select(_ => new TableWin { Won = new bool[4] })
+                    .ToArray();
+                return new PostModel(players, wins);
             }
         }
 
-        public class SeriePostModel
-        {
-            public TablePostModel[]? Tables { get; set; }
-        }
-
-        public class TablePostModel
-        {
-            public bool Score { get; set; }
-
-            public GamePostModel? Game1 { get; set; }
-
-            public GamePostModel? Game2 { get; set; }
-        }
-
-        public class GamePostModel
+        public class PlayerRow
         {
             public string? PlayerId { get; set; }
 
+            public PinsCell[]? Games { get; set; }
+        }
+
+        public class PinsCell
+        {
             [Range(0, 300)]
             public int? Pins { get; set; }
+        }
+
+        public class TableWin
+        {
+            public bool[]? Won { get; set; }
         }
     }
 

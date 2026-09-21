@@ -1,4 +1,4 @@
-@model Snittlistan.Web.Areas.V2.Controllers.MatchResultAdminController.RegisterMatchViewModel.PostModel
+﻿@model Snittlistan.Web.Areas.V2.Controllers.MatchResultAdminController.RegisterMatchViewModel.PostModel
 @{
     var playerListItems = (SelectListItem[])ViewData["PlayerListItems"];
 }
@@ -70,73 +70,83 @@
         </div>
     </div>
 </div>
-@for (var i = 0; i < Model.Series.Length; i++)
-{
-    <div class="row">
-        <div class="span12">
-            <p>Serie @(i + 1)</p>
-            <table class="table table-condensed table-bordered table-striped">
-                <tr>
-                    <th>Bord</th>
-                    <th>Spelare</th>
-                    <th>Resultat</th>
-                    <th>Vann bordet</th>
-                </tr>
-                @for (var j = 0; j < Model.Series[i].Tables.Length; j++)
+<div class="row">
+    <div class="span12">
+        <p>Namnen är förifyllda utifrån vilka som anmält sig till matchen. Byt spelare vid behov och fyll i resultatet för varje serie.</p>
+        <table class="table table-condensed table-bordered table-striped">
+            <tr>
+                <th>Bord</th>
+                <th>Spelare</th>
+                <th>Serie 1</th>
+                <th>Serie 2</th>
+                <th>Serie 3</th>
+                <th>Serie 4</th>
+            </tr>
+            @for (var t = 0; t < 4; t++)
+            {
+                for (var g = 0; g < 2; g++)
                 {
+                    var i = (t * 2) + g;
                     <tr>
-                        <td rowspan="2" style="vertical-align: middle;">@(j + 1)</td>
+                        @if (g == 0)
+                        {
+                            <td rowspan="2" style="vertical-align: middle;">@(t + 1)</td>
+                        }
                         <td>
                             @Html.DropDownListFor(
-                                m => m.Series[i].Tables[j].Game1.PlayerId,
+                                m => m.Players[i].PlayerId,
                                 playerListItems,
                                 "Välj spelare",
                                 new { @class = "span2", required = "required" })
                         </td>
+                        @for (var s = 0; s < 4; s++)
+                        {
+                            <td>
+                                @Html.TextBoxFor(
+                                    m => m.Players[i].Games[s].Pins,
+                                    new
+                                    {
+                                        @class = "span1",
+                                        type = "number",
+                                        pattern = @"\d*",
+                                        min = "0",
+                                        max = "300",
+                                        required = "required"
+                                    })
+                            </td>
+                        }
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="span12">
+        <p>Ange vilket bord som vann respektive serie.</p>
+        <table class="table table-condensed table-bordered table-striped">
+            <tr>
+                <th>Bord</th>
+                <th>Serie 1</th>
+                <th>Serie 2</th>
+                <th>Serie 3</th>
+                <th>Serie 4</th>
+            </tr>
+            @for (var t = 0; t < 4; t++)
+            {
+                <tr>
+                    <td>@(t + 1)</td>
+                    @for (var s = 0; s < 4; s++)
+                    {
                         <td>
-                            @Html.TextBoxFor(
-                                m => m.Series[i].Tables[j].Game1.Pins,
-                                new
-                                {
-                                    @class = "span1",
-                                    type = "number",
-                                    pattern = @"\d*",
-                                    min = "0",
-                                    max = "300",
-                                    required = "required"
-                                })
-                        </td>
-                        <td rowspan="2" style="vertical-align: middle;">
                             <label>
-                                @Html.CheckBoxFor(m => m.Series[i].Tables[j].Score)
+                                @Html.CheckBoxFor(m => m.Wins[t].Won[s])
                                 Vann
                             </label>
                         </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.DropDownListFor(
-                                m => m.Series[i].Tables[j].Game2.PlayerId,
-                                playerListItems,
-                                "Välj spelare",
-                                new { @class = "span2", required = "required" })
-                        </td>
-                        <td>
-                            @Html.TextBoxFor(
-                                m => m.Series[i].Tables[j].Game2.Pins,
-                                new
-                                {
-                                    @class = "span1",
-                                    type = "number",
-                                    pattern = @"\d*",
-                                    min = "0",
-                                    max = "300",
-                                    required = "required"
-                                })
-                        </td>
-                    </tr>
-                }
-            </table>
-        </div>
+                    }
+                </tr>
+            }
+        </table>
     </div>
-}
+</div>
