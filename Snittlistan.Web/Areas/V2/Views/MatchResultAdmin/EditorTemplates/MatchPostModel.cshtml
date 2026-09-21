@@ -94,9 +94,18 @@
                 <tr>
                     <td>@(i + 1)@(i == 8 ? " (reserv)" : "")</td>
                     <td>
+                        @{
+                            var rowPlayerId = Model.Players[i].PlayerId;
+                            var rowItems = playerListItems.Select(item => new SelectListItem
+                            {
+                                Text = item.Text,
+                                Value = item.Value,
+                                Selected = item.Value == rowPlayerId
+                            });
+                        }
                         @Html.DropDownListFor(
                             m => m.Players[i].PlayerId,
-                            playerListItems,
+                            rowItems,
                             "Välj spelare",
                             new { @class = "span2" })
                     </td>
