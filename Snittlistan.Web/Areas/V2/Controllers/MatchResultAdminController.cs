@@ -237,11 +237,12 @@ public class MatchResultAdminController : AbstractController
             ResultSeriesReadModel.IdFromBitsMatchId(roster.BitsMatchId, roster.Id!));
 
         SelectListItem[] playerListItems = LoadActivePlayerListItems();
+        Player[] rosterPlayers = CompositionRoot.DocumentSession.Load<Player>(roster.Players);
 
         RegisterMatchViewModel viewModel = new(
             CompositionRoot.DocumentSession.LoadRosterViewModel(roster),
             playerListItems,
-            RegisterMatchViewModel.PostModel.ForEdit(roster.Players, header, series));
+            RegisterMatchViewModel.PostModel.ForEdit(rosterPlayers, header, series));
         return View("RegisterMatchEditor", viewModel);
     }
 
@@ -735,22 +736,25 @@ public class MatchResultAdminController : AbstractController
                 return new PostModel(players);
             }
 
+            // ResultSeriesReadModel is a display-oriented projection: it keys each player's games
+            // by their NAME (see ResultSeriesHandler.CreateTable), not their document id, so the
+            // lookup below has to go through the roster players' names rather than their ids.
             public static PostModel ForEdit(
-                IEnumerable<string> rosterPlayerIds,
+                IEnumerable<Player> rosterPlayers,
                 ResultHeaderReadModel header,
                 ResultSeriesReadModel series)
             {
-                Dictionary<string, List<ResultSeriesReadModel.PlayerGame>[]> byPlayer =
+                Dictionary<string, List<ResultSeriesReadModel.PlayerGame>[]> byName =
                     series.SortedPlayers().ToDictionary(x => x.Key, x => x.Value);
 
-                string[] playerIds = rosterPlayerIds.Take(9).ToArray();
+                Player[] playerArray = rosterPlayers.Take(9).ToArray();
                 PlayerRow[] players = Enumerable.Range(0, 9)
                     .Select(i =>
                     {
-                        string? playerId = i < playerIds.Length ? playerIds[i] : null;
+                        Player? player = i < playerArray.Length ? playerArray[i] : null;
                         PinsCell[] games = Enumerable.Range(0, 4).Select(_ => new PinsCell()).ToArray();
                         int tableWins = 0;
-                        if (playerId != null && byPlayer.TryGetValue(playerId, out List<ResultSeriesReadModel.PlayerGame>[] playedSeries))
+                        if (player != null && byName.TryGetValue(player.Name, out List<ResultSeriesReadModel.PlayerGame>[] playedSeries))
                         {
                             for (int s = 0; s < 4; s++)
                             {
@@ -764,7 +768,7 @@ public class MatchResultAdminController : AbstractController
 
                         return new PlayerRow
                         {
-                            PlayerId = playerId,
+                            PlayerId = player?.Id,
                             Games = games,
                             TableWins = tableWins
                         };
