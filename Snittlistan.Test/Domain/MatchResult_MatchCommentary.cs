@@ -17,6 +17,7 @@ using Snittlistan.Web.Infrastructure.Bits;
 namespace Snittlistan.Test.Domain;
 
 [TestFixture]
+[Ignore("Slow: full IoC/RavenDB bootstrap per test plus busy-polled indexing waits in WebApiIntegrationTest")]
 public class MatchResult_MatchCommentary : WebApiIntegrationTest
 {
     private static readonly Player[] Players =

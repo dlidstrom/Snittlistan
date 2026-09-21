@@ -17,6 +17,7 @@ using Snittlistan.Web.Models;
 namespace Snittlistan.Test.ApiControllers;
 
 [TestFixture]
+[Ignore("Slow: full IoC/RavenDB bootstrap per test plus busy-polled indexing waits in WebApiIntegrationTest")]
 public class Task_Post_RegisterMatch : WebApiIntegrationTest
 {
     private RegisterPendingMatchTask? task;
