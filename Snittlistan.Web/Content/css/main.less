@@ -18,6 +18,10 @@
 @score-accomplishment-color: silver;
 @pins-accomplishment-color: darkorange;
 
+body {
+    margin-bottom: 60px;
+}
+
 .container {
     max-width: 1200px;
     margin-left: auto;
@@ -99,22 +103,22 @@ button.btn {
     text-transform: uppercase;
     text-overflow: ellipsis;
     overflow: hidden;
-    max-width: ~"calc(100% - 1rem)";
+    max-width: ~"calc(99%)";
 }
 
 .label-team-a {
     .team-label(@team-a-color);
 }
 
-.label-team-f {
+.label-team-f, .label-team-f1, .label-team-f2 {
     .team-label(@team-f-color);
 }
 
-.label-team-b {
+.label-team-b, .label-team-d {
     .team-label(@team-b-color);
 }
 
-.label-team-c {
+.label-team-c, .label-team-dc {
     .team-label(@team-c-color);
 }
 
