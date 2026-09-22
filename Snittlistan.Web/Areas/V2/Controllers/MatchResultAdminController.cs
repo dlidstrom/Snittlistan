@@ -732,7 +732,7 @@ public class MatchResultAdminController : AbstractController
             /// entry is left blank, that sentence is skipped.
             /// </summary>
             [Display(Name = "Motståndarens serieresultat")]
-            public int?[]? OpponentSeriesPins { get; set; } = new int?[4];
+            public int?[]? OpponentSeriesPins { get; set; }
 
             public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
             {
@@ -798,7 +798,10 @@ public class MatchResultAdminController : AbstractController
                         Games = Enumerable.Range(0, 4).Select(_ => new PinsCell()).ToArray()
                     })
                     .ToArray();
-                return new PostModel(players);
+                return new PostModel(players)
+                {
+                    OpponentSeriesPins = new int?[4]
+                };
             }
 
             // ResultSeriesReadModel is a display-oriented projection: it keys each player's games
@@ -846,7 +849,8 @@ public class MatchResultAdminController : AbstractController
                     OpponentScore = header.OpponentScore,
                     Commentary = header.MatchCommentary,
                     CommentaryHtml = header.MatchCommentaryHtml,
-                    CommentaryDisplay = new HtmlString(header.MatchCommentaryHtml ?? string.Empty)
+                    CommentaryDisplay = new HtmlString(header.MatchCommentaryHtml ?? string.Empty),
+                    OpponentSeriesPins = new int?[4]
                 };
             }
         }
