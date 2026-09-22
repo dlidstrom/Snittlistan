@@ -352,17 +352,6 @@ table.team-editor input[type="number"] {
 	width: 45px;
 }
 
-/* Hide the browser's built-in increment/decrement spinner on number inputs;
-   it eats into the input's width in dense tables like the match editors. */
-input[type="number"] {
-	-moz-appearance: textfield;
-}
-
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
-}
 
 /* Feedback tab */
 #feedbackTab {

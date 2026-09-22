@@ -439,3 +439,15 @@ input[type=text].date-picker {
 .quill-form {
     visibility: hidden;
 }
+
+/* Hide the browser's built-in increment/decrement spinner on number inputs;
+   it eats into the input's width in dense tables like the match editors. */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
