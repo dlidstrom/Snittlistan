@@ -41,8 +41,14 @@ public class RosterController : AbstractController
             selectAll = false;
         }
 
+        // Omgång 11 and later are handled in sportbowling.se (latest season only)
+        const int LastTurnHere = 10;
+        bool cutoff = season == CompositionRoot.DocumentSession.LatestSeasonOrDefault(SystemTime.UtcNow.Year);
+        ViewBag.TurnCutoff = cutoff ? LastTurnHere : (int?)null;
         Roster[] rosters = CompositionRoot.DocumentSession.Query<Roster, RosterSearchTerms>()
             .Where(r => r.Season == season)
+            .ToArray()
+            .Where(r => !cutoff || r.Turn <= LastTurnHere)
             .ToArray();
         InitialDataViewModel.SelectedTurn[] selectedTurns =
             Array.Empty<InitialDataViewModel.SelectedTurn>();

@@ -62,4 +62,12 @@
     }
 }
 
+@if (ViewBag.TurnCutoff != null)
+{
+    <div class="alert alert-info">
+        <strong>Omgång @(ViewBag.TurnCutoff + 1) och framåt</strong> hanteras i
+        <a href="https://sportbowling.se">sportbowling.se</a>.
+    </div>
+}
+
 <hr />
